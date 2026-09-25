@@ -1,0 +1,1372 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full bg-slate-50">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+  <title>Rapor Tengah Semester MBU - Sistem Penilaian Holistik</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Dynamic Theme CSS Variables & Custom Styles -->
+  <style id="app-dynamic-theme">
+    :root {
+      --primary-color: #1e3a8a;
+      --primary-hover: #1e40af;
+      --primary-light: #eff6ff;
+      --secondary-color: #0284c7;
+      --secondary-hover: #0369a1;
+      --accent-color: #10b981;
+      --accent-hover: #059669;
+      --font-main: 'Plus Jakarta Sans', 'Inter', sans-serif;
+    }
+    
+    body {
+      font-family: var(--font-main);
+      background-color: #f8fafc;
+      color: #1e293b;
+      overflow-x: hidden;
+    }
+    
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #f1f5f9; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    
+    .bg-theme-primary { background-color: var(--primary-color) !important; }
+    .text-theme-primary { color: var(--primary-color) !important; }
+    .border-theme-primary { border-color: var(--primary-color) !important; }
+    .bg-theme-primary-light { background-color: var(--primary-light) !important; }
+    
+    .bg-theme-secondary { background-color: var(--secondary-color) !important; }
+    .text-theme-secondary { color: var(--secondary-color) !important; }
+    .border-theme-secondary { border-color: var(--secondary-color) !important; }
+    
+    .bg-theme-accent { background-color: var(--accent-color) !important; }
+    .text-theme-accent { color: var(--accent-color) !important; }
+    
+    .badge-predikat-A { background-color: #dcfce7; color: #15803d; border: 1px solid #86efac; }
+    .badge-predikat-B { background-color: #dbeafe; color: #1d4ed8; border: 1px solid #93c5fd; }
+    .badge-predikat-C { background-color: #fef9c3; color: #a16207; border: 1px solid #fde047; }
+    .badge-predikat-D { background-color: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; }
+
+    .view-panel { transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); }
+    
+    @media print {
+      @page { size: A4 portrait; margin: 12mm 15mm; }
+      body { background: #ffffff !important; color: #000000 !important; font-size: 11pt; }
+      .no-print { display: none !important; }
+      .print-only { display: block !important; }
+      .print-container { width: 100% !important; max-width: 100% !important; margin: 0 !important; padding: 0 !important; box-shadow: none !important; border: none !important; }
+      .page-break-inside-avoid { break-inside: avoid; page-break-inside: avoid; }
+      table { border-collapse: collapse !important; width: 100% !important; }
+      th, td { border: 1px solid #333333 !important; padding: 4px 6px !important; }
+      th { background-color: #f1f5f9 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body class="h-full flex flex-col antialiased text-slate-800 bg-slate-100">
+
+  <!-- Top Navigation Bar -->
+  <header class="no-print bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between h-16 items-center">
+        
+        <div class="flex items-center space-x-3">
+          <button id="btn-toggle-sidebar" class="lg:hidden p-2 rounded-lg text-slate-600 hover:bg-slate-100 focus:outline-none">
+            <i class="fa-solid fa-bars text-lg"></i>
+          </button>
+          
+          <div class="flex items-center space-x-3 cursor-pointer" onclick="switchView('dashboard')">
+            <img id="nav-school-logo" src="https://alimamischool.com/wp-content/uploads/2020/08/Al-Imam-Islamic-School-alimamischool.com-sekolah-sunnah-logo.png" 
+                 alt="Logo Sekolah" class="h-10 w-auto object-contain drop-shadow-sm rounded" />
+            <div class="hidden sm:block">
+              <h1 id="nav-school-name" class="text-base font-bold text-slate-900 leading-tight">SMP IT Al-Imam Islamic School MBU</h1>
+              <p class="text-xs font-semibold text-slate-500 flex items-center gap-1.5">
+                <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                Sistem Rapor Tengah Semester (MVC Engine)
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex items-center space-x-3 sm:space-x-4">
+          <div class="hidden md:flex items-center bg-slate-100 border border-slate-200 px-3 py-1.5 rounded-full text-xs font-medium text-slate-700">
+            <i class="fa-regular fa-calendar-check text-theme-primary mr-1.5"></i>
+            <span>T.A. <strong id="nav-academic-year">2025/2026</strong></span>
+            <span class="mx-1.5 text-slate-300">|</span>
+            <span class="text-emerald-700 font-semibold" id="nav-semester">Ganjil</span>
+          </div>
+
+          <button onclick="openQuickPrintModal()" class="inline-flex items-center gap-2 px-3 py-1.5 bg-slate-800 hover:bg-slate-900 text-white rounded-lg text-xs font-semibold shadow transition-all">
+            <i class="fa-solid fa-print"></i>
+            <span class="hidden sm:inline">Cetak Rapor</span>
+          </button>
+
+          <!-- User Role Switcher Dropdown -->
+          <div class="relative">
+            <button id="btn-role-switcher" onclick="toggleRoleDropdown()" class="flex items-center gap-2 px-3 py-1.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-lg text-xs font-medium text-slate-700">
+              <i class="fa-solid fa-user-shield text-theme-secondary"></i>
+              <span id="nav-user-role-badge" class="font-bold text-slate-800">Admin</span>
+              <i class="fa-solid fa-chevron-down text-[10px] text-slate-400"></i>
+            </button>
+            
+            <div id="dropdown-role-switcher" class="hidden absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-slate-100 py-2 z-50 text-xs">
+              <div class="px-3 py-1.5 text-slate-400 uppercase font-semibold text-[10px] tracking-wider border-b border-slate-100">
+                Ganti Role Simulasi:
+              </div>
+              <button onclick="setSimulatedRole('admin')" class="w-full text-left px-3 py-2 hover:bg-slate-50 flex items-center gap-2 text-slate-700">
+                <span class="w-2 h-2 rounded-full bg-purple-500"></span>
+                <strong>Admin / CMS</strong> (Akses Penuh)
+              </button>
+              <button onclick="setSimulatedRole('guru_akademik')" class="w-full text-left px-3 py-2 hover:bg-slate-50 flex items-center gap-2 text-slate-700">
+                <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                <strong>Guru Akademik</strong> (Mapel Umum)
+              </button>
+              <button onclick="setSimulatedRole('pembina_kepemimpinan')" class="w-full text-left px-3 py-2 hover:bg-slate-50 flex items-center gap-2 text-slate-700">
+                <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+                <strong>Pembina Kepemimpinan</strong> (Karakter)
+              </button>
+              <button onclick="setSimulatedRole('pembina_diniyah')" class="w-full text-left px-3 py-2 hover:bg-slate-50 flex items-center gap-2 text-slate-700">
+                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                <strong>Pembina Diniyah</strong> (Tahfidz/Adab)
+              </button>
+              <button onclick="setSimulatedRole('santri')" class="w-full text-left px-3 py-2 hover:bg-slate-50 flex items-center gap-2 text-slate-700">
+                <span class="w-2 h-2 rounded-full bg-slate-400"></span>
+                <strong>Santri / Orang Tua</strong> (Lihat Rapor)
+              </button>
+            </div>
+          </div>
+
+          <div class="flex items-center space-x-2 pl-2 border-l border-slate-200">
+            <div class="w-8 h-8 rounded-full bg-theme-primary text-white flex items-center justify-center font-bold text-xs shadow-inner" id="nav-user-avatar">
+              A
+            </div>
+            <div class="hidden lg:block text-left">
+              <div id="nav-user-name" class="text-xs font-bold text-slate-800 leading-tight">Admin Utama</div>
+              <div id="nav-user-subtitle" class="text-[10px] text-slate-400">Sistem Administrator</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- App Body Layout -->
+  <div class="flex-1 flex overflow-hidden">
+    
+    <!-- Sidebar Navigation -->
+    <aside id="app-sidebar" class="no-print fixed inset-y-0 left-0 z-20 w-64 bg-slate-900 text-slate-300 transform -translate-x-full lg:translate-x-0 lg:static lg:inset-auto transition-transform duration-200 ease-in-out flex flex-col justify-between shadow-xl">
+      <div class="p-4 flex-1 overflow-y-auto">
+        <div class="flex items-center justify-between pb-4 mb-4 border-b border-slate-800 lg:hidden">
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Menu Navigasi</span>
+          <button id="btn-close-sidebar" class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800">
+            <i class="fa-solid fa-xmark text-lg"></i>
+          </button>
+        </div>
+
+        <nav class="space-y-1.5" id="sidebar-nav-list">
+          <div class="px-3 py-1 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Utama</div>
+          <a href="javascript:void(0)" onclick="switchView('dashboard')" id="nav-item-dashboard" 
+             class="sidebar-nav-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-medium text-white bg-slate-800 transition-colors">
+            <i class="fa-solid fa-chart-pie w-4 text-center text-theme-secondary text-sm"></i>
+            <span>Dashboard Ringkasan</span>
+          </a>
+
+          <div class="pt-4 px-3 py-1 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Kategori Penilaian</div>
+          
+          <a href="javascript:void(0)" onclick="switchView('akademik')" id="nav-item-akademik" 
+             class="sidebar-nav-link flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition-colors">
+            <div class="flex items-center gap-3">
+              <i class="fa-solid fa-book-open w-4 text-center text-blue-400 text-sm"></i>
+              <span>Nilai Akademik</span>
+            </div>
+            <span class="text-[10px] bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded-full font-semibold" id="badge-count-akademik">0</span>
+          </a>
+
+          <a href="javascript:void(0)" onclick="switchView('kepemimpinan')" id="nav-item-kepemimpinan" 
+             class="sidebar-nav-link flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition-colors">
+            <div class="flex items-center gap-3">
+              <i class="fa-solid fa-award w-4 text-center text-amber-400 text-sm"></i>
+              <span>Nilai Kepemimpinan</span>
+            </div>
+            <span class="text-[10px] bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded-full font-semibold" id="badge-count-kepemimpinan">0</span>
+          </a>
+
+          <a href="javascript:void(0)" onclick="switchView('diniyah')" id="nav-item-diniyah" 
+             class="sidebar-nav-link flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition-colors">
+            <div class="flex items-center gap-3">
+              <i class="fa-solid fa-quran w-4 text-center text-emerald-400 text-sm"></i>
+              <span>Nilai Diniyah & Tahfidz</span>
+            </div>
+            <span class="text-[10px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded-full font-semibold" id="badge-count-diniyah">0</span>
+          </a>
+
+          <div class="pt-4 px-3 py-1 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Output & Master</div>
+          
+          <a href="javascript:void(0)" onclick="switchView('rapor')" id="nav-item-rapor" 
+             class="sidebar-nav-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition-colors">
+            <i class="fa-solid fa-file-invoice w-4 text-center text-indigo-400 text-sm"></i>
+            <span>Cetak Rapor Terpadu</span>
+          </a>
+
+          <a href="javascript:void(0)" onclick="switchView('santri')" id="nav-item-santri" 
+             class="sidebar-nav-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition-colors">
+            <i class="fa-solid fa-user-graduate w-4 text-center text-purple-400 text-sm"></i>
+            <span>Data Santri & Kelas</span>
+          </a>
+
+          <div class="pt-4 px-3 py-1 text-[11px] font-semibold text-slate-400 uppercase tracking-wider menu-admin-only">Sistem & CMS</div>
+          <a href="javascript:void(0)" onclick="switchView('cms')" id="nav-item-cms" 
+             class="sidebar-nav-link menu-admin-only flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition-colors">
+            <i class="fa-solid fa-sliders w-4 text-center text-rose-400 text-sm"></i>
+            <span>Pengaturan CMS & SaaS</span>
+          </a>
+        </nav>
+      </div>
+
+      <div class="p-4 bg-slate-950 border-t border-slate-800 text-[11px]">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-slate-400">Status Database</span>
+          <span class="inline-flex items-center gap-1 text-emerald-400 font-medium">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+            Google Sheets
+          </span>
+        </div>
+        <button onclick="triggerInitDb()" class="w-full py-1.5 px-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg text-center text-[10px] font-semibold flex items-center justify-center gap-1.5 border border-slate-700 transition">
+          <i class="fa-solid fa-arrows-rotate text-[10px]"></i>
+          <span>Sinkron / Reset Data Awal</span>
+        </button>
+      </div>
+    </aside>
+
+    <div id="sidebar-backdrop" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-10 hidden lg:hidden" onclick="toggleSidebar()"></div>
+
+    <!-- Main Dynamic View Area -->
+    <main class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
+      <div class="max-w-7xl mx-auto space-y-6">
+        
+        <!-- 1. DASHBOARD HOME -->
+        <div id="view-dashboard" class="view-panel space-y-6">
+          <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 text-white p-6 sm:p-8 shadow-xl">
+            <div class="relative z-10 max-w-3xl">
+              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md text-xs font-semibold text-blue-200 mb-3 border border-white/10">
+                <i class="fa-solid fa-sparkles text-amber-300"></i>
+                <span>Portal Rapor Tengah Semester Terpadu</span>
+              </div>
+              <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white mb-2" id="home-welcome-school">
+                SMP IT Al-Imam Islamic School MBU
+              </h2>
+              <p class="text-sm text-blue-100/90 leading-relaxed mb-6">
+                Sistem penilaian holistik berbasis Google Apps Script & Google Sheets. Mengintegrasikan 3 pilar: Capaian Akademik, Karakter Kepemimpinan, dan Diniyah/Tahfidz Al-Qur'an.
+              </p>
+              <div class="flex flex-wrap items-center gap-3">
+                <button onclick="switchView('akademik')" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-xl text-xs shadow-lg transition-all flex items-center gap-2">
+                  <i class="fa-solid fa-pen-to-square"></i>
+                  <span>Input Nilai Akademik</span>
+                </button>
+                <button onclick="switchView('kepemimpinan')" class="px-4 py-2 bg-amber-600 hover:bg-amber-500 text-white font-semibold rounded-xl text-xs shadow-lg transition-all flex items-center gap-2">
+                  <i class="fa-solid fa-award"></i>
+                  <span>Input Kepemimpinan</span>
+                </button>
+                <button onclick="switchView('diniyah')" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-xl text-xs shadow-lg transition-all flex items-center gap-2">
+                  <i class="fa-solid fa-quran"></i>
+                  <span>Input Diniyah & Tahfidz</span>
+                </button>
+                <button onclick="switchView('rapor')" class="px-4 py-2 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-xl text-xs backdrop-blur-md transition-all flex items-center gap-2">
+                  <i class="fa-solid fa-print"></i>
+                  <span>Pratinjau & Cetak Rapor</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+            <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
+              <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Total Santri</span>
+              <div class="text-2xl sm:text-3xl font-bold text-slate-900 mt-1" id="stat-total-santri">0</div>
+              <div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+                <span>Jumlah Rombel:</span>
+                <strong class="text-slate-800" id="stat-total-kelas">0 Kelas</strong>
+              </div>
+            </div>
+            <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
+              <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Rata-Rata Akademik</span>
+              <div class="text-2xl sm:text-3xl font-bold text-blue-600 mt-1" id="stat-avg-akademik">0</div>
+              <div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+                <span>Total Record:</span>
+                <strong class="text-slate-800" id="stat-total-nilai-ak">0</strong>
+              </div>
+            </div>
+            <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
+              <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Kelengkapan Rapor</span>
+              <div class="text-2xl sm:text-3xl font-bold text-emerald-600 mt-1" id="stat-progress-percent">0%</div>
+              <div class="mt-3 pt-3 border-t border-slate-100">
+                <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+                  <div id="stat-progress-bar" class="bg-emerald-500 h-2 rounded-full" style="width: 0%"></div>
+                </div>
+              </div>
+            </div>
+            <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
+              <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Periode Aktif</span>
+              <div class="text-xl sm:text-2xl font-bold text-slate-900 mt-1" id="stat-current-semester">Ganjil</div>
+              <div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+                <span>T.A. Aktif:</span>
+                <strong class="text-slate-800" id="stat-current-year">2025/2026</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. AKADEMIK VIEW -->
+        <div id="view-akademik" class="view-panel hidden space-y-6">
+          <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+              <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-blue-600"></span>
+                Penilaian Akademik
+              </h2>
+              <p class="text-xs text-slate-500">Kelola nilai tugas (40%), UTS (60%), nilai akhir, dan predikat santri.</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <button onclick="openModalAkademik()" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl text-xs shadow flex items-center gap-2">
+                <i class="fa-solid fa-plus"></i>
+                <span>Input Nilai Akademik</span>
+              </button>
+              <button onclick="loadNilaiAkademik()" class="p-2 bg-slate-100 text-slate-700 rounded-xl text-xs"><i class="fa-solid fa-rotate"></i></button>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs text-slate-700">
+                <thead class="bg-slate-50 uppercase text-[10px] font-bold border-b">
+                  <tr>
+                    <th class="px-4 py-3">Santri</th>
+                    <th class="px-3 py-3">Kelas</th>
+                    <th class="px-3 py-3">Mata Pelajaran</th>
+                    <th class="px-3 py-3 text-center">Tugas</th>
+                    <th class="px-3 py-3 text-center">UTS</th>
+                    <th class="px-3 py-3 text-center">Akhir</th>
+                    <th class="px-3 py-3 text-center">Predikat</th>
+                    <th class="px-4 py-3">Catatan Guru</th>
+                    <th class="px-4 py-3 text-right">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="table-akademik-body" class="divide-y divide-slate-100"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. KEPEMIMPINAN VIEW -->
+        <div id="view-kepemimpinan" class="view-panel hidden space-y-6">
+          <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+              <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+                Penilaian Kepemimpinan
+              </h2>
+              <p class="text-xs text-slate-500">Evaluasi kedisiplinan, organisasi, karakter adab, dan kemandirian.</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <button onclick="openModalKepemimpinan()" class="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded-xl text-xs shadow flex items-center gap-2">
+                <i class="fa-solid fa-plus"></i>
+                <span>Input Nilai Kepemimpinan</span>
+              </button>
+              <button onclick="loadNilaiKepemimpinan()" class="p-2 bg-slate-100 text-slate-700 rounded-xl text-xs"><i class="fa-solid fa-rotate"></i></button>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs text-slate-700">
+                <thead class="bg-slate-50 uppercase text-[10px] font-bold border-b">
+                  <tr>
+                    <th class="px-4 py-3">Santri</th>
+                    <th class="px-3 py-3">Kelas</th>
+                    <th class="px-3 py-3">Kedisiplinan</th>
+                    <th class="px-3 py-3">Organisasi</th>
+                    <th class="px-3 py-3">Karakter</th>
+                    <th class="px-3 py-3">Kemandirian</th>
+                    <th class="px-4 py-3">Catatan Pembina</th>
+                    <th class="px-4 py-3 text-right">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="table-kepemimpinan-body" class="divide-y divide-slate-100"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. DINIYAH VIEW -->
+        <div id="view-diniyah" class="view-panel hidden space-y-6">
+          <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+              <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-600"></span>
+                Penilaian Diniyah & Tahfidz
+              </h2>
+              <p class="text-xs text-slate-500">Capaian Ziyadah hafalan Al-Qur'an, Muroja'ah mutqin, adab, ibadah, & Bahasa Arab.</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <button onclick="openModalDiniyah()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl text-xs shadow flex items-center gap-2">
+                <i class="fa-solid fa-plus"></i>
+                <span>Input Nilai Diniyah</span>
+              </button>
+              <button onclick="loadNilaiDiniyah()" class="p-2 bg-slate-100 text-slate-700 rounded-xl text-xs"><i class="fa-solid fa-rotate"></i></button>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs text-slate-700">
+                <thead class="bg-slate-50 uppercase text-[10px] font-bold border-b">
+                  <tr>
+                    <th class="px-4 py-3">Santri</th>
+                    <th class="px-3 py-3">Kelas</th>
+                    <th class="px-3 py-3">Ziyadah</th>
+                    <th class="px-3 py-3">Muroja'ah</th>
+                    <th class="px-3 py-3 text-center">Tahfidz</th>
+                    <th class="px-3 py-3 text-center">Adab</th>
+                    <th class="px-3 py-3 text-center">Ibadah</th>
+                    <th class="px-3 py-3 text-center">B. Arab</th>
+                    <th class="px-4 py-3">Catatan Musyrif</th>
+                    <th class="px-4 py-3 text-right">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="table-diniyah-body" class="divide-y divide-slate-100"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. SANTRI VIEW -->
+        <div id="view-santri" class="view-panel hidden space-y-6">
+          <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+              <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-purple-600"></span>
+                Master Data Santri & Rombel
+              </h2>
+              <p class="text-xs text-slate-500">Data identitas santri, rombongan belajar, dan kontak wali.</p>
+            </div>
+            <button onclick="openModalSantri()" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-xl text-xs shadow flex items-center gap-2">
+              <i class="fa-solid fa-user-plus"></i>
+              <span>Tambah Santri</span>
+            </button>
+          </div>
+
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs text-slate-700">
+                <thead class="bg-slate-50 uppercase text-[10px] font-bold border-b">
+                  <tr>
+                    <th class="px-4 py-3">NIS</th>
+                    <th class="px-4 py-3">Nama Santri</th>
+                    <th class="px-3 py-3 text-center">Kelas</th>
+                    <th class="px-3 py-3 text-center">L/P</th>
+                    <th class="px-4 py-3">Nama Wali</th>
+                    <th class="px-4 py-3">Kontak Wali</th>
+                    <th class="px-3 py-3 text-center">Status</th>
+                    <th class="px-4 py-3 text-right">Aksi & Rapor</th>
+                  </tr>
+                </thead>
+                <tbody id="table-santri-body" class="divide-y divide-slate-100"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- 6. CMS VIEW -->
+        <div id="view-cms" class="view-panel hidden space-y-6">
+          <div class="bg-gradient-to-r from-slate-900 via-rose-950 to-slate-900 text-white p-6 rounded-2xl shadow-xl flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+              <h2 class="text-xl font-black">CMS & Pengaturan Tampilan</h2>
+              <p class="text-xs text-slate-300 mt-1">Branding warna dinamis, logo sekolah, identitas lembaga, dan semester aktif.</p>
+            </div>
+            <button onclick="saveCmsSettingsAll()" class="px-5 py-2.5 bg-rose-600 hover:bg-rose-500 text-white font-bold rounded-xl text-xs shadow flex items-center gap-2">
+              <i class="fa-solid fa-floppy-disk"></i>
+              <span>Simpan Pengaturan</span>
+            </button>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 space-y-4">
+              <h3 class="text-sm font-bold text-slate-900 border-b pb-2">Identitas Sekolah</h3>
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Nama Sekolah</label>
+                <input type="text" id="cms-school-name" class="w-full text-xs bg-slate-50 border rounded-lg p-2" />
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">URL Logo</label>
+                <input type="text" id="cms-school-logo-url" oninput="previewCmsLogo()" class="w-full text-xs bg-slate-50 border rounded-lg p-2" />
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Alamat</label>
+                <textarea id="cms-school-address" rows="2" class="w-full text-xs bg-slate-50 border rounded-lg p-2"></textarea>
+              </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 space-y-4">
+              <h3 class="text-sm font-bold text-slate-900 border-b pb-2">Kustomisasi Tema Warna</h3>
+              <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl">
+                <span class="text-xs font-bold">Warna Utama (Primary)</span>
+                <input type="color" id="cms-color-primary" onchange="previewThemeColorsLive()" class="w-8 h-8 rounded border-0 cursor-pointer" />
+              </div>
+              <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl">
+                <span class="text-xs font-bold">Warna Sekunder (Secondary)</span>
+                <input type="color" id="cms-color-secondary" onchange="previewThemeColorsLive()" class="w-8 h-8 rounded border-0 cursor-pointer" />
+              </div>
+              <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl">
+                <span class="text-xs font-bold">Warna Aksen (Accent)</span>
+                <input type="color" id="cms-color-accent" onchange="previewThemeColorsLive()" class="w-8 h-8 rounded border-0 cursor-pointer" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 7. CETAK RAPOR TERPADU -->
+        <div id="view-rapor" class="view-panel hidden space-y-6">
+          <div class="no-print bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+              <h2 class="text-sm font-bold text-slate-900">Pratinjau & Cetak Rapor Tengah Semester</h2>
+              <p class="text-xs text-slate-500">Pilih santri untuk mencetak dokumen rapor 3 pilar.</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <select id="rapor-santri-select" onchange="loadSantriReportForPrint(this.value)" class="text-xs bg-slate-50 border rounded-xl px-3 py-2 font-semibold"></select>
+              <button onclick="window.print()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-xs shadow flex items-center gap-2">
+                <i class="fa-solid fa-print"></i>
+                <span>Cetak A4 / PDF</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="print-container bg-white mx-auto max-w-4xl p-6 sm:p-10 rounded-2xl border border-slate-300 shadow-lg text-slate-900">
+            <!-- Kop Surat -->
+            <div class="border-b-4 border-double border-slate-900 pb-4 mb-5 flex items-center justify-between gap-4">
+              <img id="print-school-logo" src="https://alimamischool.com/wp-content/uploads/2020/08/Al-Imam-Islamic-School-alimamischool.com-sekolah-sunnah-logo.png" alt="Logo" class="h-20 w-20 object-contain" />
+              <div class="text-center flex-1">
+                <h2 class="text-xs uppercase font-bold tracking-widest text-slate-600">Laporan Hasil Belajar Tengah Semester</h2>
+                <h1 id="print-school-name" class="text-lg sm:text-xl font-black text-slate-900 tracking-tight uppercase mt-0.5">SMP IT AL-IMAM ISLAMIC SCHOOL MBU</h1>
+                <p id="print-school-address" class="text-[11px] text-slate-600 mt-1 leading-tight">Jl. KH. M. Usman No. 128, Kukusan, Beji, Kota Depok, Jawa Barat</p>
+              </div>
+              <div class="w-20 hidden sm:block"></div>
+            </div>
+
+            <!-- Identitas Santri -->
+            <div class="grid grid-cols-2 gap-y-1.5 gap-x-6 text-xs bg-slate-50 p-3 rounded-lg border border-slate-200 mb-5">
+              <div><span class="font-semibold text-slate-600">Nama Santri:</span> <strong id="print-santri-nama">-</strong></div>
+              <div><span class="font-semibold text-slate-600">T.A. / Semester:</span> <span id="print-tahun-ajaran">2025/2026</span> (<span id="print-semester">Ganjil</span>)</div>
+              <div><span class="font-semibold text-slate-600">NIS / NISN:</span> <span id="print-santri-nis">-</span> / <span id="print-santri-nisn">-</span></div>
+              <div><span class="font-semibold text-slate-600">Kelas / Gender:</span> <strong id="print-santri-kelas">-</strong> (<span id="print-santri-jk">-</span>)</div>
+            </div>
+
+            <!-- Tabel Akademik -->
+            <div class="mb-5 page-break-inside-avoid">
+              <h3 class="text-xs font-bold uppercase tracking-wider mb-2">A. Pencapaian Akademik (Mata Pelajaran Umum)</h3>
+              <table class="w-full text-left text-xs border border-slate-300">
+                <thead class="bg-slate-100 font-bold border-b border-slate-300">
+                  <tr>
+                    <th class="w-8 p-2 text-center border-r">No</th>
+                    <th class="p-2 border-r">Mata Pelajaran</th>
+                    <th class="w-16 p-2 text-center border-r">Tugas</th>
+                    <th class="w-16 p-2 text-center border-r">UTS</th>
+                    <th class="w-20 p-2 text-center border-r">Nilai Akhir</th>
+                    <th class="w-16 p-2 text-center border-r">Predikat</th>
+                    <th class="p-2">Catatan Guru</th>
+                  </tr>
+                </thead>
+                <tbody id="print-akademik-tbody" class="divide-y divide-slate-200"></tbody>
+                <tfoot class="bg-slate-50 font-bold border-t">
+                  <tr>
+                    <td colspan="4" class="p-2 text-right border-r">Rata-Rata Akademik</td>
+                    <td id="print-akademik-avg" class="p-2 text-center text-blue-700 font-black border-r">-</td>
+                    <td colspan="2" class="p-2 text-slate-500 italic">Evaluasi Tengah Semester</td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+
+            <!-- Tabel Kepemimpinan -->
+            <div class="mb-5 page-break-inside-avoid">
+              <h3 class="text-xs font-bold uppercase tracking-wider mb-2">B. Pencapaian Kepemimpinan, Adab & Karakter</h3>
+              <table class="w-full text-left text-xs border border-slate-300">
+                <thead class="bg-slate-100 font-bold border-b">
+                  <tr>
+                    <th class="w-1/4 p-2 text-center border-r">Kedisiplinan</th>
+                    <th class="w-1/4 p-2 text-center border-r">Keorganisasian</th>
+                    <th class="w-1/4 p-2 text-center border-r">Karakter</th>
+                    <th class="w-1/4 p-2 text-center">Kemandirian</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="font-bold text-center border-b">
+                    <td id="print-kp-disiplin" class="p-2 border-r text-amber-800">-</td>
+                    <td id="print-kp-organisasi" class="p-2 border-r text-amber-800">-</td>
+                    <td id="print-kp-karakter" class="p-2 border-r text-amber-800">-</td>
+                    <td id="print-kp-inisiatif" class="p-2 text-amber-800">-</td>
+                  </tr>
+                  <tr>
+                    <td colspan="4" class="p-3 bg-slate-50">
+                      <strong class="block text-[11px] mb-1">Catatan Pembina / Wali Kelas:</strong>
+                      <p id="print-kp-catatan" class="text-xs italic leading-relaxed">-</p>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Tabel Diniyah -->
+            <div class="mb-6 page-break-inside-avoid">
+              <h3 class="text-xs font-bold uppercase tracking-wider mb-2">C. Pencapaian Diniyah & Tahfidz Al-Qur'an</h3>
+              <table class="w-full text-left text-xs border border-slate-300">
+                <thead class="bg-slate-100 font-bold border-b">
+                  <tr>
+                    <th class="p-2 border-r">Ziyadah Baru</th>
+                    <th class="p-2 border-r">Muroja'ah</th>
+                    <th class="p-2 text-center border-r">Tahfidz</th>
+                    <th class="p-2 text-center border-r">Adab</th>
+                    <th class="p-2 text-center border-r">Ibadah</th>
+                    <th class="p-2 text-center">B. Arab</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="border-b">
+                    <td id="print-dn-ziyadah" class="p-2 border-r font-semibold">-</td>
+                    <td id="print-dn-murojaah" class="p-2 border-r font-semibold">-</td>
+                    <td id="print-dn-tahfidz" class="p-2 text-center border-r font-bold text-emerald-800">-</td>
+                    <td id="print-dn-adab" class="p-2 text-center border-r font-bold text-emerald-800">-</td>
+                    <td id="print-dn-ibadah" class="p-2 text-center border-r font-bold text-emerald-800">-</td>
+                    <td id="print-dn-bahasa-arab" class="p-2 text-center font-bold text-emerald-800">-</td>
+                  </tr>
+                  <tr>
+                    <td colspan="6" class="p-3 bg-slate-50">
+                      <strong class="block text-[11px] mb-1">Catatan Musyrif Tahfidz / Diniyah:</strong>
+                      <p id="print-dn-catatan" class="text-xs italic leading-relaxed">-</p>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Tanda Tangan -->
+            <div class="page-break-inside-avoid mt-8 pt-4 border-t border-slate-300">
+              <div class="text-right text-xs mb-4">
+                <span id="print-report-place">Depok</span>, <span id="print-report-date">28 September 2025</span>
+              </div>
+              <div class="grid grid-cols-3 text-center text-xs gap-4">
+                <div class="flex flex-col justify-between h-28">
+                  <span>Orang Tua / Wali</span>
+                  <div><div class="w-32 border-b border-slate-800 mx-auto"></div><span class="text-[10px] text-slate-500 mt-1 block">( ................................... )</span></div>
+                </div>
+                <div class="flex flex-col justify-between h-28">
+                  <span>Wali Kelas</span>
+                  <div><div class="w-32 border-b border-slate-800 mx-auto"></div><span class="text-[11px] font-bold mt-1 block" id="print-wali-kelas-nama">( Ust. Budi Santoso, S.Si. )</span></div>
+                </div>
+                <div class="flex flex-col justify-between h-28">
+                  <span>Kepala Sekolah</span>
+                  <div><div class="w-32 border-b border-slate-800 mx-auto"></div><span class="text-[11px] font-bold mt-1 block" id="print-headmaster-name">Ust. Ahmad Fauzi, M.Pd.</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+  </div>
+
+  <!-- Global Modals for Single-file Operation -->
+  <!-- Modal Akademik -->
+  <div id="modal-akademik" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-lg w-full shadow-2xl p-6 space-y-4">
+      <h3 class="font-bold text-sm text-slate-900" id="modal-akademik-title">Input Nilai Akademik</h3>
+      <form id="form-akademik" onsubmit="submitFormAkademik(event)" class="space-y-3">
+        <input type="hidden" id="akademik-id" />
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Pilih Santri *</label>
+          <select id="akademik-nis" required class="w-full text-xs bg-slate-50 border rounded-lg p-2"></select>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Mata Pelajaran *</label>
+          <select id="akademik-mapel" required class="w-full text-xs bg-slate-50 border rounded-lg p-2">
+            <option value="Matematika">Matematika</option>
+            <option value="Ilmu Pengetahuan Alam (IPA)">Ilmu Pengetahuan Alam (IPA)</option>
+            <option value="Bahasa Indonesia">Bahasa Indonesia</option>
+            <option value="Bahasa Inggris">Bahasa Inggris</option>
+            <option value="Ilmu Pengetahuan Sosial (IPS)">Ilmu Pengetahuan Sosial (IPS)</option>
+            <option value="Informatika & Coding">Informatika & Coding</option>
+          </select>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Nilai Tugas (40%)</label>
+            <input type="number" id="akademik-tugas" min="0" max="100" required oninput="recalcAkademikPreview()" class="w-full text-xs bg-slate-50 border rounded-lg p-2" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Nilai UTS (60%)</label>
+            <input type="number" id="akademik-uts" min="0" max="100" required oninput="recalcAkademikPreview()" class="w-full text-xs bg-slate-50 border rounded-lg p-2" />
+          </div>
+        </div>
+        <div class="bg-blue-50 p-2.5 rounded-lg flex items-center justify-between text-xs font-bold text-blue-900">
+          <span>Nilai Akhir: <strong id="akademik-preview-akhir">0</strong></span>
+          <span>Predikat: <strong id="akademik-preview-predikat">D</strong></span>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Catatan Guru</label>
+          <textarea id="akademik-catatan" rows="2" class="w-full text-xs bg-slate-50 border rounded-lg p-2"></textarea>
+        </div>
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" onclick="closeModalAkademik()" class="px-3 py-1.5 text-xs bg-slate-100 rounded-lg">Batal</button>
+          <button type="submit" class="px-4 py-1.5 text-xs bg-blue-600 text-white font-bold rounded-lg">Simpan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Kepemimpinan -->
+  <div id="modal-kepemimpinan" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-lg w-full shadow-2xl p-6 space-y-4">
+      <h3 class="font-bold text-sm text-slate-900" id="modal-kepemimpinan-title">Input Nilai Kepemimpinan</h3>
+      <form id="form-kepemimpinan" onsubmit="submitFormKepemimpinan(event)" class="space-y-3">
+        <input type="hidden" id="kepemimpinan-id" />
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Pilih Santri *</label>
+          <select id="kepemimpinan-nis" required class="w-full text-xs bg-slate-50 border rounded-lg p-2"></select>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Kedisiplinan</label>
+            <select id="kepemimpinan-kedisiplinan" class="w-full text-xs bg-slate-50 border rounded-lg p-2">
+              <option value="Sangat Baik (A)">Sangat Baik (A)</option>
+              <option value="Baik (B)">Baik (B)</option>
+              <option value="Cukup (C)">Cukup (C)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Keorganisasian</label>
+            <select id="kepemimpinan-organisasi" class="w-full text-xs bg-slate-50 border rounded-lg p-2">
+              <option value="Sangat Aktif (A)">Sangat Aktif (A)</option>
+              <option value="Aktif (B)">Aktif (B)</option>
+              <option value="Cukup Aktif (C)">Cukup Aktif (C)</option>
+            </select>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Karakter & Adab</label>
+            <select id="kepemimpinan-karakter" class="w-full text-xs bg-slate-50 border rounded-lg p-2">
+              <option value="Sangat Baik (A)">Sangat Baik (A)</option>
+              <option value="Baik (B)">Baik (B)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Kemandirian</label>
+            <select id="kepemimpinan-inisiatif" class="w-full text-xs bg-slate-50 border rounded-lg p-2">
+              <option value="Mandiri & Proaktif (A)">Mandiri & Proaktif (A)</option>
+              <option value="Mandiri (B)">Mandiri (B)</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Catatan Pembina</label>
+          <textarea id="kepemimpinan-catatan" rows="2" class="w-full text-xs bg-slate-50 border rounded-lg p-2"></textarea>
+        </div>
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" onclick="closeModalKepemimpinan()" class="px-3 py-1.5 text-xs bg-slate-100 rounded-lg">Batal</button>
+          <button type="submit" class="px-4 py-1.5 text-xs bg-amber-600 text-white font-bold rounded-lg">Simpan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Diniyah -->
+  <div id="modal-diniyah" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-lg w-full shadow-2xl p-6 space-y-4">
+      <h3 class="font-bold text-sm text-slate-900" id="modal-diniyah-title">Input Nilai Diniyah</h3>
+      <form id="form-diniyah" onsubmit="submitFormDiniyah(event)" class="space-y-3">
+        <input type="hidden" id="diniyah-id" />
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Pilih Santri *</label>
+          <select id="diniyah-nis" required class="w-full text-xs bg-slate-50 border rounded-lg p-2"></select>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Ziyadah Baru</label>
+            <input type="text" id="diniyah-ziyadah" required class="w-full text-xs bg-slate-50 border rounded-lg p-2" placeholder="Juz 30 & 29" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Muroja'ah Mutqin</label>
+            <input type="text" id="diniyah-murojaah" required class="w-full text-xs bg-slate-50 border rounded-lg p-2" placeholder="Juz 30" />
+          </div>
+        </div>
+        <div class="grid grid-cols-3 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Nilai Tahfidz</label>
+            <input type="number" id="diniyah-tahfidz" min="0" max="100" required class="w-full text-xs bg-slate-50 border rounded-lg p-2" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Adab</label>
+            <select id="diniyah-adab" class="w-full text-xs bg-slate-50 border rounded-lg p-2">
+              <option value="Mumtaz (A)">Mumtaz (A)</option>
+              <option value="Jayyid Jiddan (B)">Jayyid Jiddan (B)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Ibadah</label>
+            <select id="diniyah-ibadah" class="w-full text-xs bg-slate-50 border rounded-lg p-2">
+              <option value="Mumtaz (A)">Mumtaz (A)</option>
+              <option value="Jayyid Jiddan (B)">Jayyid Jiddan (B)</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Nilai Bahasa Arab</label>
+          <input type="number" id="diniyah-bahasa-arab" min="0" max="100" required class="w-full text-xs bg-slate-50 border rounded-lg p-2" />
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Catatan Musyrif</label>
+          <textarea id="diniyah-catatan" rows="2" class="w-full text-xs bg-slate-50 border rounded-lg p-2"></textarea>
+        </div>
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" onclick="closeModalDiniyah()" class="px-3 py-1.5 text-xs bg-slate-100 rounded-lg">Batal</button>
+          <button type="submit" class="px-4 py-1.5 text-xs bg-emerald-600 text-white font-bold rounded-lg">Simpan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Santri -->
+  <div id="modal-santri" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-lg w-full shadow-2xl p-6 space-y-4">
+      <h3 class="font-bold text-sm text-slate-900" id="modal-santri-title">Form Data Santri</h3>
+      <form id="form-santri" onsubmit="submitFormSantri(event)" class="space-y-3">
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">NIS *</label>
+            <input type="text" id="santri-nis" required class="w-full text-xs bg-slate-50 border rounded-lg p-2" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">NISN</label>
+            <input type="text" id="santri-nisn" class="w-full text-xs bg-slate-50 border rounded-lg p-2" />
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Nama Santri *</label>
+          <input type="text" id="santri-nama" required class="w-full text-xs bg-slate-50 border rounded-lg p-2" />
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Kelas *</label>
+            <select id="santri-kelas" class="w-full text-xs bg-slate-50 border rounded-lg p-2">
+              <option value="7A">7A</option>
+              <option value="7B">7B</option>
+              <option value="8A">8A</option>
+              <option value="8B">8B</option>
+              <option value="9A">9A</option>
+              <option value="9B">9B</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Gender *</label>
+            <select id="santri-jk" class="w-full text-xs bg-slate-50 border rounded-lg p-2">
+              <option value="L">L (Ikhwan)</option>
+              <option value="P">P (Akhwat)</option>
+            </select>
+          </div>
+        </div>
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" onclick="closeModalSantri()" class="px-3 py-1.5 text-xs bg-slate-100 rounded-lg">Batal</button>
+          <button type="submit" class="px-4 py-1.5 text-xs bg-purple-600 text-white font-bold rounded-lg">Simpan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none max-w-sm w-full"></div>
+
+  <!-- Complete Javascript Controller (Embedded) -->
+  <script>
+    const AppState = {
+      currentUser: { id: 'USR-001', username: 'admin', nama_lengkap: 'Administrator', role: 'admin' },
+      currentView: 'dashboard',
+      cmsSettings: {},
+      santriList: [],
+      akademikList: [],
+      kepemimpinanList: [],
+      diniyahList: [],
+      activePrintNis: null
+    };
+
+    function callApi(actionName, payload = {}) {
+      return new Promise((resolve, reject) => {
+        if (typeof google !== 'undefined' && google.script && google.script.run) {
+          const runner = google.script.run
+            .withSuccessHandler(res => resolve(res))
+            .withFailureHandler(err => reject(err));
+          
+          switch (actionName) {
+            case 'initDatabase': runner.apiInitDatabase(); break;
+            case 'getSettings': runner.apiGetSettings(); break;
+            case 'updateSettings': runner.apiUpdateSettings(payload); break;
+            case 'getSummaryStats': runner.apiGetSummaryStats(); break;
+            case 'getSantri': runner.apiGetSantri(payload.kelas); break;
+            case 'saveSantri': runner.apiSaveSantri(payload); break;
+            case 'deleteSantri': runner.apiDeleteSantri(payload.nis); break;
+            case 'getNilaiAkademik': runner.apiGetNilaiAkademik(payload); break;
+            case 'saveNilaiAkademik': runner.apiSaveNilaiAkademik(payload); break;
+            case 'deleteNilaiAkademik': runner.apiDeleteNilaiAkademik(payload.id); break;
+            case 'getNilaiKepemimpinan': runner.apiGetNilaiKepemimpinan(payload); break;
+            case 'saveNilaiKepemimpinan': runner.apiSaveNilaiKepemimpinan(payload); break;
+            case 'deleteNilaiKepemimpinan': runner.apiDeleteNilaiKepemimpinan(payload.id); break;
+            case 'getNilaiDiniyah': runner.apiGetNilaiDiniyah(payload); break;
+            case 'saveNilaiDiniyah': runner.apiSaveNilaiDiniyah(payload); break;
+            case 'deleteNilaiDiniyah': runner.apiDeleteNilaiDiniyah(payload.id); break;
+            case 'getSantriReport': runner.apiGetSantriReport(payload.nis); break;
+            default: reject(new Error('Unknown: ' + actionName));
+          }
+        } else {
+          resolve({ success: true, data: [] });
+        }
+      });
+    }
+
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toast-container');
+      if (!container) return;
+      const toast = document.createElement('div');
+      toast.className = `p-3 rounded-xl shadow-xl text-xs font-semibold text-white bg-slate-900 border-l-4 ${type === 'error' ? 'border-rose-500' : 'border-emerald-500'}`;
+      toast.innerText = message;
+      container.appendChild(toast);
+      setTimeout(() => toast.remove(), 3500);
+    }
+
+    function switchView(viewName) {
+      AppState.currentView = viewName;
+      document.querySelectorAll('.view-panel').forEach(p => p.classList.add('hidden'));
+      const active = document.getElementById('view-' + viewName);
+      if (active) active.classList.remove('hidden');
+
+      document.querySelectorAll('.sidebar-nav-link').forEach(link => {
+        link.classList.remove('bg-slate-800', 'text-white');
+        link.classList.add('text-slate-300');
+      });
+      const actLink = document.getElementById('nav-item-' + viewName);
+      if (actLink) {
+        actLink.classList.add('bg-slate-800', 'text-white');
+        actLink.classList.remove('text-slate-300');
+      }
+
+      switch (viewName) {
+        case 'dashboard': loadDashboardStats(); break;
+        case 'akademik': loadNilaiAkademik(); break;
+        case 'kepemimpinan': loadNilaiKepemimpinan(); break;
+        case 'diniyah': loadNilaiDiniyah(); break;
+        case 'santri': loadSantriList(); break;
+        case 'cms': loadCmsSettings(); break;
+        case 'rapor':
+          if (AppState.activePrintNis) loadSantriReportForPrint(AppState.activePrintNis);
+          else if (AppState.santriList.length > 0) loadSantriReportForPrint(AppState.santriList[0].nis);
+          break;
+      }
+    }
+
+    function toggleRoleDropdown() {
+      document.getElementById('dropdown-role-switcher')?.classList.toggle('hidden');
+    }
+
+    function setSimulatedRole(role) {
+      AppState.currentUser.role = role;
+      document.getElementById('nav-user-role-badge').innerText = role;
+      document.getElementById('dropdown-role-switcher')?.classList.add('hidden');
+      showToast('Beralih ke role: ' + role, 'info');
+      switchView('dashboard');
+    }
+
+    function applyCmsTheme(settings) {
+      if (!settings) return;
+      const root = document.documentElement;
+      if (settings.theme_primary_color) root.style.setProperty('--primary-color', settings.theme_primary_color);
+      if (settings.theme_secondary_color) root.style.setProperty('--secondary-color', settings.theme_secondary_color);
+      if (settings.theme_accent_color) root.style.setProperty('--accent-color', settings.theme_accent_color);
+
+      if (settings.school_name) {
+        document.getElementById('nav-school-name').innerText = settings.school_name;
+        document.getElementById('home-welcome-school').innerText = settings.school_name;
+        document.getElementById('print-school-name').innerText = settings.school_name;
+      }
+      if (settings.school_logo_url) {
+        document.getElementById('nav-school-logo').src = settings.school_logo_url;
+        document.getElementById('print-school-logo').src = settings.school_logo_url;
+      }
+      if (settings.academic_year) document.getElementById('nav-academic-year').innerText = settings.academic_year;
+      if (settings.semester_active) document.getElementById('nav-semester').innerText = settings.semester_active;
+    }
+
+    function loadDashboardStats() {
+      callApi('getSummaryStats').then(res => {
+        if (res && res.stats) {
+          const s = res.stats;
+          document.getElementById('stat-total-santri').innerText = s.totalSantri || 0;
+          document.getElementById('stat-total-kelas').innerText = `${s.totalKelas || 0} Kelas`;
+          document.getElementById('stat-avg-akademik').innerText = s.avgAkademik || '0';
+          document.getElementById('stat-total-nilai-ak').innerText = `${s.totalNilaiAkademikInput || 0} Nilai`;
+          document.getElementById('stat-progress-percent').innerText = `${s.progressPercent || 0}%`;
+          document.getElementById('stat-progress-bar').style.width = `${s.progressPercent || 0}%`;
+          document.getElementById('stat-current-semester').innerText = s.activeSemester || 'Ganjil';
+          document.getElementById('stat-current-year').innerText = s.activeYear || '2025/2026';
+          
+          document.getElementById('badge-count-akademik').innerText = s.totalNilaiAkademikInput || 0;
+          document.getElementById('badge-count-kepemimpinan').innerText = s.totalKepemimpinanInput || 0;
+          document.getElementById('badge-count-diniyah').innerText = s.totalDiniyahInput || 0;
+        }
+      });
+    }
+
+    function loadSantriList() {
+      const tbody = document.getElementById('table-santri-body');
+      tbody.innerHTML = `<tr><td colspan="8" class="p-4 text-center text-slate-400">Memuat data...</td></tr>`;
+      callApi('getSantri', {}).then(res => {
+        AppState.santriList = res.data || [];
+        populateSantriDropdowns();
+        renderSantriTable(AppState.santriList);
+      });
+    }
+
+    function renderSantriTable(list) {
+      const tbody = document.getElementById('table-santri-body');
+      if (list.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" class="p-4 text-center text-slate-400">Belum ada data santri.</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = list.map(s => `
+        <tr class="hover:bg-slate-50 border-b">
+          <td class="p-3 font-mono font-bold">${s.nis}</td>
+          <td class="p-3 font-semibold">${s.nama_santri}</td>
+          <td class="p-3 text-center">${s.kelas}</td>
+          <td class="p-3 text-center font-bold">${s.jenis_kelamin}</td>
+          <td class="p-3">${s.nama_wali || '-'}</td>
+          <td class="p-3 font-mono text-[11px]">${s.kontak_wali || '-'}</td>
+          <td class="p-3 text-center">${s.status}</td>
+          <td class="p-3 text-right">
+            <button onclick="previewRaporDirect('${s.nis}')" class="px-2.5 py-1 bg-indigo-50 text-indigo-700 rounded-lg text-xs font-bold">Rapor</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function populateSantriDropdowns() {
+      const opts = AppState.santriList.map(s => `<option value="${s.nis}">${s.nama_santri} (${s.kelas})</option>`).join('');
+      ['akademik-nis', 'kepemimpinan-nis', 'diniyah-nis', 'rapor-santri-select'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.innerHTML = opts;
+      });
+    }
+
+    function openModalSantri() { document.getElementById('modal-santri').classList.remove('hidden'); }
+    function closeModalSantri() { document.getElementById('modal-santri').classList.add('hidden'); }
+    function submitFormSantri(e) {
+      e.preventDefault();
+      const p = {
+        nis: document.getElementById('santri-nis').value,
+        nisn: document.getElementById('santri-nisn').value,
+        nama_santri: document.getElementById('santri-nama').value,
+        kelas: document.getElementById('santri-kelas').value,
+        jenis_kelamin: document.getElementById('santri-jk').value
+      };
+      callApi('saveSantri', p).then(() => {
+        showToast('Santri berhasil disimpan!');
+        closeModalSantri();
+        loadSantriList();
+      });
+    }
+
+    // Akademik
+    function loadNilaiAkademik() {
+      callApi('getNilaiAkademik', {}).then(res => {
+        AppState.akademikList = res.data || [];
+        const tbody = document.getElementById('table-akademik-body');
+        tbody.innerHTML = AppState.akademikList.map(i => `
+          <tr class="hover:bg-slate-50 border-b">
+            <td class="p-3 font-bold">${i.nama_santri}</td>
+            <td class="p-3">${i.kelas}</td>
+            <td class="p-3 text-blue-700 font-bold">${i.mata_pelajaran}</td>
+            <td class="p-3 text-center">${i.nilai_tugas}</td>
+            <td class="p-3 text-center">${i.nilai_uts}</td>
+            <td class="p-3 text-center font-bold text-slate-900">${i.nilai_akhir}</td>
+            <td class="p-3 text-center font-black">${i.predikat}</td>
+            <td class="p-3 text-slate-600 italic text-[11px]">${i.catatan_guru || '-'}</td>
+            <td class="p-3 text-right">
+              <button onclick="deleteAkademikAction('${i.id}')" class="p-1 text-rose-600"><i class="fa-solid fa-trash"></i></button>
+            </td>
+          </tr>
+        `).join('');
+      });
+    }
+
+    function openModalAkademik() { document.getElementById('modal-akademik').classList.remove('hidden'); }
+    function closeModalAkademik() { document.getElementById('modal-akademik').classList.add('hidden'); }
+    function recalcAkademikPreview() {
+      const t = Number(document.getElementById('akademik-tugas').value) || 0;
+      const u = Number(document.getElementById('akademik-uts').value) || 0;
+      const fin = Math.round(t * 0.4 + u * 0.6);
+      let p = 'D';
+      if (fin >= 90) p = 'A';
+      else if (fin >= 80) p = 'B';
+      else if (fin >= 70) p = 'C';
+      document.getElementById('akademik-preview-akhir').innerText = fin;
+      document.getElementById('akademik-preview-predikat').innerText = p;
+    }
+    function submitFormAkademik(e) {
+      e.preventDefault();
+      const p = {
+        nis: document.getElementById('akademik-nis').value,
+        mata_pelajaran: document.getElementById('akademik-mapel').value,
+        nilai_tugas: Number(document.getElementById('akademik-tugas').value) || 0,
+        nilai_uts: Number(document.getElementById('akademik-uts').value) || 0,
+        catatan_guru: document.getElementById('akademik-catatan').value
+      };
+      callApi('saveNilaiAkademik', p).then(() => {
+        showToast('Nilai akademik berhasil disimpan!');
+        closeModalAkademik();
+        loadNilaiAkademik();
+        loadDashboardStats();
+      });
+    }
+    function deleteAkademikAction(id) {
+      if (!confirm('Hapus nilai ini?')) return;
+      callApi('deleteNilaiAkademik', { id: id }).then(() => { loadNilaiAkademik(); loadDashboardStats(); });
+    }
+
+    // Kepemimpinan
+    function loadNilaiKepemimpinan() {
+      callApi('getNilaiKepemimpinan', {}).then(res => {
+        AppState.kepemimpinanList = res.data || [];
+        const tbody = document.getElementById('table-kepemimpinan-body');
+        tbody.innerHTML = AppState.kepemimpinanList.map(i => `
+          <tr class="hover:bg-slate-50 border-b">
+            <td class="p-3 font-bold">${i.nama_santri}</td>
+            <td class="p-3">${i.kelas}</td>
+            <td class="p-3 text-amber-800">${i.kedisiplinan}</td>
+            <td class="p-3 text-amber-800">${i.organisasi}</td>
+            <td class="p-3 text-amber-800">${i.karakter_adab}</td>
+            <td class="p-3 text-amber-800">${i.inisiatif_kemandirian}</td>
+            <td class="p-3 text-slate-600 italic text-[11px]">${i.catatan_pembina || '-'}</td>
+            <td class="p-3 text-right">
+              <button onclick="deleteKepemimpinanAction('${i.id}')" class="p-1 text-rose-600"><i class="fa-solid fa-trash"></i></button>
+            </td>
+          </tr>
+        `).join('');
+      });
+    }
+    function openModalKepemimpinan() { document.getElementById('modal-kepemimpinan').classList.remove('hidden'); }
+    function closeModalKepemimpinan() { document.getElementById('modal-kepemimpinan').classList.add('hidden'); }
+    function submitFormKepemimpinan(e) {
+      e.preventDefault();
+      const p = {
+        nis: document.getElementById('kepemimpinan-nis').value,
+        kedisiplinan: document.getElementById('kepemimpinan-kedisiplinan').value,
+        organisasi: document.getElementById('kepemimpinan-organisasi').value,
+        karakter_adab: document.getElementById('kepemimpinan-karakter').value,
+        inisiatif_kemandirian: document.getElementById('kepemimpinan-inisiatif').value,
+        catatan_pembina: document.getElementById('kepemimpinan-catatan').value
+      };
+      callApi('saveNilaiKepemimpinan', p).then(() => {
+        showToast('Nilai kepemimpinan berhasil disimpan!');
+        closeModalKepemimpinan();
+        loadNilaiKepemimpinan();
+        loadDashboardStats();
+      });
+    }
+    function deleteKepemimpinanAction(id) {
+      if (!confirm('Hapus nilai ini?')) return;
+      callApi('deleteNilaiKepemimpinan', { id: id }).then(() => { loadNilaiKepemimpinan(); loadDashboardStats(); });
+    }
+
+    // Diniyah
+    function loadNilaiDiniyah() {
+      callApi('getNilaiDiniyah', {}).then(res => {
+        AppState.diniyahList = res.data || [];
+        const tbody = document.getElementById('table-diniyah-body');
+        tbody.innerHTML = AppState.diniyahList.map(i => `
+          <tr class="hover:bg-slate-50 border-b">
+            <td class="p-3 font-bold">${i.nama_santri}</td>
+            <td class="p-3">${i.kelas}</td>
+            <td class="p-3 text-emerald-800">${i.ziyadah_juz}</td>
+            <td class="p-3 text-emerald-800">${i.murojaah_juz}</td>
+            <td class="p-3 text-center font-bold">${i.nilai_tahfidz}</td>
+            <td class="p-3 text-center">${i.adab_harian}</td>
+            <td class="p-3 text-center">${i.ibadah_harian}</td>
+            <td class="p-3 text-center font-bold">${i.bahasa_arab}</td>
+            <td class="p-3 text-slate-600 italic text-[11px]">${i.catatan_musyrif || '-'}</td>
+            <td class="p-3 text-right">
+              <button onclick="deleteDiniyahAction('${i.id}')" class="p-1 text-rose-600"><i class="fa-solid fa-trash"></i></button>
+            </td>
+          </tr>
+        `).join('');
+      });
+    }
+    function openModalDiniyah() { document.getElementById('modal-diniyah').classList.remove('hidden'); }
+    function closeModalDiniyah() { document.getElementById('modal-diniyah').classList.add('hidden'); }
+    function submitFormDiniyah(e) {
+      e.preventDefault();
+      const p = {
+        nis: document.getElementById('diniyah-nis').value,
+        ziyadah_juz: document.getElementById('diniyah-ziyadah').value,
+        murojaah_juz: document.getElementById('diniyah-murojaah').value,
+        nilai_tahfidz: Number(document.getElementById('diniyah-tahfidz').value) || 0,
+        adab_harian: document.getElementById('diniyah-adab').value,
+        ibadah_harian: document.getElementById('diniyah-ibadah').value,
+        bahasa_arab: Number(document.getElementById('diniyah-bahasa-arab').value) || 0,
+        catatan_musyrif: document.getElementById('diniyah-catatan').value
+      };
+      callApi('saveNilaiDiniyah', p).then(() => {
+        showToast('Nilai diniyah berhasil disimpan!');
+        closeModalDiniyah();
+        loadNilaiDiniyah();
+        loadDashboardStats();
+      });
+    }
+    function deleteDiniyahAction(id) {
+      if (!confirm('Hapus nilai ini?')) return;
+      callApi('deleteNilaiDiniyah', { id: id }).then(() => { loadNilaiDiniyah(); loadDashboardStats(); });
+    }
+
+    // CMS Settings
+    function loadCmsSettings() {
+      callApi('getSettings').then(res => {
+        if (res && res.data) {
+          AppState.cmsSettings = res.data;
+          applyCmsTheme(res.data);
+          document.getElementById('cms-school-name').value = res.data.school_name || '';
+          document.getElementById('cms-school-logo-url').value = res.data.school_logo_url || '';
+          document.getElementById('cms-school-address').value = res.data.school_address || '';
+          document.getElementById('cms-color-primary').value = res.data.theme_primary_color || '#1e3a8a';
+          document.getElementById('cms-color-secondary').value = res.data.theme_secondary_color || '#0284c7';
+          document.getElementById('cms-color-accent').value = res.data.theme_accent_color || '#10b981';
+        }
+      });
+    }
+    function previewThemeColorsLive() {
+      applyCmsTheme({
+        theme_primary_color: document.getElementById('cms-color-primary').value,
+        theme_secondary_color: document.getElementById('cms-color-secondary').value,
+        theme_accent_color: document.getElementById('cms-color-accent').value
+      });
+    }
+    function previewCmsLogo() {
+      const url = document.getElementById('cms-school-logo-url').value;
+      if (url) {
+        document.getElementById('nav-school-logo').src = url;
+        document.getElementById('print-school-logo').src = url;
+      }
+    }
+    function saveCmsSettingsAll() {
+      const p = {
+        school_name: document.getElementById('cms-school-name').value,
+        school_logo_url: document.getElementById('cms-school-logo-url').value,
+        school_address: document.getElementById('cms-school-address').value,
+        theme_primary_color: document.getElementById('cms-color-primary').value,
+        theme_secondary_color: document.getElementById('cms-color-secondary').value,
+        theme_accent_color: document.getElementById('cms-color-accent').value
+      };
+      callApi('updateSettings', p).then(() => {
+        showToast('Pengaturan CMS berhasil disimpan!');
+        applyCmsTheme(p);
+      });
+    }
+
+    // Cetak Rapor
+    function previewRaporDirect(nis) {
+      AppState.activePrintNis = nis;
+      switchView('rapor');
+    }
+    function openQuickPrintModal() { switchView('rapor'); }
+    function loadSantriReportForPrint(nis) {
+      if (!nis) return;
+      AppState.activePrintNis = nis;
+      document.getElementById('rapor-santri-select').value = nis;
+      callApi('getSantriReport', { nis: nis }).then(res => {
+        if (res && res.data) {
+          const r = res.data;
+          const s = r.santri || {};
+          const set = r.settings || {};
+          const ak = r.akademik || { items: [] };
+          const kp = r.kepemimpinan || {};
+          const dn = r.diniyah || {};
+
+          document.getElementById('print-santri-nama').innerText = s.nama_santri || '-';
+          document.getElementById('print-santri-nis').innerText = s.nis || '-';
+          document.getElementById('print-santri-nisn').innerText = s.nisn || '-';
+          document.getElementById('print-santri-kelas').innerText = s.kelas || '-';
+          document.getElementById('print-santri-jk').innerText = s.jenis_kelamin || '-';
+          document.getElementById('print-tahun-ajaran').innerText = set.academic_year || '2025/2026';
+          document.getElementById('print-semester').innerText = set.semester_active || 'Ganjil';
+
+          const tbAk = document.getElementById('print-akademik-tbody');
+          tbAk.innerHTML = ak.items.map((i, idx) => `
+            <tr>
+              <td class="p-2 text-center border-r font-mono">${idx+1}</td>
+              <td class="p-2 border-r font-bold">${i.mata_pelajaran}</td>
+              <td class="p-2 text-center border-r">${i.nilai_tugas}</td>
+              <td class="p-2 text-center border-r">${i.nilai_uts}</td>
+              <td class="p-2 text-center border-r font-bold">${i.nilai_akhir}</td>
+              <td class="p-2 text-center border-r font-black">${i.predikat}</td>
+              <td class="p-2 text-slate-600 italic text-[11px]">${i.catatan_guru || '-'}</td>
+            </tr>
+          `).join('');
+          document.getElementById('print-akademik-avg').innerText = ak.rataRata || '0';
+
+          document.getElementById('print-kp-disiplin').innerText = kp.kedisiplinan || '-';
+          document.getElementById('print-kp-organisasi').innerText = kp.organisasi || '-';
+          document.getElementById('print-kp-karakter').innerText = kp.karakter_adab || '-';
+          document.getElementById('print-kp-inisiatif').innerText = kp.inisiatif_kemandirian || '-';
+          document.getElementById('print-kp-catatan').innerText = kp.catatan_pembina || '-';
+
+          document.getElementById('print-dn-ziyadah').innerText = dn.ziyadah_juz || '-';
+          document.getElementById('print-dn-murojaah').innerText = dn.murojaah_juz || '-';
+          document.getElementById('print-dn-tahfidz').innerText = dn.nilai_tahfidz || '0';
+          document.getElementById('print-dn-adab').innerText = dn.adab_harian || '-';
+          document.getElementById('print-dn-ibadah').innerText = dn.ibadah_harian || '-';
+          document.getElementById('print-dn-bahasa-arab').innerText = dn.bahasa_arab || '0';
+          document.getElementById('print-dn-catatan').innerText = dn.catatan_musyrif || '-';
+        }
+      });
+    }
+
+    function triggerInitDb() {
+      if (!confirm('Inisialisasi ulang database Google Sheets?')) return;
+      callApi('initDatabase').then(() => {
+        showToast('Database Google Sheets berhasil diinisialisasi!');
+        loadCmsSettings();
+        loadSantriList();
+        loadDashboardStats();
+      });
+    }
+
+    function toggleSidebar() {
+      document.getElementById('app-sidebar')?.classList.toggle('-translate-x-full');
+      document.getElementById('sidebar-backdrop')?.classList.toggle('hidden');
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('btn-toggle-sidebar')?.addEventListener('click', toggleSidebar);
+      document.getElementById('btn-close-sidebar')?.addEventListener('click', toggleSidebar);
+      loadCmsSettings();
+      loadSantriList();
+      loadDashboardStats();
+    });
+  </script>
+</body>
+</html>

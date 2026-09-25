@@ -1,0 +1,175 @@
+<!-- Dashboard & Form Nilai Akademik -->
+<div id="view-akademik" class="view-panel hidden space-y-6">
+  
+  <!-- Section Header & Filter Toolbar -->
+  <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-blue-600"></span>
+          <h2 class="text-lg font-bold text-slate-900">Dashboard Penilaian Akademik</h2>
+        </div>
+        <p class="text-xs text-slate-500 mt-0.5">Kelola data nilai mata pelajaran umum, tugas, UTS, dan capaian kompetensi santri.</p>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button onclick="openModalAkademik()" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl text-xs shadow transition flex items-center gap-2">
+          <i class="fa-solid fa-plus"></i>
+          <span>Input Nilai Akademik</span>
+        </button>
+        <button onclick="loadNilaiAkademik()" class="p-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold transition" title="Refresh Data">
+          <i class="fa-solid fa-rotate"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Filters Row -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4 pt-4 border-t border-slate-100">
+      <div>
+        <label class="block text-[11px] font-semibold text-slate-600 mb-1">Filter Kelas</label>
+        <select id="filter-akademik-kelas" onchange="loadNilaiAkademik()" class="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <option value="Semua">Semua Kelas</option>
+          <option value="7A">Kelas 7A (Ikhwan)</option>
+          <option value="7B">Kelas 7B (Akhwat)</option>
+          <option value="8A">Kelas 8A (Ikhwan)</option>
+          <option value="8B">Kelas 8B (Akhwat)</option>
+          <option value="9A">Kelas 9A (Ikhwan)</option>
+          <option value="9B">Kelas 9B (Akhwat)</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="block text-[11px] font-semibold text-slate-600 mb-1">Filter Mata Pelajaran</label>
+        <select id="filter-akademik-mapel" onchange="loadNilaiAkademik()" class="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <option value="Semua">Semua Mata Pelajaran</option>
+          <option value="Matematika">Matematika</option>
+          <option value="Ilmu Pengetahuan Alam (IPA)">Ilmu Pengetahuan Alam (IPA)</option>
+          <option value="Bahasa Indonesia">Bahasa Indonesia</option>
+          <option value="Bahasa Inggris">Bahasa Inggris</option>
+          <option value="Ilmu Pengetahuan Sosial (IPS)">Ilmu Pengetahuan Sosial (IPS)</option>
+          <option value="Informatika & Coding">Informatika & Coding</option>
+          <option value="Pendidikan Pancasila">Pendidikan Pancasila</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="block text-[11px] font-semibold text-slate-600 mb-1">Cari Santri</label>
+        <div class="relative">
+          <input type="text" id="filter-akademik-search" oninput="filterTableAkademikLocal()" placeholder="Ketik nama atau NIS..." 
+                 class="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg pl-8 pr-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-2.5 text-slate-400 text-xs"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Table Container -->
+  <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="w-full text-left text-xs text-slate-700">
+        <thead class="bg-slate-50 text-slate-600 uppercase text-[10px] font-bold tracking-wider border-b border-slate-200">
+          <tr>
+            <th class="px-4 py-3.5">Santri / NIS</th>
+            <th class="px-3 py-3.5">Kelas</th>
+            <th class="px-3 py-3.5">Mata Pelajaran</th>
+            <th class="px-3 py-3.5 text-center">Tugas (40%)</th>
+            <th class="px-3 py-3.5 text-center">UTS (60%)</th>
+            <th class="px-3 py-3.5 text-center">Nilai Akhir</th>
+            <th class="px-3 py-3.5 text-center">Predikat</th>
+            <th class="px-4 py-3.5">Catatan Kemajuan Guru</th>
+            <th class="px-4 py-3.5 text-right">Aksi</th>
+          </tr>
+        </thead>
+        <tbody id="table-akademik-body" class="divide-y divide-slate-100">
+          <tr>
+            <td colspan="9" class="px-4 py-8 text-center text-slate-400">
+              <i class="fa-solid fa-spinner fa-spin text-lg mb-2"></i>
+              <p>Memuat data nilai akademik...</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<!-- Modal Form: Tambah / Edit Nilai Akademik -->
+<div id="modal-akademik" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+  <div class="bg-white rounded-2xl max-w-lg w-full shadow-2xl border border-slate-100 overflow-hidden transform transition-all">
+    <div class="px-6 py-4 bg-gradient-to-r from-blue-900 to-indigo-900 text-white flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <i class="fa-solid fa-book-open text-blue-300"></i>
+        <h3 class="font-bold text-sm" id="modal-akademik-title">Input Nilai Akademik</h3>
+      </div>
+      <button onclick="closeModalAkademik()" class="text-slate-300 hover:text-white text-lg">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <form id="form-akademik" onsubmit="submitFormAkademik(event)" class="p-6 space-y-4">
+      <input type="hidden" id="akademik-id" />
+
+      <div>
+        <label class="block text-xs font-bold text-slate-700 mb-1">Pilih Santri *</label>
+        <select id="akademik-nis" required class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-blue-500">
+          <!-- Populated dynamically via JS -->
+        </select>
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold text-slate-700 mb-1">Mata Pelajaran *</label>
+        <select id="akademik-mapel" required class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-blue-500">
+          <option value="Matematika">Matematika</option>
+          <option value="Ilmu Pengetahuan Alam (IPA)">Ilmu Pengetahuan Alam (IPA)</option>
+          <option value="Bahasa Indonesia">Bahasa Indonesia</option>
+          <option value="Bahasa Inggris">Bahasa Inggris</option>
+          <option value="Ilmu Pengetahuan Sosial (IPS)">Ilmu Pengetahuan Sosial (IPS)</option>
+          <option value="Informatika & Coding">Informatika & Coding</option>
+          <option value="Pendidikan Pancasila">Pendidikan Pancasila</option>
+          <option value="Seni Budaya & Prakarya">Seni Budaya & Prakarya</option>
+        </select>
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Nilai Tugas (0-100) *</label>
+          <input type="number" id="akademik-tugas" min="0" max="100" required oninput="recalcAkademikPreview()" 
+                 class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-blue-500" placeholder="85" />
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Nilai UTS (0-100) *</label>
+          <input type="number" id="akademik-uts" min="0" max="100" required oninput="recalcAkademikPreview()" 
+                 class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-blue-500" placeholder="90" />
+        </div>
+      </div>
+
+      <!-- Live Calculation Card -->
+      <div class="bg-blue-50 border border-blue-200 rounded-xl p-3 flex items-center justify-between">
+        <div>
+          <span class="text-[11px] text-blue-700 font-semibold block">Nilai Akhir (Tugas 40% + UTS 60%)</span>
+          <span class="text-lg font-extrabold text-blue-900" id="akademik-preview-akhir">0</span>
+        </div>
+        <div class="text-right">
+          <span class="text-[11px] text-blue-700 font-semibold block">Predikat Otomatis</span>
+          <span class="inline-block px-3 py-0.5 rounded-full font-bold text-xs" id="akademik-preview-predikat">D</span>
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold text-slate-700 mb-1">Catatan Guru / Deskripsi Kemajuan</label>
+        <textarea id="akademik-catatan" rows="3" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-blue-500" placeholder="Tuliskan catatan pencapaian kompetensi atau evaluasi belajar santri..."></textarea>
+      </div>
+
+      <div class="pt-3 border-t border-slate-100 flex items-center justify-end gap-2">
+        <button type="button" onclick="closeModalAkademik()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold">
+          Batal
+        </button>
+        <button type="submit" id="btn-save-akademik" class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold shadow flex items-center gap-2">
+          <i class="fa-solid fa-floppy-disk"></i>
+          <span>Simpan Nilai</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

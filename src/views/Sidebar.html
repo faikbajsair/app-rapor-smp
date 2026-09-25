@@ -1,0 +1,103 @@
+<!-- Main Application Sidebar -->
+<aside id="app-sidebar" class="no-print fixed inset-y-0 left-0 z-20 w-64 bg-slate-900 text-slate-300 transform -translate-x-full lg:translate-x-0 lg:static lg:inset-auto transition-transform duration-200 ease-in-out flex flex-col justify-between shadow-xl">
+  
+  <div class="p-4 flex-1 overflow-y-auto">
+    <!-- Sidebar Header / Mobile Close -->
+    <div class="flex items-center justify-between pb-4 mb-4 border-b border-slate-800 lg:hidden">
+      <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Menu Navigasi</span>
+      <button id="btn-close-sidebar" class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+    </div>
+
+    <!-- Navigation Menu Items -->
+    <nav class="space-y-1.5" id="sidebar-nav-list">
+      
+      <!-- 1. Beranda / Ringkasan -->
+      <div class="px-3 py-1 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Utama</div>
+      <a href="javascript:void(0)" onclick="switchView('dashboard')" id="nav-item-dashboard" 
+         class="sidebar-nav-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-medium text-white bg-slate-800 transition-colors">
+        <i class="fa-solid fa-chart-pie w-4 text-center text-theme-secondary text-sm"></i>
+        <span>Dashboard Ringkasan</span>
+      </a>
+
+      <!-- 2. Tiga Kategori Penilaian Utama -->
+      <div class="pt-4 px-3 py-1 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Kategori Penilaian</div>
+      
+      <!-- Akademik -->
+      <a href="javascript:void(0)" onclick="switchView('akademik')" id="nav-item-akademik" 
+         class="sidebar-nav-link flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition-colors">
+        <div class="flex items-center gap-3">
+          <i class="fa-solid fa-book-open w-4 text-center text-blue-400 text-sm"></i>
+          <span>Nilai Akademik</span>
+        </div>
+        <span class="text-[10px] bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded-full font-semibold" id="badge-count-akademik">0</span>
+      </a>
+
+      <!-- Kepemimpinan -->
+      <a href="javascript:void(0)" onclick="switchView('kepemimpinan')" id="nav-item-kepemimpinan" 
+         class="sidebar-nav-link flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition-colors">
+        <div class="flex items-center gap-3">
+          <i class="fa-solid fa-award w-4 text-center text-amber-400 text-sm"></i>
+          <span>Nilai Kepemimpinan</span>
+        </div>
+        <span class="text-[10px] bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded-full font-semibold" id="badge-count-kepemimpinan">0</span>
+      </a>
+
+      <!-- Diniyah -->
+      <a href="javascript:void(0)" onclick="switchView('diniyah')" id="nav-item-diniyah" 
+         class="sidebar-nav-link flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition-colors">
+        <div class="flex items-center gap-3">
+          <i class="fa-solid fa-quran w-4 text-center text-emerald-400 text-sm"></i>
+          <span>Nilai Diniyah & Tahfidz</span>
+        </div>
+        <span class="text-[10px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded-full font-semibold" id="badge-count-diniyah">0</span>
+      </a>
+
+      <!-- 3. Rapor & Data Master -->
+      <div class="pt-4 px-3 py-1 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Output & Master</div>
+      
+      <!-- Cetak Rapor -->
+      <a href="javascript:void(0)" onclick="switchView('rapor')" id="nav-item-rapor" 
+         class="sidebar-nav-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition-colors">
+        <i class="fa-solid fa-file-invoice w-4 text-center text-indigo-400 text-sm"></i>
+        <span>Cetak Rapor Terpadu</span>
+      </a>
+
+      <!-- Data Santri -->
+      <a href="javascript:void(0)" onclick="switchView('santri')" id="nav-item-santri" 
+         class="sidebar-nav-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition-colors">
+        <i class="fa-solid fa-user-graduate w-4 text-center text-purple-400 text-sm"></i>
+        <span>Data Santri & Kelas</span>
+      </a>
+
+      <!-- 4. Konfigurasi CMS (SaaS Ready) -->
+      <div class="pt-4 px-3 py-1 text-[11px] font-semibold text-slate-400 uppercase tracking-wider menu-admin-only">Sistem & CMS</div>
+      <a href="javascript:void(0)" onclick="switchView('cms')" id="nav-item-cms" 
+         class="sidebar-nav-link menu-admin-only flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition-colors">
+        <i class="fa-solid fa-sliders w-4 text-center text-rose-400 text-sm"></i>
+        <span>Pengaturan CMS & SaaS</span>
+      </a>
+
+    </nav>
+  </div>
+
+  <!-- Sidebar Footer: Sheet Connection & Database Status -->
+  <div class="p-4 bg-slate-950 border-t border-slate-800 text-[11px]">
+    <div class="flex items-center justify-between mb-2">
+      <span class="text-slate-400">Status Database</span>
+      <span class="inline-flex items-center gap-1 text-emerald-400 font-medium">
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+        Google Sheets
+      </span>
+    </div>
+    <button onclick="triggerInitDb()" class="w-full py-1.5 px-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg text-center text-[10px] font-semibold flex items-center justify-center gap-1.5 border border-slate-700 transition">
+      <i class="fa-solid fa-arrows-rotate text-[10px]"></i>
+      <span>Sinkron / Reset Data Awal</span>
+    </button>
+  </div>
+
+</aside>
+
+<!-- Mobile Overlay Backdrop -->
+<div id="sidebar-backdrop" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-10 hidden lg:hidden" onclick="toggleSidebar()"></div>

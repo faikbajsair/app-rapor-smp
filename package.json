@@ -1,0 +1,29 @@
+{
+  "name": "app-rapor-tengah-semester-mbu",
+  "version": "1.0.0",
+  "description": "Aplikasi Web Rapor Tengah Semester MBU berbasis Google Apps Script (GAS) MVC & Vercel Deployment",
+  "main": "src/Code.gs",
+  "scripts": {
+    "login": "clasp login",
+    "push": "clasp push",
+    "pull": "clasp pull",
+    "watch": "clasp push --watch",
+    "deploy": "clasp deploy --description 'Production Deployment'",
+    "open": "clasp open",
+    "build": "echo 'Build successful for Vercel Static deployment'",
+    "start": "npx serve public"
+  },
+  "keywords": [
+    "google-apps-script",
+    "rapor",
+    "mvc",
+    "vercel",
+    "tailwindcss",
+    "google-sheets-database"
+  ],
+  "author": "MBU Dev Team",
+  "license": "MIT",
+  "devDependencies": {
+    "@google/clasp": "^2.4.2"
+  }
+}

@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full bg-slate-50">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+  <title>Rapor Tengah Semester MBU - Web & Vercel Client</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <style>
+    :root {
+      --primary-color: #1e3a8a;
+      --secondary-color: #0284c7;
+      --accent-color: #10b981;
+      --font-main: 'Plus Jakarta Sans', sans-serif;
+    }
+    body { font-family: var(--font-main); }
+    .bg-theme-primary { background-color: var(--primary-color) !important; }
+    .text-theme-primary { color: var(--primary-color) !important; }
+    .bg-theme-secondary { background-color: var(--secondary-color) !important; }
+    .bg-theme-accent { background-color: var(--accent-color) !important; }
+    .badge-predikat-A { background-color: #dcfce7; color: #15803d; border: 1px solid #86efac; }
+    .badge-predikat-B { background-color: #dbeafe; color: #1d4ed8; border: 1px solid #93c5fd; }
+    .badge-predikat-C { background-color: #fef9c3; color: #a16207; border: 1px solid #fde047; }
+    .badge-predikat-D { background-color: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; }
+    @media print {
+      @page { size: A4 portrait; margin: 12mm 15mm; }
+      body { background: #fff !important; font-size: 11pt; }
+      .no-print { display: none !important; }
+      .print-container { width: 100% !important; border: none !important; box-shadow: none !important; margin: 0 !important; }
+    }
+  </style>
+</head>
+<body class="h-full flex flex-col antialiased text-slate-800 bg-slate-100">
+
+  <!-- Top Navbar -->
+  <header class="no-print bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between h-16 items-center">
+        <div class="flex items-center space-x-3">
+          <img id="nav-school-logo" src="https://alimamischool.com/wp-content/uploads/2020/08/Al-Imam-Islamic-School-alimamischool.com-sekolah-sunnah-logo.png" 
+               alt="Logo Sekolah" class="h-10 w-auto object-contain drop-shadow-sm rounded" />
+          <div>
+            <h1 id="nav-school-name" class="text-base font-bold text-slate-900 leading-tight">SMP IT Al-Imam Islamic School MBU</h1>
+            <p class="text-xs font-semibold text-slate-500 flex items-center gap-1.5">
+              <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              Vercel & Google Apps Script Client (Dual Deployment)
+            </p>
+          </div>
+        </div>
+
+        <div class="flex items-center space-x-3">
+          <button onclick="openApiConfigModal()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold flex items-center gap-1.5 border border-slate-300">
+            <i class="fa-solid fa-cloud-arrow-up text-blue-600"></i>
+            <span>Set Apps Script URL</span>
+          </button>
+          <button onclick="window.print()" class="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-xs font-semibold shadow flex items-center gap-1.5">
+            <i class="fa-solid fa-print"></i>
+            <span>Cetak Rapor</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- App Body -->
+  <div class="flex-1 flex overflow-hidden">
+    
+    <!-- Sidebar -->
+    <aside class="no-print w-64 bg-slate-900 text-slate-300 flex flex-col justify-between p-4 shadow-xl">
+      <nav class="space-y-1.5">
+        <div class="px-3 py-1 text-[11px] font-semibold text-slate-400 uppercase">Menu Utama</div>
+        <button onclick="switchViewVercel('dashboard')" id="btn-v-dashboard" class="w-full text-left flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-medium text-white bg-slate-800">
+          <i class="fa-solid fa-chart-pie text-sky-400"></i>
+          <span>Dashboard Ringkasan</span>
+        </button>
+        <button onclick="switchViewVercel('akademik')" id="btn-v-akademik" class="w-full text-left flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-medium text-slate-300 hover:bg-slate-800">
+          <i class="fa-solid fa-book-open text-blue-400"></i>
+          <span>Nilai Akademik</span>
+        </button>
+        <button onclick="switchViewVercel('kepemimpinan')" id="btn-v-kepemimpinan" class="w-full text-left flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-medium text-slate-300 hover:bg-slate-800">
+          <i class="fa-solid fa-award text-amber-400"></i>
+          <span>Nilai Kepemimpinan</span>
+        </button>
+        <button onclick="switchViewVercel('diniyah')" id="btn-v-diniyah" class="w-full text-left flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-medium text-slate-300 hover:bg-slate-800">
+          <i class="fa-solid fa-quran text-emerald-400"></i>
+          <span>Nilai Diniyah</span>
+        </button>
+        <button onclick="switchViewVercel('rapor')" id="btn-v-rapor" class="w-full text-left flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-medium text-slate-300 hover:bg-slate-800">
+          <i class="fa-solid fa-file-invoice text-indigo-400"></i>
+          <span>Pratinjau Rapor Terpadu</span>
+        </button>
+      </nav>
+
+      <div class="p-3 bg-slate-950 rounded-xl text-xs text-slate-400">
+        <span class="block text-[11px] font-bold text-slate-200 mb-1">Status Koneksi API:</span>
+        <span id="api-status-label" class="text-amber-400 font-semibold text-[11px]">Mode Standalone / Demo</span>
+      </div>
+    </aside>
+
+    <!-- Main Content View -->
+    <main class="flex-1 overflow-y-auto p-6">
+      
+      <!-- Panel: Dashboard -->
+      <div id="v-panel-dashboard" class="space-y-6">
+        <div class="bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 text-white p-6 rounded-2xl shadow-xl">
+          <span class="px-3 py-1 bg-white/10 rounded-full text-xs font-semibold text-blue-200">Vercel Deployment Preview</span>
+          <h2 class="text-2xl font-black mt-2">Rapor Tengah Semester MBU (MVC Architecture)</h2>
+          <p class="text-xs text-blue-100 mt-1">Aplikasi Web terpadu yang terhubung dengan Google Sheets Database melalui Apps Script REST Endpoint.</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
+          <div class="bg-white p-5 rounded-2xl border border-slate-200">
+            <span class="text-xs text-slate-500 font-bold uppercase">Total Santri</span>
+            <div class="text-2xl font-bold text-slate-900 mt-1" id="v-stat-santri">9 Santri</div>
+          </div>
+          <div class="bg-white p-5 rounded-2xl border border-slate-200">
+            <span class="text-xs text-slate-500 font-bold uppercase">Rata-Rata Akademik</span>
+            <div class="text-2xl font-bold text-blue-600 mt-1" id="v-stat-avg">89.2</div>
+          </div>
+          <div class="bg-white p-5 rounded-2xl border border-slate-200">
+            <span class="text-xs text-slate-500 font-bold uppercase">Status Semester</span>
+            <div class="text-2xl font-bold text-emerald-600 mt-1">Ganjil 2025/2026</div>
+          </div>
+          <div class="bg-white p-5 rounded-2xl border border-slate-200">
+            <span class="text-xs text-slate-500 font-bold uppercase">Titimangsa Rapor</span>
+            <div class="text-lg font-bold text-slate-900 mt-1">28 September 2025</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel: Rapor Print Sheet -->
+      <div id="v-panel-rapor" class="hidden space-y-4">
+        <div class="print-container bg-white mx-auto max-w-4xl p-8 rounded-2xl border border-slate-300 shadow text-slate-900">
+          <div class="border-b-4 border-double border-slate-900 pb-4 mb-5 flex items-center justify-between gap-4">
+            <img src="https://alimamischool.com/wp-content/uploads/2020/08/Al-Imam-Islamic-School-alimamischool.com-sekolah-sunnah-logo.png" 
+                 alt="Logo" class="h-16 w-16 object-contain" />
+            <div class="text-center flex-1">
+              <h2 class="text-xs uppercase font-bold text-slate-600">Laporan Hasil Belajar Tengah Semester</h2>
+              <h1 class="text-lg font-black text-slate-900 uppercase">SMP IT AL-IMAM ISLAMIC SCHOOL MBU</h1>
+              <p class="text-[11px] text-slate-600">Jl. KH. M. Usman No. 128, Kukusan, Beji, Kota Depok, Jawa Barat</p>
+            </div>
+            <div class="w-16"></div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2 text-xs bg-slate-50 p-3 rounded-lg border border-slate-200 mb-5">
+            <div><strong>Nama Santri:</strong> Muhammad Zaidan Al-Fatih</div>
+            <div><strong>Tahun Ajaran:</strong> 2025/2026 (Ganjil)</div>
+            <div><strong>NIS / Kelas:</strong> 202507001 / 7A</div>
+            <div><strong>Jenis Kelamin:</strong> Laki-laki</div>
+          </div>
+
+          <div class="mb-5">
+            <h3 class="text-xs font-bold uppercase mb-2">A. Pencapaian Akademik</h3>
+            <table class="w-full text-left text-xs border border-slate-300">
+              <thead class="bg-slate-100 font-bold border-b border-slate-300">
+                <tr>
+                  <th class="p-2 border-r">Mata Pelajaran</th>
+                  <th class="p-2 text-center border-r">Tugas</th>
+                  <th class="p-2 text-center border-r">UTS</th>
+                  <th class="p-2 text-center border-r">Akhir</th>
+                  <th class="p-2 text-center border-r">Predikat</th>
+                  <th class="p-2">Catatan Guru</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="border-b">
+                  <td class="p-2 border-r font-bold">Matematika</td>
+                  <td class="p-2 text-center border-r">88</td>
+                  <td class="p-2 text-center border-r">92</td>
+                  <td class="p-2 text-center border-r font-bold">90</td>
+                  <td class="p-2 text-center border-r font-black">A</td>
+                  <td class="p-2 text-slate-600 italic">Sangat baik dalam pemahaman aljabar dan logika matematika.</td>
+                </tr>
+                <tr class="border-b">
+                  <td class="p-2 border-r font-bold">Informatika & Coding</td>
+                  <td class="p-2 text-center border-r">95</td>
+                  <td class="p-2 text-center border-r">96</td>
+                  <td class="p-2 text-center border-r font-bold">96</td>
+                  <td class="p-2 text-center border-r font-black">A</td>
+                  <td class="p-2 text-slate-600 italic">Sangat mahir dalam computational thinking dan algoritma.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="mb-5">
+            <h3 class="text-xs font-bold uppercase mb-2">B. Pencapaian Kepemimpinan & Adab</h3>
+            <div class="grid grid-cols-4 text-center text-xs border border-slate-300 bg-slate-50 p-2 font-bold mb-2">
+              <div>Kedisiplinan: <span class="text-amber-800">Sangat Baik (A)</span></div>
+              <div>Keorganisasian: <span class="text-amber-800">Sangat Aktif (A)</span></div>
+              <div>Karakter: <span class="text-amber-800">Sangat Baik (A)</span></div>
+              <div>Kemandirian: <span class="text-amber-800">Mandiri (A)</span></div>
+            </div>
+          </div>
+
+          <div class="mb-5">
+            <h3 class="text-xs font-bold uppercase mb-2">C. Pencapaian Diniyah & Tahfidz</h3>
+            <div class="border border-slate-300 p-3 rounded text-xs bg-slate-50">
+              <div class="grid grid-cols-3 gap-2 font-semibold">
+                <div>Ziyadah: Juz 30 & Juz 29</div>
+                <div>Muroja'ah: Juz 30 Mutqin</div>
+                <div>Tahfidz: 94 (Tajwid Mumtaz)</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Signatures -->
+          <div class="grid grid-cols-3 text-center text-xs gap-4 mt-8 pt-4 border-t border-slate-300">
+            <div>Mengetahui,<br><strong>Orang Tua Santri</strong><br><br><br><strong>( ................................ )</strong></div>
+            <div>Wali Kelas /<br><strong>Pembina Asrama</strong><br><br><br><strong>( Ust. Budi Santoso, S.Si. )</strong></div>
+            <div>Kepala Sekolah,<br><strong>SMP IT Al-Imam</strong><br><br><br><strong>Ust. Ahmad Fauzi, M.Pd.</strong><br><span class="text-[10px] text-slate-500">NIP. 198507152010011002</span></div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- API Config Modal -->
+  <div id="modal-api-config" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
+      <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+        <i class="fa-solid fa-link text-blue-600"></i>
+        Hubungkan ke Google Apps Script Web App
+      </h3>
+      <p class="text-xs text-slate-500">
+        Masukkan URL deployment Google Apps Script Executable Web App Anda (akhiran <code>/exec</code>) untuk sinkronisasi data langsung dengan Google Sheets.
+      </p>
+      <div>
+        <label class="block text-xs font-bold text-slate-700 mb-1">Apps Script Executable URL</label>
+        <input type="text" id="input-api-url" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg p-2.5" placeholder="https://script.google.com/macros/s/.../exec" />
+      </div>
+      <div class="flex justify-end gap-2 pt-2">
+        <button onclick="closeApiConfigModal()" class="px-3 py-1.5 text-xs bg-slate-100 rounded-lg">Batal</button>
+        <button onclick="saveApiUrlConfig()" class="px-4 py-1.5 text-xs bg-blue-600 text-white font-bold rounded-lg">Simpan URL</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Default Deployed Google Apps Script API URL
+    const DEFAULT_GAS_URL = 'https://script.google.com/a/macros/alimamischool.com/s/AKfycbzaU5Z1nnUXejsCwztD13z52p8ZG5UeV5z_FYzzpe39mz_9iC0UjdFOnTll3rDw1SmX/exec';
+
+    function switchViewVercel(view) {
+      document.getElementById('v-panel-dashboard').classList.add('hidden');
+      document.getElementById('v-panel-rapor').classList.add('hidden');
+      
+      if (view === 'dashboard') document.getElementById('v-panel-dashboard').classList.remove('hidden');
+      else document.getElementById('v-panel-rapor').classList.remove('hidden');
+    }
+
+    function openApiConfigModal() {
+      document.getElementById('input-api-url').value = localStorage.getItem('APPS_SCRIPT_URL') || DEFAULT_GAS_URL;
+      document.getElementById('modal-api-config').classList.remove('hidden');
+    }
+    function closeModalApiConfig() {
+      document.getElementById('modal-api-config').classList.add('hidden');
+    }
+    function saveApiUrlConfig() {
+      const url = document.getElementById('input-api-url').value.trim() || DEFAULT_GAS_URL;
+      localStorage.setItem('APPS_SCRIPT_URL', url);
+      window.APPS_SCRIPT_API_URL = url;
+      document.getElementById('api-status-label').innerText = 'Terhubung ke Apps Script API';
+      document.getElementById('api-status-label').className = 'text-emerald-400 font-semibold text-[11px]';
+      closeModalApiConfig();
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const saved = localStorage.getItem('APPS_SCRIPT_URL') || DEFAULT_GAS_URL;
+      window.APPS_SCRIPT_API_URL = saved;
+      document.getElementById('api-status-label').innerText = 'Terhubung ke Apps Script API (Live)';
+      document.getElementById('api-status-label').className = 'text-emerald-400 font-semibold text-[11px]';
+    });
+  </script>
+</body>
+</html>

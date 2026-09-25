@@ -1,0 +1,165 @@
+<!-- Manajemen Data Santri & Kelas -->
+<div id="view-santri" class="view-panel hidden space-y-6">
+  
+  <!-- Header & Toolbar -->
+  <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-purple-600"></span>
+          <h2 class="text-lg font-bold text-slate-900">Manajemen Data Santri & Rombel</h2>
+        </div>
+        <p class="text-xs text-slate-500 mt-0.5">Master data santri, pembagian kelas/rombel, dan informasi wali santri.</p>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button onclick="openModalSantri()" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-xl text-xs shadow transition flex items-center gap-2">
+          <i class="fa-solid fa-user-plus"></i>
+          <span>Tambah Santri</span>
+        </button>
+        <button onclick="loadSantriList()" class="p-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold transition" title="Refresh Data">
+          <i class="fa-solid fa-rotate"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Filters Row -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4 pt-4 border-t border-slate-100">
+      <div>
+        <label class="block text-[11px] font-semibold text-slate-600 mb-1">Filter Kelas</label>
+        <select id="filter-santri-kelas" onchange="loadSantriList()" class="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-purple-500">
+          <option value="Semua">Semua Kelas</option>
+          <option value="7A">Kelas 7A (Ikhwan)</option>
+          <option value="7B">Kelas 7B (Akhwat)</option>
+          <option value="8A">Kelas 8A (Ikhwan)</option>
+          <option value="8B">Kelas 8B (Akhwat)</option>
+          <option value="9A">Kelas 9A (Ikhwan)</option>
+          <option value="9B">Kelas 9B (Akhwat)</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="block text-[11px] font-semibold text-slate-600 mb-1">Cari Santri</label>
+        <div class="relative">
+          <input type="text" id="filter-santri-search" oninput="filterTableSantriLocal()" placeholder="Ketik nama, NIS, atau NISN..." 
+                 class="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg pl-8 pr-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-purple-500" />
+          <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-2.5 text-slate-400 text-xs"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Table Container -->
+  <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="w-full text-left text-xs text-slate-700">
+        <thead class="bg-slate-50 text-slate-600 uppercase text-[10px] font-bold tracking-wider border-b border-slate-200">
+          <tr>
+            <th class="px-4 py-3.5">NIS</th>
+            <th class="px-4 py-3.5">NISN</th>
+            <th class="px-4 py-3.5">Nama Santri</th>
+            <th class="px-3 py-3.5 text-center">Kelas</th>
+            <th class="px-3 py-3.5 text-center">L/P</th>
+            <th class="px-4 py-3.5">Nama Wali</th>
+            <th class="px-4 py-3.5">Kontak Wali</th>
+            <th class="px-3 py-3.5 text-center">Status</th>
+            <th class="px-4 py-3.5 text-right">Aksi & Rapor</th>
+          </tr>
+        </thead>
+        <tbody id="table-santri-body" class="divide-y divide-slate-100">
+          <tr>
+            <td colspan="9" class="px-4 py-8 text-center text-slate-400">
+              <i class="fa-solid fa-spinner fa-spin text-lg mb-2"></i>
+              <p>Memuat data santri...</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<!-- Modal Form: Tambah / Edit Santri -->
+<div id="modal-santri" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+  <div class="bg-white rounded-2xl max-w-lg w-full shadow-2xl border border-slate-100 overflow-hidden transform transition-all">
+    <div class="px-6 py-4 bg-gradient-to-r from-purple-900 to-indigo-900 text-white flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <i class="fa-solid fa-user-graduate text-purple-300"></i>
+        <h3 class="font-bold text-sm" id="modal-santri-title">Form Data Santri</h3>
+      </div>
+      <button onclick="closeModalSantri()" class="text-slate-300 hover:text-white text-lg">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <form id="form-santri" onsubmit="submitFormSantri(event)" class="p-6 space-y-4">
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">NIS (Nomor Induk) *</label>
+          <input type="text" id="santri-nis" required class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-purple-500" placeholder="202507001" />
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">NISN</label>
+          <input type="text" id="santri-nisn" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-purple-500" placeholder="0091234561" />
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold text-slate-700 mb-1">Nama Lengkap Santri *</label>
+        <input type="text" id="santri-nama" required class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-purple-500" placeholder="Nama santri..." />
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Kelas / Rombel *</label>
+          <select id="santri-kelas" required class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-purple-500">
+            <option value="7A">7A</option>
+            <option value="7B">7B</option>
+            <option value="8A">8A</option>
+            <option value="8B">8B</option>
+            <option value="9A">9A</option>
+            <option value="9B">9B</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Jenis Kelamin *</label>
+          <select id="santri-jk" required class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-purple-500">
+            <option value="L">Laki-laki (Ikhwan)</option>
+            <option value="P">Perempuan (Akhwat)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Nama Orang Tua / Wali</label>
+          <input type="text" id="santri-wali" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-purple-500" placeholder="Nama wali..." />
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Kontak / No. WhatsApp Wali</label>
+          <input type="text" id="santri-kontak" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-purple-500" placeholder="081234567890" />
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold text-slate-700 mb-1">Status Santri</label>
+        <select id="santri-status" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-purple-500">
+          <option value="Aktif">Aktif</option>
+          <option value="Mutasi">Mutasi</option>
+          <option value="Lulus">Lulus</option>
+        </select>
+      </div>
+
+      <div class="pt-3 border-t border-slate-100 flex items-center justify-end gap-2">
+        <button type="button" onclick="closeModalSantri()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold">
+          Batal
+        </button>
+        <button type="submit" id="btn-save-santri" class="px-5 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-xs font-bold shadow flex items-center gap-2">
+          <i class="fa-solid fa-floppy-disk"></i>
+          <span>Simpan Santri</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

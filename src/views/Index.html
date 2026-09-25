@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full bg-slate-50">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+  <title>Rapor Tengah Semester MBU - Sistem Penilaian Holistik</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Dynamic Theme CSS Variables & Custom Styles -->
+  <style id="app-dynamic-theme">
+    :root {
+      --primary-color: #1e3a8a;
+      --primary-hover: #1e40af;
+      --primary-light: #eff6ff;
+      --secondary-color: #0284c7;
+      --secondary-hover: #0369a1;
+      --accent-color: #10b981;
+      --accent-hover: #059669;
+      --font-main: 'Plus Jakarta Sans', 'Inter', sans-serif;
+    }
+    
+    body {
+      font-family: var(--font-main);
+      background-color: #f8fafc;
+      color: #1e293b;
+      overflow-x: hidden;
+    }
+    
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+    
+    /* Custom CSS Utility Classes using dynamic CSS variables */
+    .bg-theme-primary { background-color: var(--primary-color) !important; }
+    .text-theme-primary { color: var(--primary-color) !important; }
+    .border-theme-primary { border-color: var(--primary-color) !important; }
+    .bg-theme-primary-light { background-color: var(--primary-light) !important; }
+    
+    .bg-theme-secondary { background-color: var(--secondary-color) !important; }
+    .text-theme-secondary { color: var(--secondary-color) !important; }
+    .border-theme-secondary { border-color: var(--secondary-color) !important; }
+    
+    .bg-theme-accent { background-color: var(--accent-color) !important; }
+    .text-theme-accent { color: var(--accent-color) !important; }
+    
+    .badge-predikat-A { background-color: #dcfce7; color: #15803d; border: 1px solid #86efac; }
+    .badge-predikat-B { background-color: #dbeafe; color: #1d4ed8; border: 1px solid #93c5fd; }
+    .badge-predikat-C { background-color: #fef9c3; color: #a16207; border: 1px solid #fde047; }
+    .badge-predikat-D { background-color: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; }
+
+    /* Smooth View Transitions */
+    .view-panel {
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    /* Print Optimization for Report Card (Format A4) */
+    @media print {
+      @page {
+        size: A4 portrait;
+        margin: 12mm 15mm 12mm 15mm;
+      }
+      body {
+        background: #ffffff !important;
+        color: #000000 !important;
+        font-size: 11pt;
+      }
+      .no-print {
+        display: none !important;
+      }
+      .print-only {
+        display: block !important;
+      }
+      .print-container {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        box-shadow: none !important;
+        border: none !important;
+      }
+      .page-break-inside-avoid {
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+      table {
+        border-collapse: collapse !important;
+        width: 100% !important;
+      }
+      th, td {
+        border: 1px solid #333333 !important;
+        padding: 4px 6px !important;
+      }
+      th {
+        background-color: #f1f5f9 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+    }
+  </style>
+</head>
+<body class="h-full flex flex-col antialiased text-slate-800 bg-slate-100">
+
+  <!-- Top Navigation Bar -->
+  <header class="no-print bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between h-16 items-center">
+        
+        <!-- Left: Mobile Menu Toggle & Brand Info -->
+        <div class="flex items-center space-x-3">
+          <button id="btn-toggle-sidebar" class="lg:hidden p-2 rounded-lg text-slate-600 hover:bg-slate-100 focus:outline-none">
+            <i class="fa-solid fa-bars text-lg"></i>
+          </button>
+          
+          <div class="flex items-center space-x-3 cursor-pointer" onclick="switchView('dashboard')">
+            <img id="nav-school-logo" src="https://alimamischool.com/wp-content/uploads/2020/08/Al-Imam-Islamic-School-alimamischool.com-sekolah-sunnah-logo.png" 
+                 alt="Logo Sekolah" class="h-10 w-auto object-contain drop-shadow-sm rounded" />
+            <div class="hidden sm:block">
+              <h1 id="nav-school-name" class="text-base font-bold text-slate-900 leading-tight">SMP IT Al-Imam Islamic School MBU</h1>
+              <p class="text-xs font-semibold text-slate-500 flex items-center gap-1.5">
+                <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                Sistem Rapor Tengah Semester (MVC Engine)
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Center / Right: Academic Badge & User Quick Controls -->
+        <div class="flex items-center space-x-3 sm:space-x-4">
+          
+          <!-- Active Period Pill -->
+          <div class="hidden md:flex items-center bg-slate-100 border border-slate-200 px-3 py-1.5 rounded-full text-xs font-medium text-slate-700">
+            <i class="fa-regular fa-calendar-check text-theme-primary mr-1.5"></i>
+            <span>T.A. <strong id="nav-academic-year">2025/2026</strong></span>
+            <span class="mx-1.5 text-slate-300">|</span>
+            <span class="text-emerald-700 font-semibold" id="nav-semester">Ganjil</span>
+          </div>
+
+          <!-- Quick Cetak Rapor Button -->
+          <button onclick="openQuickPrintModal()" class="inline-flex items-center gap-2 px-3 py-1.5 bg-slate-800 hover:bg-slate-900 text-white rounded-lg text-xs font-semibold shadow transition-all">
+            <i class="fa-solid fa-print"></i>
+            <span class="hidden sm:inline">Cetak Rapor</span>
+          </button>
+
+          <!-- User Role Switcher Dropdown -->
+          <div class="relative">
+            <button id="btn-role-switcher" onclick="toggleRoleDropdown()" class="flex items-center gap-2 px-3 py-1.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-lg text-xs font-medium text-slate-700">
+              <i class="fa-solid fa-user-shield text-theme-secondary"></i>
+              <span id="nav-user-role-badge" class="font-bold text-slate-800">Admin</span>
+              <i class="fa-solid fa-chevron-down text-[10px] text-slate-400"></i>
+            </button>
+            
+            <div id="dropdown-role-switcher" class="hidden absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-slate-100 py-2 z-50 text-xs">
+              <div class="px-3 py-1.5 text-slate-400 uppercase font-semibold text-[10px] tracking-wider border-b border-slate-100">
+                Ganti Role Simulasi:
+              </div>
+              <button onclick="setSimulatedRole('admin')" class="w-full text-left px-3 py-2 hover:bg-slate-50 flex items-center gap-2 text-slate-700">
+                <span class="w-2 h-2 rounded-full bg-purple-500"></span>
+                <strong>Admin / CMS</strong> (Akses Penuh)
+              </button>
+              <button onclick="setSimulatedRole('guru_akademik')" class="w-full text-left px-3 py-2 hover:bg-slate-50 flex items-center gap-2 text-slate-700">
+                <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                <strong>Guru Akademik</strong> (Mapel Umum)
+              </button>
+              <button onclick="setSimulatedRole('pembina_kepemimpinan')" class="w-full text-left px-3 py-2 hover:bg-slate-50 flex items-center gap-2 text-slate-700">
+                <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+                <strong>Pembina Kepemimpinan</strong> (Karakter)
+              </button>
+              <button onclick="setSimulatedRole('pembina_diniyah')" class="w-full text-left px-3 py-2 hover:bg-slate-50 flex items-center gap-2 text-slate-700">
+                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                <strong>Pembina Diniyah</strong> (Tahfidz/Adab)
+              </button>
+              <button onclick="setSimulatedRole('santri')" class="w-full text-left px-3 py-2 hover:bg-slate-50 flex items-center gap-2 text-slate-700">
+                <span class="w-2 h-2 rounded-full bg-slate-400"></span>
+                <strong>Santri / Orang Tua</strong> (Lihat Rapor)
+              </button>
+            </div>
+          </div>
+
+          <!-- User Profile -->
+          <div class="flex items-center space-x-2 pl-2 border-l border-slate-200">
+            <div class="w-8 h-8 rounded-full bg-theme-primary text-white flex items-center justify-center font-bold text-xs shadow-inner" id="nav-user-avatar">
+              A
+            </div>
+            <div class="hidden lg:block text-left">
+              <div id="nav-user-name" class="text-xs font-bold text-slate-800 leading-tight">Admin Utama</div>
+              <div id="nav-user-subtitle" class="text-[10px] text-slate-400">Sistem Administrator</div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- App Body Layout -->
+  <div class="flex-1 flex overflow-hidden">
+    
+    <!-- Sidebar Navigation -->
+    <aside id="app-sidebar" class="no-print fixed inset-y-0 left-0 z-20 w-64 bg-slate-900 text-slate-300 transform -translate-x-full lg:translate-x-0 lg:static lg:inset-auto transition-transform duration-200 ease-in-out flex flex-col justify-between shadow-xl">
+      <div class="p-4 flex-1 overflow-y-auto">
+        <div class="flex items-center justify-between pb-4 mb-4 border-b border-slate-800 lg:hidden">
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Menu Navigasi</span>
+          <button id="btn-close-sidebar" class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800">
+            <i class="fa-solid fa-xmark text-lg"></i>
+          </button>
+        </div>
+
+        <nav class="space-y-1.5" id="sidebar-nav-list">
+          <div class="px-3 py-1 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Utama</div>
+          <a href="javascript:void(0)" onclick="switchView('dashboard')" id="nav-item-dashboard" 
+             class="sidebar-nav-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-medium text-white bg-slate-800 transition-colors">
+            <i class="fa-solid fa-chart-pie w-4 text-center text-theme-secondary text-sm"></i>
+            <span>Dashboard Ringkasan</span>
+          </a>
+
+          <div class="pt-4 px-3 py-1 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Kategori Penilaian</div>
+          
+          <a href="javascript:void(0)" onclick="switchView('akademik')" id="nav-item-akademik" 
+             class="sidebar-nav-link flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition-colors">
+            <div class="flex items-center gap-3">
+              <i class="fa-solid fa-book-open w-4 text-center text-blue-400 text-sm"></i>
+              <span>Nilai Akademik</span>
+            </div>
+            <span class="text-[10px] bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded-full font-semibold" id="badge-count-akademik">0</span>
+          </a>
+
+          <a href="javascript:void(0)" onclick="switchView('kepemimpinan')" id="nav-item-kepemimpinan" 
+             class="sidebar-nav-link flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition-colors">
+            <div class="flex items-center gap-3">
+              <i class="fa-solid fa-award w-4 text-center text-amber-400 text-sm"></i>
+              <span>Nilai Kepemimpinan</span>
+            </div>
+            <span class="text-[10px] bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded-full font-semibold" id="badge-count-kepemimpinan">0</span>
+          </a>
+
+          <a href="javascript:void(0)" onclick="switchView('diniyah')" id="nav-item-diniyah" 
+             class="sidebar-nav-link flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition-colors">
+            <div class="flex items-center gap-3">
+              <i class="fa-solid fa-quran w-4 text-center text-emerald-400 text-sm"></i>
+              <span>Nilai Diniyah & Tahfidz</span>
+            </div>
+            <span class="text-[10px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded-full font-semibold" id="badge-count-diniyah">0</span>
+          </a>
+
+          <div class="pt-4 px-3 py-1 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Output & Master</div>
+          
+          <a href="javascript:void(0)" onclick="switchView('rapor')" id="nav-item-rapor" 
+             class="sidebar-nav-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition-colors">
+            <i class="fa-solid fa-file-invoice w-4 text-center text-indigo-400 text-sm"></i>
+            <span>Cetak Rapor Terpadu</span>
+          </a>
+
+          <a href="javascript:void(0)" onclick="switchView('santri')" id="nav-item-santri" 
+             class="sidebar-nav-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition-colors">
+            <i class="fa-solid fa-user-graduate w-4 text-center text-purple-400 text-sm"></i>
+            <span>Data Santri & Kelas</span>
+          </a>
+
+          <div class="pt-4 px-3 py-1 text-[11px] font-semibold text-slate-400 uppercase tracking-wider menu-admin-only">Sistem & CMS</div>
+          <a href="javascript:void(0)" onclick="switchView('cms')" id="nav-item-cms" 
+             class="sidebar-nav-link menu-admin-only flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition-colors">
+            <i class="fa-solid fa-sliders w-4 text-center text-rose-400 text-sm"></i>
+            <span>Pengaturan CMS & SaaS</span>
+          </a>
+        </nav>
+      </div>
+
+      <div class="p-4 bg-slate-950 border-t border-slate-800 text-[11px]">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-slate-400">Status Database</span>
+          <span class="inline-flex items-center gap-1 text-emerald-400 font-medium">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+            Google Sheets
+          </span>
+        </div>
+        <button onclick="triggerInitDb()" class="w-full py-1.5 px-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg text-center text-[10px] font-semibold flex items-center justify-center gap-1.5 border border-slate-700 transition">
+          <i class="fa-solid fa-arrows-rotate text-[10px]"></i>
+          <span>Sinkron / Reset Data Awal</span>
+        </button>
+      </div>
+    </aside>
+
+    <div id="sidebar-backdrop" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-10 hidden lg:hidden" onclick="toggleSidebar()"></div>
+
+    <!-- Main Dynamic View Area -->
+    <main class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
+      <div class="max-w-7xl mx-auto space-y-6">
+        
+        <!-- View 1: Beranda / Dashboard -->
+        <?!= include('views/DashboardHome') ?>
+
+        <!-- View 2: Nilai Akademik -->
+        <?!= include('views/AkademikView') ?>
+
+        <!-- View 3: Nilai Kepemimpinan -->
+        <?!= include('views/KepemimpinanView') ?>
+
+        <!-- View 4: Nilai Diniyah -->
+        <?!= include('views/DiniyahView') ?>
+
+        <!-- View 5: Santri -->
+        <?!= include('views/SantriView') ?>
+
+        <!-- View 6: CMS -->
+        <?!= include('views/CMSView') ?>
+
+        <!-- View 7: Cetak Rapor -->
+        <?!= include('views/CetakRapor') ?>
+
+      </div>
+    </main>
+
+  </div>
+
+  <!-- Toast Container -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none max-w-sm w-full"></div>
+
+  <!-- Scripts -->
+  <?!= include('views/Scripts') ?>
+</body>
+</html>

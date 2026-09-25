@@ -1,0 +1,168 @@
+<!-- Dashboard & Form Nilai Diniyah & Tahfidz -->
+<div id="view-diniyah" class="view-panel hidden space-y-6">
+  
+  <!-- Section Header & Filter Toolbar -->
+  <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-600"></span>
+          <h2 class="text-lg font-bold text-slate-900">Dashboard Penilaian Diniyah & Tahfidz</h2>
+        </div>
+        <p class="text-xs text-slate-500 mt-0.5">Kelola capaian Ziyadah hafalan Al-Qur'an, Muroja'ah mutqin, adab & ibadah harian, serta Bahasa Arab.</p>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button onclick="openModalDiniyah()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl text-xs shadow transition flex items-center gap-2">
+          <i class="fa-solid fa-plus"></i>
+          <span>Input Nilai Diniyah</span>
+        </button>
+        <button onclick="loadNilaiDiniyah()" class="p-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold transition" title="Refresh Data">
+          <i class="fa-solid fa-rotate"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Filters Row -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4 pt-4 border-t border-slate-100">
+      <div>
+        <label class="block text-[11px] font-semibold text-slate-600 mb-1">Filter Kelas</label>
+        <select id="filter-diniyah-kelas" onchange="loadNilaiDiniyah()" class="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+          <option value="Semua">Semua Kelas</option>
+          <option value="7A">Kelas 7A (Ikhwan)</option>
+          <option value="7B">Kelas 7B (Akhwat)</option>
+          <option value="8A">Kelas 8A (Ikhwan)</option>
+          <option value="8B">Kelas 8B (Akhwat)</option>
+          <option value="9A">Kelas 9A (Ikhwan)</option>
+          <option value="9B">Kelas 9B (Akhwat)</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="block text-[11px] font-semibold text-slate-600 mb-1">Cari Santri</label>
+        <div class="relative">
+          <input type="text" id="filter-diniyah-search" oninput="filterTableDiniyahLocal()" placeholder="Ketik nama atau NIS..." 
+                 class="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg pl-8 pr-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500" />
+          <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-2.5 text-slate-400 text-xs"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Table Container -->
+  <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="w-full text-left text-xs text-slate-700">
+        <thead class="bg-slate-50 text-slate-600 uppercase text-[10px] font-bold tracking-wider border-b border-slate-200">
+          <tr>
+            <th class="px-4 py-3.5">Santri / NIS</th>
+            <th class="px-3 py-3.5">Kelas</th>
+            <th class="px-3 py-3.5">Capaian Ziyadah</th>
+            <th class="px-3 py-3.5">Muroja'ah Mutqin</th>
+            <th class="px-3 py-3.5 text-center">Tahfidz (Tajwid)</th>
+            <th class="px-3 py-3.5 text-center">Adab Harian</th>
+            <th class="px-3 py-3.5 text-center">Ibadah Harian</th>
+            <th class="px-3 py-3.5 text-center">B. Arab</th>
+            <th class="px-4 py-3.5">Catatan Musyrif</th>
+            <th class="px-4 py-3.5 text-right">Aksi</th>
+          </tr>
+        </thead>
+        <tbody id="table-diniyah-body" class="divide-y divide-slate-100">
+          <tr>
+            <td colspan="10" class="px-4 py-8 text-center text-slate-400">
+              <i class="fa-solid fa-spinner fa-spin text-lg mb-2"></i>
+              <p>Memuat data nilai diniyah...</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<!-- Modal Form: Tambah / Edit Nilai Diniyah -->
+<div id="modal-diniyah" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+  <div class="bg-white rounded-2xl max-w-lg w-full shadow-2xl border border-slate-100 overflow-hidden transform transition-all">
+    <div class="px-6 py-4 bg-gradient-to-r from-emerald-800 to-teal-900 text-white flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <i class="fa-solid fa-quran text-emerald-300"></i>
+        <h3 class="font-bold text-sm" id="modal-diniyah-title">Input Nilai Diniyah & Tahfidz</h3>
+      </div>
+      <button onclick="closeModalDiniyah()" class="text-slate-300 hover:text-white text-lg">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <form id="form-diniyah" onsubmit="submitFormDiniyah(event)" class="p-6 space-y-4">
+      <input type="hidden" id="diniyah-id" />
+
+      <div>
+        <label class="block text-xs font-bold text-slate-700 mb-1">Pilih Santri *</label>
+        <select id="diniyah-nis" required class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-emerald-500">
+          <!-- Populated dynamically via JS -->
+        </select>
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Capaian Ziyadah Baru *</label>
+          <input type="text" id="diniyah-ziyadah" required 
+                 class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-emerald-500" placeholder="Cth: Juz 30 & Juz 29 (Lancar)" />
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Capaian Muroja'ah Mutqin *</label>
+          <input type="text" id="diniyah-murojaah" required 
+                 class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-emerald-500" placeholder="Cth: Juz 30 (Surah An-Naba - An-Nas)" />
+        </div>
+      </div>
+
+      <div class="grid grid-cols-3 gap-3">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Nilai Tahfidz (0-100) *</label>
+          <input type="number" id="diniyah-tahfidz" min="0" max="100" required 
+                 class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-emerald-500" placeholder="92" />
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Adab Harian *</label>
+          <select id="diniyah-adab" required class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-emerald-500">
+            <option value="Mumtaz (A)">Mumtaz (A)</option>
+            <option value="Jayyid Jiddan (B)">Jayyid Jiddan (B)</option>
+            <option value="Jayyid (C)">Jayyid (C)</option>
+            <option value="Maqbul (D)">Maqbul (D)</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Ibadah Harian *</label>
+          <select id="diniyah-ibadah" required class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-emerald-500">
+            <option value="Mumtaz (A)">Mumtaz (A)</option>
+            <option value="Jayyid Jiddan (B)">Jayyid Jiddan (B)</option>
+            <option value="Jayyid (C)">Jayyid (C)</option>
+            <option value="Maqbul (D)">Maqbul (D)</option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold text-slate-700 mb-1">Nilai Bahasa Arab (0-100) *</label>
+        <input type="number" id="diniyah-bahasa-arab" min="0" max="100" required 
+               class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-emerald-500" placeholder="88" />
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold text-slate-700 mb-1">Catatan Musyrif Tahfidz / Diniyah</label>
+        <textarea id="diniyah-catatan" rows="3" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-emerald-500" placeholder="Evaluasi kelancaran tajwid, makharijul huruf, dan kedisiplinan halaqah Al-Qur'an..."></textarea>
+      </div>
+
+      <div class="pt-3 border-t border-slate-100 flex items-center justify-end gap-2">
+        <button type="button" onclick="closeModalDiniyah()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold">
+          Batal
+        </button>
+        <button type="submit" id="btn-save-diniyah" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow flex items-center gap-2">
+          <i class="fa-solid fa-floppy-disk"></i>
+          <span>Simpan Diniyah</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

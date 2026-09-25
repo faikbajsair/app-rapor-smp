@@ -1,0 +1,114 @@
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- Google Fonts: Plus Jakarta Sans & Inter -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- FontAwesome Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<!-- Dynamic Theme CSS Variables & Custom Styles -->
+<style id="app-dynamic-theme">
+  :root {
+    --primary-color: #1e3a8a;
+    --primary-hover: #1e40af;
+    --primary-light: #eff6ff;
+    --secondary-color: #0284c7;
+    --secondary-hover: #0369a1;
+    --accent-color: #10b981;
+    --accent-hover: #059669;
+    --font-main: 'Plus Jakarta Sans', 'Inter', sans-serif;
+  }
+  
+  body {
+    font-family: var(--font-main);
+    background-color: #f8fafc;
+    color: #1e293b;
+    overflow-x: hidden;
+  }
+  
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #f1f5f9;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+  }
+  
+  /* Custom CSS Utility Classes using dynamic CSS variables */
+  .bg-theme-primary { background-color: var(--primary-color) !important; }
+  .text-theme-primary { color: var(--primary-color) !important; }
+  .border-theme-primary { border-color: var(--primary-color) !important; }
+  .bg-theme-primary-light { background-color: var(--primary-light) !important; }
+  
+  .bg-theme-secondary { background-color: var(--secondary-color) !important; }
+  .text-theme-secondary { color: var(--secondary-color) !important; }
+  .border-theme-secondary { border-color: var(--secondary-color) !important; }
+  
+  .bg-theme-accent { background-color: var(--accent-color) !important; }
+  .text-theme-accent { color: var(--accent-color) !important; }
+  
+  .badge-predikat-A { background-color: #dcfce7; color: #15803d; border: 1px solid #86efac; }
+  .badge-predikat-B { background-color: #dbeafe; color: #1d4ed8; border: 1px solid #93c5fd; }
+  .badge-predikat-C { background-color: #fef9c3; color: #a16207; border: 1px solid #fde047; }
+  .badge-predikat-D { background-color: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; }
+
+  /* Smooth View Transitions */
+  .view-panel {
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  /* Print Optimization for Report Card (Format A4) */
+  @media print {
+    @page {
+      size: A4 portrait;
+      margin: 12mm 15mm 12mm 15mm;
+    }
+    body {
+      background: #ffffff !important;
+      color: #000000 !important;
+      font-size: 11pt;
+    }
+    .no-print {
+      display: none !important;
+    }
+    .print-only {
+      display: block !important;
+    }
+    .print-container {
+      width: 100% !important;
+      max-width: 100% !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      box-shadow: none !important;
+      border: none !important;
+    }
+    .page-break-inside-avoid {
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+    table {
+      border-collapse: collapse !important;
+      width: 100% !important;
+    }
+    th, td {
+      border: 1px solid #333333 !important;
+      padding: 4px 6px !important;
+    }
+    th {
+      background-color: #f1f5f9 !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+  }
+</style>

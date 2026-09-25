@@ -1,0 +1,16 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Clasp auth token
+.clasprc.json
+
+# Temporary files & logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.DS_Store
+*.log
+
+# Vercel
+.vercel

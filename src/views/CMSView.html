@@ -1,0 +1,327 @@
+<!-- CMS & SaaS Multi-tenant Configuration Panel -->
+<div id="view-cms" class="view-panel hidden space-y-6">
+  
+  <!-- CMS Header Banner -->
+  <div class="bg-gradient-to-r from-slate-900 via-rose-950 to-slate-900 text-white p-6 rounded-2xl border border-slate-800 shadow-xl">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div>
+        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-500/20 text-rose-300 text-xs font-semibold mb-2 border border-rose-500/30">
+          <i class="fa-solid fa-gear"></i>
+          <span>Multi-Tenant & SaaS Ready</span>
+        </div>
+        <h2 class="text-xl sm:text-2xl font-black">CMS & Pengaturan Aplikasi</h2>
+        <p class="text-xs text-slate-300 mt-1">Kustomisasi identitas sekolah, branding warna, tanda tangan, manajemen pengguna, dan periode rapor.</p>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button onclick="saveCmsSettingsAll()" class="px-5 py-2.5 bg-rose-600 hover:bg-rose-500 text-white font-bold rounded-xl text-xs shadow-lg transition flex items-center gap-2">
+          <i class="fa-solid fa-floppy-disk"></i>
+          <span>Simpan Semua Pengaturan</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CMS Sub-Tabs Navigation -->
+  <div class="flex border-b border-slate-200 bg-white rounded-xl p-1 shadow-sm gap-1">
+    <button onclick="switchCmsTab('appearance')" id="cms-tab-appearance" class="cms-tab-btn flex-1 py-2 px-3 text-xs font-bold rounded-lg text-slate-800 bg-slate-100 transition">
+      <i class="fa-solid fa-palette mr-1.5 text-rose-600"></i>
+      <span>Tampilan & Branding</span>
+    </button>
+    <button onclick="switchCmsTab('users')" id="cms-tab-users" class="cms-tab-btn flex-1 py-2 px-3 text-xs font-semibold rounded-lg text-slate-500 hover:text-slate-800 transition">
+      <i class="fa-solid fa-users-gear mr-1.5 text-blue-600"></i>
+      <span>Manajemen User & Role</span>
+    </button>
+    <button onclick="switchCmsTab('academic')" id="cms-tab-academic" class="cms-tab-btn flex-1 py-2 px-3 text-xs font-semibold rounded-lg text-slate-500 hover:text-slate-800 transition">
+      <i class="fa-solid fa-calendar-check mr-1.5 text-amber-600"></i>
+      <span>Semester & TTD Rapor</span>
+    </button>
+  </div>
+
+  <!-- TAB 1: Tampilan & Branding -->
+  <div id="cms-panel-appearance" class="cms-panel space-y-6">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      
+      <!-- Card: Logo & Identitas Lembaga -->
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+        <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-3">
+          <i class="fa-solid fa-school text-rose-600"></i>
+          <span>Identitas Lembaga / Sekolah</span>
+        </h3>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Nama Lengkap Sekolah</label>
+          <input type="text" id="cms-school-name" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-rose-500" />
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">URL Logo Sekolah</label>
+          <div class="flex gap-2">
+            <input type="text" id="cms-school-logo-url" oninput="previewCmsLogo()" class="flex-1 text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-rose-500" />
+            <button type="button" onclick="resetDefaultLogo()" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold">
+              Default Al-Imam
+            </button>
+          </div>
+          <!-- Logo Preview Box -->
+          <div class="mt-3 p-3 bg-slate-50 border border-dashed border-slate-300 rounded-xl flex items-center gap-4">
+            <img id="cms-logo-preview" src="https://alimamischool.com/wp-content/uploads/2020/08/Al-Imam-Islamic-School-alimamischool.com-sekolah-sunnah-logo.png" 
+                 alt="Preview Logo" class="h-12 w-auto object-contain bg-white p-1 rounded border" />
+            <div class="text-[11px] text-slate-500">
+              Pratinjau logo yang akan tampil pada navbar, kop surat, dan dokumen cetak rapor.
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Alamat Lengkap</label>
+          <textarea id="cms-school-address" rows="2" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-rose-500"></textarea>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">No. Telepon</label>
+            <input type="text" id="cms-school-phone" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-rose-500" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Situs Web</label>
+            <input type="text" id="cms-school-website" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-rose-500" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Teks Footer Rapor (Motto / Slogan)</label>
+          <input type="text" id="cms-footer-text" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-rose-500" />
+        </div>
+      </div>
+
+      <!-- Card: Dynamic Theme & Color Customization -->
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+        <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-3">
+          <i class="fa-solid fa-palette text-rose-600"></i>
+          <span>Kustomisasi Warna Tema (Branding)</span>
+        </h3>
+
+        <div class="space-y-3">
+          <!-- Primary Color -->
+          <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-200">
+            <div>
+              <span class="text-xs font-bold text-slate-800 block">Warna Utama (Primary Color)</span>
+              <span class="text-[11px] text-slate-500">Warna header, tombol utama, dan aksen navigasi.</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <input type="color" id="cms-color-primary" onchange="previewThemeColorsLive()" class="w-9 h-9 rounded-lg border-0 cursor-pointer p-0 bg-transparent" />
+              <span class="text-xs font-mono font-bold text-slate-700" id="cms-color-primary-text">#1e3a8a</span>
+            </div>
+          </div>
+
+          <!-- Secondary Color -->
+          <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-200">
+            <div>
+              <span class="text-xs font-bold text-slate-800 block">Warna Sekunder (Secondary Color)</span>
+              <span class="text-[11px] text-slate-500">Warna elemen pendukung dan badge.</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <input type="color" id="cms-color-secondary" onchange="previewThemeColorsLive()" class="w-9 h-9 rounded-lg border-0 cursor-pointer p-0 bg-transparent" />
+              <span class="text-xs font-mono font-bold text-slate-700" id="cms-color-secondary-text">#0284c7</span>
+            </div>
+          </div>
+
+          <!-- Accent Color -->
+          <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-200">
+            <div>
+              <span class="text-xs font-bold text-slate-800 block">Warna Aksen (Accent / Success)</span>
+              <span class="text-[11px] text-slate-500">Warna status aktif, kelulusan, dan highlight pilar.</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <input type="color" id="cms-color-accent" onchange="previewThemeColorsLive()" class="w-9 h-9 rounded-lg border-0 cursor-pointer p-0 bg-transparent" />
+              <span class="text-xs font-mono font-bold text-slate-700" id="cms-color-accent-text">#10b981</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-xl bg-slate-900 text-white space-y-2">
+          <span class="text-xs font-bold text-amber-300 flex items-center gap-1.5">
+            <i class="fa-solid fa-lightbulb"></i>
+            Pratinjau Komponen Tema
+          </span>
+          <div class="flex flex-wrap gap-2 pt-1">
+            <span class="px-3 py-1 rounded-lg text-xs font-bold text-white bg-theme-primary">Tombol Primer</span>
+            <span class="px-3 py-1 rounded-lg text-xs font-bold text-white bg-theme-secondary">Tombol Sekunder</span>
+            <span class="px-3 py-1 rounded-lg text-xs font-bold text-white bg-theme-accent">Aksen Hijau</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- TAB 2: Manajemen User & Role -->
+  <div id="cms-panel-users" class="cms-panel hidden space-y-6">
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-slate-100 pb-4">
+        <div>
+          <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+            <i class="fa-solid fa-users-gear text-blue-600"></i>
+            <span>Daftar Pengguna & Hak Akses</span>
+          </h3>
+          <p class="text-xs text-slate-500 mt-0.5">Kelola akun admin, guru akademik, pembina kepemimpinan, musyrif diniyah, dan santri.</p>
+        </div>
+        <button onclick="openModalUser()" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs shadow flex items-center gap-2">
+          <i class="fa-solid fa-user-plus"></i>
+          <span>Tambah Pengguna</span>
+        </button>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs text-slate-700">
+          <thead class="bg-slate-50 text-slate-600 uppercase text-[10px] font-bold tracking-wider border-b border-slate-200">
+            <tr>
+              <th class="px-4 py-3">ID</th>
+              <th class="px-4 py-3">Username</th>
+              <th class="px-4 py-3">Nama Lengkap</th>
+              <th class="px-3 py-3">Role Hak Akses</th>
+              <th class="px-3 py-3 text-center">Status</th>
+              <th class="px-4 py-3 text-right">Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="table-users-body" class="divide-y divide-slate-100">
+            <tr>
+              <td colspan="6" class="px-4 py-6 text-center text-slate-400">
+                <i class="fa-solid fa-spinner fa-spin text-base mb-1"></i>
+                <p>Memuat data pengguna...</p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 3: Semester & Tanda Tangan Rapor -->
+  <div id="cms-panel-academic" class="cms-panel hidden space-y-6">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      
+      <!-- Periode Penilaian -->
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+        <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-3">
+          <i class="fa-solid fa-calendar-days text-amber-600"></i>
+          <span>Pengaturan Semester & Periode Rapor</span>
+        </h3>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Tahun Ajaran Aktif</label>
+            <input type="text" id="cms-academic-year" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-amber-500" placeholder="2025/2026" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Semester Aktif</label>
+            <select id="cms-semester-active" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-amber-500">
+              <option value="Ganjil">Semester Ganjil</option>
+              <option value="Genap">Semester Genap</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Kota Pembagian Rapor</label>
+            <input type="text" id="cms-report-place" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-amber-500" placeholder="Depok" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Tanggal Titimangsa Rapor</label>
+            <input type="text" id="cms-report-date" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-amber-500" placeholder="28 September 2025" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Penandatangan Resmi -->
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+        <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-3">
+          <i class="fa-solid fa-signature text-amber-600"></i>
+          <span>Penandatangan Resmi Rapor</span>
+        </h3>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Nama Kepala Sekolah</label>
+          <input type="text" id="cms-headmaster-name" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-amber-500" placeholder="Ust. Ahmad Fauzi, M.Pd." />
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">NIP / NIY Kepala Sekolah</label>
+          <input type="text" id="cms-headmaster-nip" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-amber-500" placeholder="198507152010011002" />
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">URL Tanda Tangan Digital (Opsional)</label>
+          <input type="text" id="cms-headmaster-signature-url" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-amber-500" placeholder="https://... / link gambar png ttd transparan" />
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- Modal Form: Tambah / Edit User -->
+<div id="modal-user" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+  <div class="bg-white rounded-2xl max-w-md w-full shadow-2xl border border-slate-100 overflow-hidden transform transition-all">
+    <div class="px-6 py-4 bg-gradient-to-r from-slate-900 to-blue-950 text-white flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <i class="fa-solid fa-user-gear text-blue-300"></i>
+        <h3 class="font-bold text-sm" id="modal-user-title">Form Data Pengguna</h3>
+      </div>
+      <button onclick="closeModalUser()" class="text-slate-300 hover:text-white text-lg">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <form id="form-user" onsubmit="submitFormUser(event)" class="p-6 space-y-4">
+      <input type="hidden" id="user-id" />
+
+      <div>
+        <label class="block text-xs font-bold text-slate-700 mb-1">Nama Lengkap *</label>
+        <input type="text" id="user-nama" required class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-blue-500" placeholder="Nama & Gelar..." />
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold text-slate-700 mb-1">Username *</label>
+        <input type="text" id="user-username" required class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-blue-500" placeholder="username.login" />
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold text-slate-700 mb-1">Kata Sandi (Password)</label>
+        <input type="password" id="user-password" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-blue-500" placeholder="Kosongkan jika tidak ingin mengubah password" />
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Role / Hak Akses *</label>
+          <select id="user-role" required class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-blue-500">
+            <option value="admin">Administrator / CMS</option>
+            <option value="guru_akademik">Guru Akademik</option>
+            <option value="pembina_kepemimpinan">Pembina Kepemimpinan</option>
+            <option value="pembina_diniyah">Pembina Diniyah / Musyrif</option>
+            <option value="santri">Santri / Wali</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Status Akun *</label>
+          <select id="user-status" required class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-blue-500">
+            <option value="aktif">Aktif</option>
+            <option value="nonaktif">Nonaktif</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="pt-3 border-t border-slate-100 flex items-center justify-end gap-2">
+        <button type="button" onclick="closeModalUser()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold">
+          Batal
+        </button>
+        <button type="submit" id="btn-save-user" class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold shadow flex items-center gap-2">
+          <i class="fa-solid fa-floppy-disk"></i>
+          <span>Simpan User</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

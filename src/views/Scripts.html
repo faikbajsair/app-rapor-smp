@@ -1,0 +1,1140 @@
+<script>
+/**
+ * ============================================================================
+ * SCRIPTS.HTML - Client-Side Controller & State Management (MVC Pattern)
+ * Aplikasi Rapor Tengah Semester MBU
+ * ============================================================================
+ */
+
+// 1. GLOBAL STATE
+const AppState = {
+  currentUser: {
+    id: 'USR-001',
+    username: 'admin',
+    nama_lengkap: 'Administrator Utama',
+    role: 'admin'
+  },
+  currentView: 'dashboard',
+  cmsSettings: {},
+  santriList: [],
+  akademikList: [],
+  kepemimpinanList: [],
+  diniyahList: [],
+  usersList: [],
+  activePrintNis: null
+};
+
+// 2. API CALL WRAPPER (Auto-detect google.script.run or Fetch REST)
+function callApi(actionName, payload = {}) {
+  return new Promise((resolve, reject) => {
+    // Mode Google Apps Script (HTMLService)
+    if (typeof google !== 'undefined' && google.script && google.script.run) {
+      const runner = google.script.run
+        .withSuccessHandler(response => resolve(response))
+        .withFailureHandler(error => {
+          console.error('API Error:', error);
+          reject(error);
+        });
+      
+      switch (actionName) {
+        case 'initDatabase': runner.apiInitDatabase(); break;
+        case 'login': runner.apiLogin(payload.username, payload.password); break;
+        case 'getSettings': runner.apiGetSettings(); break;
+        case 'updateSettings': runner.apiUpdateSettings(payload); break;
+        case 'getSummaryStats': runner.apiGetSummaryStats(); break;
+        case 'getSantri': runner.apiGetSantri(payload.kelas); break;
+        case 'saveSantri': runner.apiSaveSantri(payload); break;
+        case 'deleteSantri': runner.apiDeleteSantri(payload.nis); break;
+        case 'getUsers': runner.apiGetUsers(); break;
+        case 'saveUser': runner.apiSaveUser(payload); break;
+        case 'deleteUser': runner.apiDeleteUser(payload.id); break;
+        case 'getNilaiAkademik': runner.apiGetNilaiAkademik(payload); break;
+        case 'saveNilaiAkademik': runner.apiSaveNilaiAkademik(payload); break;
+        case 'deleteNilaiAkademik': runner.apiDeleteNilaiAkademik(payload.id); break;
+        case 'getNilaiKepemimpinan': runner.apiGetNilaiKepemimpinan(payload); break;
+        case 'saveNilaiKepemimpinan': runner.apiSaveNilaiKepemimpinan(payload); break;
+        case 'deleteNilaiKepemimpinan': runner.apiDeleteNilaiKepemimpinan(payload.id); break;
+        case 'getNilaiDiniyah': runner.apiGetNilaiDiniyah(payload); break;
+        case 'saveNilaiDiniyah': runner.apiSaveNilaiDiniyah(payload); break;
+        case 'deleteNilaiDiniyah': runner.apiDeleteNilaiDiniyah(payload.id); break;
+        case 'getSantriReport': runner.apiGetSantriReport(payload.nis); break;
+        default:
+          reject(new Error('Unknown action: ' + actionName));
+      }
+    } else {
+      // Mode Standalone / Vercel Client (Fallback Fetch API)
+      const apiUrl = window.APPS_SCRIPT_API_URL || '';
+      if (!apiUrl) {
+        // Mock fallback for direct preview
+        console.warn('Running in Mock/Preview mode. Setting up local response for:', actionName);
+        resolve({ success: true, message: 'Simulasi berhasil (Mock data)', data: [] });
+        return;
+      }
+      
+      fetch(apiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: actionName, payload: payload })
+      })
+      .then(res => res.json())
+      .then(data => resolve(data))
+      .catch(err => reject(err));
+    }
+  });
+}
+
+// 3. TOAST NOTIFICATION SYSTEM
+function showToast(message, type = 'success') {
+  const container = document.getElementById('toast-container');
+  if (!container) return;
+
+  const toast = document.createElement('div');
+  const colors = {
+    success: 'bg-slate-900 border-emerald-500 text-white',
+    error: 'bg-rose-900 border-rose-500 text-white',
+    info: 'bg-blue-900 border-blue-500 text-white'
+  };
+  const icons = {
+    success: 'fa-solid fa-circle-check text-emerald-400',
+    error: 'fa-solid fa-triangle-exclamation text-rose-400',
+    info: 'fa-solid fa-circle-info text-blue-400'
+  };
+
+  toast.className = `flex items-center gap-3 px-4 py-3 rounded-xl border shadow-xl text-xs font-semibold transform transition-all duration-300 translate-y-2 opacity-0 ${colors[type] || colors.success}`;
+  toast.innerHTML = `
+    <i class="${icons[type] || icons.success} text-base"></i>
+    <span>${message}</span>
+  `;
+
+  container.appendChild(toast);
+  setTimeout(() => {
+    toast.classList.remove('translate-y-2', 'opacity-0');
+  }, 10);
+
+  setTimeout(() => {
+    toast.classList.add('opacity-0', 'translate-y-2');
+    setTimeout(() => toast.remove(), 300);
+  }, 3500);
+}
+
+// 4. VIEW ROUTING & ROLE PERMISSION
+function switchView(viewName) {
+  // Permission guard check
+  const role = AppState.currentUser.role;
+  if (role !== 'admin') {
+    if (viewName === 'cms' || (role === 'santri' && (viewName === 'akademik' || viewName === 'kepemimpinan' || viewName === 'diniyah' || viewName === 'santri'))) {
+      showToast('Akses ditolak: Role Anda tidak memiliki izin untuk halaman ini.', 'error');
+      return;
+    }
+  }
+
+  // Update State
+  AppState.currentView = viewName;
+
+  // Toggle visible view panel
+  document.querySelectorAll('.view-panel').forEach(panel => {
+    panel.classList.add('hidden');
+  });
+  const activePanel = document.getElementById('view-' + viewName);
+  if (activePanel) {
+    activePanel.classList.remove('hidden');
+  }
+
+  // Update Sidebar Active Class
+  document.querySelectorAll('.sidebar-nav-link').forEach(link => {
+    link.classList.remove('bg-slate-800', 'text-white');
+    link.classList.add('text-slate-300');
+  });
+  const activeLink = document.getElementById('nav-item-' + viewName);
+  if (activeLink) {
+    activeLink.classList.add('bg-slate-800', 'text-white');
+    activeLink.classList.remove('text-slate-300');
+  }
+
+  // Close mobile sidebar if opened
+  const sidebar = document.getElementById('app-sidebar');
+  const backdrop = document.getElementById('sidebar-backdrop');
+  if (sidebar && !sidebar.classList.contains('-translate-x-full')) {
+    sidebar.classList.add('-translate-x-full');
+    if (backdrop) backdrop.classList.add('hidden');
+  }
+
+  // Auto-fetch data on view activation
+  switch (viewName) {
+    case 'dashboard': loadDashboardStats(); break;
+    case 'akademik': loadNilaiAkademik(); break;
+    case 'kepemimpinan': loadNilaiKepemimpinan(); break;
+    case 'diniyah': loadNilaiDiniyah(); break;
+    case 'santri': loadSantriList(); break;
+    case 'cms': loadCmsSettings(); break;
+    case 'rapor':
+      if (AppState.activePrintNis) {
+        loadSantriReportForPrint(AppState.activePrintNis);
+      } else if (AppState.santriList.length > 0) {
+        loadSantriReportForPrint(AppState.santriList[0].nis);
+      }
+      break;
+  }
+}
+
+// 5. ROLE SWITCHER SIMULATOR (for testing and demo)
+function toggleRoleDropdown() {
+  const el = document.getElementById('dropdown-role-switcher');
+  if (el) el.classList.toggle('hidden');
+}
+
+function setSimulatedRole(role) {
+  const roleNames = {
+    admin: 'Admin / CMS',
+    guru_akademik: 'Guru Akademik',
+    pembina_kepemimpinan: 'Pembina Kepemimpinan',
+    pembina_diniyah: 'Pembina Diniyah',
+    santri: 'Santri / Wali'
+  };
+
+  AppState.currentUser.role = role;
+  AppState.currentUser.nama_lengkap = roleNames[role] || 'Pengguna';
+
+  document.getElementById('nav-user-role-badge').innerText = roleNames[role] || role;
+  document.getElementById('nav-user-name').innerText = roleNames[role];
+  document.getElementById('nav-user-avatar').innerText = role.charAt(0).toUpperCase();
+
+  // Hide/Show Admin Only Menus
+  const adminElements = document.querySelectorAll('.menu-admin-only');
+  adminElements.forEach(el => {
+    if (role === 'admin') el.classList.remove('hidden');
+    else el.classList.add('hidden');
+  });
+
+  const dropdown = document.getElementById('dropdown-role-switcher');
+  if (dropdown) dropdown.classList.add('hidden');
+
+  showToast(`Beralih ke tampilan role: ${roleNames[role]}`, 'info');
+  switchView('dashboard');
+}
+
+// 6. THEME & CMS APPLICATION
+function applyCmsTheme(settings) {
+  if (!settings) return;
+  AppState.cmsSettings = settings;
+
+  const root = document.documentElement;
+  if (settings.theme_primary_color) {
+    root.style.setProperty('--primary-color', settings.theme_primary_color);
+  }
+  if (settings.theme_secondary_color) {
+    root.style.setProperty('--secondary-color', settings.theme_secondary_color);
+  }
+  if (settings.theme_accent_color) {
+    root.style.setProperty('--accent-color', settings.theme_accent_color);
+  }
+
+  // Update Navbar & Headings
+  const schoolName = settings.school_name || 'SMP IT Al-Imam Islamic School MBU';
+  const logoUrl = settings.school_logo_url || 'https://alimamischool.com/wp-content/uploads/2020/08/Al-Imam-Islamic-School-alimamischool.com-sekolah-sunnah-logo.png';
+
+  const navLogo = document.getElementById('nav-school-logo');
+  if (navLogo) navLogo.src = logoUrl;
+  const navName = document.getElementById('nav-school-name');
+  if (navName) navName.innerText = schoolName;
+
+  const homeWelcome = document.getElementById('home-welcome-school');
+  if (homeWelcome) homeWelcome.innerText = schoolName;
+
+  const navYear = document.getElementById('nav-academic-year');
+  if (navYear) navYear.innerText = settings.academic_year || '2025/2026';
+  const navSem = document.getElementById('nav-semester');
+  if (navSem) navSem.innerText = settings.semester_active || 'Ganjil';
+
+  // Update Print Kop
+  const printLogo = document.getElementById('print-school-logo');
+  if (printLogo) printLogo.src = logoUrl;
+  const printName = document.getElementById('print-school-name');
+  if (printName) printName.innerText = schoolName;
+  const printAddress = document.getElementById('print-school-address');
+  if (printAddress) printAddress.innerText = `${settings.school_address || ''} | Telp: ${settings.school_phone || ''}`;
+  const printWeb = document.getElementById('print-school-contact');
+  if (printWeb) printWeb.innerText = `Website: ${settings.school_website || ''}`;
+  const printFooter = document.getElementById('print-footer-motto');
+  if (printFooter) printFooter.innerText = settings.report_footer_text || '';
+}
+
+// 7. DASHBOARD STATS
+function loadDashboardStats() {
+  callApi('getSummaryStats')
+    .then(res => {
+      if (res && res.stats) {
+        const s = res.stats;
+        document.getElementById('stat-total-santri').innerText = s.totalSantri || 0;
+        document.getElementById('stat-total-kelas').innerText = `${s.totalKelas || 0} Kelas`;
+        document.getElementById('stat-avg-akademik').innerText = s.avgAkademik || '0';
+        document.getElementById('stat-total-nilai-ak').innerText = `${s.totalNilaiAkademikInput || 0} Nilai`;
+        document.getElementById('stat-progress-percent').innerText = `${s.progressPercent || 0}%`;
+        document.getElementById('stat-progress-bar').style.width = `${s.progressPercent || 0}%`;
+        document.getElementById('stat-current-semester').innerText = s.activeSemester || 'Ganjil';
+        document.getElementById('stat-current-year').innerText = s.activeYear || '2025/2026';
+        
+        document.getElementById('summary-ak-count').innerText = s.totalNilaiAkademikInput || 0;
+        document.getElementById('summary-kp-count').innerText = s.totalKepemimpinanInput || 0;
+        document.getElementById('summary-dn-count').innerText = s.totalDiniyahInput || 0;
+        
+        document.getElementById('badge-count-akademik').innerText = s.totalNilaiAkademikInput || 0;
+        document.getElementById('badge-count-kepemimpinan').innerText = s.totalKepemimpinanInput || 0;
+        document.getElementById('badge-count-diniyah').innerText = s.totalDiniyahInput || 0;
+      }
+    })
+    .catch(err => console.error('Error stats:', err));
+}
+
+// 8. SANTRI MANAGEMENT
+function loadSantriList() {
+  const kelas = document.getElementById('filter-santri-kelas')?.value || 'Semua';
+  const tbody = document.getElementById('table-santri-body');
+  if (tbody) tbody.innerHTML = `<tr><td colspan="9" class="px-4 py-8 text-center text-slate-400"><i class="fa-solid fa-spinner fa-spin text-lg mb-2"></i><p>Memuat santri...</p></td></tr>`;
+
+  callApi('getSantri', { kelas: kelas })
+    .then(res => {
+      AppState.santriList = res.data || [];
+      populateSantriDropdowns();
+      renderSantriTable(AppState.santriList);
+    })
+    .catch(err => {
+      showToast('Gagal memuat santri: ' + err.toString(), 'error');
+    });
+}
+
+function renderSantriTable(list) {
+  const tbody = document.getElementById('table-santri-body');
+  if (!tbody) return;
+
+  if (list.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="9" class="px-4 py-8 text-center text-slate-400">Belum ada data santri pada kelas ini.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = list.map(s => `
+    <tr class="hover:bg-slate-50 transition">
+      <td class="px-4 py-3 font-mono font-bold text-slate-900">${s.nis}</td>
+      <td class="px-4 py-3 text-slate-500 font-mono">${s.nisn || '-'}</td>
+      <td class="px-4 py-3 font-semibold text-slate-800">${s.nama_santri}</td>
+      <td class="px-3 py-3 text-center"><span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-purple-50 text-purple-700 border border-purple-200">${s.kelas}</span></td>
+      <td class="px-3 py-3 text-center font-bold ${s.jenis_kelamin === 'L' ? 'text-blue-600' : 'text-pink-600'}">${s.jenis_kelamin}</td>
+      <td class="px-4 py-3 text-slate-700">${s.nama_wali || '-'}</td>
+      <td class="px-4 py-3 text-slate-500 font-mono text-[11px]">${s.kontak_wali || '-'}</td>
+      <td class="px-3 py-3 text-center"><span class="px-2 py-0.5 rounded-full text-[10px] font-semibold ${s.status === 'Aktif' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-slate-100 text-slate-600'}">${s.status}</span></td>
+      <td class="px-4 py-3 text-right space-x-1">
+        <button onclick="previewRaporDirect('${s.nis}')" class="p-1.5 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 rounded-lg text-xs" title="Lihat & Cetak Rapor">
+          <i class="fa-solid fa-file-invoice"></i>
+        </button>
+        <button onclick="editSantriModal('${s.nis}')" class="p-1.5 bg-slate-100 text-slate-700 hover:bg-slate-200 rounded-lg text-xs" title="Edit Santri">
+          <i class="fa-solid fa-pen-to-square"></i>
+        </button>
+        <button onclick="deleteSantriAction('${s.nis}')" class="p-1.5 bg-rose-50 text-rose-600 hover:bg-rose-100 rounded-lg text-xs" title="Hapus">
+          <i class="fa-solid fa-trash"></i>
+        </button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function filterTableSantriLocal() {
+  const query = (document.getElementById('filter-santri-search')?.value || '').toLowerCase();
+  const filtered = AppState.santriList.filter(s => 
+    s.nama_santri.toLowerCase().includes(query) ||
+    String(s.nis).toLowerCase().includes(query) ||
+    String(s.nisn).toLowerCase().includes(query)
+  );
+  renderSantriTable(filtered);
+}
+
+function populateSantriDropdowns() {
+  const optionsHtml = AppState.santriList.map(s => 
+    `<option value="${s.nis}">${s.nama_santri} (${s.kelas} - ${s.nis})</option>`
+  ).join('');
+
+  const dropdowns = ['akademik-nis', 'kepemimpinan-nis', 'diniyah-nis', 'rapor-santri-select'];
+  dropdowns.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = optionsHtml;
+  });
+}
+
+function openModalSantri() {
+  document.getElementById('modal-santri-title').innerText = 'Tambah Santri Baru';
+  document.getElementById('form-santri').reset();
+  document.getElementById('santri-nis').readOnly = false;
+  document.getElementById('modal-santri').classList.remove('hidden');
+}
+
+function closeModalSantri() {
+  document.getElementById('modal-santri').classList.add('hidden');
+}
+
+function editSantriModal(nis) {
+  const santri = AppState.santriList.find(s => String(s.nis) === String(nis));
+  if (!santri) return;
+  document.getElementById('modal-santri-title').innerText = 'Edit Data Santri';
+  document.getElementById('santri-nis').value = santri.nis;
+  document.getElementById('santri-nis').readOnly = true;
+  document.getElementById('santri-nisn').value = santri.nisn || '';
+  document.getElementById('santri-nama').value = santri.nama_santri || '';
+  document.getElementById('santri-kelas').value = santri.kelas || '7A';
+  document.getElementById('santri-jk').value = santri.jenis_kelamin || 'L';
+  document.getElementById('santri-wali').value = santri.nama_wali || '';
+  document.getElementById('santri-kontak').value = santri.kontak_wali || '';
+  document.getElementById('santri-status').value = santri.status || 'Aktif';
+  document.getElementById('modal-santri').classList.remove('hidden');
+}
+
+function submitFormSantri(e) {
+  e.preventDefault();
+  const payload = {
+    nis: document.getElementById('santri-nis').value,
+    nisn: document.getElementById('santri-nisn').value,
+    nama_santri: document.getElementById('santri-nama').value,
+    kelas: document.getElementById('santri-kelas').value,
+    jenis_kelamin: document.getElementById('santri-jk').value,
+    nama_wali: document.getElementById('santri-wali').value,
+    kontak_wali: document.getElementById('santri-kontak').value,
+    status: document.getElementById('santri-status').value
+  };
+
+  callApi('saveSantri', payload)
+    .then(res => {
+      showToast('Data santri berhasil disimpan!');
+      closeModalSantri();
+      loadSantriList();
+    })
+    .catch(err => showToast('Gagal menyimpan santri: ' + err.toString(), 'error'));
+}
+
+function deleteSantriAction(nis) {
+  if (!confirm(`Yakin ingin menghapus santri dengan NIS ${nis}?`)) return;
+  callApi('deleteSantri', { nis: nis })
+    .then(res => {
+      showToast('Santri berhasil dihapus.');
+      loadSantriList();
+    })
+    .catch(err => showToast('Gagal menghapus santri: ' + err.toString(), 'error'));
+}
+
+// 9. AKADEMIK MODULE
+function loadNilaiAkademik() {
+  const kelas = document.getElementById('filter-akademik-kelas')?.value || 'Semua';
+  const mapel = document.getElementById('filter-akademik-mapel')?.value || 'Semua';
+  const tbody = document.getElementById('table-akademik-body');
+  if (tbody) tbody.innerHTML = `<tr><td colspan="9" class="px-4 py-8 text-center text-slate-400"><i class="fa-solid fa-spinner fa-spin text-lg mb-2"></i><p>Memuat data nilai akademik...</p></td></tr>`;
+
+  callApi('getNilaiAkademik', { kelas: kelas, mata_pelajaran: mapel })
+    .then(res => {
+      AppState.akademikList = res.data || [];
+      renderTableAkademik(AppState.akademikList);
+    })
+    .catch(err => showToast('Gagal memuat nilai akademik: ' + err.toString(), 'error'));
+}
+
+function renderTableAkademik(list) {
+  const tbody = document.getElementById('table-akademik-body');
+  if (!tbody) return;
+
+  if (list.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="9" class="px-4 py-8 text-center text-slate-400">Tidak ada data nilai yang sesuai dengan filter.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = list.map(item => `
+    <tr class="hover:bg-slate-50 transition">
+      <td class="px-4 py-3">
+        <div class="font-bold text-slate-900">${item.nama_santri}</div>
+        <div class="text-[11px] text-slate-400 font-mono">${item.nis}</div>
+      </td>
+      <td class="px-3 py-3 font-semibold text-slate-700">${item.kelas}</td>
+      <td class="px-3 py-3 font-bold text-blue-700">${item.mata_pelajaran}</td>
+      <td class="px-3 py-3 text-center font-mono">${item.nilai_tugas}</td>
+      <td class="px-3 py-3 text-center font-mono">${item.nilai_uts}</td>
+      <td class="px-3 py-3 text-center font-bold text-slate-900 font-mono text-sm">${item.nilai_akhir}</td>
+      <td class="px-3 py-3 text-center">
+        <span class="px-2.5 py-0.5 rounded-full text-xs font-black badge-predikat-${item.predikat}">${item.predikat}</span>
+      </td>
+      <td class="px-4 py-3 text-slate-600 italic text-[11px] max-w-xs truncate">${item.catatan_guru || '-'}</td>
+      <td class="px-4 py-3 text-right space-x-1">
+        <button onclick="editNilaiAkademikModal('${item.id}')" class="p-1.5 bg-blue-50 text-blue-700 hover:bg-blue-100 rounded-lg text-xs" title="Edit Nilai">
+          <i class="fa-solid fa-pen-to-square"></i>
+        </button>
+        <button onclick="deleteAkademikAction('${item.id}')" class="p-1.5 bg-rose-50 text-rose-600 hover:bg-rose-100 rounded-lg text-xs" title="Hapus">
+          <i class="fa-solid fa-trash"></i>
+        </button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function filterTableAkademikLocal() {
+  const query = (document.getElementById('filter-akademik-search')?.value || '').toLowerCase();
+  const filtered = AppState.akademikList.filter(item => 
+    item.nama_santri.toLowerCase().includes(query) ||
+    String(item.nis).toLowerCase().includes(query) ||
+    item.mata_pelajaran.toLowerCase().includes(query)
+  );
+  renderTableAkademik(filtered);
+}
+
+function openModalAkademik() {
+  document.getElementById('modal-akademik-title').innerText = 'Input Nilai Akademik';
+  document.getElementById('form-akademik').reset();
+  document.getElementById('akademik-id').value = '';
+  recalcAkademikPreview();
+  document.getElementById('modal-akademik').classList.remove('hidden');
+}
+
+function closeModalAkademik() {
+  document.getElementById('modal-akademik').classList.add('hidden');
+}
+
+function recalcAkademikPreview() {
+  const tugas = Number(document.getElementById('akademik-tugas')?.value) || 0;
+  const uts = Number(document.getElementById('akademik-uts')?.value) || 0;
+  const akhir = Math.round((tugas * 0.4) + (uts * 0.6));
+  
+  let predikat = 'D';
+  if (akhir >= 90) predikat = 'A';
+  else if (akhir >= 80) predikat = 'B';
+  else if (akhir >= 70) predikat = 'C';
+
+  const previewAkhir = document.getElementById('akademik-preview-akhir');
+  if (previewAkhir) previewAkhir.innerText = akhir;
+  const previewPredikat = document.getElementById('akademik-preview-predikat');
+  if (previewPredikat) {
+    previewPredikat.innerText = predikat;
+    previewPredikat.className = `inline-block px-3 py-0.5 rounded-full font-bold text-xs badge-predikat-${predikat}`;
+  }
+}
+
+function editNilaiAkademikModal(id) {
+  const item = AppState.akademikList.find(n => String(n.id) === String(id));
+  if (!item) return;
+  document.getElementById('modal-akademik-title').innerText = 'Edit Nilai Akademik';
+  document.getElementById('akademik-id').value = item.id;
+  document.getElementById('akademik-nis').value = item.nis;
+  document.getElementById('akademik-mapel').value = item.mata_pelajaran;
+  document.getElementById('akademik-tugas').value = item.nilai_tugas;
+  document.getElementById('akademik-uts').value = item.nilai_uts;
+  document.getElementById('akademik-catatan').value = item.catatan_guru || '';
+  recalcAkademikPreview();
+  document.getElementById('modal-akademik').classList.remove('hidden');
+}
+
+function submitFormAkademik(e) {
+  e.preventDefault();
+  const payload = {
+    id: document.getElementById('akademik-id').value,
+    nis: document.getElementById('akademik-nis').value,
+    mata_pelajaran: document.getElementById('akademik-mapel').value,
+    nilai_tugas: Number(document.getElementById('akademik-tugas').value) || 0,
+    nilai_uts: Number(document.getElementById('akademik-uts').value) || 0,
+    catatan_guru: document.getElementById('akademik-catatan').value
+  };
+
+  callApi('saveNilaiAkademik', payload)
+    .then(res => {
+      showToast('Nilai akademik berhasil disimpan!');
+      closeModalAkademik();
+      loadNilaiAkademik();
+      loadDashboardStats();
+    })
+    .catch(err => showToast('Gagal menyimpan nilai: ' + err.toString(), 'error'));
+}
+
+function deleteAkademikAction(id) {
+  if (!confirm('Yakin ingin menghapus entri nilai akademik ini?')) return;
+  callApi('deleteNilaiAkademik', { id: id })
+    .then(res => {
+      showToast('Nilai akademik berhasil dihapus.');
+      loadNilaiAkademik();
+      loadDashboardStats();
+    })
+    .catch(err => showToast('Gagal menghapus: ' + err.toString(), 'error'));
+}
+
+// 10. KEPEMIMPINAN MODULE
+function loadNilaiKepemimpinan() {
+  const kelas = document.getElementById('filter-kepemimpinan-kelas')?.value || 'Semua';
+  const tbody = document.getElementById('table-kepemimpinan-body');
+  if (tbody) tbody.innerHTML = `<tr><td colspan="8" class="px-4 py-8 text-center text-slate-400"><i class="fa-solid fa-spinner fa-spin text-lg mb-2"></i><p>Memuat nilai kepemimpinan...</p></td></tr>`;
+
+  callApi('getNilaiKepemimpinan', { kelas: kelas })
+    .then(res => {
+      AppState.kepemimpinanList = res.data || [];
+      renderTableKepemimpinan(AppState.kepemimpinanList);
+    })
+    .catch(err => showToast('Gagal memuat data kepemimpinan: ' + err.toString(), 'error'));
+}
+
+function renderTableKepemimpinan(list) {
+  const tbody = document.getElementById('table-kepemimpinan-body');
+  if (!tbody) return;
+
+  if (list.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="8" class="px-4 py-8 text-center text-slate-400">Tidak ada data nilai kepemimpinan.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = list.map(item => `
+    <tr class="hover:bg-slate-50 transition">
+      <td class="px-4 py-3">
+        <div class="font-bold text-slate-900">${item.nama_santri}</div>
+        <div class="text-[11px] text-slate-400 font-mono">${item.nis}</div>
+      </td>
+      <td class="px-3 py-3 font-semibold text-slate-700">${item.kelas}</td>
+      <td class="px-3 py-3 font-medium text-amber-800">${item.kedisiplinan}</td>
+      <td class="px-3 py-3 font-medium text-amber-800">${item.organisasi}</td>
+      <td class="px-3 py-3 font-medium text-amber-800">${item.karakter_adab}</td>
+      <td class="px-3 py-3 font-medium text-amber-800">${item.inisiatif_kemandirian}</td>
+      <td class="px-4 py-3 text-slate-600 italic text-[11px] max-w-xs truncate">${item.catatan_pembina || '-'}</td>
+      <td class="px-4 py-3 text-right space-x-1">
+        <button onclick="editNilaiKepemimpinanModal('${item.id}')" class="p-1.5 bg-amber-50 text-amber-700 hover:bg-amber-100 rounded-lg text-xs" title="Edit Nilai">
+          <i class="fa-solid fa-pen-to-square"></i>
+        </button>
+        <button onclick="deleteKepemimpinanAction('${item.id}')" class="p-1.5 bg-rose-50 text-rose-600 hover:bg-rose-100 rounded-lg text-xs" title="Hapus">
+          <i class="fa-solid fa-trash"></i>
+        </button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function filterTableKepemimpinanLocal() {
+  const query = (document.getElementById('filter-kepemimpinan-search')?.value || '').toLowerCase();
+  const filtered = AppState.kepemimpinanList.filter(item => 
+    item.nama_santri.toLowerCase().includes(query) ||
+    String(item.nis).toLowerCase().includes(query)
+  );
+  renderTableKepemimpinan(filtered);
+}
+
+function openModalKepemimpinan() {
+  document.getElementById('modal-kepemimpinan-title').innerText = 'Input Nilai Kepemimpinan';
+  document.getElementById('form-kepemimpinan').reset();
+  document.getElementById('kepemimpinan-id').value = '';
+  document.getElementById('modal-kepemimpinan').classList.remove('hidden');
+}
+
+function closeModalKepemimpinan() {
+  document.getElementById('modal-kepemimpinan').classList.add('hidden');
+}
+
+function editNilaiKepemimpinanModal(id) {
+  const item = AppState.kepemimpinanList.find(n => String(n.id) === String(id));
+  if (!item) return;
+  document.getElementById('modal-kepemimpinan-title').innerText = 'Edit Nilai Kepemimpinan';
+  document.getElementById('kepemimpinan-id').value = item.id;
+  document.getElementById('kepemimpinan-nis').value = item.nis;
+  document.getElementById('kepemimpinan-kedisiplinan').value = item.kedisiplinan;
+  document.getElementById('kepemimpinan-organisasi').value = item.organisasi;
+  document.getElementById('kepemimpinan-karakter').value = item.karakter_adab;
+  document.getElementById('kepemimpinan-inisiatif').value = item.inisiatif_kemandirian;
+  document.getElementById('kepemimpinan-catatan').value = item.catatan_pembina || '';
+  document.getElementById('modal-kepemimpinan').classList.remove('hidden');
+}
+
+function submitFormKepemimpinan(e) {
+  e.preventDefault();
+  const payload = {
+    id: document.getElementById('kepemimpinan-id').value,
+    nis: document.getElementById('kepemimpinan-nis').value,
+    kedisiplinan: document.getElementById('kepemimpinan-kedisiplinan').value,
+    organisasi: document.getElementById('kepemimpinan-organisasi').value,
+    karakter_adab: document.getElementById('kepemimpinan-karakter').value,
+    inisiatif_kemandirian: document.getElementById('kepemimpinan-inisiatif').value,
+    catatan_pembina: document.getElementById('kepemimpinan-catatan').value
+  };
+
+  callApi('saveNilaiKepemimpinan', payload)
+    .then(res => {
+      showToast('Nilai kepemimpinan berhasil disimpan!');
+      closeModalKepemimpinan();
+      loadNilaiKepemimpinan();
+      loadDashboardStats();
+    })
+    .catch(err => showToast('Gagal menyimpan: ' + err.toString(), 'error'));
+}
+
+function deleteKepemimpinanAction(id) {
+  if (!confirm('Yakin ingin menghapus nilai kepemimpinan ini?')) return;
+  callApi('deleteNilaiKepemimpinan', { id: id })
+    .then(res => {
+      showToast('Nilai kepemimpinan berhasil dihapus.');
+      loadNilaiKepemimpinan();
+      loadDashboardStats();
+    })
+    .catch(err => showToast('Gagal menghapus: ' + err.toString(), 'error'));
+}
+
+// 11. DINIYAH & TAHFIDZ MODULE
+function loadNilaiDiniyah() {
+  const kelas = document.getElementById('filter-diniyah-kelas')?.value || 'Semua';
+  const tbody = document.getElementById('table-diniyah-body');
+  if (tbody) tbody.innerHTML = `<tr><td colspan="10" class="px-4 py-8 text-center text-slate-400"><i class="fa-solid fa-spinner fa-spin text-lg mb-2"></i><p>Memuat nilai diniyah...</p></td></tr>`;
+
+  callApi('getNilaiDiniyah', { kelas: kelas })
+    .then(res => {
+      AppState.diniyahList = res.data || [];
+      renderTableDiniyah(AppState.diniyahList);
+    })
+    .catch(err => showToast('Gagal memuat nilai diniyah: ' + err.toString(), 'error'));
+}
+
+function renderTableDiniyah(list) {
+  const tbody = document.getElementById('table-diniyah-body');
+  if (!tbody) return;
+
+  if (list.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="10" class="px-4 py-8 text-center text-slate-400">Tidak ada data nilai diniyah.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = list.map(item => `
+    <tr class="hover:bg-slate-50 transition">
+      <td class="px-4 py-3">
+        <div class="font-bold text-slate-900">${item.nama_santri}</div>
+        <div class="text-[11px] text-slate-400 font-mono">${item.nis}</div>
+      </td>
+      <td class="px-3 py-3 font-semibold text-slate-700">${item.kelas}</td>
+      <td class="px-3 py-3 font-medium text-emerald-800">${item.ziyadah_juz || '-'}</td>
+      <td class="px-3 py-3 font-medium text-emerald-800">${item.murojaah_juz || '-'}</td>
+      <td class="px-3 py-3 text-center font-bold text-emerald-700 font-mono">${item.nilai_tahfidz}</td>
+      <td class="px-3 py-3 text-center font-semibold text-emerald-800 text-xs">${item.adab_harian}</td>
+      <td class="px-3 py-3 text-center font-semibold text-emerald-800 text-xs">${item.ibadah_harian}</td>
+      <td class="px-3 py-3 text-center font-bold text-emerald-700 font-mono">${item.bahasa_arab}</td>
+      <td class="px-4 py-3 text-slate-600 italic text-[11px] max-w-xs truncate">${item.catatan_musyrif || '-'}</td>
+      <td class="px-4 py-3 text-right space-x-1">
+        <button onclick="editNilaiDiniyahModal('${item.id}')" class="p-1.5 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 rounded-lg text-xs" title="Edit Nilai">
+          <i class="fa-solid fa-pen-to-square"></i>
+        </button>
+        <button onclick="deleteDiniyahAction('${item.id}')" class="p-1.5 bg-rose-50 text-rose-600 hover:bg-rose-100 rounded-lg text-xs" title="Hapus">
+          <i class="fa-solid fa-trash"></i>
+        </button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function filterTableDiniyahLocal() {
+  const query = (document.getElementById('filter-diniyah-search')?.value || '').toLowerCase();
+  const filtered = AppState.diniyahList.filter(item => 
+    item.nama_santri.toLowerCase().includes(query) ||
+    String(item.nis).toLowerCase().includes(query)
+  );
+  renderTableDiniyah(filtered);
+}
+
+function openModalDiniyah() {
+  document.getElementById('modal-diniyah-title').innerText = 'Input Nilai Diniyah & Tahfidz';
+  document.getElementById('form-diniyah').reset();
+  document.getElementById('diniyah-id').value = '';
+  document.getElementById('modal-diniyah').classList.remove('hidden');
+}
+
+function closeModalDiniyah() {
+  document.getElementById('modal-diniyah').classList.add('hidden');
+}
+
+function editNilaiDiniyahModal(id) {
+  const item = AppState.diniyahList.find(n => String(n.id) === String(id));
+  if (!item) return;
+  document.getElementById('modal-diniyah-title').innerText = 'Edit Nilai Diniyah & Tahfidz';
+  document.getElementById('diniyah-id').value = item.id;
+  document.getElementById('diniyah-nis').value = item.nis;
+  document.getElementById('diniyah-ziyadah').value = item.ziyadah_juz || '';
+  document.getElementById('diniyah-murojaah').value = item.murojaah_juz || '';
+  document.getElementById('diniyah-tahfidz').value = item.nilai_tahfidz || 0;
+  document.getElementById('diniyah-adab').value = item.adab_harian || 'Mumtaz (A)';
+  document.getElementById('diniyah-ibadah').value = item.ibadah_harian || 'Mumtaz (A)';
+  document.getElementById('diniyah-bahasa-arab').value = item.bahasa_arab || 0;
+  document.getElementById('diniyah-catatan').value = item.catatan_musyrif || '';
+  document.getElementById('modal-diniyah').classList.remove('hidden');
+}
+
+function submitFormDiniyah(e) {
+  e.preventDefault();
+  const payload = {
+    id: document.getElementById('diniyah-id').value,
+    nis: document.getElementById('diniyah-nis').value,
+    ziyadah_juz: document.getElementById('diniyah-ziyadah').value,
+    murojaah_juz: document.getElementById('diniyah-murojaah').value,
+    nilai_tahfidz: Number(document.getElementById('diniyah-tahfidz').value) || 0,
+    adab_harian: document.getElementById('diniyah-adab').value,
+    ibadah_harian: document.getElementById('diniyah-ibadah').value,
+    bahasa_arab: Number(document.getElementById('diniyah-bahasa-arab').value) || 0,
+    catatan_musyrif: document.getElementById('diniyah-catatan').value
+  };
+
+  callApi('saveNilaiDiniyah', payload)
+    .then(res => {
+      showToast('Nilai Diniyah berhasil disimpan!');
+      closeModalDiniyah();
+      loadNilaiDiniyah();
+      loadDashboardStats();
+    })
+    .catch(err => showToast('Gagal menyimpan: ' + err.toString(), 'error'));
+}
+
+function deleteDiniyahAction(id) {
+  if (!confirm('Yakin ingin menghapus nilai diniyah ini?')) return;
+  callApi('deleteNilaiDiniyah', { id: id })
+    .then(res => {
+      showToast('Nilai diniyah berhasil dihapus.');
+      loadNilaiDiniyah();
+      loadDashboardStats();
+    })
+    .catch(err => showToast('Gagal menghapus: ' + err.toString(), 'error'));
+}
+
+// 12. CMS & SaaS SETTINGS
+function switchCmsTab(tabName) {
+  document.querySelectorAll('.cms-panel').forEach(p => p.classList.add('hidden'));
+  document.querySelectorAll('.cms-tab-btn').forEach(btn => {
+    btn.classList.remove('bg-slate-100', 'text-slate-800');
+    btn.classList.add('text-slate-500');
+  });
+
+  const panel = document.getElementById('cms-panel-' + tabName);
+  if (panel) panel.classList.remove('hidden');
+
+  const btn = document.getElementById('cms-tab-' + tabName);
+  if (btn) {
+    btn.classList.add('bg-slate-100', 'text-slate-800');
+    btn.classList.remove('text-slate-500');
+  }
+
+  if (tabName === 'users') loadUsersList();
+}
+
+function loadCmsSettings() {
+  callApi('getSettings')
+    .then(res => {
+      if (res && res.data) {
+        const s = res.data;
+        AppState.cmsSettings = s;
+        applyCmsTheme(s);
+
+        // Populate Form Fields
+        document.getElementById('cms-school-name').value = s.school_name || '';
+        document.getElementById('cms-school-logo-url').value = s.school_logo_url || '';
+        document.getElementById('cms-school-address').value = s.school_address || '';
+        document.getElementById('cms-school-phone').value = s.school_phone || '';
+        document.getElementById('cms-school-website').value = s.school_website || '';
+        document.getElementById('cms-footer-text').value = s.report_footer_text || '';
+
+        document.getElementById('cms-color-primary').value = s.theme_primary_color || '#1e3a8a';
+        document.getElementById('cms-color-primary-text').innerText = s.theme_primary_color || '#1e3a8a';
+        document.getElementById('cms-color-secondary').value = s.theme_secondary_color || '#0284c7';
+        document.getElementById('cms-color-secondary-text').innerText = s.theme_secondary_color || '#0284c7';
+        document.getElementById('cms-color-accent').value = s.theme_accent_color || '#10b981';
+        document.getElementById('cms-color-accent-text').innerText = s.theme_accent_color || '#10b981';
+
+        document.getElementById('cms-academic-year').value = s.academic_year || '2025/2026';
+        document.getElementById('cms-semester-active').value = s.semester_active || 'Ganjil';
+        document.getElementById('cms-report-place').value = s.report_place || 'Depok';
+        document.getElementById('cms-report-date').value = s.report_date || '28 September 2025';
+
+        document.getElementById('cms-headmaster-name').value = s.headmaster_name || '';
+        document.getElementById('cms-headmaster-nip').value = s.headmaster_nip || '';
+        document.getElementById('cms-headmaster-signature-url').value = s.headmaster_signature_url || '';
+
+        previewCmsLogo();
+      }
+    })
+    .catch(err => console.error('Error load settings:', err));
+}
+
+function previewCmsLogo() {
+  const url = document.getElementById('cms-school-logo-url')?.value;
+  const img = document.getElementById('cms-logo-preview');
+  if (img && url) img.src = url;
+}
+
+function resetDefaultLogo() {
+  const defaultUrl = 'https://alimamischool.com/wp-content/uploads/2020/08/Al-Imam-Islamic-School-alimamischool.com-sekolah-sunnah-logo.png';
+  document.getElementById('cms-school-logo-url').value = defaultUrl;
+  previewCmsLogo();
+}
+
+function previewThemeColorsLive() {
+  const p = document.getElementById('cms-color-primary').value;
+  const s = document.getElementById('cms-color-secondary').value;
+  const a = document.getElementById('cms-color-accent').value;
+
+  document.getElementById('cms-color-primary-text').innerText = p;
+  document.getElementById('cms-color-secondary-text').innerText = s;
+  document.getElementById('cms-color-accent-text').innerText = a;
+
+  applyCmsTheme({
+    ...AppState.cmsSettings,
+    theme_primary_color: p,
+    theme_secondary_color: s,
+    theme_accent_color: a
+  });
+}
+
+function saveCmsSettingsAll() {
+  const payload = {
+    school_name: document.getElementById('cms-school-name').value,
+    school_logo_url: document.getElementById('cms-school-logo-url').value,
+    school_address: document.getElementById('cms-school-address').value,
+    school_phone: document.getElementById('cms-school-phone').value,
+    school_website: document.getElementById('cms-school-website').value,
+    report_footer_text: document.getElementById('cms-footer-text').value,
+    theme_primary_color: document.getElementById('cms-color-primary').value,
+    theme_secondary_color: document.getElementById('cms-color-secondary').value,
+    theme_accent_color: document.getElementById('cms-color-accent').value,
+    academic_year: document.getElementById('cms-academic-year').value,
+    semester_active: document.getElementById('cms-semester-active').value,
+    report_place: document.getElementById('cms-report-place').value,
+    report_date: document.getElementById('cms-report-date').value,
+    headmaster_name: document.getElementById('cms-headmaster-name').value,
+    headmaster_nip: document.getElementById('cms-headmaster-nip').value,
+    headmaster_signature_url: document.getElementById('cms-headmaster-signature-url').value
+  };
+
+  callApi('updateSettings', payload)
+    .then(res => {
+      showToast('Pengaturan CMS & Tampilan berhasil disimpan!');
+      applyCmsTheme(payload);
+      loadDashboardStats();
+    })
+    .catch(err => showToast('Gagal menyimpan settings: ' + err.toString(), 'error'));
+}
+
+// 13. USERS MANAGEMENT
+function loadUsersList() {
+  const tbody = document.getElementById('table-users-body');
+  if (tbody) tbody.innerHTML = `<tr><td colspan="6" class="px-4 py-6 text-center text-slate-400"><i class="fa-solid fa-spinner fa-spin text-base mb-1"></i><p>Memuat pengguna...</p></td></tr>`;
+
+  callApi('getUsers')
+    .then(res => {
+      AppState.usersList = res.data || [];
+      renderTableUsers(AppState.usersList);
+    })
+    .catch(err => showToast('Gagal memuat pengguna: ' + err.toString(), 'error'));
+}
+
+function renderTableUsers(list) {
+  const tbody = document.getElementById('table-users-body');
+  if (!tbody) return;
+
+  tbody.innerHTML = list.map(u => `
+    <tr class="hover:bg-slate-50 transition">
+      <td class="px-4 py-3 font-mono text-[11px] text-slate-500">${u.id}</td>
+      <td class="px-4 py-3 font-bold text-slate-900">${u.username}</td>
+      <td class="px-4 py-3 text-slate-700">${u.nama_lengkap}</td>
+      <td class="px-3 py-3">
+        <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 border border-slate-200">${u.role}</span>
+      </td>
+      <td class="px-3 py-3 text-center">
+        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${u.status === 'aktif' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-rose-50 text-rose-700'}">${u.status}</span>
+      </td>
+      <td class="px-4 py-3 text-right space-x-1">
+        <button onclick="editUserModal('${u.id}')" class="p-1.5 bg-blue-50 text-blue-700 hover:bg-blue-100 rounded-lg text-xs" title="Edit Pengguna">
+          <i class="fa-solid fa-pen-to-square"></i>
+        </button>
+        <button onclick="deleteUserAction('${u.id}')" class="p-1.5 bg-rose-50 text-rose-600 hover:bg-rose-100 rounded-lg text-xs" title="Hapus">
+          <i class="fa-solid fa-trash"></i>
+        </button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function openModalUser() {
+  document.getElementById('modal-user-title').innerText = 'Tambah Pengguna Baru';
+  document.getElementById('form-user').reset();
+  document.getElementById('user-id').value = '';
+  document.getElementById('modal-user').classList.remove('hidden');
+}
+
+function closeModalUser() {
+  document.getElementById('modal-user').classList.add('hidden');
+}
+
+function editUserModal(id) {
+  const user = AppState.usersList.find(u => String(u.id) === String(id));
+  if (!user) return;
+  document.getElementById('modal-user-title').innerText = 'Edit Pengguna';
+  document.getElementById('user-id').value = user.id;
+  document.getElementById('user-nama').value = user.nama_lengkap || '';
+  document.getElementById('user-username').value = user.username || '';
+  document.getElementById('user-password').value = '';
+  document.getElementById('user-role').value = user.role || 'guru_akademik';
+  document.getElementById('user-status').value = user.status || 'aktif';
+  document.getElementById('modal-user').classList.remove('hidden');
+}
+
+function submitFormUser(e) {
+  e.preventDefault();
+  const payload = {
+    id: document.getElementById('user-id').value,
+    nama_lengkap: document.getElementById('user-nama').value,
+    username: document.getElementById('user-username').value,
+    password_hash: document.getElementById('user-password').value,
+    role: document.getElementById('user-role').value,
+    status: document.getElementById('user-status').value
+  };
+
+  callApi('saveUser', payload)
+    .then(res => {
+      showToast('Pengguna berhasil disimpan!');
+      closeModalUser();
+      loadUsersList();
+    })
+    .catch(err => showToast('Gagal menyimpan pengguna: ' + err.toString(), 'error'));
+}
+
+function deleteUserAction(id) {
+  if (!confirm('Yakin ingin menghapus pengguna ini?')) return;
+  callApi('deleteUser', { id: id })
+    .then(res => {
+      showToast('Pengguna berhasil dihapus.');
+      loadUsersList();
+    })
+    .catch(err => showToast('Gagal menghapus: ' + err.toString(), 'error'));
+}
+
+// 14. CETAK RAPOR TERPADU (3 PILAR GENERATOR)
+function previewRaporDirect(nis) {
+  AppState.activePrintNis = nis;
+  switchView('rapor');
+}
+
+function openQuickPrintModal() {
+  switchView('rapor');
+}
+
+function loadSantriReportForPrint(nis) {
+  if (!nis) return;
+  AppState.activePrintNis = nis;
+  
+  const select = document.getElementById('rapor-santri-select');
+  if (select && select.value !== nis) select.value = nis;
+
+  const printBody = document.getElementById('print-akademik-tbody');
+  if (printBody) {
+    printBody.innerHTML = `<tr><td colspan="7" class="py-4 text-center text-slate-400"><i class="fa-solid fa-spinner fa-spin mr-2"></i>Menyusun data rapor...</td></tr>`;
+  }
+
+  callApi('getSantriReport', { nis: nis })
+    .then(res => {
+      if (res && res.success && res.data) {
+        renderRaporSheet(res.data);
+      } else {
+        showToast(res.message || 'Gagal memuat data rapor.', 'error');
+      }
+    })
+    .catch(err => showToast('Error generate rapor: ' + err.toString(), 'error'));
+}
+
+function renderRaporSheet(report) {
+  const s = report.santri || {};
+  const set = report.settings || {};
+  const ak = report.akademik || { items: [] };
+  const kp = report.kepemimpinan || {};
+  const dn = report.diniyah || {};
+
+  // Header Identitas
+  document.getElementById('print-santri-nama').innerText = s.nama_santri || '-';
+  document.getElementById('print-santri-nis').innerText = s.nis || '-';
+  document.getElementById('print-santri-nisn').innerText = s.nisn || '-';
+  document.getElementById('print-santri-kelas').innerText = s.kelas || '-';
+  document.getElementById('print-santri-jk').innerText = s.jenis_kelamin === 'L' ? 'Laki-laki (Ikhwan)' : 'Perempuan (Akhwat)';
+  document.getElementById('print-tahun-ajaran').innerText = set.academic_year || '2025/2026';
+  document.getElementById('print-semester').innerText = set.semester_active || 'Ganjil';
+
+  // Section 1: Akademik
+  const tbodyAk = document.getElementById('print-akademik-tbody');
+  if (ak.items.length === 0) {
+    tbodyAk.innerHTML = `<tr><td colspan="7" class="py-3 px-3 text-center text-slate-400 italic">Belum ada input nilai akademik untuk santri ini.</td></tr>`;
+  } else {
+    tbodyAk.innerHTML = ak.items.map((item, idx) => `
+      <tr>
+        <td class="py-2 px-2 text-center border-r border-slate-300 font-mono">${idx + 1}</td>
+        <td class="py-2 px-3 border-r border-slate-300 font-bold text-slate-900">${item.mata_pelajaran}</td>
+        <td class="py-2 px-2 text-center border-r border-slate-300 font-mono">${item.nilai_tugas}</td>
+        <td class="py-2 px-2 text-center border-r border-slate-300 font-mono">${item.nilai_uts}</td>
+        <td class="py-2 px-2 text-center border-r border-slate-300 font-bold font-mono text-slate-900">${item.nilai_akhir}</td>
+        <td class="py-2 px-2 text-center border-r border-slate-300 font-black">${item.predikat}</td>
+        <td class="py-2 px-3 text-slate-700 italic text-[11px] leading-tight">${item.catatan_guru || '-'}</td>
+      </tr>
+    `).join('');
+  }
+  document.getElementById('print-akademik-avg').innerText = ak.rataRata || '0';
+
+  // Section 2: Kepemimpinan
+  document.getElementById('print-kp-disiplin').innerText = kp.kedisiplinan || '-';
+  document.getElementById('print-kp-organisasi').innerText = kp.organisasi || '-';
+  document.getElementById('print-kp-karakter').innerText = kp.karakter_adab || '-';
+  document.getElementById('print-kp-inisiatif').innerText = kp.inisiatif_kemandirian || '-';
+  document.getElementById('print-kp-catatan').innerText = kp.catatan_pembina || 'Belum ada catatan kepemimpinan.';
+
+  // Section 3: Diniyah
+  document.getElementById('print-dn-ziyadah').innerText = dn.ziyadah_juz || '-';
+  document.getElementById('print-dn-murojaah').innerText = dn.murojaah_juz || '-';
+  document.getElementById('print-dn-tahfidz').innerText = dn.nilai_tahfidz || '0';
+  document.getElementById('print-dn-adab').innerText = dn.adab_harian || '-';
+  document.getElementById('print-dn-ibadah').innerText = dn.ibadah_harian || '-';
+  document.getElementById('print-dn-bahasa-arab').innerText = dn.bahasa_arab || '0';
+  document.getElementById('print-dn-catatan').innerText = dn.catatan_musyrif || 'Belum ada catatan diniyah.';
+
+  // Signatures
+  document.getElementById('print-report-place').innerText = set.report_place || 'Depok';
+  document.getElementById('print-report-date').innerText = set.report_date || '28 September 2025';
+  document.getElementById('print-signatory-school').innerText = set.school_name || 'SMP IT Al-Imam';
+  document.getElementById('print-headmaster-name').innerText = set.headmaster_name || 'Ust. Ahmad Fauzi, M.Pd.';
+  document.getElementById('print-headmaster-nip').innerText = set.headmaster_nip ? `NIP. ${set.headmaster_nip}` : '';
+
+  const sigImg = document.getElementById('print-headmaster-sig-img');
+  if (sigImg) {
+    if (set.headmaster_signature_url) {
+      sigImg.src = set.headmaster_signature_url;
+      sigImg.classList.remove('hidden');
+    } else {
+      sigImg.classList.add('hidden');
+    }
+  }
+}
+
+// 15. DATABASE INITIALIZATION TRIGGER
+function triggerInitDb() {
+  if (!confirm('Inisialisasi ulang database Google Sheets akan memastikan seluruh skema sheet dan data seed default terpasang. Lanjutkan?')) return;
+  
+  showToast('Menginisialisasi skema sheet Google Sheets...', 'info');
+  callApi('initDatabase')
+    .then(res => {
+      showToast('Database Google Sheets berhasil diinisialisasi!', 'success');
+      loadCmsSettings();
+      loadSantriList();
+      loadDashboardStats();
+    })
+    .catch(err => showToast('Gagal init database: ' + err.toString(), 'error'));
+}
+
+// 16. MOBILE SIDEBAR TOGGLE
+function toggleSidebar() {
+  const sidebar = document.getElementById('app-sidebar');
+  const backdrop = document.getElementById('sidebar-backdrop');
+  if (!sidebar) return;
+  sidebar.classList.toggle('-translate-x-full');
+  if (backdrop) backdrop.classList.toggle('hidden');
+}
+
+// 17. APP STARTUP
+window.addEventListener('DOMContentLoaded', () => {
+  // Mobile Sidebar Toggles
+  document.getElementById('btn-toggle-sidebar')?.addEventListener('click', toggleSidebar);
+  document.getElementById('btn-close-sidebar')?.addEventListener('click', toggleSidebar);
+
+  // Initial Load
+  loadCmsSettings();
+  loadSantriList();
+  loadDashboardStats();
+});
+</script>
