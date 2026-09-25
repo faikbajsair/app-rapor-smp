@@ -129,7 +129,7 @@ function getDashboardSummaryStats() {
       progressPercent: progressPercent,
       activeSemester: currentSemester,
       activeYear: currentYear,
-      schoolName: settings.school_name || 'SMP IT Al-Imam'
+      schoolName: settings.school_name || 'SMP Al-Imam Islamic School (AI IS)'
     }
   };
 }

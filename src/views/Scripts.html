@@ -230,7 +230,7 @@ function applyCmsTheme(settings) {
   }
 
   // Update Navbar & Headings
-  const schoolName = settings.school_name || 'SMP IT Al-Imam Islamic School MBU';
+  const schoolName = settings.school_name || 'SMP Al-Imam Islamic School (AI IS)';
   const logoUrl = settings.school_logo_url || 'https://alimamischool.com/wp-content/uploads/2020/08/Al-Imam-Islamic-School-alimamischool.com-sekolah-sunnah-logo.png';
 
   const navLogo = document.getElementById('nav-school-logo');
@@ -1087,7 +1087,7 @@ function renderRaporSheet(report) {
   // Signatures
   document.getElementById('print-report-place').innerText = set.report_place || 'Depok';
   document.getElementById('print-report-date').innerText = set.report_date || '28 September 2025';
-  document.getElementById('print-signatory-school').innerText = set.school_name || 'SMP IT Al-Imam';
+  document.getElementById('print-signatory-school').innerText = set.school_name || 'SMP Al-Imam (AI IS)';
   document.getElementById('print-headmaster-name').innerText = set.headmaster_name || 'Ust. Ahmad Fauzi, M.Pd.';
   document.getElementById('print-headmaster-nip').innerText = set.headmaster_nip ? `NIP. ${set.headmaster_nip}` : '';
 

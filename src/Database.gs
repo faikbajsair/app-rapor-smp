@@ -119,7 +119,7 @@ function initDatabase() {
   const sheetSettings = getOrCreateSheet(DB_CONFIG.SHEET_SETTINGS, ['key', 'value', 'category', 'description']);
   if (sheetSettings.getLastRow() <= 1) {
     const defaultSettings = [
-      ['school_name', 'SMP IT Al-Imam Islamic School MBU', 'general', 'Nama Lengkap Sekolah'],
+      ['school_name', 'SMP Al-Imam Islamic School (AI IS)', 'general', 'Nama Lengkap Sekolah'],
       ['school_address', 'Jl. KH. M. Usman No. 128, Kukusan, Beji, Kota Depok, Jawa Barat', 'general', 'Alamat Lengkap Sekolah'],
       ['school_phone', '0812-3456-7890 / (021) 7788990', 'general', 'Telepon/Kontak Sekolah'],
       ['school_website', 'https://alimamischool.com', 'general', 'Situs Web Resmi'],

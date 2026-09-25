@@ -41,7 +41,7 @@ function doGet(e) {
   } catch (err) {
     // Jika sheet belum terinisialisasi
     template.cmsSettings = {
-      school_name: 'SMP IT Al-Imam Islamic School MBU',
+      school_name: 'SMP Al-Imam Islamic School (AI IS)',
       school_logo_url: 'https://alimamischool.com/wp-content/uploads/2020/08/Al-Imam-Islamic-School-alimamischool.com-sekolah-sunnah-logo.png',
       theme_primary_color: '#1e3a8a',
       theme_secondary_color: '#0284c7',

@@ -220,4 +220,4 @@ Jika tidak menggunakan Clasp/CLI:
 
 ---
 
-*Dikembangkan untuk SMP IT Al-Imam Islamic School MBU - Sistem Rapor Terpadu.*
+*Dikembangkan untuk SMP Al-Imam Islamic School (AI IS) - Development by Al-Imam EduTech*
