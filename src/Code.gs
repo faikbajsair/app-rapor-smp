@@ -1,7 +1,7 @@
 /**
  * ============================================================================
  * CODE.GS - Controller Utama & Router API Web App (MVC Pattern)
- * Aplikasi Rapor Tengah Semester MBU
+ * Aplikasi Rapor Tengah Semester SMP Al-Imam (AI IS)
  * ============================================================================
  */
 
@@ -30,7 +30,7 @@ function doGet(e) {
           '<h2 style="color:#e11d48;">File View HTML Belum Ditambahkan</h2>' +
           '<p style="color:#475569;">Pastikan Anda telah membuat file HTML bernama <code>Index_Complete</code> atau <code>Index</code> di editor Apps Script.</p>' +
           '</div>'
-        ).setTitle('Rapor Tengah Semester MBU');
+        ).setTitle('Rapor Tengah Semester SMP Al-Imam (AI IS)');
       }
     }
   }
@@ -50,7 +50,7 @@ function doGet(e) {
   }
   
   return template.evaluate()
-    .setTitle('Rapor Tengah Semester MBU')
+    .setTitle('Rapor Tengah Semester SMP Al-Imam (AI IS)')
     .addMetaTag('viewport', 'width=device-width, initial-scale=1, maximum-scale=1')
     .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
 }

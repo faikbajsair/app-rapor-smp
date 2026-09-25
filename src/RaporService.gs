@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- * RAPORSERVICE.GS - Layanan Agregasi & Generator Rapor Tengah Semester MBU
+ * RAPORSERVICE.GS - Layanan Agregasi & Generator Rapor Tengah Semester SMP Al-Imam (AI IS)
  * Mengintegrasikan 3 Aspek: Akademik, Kepemimpinan, dan Diniyah
  * ============================================================================
  */

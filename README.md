@@ -1,4 +1,4 @@
-# Aplikasi Web Rapor Tengah Semester MBU (MVC Architecture)
+# Aplikasi Web Rapor Tengah Semester SMP Al-Imam Islamic School (AI IS) (MVC Architecture)
 
 Sistem Informasi Manajemen Rapor Tengah Semester Holistik berbasis **Google Apps Script (GAS)** dengan pola **Model-View-Controller (MVC)**, terintegrasi dengan **Google Sheets** sebagai Database Engine, serta siap dideploy ke **GitHub** dan **Vercel**.
 
@@ -170,7 +170,7 @@ Aplikasi ini dilengkapi konfigurasi `vercel.json` dan client statis di folder `p
    ```bash
    git init
    git add .
-   git commit -m "feat: complete mvc rapor mbu gas app"
+   git commit -m "feat: complete mvc rapor ai-is app"
    git remote add origin https://github.com/USERNAME/app-rapor-smp.git
    git branch -M main
    git push -u origin main

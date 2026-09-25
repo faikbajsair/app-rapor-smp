@@ -1,7 +1,7 @@
 /**
  * ============================================================================
  * DATABASE.GS - Model & Layer Akses Data Google Sheets
- * Aplikasi Rapor Tengah Semester MBU (MVC Architecture)
+ * Aplikasi Rapor Tengah Semester SMP Al-Imam (AI IS) (MVC Architecture)
  * ============================================================================
  */
 

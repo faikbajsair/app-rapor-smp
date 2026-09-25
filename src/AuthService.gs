@@ -1,7 +1,7 @@
 /**
  * ============================================================================
  * AUTHSERVICE.GS - Layanan Autentikasi, Hak Akses & Session
- * Aplikasi Rapor Tengah Semester MBU
+ * Aplikasi Rapor Tengah Semester SMP Al-Imam (AI IS)
  * ============================================================================
  */
 

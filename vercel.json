@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "name": "app-rapor-tengah-semester-mbu",
+  "name": "app-rapor-smp-aiis",
   "builds": [
     {
       "src": "public/**/*",
