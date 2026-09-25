@@ -377,6 +377,9 @@ function deleteUser(userId) {
  */
 function getAllSantri(filterClass = '') {
   const sheet = getOrCreateSheet(DB_CONFIG.SHEET_SANTRI);
+  if (sheet.getLastRow() <= 1) {
+    initDatabase();
+  }
   let list = sheetToObjects(sheet);
   if (filterClass && filterClass !== 'Semua') {
     list = list.filter(s => String(s.kelas).toUpperCase() === String(filterClass).toUpperCase());
