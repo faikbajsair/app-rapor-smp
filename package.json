@@ -10,7 +10,8 @@
     "watch": "clasp push --watch",
     "deploy": "clasp deploy --description 'Production Deployment'",
     "open": "clasp open",
-    "build": "echo 'Build successful for Vercel Static deployment'",
+    "build:bundle": "node scripts/bundle.js",
+    "build": "node scripts/bundle.js && echo 'Build successful for Vercel Static deployment'",
     "start": "npx serve public"
   },
   "keywords": [

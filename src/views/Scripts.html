@@ -429,8 +429,29 @@ function loadNilaiAkademik() {
     .then(res => {
       AppState.akademikList = res.data || [];
       renderTableAkademik(AppState.akademikList);
+      updateAkademikWidgets(AppState.akademikList);
     })
     .catch(err => showToast('Gagal memuat nilai akademik: ' + err.toString(), 'error'));
+}
+
+function updateAkademikWidgets(list) {
+  const total = list.length;
+  let sum = 0;
+  let countA = 0;
+  let countPass = 0;
+  list.forEach(i => {
+    const val = Number(i.nilai_akhir) || 0;
+    sum += val;
+    if (i.predikat === 'A') countA++;
+    if (val >= 75) countPass++;
+  });
+  const avg = total > 0 ? (sum / total).toFixed(1) : 0;
+  const passRate = total > 0 ? Math.round((countPass / total) * 100) + '%' : '100%';
+
+  if (document.getElementById('widget-ak-total')) document.getElementById('widget-ak-total').innerText = total;
+  if (document.getElementById('widget-ak-avg')) document.getElementById('widget-ak-avg').innerText = avg;
+  if (document.getElementById('widget-ak-count-a')) document.getElementById('widget-ak-count-a').innerText = countA;
+  if (document.getElementById('widget-ak-pass-rate')) document.getElementById('widget-ak-pass-rate').innerText = passRate;
 }
 
 function renderTableAkademik(list) {
@@ -566,8 +587,26 @@ function loadNilaiKepemimpinan() {
     .then(res => {
       AppState.kepemimpinanList = res.data || [];
       renderTableKepemimpinan(AppState.kepemimpinanList);
+      updateKepemimpinanWidgets(AppState.kepemimpinanList);
     })
     .catch(err => showToast('Gagal memuat data kepemimpinan: ' + err.toString(), 'error'));
+}
+
+function updateKepemimpinanWidgets(list) {
+  const total = list.length;
+  let countA = 0;
+  let countOrgA = 0;
+  let countGood = 0;
+  list.forEach(i => {
+    if (String(i.kedisiplinan).includes('(A)')) countA++;
+    if (String(i.organisasi).includes('(A)')) countOrgA++;
+    if (String(i.karakter_adab).includes('(A)') || String(i.karakter_adab).includes('(B)')) countGood++;
+  });
+  const goodRate = total > 0 ? Math.round((countGood / total) * 100) + '%' : '100%';
+  if (document.getElementById('widget-kp-total')) document.getElementById('widget-kp-total').innerText = total;
+  if (document.getElementById('widget-kp-count-a')) document.getElementById('widget-kp-count-a').innerText = countA;
+  if (document.getElementById('widget-kp-org-a')) document.getElementById('widget-kp-org-a').innerText = countOrgA;
+  if (document.getElementById('widget-kp-char-good')) document.getElementById('widget-kp-char-good').innerText = goodRate;
 }
 
 function renderTableKepemimpinan(list) {
@@ -680,8 +719,27 @@ function loadNilaiDiniyah() {
     .then(res => {
       AppState.diniyahList = res.data || [];
       renderTableDiniyah(AppState.diniyahList);
+      updateDiniyahWidgets(AppState.diniyahList);
     })
     .catch(err => showToast('Gagal memuat nilai diniyah: ' + err.toString(), 'error'));
+}
+
+function updateDiniyahWidgets(list) {
+  const total = list.length;
+  let sumTahfidz = 0;
+  let sumArab = 0;
+  let countMumtaz = 0;
+  list.forEach(i => {
+    sumTahfidz += Number(i.nilai_tahfidz) || 0;
+    sumArab += Number(i.bahasa_arab) || 0;
+    if (String(i.adab_harian).includes('(A)')) countMumtaz++;
+  });
+  const avgTahfidz = total > 0 ? (sumTahfidz / total).toFixed(1) : 0;
+  const avgArab = total > 0 ? (sumArab / total).toFixed(1) : 0;
+  if (document.getElementById('widget-dn-total')) document.getElementById('widget-dn-total').innerText = total;
+  if (document.getElementById('widget-dn-tahfidz-avg')) document.getElementById('widget-dn-tahfidz-avg').innerText = avgTahfidz;
+  if (document.getElementById('widget-dn-adab-a')) document.getElementById('widget-dn-adab-a').innerText = countMumtaz;
+  if (document.getElementById('widget-dn-arab-avg')) document.getElementById('widget-dn-arab-avg').innerText = avgArab;
 }
 
 function renderTableDiniyah(list) {
