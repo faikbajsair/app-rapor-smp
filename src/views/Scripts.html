@@ -1184,7 +1184,91 @@ function toggleSidebar() {
   if (backdrop) backdrop.classList.toggle('hidden');
 }
 
-// 17. APP STARTUP
+// 17. INTERACTIVE ONBOARDING GUIDE TOUR
+let currentGuideStep = 1;
+const TOTAL_GUIDE_STEPS = 8;
+
+function openInteractiveGuide(step = 1) {
+  currentGuideStep = step;
+  const modal = document.getElementById('modal-interactive-guide');
+  if (modal) {
+    modal.classList.remove('hidden');
+    renderGuideStep(currentGuideStep);
+  }
+}
+
+function closeInteractiveGuide(dismissForever = false) {
+  const modal = document.getElementById('modal-interactive-guide');
+  if (modal) modal.classList.add('hidden');
+  if (dismissForever) {
+    localStorage.setItem('rapor_guide_dismissed', 'true');
+    showToast('Panduan ditutup. Anda dapat membukanya kembali kapan saja melalui tombol di navbar.', 'info');
+  }
+}
+
+function changeGuideStep(delta) {
+  const nextStep = currentGuideStep + delta;
+  if (nextStep < 1) return;
+  if (nextStep > TOTAL_GUIDE_STEPS) {
+    closeInteractiveGuide(true);
+    showToast('Alhamdulillah! Anda telah menyelesaikan panduan penggunaan sistem.', 'success');
+    return;
+  }
+  currentGuideStep = nextStep;
+  renderGuideStep(currentGuideStep);
+}
+
+function renderGuideStep(step) {
+  // Update counter & progress bar
+  const counter = document.getElementById('guide-step-counter');
+  if (counter) counter.innerText = `Langkah ${step} dari ${TOTAL_GUIDE_STEPS}`;
+  
+  const progressFill = document.getElementById('guide-progress-fill');
+  if (progressFill) progressFill.style.width = `${(step / TOTAL_GUIDE_STEPS) * 100}%`;
+
+  // Toggle step cards
+  document.querySelectorAll('.guide-step-card').forEach(card => {
+    if (parseInt(card.getAttribute('data-step')) === step) {
+      card.classList.remove('hidden');
+    } else {
+      card.classList.add('hidden');
+    }
+  });
+
+  // Buttons
+  const btnPrev = document.getElementById('btn-guide-prev');
+  const btnNext = document.getElementById('btn-guide-next');
+  if (btnPrev) {
+    if (step === 1) btnPrev.classList.add('hidden');
+    else btnPrev.classList.remove('hidden');
+  }
+  if (btnNext) {
+    if (step === TOTAL_GUIDE_STEPS) {
+      btnNext.innerHTML = '<span>Mulai Gunakan Aplikasi</span> <i class="fa-solid fa-check text-xs"></i>';
+      btnNext.className = 'px-4 py-2 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-xl shadow-md transition flex items-center gap-1.5';
+    } else {
+      btnNext.innerHTML = '<span>Selanjutnya</span> <i class="fa-solid fa-arrow-right text-[10px]"></i>';
+      btnNext.className = 'px-4 py-2 text-xs font-bold text-white bg-theme-primary hover:opacity-90 rounded-xl shadow-md transition flex items-center gap-1.5';
+    }
+  }
+}
+
+function switchViewAndHighlight(viewName) {
+  switchView(viewName);
+  closeInteractiveGuide(false);
+  const titles = {
+    'dashboard': 'Dashboard Beranda',
+    'akademik': 'Nilai Akademik',
+    'kepemimpinan': 'Nilai Kepemimpinan',
+    'diniyah': 'Nilai Diniyah & Tahfidz',
+    'santri': 'Data Santri & Kelas',
+    'rapor': 'Cetak Rapor Terpadu',
+    'cms': 'Pengaturan CMS'
+  };
+  showToast(`💡 Anda berada di modul: ${titles[viewName] || viewName}. Klik 'Panduan Interaktif' di atas untuk membuka kembali tour.`);
+}
+
+// 18. APP STARTUP
 window.addEventListener('DOMContentLoaded', () => {
   // Mobile Sidebar Toggles
   document.getElementById('btn-toggle-sidebar')?.addEventListener('click', toggleSidebar);
@@ -1194,5 +1278,12 @@ window.addEventListener('DOMContentLoaded', () => {
   loadCmsSettings();
   loadSantriList();
   loadDashboardStats();
+
+  // Auto trigger interactive tour for first-time visitors
+  if (localStorage.getItem('rapor_guide_dismissed') !== 'true') {
+    setTimeout(() => {
+      openInteractiveGuide(1);
+    }, 1200);
+  }
 });
 </script>

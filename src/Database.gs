@@ -145,10 +145,13 @@ function initDatabase() {
   if (sheetUsers.getLastRow() <= 1) {
     const defaultUsers = [
       ['USR-001', 'admin', 'admin123', 'Administrator Utama', 'admin', 'aktif', '2025-01-01'],
-      ['USR-002', 'guru.akademik', 'guru123', 'Ust. Budi Santoso, S.Si.', 'guru_akademik', 'aktif', '2025-01-01'],
-      ['USR-003', 'pembina.leadership', 'pembina123', 'Ust. Ridwan Kamil, S.Pd.I.', 'pembina_kepemimpinan', 'aktif', '2025-01-01'],
-      ['USR-004', 'musyrif.diniyah', 'musyrif123', 'Ust. Muhammad Ihsan, Lc.', 'pembina_diniyah', 'aktif', '2025-01-01'],
-      ['USR-005', 'santri.demo', 'santri123', 'Muhammad Zaidan Al-Fatih', 'santri', 'aktif', '2025-01-01']
+      ['USR-002', 'guru.matematika', 'guru123', 'Ust. Budi Santoso, M.Pd.', 'guru_akademik', 'aktif', '2025-01-01'],
+      ['USR-003', 'guru.ipa', 'guru123', 'Ustdz. Nurul Hidayah, S.Si.', 'guru_akademik', 'aktif', '2025-01-01'],
+      ['USR-004', 'guru.bahasa', 'guru123', 'Ust. Farhan Ramadhan, S.Pd.', 'guru_akademik', 'aktif', '2025-01-01'],
+      ['USR-005', 'pembina.asrama', 'pembina123', 'Ust. Ridwan Kamil, S.Pd.I.', 'pembina_kepemimpinan', 'aktif', '2025-01-01'],
+      ['USR-006', 'pembina.putri', 'pembina123', 'Ustdz. Fatimah Azzahra, S.Sos.', 'pembina_kepemimpinan', 'aktif', '2025-01-01'],
+      ['USR-007', 'musyrif.tahfidz', 'musyrif123', 'Ust. Muhammad Ihsan, Lc., Al-Hafizh', 'pembina_diniyah', 'aktif', '2025-01-01'],
+      ['USR-008', 'santri.demo', 'santri123', 'Muhammad Zaidan Al-Fatih', 'santri', 'aktif', '2025-01-01']
     ];
     sheetUsers.getRange(2, 1, defaultUsers.length, 7).setValues(defaultUsers);
   }
@@ -162,8 +165,11 @@ function initDatabase() {
       ['202507003', '0091234563', 'Fatih Rayyan Al-Ghifari', '7A', 'L', 'Dr. Hendra Gunawan', '085612349876', 'Aktif'],
       ['202507004', '0091234564', 'Aisyah Humaira Azzahra', '7B', 'P', 'dr. Lukman Hakim, Sp.A', '081122334455', 'Aktif'],
       ['202507005', '0091234565', 'Khadijah Salma Nabila', '7B', 'P', 'Rahmat Hidayat, M.Kom', '081765432109', 'Aktif'],
+      ['202507006', '0091234566', 'Fathia Rahma Salsabila', '7B', 'P', 'Ir. Tri Wahyudi', '081234567812', 'Aktif'],
       ['202408001', '0081234561', 'Umar Farouq Al-Khattab', '8A', 'L', 'Subhan Wijaya, S.E.', '081233445566', 'Aktif'],
-      ['202408002', '0081234562', 'Fathimah Zahira Khansa', '8B', 'P', 'Agus Salim, M.Pd.', '085799881122', 'Aktif'],
+      ['202408002', '0081234562', 'Tariq Ziyad Al-Andalusi', '8A', 'L', 'Drs. H. Mulyadi', '081355667788', 'Aktif'],
+      ['202408003', '0081234563', 'Fathimah Zahira Khansa', '8B', 'P', 'Agus Salim, M.Pd.', '085799881122', 'Aktif'],
+      ['202408004', '0081234564', 'Zahra Syarifah Munawwar', '8B', 'P', 'drg. Firdaus, Sp.Ort', '081833445566', 'Aktif'],
       ['202309001', '0071234561', 'Ali Imran Al-Qasimi', '9A', 'L', 'Drs. Syarifuddin', '081822334455', 'Aktif'],
       ['202309002', '0071234562', 'Maryam Qurrata Ayun', '9B', 'P', 'M. Fadli, S.T.', '081900112233', 'Aktif']
     ];
@@ -176,19 +182,45 @@ function initDatabase() {
   ]);
   if (sheetAkademik.getLastRow() <= 1) {
     const defaultAkademik = [
-      ['NA-001', '202507001', 'Ganjil', '2025/2026', 'Matematika', 88, 92, 90, 'A', 'Sangat baik dalam pemahaman aljabar dan logika matematika.'],
-      ['NA-002', '202507001', 'Ganjil', '2025/2026', 'Ilmu Pengetahuan Alam (IPA)', 85, 87, 86, 'B', 'Aktif dalam eksperimen sains dan pemecahan masalah.'],
-      ['NA-003', '202507001', 'Ganjil', '2025/2026', 'Bahasa Indonesia', 90, 94, 92, 'A', 'Kemampuan literasi, retorika, dan tata bahasa sangat menonjol.'],
+      // Santri 1 (7A): Muhammad Zaidan Al-Fatih
+      ['NA-001', '202507001', 'Ganjil', '2025/2026', 'Pendidikan Agama Islam (PAI)', 92, 94, 93, 'A', 'Sangat mendalam dalam pemahaman akidah akhlak dan fiqih ibadah.'],
+      ['NA-002', '202507001', 'Ganjil', '2025/2026', 'Pendidikan Pancasila & Kewarganegaraan', 88, 90, 89, 'A', 'Memiliki pemahaman wawasan kebangsaan dan keteladanan yang kuat.'],
+      ['NA-003', '202507001', 'Ganjil', '2025/2026', 'Bahasa Indonesia', 90, 94, 92, 'A', 'Kemampuan literasi, retorika, dan penulisan esai sangat menonjol.'],
       ['NA-004', '202507001', 'Ganjil', '2025/2026', 'Bahasa Inggris', 86, 90, 88, 'A', 'Percaya diri dalam percakapan lisan dan reading comprehension.'],
-      ['NA-005', '202507001', 'Ganjil', '2025/2026', 'Ilmu Pengetahuan Sosial (IPS)', 84, 82, 83, 'B', 'Mampu menganalisis fenomena sosial dengan sudut pandang islami.'],
-      ['NA-006', '202507001', 'Ganjil', '2025/2026', 'Informatika & Coding', 95, 96, 96, 'A', 'Sangat mahir dalam computational thinking dan pembuatan algoritma.'],
+      ['NA-005', '202507001', 'Ganjil', '2025/2026', 'Matematika', 88, 92, 90, 'A', 'Sangat baik dalam pemahaman aljabar dan logika matematika analitis.'],
+      ['NA-006', '202507001', 'Ganjil', '2025/2026', 'Ilmu Pengetahuan Alam (IPA)', 85, 87, 86, 'B', 'Aktif dalam eksperimen sains dan penyelidikan fenomena fisika.'],
+      ['NA-007', '202507001', 'Ganjil', '2025/2026', 'Ilmu Pengetahuan Sosial (IPS)', 84, 82, 83, 'B', 'Mampu menganalisis dinamika ruang dan interaksi sosial dengan baik.'],
+      ['NA-008', '202507001', 'Ganjil', '2025/2026', 'Informatika & Coding', 95, 96, 96, 'A', 'Sangat mahir dalam computational thinking, algoritma, dan logika web.'],
+      ['NA-009', '202507001', 'Ganjil', '2025/2026', 'Pendidikan Jasmani (PJOK)', 88, 85, 86, 'B', 'Kebugaran jasmani dan sportivitas dalam olahraga beregu sangat baik.'],
+      ['NA-010', '202507001', 'Ganjil', '2025/2026', 'Seni Budaya & Prakarya', 86, 88, 87, 'B', 'Kreatif dalam pembuatan kaligrafi dan karya seni terapan.'],
       
-      ['NA-007', '202507002', 'Ganjil', '2025/2026', 'Matematika', 80, 82, 81, 'B', 'Tingkatkan latihan soal analitis bertingkat.'],
-      ['NA-008', '202507002', 'Ganjil', '2025/2026', 'Ilmu Pengetahuan Alam (IPA)', 85, 85, 85, 'B', 'Konsisten dalam pemahaman materi biologi dan fisika dasar.'],
-      ['NA-009', '202507002', 'Ganjil', '2025/2026', 'Bahasa Indonesia', 88, 86, 87, 'B', 'Menulis karya tulis deskriptif dengan runtut.'],
-      ['NA-010', '202507002', 'Ganjil', '2025/2026', 'Bahasa Inggris', 80, 84, 82, 'B', 'Perbanyak kosakata akademik bahasa Inggris.'],
-      ['NA-011', '202507002', 'Ganjil', '2025/2026', 'Ilmu Pengetahuan Sosial (IPS)', 86, 88, 87, 'B', 'Pemahaman sejarah dan geografi sangat baik.'],
-      ['NA-012', '202507002', 'Ganjil', '2025/2026', 'Informatika & Coding', 88, 90, 89, 'A', 'Antusias dalam pemrograman dasar Scratch & Python.']
+      // Santri 2 (7A): Abdullah Hanif Azzam
+      ['NA-011', '202507002', 'Ganjil', '2025/2026', 'Pendidikan Agama Islam (PAI)', 90, 92, 91, 'A', 'Menguasai materi sejarah peradaban islam dan tajwid.'],
+      ['NA-012', '202507002', 'Ganjil', '2025/2026', 'Bahasa Indonesia', 88, 86, 87, 'B', 'Mampu menyusun teks deskripsi dan laporan hasil observasi dengan runtut.'],
+      ['NA-013', '202507002', 'Ganjil', '2025/2026', 'Bahasa Inggris', 80, 84, 82, 'B', 'Penguasaan grammar baik, perlu diperbanyak latihan percakapan aktif.'],
+      ['NA-014', '202507002', 'Ganjil', '2025/2026', 'Matematika', 80, 82, 81, 'B', 'Perlu tingkatkan ketelitian pada operasi bilangan pecahan dan pola bilangan.'],
+      ['NA-015', '202507002', 'Ganjil', '2025/2026', 'Ilmu Pengetahuan Alam (IPA)', 85, 85, 85, 'B', 'Konsisten dalam pengamatan mikroskop dan klasifikasi materi.'],
+      ['NA-016', '202507002', 'Ganjil', '2025/2026', 'Informatika & Coding', 88, 90, 89, 'A', 'Antusias dalam pemrograman dasar Scratch dan pengenalan perangkat keras.'],
+      
+      // Santri 4 (7B): Aisyah Humaira Azzahra
+      ['NA-017', '202507004', 'Ganjil', '2025/2026', 'Pendidikan Agama Islam (PAI)', 95, 96, 96, 'A', 'Sangat teladan dalam penerapan adab islami dan pemahaman syariat.'],
+      ['NA-018', '202507004', 'Ganjil', '2025/2026', 'Bahasa Indonesia', 92, 94, 93, 'A', 'Diksi dan tata kalimat dalam menyusun resensi buku sangat memukau.'],
+      ['NA-019', '202507004', 'Ganjil', '2025/2026', 'Bahasa Inggris', 90, 92, 91, 'A', 'Sangat lancar dalam listening and reading comprehension.'],
+      ['NA-020', '202507004', 'Ganjil', '2025/2026', 'Matematika', 86, 88, 87, 'B', 'Mampu menyelesaikan soal kontekstual matematika dengan runtut.'],
+      ['NA-021', '202507004', 'Ganjil', '2025/2026', 'Ilmu Pengetahuan Alam (IPA)', 90, 92, 91, 'A', 'Sangat teliti dalam eksperimen biotik-abiotik dan analisa ekosistem.'],
+      ['NA-022', '202507004', 'Ganjil', '2025/2026', 'Informatika & Coding', 90, 92, 91, 'A', 'Sangat terampil dalam menyusun presentasi data dan desain digital.'],
+
+      // Santri 7 (8A): Umar Farouq Al-Khattab
+      ['NA-023', '202408001', 'Ganjil', '2025/2026', 'Matematika', 94, 96, 95, 'A', 'Sangat unggul dalam persamaan linear dan teorema phytagoras.'],
+      ['NA-024', '202408001', 'Ganjil', '2025/2026', 'Ilmu Pengetahuan Alam (IPA)', 90, 94, 92, 'A', 'Memahami konsep hukum Newton dan sistem gerak makhluk hidup dengan sangat baik.'],
+      ['NA-025', '202408001', 'Ganjil', '2025/2026', 'Bahasa Inggris', 88, 90, 89, 'A', 'Mampu berpidato bahasa Inggris (speech) dengan artikulasi yang jelas.'],
+      ['NA-026', '202408001', 'Ganjil', '2025/2026', 'Informatika & Coding', 96, 98, 97, 'A', 'Sangat berbakat dalam web development dan logika database dasar.'],
+
+      // Santri 11 (9A): Ali Imran Al-Qasimi
+      ['NA-027', '202309001', 'Ganjil', '2025/2026', 'Matematika', 92, 95, 94, 'A', 'Menguasai materi fungsi kuadrat dan transformasi geometri tingkat lanjut.'],
+      ['NA-028', '202309001', 'Ganjil', '2025/2026', 'Ilmu Pengetahuan Alam (IPA)', 90, 92, 91, 'A', 'Sangat baik dalam memahami konsep listrik dinamis dan bioteknologi.'],
+      ['NA-029', '202309001', 'Ganjil', '2025/2026', 'Bahasa Indonesia', 88, 90, 89, 'A', 'Kemampuan menulis teks tanggapan kritis dan pidato persuasif sangat baik.'],
+      ['NA-030', '202309001', 'Ganjil', '2025/2026', 'Bahasa Inggris', 90, 92, 91, 'A', 'Memiliki skor TOEFL Junior yang tinggi dan aktif dalam English Club.']
     ];
     sheetAkademik.getRange(2, 1, defaultAkademik.length, 10).setValues(defaultAkademik);
   }
@@ -199,8 +231,18 @@ function initDatabase() {
   ]);
   if (sheetKepemimpinan.getLastRow() <= 1) {
     const defaultKepemimpinan = [
-      ['NK-001', '202507001', 'Ganjil', '2025/2026', 'Sangat Baik (A)', 'Sangat Aktif (A)', 'Sangat Baik (A)', 'Mandiri & Proaktif (A)', 'Menunjukkan jiwa kepemimpinan yang tangguh, disegani teman, serta selalu tepat waktu dalam kegiatan qiyamullail dan halaqah.'],
-      ['NK-002', '202507002', 'Ganjil', '2025/2026', 'Baik (B)', 'Aktif (B)', 'Sangat Baik (A)', 'Mandiri (B)', 'Santri yang sopan, taat peraturan asrama, dan selalu kooperatif dalam kerja kelompok santri.']
+      ['NK-001', '202507001', 'Ganjil', '2025/2026', 'Sangat Baik (A)', 'Sangat Aktif (A)', 'Sangat Baik (A)', 'Mandiri & Proaktif (A)', 'Menunjukkan jiwa kepemimpinan yang tangguh, disegani teman, serta selalu tepat waktu dalam kegiatan qiyamullail, sholat berjamaah di shaf pertama, dan piket asrama.'],
+      ['NK-002', '202507002', 'Ganjil', '2025/2026', 'Baik (B)', 'Aktif (B)', 'Sangat Baik (A)', 'Mandiri (B)', 'Santri yang sopan, santun kepada guru dan musyrif, taat peraturan asrama, dan selalu kooperatif dalam kerja kelompok santri.'],
+      ['NK-003', '202507003', 'Ganjil', '2025/2026', 'Baik (B)', 'Aktif (B)', 'Baik (B)', 'Mandiri (B)', 'Menunjukkan perkembangan kemandirian yang positif dalam merapikan kamar dan menjaga kebersihan barang pribadi.'],
+      ['NK-004', '202507004', 'Ganjil', '2025/2026', 'Sangat Baik (A)', 'Sangat Aktif (A)', 'Sangat Baik (A)', 'Mandiri & Proaktif (A)', 'Menjadi teladan bagi santriwati lainnya, aktif mengkoordinir halaqah tilawah keputrian, dan memiliki kepribadian yang ramah serta berakhlak mulia.'],
+      ['NK-005', '202507005', 'Ganjil', '2025/2026', 'Sangat Baik (A)', 'Aktif (B)', 'Sangat Baik (A)', 'Mandiri (B)', 'Disiplin dalam jadwal belajar mandiri asrama putri dan selalu menjaga lisan serta kerapian asrama.'],
+      ['NK-006', '202507006', 'Ganjil', '2025/2026', 'Baik (B)', 'Aktif (B)', 'Baik (B)', 'Mandiri (B)', 'Memiliki rasa empati yang tinggi, suka membantu teman yang membutuhkan, dan giat dalam kegiatan ekstrakurikuler keputrian.'],
+      ['NK-007', '202408001', 'Ganjil', '2025/2026', 'Sangat Baik (A)', 'Sangat Aktif (A)', 'Sangat Baik (A)', 'Mandiri & Proaktif (A)', 'Menjabat sebagai ketua komdis Organisasi Santri, bertanggung jawab tinggi, adil dalam bersikap, dan amanah dalam menjalankan tugas.'],
+      ['NK-008', '202408002', 'Ganjil', '2025/2026', 'Baik (B)', 'Aktif (B)', 'Sangat Baik (A)', 'Mandiri (B)', 'Berperilaku santun, aktif dalam kepanitiaan pekan olahraga santri, dan selalu menjaga keharmonisan kamar asrama.'],
+      ['NK-009', '202408003', 'Ganjil', '2025/2026', 'Sangat Baik (A)', 'Sangat Aktif (A)', 'Sangat Baik (A)', 'Mandiri & Proaktif (A)', 'Pengurus bagian kebahasaan santriwati, aktif membimbing adik kelas dalam percakapan Yaumiyyah Bahasa Arab.'],
+      ['NK-010', '202408004', 'Ganjil', '2025/2026', 'Baik (B)', 'Aktif (B)', 'Baik (B)', 'Mandiri (B)', 'Rajin dan tertib dalam mengikuti agenda halaqah tarbiyah serta menjaga komitmen ibadah sunnah.'],
+      ['NK-011', '202309001', 'Ganjil', '2025/2026', 'Sangat Baik (A)', 'Sangat Aktif (A)', 'Sangat Baik (A)', 'Mandiri & Proaktif (A)', 'Ketua Umum Badan Eksekutif Santri (BEM), visioner, mampu menjadi inspirasi bagi adik kelas, dan matang dalam mengambil keputusan.'],
+      ['NK-012', '202309002', 'Ganjil', '2025/2026', 'Sangat Baik (A)', 'Sangat Aktif (A)', 'Sangat Baik (A)', 'Mandiri & Proaktif (A)', 'Ketua Keputrian Santriwati, teladan dalam adab tholabul ilmi, berprestasi, dan disegani seluruh warga pondok pesantren.']
     ];
     sheetKepemimpinan.getRange(2, 1, defaultKepemimpinan.length, 9).setValues(defaultKepemimpinan);
   }
@@ -211,8 +253,18 @@ function initDatabase() {
   ]);
   if (sheetDiniyah.getLastRow() <= 1) {
     const defaultDiniyah = [
-      ['ND-001', '202507001', 'Ganjil', '2025/2026', 'Juz 30 & Juz 29 (Lancar)', 'Juz 30 (Mutqin)', 94, 'Mumtaz (A)', 'Mumtaz (A)', 90, 'Alhamdulillah capaian ziyadah melampaui target tengah semester. Makhraj huruf dan hukum tajwid sangat baik.'],
-      ['ND-002', '202507002', 'Ganjil', '2025/2026', 'Juz 30 (15 Halaman)', 'Juz 30 (Surah An-Naba s.d At-Takwir)', 86, 'Jayyid Jiddan (B)', 'Mumtaz (A)', 84, 'Konsisten dalam halaqah tahfidz. Perlu penekanan pada kelancaran murojaah juz 30 paruh kedua.']
+      ['ND-001', '202507001', 'Ganjil', '2025/2026', 'Juz 30 & Juz 29 (Lancar)', 'Juz 30 (Mutqin)', 94, 'Mumtaz (A)', 'Mumtaz (A)', 90, 'Alhamdulillah capaian ziyadah melampaui target tengah semester. Makhraj huruf, kaidah mad, dan hukum tajwid sangat baik.'],
+      ['ND-002', '202507002', 'Ganjil', '2025/2026', 'Juz 30 (15 Halaman)', 'Juz 30 (Surah An-Naba s.d At-Takwir)', 86, 'Jayyid Jiddan (B)', 'Mumtaz (A)', 84, 'Konsisten dalam halaqah tahfidz. Perlu penekanan pada kelancaran murojaah juz 30 paruh kedua secara mandiri.'],
+      ['ND-003', '202507003', 'Ganjil', '2025/2026', 'Juz 30 (12 Halaman)', 'Juz 30 (Surah An-Naba s.d Al-Infitar)', 84, 'Jayyid Jiddan (B)', 'Jayyid Jiddan (B)', 82, 'Semangat setoran hafalan sangat baik. Tingkatkan keteraturan murojaah ba\'da Shubuh.'],
+      ['ND-004', '202507004', 'Ganjil', '2025/2026', 'Juz 30 & Juz 29 (Lancar)', 'Juz 30 (Mutqin)', 96, 'Mumtaz (A)', 'Mumtaz (A)', 92, 'MasyaAllah bacaan sangat tartil dengan irama jiharkah/nahawand yang indah. Sangat fasih dalam mufrodat bahasa Arab harian.'],
+      ['ND-005', '202507005', 'Ganjil', '2025/2026', 'Juz 30 (18 Halaman)', 'Juz 30 (Surah An-Naba s.d Al-Balad)', 88, 'Mumtaz (A)', 'Mumtaz (A)', 86, 'Hafalan kuat, tajwid tertib, dan selalu menjaga adab terhadap mushaf Al-Qur\'an.'],
+      ['ND-006', '202507006', 'Ganjil', '2025/2026', 'Juz 30 (10 Halaman)', 'Juz 30 (Surah Ad-Dhuha s.d An-Nas)', 82, 'Jayyid (C)', 'Jayyid Jiddan (B)', 80, 'Perlu menambah durasi talaqqi dan memperbaiki tebal-tipis huruf isti\'la.'],
+      ['ND-007', '202408001', 'Ganjil', '2025/2026', 'Juz 28 (Lancar)', 'Juz 30, 29 (Mutqin)', 95, 'Mumtaz (A)', 'Mumtaz (A)', 94, 'Alhamdulillah telah menuntaskan hafalan 3 Juz dengan kelancaran istimewa. Nilai nahwu shorof sangat memuaskan.'],
+      ['ND-008', '202408002', 'Ganjil', '2025/2026', 'Juz 29 (Lancar)', 'Juz 30 (Mutqin)', 89, 'Jayyid Jiddan (B)', 'Mumtaz (A)', 88, 'Aktif bertanya seputar kaidah tajwid Tuhfatul Athfal dan rajin menghadiri majelis ilmu diniyah.'],
+      ['ND-009', '202408003', 'Ganjil', '2025/2026', 'Juz 28 & Juz 27 (Lancar)', 'Juz 30, 29, 28 (Mutqin)', 97, 'Mumtaz (A)', 'Mumtaz (A)', 95, 'Capaian tahfidz mencapai 4 Juz Mutqin. Sangat menguasai gramatika bahasa Arab dan muhadatsah yaumiyyah.'],
+      ['ND-010', '202408004', 'Ganjil', '2025/2026', 'Juz 29 (10 Halaman)', 'Juz 30 (Mutqin)', 87, 'Mumtaz (A)', 'Jayyid Jiddan (B)', 85, 'Memiliki intonasi tilawah yang tenang, istiqomah dalam dzikir pagi petang dan sholat sunnah rawatib.'],
+      ['ND-011', '202309001', 'Ganjil', '2025/2026', 'Juz 1 s.d 5 (Lancar)', 'Juz 30, 29, 28, 27 (Mutqin)', 98, 'Mumtaz (A)', 'Mumtaz (A)', 96, 'Santri teladan hafalan 7 Juz Al-Qur\'an bersanad, siap menjadi imam sholat rawatib dan khatib jumat.'],
+      ['ND-012', '202309002', 'Ganjil', '2025/2026', 'Juz 1 s.d 5 (Lancar)', 'Juz 30, 29, 28, 27 (Mutqin)', 98, 'Mumtaz (A)', 'Mumtaz (A)', 97, 'Hafidzah 7 Juz mutqin, berakhlak mulia, dan aktif menjadi penguji sima\'an tahfidz santriwati junior.']
     ];
     sheetDiniyah.getRange(2, 1, defaultDiniyah.length, 11).setValues(defaultDiniyah);
   }
