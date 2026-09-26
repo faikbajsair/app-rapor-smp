@@ -241,7 +241,30 @@ function initDatabase() {
       ['252607032', '3121228938', 'Rafkantara Arifianto', 'VII UTSMAN', 'L', 'Bpk. Arifianto', '081234567612', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Futsal', 'Ust. Abdullah Syafi\'i, S.Pd.'],
       ['252607033', '0137000097', 'Ryan Aditya Herlambang S', 'VII UTSMAN', 'L', 'Bpk. Herlambang', '081234567613', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Basket', 'Ust. Abdullah Syafi\'i, S.Pd.'],
       ['252607034', '3135297913', 'Teuku Muhamad Zulkarnaen', 'VII UTSMAN', 'L', 'Bpk. Zulkarnaen', '081234567614', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Futsal', 'Ust. Abdullah Syafi\'i, S.Pd.'],
-      ['252607036', '3125394046', 'Zamzam Alif', 'VII UTSMAN', 'L', 'Bpk. Alif', '081234567615', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Futsal', 'Ust. Abdullah Syafi\'i, S.Pd.']
+      ['252607036', '3125394046', 'Zamzam Alif', 'VII UTSMAN', 'L', 'Bpk. Alif', '081234567615', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Futsal', 'Ust. Abdullah Syafi\'i, S.Pd.'],
+
+      // VIII KHADIJAH (21 Murid Resmi Format Excel)
+      ['242507019', '0128223754', 'Adela Nolly Riyanto', 'VIII KHADIJAH', 'P', 'Bpk. Riyanto', '081234568101', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'English Club', 'Sumiati, S.Pd., Gr.'],
+      ['242501020', '0128083582', 'Aidah Huriah Mumtamzah Sugito', 'VIII KHADIJAH', 'P', 'Bpk. Sugito', '081234568102', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Desain Grafis', 'Sumiati, S.Pd., Gr.'],
+      ['242507021', '0123290386', 'Aisyah Daamiyaa Nur Sa Adah', 'VIII KHADIJAH', 'P', 'Bpk. Sa Adah', '081234568103', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Panahan', 'Sumiati, S.Pd., Gr.'],
+      ['242507004', '0126472680', 'Alika Ramadina Setiawan', 'VIII KHADIJAH', 'P', 'Bpk. Setiawan', '081234568104', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Basket', 'Sumiati, S.Pd., Gr.'],
+      ['242507023', '0124288742', 'Alisha Malaika Arifianto', 'VIII KHADIJAH', 'P', 'Bpk. Arifianto', '081234568105', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'English Club', 'Sumiati, S.Pd., Gr.'],
+      ['242507024', '0121553565', 'Alisha Priyanka Anindita', 'VIII KHADIJAH', 'P', 'Bpk. Anindita', '081234568106', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Desain Grafis', 'Sumiati, S.Pd., Gr.'],
+      ['242507026', '0128738802', 'Chalisa Afiyah Abdi', 'VIII KHADIJAH', 'P', 'Bpk. Abdi', '081234568107', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Panahan', 'Sumiati, S.Pd., Gr.'],
+      ['242507027', '0129837419', 'Chayyara Aila Janeeta', 'VIII KHADIJAH', 'P', 'Bpk. Janeeta', '081234568108', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Basket', 'Sumiati, S.Pd., Gr.'],
+      ['242507028', '0123148760', 'Eshal Calysta', 'VIII KHADIJAH', 'P', 'Bpk. Calysta', '081234568109', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'English Club', 'Sumiati, S.Pd., Gr.'],
+      ['242507029', '0119747032', 'Falisha Jasmine Budiman', 'VIII KHADIJAH', 'P', 'Bpk. Budiman', '081234568110', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Desain Grafis', 'Sumiati, S.Pd., Gr.'],
+      ['242507030', '3114526209', 'Firli Oktaviani Hermwan', 'VIII KHADIJAH', 'P', 'Bpk. Hermwan', '081234568111', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Panahan', 'Sumiati, S.Pd., Gr.'],
+      ['242507031', '0117217743', 'Ghaida Alin Nada', 'VIII KHADIJAH', 'P', 'Bpk. Nada', '081234568112', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Basket', 'Sumiati, S.Pd., Gr.'],
+      ['242507032', '0125571433', 'Jasmine Alliya Putri', 'VIII KHADIJAH', 'P', 'Bpk. Putri', '081234568113', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'English Club', 'Sumiati, S.Pd., Gr.'],
+      ['242507011', '0113977545', 'Jasmine Nadiah Wardhani', 'VIII KHADIJAH', 'P', 'Bpk. Wardhani', '081234568114', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Desain Grafis', 'Sumiati, S.Pd., Gr.'],
+      ['242507033', '3123490512', 'Jiehan Sekar Maheswari', 'VIII KHADIJAH', 'P', 'Bpk. Maheswari', '081234568115', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Panahan', 'Sumiati, S.Pd., Gr.'],
+      ['242507034', '0126895489', 'Makaila Khanza Azzahra', 'VIII KHADIJAH', 'P', 'Bpk. Azzahra', '081234568116', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Basket', 'Sumiati, S.Pd., Gr.'],
+      ['242507035', '0113480749', 'Radella Githa Octaviana', 'VIII KHADIJAH', 'P', 'Bpk. Octaviana', '081234568117', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'English Club', 'Sumiati, S.Pd., Gr.'],
+      ['242507036', '0121734069', 'Rr. Shofia Puteri Nirwani', 'VIII KHADIJAH', 'P', 'Bpk. Nirwani', '081234568118', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Desain Grafis', 'Sumiati, S.Pd., Gr.'],
+      ['242507037', '0127484601', 'Sarah Zakiyya Shaleh', 'VIII KHADIJAH', 'P', 'Bpk. Shaleh', '081234568119', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Panahan', 'Sumiati, S.Pd., Gr.'],
+      ['242507039', '0123343195', 'Seyla Alexandra', 'VIII KHADIJAH', 'P', 'Bpk. Alexandra', '081234568120', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Basket', 'Sumiati, S.Pd., Gr.'],
+      ['242507038', '0126637571', 'Syazani Putrigiy', 'VIII KHADIJAH', 'P', 'Bpk. Putrigiy', '081234568121', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'English Club', 'Sumiati, S.Pd., Gr.']
     ];
     sheetMurid.getRange(2, 1, defaultMurid.length, 15).setValues(defaultMurid);
   }
@@ -314,7 +337,8 @@ function initDatabase() {
       ['SKL-232407021', '232407021', 'Tengah Semester 1', '2025/2026', 'Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan', 'A','A','A','A','A','A','A', 'B','B','B','B','B', 'A','A','A','A','A', 'A','A', 'A','A', 'A','A', 'A','A','A', 'A','A', 'A'],
       ['SKL-252607006', '252607006', 'Tengah Semester 1', '2025/2026', 'Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita', 'A','A','A','A','A','A','A', 'A','A','A','A','A', 'A','A','A','A','A', 'A','A', 'A','A', 'A','A', 'A','A','A', 'A','A', 'A'],
       ['SKL-252607013', '252607013', 'Tengah Semester 1', '2025/2026', 'Tingkatkan semangat dan keseriusan dalam belajar agar mendapat hasil yang maksimal.', 'A','A','A','B','A','A','A', 'A','A','A','A','A', 'A','A','A','A','A', 'A','A', 'A','A', 'A','A', 'A','A','A', 'A','A', 'A'],
-      ['SKL-252607038', '252607038', 'Tengah Semester 1', '2025/2026', 'Ananda memiliki semangat kepemimpinan yang kuat dan inspiratif bagi teman-temannya, lanjutkan usahamu mengajak teman-teman dalam kebaikan', 'A','A','A','A','A','A','A', 'A','B','B','B','B', 'B','B','A','A','A', 'B','A', 'A','A', 'A','A', 'A','A','A', 'A','A', 'A']
+      ['SKL-252607038', '252607038', 'Tengah Semester 1', '2025/2026', 'Ananda memiliki semangat kepemimpinan yang kuat dan inspiratif bagi teman-temannya, lanjutkan usahamu mengajak teman-teman dalam kebaikan', 'A','A','A','A','A','A','A', 'A','B','B','B','B', 'B','B','A','A','A', 'B','A', 'A','A', 'A','A', 'A','A','A', 'A','A', 'A'],
+      ['SKL-242507019', '242507019', 'Tengah Semester 1', '2025/2026', 'Ananda adalah rekan tim yang menyenangkan; ia kooperatif, sopan, dan mampu menyelesaikan bagian tugasnya dengan tuntas.', 'A','A','A','A','A','A','A', 'A','A','A','A','A', 'A','A','A','A','A', 'A','A', 'A','A', 'A','A', 'A','A','A', 'A','A', 'A']
     ];
     sheetSkl.getRange(2, 1, defaultSkl.length, sklHeaders.length).setValues(defaultSkl);
   }
