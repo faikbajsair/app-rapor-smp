@@ -224,7 +224,24 @@ function initDatabase() {
       ['252607039', '3133165032', 'Shazia Keizaluna Humaira', 'VII AISYAH', 'P', 'Bpk. Humaira', '081234567715', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Panahan', 'Tri Yuli Aryani, S.Pd., Gr.'],
       ['252607043', '3136022469', 'Syafikah Ghalin Alzena', 'VII AISYAH', 'P', 'Bpk. Alzena', '081234567716', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'English Club', 'Tri Yuli Aryani, S.Pd., Gr.'],
       ['252607020', '3121914004', 'Talita Lubna Humaira Renleuw', 'VII AISYAH', 'P', 'Bpk. Renleuw', '081234567717', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Desain Grafis', 'Tri Yuli Aryani, S.Pd., Gr.'],
-      ['252607040', '0136813875', 'Zahira Sarifah Salsabila', 'VII AISYAH', 'P', 'Bpk. Salsabila', '081234567718', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Basket', 'Tri Yuli Aryani, S.Pd., Gr.']
+      ['252607040', '0136813875', 'Zahira Sarifah Salsabila', 'VII AISYAH', 'P', 'Bpk. Salsabila', '081234567718', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Basket', 'Tri Yuli Aryani, S.Pd., Gr.'],
+
+      // VII UTSMAN (15 Murid Resmi Format Excel)
+      ['252607038', '0135559636', 'Achmed Syathir Elhayba', 'VII UTSMAN', 'L', 'Bpk. Elhayba', '081234567601', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Futsal', 'Ust. Abdullah Syafi\'i, S.Pd.'],
+      ['252607022', '0122543534', 'Ali Zatrio Ikhwantoro', 'VII UTSMAN', 'L', 'Bpk. Ikhwantoro', '081234567602', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Basket', 'Ust. Abdullah Syafi\'i, S.Pd.'],
+      ['252607023', '3122299878', 'Arsa Ardhani Putra Permadi', 'VII UTSMAN', 'L', 'Bpk. Permadi', '081234567603', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Futsal', 'Ust. Abdullah Syafi\'i, S.Pd.'],
+      ['252607025', '3125545030', 'Gerald Lazzaro Nggebu', 'VII UTSMAN', 'L', 'Bpk. Nggebu', '081234567604', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Basket', 'Ust. Abdullah Syafi\'i, S.Pd.'],
+      ['252607026', '3131067683', 'Hasan Muzakki', 'VII UTSMAN', 'L', 'Bpk. Muzakki', '081234567605', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Futsal', 'Ust. Abdullah Syafi\'i, S.Pd.'],
+      ['252607027', '3123913434', 'Ibrahim Fadhilah Syuja Tambunan', 'VII UTSMAN', 'L', 'Bpk. Tambunan', '081234567606', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Futsal', 'Ust. Abdullah Syafi\'i, S.Pd.'],
+      ['252607012', '3134467062', 'Kanaka Arkhan Gaizan', 'VII UTSMAN', 'L', 'Bpk. Gaizan', '081234567607', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Basket', 'Ust. Abdullah Syafi\'i, S.Pd.'],
+      ['252607028', '3135642963', 'Muhamad Fathan Gunawan', 'VII UTSMAN', 'L', 'Bpk. Gunawan', '081234567608', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Futsal', 'Ust. Abdullah Syafi\'i, S.Pd.'],
+      ['252607029', '0122555954', 'Muhammad Aydin Arkananta', 'VII UTSMAN', 'L', 'Bpk. Arkananta', '081234567609', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Basket', 'Ust. Abdullah Syafi\'i, S.Pd.'],
+      ['252607030', '3134356099', 'Muhammad Billal Amilusa', 'VII UTSMAN', 'L', 'Bpk. Amilusa', '081234567610', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Futsal', 'Ust. Abdullah Syafi\'i, S.Pd.'],
+      ['252607031', '3136252133', 'Nauval Agha Irawan', 'VII UTSMAN', 'L', 'Bpk. Irawan', '081234567611', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Basket', 'Ust. Abdullah Syafi\'i, S.Pd.'],
+      ['252607032', '3121228938', 'Rafkantara Arifianto', 'VII UTSMAN', 'L', 'Bpk. Arifianto', '081234567612', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Futsal', 'Ust. Abdullah Syafi\'i, S.Pd.'],
+      ['252607033', '0137000097', 'Ryan Aditya Herlambang S', 'VII UTSMAN', 'L', 'Bpk. Herlambang', '081234567613', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Basket', 'Ust. Abdullah Syafi\'i, S.Pd.'],
+      ['252607034', '3135297913', 'Teuku Muhamad Zulkarnaen', 'VII UTSMAN', 'L', 'Bpk. Zulkarnaen', '081234567614', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Futsal', 'Ust. Abdullah Syafi\'i, S.Pd.'],
+      ['252607036', '3125394046', 'Zamzam Alif', 'VII UTSMAN', 'L', 'Bpk. Alif', '081234567615', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Futsal', 'Ust. Abdullah Syafi\'i, S.Pd.']
     ];
     sheetMurid.getRange(2, 1, defaultMurid.length, 15).setValues(defaultMurid);
   }
@@ -296,7 +313,8 @@ function initDatabase() {
       ['SKL-232407005', '232407005', 'Tengah Semester 1', '2025/2026', 'Telah menunjukkan sikap tanggung jawab dan disiplin; terus latih kemampuan komunikasi agar lebih efektif dalam memimpin.', 'A','A','A','A','A','A','A', 'A','A','A','A','A', 'A','B','A','A','A', 'A','A', 'A','B', 'A','A', 'A','A','A', 'A','A', 'A'],
       ['SKL-232407021', '232407021', 'Tengah Semester 1', '2025/2026', 'Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan', 'A','A','A','A','A','A','A', 'B','B','B','B','B', 'A','A','A','A','A', 'A','A', 'A','A', 'A','A', 'A','A','A', 'A','A', 'A'],
       ['SKL-252607006', '252607006', 'Tengah Semester 1', '2025/2026', 'Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita', 'A','A','A','A','A','A','A', 'A','A','A','A','A', 'A','A','A','A','A', 'A','A', 'A','A', 'A','A', 'A','A','A', 'A','A', 'A'],
-      ['SKL-252607013', '252607013', 'Tengah Semester 1', '2025/2026', 'Tingkatkan semangat dan keseriusan dalam belajar agar mendapat hasil yang maksimal.', 'A','A','A','B','A','A','A', 'A','A','A','A','A', 'A','A','A','A','A', 'A','A', 'A','A', 'A','A', 'A','A','A', 'A','A', 'A']
+      ['SKL-252607013', '252607013', 'Tengah Semester 1', '2025/2026', 'Tingkatkan semangat dan keseriusan dalam belajar agar mendapat hasil yang maksimal.', 'A','A','A','B','A','A','A', 'A','A','A','A','A', 'A','A','A','A','A', 'A','A', 'A','A', 'A','A', 'A','A','A', 'A','A', 'A'],
+      ['SKL-252607038', '252607038', 'Tengah Semester 1', '2025/2026', 'Ananda memiliki semangat kepemimpinan yang kuat dan inspiratif bagi teman-temannya, lanjutkan usahamu mengajak teman-teman dalam kebaikan', 'A','A','A','A','A','A','A', 'A','B','B','B','B', 'B','B','A','A','A', 'B','A', 'A','A', 'A','A', 'A','A','A', 'A','A', 'A']
     ];
     sheetSkl.getRange(2, 1, defaultSkl.length, sklHeaders.length).setValues(defaultSkl);
   }

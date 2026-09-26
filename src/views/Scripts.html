@@ -214,6 +214,8 @@ const WALI_KELAS_MAP = {
   'IX UMMU SALAMAH': 'Dewi Fitria Nugraheni, S.Pd., Gr.',
   'VII AISYAH': 'Tri Yuli Aryani, S.Pd., Gr.',
   'VII Aisyah Binti Abu Bakar': 'Tri Yuli Aryani, S.Pd., Gr.',
+  'VII UTSMAN': 'Ust. Abdullah Syafi\'i, S.Pd.',
+  '7 UTSMAN': 'Ust. Abdullah Syafi\'i, S.Pd.',
   'VIII THALHAH': 'Ust. Salman Al-Farisi, S.Pd.',
   'VIII AISYAH': 'Usth. Fatimah Az-Zahra, S.Pd.',
   'VII BILAL': 'Ust. Abdullah Syafi\'i, S.Pd.',
@@ -569,7 +571,116 @@ const EXCEL_STUDENTS_VII_AISYAH = [
   }
 ];
 
-// 4. Cohort Dataset Kelas Lainnya
+// 4. Dataset Resmi Kelas VII UTSMAN (15 Murid Ikhwan - Sesuai File Excel RAPORT KEPEMIMPINAN VII UTSMAN)
+const EXCEL_STUDENTS_VII_UTSMAN = [
+  { 
+    no: 1, nis: '252607038', nisn: '0135559636', nama: 'Achmed Syathir Elhayba', s: 0, i: 0, a: 0, 
+    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'Futsal', e3n: 'Sangat Baik', 
+    scores: [88, 89, 86, 90, 85, 87, 92, 85, 88, 86, 90, 87, 91, 90, 89, 84],
+    skl_custom: { k2:'B', k3:'B', k4:'B', k5:'B', p1:'B', p2:'B', s1:'B' },
+    catatan_walas: "Ananda memiliki semangat kepemimpinan yang kuat dan inspiratif bagi teman-temannya, lanjutkan usahamu mengajak teman-teman dalam kebaikan"
+  },
+  { 
+    no: 2, nis: '252607022', nisn: '0122543534', nama: 'Ali Zatrio Ikhwantoro', s: 0, i: 0, a: 0, 
+    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'Basket', e3n: 'Sangat Baik', 
+    scores: [90, 91, 88, 92, 90, 89, 92, 86, 89, 88, 91, 88, 90, 91, 92, 86],
+    skl_custom: {},
+    catatan_walas: "Ananda memiliki empati tinggi dan selalu berpihak pada kebaikan bersama"
+  },
+  { 
+    no: 3, nis: '252607023', nisn: '3122299878', nama: 'Arsa Ardhani Putra Permadi', s: 0, i: 0, a: 0, 
+    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'Futsal', e3n: 'Sangat Baik', 
+    scores: [87, 88, 85, 89, 84, 86, 90, 82, 86, 85, 88, 86, 89, 90, 87, 82],
+    skl_custom: { k1:'B', s1:'B', s2:'B', t1:'B', t2:'B', r1:'B', r2:'B', r3:'B', j1:'B', j2:'B' },
+    catatan_walas: "Ananda berani mengambil keputusan yang bijak dan cepat dalam situasi sulit"
+  },
+  { 
+    no: 4, nis: '252607025', nisn: '3125545030', nama: 'Gerald Lazzaro Nggebu', s: 0, i: 0, a: 0, 
+    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'Basket', e3n: 'Sangat Baik', 
+    scores: [86, 87, 84, 88, 83, 85, 89, 81, 85, 84, 87, 85, 88, 89, 86, 80],
+    skl_custom: { d7:'B', k1:'B', k2:'B', k3:'B', k4:'B', k5:'B', p1:'B', p2:'B', p4:'B', p5:'B', s1:'B', s2:'B', m1:'B', r1:'B', r2:'B', r3:'B', j2:'B' },
+    catatan_walas: "Ananda tampil percaya diri dan menjadi panutan dalam berbagai kegiatan sekolah"
+  },
+  { 
+    no: 5, nis: '252607026', nisn: '3131067683', nama: 'Hasan Muzakki', s: 0, i: 0, a: 0, 
+    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'Futsal', e3n: 'Sangat Baik', 
+    scores: [89, 90, 87, 91, 89, 88, 91, 85, 88, 87, 90, 87, 89, 90, 91, 85],
+    skl_custom: { d7:'B', k1:'B', k2:'B', k3:'B', k4:'B', k5:'B', p1:'B', p2:'B', p4:'B', p5:'B', s1:'B', s2:'B', t1:'B', t2:'B', m1:'B', m2:'B', r2:'B', r3:'B', j1:'B', j2:'B' },
+    catatan_walas: "Ananda punya pandangan jauh ke depan dan ide-ide kreatif dalam memimpin"
+  },
+  { 
+    no: 6, nis: '252607027', nisn: '3123913434', nama: 'Ibrahim Fadhilah Syuja Tambunan', s: 0, i: 0, a: 0, 
+    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'Futsal', e3n: 'Sangat Baik', 
+    scores: [88, 89, 86, 90, 88, 87, 90, 84, 87, 86, 89, 86, 88, 89, 90, 84],
+    skl_custom: { d6:'B', k1:'B', k2:'B', k3:'B', k4:'B', k5:'B', p2:'B', p3:'B', p4:'B', p5:'B', t1:'B', t2:'B', m1:'B', r1:'B', r2:'B', r3:'B', j1:'B', j2:'B' },
+    catatan_walas: "Ananda dapat menghargai perbedaan pendapat dan mampu mencari jalan tengah"
+  },
+  { 
+    no: 7, nis: '252607012', nisn: '3134467062', nama: 'Kanaka Arkhan Gaizan', s: 0, i: 0, a: 0, 
+    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'Basket', e3n: 'Sangat Baik', 
+    scores: [91, 92, 89, 93, 91, 90, 93, 88, 90, 89, 92, 89, 91, 92, 93, 88],
+    skl_custom: {},
+    catatan_walas: "Ananda mampu mengajak teman berbuat baik dan menjaga disiplin bersama"
+  },
+  { 
+    no: 8, nis: '252607028', nisn: '3135642963', nama: 'Muhamad Fathan Gunawan', s: 0, i: 0, a: 0, 
+    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'Futsal', e3n: 'Sangat Baik', 
+    scores: [90, 91, 88, 92, 90, 89, 92, 86, 89, 88, 91, 88, 90, 91, 92, 86],
+    skl_custom: { p2:'B', p3:'B', p5:'B', s1:'B' },
+    catatan_walas: "Ananda dapat memimpin dengan memberi contoh dalam kerja keras dan pengabdian"
+  },
+  { 
+    no: 9, nis: '252607029', nisn: '0122555954', nama: 'Muhammad Aydin Arkananta', s: 0, i: 0, a: 0, 
+    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'Basket', e3n: 'Sangat Baik', 
+    scores: [88, 89, 86, 90, 85, 87, 92, 85, 88, 86, 90, 87, 91, 90, 89, 84],
+    skl_custom: { k1:'B', p1:'B', s1:'B', s2:'B', t1:'B', t2:'B' },
+    catatan_walas: "Ananda aktif membangun suasana kelas yang harmonis dan saling menghargai"
+  },
+  { 
+    no: 10, nis: '252607030', nisn: '3134356099', nama: 'Muhammad Billal Amilusa', s: 0, i: 0, a: 0, 
+    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'Futsal', e3n: 'Sangat Baik', 
+    scores: [92, 93, 90, 94, 92, 91, 94, 89, 91, 90, 93, 90, 92, 93, 94, 89],
+    skl_custom: {},
+    catatan_walas: "Ananda dapat memimpin dengan ketenangan dan kebijaksanaan, bukan dengan suara keras"
+  },
+  { 
+    no: 11, nis: '252607031', nisn: '3136252133', nama: 'Nauval Agha Irawan', s: 0, i: 0, a: 0, 
+    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'Basket', e3n: 'Sangat Baik', 
+    scores: [91, 92, 89, 93, 91, 90, 93, 88, 90, 89, 92, 89, 91, 92, 93, 88],
+    skl_custom: {},
+    catatan_walas: "Ananda dapat menginspirasi teman dengan semangat dan ketulusan dalam bertindak"
+  },
+  { 
+    no: 12, nis: '252607032', nisn: '3121228938', nama: 'Rafkantara Arifianto', s: 0, i: 0, a: 0, 
+    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'Futsal', e3n: 'Sangat Baik', 
+    scores: [89, 90, 87, 91, 89, 88, 91, 85, 88, 87, 90, 87, 89, 90, 91, 85],
+    skl_custom: {},
+    catatan_walas: "Ananda dapat mampu bekerja sama dengan semua teman tanpa membeda-bedakan"
+  },
+  { 
+    no: 13, nis: '252607033', nisn: '0137000097', nama: 'Ryan Aditya Herlambang S', s: 0, i: 0, a: 0, 
+    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'Basket', e3n: 'Sangat Baik', 
+    scores: [90, 91, 88, 92, 90, 89, 92, 86, 89, 88, 91, 88, 90, 91, 92, 86],
+    skl_custom: { d6:'B', p1:'B', s1:'B', m1:'B' },
+    catatan_walas: "Ananda dapat memimpin dengan tegas namun tetap santun dan menghargai pendapat teman"
+  },
+  { 
+    no: 14, nis: '252607034', nisn: '3135297913', nama: 'Teuku Muhamad Zulkarnaen', s: 0, i: 0, a: 0, 
+    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'Futsal', e3n: 'Sangat Baik', 
+    scores: [88, 89, 86, 90, 88, 87, 90, 84, 87, 86, 89, 86, 88, 89, 90, 84],
+    skl_custom: { d1:'B', k1:'B', k2:'B', k3:'B', k4:'B', s1:'B', s2:'B', m1:'B', m2:'B' },
+    catatan_walas: "Ananda tulus dalam bertindak dan menjadi penggerak kebaikan di lingkungan sekolah"
+  },
+  { 
+    no: 15, nis: '252607036', nisn: '3125394046', nama: 'Zamzam Alif', s: 0, i: 0, a: 0, 
+    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'Futsal', e3n: 'Sangat Baik', 
+    scores: [91, 92, 89, 93, 91, 90, 93, 88, 90, 89, 92, 89, 91, 92, 93, 88],
+    skl_custom: {},
+    catatan_walas: "Meskipun pendiam, ananda mampu memimpin dengan tindakan nyata dan keteladanan"
+  }
+];
+
+// 5. Cohort Dataset Kelas Lainnya
 const COHORT_STUDENTS_VIII_THALHAH = [
   { no: 1, nisn: '0123450001', nama: 'ABDULLAH FAQIH', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Futsal', e3n: 'Sangat Baik', scores: [88, 89, 86, 90, 85, 87, 92, 85, 88, 86, 90, 87, 91, 90, 89, 84] },
   { no: 2, nisn: '0123450002', nama: 'BILAL AL-HABSYI', s: 1, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Basket', e3n: 'Baik', scores: [86, 85, 83, 88, 82, 85, 89, 80, 85, 84, 88, 85, 88, 89, 86, 80] },
@@ -728,7 +839,7 @@ function buildExactAlImamDataset() {
       const sklCustom = st.skl_custom || {};
       const sklScores = {};
       const sklKeys = ['d1', 'd2', 'd3', 'd4', 'd5', 'd6', 'd7', 'k1', 'k2', 'k3', 'k4', 'k5', 'p1', 'p2', 'p3', 'p4', 'p5', 's1', 's2', 't1', 't2', 'm1', 'm2', 'r1', 'r2', 'r3', 'j1', 'j2', 'h1'];
-      const defaultKebersihanVal = (kelasName === 'IX UMMU SALAMAH' || kelasName === 'VII AISYAH' || kelasName === 'VII Aisyah Binti Abu Bakar') ? 'A' : 'B';
+      const defaultKebersihanVal = (kelasName === 'IX UMMU SALAMAH' || kelasName === 'VII AISYAH' || kelasName === 'VII Aisyah Binti Abu Bakar' || kelasName === 'VII UTSMAN' || kelasName === '7 UTSMAN') ? 'A' : 'B';
       sklKeys.forEach(k => {
         sklScores[k] = sklCustom[k] || (k.startsWith('k') ? defaultKebersihanVal : 'A');
       });
@@ -750,6 +861,7 @@ function buildExactAlImamDataset() {
   addCohortToData(EXCEL_STUDENTS_IX_ABU_BAKAR, 'IX ABU BAKAR', '2324070', 'L');
   addCohortToData(EXCEL_STUDENTS_IX_UMMU_SALAMAH, 'IX UMMU SALAMAH', '2324070', 'P');
   addCohortToData(EXCEL_STUDENTS_VII_AISYAH, 'VII AISYAH', '2526070', 'P');
+  addCohortToData(EXCEL_STUDENTS_VII_UTSMAN, 'VII UTSMAN', '2526070', 'L');
   addCohortToData(COHORT_STUDENTS_VIII_THALHAH, 'VIII THALHAH', '2425080', 'L');
   addCohortToData(COHORT_STUDENTS_VIII_KHADIJAH, 'VIII KHADIJAH', '2425081', 'P');
   addCohortToData(COHORT_STUDENTS_VII_BILAL, 'VII BILAL', '2526070', 'L');
