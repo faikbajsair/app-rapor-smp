@@ -214,8 +214,9 @@ const WALI_KELAS_MAP = {
   'IX UMMU SALAMAH': 'Dewi Fitria Nugraheni, S.Pd., Gr.',
   'VII AISYAH': 'Tri Yuli Aryani, S.Pd., Gr.',
   'VII Aisyah Binti Abu Bakar': 'Tri Yuli Aryani, S.Pd., Gr.',
-  'VII UTSMAN': 'Ust. Abdullah Syafi\'i, S.Pd.',
-  '7 UTSMAN': 'Ust. Abdullah Syafi\'i, S.Pd.',
+  'VII UTSMAN': 'Andrew Syaputra',
+  'VII UTSMAN BIN AFFAN': 'Andrew Syaputra',
+  '7 UTSMAN': 'Andrew Syaputra',
   'VIII THALHAH': 'Ust. Salman Al-Farisi, S.Pd.',
   'VIII AISYAH': 'Usth. Fatimah Az-Zahra, S.Pd.',
   'VII BILAL': 'Ust. Abdullah Syafi\'i, S.Pd.',
@@ -658,109 +659,244 @@ const EXCEL_STUDENTS_VII_AISYAH = [
 // 4. Dataset Resmi Kelas VII UTSMAN (15 Murid Ikhwan - Sesuai File Excel RAPORT KEPEMIMPINAN VII UTSMAN)
 const EXCEL_STUDENTS_VII_UTSMAN = [
   { 
-    no: 1, nis: '252607038', nisn: '0135559636', nama: 'Achmed Syathir Elhayba', s: 0, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'Futsal', e3n: 'Sangat Baik', 
-    scores: [88, 89, 86, 90, 85, 87, 92, 85, 88, 86, 90, 87, 91, 90, 89, 84],
+    no: 1, nis: '252607038', nisn: '0135559636', nama: 'Achmed Syathir Elhayba', s: 1, i: 0, a: 0, 
+    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Basket', e3n: 'Baik', 
+    scores: [90, 88, 85, 89, 93, 83, 88, 85, 88, 86, 90, 87, 91, 90, 89, 84],
     skl_custom: { k2:'B', k3:'B', k4:'B', k5:'B', p1:'B', p2:'B', s1:'B' },
-    catatan_walas: "Ananda memiliki semangat kepemimpinan yang kuat dan inspiratif bagi teman-temannya, lanjutkan usahamu mengajak teman-teman dalam kebaikan"
+    kp: {
+      ibadah: "Jadikan ibadah sebagai bagian hidupmu, bukan hanya kewajiban.Dengan begitu, ananda akan merasa lebih bahagia dengan dekat kepada Allah",
+      akhlak: "Teruslah belajar menjadi pribadi yang lebih baik setiap hari",
+      kedisiplinan: "Ketekunan kecil yang dilakukan setiap hari menghasilkan hasil besar di masa depan",
+      kerapihan: "Kebersihan adalah cermin kepribadianmu",
+      kepemimpinan: "Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan",
+      kerjasama: "Berbagi peran dalam kerjasama kelompok akan menciptakan keharmonisan",
+      catatan: "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Tingkatkan semangat belajarmu"
+    },
+    catatan_walas: "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Tingkatkan semangat belajarmu"
   },
   { 
-    no: 2, nis: '252607022', nisn: '0122543534', nama: 'Ali Zatrio Ikhwantoro', s: 0, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'Basket', e3n: 'Sangat Baik', 
-    scores: [90, 91, 88, 92, 90, 89, 92, 86, 89, 88, 91, 88, 90, 91, 92, 86],
+    no: 2, nis: '252607022', nisn: '0122543534', nama: 'Ali Zatrio Ikhwantoro', s: 2, i: 0, a: 0, 
+    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Desain grafis', e3n: 'Baik', 
+    scores: [89, 88, 85, 84, 90, 86, 92, 86, 89, 88, 91, 88, 90, 91, 92, 86],
     skl_custom: {},
-    catatan_walas: "Ananda memiliki empati tinggi dan selalu berpihak pada kebaikan bersama"
+    kp: {
+      ibadah: "Teruslah melangkah dalam ibadahmu, ananda kuat dan Allah selalu bersamamu",
+      akhlak: "Terus tumbuh menjadi pribadi yang ramah dan bertanggung jawab.",
+      kedisiplinan: "Tanggung jawab membuat seseorang di percaya dan di hormati.",
+      kerapihan: "Kerapian mencerminkan pikiran yang teratur",
+      kepemimpinan: "Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan",
+      kerjasama: "Tolong-menolonglah kamu dalam kebaikan dan jangan tolong-menolong dalam keburukan",
+      catatan: "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Tingkatkan semangat belajarmu"
+    },
+    catatan_walas: "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Tingkatkan semangat belajarmu"
   },
   { 
-    no: 3, nis: '252607023', nisn: '3122299878', nama: 'Arsa Ardhani Putra Permadi', s: 0, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'Futsal', e3n: 'Sangat Baik', 
-    scores: [87, 88, 85, 89, 84, 86, 90, 82, 86, 85, 88, 86, 89, 90, 87, 82],
+    no: 3, nis: '252607023', nisn: '3122299878', nama: 'Arsa Ardhani Putra Permadi', s: 4, i: 0, a: 0, 
+    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'English Club', e3n: 'Baik', 
+    scores: [86, 90, 87, 82, 90, 83, 90, 82, 86, 85, 88, 86, 89, 90, 87, 82],
     skl_custom: { k1:'B', s1:'B', s2:'B', t1:'B', t2:'B', r1:'B', r2:'B', r3:'B', j1:'B', j2:'B' },
-    catatan_walas: "Ananda berani mengambil keputusan yang bijak dan cepat dalam situasi sulit"
+    kp: {
+      ibadah: "Ibadah bukan hanya kewajiban, tapi juga kesempatan untuk membersihkan hati dan jiwa",
+      akhlak: "Sikap jujur adalah awal dari akhlak yang mulia",
+      kedisiplinan: "Disiplin adalah kunci utama menuju kesuksesan sejati",
+      kerapihan: "Menjaga kebersihan dan kerapian adalah bentuk rasa syukur kepada Allah",
+      kepemimpinan: "Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan",
+      kerjasama: "Berbagi peran dalam kerjasama kelompok akan menciptakan keharmonisan",
+      catatan: "Tingkatkan semangat dan keseriusan dalam belajar agar mendapat hasil yang maksimal."
+    },
+    catatan_walas: "Tingkatkan semangat dan keseriusan dalam belajar agar mendapat hasil yang maksimal."
   },
   { 
-    no: 4, nis: '252607025', nisn: '3125545030', nama: 'Gerald Lazzaro Nggebu', s: 0, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'Basket', e3n: 'Sangat Baik', 
-    scores: [86, 87, 84, 88, 83, 85, 89, 81, 85, 84, 87, 85, 88, 89, 86, 80],
+    no: 4, nis: '252607025', nisn: '3125545030', nama: 'Gerald Lazzaro Nggebu', s: 5, i: 1, a: 0, 
+    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'English Club', e3n: 'Baik', 
+    scores: [83, 84, 85, 81, 75, 74, 89, 81, 85, 84, 87, 85, 88, 89, 86, 80],
     skl_custom: { d7:'B', k1:'B', k2:'B', k3:'B', k4:'B', k5:'B', p1:'B', p2:'B', p4:'B', p5:'B', s1:'B', s2:'B', m1:'B', r1:'B', r2:'B', r3:'B', j2:'B' },
-    catatan_walas: "Ananda tampil percaya diri dan menjadi panutan dalam berbagai kegiatan sekolah"
+    kp: {
+      ibadah: "Jadikan ibadah sebagai kebutuhan, bukan hanya kewajiban.",
+      akhlak: "Akhlak baik akan membawamu pada kesuksesan sejati",
+      kedisiplinan: "Kegigihan akan selalu mengalahkan bakat yang malas",
+      kerapihan: "Kerapihan & kebersihan diri merupakan cermin pribadi seorang muslim, jadikanlah itu sebagai identitasmu",
+      kepemimpinan: "Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan",
+      kerjasama: "Berbagi peran dalam kerjasama kelompok akan menciptakan keharmonisan",
+      catatan: "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal & cita-cita di masa depan. \"Jadikan Al-Qur'an sebagai sahabat setiamu\""
+    },
+    catatan_walas: "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal & cita-cita di masa depan. \"Jadikan Al-Qur'an sebagai sahabat setiamu\""
   },
   { 
     no: 5, nis: '252607026', nisn: '3131067683', nama: 'Hasan Muzakki', s: 0, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'Futsal', e3n: 'Sangat Baik', 
-    scores: [89, 90, 87, 91, 89, 88, 91, 85, 88, 87, 90, 87, 89, 90, 91, 85],
+    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'English Club', e3n: 'Baik', 
+    scores: [87, 86, 90, 89, 93, 88, 91, 85, 88, 87, 90, 87, 89, 90, 91, 85],
     skl_custom: { d7:'B', k1:'B', k2:'B', k3:'B', k4:'B', k5:'B', p1:'B', p2:'B', p4:'B', p5:'B', s1:'B', s2:'B', t1:'B', t2:'B', m1:'B', m2:'B', r2:'B', r3:'B', j1:'B', j2:'B' },
-    catatan_walas: "Ananda punya pandangan jauh ke depan dan ide-ide kreatif dalam memimpin"
+    kp: {
+      ibadah: "Ibadah dapat membuat ananda merasa tenang dan bahagia. Jadi, mari kita prioritaskan ibadah dalam hidup kita",
+      akhlak: "Jadilah teladan dalam ucapan dan perbuatan",
+      kedisiplinan: "Disiplin bukan beban, tapi kebiasaan orang sukses",
+      kerapihan: "Bersih hati, bersih lingkungan, hidup pun berkah",
+      kepemimpinan: "Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan",
+      kerjasama: "Tolong-menolonglah kamu dalam kebaikan dan jangan tolong-menolong dalam keburukan",
+      catatan: "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Tingkatkan semangat belajarmu"
+    },
+    catatan_walas: "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Tingkatkan semangat belajarmu"
   },
   { 
-    no: 6, nis: '252607027', nisn: '3123913434', nama: 'Ibrahim Fadhilah Syuja Tambunan', s: 0, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'Futsal', e3n: 'Sangat Baik', 
-    scores: [88, 89, 86, 90, 88, 87, 90, 84, 87, 86, 89, 86, 88, 89, 90, 84],
+    no: 6, nis: '252607027', nisn: '3123913434', nama: 'Ibrahim Fadhilah Syuja Tambunan', s: 4, i: 0, a: 0, 
+    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Basket', e3n: 'Baik', 
+    scores: [84, 87, 85, 85, 83, 83, 90, 84, 87, 86, 89, 86, 88, 89, 90, 84],
     skl_custom: { d6:'B', k1:'B', k2:'B', k3:'B', k4:'B', k5:'B', p2:'B', p3:'B', p4:'B', p5:'B', t1:'B', t2:'B', m1:'B', r1:'B', r2:'B', r3:'B', j1:'B', j2:'B' },
-    catatan_walas: "Ananda dapat menghargai perbedaan pendapat dan mampu mencari jalan tengah"
+    kp: {
+      ibadah: "Ibadahmu adalah cahaya yang menerangi jalanmu, teruslah berjalan!",
+      akhlak: "Terus tumbuh menjadi pribadi yang ramah dan bertanggung jawab.",
+      kedisiplinan: "Orang sukses dimulai dari kebiasaan baik di masa muda",
+      kerapihan: "Jadikan bersih dan rapi sebagai bagian dari jati dirimu",
+      kepemimpinan: "Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan",
+      kerjasama: "Berbagi peran dalam kerjasama kelompok akan menciptakan keharmonisan",
+      catatan: "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Tingkatkan semangat belajarmu"
+    },
+    catatan_walas: "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Tingkatkan semangat belajarmu"
   },
   { 
-    no: 7, nis: '252607012', nisn: '3134467062', nama: 'Kanaka Arkhan Gaizan', s: 0, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'Basket', e3n: 'Sangat Baik', 
-    scores: [91, 92, 89, 93, 91, 90, 93, 88, 90, 89, 92, 89, 91, 92, 93, 88],
+    no: 7, nis: '252607012', nisn: '3134462062', nama: 'Kanaka Arkhan Gaizan', s: 4, i: 0, a: 0, 
+    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: '-', e3n: '-', 
+    scores: [86, 89, 85, 90, 88, 83, 93, 88, 90, 89, 92, 89, 91, 92, 93, 88],
     skl_custom: {},
-    catatan_walas: "Ananda mampu mengajak teman berbuat baik dan menjaga disiplin bersama"
+    kp: {
+      ibadah: "Kamu telah menunjukkan komitmen yang bagus dalam beribadah, teruslah maju!",
+      akhlak: "Adab yang baik menunjukkan tingginya ilmu seseorang",
+      kedisiplinan: "Orang sukses selalu mulai dari kejujuran dan ketertiban",
+      kerapihan: "Kebersihan membawa ketenangan, kerapian membawa kenyamanan",
+      kepemimpinan: "Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan",
+      kerjasama: "Berbagi peran dalam kerjasama kelompok akan menciptakan keharmonisan",
+      catatan: "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal & cita-cita di masa depan. Tingkatkan semangat belajarmu"
+    },
+    catatan_walas: "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal & cita-cita di masa depan. Tingkatkan semangat belajarmu"
   },
   { 
-    no: 8, nis: '252607028', nisn: '3135642963', nama: 'Muhamad Fathan Gunawan', s: 0, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'Futsal', e3n: 'Sangat Baik', 
-    scores: [90, 91, 88, 92, 90, 89, 92, 86, 89, 88, 91, 88, 90, 91, 92, 86],
+    no: 8, nis: '252607028', nisn: '3135642963', nama: 'Muhamad Fathan Gunawan', s: 1, i: 0, a: 0, 
+    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Desain grafis', e3n: 'Baik', 
+    scores: [84, 87, 84, 83, 78, 79, 92, 86, 89, 88, 91, 88, 90, 91, 92, 86],
     skl_custom: { p2:'B', p3:'B', p5:'B', s1:'B' },
-    catatan_walas: "Ananda dapat memimpin dengan memberi contoh dalam kerja keras dan pengabdian"
+    kp: {
+      ibadah: "Setiap langkah dalam ibadahmu membawa kamu lebih dekat kepada Allah",
+      akhlak: "Akhlak baik akan membawa berkah dalam hidupmu",
+      kedisiplinan: "Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita",
+      kerapihan: "Rapi dalam hal kecil akan membentuk kesuksesan besar",
+      kepemimpinan: "Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan",
+      kerjasama: "Tolong-menolonglah kamu dalam kebaikan dan jangan tolong-menolong dalam keburukan",
+      catatan: "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal & cita-cita di masa depan."
+    },
+    catatan_walas: "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal & cita-cita di masa depan."
   },
   { 
-    no: 9, nis: '252607029', nisn: '0122555954', nama: 'Muhammad Aydin Arkananta', s: 0, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'Basket', e3n: 'Sangat Baik', 
-    scores: [88, 89, 86, 90, 85, 87, 92, 85, 88, 86, 90, 87, 91, 90, 89, 84],
+    no: 9, nis: '252607029', nisn: '0122555954', nama: 'Muhammad Aydin Arkananta', s: 1, i: 0, a: 0, 
+    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Basket', e3n: 'Baik', 
+    scores: [85, 87, 85, 83, 90, 83, 92, 85, 88, 86, 90, 87, 91, 90, 89, 84],
     skl_custom: { k1:'B', p1:'B', s1:'B', s2:'B', t1:'B', t2:'B' },
-    catatan_walas: "Ananda aktif membangun suasana kelas yang harmonis dan saling menghargai"
+    kp: {
+      ibadah: "Setiap langkah kecil dalam beribadahmu akan membawa perubahan besar",
+      akhlak: "Teruslah menjadi pribadi yang santun dan beradab",
+      kedisiplinan: "Disiplin adalah tanda seorang muslim yang taat dan bertanggung jawab",
+      kerapihan: "Dunia yang bersih dimulai dari satu tangan yang peduli",
+      kepemimpinan: "Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan",
+      kerjasama: "Berbagi peran dalam kerjasama kelompok akan menciptakan keharmonisan",
+      catatan: "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal & cita-cita di masa depan. Pertahankan Semangat Belajar dan Prestasimu"
+    },
+    catatan_walas: "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal & cita-cita di masa depan. Pertahankan Semangat Belajar dan Prestasimu"
   },
   { 
-    no: 10, nis: '252607030', nisn: '3134356099', nama: 'Muhammad Billal Amilusa', s: 0, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'Futsal', e3n: 'Sangat Baik', 
-    scores: [92, 93, 90, 94, 92, 91, 94, 89, 91, 90, 93, 90, 92, 93, 94, 89],
+    no: 10, nis: '252607030', nisn: '3134356099', nama: 'Muhammad Billal Amilusa', s: 4, i: 0, a: 0, 
+    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Panahan', e3n: 'Baik', 
+    scores: [87, 86, 83, 90, 80, 78, 94, 89, 91, 90, 93, 90, 92, 93, 94, 89],
     skl_custom: {},
-    catatan_walas: "Ananda dapat memimpin dengan ketenangan dan kebijaksanaan, bukan dengan suara keras"
+    kp: {
+      ibadah: "Allah membalas ketulusan hatimu dengan kasih sayang-Nya, teruslah beribadah dengan hati yang ikhlas",
+      akhlak: "Akhlak mulia akan mengangkatmu lebih tinggi daripada nilai akademik",
+      kedisiplinan: "Allah mencintai hamba yang bekerja keras dan bersungguh-sungguh",
+      kerapihan: "Kerapihan & kebersihan diri merupakan cermin pribadi seorang muslim, jadikanlah itu sebagai identitasmu",
+      kepemimpinan: "Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan",
+      kerjasama: "Tolong-menolonglah kamu dalam kebaikan dan jangan tolong-menolong dalam keburukan",
+      catatan: "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal & cita-cita di masa depan."
+    },
+    catatan_walas: "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal & cita-cita di masa depan."
   },
   { 
-    no: 11, nis: '252607031', nisn: '3136252133', nama: 'Nauval Agha Irawan', s: 0, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'Basket', e3n: 'Sangat Baik', 
-    scores: [91, 92, 89, 93, 91, 90, 93, 88, 90, 89, 92, 89, 91, 92, 93, 88],
+    no: 11, nis: '252607031', nisn: '3136252133', nama: 'Nauval Agha Irawan', s: 1, i: 0, a: 0, 
+    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Panahan', e3n: 'Baik', 
+    scores: [88, 91, 86, 89, 98, 86, 93, 88, 90, 89, 92, 89, 91, 92, 93, 88],
     skl_custom: {},
-    catatan_walas: "Ananda dapat menginspirasi teman dengan semangat dan ketulusan dalam bertindak"
+    kp: {
+      ibadah: "Semangat beribadahmu adalah inspirasi bagi banyak orang",
+      akhlak: "Alhamdulillah, pertahankan akhlak baikmu di mana saja Ananda berada",
+      kedisiplinan: "Anak yang rajin dan tertib akan membawa kebahagiaan bagi orang tua",
+      kerapihan: "Kerapihan & kebersihan diri dan lingkungan akan menciptakan rasa nyaman dalam belajar",
+      kepemimpinan: "Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan",
+      kerjasama: "Berbagi peran dalam kerjasama kelompok akan menciptakan keharmonisan",
+      catatan: "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal & cita-cita di masa depan."
+    },
+    catatan_walas: "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal & cita-cita di masa depan."
   },
   { 
-    no: 12, nis: '252607032', nisn: '3121228938', nama: 'Rafkantara Arifianto', s: 0, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'Futsal', e3n: 'Sangat Baik', 
-    scores: [89, 90, 87, 91, 89, 88, 91, 85, 88, 87, 90, 87, 89, 90, 91, 85],
+    no: 12, nis: '252607032', nisn: '3121228938', nama: 'Rafkantara Arifianto', s: 3, i: 0, a: 0, 
+    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Panahan', e3n: 'Baik', 
+    scores: [89, 88, 85, 89, 93, 86, 91, 85, 88, 87, 90, 87, 89, 90, 91, 85],
     skl_custom: {},
-    catatan_walas: "Ananda dapat mampu bekerja sama dengan semua teman tanpa membeda-bedakan"
+    kp: {
+      ibadah: "Setiap langkah dalam ibadahmu membawa kamu lebih dekat kepada Allah",
+      akhlak: "Akhlak baik akan membawa berkah dalam hidupmu",
+      kedisiplinan: "Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita",
+      kerapihan: "Rapi dalam hal kecil akan membentuk kesuksesan besar",
+      kepemimpinan: "Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan",
+      kerjasama: "Tolong-menolonglah kamu dalam kebaikan dan jangan tolong-menolong dalam keburukan",
+      catatan: "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal & cita-cita di masa depan."
+    },
+    catatan_walas: "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal & cita-cita di masa depan."
   },
   { 
     no: 13, nis: '252607033', nisn: '0137000097', nama: 'Ryan Aditya Herlambang S', s: 0, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'Basket', e3n: 'Sangat Baik', 
-    scores: [90, 91, 88, 92, 90, 89, 92, 86, 89, 88, 91, 88, 90, 91, 92, 86],
+    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Futsal', e3n: 'Baik', 
+    scores: [82, 84, 85, 82, 75, 78, 92, 86, 89, 88, 91, 88, 90, 91, 92, 86],
     skl_custom: { d6:'B', p1:'B', s1:'B', m1:'B' },
-    catatan_walas: "Ananda dapat memimpin dengan tegas namun tetap santun dan menghargai pendapat teman"
+    kp: {
+      ibadah: "Ibadah bukan hanya kewajiban, tapi juga kesempatan untuk membersihkan hati dan jiwa",
+      akhlak: "Sikap jujur adalah awal dari akhlak yang mulia",
+      kedisiplinan: "Disiplin adalah kunci utama menuju kesuksesan sejati",
+      kerapihan: "Menjaga kebersihan dan kerapian adalah bentuk rasa syukur kepada Allah",
+      kepemimpinan: "Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan",
+      kerjasama: "Berbagi peran dalam kerjasama kelompok akan menciptakan keharmonisan",
+      catatan: "Tingkatkan semangat dan keseriusan dalam belajar agar mendapat hasil yang maksimal"
+    },
+    catatan_walas: "Tingkatkan semangat dan keseriusan dalam belajar agar mendapat hasil yang maksimal"
   },
   { 
     no: 14, nis: '252607034', nisn: '3135297913', nama: 'Teuku Muhamad Zulkarnaen', s: 0, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'Futsal', e3n: 'Sangat Baik', 
-    scores: [88, 89, 86, 90, 88, 87, 90, 84, 87, 86, 89, 86, 88, 89, 90, 84],
+    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'English Club', e3n: 'Baik', 
+    scores: [85, 85, 86, 84, 86, 81, 90, 84, 87, 86, 89, 86, 88, 89, 90, 84],
     skl_custom: { d1:'B', k1:'B', k2:'B', k3:'B', k4:'B', s1:'B', s2:'B', m1:'B', m2:'B' },
-    catatan_walas: "Ananda tulus dalam bertindak dan menjadi penggerak kebaikan di lingkungan sekolah"
+    kp: {
+      ibadah: "Jadikan ibadah sebagai kebutuhan, bukan hanya kewajiban.",
+      akhlak: "Teruslah belajar menjadi pribadi yang lebih baik setiap hari",
+      kedisiplinan: "Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita",
+      kerapihan: "Kerapihan & kebersihan diri dan lingkungan akan menciptakan rasa nyaman dalam belajar",
+      kepemimpinan: "Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan",
+      kerjasama: "Berbagi peran dalam kerjasama kelompok akan menciptakan keharmonisan",
+      catatan: "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal & cita-cita di masa depan."
+    },
+    catatan_walas: "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal & cita-cita di masa depan."
   },
   { 
-    no: 15, nis: '252607036', nisn: '3125394046', nama: 'Zamzam Alif', s: 0, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'Futsal', e3n: 'Sangat Baik', 
-    scores: [91, 92, 89, 93, 91, 90, 93, 88, 90, 89, 92, 89, 91, 92, 93, 88],
+    no: 15, nis: '252607036', nisn: '3125394046', nama: 'Zamzam Alif', s: 5, i: 0, a: 0, 
+    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Panahan', e3n: 'Baik', 
+    scores: [89, 87, 83, 89, 83, 82, 93, 88, 90, 89, 92, 89, 91, 92, 93, 88],
     skl_custom: {},
-    catatan_walas: "Meskipun pendiam, ananda mampu memimpin dengan tindakan nyata dan keteladanan"
+    kp: {
+      ibadah: "Jadikan ibadah sebagai kebutuhan, bukan hanya kewajiban.",
+      akhlak: "Akhlak baik akan membawamu pada kesuksesan sejati",
+      kedisiplinan: "Kegigihan akan selalu mengalahkan bakat yang malas",
+      kerapihan: "Kerapihan & kebersihan diri merupakan cermin pribadi seorang muslim, jadikanlah itu sebagai identitasmu",
+      kepemimpinan: "Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan",
+      kerjasama: "Tolong-menolonglah kamu dalam kebaikan dan jangan tolong-menolong dalam keburukan",
+      catatan: "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal & cita-cita di masa depan."
+    },
+    catatan_walas: "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal & cita-cita di masa depan."
   }
 ];
 
