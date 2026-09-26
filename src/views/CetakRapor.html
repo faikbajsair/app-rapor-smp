@@ -274,7 +274,7 @@
            alt="Logo Al-Imam" class="h-16 w-auto max-w-[120px] object-contain" />
       
       <div class="text-center flex-1">
-        <div class="text-[10px] tracking-widest text-slate-700 font-arabic font-bold mb-0.5">مؤسسة الأطفال الأذكياء دار السلام</div>
+        <div class="text-[11px] tracking-widest text-slate-800 font-arabic font-bold mb-0.5">مؤسسة الأطفال الأذكياء "دار السلام"</div>
         <h3 class="text-[11px] font-bold tracking-wider text-slate-900 uppercase">YAYASAN SEKOLAH ANAK PINTAR DARUSSALAM</h3>
         <h1 class="text-sm sm:text-base font-black text-slate-950 uppercase tracking-wide">
           SMP AL-IMAM ISLAMIC SCHOOL
@@ -282,7 +282,10 @@
         <p class="text-[9px] text-slate-700 font-sans mt-0.5">TERAKREDITASI "B" No.SK: 02.00/347/SK/BAP-SM/XI/2017</p>
       </div>
 
-      <div class="w-16 shrink-0"></div>
+      <!-- Yellow Student No Badge (Sesuai Excel Asli) -->
+      <div class="w-14 h-7 bg-amber-300 border border-black flex items-center justify-center font-bold text-sm text-slate-950 shadow-2xs font-sans shrink-0" id="print-skl-no-badge">
+        5
+      </div>
     </div>
 
     <!-- Judul Rapor Kepemimpinan -->
@@ -295,24 +298,24 @@
       </h3>
     </div>
 
-    <!-- Identitas Murid & Info Sekolah -->
+    <!-- Identitas Murid & Info Sekolah (ISI DATA MANUAL) -->
     <div class="grid grid-cols-1 md:grid-cols-12 gap-4 text-[11px] mb-4 pb-2 border-b border-slate-300">
       <div class="md:col-span-7 space-y-1 font-sans">
         <div class="flex">
           <span class="w-48 font-medium text-slate-700">Nama</span>
-          <span class="font-bold text-slate-950">: <span id="print-skl-nama">ALWAN IBRAHIM</span></span>
+          <span class="font-bold text-slate-950">: <span id="print-skl-nama">AYESHA ALFIRA RAFANDA</span></span>
         </div>
         <div class="flex">
           <span class="w-48 font-medium text-slate-700">Kelas</span>
-          <span class="font-bold text-slate-950">: <span id="print-skl-kelas">IX ABU BAKAR</span></span>
+          <span class="font-bold text-slate-950">: <span id="print-skl-kelas">IX Ummu Salamah</span></span>
         </div>
         <div class="flex">
           <span class="w-48 font-medium text-slate-700">Nomor Induk Siswa</span>
-          <span class="font-bold text-slate-950">: <span id="print-skl-nis">232407051</span></span>
+          <span class="font-bold text-slate-950">: <span id="print-skl-nis">232407005</span></span>
         </div>
         <div class="flex">
           <span class="w-48 font-medium text-slate-700">Nomor Induk Siswa Nasional</span>
-          <span class="font-bold text-slate-950">: <span id="print-skl-nisn">0113811055</span></span>
+          <span class="font-bold text-slate-950">: <span id="print-skl-nisn">0117636003</span></span>
         </div>
         <div class="flex">
           <span class="w-48 font-medium text-slate-700">Semester</span>
@@ -320,11 +323,12 @@
         </div>
       </div>
 
-      <div class="md:col-span-5 space-y-1 font-sans text-right md:text-left bg-slate-50 p-2 rounded border border-slate-200 text-[10px]">
-        <div><span class="text-slate-500 font-semibold">Nomor:</span> <span id="print-skl-no-surat" class="font-bold text-slate-800">421.3/079/SMP.AIIS/VI/2022</span></div>
-        <div><span class="text-slate-500 font-semibold">Nama Sekolah:</span> <span class="font-bold text-slate-800">SMP AL-IMAM ISLAMIC SCHOOL</span></div>
-        <div><span class="text-slate-500 font-semibold">NPSN:</span> <span class="font-bold text-slate-800">69915055</span></div>
-        <div><span class="text-slate-500 font-semibold">Walas:</span> <span id="print-skl-walas-info" class="font-bold text-slate-800">Kahlil Gibran, S.Pd.</span></div>
+      <div class="md:col-span-5 space-y-1 font-sans text-right md:text-left bg-slate-50 p-2.5 rounded border border-slate-300 text-[10px]">
+        <div class="font-bold text-slate-900 border-b border-slate-200 pb-1 mb-1 text-[9px] uppercase tracking-wider">ISI DATA MANUAL</div>
+        <div class="grid grid-cols-3 gap-1"><span class="text-slate-600 font-semibold">Nomor</span><span class="col-span-2 font-bold text-slate-900">: <span id="print-skl-no-surat">421.3/079/SMP.AIIS/VI/2022</span></span></div>
+        <div class="grid grid-cols-3 gap-1"><span class="text-slate-600 font-semibold">Nama Sekolah</span><span class="col-span-2 font-bold text-slate-900">: SMP AL-IMAM ISLAMIC SCHOOL</span></div>
+        <div class="grid grid-cols-3 gap-1"><span class="text-slate-600 font-semibold">NPSN</span><span class="col-span-2 font-bold text-slate-900">: 69915055</span></div>
+        <div class="grid grid-cols-3 gap-1"><span class="text-slate-600 font-semibold">walas</span><span class="col-span-2 font-bold text-slate-900">: <span id="print-skl-walas-info">Dewi Fitria Nugraheni, S.Pd., Gr.</span></span></div>
       </div>
     </div>
 
@@ -352,37 +356,50 @@
 
     <!-- Catatan Wali Kelas & Orang Tua (Persis Baris 57-63 Excel) -->
     <div class="space-y-2 mb-6 font-sans page-break-inside-avoid">
-      <div class="border border-black p-2 bg-white">
-        <span class="font-bold block text-[10px] text-slate-800 mb-1">Catatan Wali Kelas:</span>
+      <div class="border border-black p-2.5 bg-white">
+        <span class="font-bold block text-[10px] text-slate-800 mb-1">Catatan Wali Kelas</span>
         <p id="print-skl-catatan-walas" class="text-[10.5px] italic text-slate-900 min-h-[30px] flex items-center">
-          Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan.
+          Telah menunjukkan sikap tanggung jawab dan disiplin; terus latih kemampuan komunikasi agar lebih efektif dalam memimpin.
         </p>
       </div>
 
-      <div class="border border-black p-2 bg-white">
-        <span class="font-bold block text-[10px] text-slate-800 mb-1">Catatan Orang Tua:</span>
-        <div class="min-h-[30px] border-b border-dotted border-slate-400"></div>
+      <div class="border border-black p-2.5 bg-white">
+        <span class="font-bold block text-[10px] text-slate-800 mb-1">Catatan Orang Tua</span>
+        <div class="min-h-[30px]"></div>
       </div>
     </div>
 
-    <!-- Tanda Tangan 3 Pihak (Orang Tua - Walas - Kepsek) -->
+    <!-- Tanda Tangan 3 Pihak Resmi (Orang Tua - Walas - Kepsek) -->
     <div class="grid grid-cols-3 text-[10.5px] font-sans gap-4 pt-2 text-center page-break-inside-avoid">
-      <div class="flex flex-col justify-between h-28">
-        <span class="font-medium text-slate-800">Orang Tua/Wali</span>
+      <!-- Orang Tua / Wali -->
+      <div class="flex flex-col justify-between h-28 text-center">
+        <div>
+          <span class="text-slate-600 block text-[9.5px]">Mengetahui :</span>
+          <span class="font-bold text-slate-800">Orang Tua/Wali</span>
+        </div>
         <div class="text-slate-800 font-medium">( ........................................ )</div>
       </div>
 
-      <div class="flex flex-col justify-between h-28">
-        <span class="font-medium text-slate-800">Wali Kelas</span>
+      <!-- Wali Kelas -->
+      <div class="flex flex-col justify-between h-28 text-center items-center">
+        <span class="font-bold text-slate-800">Wali Kelas</span>
+        <div class="my-0.5 flex items-center justify-center">
+          <svg class="h-10 w-24 text-slate-800 opacity-90" viewBox="0 0 120 50" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M 10 35 C 25 10, 35 45, 45 20 C 55 5, 50 40, 65 25 C 75 15, 80 35, 95 28 C 105 22, 110 30, 115 26 M 20 38 Q 60 48 105 36" />
+          </svg>
+        </div>
         <div>
-          <span class="font-bold underline text-slate-950 block" id="print-skl-ttd-walas">Kahlil Gibran, S.Pd.</span>
+          <span class="font-bold underline text-slate-950 block" id="print-skl-ttd-walas">Dewi Fitria Nugraheni, S.Pd., Gr.</span>
         </div>
       </div>
 
-      <div class="flex flex-col justify-between h-28">
-        <div>
-          <span class="text-slate-600 block text-[9.5px]">Mengetahui,</span>
-          <span class="font-medium text-slate-800">Kepala Sekolah</span>
+      <!-- Kepala Sekolah -->
+      <div class="flex flex-col justify-between h-28 text-center items-center">
+        <span class="font-bold text-slate-800">Kepala Sekolah</span>
+        <div class="my-0.5 flex items-center justify-center">
+          <!-- QR Code Digital Verification -->
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=50x50&data=SMP-ALIMAM-RAPOR-KEPEMIMPINAN-ARIF-ROHMAN-VERIFIED" 
+               alt="QR Code Verifikasi" class="w-10 h-10 border border-slate-300 p-0.5 rounded shadow-2xs" />
         </div>
         <div>
           <span class="font-bold underline text-slate-950 block" id="print-skl-ttd-kepsek">Arif Rohman, M.Pd.</span>

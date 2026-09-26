@@ -2923,6 +2923,7 @@ function renderRaporKepemimpinanSheet(report) {
   if (document.getElementById('print-skl-nisn')) document.getElementById('print-skl-nisn').innerText = m.nisn || '-';
   if (document.getElementById('print-skl-semester')) document.getElementById('print-skl-semester').innerText = sklEntry.semester || 'Tengah Semester 1';
   if (document.getElementById('print-skl-tahun-ajaran')) document.getElementById('print-skl-tahun-ajaran').innerText = set.academic_year || sklEntry.tahun_ajaran || '2025/2026';
+  if (document.getElementById('print-skl-no-badge')) document.getElementById('print-skl-no-badge').innerText = m.no_urut || '1';
 
   const waliKelasMurid = m.wali_kelas || WALI_KELAS_MAP[m.kelas] || set.wali_kelas_default || 'Kahlil Gibran, S.Pd.';
   if (document.getElementById('print-skl-walas-info')) document.getElementById('print-skl-walas-info').innerText = waliKelasMurid;
