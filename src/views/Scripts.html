@@ -212,6 +212,8 @@ const TEMPLETE_CATATAN_WALAS_32 = [
 const WALI_KELAS_MAP = {
   'IX ABU BAKAR': 'Kahlil Gibran, S.Pd.',
   'IX UMMU SALAMAH': 'Dewi Fitria Nugraheni, S.Pd., Gr.',
+  'VII AISYAH': 'Tri Yuli Aryani, S.Pd., Gr.',
+  'VII Aisyah Binti Abu Bakar': 'Tri Yuli Aryani, S.Pd., Gr.',
   'VIII THALHAH': 'Ust. Salman Al-Farisi, S.Pd.',
   'VIII AISYAH': 'Usth. Fatimah Az-Zahra, S.Pd.',
   'VII BILAL': 'Ust. Abdullah Syafi\'i, S.Pd.',
@@ -437,23 +439,148 @@ const EXCEL_STUDENTS_IX_UMMU_SALAMAH = [
   }
 ];
 
-// 3. Cohort Dataset Kelas VIII & VII
+// 3. Dataset Resmi Kelas VII AISYAH (18 Murid Akhwat - Sesuai File Excel RAPORT KEPEMIMPINAN VII AISYAH)
+const EXCEL_STUDENTS_VII_AISYAH = [
+  { 
+    no: 1, nis: '252607002', nisn: '0138027960', nama: 'Ajeng Putri Kirana', s: 0, i: 0, a: 0, 
+    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'English Club', e3n: 'Sangat Baik', 
+    scores: [90, 91, 88, 92, 90, 89, 92, 86, 89, 88, 91, 88, 90, 91, 92, 86],
+    skl_custom: {},
+    catatan_walas: "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Tingkatkan semangat belajarmu"
+  },
+  { 
+    no: 2, nis: '252607003', nisn: '3124658329', nama: 'Allysha Qiana Zetta', s: 0, i: 0, a: 0, 
+    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'Desain Grafis', e3n: 'Sangat Baik', 
+    scores: [91, 92, 89, 93, 91, 90, 93, 88, 90, 89, 92, 89, 91, 92, 93, 88],
+    skl_custom: {},
+    catatan_walas: "Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan"
+  },
+  { 
+    no: 3, nis: '252607004', nisn: '3124676739', nama: 'Alzena Aila Varisha', s: 0, i: 0, a: 0, 
+    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'Panahan', e3n: 'Sangat Baik', 
+    scores: [89, 90, 87, 91, 89, 88, 91, 85, 88, 87, 90, 87, 89, 90, 91, 85],
+    skl_custom: {},
+    catatan_walas: "Tingkatkan semangat dan keseriusan dalam belajar agar mendapat hasil yang maksimal."
+  },
+  { 
+    no: 4, nis: '252607006', nisn: '3128139667', nama: 'Annisa Shazia Athifah', s: 0, i: 0, a: 0, 
+    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'Basket', e3n: 'Sangat Baik', 
+    scores: [92, 93, 90, 94, 92, 91, 94, 89, 91, 90, 93, 90, 92, 93, 94, 89],
+    skl_custom: {},
+    catatan_walas: "Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita"
+  },
+  { 
+    no: 5, nis: '252607007', nisn: '3133343263', nama: 'Dean Sectio Ranya Ariyadi', s: 0, i: 0, a: 0, 
+    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'English Club', e3n: 'Sangat Baik', 
+    scores: [88, 89, 86, 90, 88, 87, 90, 84, 87, 86, 89, 86, 88, 89, 90, 84],
+    skl_custom: {},
+    catatan_walas: "Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita"
+  },
+  { 
+    no: 6, nis: '252607008', nisn: '3121871205', nama: 'Evelyn Kenivael', s: 0, i: 0, a: 0, 
+    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'Desain Grafis', e3n: 'Sangat Baik', 
+    scores: [90, 91, 88, 92, 90, 89, 92, 86, 89, 88, 91, 88, 90, 91, 92, 86],
+    skl_custom: {},
+    catatan_walas: "Tingkatkan semangat dan keseriusan dalam belajar agar mendapat hasil yang maksimal."
+  },
+  { 
+    no: 7, nis: '252607045', nisn: '0139289257', nama: 'Garjita Galuh Gunawan', s: 0, i: 0, a: 0, 
+    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'English Club', e3n: 'Sangat Baik', 
+    scores: [91, 92, 89, 93, 91, 90, 93, 88, 90, 89, 92, 89, 91, 92, 93, 88],
+    skl_custom: {},
+    catatan_walas: "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Tingkatkan semangat belajarmu"
+  },
+  { 
+    no: 8, nis: '252607009', nisn: '0134935321', nama: 'Griseldis Radhiya Nur Hazrina', s: 0, i: 0, a: 0, 
+    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'Basket', e3n: 'Sangat Baik', 
+    scores: [89, 90, 87, 91, 89, 88, 91, 85, 88, 87, 90, 87, 89, 90, 91, 85],
+    skl_custom: {},
+    catatan_walas: "Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita"
+  },
+  { 
+    no: 9, nis: '252607010', nisn: '3137691972', nama: 'Gyzell Prianatasya Putri', s: 0, i: 0, a: 0, 
+    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'Desain Grafis', e3n: 'Sangat Baik', 
+    scores: [93, 94, 91, 95, 93, 92, 95, 90, 92, 91, 94, 91, 93, 94, 95, 90],
+    skl_custom: {},
+    catatan_walas: "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Tingkatkan semangat belajarmu"
+  },
+  { 
+    no: 10, nis: '252607011', nisn: '3138973504', nama: 'Kamila Putri Budiman', s: 0, i: 0, a: 0, 
+    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'Panahan', e3n: 'Sangat Baik', 
+    scores: [90, 91, 88, 92, 90, 89, 92, 86, 89, 88, 91, 88, 90, 91, 92, 86],
+    skl_custom: {},
+    catatan_walas: "Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita"
+  },
+  { 
+    no: 11, nis: '252607013', nisn: '3128354313', nama: 'Malika Anindya Adeeva', s: 0, i: 0, a: 0, 
+    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'English Club', e3n: 'Sangat Baik', 
+    scores: [88, 89, 86, 90, 88, 87, 90, 84, 87, 86, 89, 86, 88, 89, 90, 84],
+    skl_custom: { d4: 'B' },
+    catatan_walas: "Tingkatkan semangat dan keseriusan dalam belajar agar mendapat hasil yang maksimal."
+  },
+  { 
+    no: 12, nis: '252607016', nisn: '3135906759', nama: 'Naylana Khayra Dzahin', s: 0, i: 0, a: 0, 
+    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'Basket', e3n: 'Sangat Baik', 
+    scores: [91, 92, 89, 93, 91, 90, 93, 88, 90, 89, 92, 89, 91, 92, 93, 88],
+    skl_custom: {},
+    catatan_walas: "Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan"
+  },
+  { 
+    no: 13, nis: '252607017', nisn: '3134727061', nama: 'Rheva Agnezia Putri', s: 0, i: 0, a: 0, 
+    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'English Club', e3n: 'Sangat Baik', 
+    scores: [92, 93, 90, 94, 92, 91, 94, 89, 91, 90, 93, 90, 92, 93, 94, 89],
+    skl_custom: {},
+    catatan_walas: "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Tingkatkan semangat belajarmu"
+  },
+  { 
+    no: 14, nis: '252607018', nisn: '3131583386', nama: 'Sarah Salsabila', s: 0, i: 0, a: 0, 
+    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'Desain Grafis', e3n: 'Sangat Baik', 
+    scores: [89, 90, 87, 91, 89, 88, 91, 85, 88, 87, 90, 87, 89, 90, 91, 85],
+    skl_custom: {},
+    catatan_walas: "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal & cita-cita di masa depan."
+  },
+  { 
+    no: 15, nis: '252607039', nisn: '3133165032', nama: 'Shazia Keizaluna Humaira', s: 0, i: 0, a: 0, 
+    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'Panahan', e3n: 'Sangat Baik', 
+    scores: [90, 91, 88, 92, 90, 89, 92, 86, 89, 88, 91, 88, 90, 91, 92, 86],
+    skl_custom: {},
+    catatan_walas: "Tingkatkan semangat dan keseriusan dalam belajar agar mendapat hasil yang maksimal."
+  },
+  { 
+    no: 16, nis: '252607043', nisn: '3136022469', nama: 'Syafikah Ghalin Alzena', s: 0, i: 0, a: 0, 
+    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'English Club', e3n: 'Sangat Baik', 
+    scores: [91, 92, 89, 93, 91, 90, 93, 88, 90, 89, 92, 89, 91, 92, 93, 88],
+    skl_custom: { d4: 'B' },
+    catatan_walas: "Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita"
+  },
+  { 
+    no: 17, nis: '252607020', nisn: '3121914004', nama: 'Talita Lubna Humaira Renleuw', s: 0, i: 0, a: 0, 
+    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'Desain Grafis', e3n: 'Sangat Baik', 
+    scores: [90, 91, 88, 92, 90, 89, 92, 86, 89, 88, 91, 88, 90, 91, 92, 86],
+    skl_custom: {},
+    catatan_walas: "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Tingkatkan semangat belajarmu"
+  },
+  { 
+    no: 18, nis: '252607040', nisn: '0136813875', nama: 'Zahira Sarifah Salsabila', s: 0, i: 0, a: 0, 
+    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'Basket', e3n: 'Sangat Baik', 
+    scores: [93, 94, 91, 95, 93, 92, 95, 90, 92, 91, 94, 91, 93, 94, 95, 90],
+    skl_custom: {},
+    catatan_walas: "Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan"
+  }
+];
+
+// 4. Cohort Dataset Kelas Lainnya
 const COHORT_STUDENTS_VIII_THALHAH = [
   { no: 1, nisn: '0123450001', nama: 'ABDULLAH FAQIH', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Futsal', e3n: 'Sangat Baik', scores: [88, 89, 86, 90, 85, 87, 92, 85, 88, 86, 90, 87, 91, 90, 89, 84] },
   { no: 2, nisn: '0123450002', nama: 'BILAL AL-HABSYI', s: 1, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Basket', e3n: 'Baik', scores: [86, 85, 83, 88, 82, 85, 89, 80, 85, 84, 88, 85, 88, 89, 86, 80] },
   { no: 3, nisn: '0123450003', nama: 'FATHURRAHMAN AL-FATIH', s: 0, i: 1, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Futsal', e3n: 'Sangat Baik', scores: [91, 90, 92, 94, 90, 91, 94, 88, 92, 90, 93, 89, 93, 92, 94, 88] }
 ];
 
-const COHORT_STUDENTS_VIII_AISYAH = [
-  { no: 1, nisn: '0123451001', nama: 'AISYAH AZ-ZAHRA', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'English Club', e3n: 'Sangat Baik', scores: [93, 94, 92, 95, 96, 92, 95, 91, 93, 91, 95, 90, 92, 94, 95, 92] },
-  { no: 2, nisn: '0123451002', nama: 'FATIMAH HUMAIRA', s: 1, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Desain Grafis', e3n: 'Baik', scores: [90, 91, 88, 92, 90, 89, 92, 86, 89, 88, 91, 88, 90, 91, 92, 86] }
-];
-
 const COHORT_STUDENTS_VII_BILAL = [
   { no: 1, nisn: '0133450001', nama: 'ALI IMRAN PRATAMA', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Futsal', e3n: 'Baik', scores: [87, 88, 85, 89, 84, 86, 90, 82, 86, 85, 88, 86, 89, 90, 87, 82] }
 ];
 
-const COHORT_STUDENTS_VII_KHADIJAH = [
+const COHORT_STUDENTS_VIII_KHADIJAH = [
   { no: 1, nisn: '0133451001', nama: 'KHADIJAH NAILAH', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'English Club', e3n: 'Sangat Baik', scores: [92, 93, 90, 94, 93, 91, 94, 88, 91, 90, 93, 89, 92, 93, 94, 88] }
 ];
 
@@ -601,7 +728,7 @@ function buildExactAlImamDataset() {
       const sklCustom = st.skl_custom || {};
       const sklScores = {};
       const sklKeys = ['d1', 'd2', 'd3', 'd4', 'd5', 'd6', 'd7', 'k1', 'k2', 'k3', 'k4', 'k5', 'p1', 'p2', 'p3', 'p4', 'p5', 's1', 's2', 't1', 't2', 'm1', 'm2', 'r1', 'r2', 'r3', 'j1', 'j2', 'h1'];
-      const defaultKebersihanVal = (kelasName === 'IX UMMU SALAMAH') ? 'A' : 'B';
+      const defaultKebersihanVal = (kelasName === 'IX UMMU SALAMAH' || kelasName === 'VII AISYAH' || kelasName === 'VII Aisyah Binti Abu Bakar') ? 'A' : 'B';
       sklKeys.forEach(k => {
         sklScores[k] = sklCustom[k] || (k.startsWith('k') ? defaultKebersihanVal : 'A');
       });
@@ -620,12 +747,12 @@ function buildExactAlImamDataset() {
   };
 
   // Add all classes
-  addCohortToData(EXCEL_STUDENTS_IX_ABU_BAKAR, 'IX ABU BAKAR', '2025090', 'L');
-  addCohortToData(EXCEL_STUDENTS_IX_UMMU_SALAMAH, 'IX UMMU SALAMAH', '2025091', 'P');
-  addCohortToData(COHORT_STUDENTS_VIII_THALHAH, 'VIII THALHAH', '2025080', 'L');
-  addCohortToData(COHORT_STUDENTS_VIII_AISYAH, 'VIII AISYAH', '2025081', 'P');
-  addCohortToData(COHORT_STUDENTS_VII_BILAL, 'VII BILAL', '2025070', 'L');
-  addCohortToData(COHORT_STUDENTS_VII_KHADIJAH, 'VII KHADIJAH', '2025071', 'P');
+  addCohortToData(EXCEL_STUDENTS_IX_ABU_BAKAR, 'IX ABU BAKAR', '2324070', 'L');
+  addCohortToData(EXCEL_STUDENTS_IX_UMMU_SALAMAH, 'IX UMMU SALAMAH', '2324070', 'P');
+  addCohortToData(EXCEL_STUDENTS_VII_AISYAH, 'VII AISYAH', '2526070', 'P');
+  addCohortToData(COHORT_STUDENTS_VIII_THALHAH, 'VIII THALHAH', '2425080', 'L');
+  addCohortToData(COHORT_STUDENTS_VIII_KHADIJAH, 'VIII KHADIJAH', '2425081', 'P');
+  addCohortToData(COHORT_STUDENTS_VII_BILAL, 'VII BILAL', '2526070', 'L');
 
   DEMO_DATA.murid = mList;
   DEMO_DATA.akademik = akList;
