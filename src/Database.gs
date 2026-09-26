@@ -141,13 +141,14 @@ function initDatabase() {
       ['theme_accent_color', '#10b981', 'appearance', 'Warna Aksen (Hex)'],
       ['theme_sidebar_dark', 'true', 'appearance', 'Mode Gelap Sidebar (true/false)'],
       ['academic_year', '2025/2026', 'academic', 'Tahun Ajaran Aktif'],
-      ['semester_active', 'Ganjil', 'academic', 'Semester Aktif (Ganjil/Genap)'],
-      ['report_date', 'Bogor, 17 Oktober 2025', 'academic', 'Tanggal Titimangsa Rapor'],
+      ['semester_active', 'I (Satu)', 'academic', 'Semester Aktif (I (Satu) / II (Dua))'],
+      ['report_date', '17 Oktober 2025', 'academic', 'Tanggal Titimangsa Rapor'],
       ['report_place', 'Bogor', 'academic', 'Kota Pembagian Rapor'],
-      ['headmaster_name', 'Ust. Ahmad Fauzi, M.Pd.', 'signatory', 'Nama Kepala Sekolah'],
-      ['headmaster_nip', '198204152008011005', 'signatory', 'NIP/NIY Kepala Sekolah'],
+      ['wali_kelas_default', 'Kahlil Gibran, S.Pd.', 'academic', 'Wali Kelas Default'],
+      ['headmaster_name', 'Arif Rohman, M.Pd.', 'signatory', 'Nama Kepala Sekolah'],
+      ['headmaster_nip', '', 'signatory', 'NIP/NIY Kepala Sekolah'],
       ['headmaster_signature_url', '', 'signatory', 'URL Gambar TTD Kepala Sekolah (Opsional)'],
-      ['report_footer_text', 'Membentuk Generasi Qur\'ani, Berkarakter Pemimpin, dan Berwawasan Global', 'general', 'Teks Footer Rapor']
+      ['report_footer_text', 'RAPOR TENGAH SEMESTER PROGRAM PORTOFOLIO SMP AL IMAM ISLAMIC SCHOOL', 'general', 'Teks Footer Rapor']
     ];
     sheetSettings.getRange(2, 1, defaultSettings.length, 4).setValues(defaultSettings);
   }
@@ -157,9 +158,10 @@ function initDatabase() {
   if (sheetUsers.getLastRow() <= 1) {
     const defaultUsers = [
       ['USR-001', 'admin', 'admin123', 'Administrator Utama', 'admin', 'aktif', '2025-01-01'],
-      ['USR-002', 'kepsek', 'kepsek123', 'Ust. Ahmad Fauzi, M.Pd.', 'kepala_sekolah', 'aktif', '2025-01-01'],
-      ['USR-003', 'guru', 'guru123', 'Ust. Kahlil Gibran, S.Pd.', 'guru', 'aktif', '2025-01-01'],
-      ['USR-004', 'walimurid', 'wali123', 'Bpk. Hendra Gunawan (Wali Zaidan)', 'wali_murid', 'aktif', '2025-01-01']
+      ['USR-002', 'kepsek', 'kepsek123', 'Arif Rohman, M.Pd.', 'kepala_sekolah', 'aktif', '2025-01-01'],
+      ['USR-003', 'guru', 'guru123', 'Kahlil Gibran, S.Pd.', 'guru', 'aktif', '2025-01-01'],
+      ['USR-004', 'dewi', 'dewi123', 'Dewi Fitria Nugraheni, S.Pd., Gr.', 'guru', 'aktif', '2025-01-01'],
+      ['USR-005', 'walimurid', 'wali123', 'Bpk. Rifaat (Wali Nadhif)', 'wali_murid', 'aktif', '2025-01-01']
     ];
     sheetUsers.getRange(2, 1, defaultUsers.length, 7).setValues(defaultUsers);
   }
@@ -170,18 +172,37 @@ function initDatabase() {
   ]);
   if (sheetMurid.getLastRow() <= 1) {
     const defaultMurid = [
-      ['202507001', '0113408257', 'AHMAD YAZID ILMANY RAMADHAN', 'IX ABU BAKAR', 'L', 'Bpk. Ramadhan', '081234567801', 'Aktif', '2', '-', '-', 'Pramuka', 'Wushu', 'Futsal', 'Kahlil Gibran, S.Pd.'],
-      ['202507002', '0116425792', 'AL AZIZ BENZAVEIRO SUNARYO', 'IX ABU BAKAR', 'L', 'Bpk. Sunaryo', '081234567802', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Basket', 'Kahlil Gibran, S.Pd.'],
-      ['202507003', '0113811055', 'ALWAN IBRAHIM', 'IX ABU BAKAR', 'L', 'Bpk. Ibrahim', '081234567803', 'Aktif', '2', '3', '4', 'Pramuka', 'Wushu', 'Futsal', 'Kahlil Gibran, S.Pd.'],
-      ['202507004', '0114838409', 'AZKA DWI ABDHUL GHANIY', 'IX ABU BAKAR', 'L', 'Bpk. Ghaniy', '081234567804', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Basket', 'Kahlil Gibran, S.Pd.'],
-      ['202507005', '0118589769', 'DZAKI AQEELA ALIFANDRA', 'IX ABU BAKAR', 'L', 'Bpk. Alifandra', '081234567805', 'Aktif', '2', '-', '-', 'Pramuka', 'Wushu', 'Basket', 'Kahlil Gibran, S.Pd.'],
-      ['202507006', '0113915620', 'FARHAN PUTRA NOVRIANSYAH', 'IX ABU BAKAR', 'L', 'Bpk. Novriansyah', '081234567806', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Futsal', 'Kahlil Gibran, S.Pd.'],
-      ['202507007', '0118560424', 'GHAISAN FARRELLUZ SUKARNO', 'IX ABU BAKAR', 'L', 'Bpk. Sukarno', '081234567807', 'Aktif', '-', '3', '-', 'Pramuka', 'Wushu', 'Basket', 'Kahlil Gibran, S.Pd.'],
-      ['202507008', '0119042818', 'GIBRAN ARGA PUTRAKU', 'IX ABU BAKAR', 'L', 'Bpk. Putraku', '081234567808', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Futsal', 'Kahlil Gibran, S.Pd.'],
-      ['202507009', '0107305756', 'LUTHFI FAEYZA SATRIOPUTRA', 'IX ABU BAKAR', 'L', 'Bpk. Satrioputra', '081234567809', 'Aktif', '-', '1', '-', 'Pramuka', 'Wushu', 'Futsal', 'Kahlil Gibran, S.Pd.'],
-      ['202507010', '0108446122', 'MOHAMAD MIRZA RADITYA', 'IX ABU BAKAR', 'L', 'Bpk. Raditya', '081234567810', 'Aktif', '2', '-', '-', 'Pramuka', 'Wushu', 'Futsal', 'Kahlil Gibran, S.Pd.'],
-      ['202507011', '0113743973', 'MUHAMMAD ALFAJRI', 'IX ABU BAKAR', 'L', 'Bpk. Alfajri', '081234567811', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Basket', 'Kahlil Gibran, S.Pd.'],
-      ['202507012', '0103456069', 'NADHIF SYAFWAN RIFAAT', 'IX ABU BAKAR', 'L', 'Bpk. Rifaat', '081234567812', 'Aktif', '-', '3', '-', 'Pramuka', 'Wushu', 'Basket', 'Kahlil Gibran, S.Pd.']
+      // IX ABU BAKAR (12 Murid)
+      ['202509001', '0113408257', 'AHMAD YAZID ILMANY RAMADHAN', 'IX ABU BAKAR', 'L', 'Bpk. Ramadhan', '081234567801', 'Aktif', '2', '-', '-', 'Pramuka', 'Wushu', 'Futsal', 'Kahlil Gibran, S.Pd.'],
+      ['202509002', '0116425792', 'AL AZIZ BENZAVEIRO SUNARYO', 'IX ABU BAKAR', 'L', 'Bpk. Sunaryo', '081234567802', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Basket', 'Kahlil Gibran, S.Pd.'],
+      ['202509003', '0113811055', 'ALWAN IBRAHIM', 'IX ABU BAKAR', 'L', 'Bpk. Ibrahim', '081234567803', 'Aktif', '2', '3', '4', 'Pramuka', 'Wushu', 'Futsal', 'Kahlil Gibran, S.Pd.'],
+      ['202509004', '0114838409', 'AZKA DWI ABDHUL GHANIY', 'IX ABU BAKAR', 'L', 'Bpk. Ghaniy', '081234567804', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Basket', 'Kahlil Gibran, S.Pd.'],
+      ['202509005', '0118589769', 'DZAKI AQEELA ALIFANDRA', 'IX ABU BAKAR', 'L', 'Bpk. Alifandra', '081234567805', 'Aktif', '2', '-', '-', 'Pramuka', 'Wushu', 'Basket', 'Kahlil Gibran, S.Pd.'],
+      ['202509006', '0113915620', 'FARHAN PUTRA NOVRIANSYAH', 'IX ABU BAKAR', 'L', 'Bpk. Novriansyah', '081234567806', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Futsal', 'Kahlil Gibran, S.Pd.'],
+      ['202509007', '0118560424', 'GHAISAN FARRELLUZ SUKARNO', 'IX ABU BAKAR', 'L', 'Bpk. Sukarno', '081234567807', 'Aktif', '-', '3', '-', 'Pramuka', 'Wushu', 'Basket', 'Kahlil Gibran, S.Pd.'],
+      ['202509008', '0119042818', 'GIBRAN ARGA PUTRAKU', 'IX ABU BAKAR', 'L', 'Bpk. Putraku', '081234567808', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Futsal', 'Kahlil Gibran, S.Pd.'],
+      ['202509009', '0107305756', 'LUTHFI FAEYZA SATRIOPUTRA', 'IX ABU BAKAR', 'L', 'Bpk. Satrioputra', '081234567809', 'Aktif', '-', '1', '-', 'Pramuka', 'Wushu', 'Futsal', 'Kahlil Gibran, S.Pd.'],
+      ['202509010', '0108446122', 'MOHAMAD MIRZA RADITYA', 'IX ABU BAKAR', 'L', 'Bpk. Raditya', '081234567810', 'Aktif', '2', '-', '-', 'Pramuka', 'Wushu', 'Futsal', 'Kahlil Gibran, S.Pd.'],
+      ['202509011', '0113743973', 'MUHAMMAD ALFAJRI', 'IX ABU BAKAR', 'L', 'Bpk. Alfajri', '081234567811', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Basket', 'Kahlil Gibran, S.Pd.'],
+      ['202509012', '0103456069', 'NADHIF SYAFWAN RIFAAT', 'IX ABU BAKAR', 'L', 'Bpk. Rifaat', '081234567812', 'Aktif', '-', '3', '-', 'Pramuka', 'Wushu', 'Basket', 'Kahlil Gibran, S.Pd.'],
+      
+      // IX UMMU SALAMAH (16 Murid)
+      ['202509101', '0112522587', 'ALIZA FAIDA NUR AZMI', 'IX UMMU SALAMAH', 'P', 'Bpk. Azmi', '081234567901', 'Aktif', '1', '-', '-', 'Pramuka', 'Wushu', 'Desain Grafis', 'Dewi Fitria Nugraheni, S.Pd., Gr.'],
+      ['202509102', '0117401882', 'ALMIRA SYIFA RAHMADINI', 'IX UMMU SALAMAH', 'P', 'Bpk. Rahmadini', '081234567902', 'Aktif', '6', '-', '-', 'Pramuka', 'Wushu', 'English Club', 'Dewi Fitria Nugraheni, S.Pd., Gr.'],
+      ['202509103', '0118273422', 'ANDI ATHIFA KHANSA TABINA', 'IX UMMU SALAMAH', 'P', 'Bpk. Pangerang', '081234567903', 'Aktif', '1', '-', '-', 'Pramuka', 'Wushu', 'English Club', 'Dewi Fitria Nugraheni, S.Pd., Gr.'],
+      ['202509104', '3109536735', 'ANNISA GEMINTANG NOVIANI', 'IX UMMU SALAMAH', 'P', 'Bpk. Noviani', '081234567904', 'Aktif', '1', '1', '-', 'Pramuka', 'Wushu', 'Basket', 'Dewi Fitria Nugraheni, S.Pd., Gr.'],
+      ['202509105', '0117636003', 'AYESHA ALFIRA RAFANDA', 'IX UMMU SALAMAH', 'P', 'Bpk. Rafanda', '081234567905', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Basket', 'Dewi Fitria Nugraheni, S.Pd., Gr.'],
+      ['202509106', '0103651480', 'AYRA FARADINA MUMTAZAH', 'IX UMMU SALAMAH', 'P', 'Bpk. Mumtazah', '081234567906', 'Aktif', '3', '-', '-', 'Pramuka', 'Wushu', 'Desain Grafis', 'Dewi Fitria Nugraheni, S.Pd., Gr.'],
+      ['202509107', '0115212757', 'CALISTA HUMAIRA NOOR KHAIRANI', 'IX UMMU SALAMAH', 'P', 'Bpk. Khairani', '081234567907', 'Aktif', '2', '-', '-', 'Pramuka', 'Wushu', 'Panahan', 'Dewi Fitria Nugraheni, S.Pd., Gr.'],
+      ['202509108', '0101875317', 'DAFINA ANGGUN KHAIRUNNISA', 'IX UMMU SALAMAH', 'P', 'Bpk. Khairunnisa', '081234567908', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'English Club', 'Dewi Fitria Nugraheni, S.Pd., Gr.'],
+      ['202509109', '0105915404', 'FATHIAH NUR AMALINA GHASSANI', 'IX UMMU SALAMAH', 'P', 'Bpk. Ghassani', '081234567909', 'Aktif', '2', '-', '-', 'Pramuka', 'Wushu', 'English Club', 'Dewi Fitria Nugraheni, S.Pd., Gr.'],
+      ['202509110', '0109433278', 'FEIYAZ SABRINA', 'IX UMMU SALAMAH', 'P', 'Bpk. Sabrina', '081234567910', 'Aktif', '-', '1', '-', 'Pramuka', 'Wushu', 'Desain Grafis', 'Dewi Fitria Nugraheni, S.Pd., Gr.'],
+      ['202509111', '0102134181', 'HANA NADIAH', 'IX UMMU SALAMAH', 'P', 'Bpk. Nadiah', '081234567911', 'Aktif', '2', '-', '-', 'Pramuka', 'Wushu', 'Panahan', 'Dewi Fitria Nugraheni, S.Pd., Gr.'],
+      ['202509112', '0116883089', 'LINZIA KENIVAEL', 'IX UMMU SALAMAH', 'P', 'Bpk. Kenivael', '081234567912', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Desain Grafis', 'Dewi Fitria Nugraheni, S.Pd., Gr.'],
+      ['202509113', '0105697995', 'RAEESA AMEERA ALSHAN', 'IX UMMU SALAMAH', 'P', 'Bpk. Alshan', '081234567913', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'English Club', 'Dewi Fitria Nugraheni, S.Pd., Gr.'],
+      ['202509114', '3117690947', 'ZAHRA RIZQI SYAHBANIA', 'IX UMMU SALAMAH', 'P', 'Bpk. Syahbania', '081234567914', 'Aktif', '1', '-', '-', 'Pramuka', 'Wushu', 'English Club', 'Dewi Fitria Nugraheni, S.Pd., Gr.'],
+      ['202509115', '0111672076', 'ZAMEENA SARAH QANITA', 'IX UMMU SALAMAH', 'P', 'Bpk. Qanita', '081234567915', 'Aktif', '1', '-', '-', 'Pramuka', 'Wushu', 'Desain Grafis', 'Dewi Fitria Nugraheni, S.Pd., Gr.'],
+      ['202509116', '0111010746', 'ZANIRA ATHAYALITA YUSUF', 'IX UMMU SALAMAH', 'P', 'Bpk. Yusuf', '081234567916', 'Aktif', '4', '-', '-', 'Pramuka', 'Wushu', 'Desain Grafis', 'Dewi Fitria Nugraheni, S.Pd., Gr.']
     ];
     sheetMurid.getRange(2, 1, defaultMurid.length, 15).setValues(defaultMurid);
   }
@@ -192,20 +213,22 @@ function initDatabase() {
   ]);
   if (sheetAkademik.getLastRow() <= 1) {
     const defaultAkademik = [
-      ['NA-001', '202507001', 'Ganjil', '2025/2026', 'Akidah', 70, 87, 87, 87, 'A', 'Ananda menunjukkan pemahaman baik tentang adab dalam menyebut Asma\' Allah, Al-Qur\'an, dan Rasul-Nya serta baik dalam memahami makna bersyukur.', 'Sangat aktif dalam pembelajaran.'],
-      ['NA-002', '202507001', 'Ganjil', '2025/2026', 'Akhlak', 72, 88, 88, 88, 'A', 'Ananda baik dalam menerapkan adab terhadap orang tua dan guru.', 'Pertahankan akhlak terpuji.'],
-      ['NA-003', '202507001', 'Ganjil', '2025/2026', 'Hadis', 75, 82, 82, 82, 'B', 'Ananda baik dalam menghafal matan dan terjemah hadits kebersihan.', 'Tingkatkan muroja\'ah hadits.'],
-      ['NA-004', '202507001', 'Ganjil', '2025/2026', 'Fiqih Ibadah', 75, 90, 92, 91, 'A', 'Ananda menguasai tata cara thaharah dan sholat fardhu secara sempurna.', 'Praktik ibadah sangat baik.'],
-      ['NA-005', '202507001', 'Ganjil', '2025/2026', 'Bahasa Arab', 75, 88, 90, 89, 'A', 'Ananda sangat lancar dalam hiwar percakapan yaumiyyah dan mufrodat.', 'Kosa kata sangat luas.'],
-      ['NA-006', '202507001', 'Ganjil', '2025/2026', 'Bahasa Indonesia', 75, 90, 94, 92, 'A', 'Ananda sangat menonjol dalam menulis teks narasi dan menyimak teks berita.', 'Literasi sangat baik.'],
-      ['NA-007', '202507001', 'Ganjil', '2025/2026', 'Bahasa Inggris', 75, 86, 90, 88, 'A', 'Ananda percaya diri dalam percakapan lisan dan reading comprehension.', 'Aktif dalam dialog bahasa Inggris.'],
-      ['NA-008', '202507001', 'Ganjil', '2025/2026', 'Matematika', 72, 88, 92, 90, 'A', 'Ananda sangat baik dalam pemahaman aljabar dan logika matematika analitis.', 'Penalaran sangat tajam.'],
-      ['NA-009', '202507001', 'Ganjil', '2025/2026', 'Ilmu Pengetahuan Alam (IPA)', 72, 85, 87, 86, 'B', 'Ananda aktif dalam eksperimen sains dan penyelidikan fenomena fisika.', 'Eksperimen sangat teliti.'],
-      ['NA-010', '202507001', 'Ganjil', '2025/2026', 'Ilmu Pengetahuan Sosial (IPS)', 72, 84, 82, 83, 'B', 'Ananda mampu menganalisis dinamika ruang dan interaksi sosial dengan baik.', 'Pahami dinamika kependudukan.'],
-      ['NA-011', '202507001', 'Ganjil', '2025/2026', 'Informatika & Coding', 75, 95, 96, 96, 'A', 'Ananda sangat mahir dalam computational thinking, algoritma, dan logika web.', 'Potensi teknologi istimewa.'],
-      ['NA-012', '202507001', 'Ganjil', '2025/2026', 'Pendidikan Pancasila & Kewarganegaraan', 75, 88, 90, 89, 'A', 'Ananda memiliki pemahaman wawasan kebangsaan dan keteladanan yang kuat.', 'Sikap toleran dan beradab.'],
-      ['NA-013', '202507001', 'Ganjil', '2025/2026', 'Pendidikan Jasmani (PJOK)', 75, 88, 85, 86, 'B', 'Ananda memiliki kebugaran jasmani dan sportivitas olahraga beregu yang baik.', 'Tubuh bugar dan aktif.'],
-      ['NA-014', '202507001', 'Ganjil', '2025/2026', 'Seni Budaya & Prakarya', 75, 86, 88, 87, 'B', 'Ananda kreatif dalam pembuatan kaligrafi dan karya seni terapan islami.', 'Karya seni bernilai estetis.']
+      ['NA-001', '202509001', 'Ganjil', '2025/2026', 'Akidah', 70, 87, 87, 87, 'A', 'Ananda menunjukkan pemahaman baik tentang adab dalam menyebut Asma\' Allah, Al-Qur\'an, dan Rasul-Nya serta baik dalam memahami makna bersyukur.', 'Sangat aktif dalam pembelajaran.'],
+      ['NA-002', '202509001', 'Ganjil', '2025/2026', 'Akhlak', 72, 88, 88, 88, 'A', 'Ananda baik dalam menerapkan adab terhadap orang tua dan guru.', 'Pertahankan akhlak terpuji.'],
+      ['NA-003', '202509001', 'Ganjil', '2025/2026', 'Hadits', 75, 82, 82, 82, 'B', 'Ananda baik dalam menghafal matan dan terjemah hadits kebersihan.', 'Tingkatkan muroja\'ah hadits.'],
+      ['NA-004', '202509001', 'Ganjil', '2025/2026', 'Fikih', 75, 90, 92, 91, 'A', 'Ananda menguasai tata cara thaharah dan sholat fardhu secara sempurna.', 'Praktik ibadah sangat baik.'],
+      ['NA-005', '202509001', 'Ganjil', '2025/2026', 'SKI', 75, 80, 80, 80, 'B', 'Ananda memahami sejarah perkembangan islam.', 'Terus tingkatkan literasi sejarah.'],
+      ['NA-006', '202509001', 'Ganjil', '2025/2026', 'Pendidikan Pancasila', 75, 85, 85, 85, 'B', 'Ananda memiliki pemahaman wawasan kebangsaan yang baik.', 'Sikap toleran dan beradab.'],
+      ['NA-007', '202509001', 'Ganjil', '2025/2026', 'Bahasa Indonesia', 75, 93, 93, 93, 'A', 'Ananda sangat baik dalam memahami struktur teks laporan percobaan.', 'Literasi sangat baik.'],
+      ['NA-008', '202509001', 'Ganjil', '2025/2026', 'Bahasa Inggris', 73, 78, 78, 78, 'B', 'Ananda cukup baik dalam menggunakan berbagai ungkapan bahasa Inggris.', 'Tingkatkan conversation.'],
+      ['NA-009', '202509001', 'Ganjil', '2025/2026', 'Matematika', 75, 84, 84, 84, 'B', 'Ananda baik dalam mengenali pola susunan bilangan.', 'Penalaran baik.'],
+      ['NA-010', '202509001', 'Ganjil', '2025/2026', 'Ilmu Pengetahuan Alam', 75, 85, 85, 85, 'B', 'Ananda baik dalam memahami ciri makhluk hidup dan sistem reproduksi.', 'Eksperimen baik.'],
+      ['NA-011', '202509001', 'Ganjil', '2025/2026', 'Ilmu Pengetahuan Sosial', 75, 89, 89, 89, 'B', 'Ananda baik dalam memahami kondisi geografis Indonesia.', 'Analisis spasial baik.'],
+      ['NA-012', '202509001', 'Ganjil', '2025/2026', 'Prakarya', 70, 86, 86, 86, 'B', 'Ananda baik dalam membuat karya seni rupa modifikasi.', 'Kreatif.'],
+      ['NA-013', '202509001', 'Ganjil', '2025/2026', 'Pendidikan Jasmani, Olahraga, dan Kesehatan', 72, 89, 89, 89, 'B', 'Ananda baik dalam mempraktikkan permainan bola voli dan sepak bola.', 'Sportif.'],
+      ['NA-014', '202509001', 'Ganjil', '2025/2026', 'Bahasa Sunda', 75, 90, 90, 90, 'A', 'Ananda sangat baik dalam menganalisis biantara.', 'Sangat baik.'],
+      ['NA-015', '202509001', 'Ganjil', '2025/2026', 'Informatika', 75, 85, 85, 85, 'B', 'Ananda baik dalam pemecahan persoalan komputasional.', 'Logika baik.'],
+      ['NA-016', '202509001', 'Ganjil', '2025/2026', 'Bahasa Arab', 75, 76, 76, 76, 'C', 'Ananda cukup baik dalam penguasaan mufrodat dan dhomir.', 'Tingkatkan hafalan mufrodat.']
     ];
     sheetAkademik.getRange(2, 1, defaultAkademik.length, 12).setValues(defaultAkademik);
   }
@@ -217,26 +240,26 @@ function initDatabase() {
   if (sheetKepemimpinan.getLastRow() <= 1) {
     const defaultKepemimpinan = [
       [
-        'NK-001', '202507001', 'Ganjil', '2025/2026',
+        'NK-001', '202509001', 'Ganjil', '2025/2026',
         'Jadikan ibadah sebagai kebutuhan, bukan hanya kewajiban.',
-        'Keseimbangan antara kemampuan akademis serta sikap & akhlak mulia menjadikanmu insan yang lebih baik.',
-        'Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita.',
-        'Kerapihan & kebersihan diri merupakan cermin pribadi seorang muslim, jadikanlah itu sebagai identitasmu.',
-        'Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan.',
-        'Berbagi peran dalam kerjasama kelompok akan menciptakan keharmonisan.',
-        'Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Tingkatkan semangat belajarmu.',
+        'Alhamdulillah, pertahankan akhlak baikmu di mana saja Ananda berada',
+        'Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita',
+        'Kerapihan & kebersihan diri merupakan cermin pribadi seorang muslim, jadikanlah itu sebagai identitasmu',
+        'Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan',
+        'Berbagi peran dalam kerjasama kelompok akan menciptakan keharmonisan',
+        'Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal & cita-cita di masa depan.',
         'Sangat disiplin dan menunjukkan keteladanan yang baik bagi teman-temannya.'
       ],
       [
-        'NK-002', '202507002', 'Ganjil', '2025/2026',
+        'NK-002', '202509101', 'Ganjil', '2025/2026',
         'Jadikan ibadah sebagai kebutuhan, bukan hanya kewajiban.',
-        'Keseimbangan antara kemampuan akademis serta sikap & akhlak mulia menjadikanmu insan yang lebih baik.',
-        'Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita.',
-        'Kerapihan & kebersihan diri merupakan cermin pribadi seorang muslim, jadikanlah itu sebagai identitasmu.',
-        'Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan.',
-        'Tolong-menolonglah kamu dalam kebaikan dan jangan tolong-menolong dalam keburukan.',
-        'Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal. Tingkatkan semangat belajarmu.',
-        'Ananda santun dan kooperatif di kelas.'
+        'Alhamdulillah, pertahankan akhlak baikmu di mana saja Ananda berada',
+        'Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita',
+        'Kerapihan & kebersihan diri dan lingkungan akan menciptakan rasa nyaman dalam belajar',
+        'Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan',
+        'Berbagi peran dalam kerjasama kelompok akan menciptakan keharmonisan',
+        'Sudah menunjukkan sikap belajar yang positif. Tingkatkan lagi ketekunan dan manajemen waktumu agar hasilnya semakin baik.',
+        'Ananda santun dan sangat aktif di kelas.'
       ]
     ];
     sheetKepemimpinan.getRange(2, 1, defaultKepemimpinan.length, 12).setValues(defaultKepemimpinan);
