@@ -1,18 +1,22 @@
-<!-- Manajemen Data Murid & Kelas -->
+<!-- Manajemen Data Murid & Kehadiran / Ekskul (Format Data Siswa SMP Al-Imam) -->
 <div id="view-murid" class="view-panel hidden space-y-6">
   
   <!-- Header & Toolbar -->
   <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
-    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
       <div>
         <div class="flex items-center gap-2">
           <span class="w-2.5 h-2.5 rounded-full bg-purple-600"></span>
-          <h2 class="text-lg font-bold text-slate-900">Manajemen Data Murid & Rombel</h2>
+          <h2 class="text-lg font-bold text-slate-900">Data Peserta Didik, Presensi & Ekskul</h2>
         </div>
-        <p class="text-xs text-slate-500 mt-0.5">Master data murid, pembagian kelas/rombel, dan informasi orang tua/wali murid.</p>
+        <p class="text-xs text-slate-500 mt-0.5">Sesuai Format Excel SMP Al-Imam: Master NISN, Nama Peserta Didik, Kehadiran (S/I/A), dan Pilihan 3 Ekstrakurikuler.</p>
       </div>
 
-      <div class="flex items-center gap-2">
+      <div class="flex flex-wrap items-center gap-2">
+        <button onclick="openModalBulkPresensi()" class="px-3.5 py-2 bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-200 font-bold rounded-xl text-xs shadow-sm transition flex items-center gap-1.5">
+          <i class="fa-solid fa-clipboard-user"></i>
+          <span>Input Presensi & Ekskul Sekelas</span>
+        </button>
         <button onclick="openModalMurid()" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-xl text-xs shadow transition flex items-center gap-2">
           <i class="fa-solid fa-user-plus"></i>
           <span>Tambah Murid</span>
@@ -27,8 +31,9 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4 pt-4 border-t border-slate-100">
       <div>
         <label class="block text-[11px] font-semibold text-slate-600 mb-1">Filter Kelas</label>
-        <select id="filter-murid-kelas" onchange="loadMuridList()" class="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-purple-500">
+        <select id="filter-murid-kelas" onchange="loadMuridList()" class="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-purple-500 font-bold">
           <option value="Semua">Semua Kelas</option>
+          <option value="IX ABU BAKAR">Kelas IX ABU BAKAR</option>
           <option value="7A">Kelas 7A (Ikhwan)</option>
           <option value="7B">Kelas 7B (Akhwat)</option>
           <option value="8A">Kelas 8A (Ikhwan)</option>
@@ -55,22 +60,21 @@
       <table class="w-full text-left text-xs text-slate-700">
         <thead class="bg-slate-50 text-slate-600 uppercase text-[10px] font-bold tracking-wider border-b border-slate-200">
           <tr>
-            <th class="px-4 py-3.5">NIS</th>
-            <th class="px-4 py-3.5">NISN</th>
-            <th class="px-4 py-3.5">Nama Murid</th>
+            <th class="w-12 px-3 py-3.5 text-center">No</th>
+            <th class="px-3 py-3.5">NISN</th>
+            <th class="px-4 py-3.5">Nama Peserta Didik</th>
             <th class="px-3 py-3.5 text-center">Kelas</th>
-            <th class="px-3 py-3.5 text-center">L/P</th>
-            <th class="px-4 py-3.5">Nama Wali</th>
-            <th class="px-4 py-3.5">Kontak Wali</th>
+            <th class="px-3 py-3.5 text-center">Kehadiran (S / I / A)</th>
+            <th class="px-4 py-3.5">Ekstrakurikuler (1, 2, 3)</th>
             <th class="px-3 py-3.5 text-center">Status</th>
             <th class="px-4 py-3.5 text-right">Aksi & Rapor</th>
           </tr>
         </thead>
         <tbody id="table-murid-body" class="divide-y divide-slate-100">
           <tr>
-            <td colspan="9" class="px-4 py-8 text-center text-slate-400">
+            <td colspan="8" class="px-4 py-8 text-center text-slate-400">
               <i class="fa-solid fa-spinner fa-spin text-lg mb-2"></i>
-              <p>Memuat data murid...</p>
+              <p>Memuat data peserta didik...</p>
             </td>
           </tr>
         </tbody>
@@ -80,40 +84,41 @@
 
 </div>
 
-<!-- Modal Form: Tambah / Edit Murid -->
+<!-- Modal Form: Tambah / Edit Murid Individual -->
 <div id="modal-murid" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-  <div class="bg-white rounded-2xl max-w-lg w-full shadow-2xl border border-slate-100 overflow-hidden transform transition-all">
+  <div class="bg-white rounded-2xl max-w-lg w-full max-h-[90vh] shadow-2xl border border-slate-100 overflow-hidden flex flex-col transform transition-all">
     <div class="px-6 py-4 bg-gradient-to-r from-purple-900 to-indigo-900 text-white flex items-center justify-between">
       <div class="flex items-center gap-2">
         <i class="fa-solid fa-user-graduate text-purple-300"></i>
-        <h3 class="font-bold text-sm" id="modal-murid-title">Form Data Murid</h3>
+        <h3 class="font-bold text-sm" id="modal-murid-title">Form Data Peserta Didik</h3>
       </div>
       <button onclick="closeModalMurid()" class="text-slate-300 hover:text-white text-lg">
         <i class="fa-solid fa-xmark"></i>
       </button>
     </div>
 
-    <form id="form-murid" onsubmit="submitFormMurid(event)" class="p-6 space-y-4">
+    <form id="form-murid" onsubmit="submitFormMurid(event)" class="p-6 space-y-4 overflow-y-auto flex-1">
       <div class="grid grid-cols-2 gap-3">
         <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">NIS (Nomor Induk) *</label>
+          <label class="block text-xs font-bold text-slate-700 mb-1">NIS *</label>
           <input type="text" id="murid-nis" required class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-purple-500" placeholder="202507001" />
         </div>
         <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">NISN</label>
-          <input type="text" id="murid-nisn" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-purple-500" placeholder="0091234561" />
+          <label class="block text-xs font-bold text-slate-700 mb-1">NISN *</label>
+          <input type="text" id="murid-nisn" required class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-purple-500 font-bold" placeholder="0113408257" />
         </div>
       </div>
 
       <div>
-        <label class="block text-xs font-bold text-slate-700 mb-1">Nama Lengkap Murid *</label>
-        <input type="text" id="murid-nama" required class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-purple-500" placeholder="Nama murid..." />
+        <label class="block text-xs font-bold text-slate-700 mb-1">Nama Peserta Didik *</label>
+        <input type="text" id="murid-nama" required class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-purple-500 font-bold" placeholder="AHMAD YAZID ILMANY RAMADHAN" />
       </div>
 
       <div class="grid grid-cols-2 gap-3">
         <div>
           <label class="block text-xs font-bold text-slate-700 mb-1">Kelas / Rombel *</label>
-          <select id="murid-kelas" required class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-purple-500">
+          <select id="murid-kelas" required class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-purple-500 font-bold">
+            <option value="IX ABU BAKAR">IX ABU BAKAR</option>
             <option value="7A">7A</option>
             <option value="7B">7B</option>
             <option value="8A">8A</option>
@@ -131,13 +136,51 @@
         </div>
       </div>
 
+      <!-- Presensi Kehadiran (S, I, A) -->
+      <div class="bg-purple-50/60 p-3 rounded-xl border border-purple-100 space-y-2">
+        <span class="text-xs font-bold text-purple-900 block">Kehadiran (Absen sampai pekan UTS)</span>
+        <div class="grid grid-cols-3 gap-2">
+          <div>
+            <label class="block text-[10px] font-bold text-slate-600">Sakit (S)</label>
+            <input type="number" id="murid-kehadiran-s" min="0" value="0" class="w-full text-xs bg-white border border-purple-200 rounded-lg px-2 py-1.5 text-center font-bold text-slate-800" />
+          </div>
+          <div>
+            <label class="block text-[10px] font-bold text-slate-600">Izin (I)</label>
+            <input type="number" id="murid-kehadiran-i" min="0" value="0" class="w-full text-xs bg-white border border-purple-200 rounded-lg px-2 py-1.5 text-center font-bold text-slate-800" />
+          </div>
+          <div>
+            <label class="block text-[10px] font-bold text-slate-600">Alpa (A)</label>
+            <input type="number" id="murid-kehadiran-a" min="0" value="0" class="w-full text-xs bg-white border border-purple-200 rounded-lg px-2 py-1.5 text-center font-bold text-slate-800" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Ekstrakurikuler (1, 2, 3) -->
+      <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-2">
+        <span class="text-xs font-bold text-slate-800 block">Kegiatan Ekstrakurikuler</span>
+        <div class="grid grid-cols-3 gap-2">
+          <div>
+            <label class="block text-[10px] font-bold text-slate-600">Ekskul 1</label>
+            <input type="text" id="murid-ekskul-1" value="Pramuka" class="w-full text-xs bg-white border border-slate-300 rounded-lg px-2 py-1.5 text-slate-800 font-medium" />
+          </div>
+          <div>
+            <label class="block text-[10px] font-bold text-slate-600">Ekskul 2</label>
+            <input type="text" id="murid-ekskul-2" value="Wushu" class="w-full text-xs bg-white border border-slate-300 rounded-lg px-2 py-1.5 text-slate-800 font-medium" />
+          </div>
+          <div>
+            <label class="block text-[10px] font-bold text-slate-600">Ekskul 3</label>
+            <input type="text" id="murid-ekskul-3" value="Futsal" class="w-full text-xs bg-white border border-slate-300 rounded-lg px-2 py-1.5 text-slate-800 font-medium" />
+          </div>
+        </div>
+      </div>
+
       <div class="grid grid-cols-2 gap-3">
         <div>
           <label class="block text-xs font-bold text-slate-700 mb-1">Nama Orang Tua / Wali</label>
           <input type="text" id="murid-wali" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-purple-500" placeholder="Nama wali..." />
         </div>
         <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">Kontak / No. WhatsApp Wali</label>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Kontak WhatsApp</label>
           <input type="text" id="murid-kontak" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-purple-500" placeholder="081234567890" />
         </div>
       </div>
@@ -157,9 +200,75 @@
         </button>
         <button type="submit" id="btn-save-murid" class="px-5 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-xs font-bold shadow flex items-center gap-2">
           <i class="fa-solid fa-floppy-disk"></i>
-          <span>Simpan Murid</span>
+          <span>Simpan Data Murid</span>
         </button>
       </div>
     </form>
+  </div>
+</div>
+
+<!-- Modal Form: Presensi & Ekskul Massal Sekelas -->
+<div id="modal-bulk-presensi" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+  <div class="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] shadow-2xl border border-slate-100 overflow-hidden flex flex-col transform transition-all">
+    <div class="px-6 py-4 bg-gradient-to-r from-purple-900 to-indigo-900 text-white flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <i class="fa-solid fa-clipboard-user text-purple-300"></i>
+        <h3 class="font-bold text-sm">Input Presensi & Ekskul Sekelas (Cepat)</h3>
+      </div>
+      <button onclick="closeModalBulkPresensi()" class="text-slate-300 hover:text-white text-lg">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <div class="p-6 space-y-4 overflow-y-auto flex-1">
+      <div class="flex items-center justify-between gap-4">
+        <div>
+          <label class="block text-[10px] font-bold text-slate-500 uppercase">Pilih Kelas</label>
+          <select id="bulk-presensi-kelas" onchange="renderBulkPresensiGrid()" class="text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 font-bold text-slate-800">
+            <option value="IX ABU BAKAR">IX ABU BAKAR</option>
+            <option value="7A">7A</option>
+            <option value="7B">7B</option>
+            <option value="8A">8A</option>
+            <option value="8B">8B</option>
+            <option value="9A">9A</option>
+            <option value="9B">9B</option>
+          </select>
+        </div>
+        <div class="text-xs text-slate-500 italic">
+          Absen dihitung sampai pekan UTS.
+        </div>
+      </div>
+
+      <div class="overflow-x-auto rounded-xl border border-slate-200">
+        <table class="w-full text-left text-xs text-slate-700">
+          <thead class="bg-slate-100 text-slate-800 uppercase text-[10px] font-extrabold border-b border-slate-200">
+            <tr>
+              <th class="w-10 px-2 py-3 text-center">No</th>
+              <th class="w-28 px-3 py-3">NISN</th>
+              <th class="w-56 px-3 py-3">Nama Peserta Didik</th>
+              <th class="w-16 px-2 py-3 text-center bg-rose-50 text-rose-900">Sakit (S)</th>
+              <th class="w-16 px-2 py-3 text-center bg-amber-50 text-amber-900">Izin (I)</th>
+              <th class="w-16 px-2 py-3 text-center bg-slate-200 text-slate-900">Alpa (A)</th>
+              <th class="px-2 py-3">Ekskul 1</th>
+              <th class="px-2 py-3">Ekskul 2</th>
+              <th class="px-2 py-3">Ekskul 3</th>
+            </tr>
+          </thead>
+          <tbody id="bulk-presensi-tbody" class="divide-y divide-slate-200 bg-white">
+            <!-- Populated dynamically via JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="px-6 py-4 bg-slate-50 border-t border-slate-200 flex items-center justify-end gap-2">
+      <button type="button" onclick="closeModalBulkPresensi()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-xl text-xs font-semibold">
+        Batal
+      </button>
+      <button type="button" onclick="saveBulkPresensiData()" class="px-5 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-xs font-bold shadow flex items-center gap-2">
+        <i class="fa-solid fa-floppy-disk"></i>
+        <span>Simpan Presensi & Ekskul Sekelas</span>
+      </button>
+    </div>
   </div>
 </div>

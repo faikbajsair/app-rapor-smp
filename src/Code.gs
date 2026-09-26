@@ -145,6 +145,8 @@ function dispatchApiAction(action, payload) {
       case 'saveMurid':
       case 'saveSantri':
         return saveMurid(payload);
+      case 'saveBulkMuridData':
+        return saveBulkMuridData(payload.items || payload);
       case 'deleteMurid':
       case 'deleteSantri':
         return deleteMurid(payload.nis);
@@ -164,15 +166,22 @@ function dispatchApiAction(action, payload) {
         return { success: true, data: getNilaiAkademikList(payload) };
       case 'saveNilaiAkademik':
         return saveNilaiAkademik(payload);
+      case 'saveBulkNilaiAkademik':
+        return saveBulkNilaiAkademik(payload);
       case 'deleteNilaiAkademik':
         return deleteNilaiAkademik(payload.id);
         
-      // Nilai Kepemimpinan
+      // Nilai Kepribadian / Kepemimpinan
       case 'getNilaiKepemimpinan':
+      case 'getNilaiKepribadian':
         return { success: true, data: getNilaiKepemimpinanList(payload) };
       case 'saveNilaiKepemimpinan':
+      case 'saveNilaiKepribadian':
         return saveNilaiKepemimpinan(payload);
+      case 'saveBulkKepribadian':
+        return saveBulkKepribadian(payload.items || payload);
       case 'deleteNilaiKepemimpinan':
+      case 'deleteNilaiKepribadian':
         return deleteNilaiKepemimpinan(payload.id);
         
       // Nilai Diniyah
@@ -209,6 +218,7 @@ function apiGetSummaryStats() { return dispatchApiAction('getSummaryStats', {});
 
 function apiGetMurid(kelas) { return dispatchApiAction('getMurid', { kelas: kelas }); }
 function apiSaveMurid(data) { return dispatchApiAction('saveMurid', data); }
+function apiSaveBulkMuridData(data) { return dispatchApiAction('saveBulkMuridData', data); }
 function apiDeleteMurid(nis) { return dispatchApiAction('deleteMurid', { nis: nis }); }
 function apiGetMuridReport(nis) { return dispatchApiAction('getMuridReport', { nis: nis }); }
 
@@ -225,12 +235,18 @@ function apiChangePassword(userId, oldPass, newPass) { return dispatchApiAction(
 
 function apiGetNilaiAkademik(filters) { return dispatchApiAction('getNilaiAkademik', filters || {}); }
 function apiSaveNilaiAkademik(data) { return dispatchApiAction('saveNilaiAkademik', data); }
+function apiSaveBulkNilaiAkademik(data) { return dispatchApiAction('saveBulkNilaiAkademik', data); }
 function apiDeleteNilaiAkademik(id) { return dispatchApiAction('deleteNilaiAkademik', { id: id }); }
 
 function apiGetNilaiKepemimpinan(filters) { return dispatchApiAction('getNilaiKepemimpinan', filters || {}); }
 function apiSaveNilaiKepemimpinan(data) { return dispatchApiAction('saveNilaiKepemimpinan', data); }
+function apiGetNilaiKepribadian(filters) { return dispatchApiAction('getNilaiKepribadian', filters || {}); }
+function apiSaveNilaiKepribadian(data) { return dispatchApiAction('saveNilaiKepribadian', data); }
+function apiSaveBulkKepribadian(data) { return dispatchApiAction('saveBulkKepribadian', data); }
 function apiDeleteNilaiKepemimpinan(id) { return dispatchApiAction('deleteNilaiKepemimpinan', { id: id }); }
+function apiDeleteNilaiKepribadian(id) { return dispatchApiAction('deleteNilaiKepribadian', { id: id }); }
 
 function apiGetNilaiDiniyah(filters) { return dispatchApiAction('getNilaiDiniyah', filters || {}); }
 function apiSaveNilaiDiniyah(data) { return dispatchApiAction('saveNilaiDiniyah', data); }
 function apiDeleteNilaiDiniyah(id) { return dispatchApiAction('deleteNilaiDiniyah', { id: id }); }
+

@@ -1,172 +1,257 @@
-<!-- Dashboard & Form Nilai Kepemimpinan -->
+<!-- Dashboard & Form Ahlaq & Kepribadian (Tiru Format Excel SMP Al-Imam) -->
 <div id="view-kepemimpinan" class="view-panel hidden space-y-6">
   
-  <!-- Section Header & Filter Toolbar -->
+  <!-- Header & Mode Switcher -->
   <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
-    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
       <div>
         <div class="flex items-center gap-2">
           <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
-          <h2 class="text-lg font-bold text-slate-900">Dashboard Penilaian Kepemimpinan</h2>
+          <h2 class="text-lg font-bold text-slate-900">Penilaian Ahlaq & Kepribadian</h2>
         </div>
-        <p class="text-xs text-slate-500 mt-0.5">Evaluasi kedisiplinan, organisasi, karakter adab, inisiatif, dan soft-skills kepemimpinan murid.</p>
+        <p class="text-xs text-slate-500 mt-0.5">Sesuai Format Excel SMP Al-Imam: 6 Aspek Karakter Utama (Ibadah, Akhlak, Kedisiplinan, Kerapihan, Kepemimpinan, Kerja Sama) & Catatan Wali Kelas.</p>
       </div>
 
-      <div class="flex items-center gap-2">
-        <button onclick="openModalKepemimpinan()" class="btn-action-input px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded-xl text-xs shadow transition flex items-center gap-2">
-          <i class="fa-solid fa-plus"></i>
-          <span>Input Nilai Kepemimpinan</span>
+      <!-- Mode Switcher Tabs -->
+      <div class="flex items-center gap-2 bg-slate-100 p-1 rounded-xl">
+        <button id="btn-mode-kp-leger" onclick="switchKepribadianInputMode('leger')" 
+                class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-2 bg-white text-amber-800 shadow-sm">
+          <i class="fa-solid fa-table-cells"></i>
+          <span>Mode Input Sekelas (Bank Kalimat)</span>
         </button>
-        <button onclick="loadNilaiKepemimpinan()" class="p-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold transition" title="Refresh Data">
-          <i class="fa-solid fa-rotate"></i>
+        <button id="btn-mode-kp-list" onclick="switchKepribadianInputMode('list')" 
+                class="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 transition flex items-center gap-2">
+          <i class="fa-solid fa-list-check"></i>
+          <span>Tabel Riwayat Entri</span>
         </button>
       </div>
     </div>
 
-    <!-- Statistik Ringkasan Kepemimpinan Widgets -->
+    <!-- Statistik Ringkasan Kepribadian Widgets -->
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4 pt-4 border-t border-slate-100">
       <div class="bg-amber-50/70 border border-amber-100 p-3 rounded-xl">
         <span class="text-[10px] font-bold text-amber-700 uppercase tracking-wider block">Total Terinput</span>
         <span class="text-lg font-extrabold text-amber-950" id="widget-kp-total">0</span>
       </div>
       <div class="bg-emerald-50/70 border border-emerald-100 p-3 rounded-xl">
-        <span class="text-[10px] font-bold text-emerald-700 uppercase tracking-wider block">Disiplin Sangat Baik (A)</span>
-        <span class="text-lg font-extrabold text-emerald-950" id="widget-kp-count-a">0</span>
+        <span class="text-[10px] font-bold text-emerald-700 uppercase tracking-wider block">Aspek Ibadah Lengkap</span>
+        <span class="text-lg font-extrabold text-emerald-950" id="widget-kp-ibadah-count">100%</span>
       </div>
       <div class="bg-blue-50/70 border border-blue-100 p-3 rounded-xl">
-        <span class="text-[10px] font-bold text-blue-700 uppercase tracking-wider block">Organisasi Sangat Aktif</span>
-        <span class="text-lg font-extrabold text-blue-950" id="widget-kp-org-a">0</span>
+        <span class="text-[10px] font-bold text-blue-700 uppercase tracking-wider block">Aspek Akhlak Lengkap</span>
+        <span class="text-lg font-extrabold text-blue-950" id="widget-kp-akhlak-count">100%</span>
       </div>
       <div class="bg-purple-50/70 border border-purple-100 p-3 rounded-xl">
-        <span class="text-[10px] font-bold text-purple-700 uppercase tracking-wider block">Karakter & Adab Baik</span>
+        <span class="text-[10px] font-bold text-purple-700 uppercase tracking-wider block">Catatan Terisi</span>
         <span class="text-lg font-extrabold text-purple-950" id="widget-kp-char-good">100%</span>
-      </div>
-    </div>
-
-    <!-- Filters Row -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4 pt-4 border-t border-slate-100">
-      <div>
-        <label class="block text-[11px] font-semibold text-slate-600 mb-1">Filter Kelas</label>
-        <select id="filter-kepemimpinan-kelas" onchange="loadNilaiKepemimpinan()" class="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500">
-          <option value="Semua">Semua Kelas</option>
-          <option value="7A">Kelas 7A (Ikhwan)</option>
-          <option value="7B">Kelas 7B (Akhwat)</option>
-          <option value="8A">Kelas 8A (Ikhwan)</option>
-          <option value="8B">Kelas 8B (Akhwat)</option>
-          <option value="9A">Kelas 9A (Ikhwan)</option>
-          <option value="9B">Kelas 9B (Akhwat)</option>
-        </select>
-      </div>
-
-      <div>
-        <label class="block text-[11px] font-semibold text-slate-600 mb-1">Cari Murid</label>
-        <div class="relative">
-          <input type="text" id="filter-kepemimpinan-search" oninput="filterTableKepemimpinanLocal()" placeholder="Ketik nama atau NIS murid..." 
-                 class="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg pl-8 pr-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500" />
-          <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-2.5 text-slate-400 text-xs"></i>
-        </div>
       </div>
     </div>
   </div>
 
-  <!-- Table Container -->
-  <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-    <div class="overflow-x-auto">
-      <table class="w-full text-left text-xs text-slate-700">
-        <thead class="bg-slate-50 text-slate-600 uppercase text-[10px] font-bold tracking-wider border-b border-slate-200">
-          <tr>
-            <th class="px-4 py-3.5">Murid / NIS</th>
-            <th class="px-3 py-3.5">Kelas</th>
-            <th class="px-3 py-3.5">Kedisiplinan</th>
-            <th class="px-3 py-3.5">Organisasi</th>
-            <th class="px-3 py-3.5">Karakter & Adab</th>
-            <th class="px-3 py-3.5">Kemandirian</th>
-            <th class="px-4 py-3.5">Catatan Pembina / Wali Kelas</th>
-            <th class="px-4 py-3.5 text-right">Aksi</th>
-          </tr>
-        </thead>
-        <tbody id="table-kepemimpinan-body" class="divide-y divide-slate-100">
-          <tr>
-            <td colspan="8" class="px-4 py-8 text-center text-slate-400">
-              <i class="fa-solid fa-spinner fa-spin text-lg mb-2"></i>
-              <p>Memuat data nilai kepemimpinan...</p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+  <!-- SECTION 1: MODE INPUT GRID SEKELAS & BANK KALIMAT (GURU-FIRST WORKFLOW) -->
+  <div id="section-kp-leger" class="space-y-4">
+    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+      
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
+        <div class="flex items-center gap-3">
+          <div>
+            <label class="block text-[10px] font-bold text-slate-500 uppercase">Pilih Kelas</label>
+            <select id="leger-kp-kelas" onchange="renderKepribadianGrid()" class="text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 font-bold text-slate-800 focus:ring-2 focus:ring-amber-500">
+              <option value="IX ABU BAKAR">IX ABU BAKAR</option>
+              <option value="7A">7A (Ikhwan)</option>
+              <option value="7B">7B (Akhwat)</option>
+              <option value="8A">8A (Ikhwan)</option>
+              <option value="8B">8B (Akhwat)</option>
+              <option value="9A">9A (Ikhwan)</option>
+              <option value="9B">9B (Akhwat)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Quick Generator & Fast-Fill Tools -->
+        <div class="flex flex-wrap items-center gap-2">
+          <button onclick="applyDefaultAlImamBankKalimat()" 
+                  class="px-3.5 py-2 bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-300 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm"
+                  title="Terapkan kalimat standar Ahlaq & Kepribadian Al-Imam untuk semua murid sekelas dalam 1-klik">
+            <i class="fa-solid fa-wand-magic-sparkles text-amber-600"></i>
+            <span>Terapkan Bank Kalimat Al-Imam (Sekelas)</span>
+          </button>
+          
+          <button onclick="saveBulkKepribadianGrid()" id="btn-save-bulk-kp"
+                  class="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs font-bold shadow-md transition flex items-center gap-2">
+            <i class="fa-solid fa-floppy-disk"></i>
+            <span>Simpan Kepribadian Sekelas</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick Tips & Bank Kalimat Info -->
+      <div class="p-3 bg-amber-50/60 border border-amber-100 rounded-xl text-xs text-amber-900 flex flex-col md:flex-row md:items-center justify-between gap-2">
+        <div class="flex items-center gap-2">
+          <i class="fa-solid fa-circle-check text-amber-600 text-sm"></i>
+          <span><strong>Bank Kalimat Otomatis:</strong> Guru dapat memilih opsi template kalimat atau mengedit teks sesuai karakteristik masing-masing murid.</span>
+        </div>
+        <div class="text-[11px] font-semibold text-amber-800">
+          Total Murid: <span id="kp-student-count" class="font-bold">12</span>
+        </div>
+      </div>
+
+      <!-- Student Kepribadian Cards Grid -->
+      <div id="kp-cards-container" class="space-y-4">
+        <!-- Populated dynamically via JS -->
+      </div>
+
+      <div class="flex items-center justify-between pt-3 border-t border-slate-100 text-xs text-slate-500">
+        <span>Semua 6 aspek kepribadian & catatan diperhatikan akan dicetak pada Rapor Portofolio.</span>
+        <button onclick="saveBulkKepribadianGrid()" class="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs font-bold shadow transition flex items-center gap-2">
+          <i class="fa-solid fa-floppy-disk"></i>
+          <span>Simpan Kepribadian Sekelas</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SECTION 2: MODE RIWAYAT / DETAIL (TABLE LIST) -->
+  <div id="section-kp-list" class="space-y-4 hidden">
+    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+      
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 flex-1">
+          <div>
+            <label class="block text-[11px] font-semibold text-slate-600 mb-1">Filter Kelas</label>
+            <select id="filter-kepemimpinan-kelas" onchange="loadNilaiKepemimpinan()" class="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500">
+              <option value="Semua">Semua Kelas</option>
+              <option value="IX ABU BAKAR">Kelas IX ABU BAKAR</option>
+              <option value="7A">Kelas 7A (Ikhwan)</option>
+              <option value="7B">Kelas 7B (Akhwat)</option>
+              <option value="8A">Kelas 8A (Ikhwan)</option>
+              <option value="8B">Kelas 8B (Akhwat)</option>
+              <option value="9A">Kelas 9A (Ikhwan)</option>
+              <option value="9B">Kelas 9B (Akhwat)</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-[11px] font-semibold text-slate-600 mb-1">Cari Murid</label>
+            <div class="relative">
+              <input type="text" id="filter-kepemimpinan-search" oninput="filterTableKepemimpinanLocal()" placeholder="Ketik nama murid..." 
+                     class="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg pl-8 pr-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500" />
+              <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-2.5 text-slate-400 text-xs"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 self-end">
+          <button onclick="openModalKepemimpinan()" class="btn-action-input px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded-xl text-xs shadow transition flex items-center gap-2">
+            <i class="fa-solid fa-plus"></i>
+            <span>Input Per Murid</span>
+          </button>
+          <button onclick="loadNilaiKepemimpinan()" class="p-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold transition" title="Refresh Data">
+            <i class="fa-solid fa-rotate"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Table Container -->
+      <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs text-slate-700">
+            <thead class="bg-slate-50 text-slate-600 uppercase text-[10px] font-bold tracking-wider border-b border-slate-200">
+              <tr>
+                <th class="px-4 py-3.5">Murid / NISN</th>
+                <th class="px-3 py-3.5">Kelas</th>
+                <th class="px-3 py-3.5">Ibadah</th>
+                <th class="px-3 py-3.5">Akhlak</th>
+                <th class="px-3 py-3.5">Kedisiplinan</th>
+                <th class="px-3 py-3.5">Kerapihan</th>
+                <th class="px-3 py-3.5">Kepemimpinan</th>
+                <th class="px-3 py-3.5">Kerja Sama</th>
+                <th class="px-4 py-3.5 text-right">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="table-kepemimpinan-body" class="divide-y divide-slate-100">
+              <tr>
+                <td colspan="9" class="px-4 py-8 text-center text-slate-400">
+                  <i class="fa-solid fa-spinner fa-spin text-lg mb-2"></i>
+                  <p>Memuat data nilai kepribadian...</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
     </div>
   </div>
 
 </div>
 
-<!-- Modal Form: Tambah / Edit Nilai Kepemimpinan -->
+<!-- Modal Form: Tambah / Edit Ahlaq & Kepribadian Individual -->
 <div id="modal-kepemimpinan" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-  <div class="bg-white rounded-2xl max-w-lg w-full shadow-2xl border border-slate-100 overflow-hidden transform transition-all">
+  <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] shadow-2xl border border-slate-100 overflow-hidden flex flex-col transform transition-all">
     <div class="px-6 py-4 bg-gradient-to-r from-amber-700 to-yellow-800 text-white flex items-center justify-between">
       <div class="flex items-center gap-2">
         <i class="fa-solid fa-award text-amber-300"></i>
-        <h3 class="font-bold text-sm" id="modal-kepemimpinan-title">Input Nilai Kepemimpinan</h3>
+        <h3 class="font-bold text-sm" id="modal-kepemimpinan-title">Input Ahlaq & Kepribadian Murid</h3>
       </div>
       <button onclick="closeModalKepemimpinan()" class="text-slate-300 hover:text-white text-lg">
         <i class="fa-solid fa-xmark"></i>
       </button>
     </div>
 
-    <form id="form-kepemimpinan" onsubmit="submitFormKepemimpinan(event)" class="p-6 space-y-4">
+    <form id="form-kepemimpinan" onsubmit="submitFormKepemimpinan(event)" class="p-6 space-y-4 overflow-y-auto flex-1">
       <input type="hidden" id="kepemimpinan-id" />
 
       <div>
         <label class="block text-xs font-bold text-slate-700 mb-1">Pilih Murid *</label>
-        <select id="kepemimpinan-nis" required class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-amber-500">
+        <select id="kepemimpinan-nis" required class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-amber-500 font-bold">
           <!-- Populated dynamically via JS -->
         </select>
       </div>
 
-      <div class="grid grid-cols-2 gap-3">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <!-- 1. Ibadah -->
         <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">Kedisiplinan *</label>
-          <select id="kepemimpinan-kedisiplinan" required class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-amber-500">
-            <option value="Sangat Baik (A)">Sangat Baik (A)</option>
-            <option value="Baik (B)">Baik (B)</option>
-            <option value="Cukup (C)">Cukup (C)</option>
-            <option value="Perlu Bimbingan (D)">Perlu Bimbingan (D)</option>
-          </select>
+          <label class="block text-xs font-bold text-slate-700 mb-1">1. Ibadah *</label>
+          <textarea id="kp-ibadah" rows="2" required class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-amber-500" placeholder="Jadikan ibadah sebagai kebutuhan, bukan hanya kewajiban."></textarea>
         </div>
+
+        <!-- 2. Akhlak -->
         <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">Keorganisasian *</label>
-          <select id="kepemimpinan-organisasi" required class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-amber-500">
-            <option value="Sangat Aktif (A)">Sangat Aktif (A)</option>
-            <option value="Aktif (B)">Aktif (B)</option>
-            <option value="Cukup Aktif (C)">Cukup Aktif (C)</option>
-            <option value="Kurang Aktif (D)">Kurang Aktif (D)</option>
-          </select>
+          <label class="block text-xs font-bold text-slate-700 mb-1">2. Akhlak *</label>
+          <textarea id="kp-akhlak" rows="2" required class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-amber-500" placeholder="Keseimbangan antara kemampuan akademis serta sikap & akhlak mulia..."></textarea>
+        </div>
+
+        <!-- 3. Kedisiplinan & Kerajinan -->
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">3. Kedisiplinan & Kerajinan *</label>
+          <textarea id="kp-kedisiplinan" rows="2" required class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-amber-500" placeholder="Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu..."></textarea>
+        </div>
+
+        <!-- 4. Kerapihan & Kebersihan -->
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">4. Kerapihan & Kebersihan *</label>
+          <textarea id="kp-kerapihan" rows="2" required class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-amber-500" placeholder="Kerapihan & kebersihan diri merupakan cermin pribadi..."></textarea>
+        </div>
+
+        <!-- 5. Kepemimpinan -->
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">5. Kepemimpinan *</label>
+          <textarea id="kp-kepemimpinan" rows="2" required class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-amber-500" placeholder="Kemampuan memimpinmu terlihat baik, lanjutkan usahamu..."></textarea>
+        </div>
+
+        <!-- 6. Kerja Sama -->
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">6. Kerja Sama *</label>
+          <textarea id="kp-kerjasama" rows="2" required class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-amber-500" placeholder="Berbagi peran dalam kerjasama kelompok akan menciptakan keharmonisan."></textarea>
         </div>
       </div>
 
-      <div class="grid grid-cols-2 gap-3">
-        <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">Karakter & Adab *</label>
-          <select id="kepemimpinan-karakter" required class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-amber-500">
-            <option value="Sangat Baik (A)">Sangat Baik (A)</option>
-            <option value="Baik (B)">Baik (B)</option>
-            <option value="Cukup (C)">Cukup (C)</option>
-            <option value="Perlu Perbaikan (D)">Perlu Perbaikan (D)</option>
-          </select>
-        </div>
-        <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">Kemandirian & Inisiatif *</label>
-          <select id="kepemimpinan-inisiatif" required class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-amber-500">
-            <option value="Mandiri & Proaktif (A)">Mandiri & Proaktif (A)</option>
-            <option value="Mandiri (B)">Mandiri (B)</option>
-            <option value="Cukup Mandiri (C)">Cukup Mandiri (C)</option>
-            <option value="Perlu Pendampingan (D)">Perlu Pendampingan (D)</option>
-          </select>
-        </div>
-      </div>
-
+      <!-- 7. Catatan yg Diperhatikan -->
       <div>
-        <label class="block text-xs font-bold text-slate-700 mb-1">Catatan Pembina / Wali Kelas</label>
-        <textarea id="kepemimpinan-catatan" rows="3" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-amber-500" placeholder="Catatan mengenai perkembangan karakter, kepemimpinan, dan kepatuhan terhadap tata tertib murid..."></textarea>
+        <label class="block text-xs font-bold text-slate-700 mb-1">Catatan yg Diperhatikan (Wali Kelas / Pembina) *</label>
+        <textarea id="kp-catatan" rows="3" required class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-amber-500" placeholder="Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal..."></textarea>
       </div>
 
       <div class="pt-3 border-t border-slate-100 flex items-center justify-end gap-2">
@@ -175,7 +260,7 @@
         </button>
         <button type="submit" id="btn-save-kepemimpinan" class="px-5 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs font-bold shadow flex items-center gap-2">
           <i class="fa-solid fa-floppy-disk"></i>
-          <span>Simpan Kepemimpinan</span>
+          <span>Simpan Kepribadian</span>
         </button>
       </div>
     </form>
