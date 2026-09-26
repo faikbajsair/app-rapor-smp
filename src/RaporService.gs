@@ -74,8 +74,11 @@ function getMuridReportData(nis) {
         kehadiran_i: murid.kehadiran_i || '-',
         kehadiran_a: murid.kehadiran_a || '-',
         ekskul_1: murid.ekskul_1 || 'Pramuka',
+        ekskul_1_nilai: murid.ekskul_1_nilai || 'Baik',
         ekskul_2: murid.ekskul_2 || 'Wushu',
-        ekskul_3: murid.ekskul_3 || 'Futsal',
+        ekskul_2_nilai: murid.ekskul_2_nilai || 'Baik',
+        ekskul_3: murid.ekskul_3 || 'Basket',
+        ekskul_3_nilai: murid.ekskul_3_nilai || 'Baik',
         wali_kelas: murid.wali_kelas || 'Kahlil Gibran, S.Pd.'
       },
       santri: murid, // alias
