@@ -1,192 +1,382 @@
-<!-- Dashboard Home / Overview View -->
+<!-- Dashboard Home / Overview View (3 Separate Dashboards: Akademik, Diniyah, Kepemimpinan) -->
 <div id="view-dashboard" class="view-panel space-y-6">
   
-  <!-- Welcome Banner -->
-  <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 text-white p-6 sm:p-8 shadow-xl">
-    <div class="absolute -right-10 -bottom-10 opacity-10 pointer-events-none">
-      <i class="fa-solid fa-graduation-cap text-9xl"></i>
+  <!-- Tab Header & Toggle (MBU Inspired Glassmorphism Header) -->
+  <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white/70 backdrop-blur-md p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-sm">
+    <div>
+      <div class="flex items-center gap-2 mb-1">
+        <span class="inline-block w-2.5 h-2.5 rounded-full bg-theme-primary animate-pulse"></span>
+        <span class="text-xs font-bold uppercase tracking-wider text-slate-500" id="dash-category-label">Kategori Penilaian Aktif</span>
+      </div>
+      <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight" id="dashboardTitle">Dashboard Akademik</h1>
+      <p class="text-xs sm:text-sm text-slate-500 mt-0.5" id="dashboardSubtitle">Status rekapitulasi nilai mata pelajaran umum, tugas, UTS, dan statistik ketuntasan KKM.</p>
     </div>
     
-    <div class="relative z-10 max-w-3xl">
-      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md text-xs font-semibold text-blue-200 mb-3 border border-white/10">
-        <i class="fa-solid fa-sparkles text-amber-300"></i>
-        <span>Portal Rapor Tengah Semester Terpadu</span>
+    <!-- 3-Way Dashboard Tab Switches -->
+    <div class="flex bg-slate-100 p-1.5 rounded-xl border border-slate-200/80 shadow-inner w-full sm:w-auto overflow-x-auto">
+      <button id="dashTabBtnAkademik" onclick="switchDashboardTab('Akademik')" class="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all duration-200 bg-white text-blue-700 shadow-sm">
+        <i class="fa-solid fa-book-open"></i>
+        <span>Akademik</span>
+      </button>
+      <button id="dashTabBtnDiniyah" onclick="switchDashboardTab('Diniyah')" class="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all duration-200 text-slate-600 hover:text-slate-900">
+        <i class="fa-solid fa-quran"></i>
+        <span>Diniyah</span>
+      </button>
+      <button id="dashTabBtnKepemimpinan" onclick="switchDashboardTab('Kepemimpinan')" class="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all duration-200 text-slate-600 hover:text-slate-900">
+        <i class="fa-solid fa-award"></i>
+        <span>Kepemimpinan</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- SECTION 1: DASHBOARD AKADEMIK -->
+  <div id="dashPanelAkademik" class="dash-category-panel space-y-6">
+    <!-- 4 KPI Gradient Cards (Akademik) -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+      <div class="bg-gradient-to-br from-blue-600 to-indigo-700 p-5 rounded-2xl text-white shadow-lg shadow-blue-500/10 relative overflow-hidden group">
+        <div class="absolute -right-4 -bottom-4 text-white/10 transform rotate-12 group-hover:scale-110 transition-transform">
+          <i class="fa-solid fa-user-graduate text-8xl"></i>
+        </div>
+        <div class="relative z-10">
+          <p class="text-xs text-blue-100 font-semibold tracking-wider uppercase">Total Santri</p>
+          <h3 class="text-3xl font-extrabold mt-1" id="kpi-ak-santri">12</h3>
+          <p class="text-[11px] text-blue-200 mt-2 flex items-center gap-1">
+            <i class="fa-solid fa-layer-group text-[10px]"></i> 6 Kelas Terdaftar (7A - 9B)
+          </p>
+        </div>
       </div>
-      <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white mb-2" id="home-welcome-school">
-        SMP Al-Imam Islamic School (AI IS)
-      </h2>
-      <p class="text-sm text-blue-100/90 leading-relaxed mb-6">
-        Sistem penilaian holistik berbasis Google Apps Script & Google Sheets. Mengintegrasikan 3 pilar utama: Capaian Akademik, Karakter Kepemimpinan, dan Diniyah/Tahfidz Al-Qur'an.
-      </p>
-      
-      <div class="flex flex-wrap items-center gap-3">
-        <button onclick="switchView('akademik')" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-xl text-xs shadow-lg transition-all flex items-center gap-2">
+
+      <div class="bg-gradient-to-br from-teal-500 to-emerald-600 p-5 rounded-2xl text-white shadow-lg shadow-teal-500/10 relative overflow-hidden group">
+        <div class="absolute -right-4 -bottom-4 text-white/10 transform rotate-12 group-hover:scale-110 transition-transform">
+          <i class="fa-solid fa-chart-line text-8xl"></i>
+        </div>
+        <div class="relative z-10">
+          <p class="text-xs text-teal-100 font-semibold tracking-wider uppercase">Rata-Rata Akademik</p>
+          <h3 class="text-3xl font-extrabold mt-1" id="kpi-ak-avg">89.2</h3>
+          <p class="text-[11px] text-teal-200 mt-2 flex items-center gap-1">
+            <i class="fa-solid fa-circle-check text-[10px]"></i> Skala Penilaian 0 - 100
+          </p>
+        </div>
+      </div>
+
+      <div class="bg-gradient-to-br from-amber-500 to-orange-600 p-5 rounded-2xl text-white shadow-lg shadow-amber-500/10 relative overflow-hidden group">
+        <div class="absolute -right-4 -bottom-4 text-white/10 transform rotate-12 group-hover:scale-110 transition-transform">
+          <i class="fa-solid fa-bullseye text-8xl"></i>
+        </div>
+        <div class="relative z-10">
+          <p class="text-xs text-amber-100 font-semibold tracking-wider uppercase">Ketuntasan KKM</p>
+          <h3 class="text-3xl font-extrabold mt-1" id="kpi-ak-kkm">100%</h3>
+          <p class="text-[11px] text-amber-200 mt-2 flex items-center gap-1">
+            <i class="fa-solid fa-circle-info text-[10px]"></i> Standar KKM Minimum: 75
+          </p>
+        </div>
+      </div>
+
+      <div class="bg-gradient-to-br from-purple-600 to-pink-600 p-5 rounded-2xl text-white shadow-lg shadow-purple-500/10 relative overflow-hidden group">
+        <div class="absolute -right-4 -bottom-4 text-white/10 transform rotate-12 group-hover:scale-110 transition-transform">
+          <i class="fa-solid fa-file-lines text-8xl"></i>
+        </div>
+        <div class="relative z-10">
+          <p class="text-xs text-purple-100 font-semibold tracking-wider uppercase">Total Entri Nilai</p>
+          <h3 class="text-3xl font-extrabold mt-1" id="kpi-ak-total">30</h3>
+          <p class="text-[11px] text-purple-200 mt-2 flex items-center gap-1">
+            <i class="fa-solid fa-book text-[10px]"></i> 10 Mata Pelajaran Aktif
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Split Grid: Tabel Ringkasan Akademik & Mading -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div class="lg:col-span-2 bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-4">
+        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+          <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+            <i class="fa-solid fa-table-list text-blue-600"></i>
+            <span>Rekapitulasi Nilai Akademik Terkini</span>
+          </h3>
+          <button onclick="switchView('akademik')" class="text-xs font-bold text-blue-600 hover:text-blue-800 flex items-center gap-1">
+            <span>Buka Modul Input Nilai</span> <i class="fa-solid fa-arrow-right text-[10px]"></i>
+          </button>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-slate-50 text-slate-600 font-semibold border-b border-slate-200">
+              <tr>
+                <th class="py-2.5 px-3">Nama Santri</th>
+                <th class="py-2.5 px-3">Mata Pelajaran</th>
+                <th class="py-2.5 px-2 text-center">Tugas</th>
+                <th class="py-2.5 px-2 text-center">UTS</th>
+                <th class="py-2.5 px-2 text-center">Akhir</th>
+                <th class="py-2.5 px-2 text-center">Predikat</th>
+              </tr>
+            </thead>
+            <tbody id="dash-akademik-tbody" class="divide-y divide-slate-100">
+              <!-- Render dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Right Column: Mading & Agenda Akademik -->
+      <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-4 flex flex-col justify-between">
+        <div>
+          <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2 mb-3 border-b border-slate-100 pb-2.5">
+            <i class="fa-solid fa-bullhorn text-blue-600"></i>
+            <span>Mading & Agenda Akademik</span>
+          </h3>
+          <div class="space-y-3 text-xs">
+            <div class="p-3 bg-blue-50/70 border border-blue-100 rounded-xl">
+              <span class="text-[10px] font-bold text-blue-700 uppercase block">Agenda Ujian</span>
+              <h4 class="font-bold text-slate-900 mt-0.5">Penilaian Tengah Semester (PTS) Ganjil</h4>
+              <p class="text-slate-600 text-[11px] mt-1">Batas akhir penginputan leger nilai akademik adalah 28 September 2025.</p>
+            </div>
+            <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl">
+              <span class="text-[10px] font-bold text-slate-500 uppercase block">Kurikulum</span>
+              <h4 class="font-bold text-slate-900 mt-0.5">Standar Bobot Penilaian Rapor</h4>
+              <p class="text-slate-600 text-[11px] mt-1">Nilai Akhir = Tugas (40%) + UTS (60%). Predikat A ≥ 90, B ≥ 80, C ≥ 75.</p>
+            </div>
+          </div>
+        </div>
+
+        <button onclick="switchView('akademik')" class="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow transition flex items-center justify-center gap-2">
           <i class="fa-solid fa-pen-to-square"></i>
-          <span>Input Nilai Akademik</span>
+          <span>Kelola Nilai Akademik</span>
         </button>
-        <button onclick="switchView('kepemimpinan')" class="px-4 py-2 bg-amber-600 hover:bg-amber-500 text-white font-semibold rounded-xl text-xs shadow-lg transition-all flex items-center gap-2">
-          <i class="fa-solid fa-award"></i>
-          <span>Input Kepemimpinan</span>
-        </button>
-        <button onclick="switchView('diniyah')" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-xl text-xs shadow-lg transition-all flex items-center gap-2">
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: DASHBOARD DINIYAH & TAHFIDZ -->
+  <div id="dashPanelDiniyah" class="dash-category-panel space-y-6 hidden">
+    <!-- 4 KPI Gradient Cards (Diniyah) -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+      <div class="bg-gradient-to-br from-emerald-600 to-teal-700 p-5 rounded-2xl text-white shadow-lg shadow-emerald-500/10 relative overflow-hidden group">
+        <div class="absolute -right-4 -bottom-4 text-white/10 transform rotate-12 group-hover:scale-110 transition-transform">
+          <i class="fa-solid fa-quran text-8xl"></i>
+        </div>
+        <div class="relative z-10">
+          <p class="text-xs text-emerald-100 font-semibold tracking-wider uppercase">Santri Tahfidz</p>
+          <h3 class="text-3xl font-extrabold mt-1" id="kpi-dn-santri">12</h3>
+          <p class="text-[11px] text-emerald-200 mt-2 flex items-center gap-1">
+            <i class="fa-solid fa-users text-[10px]"></i> 6 Kelompok Halaqah Aktif
+          </p>
+        </div>
+      </div>
+
+      <div class="bg-gradient-to-br from-teal-500 to-cyan-600 p-5 rounded-2xl text-white shadow-lg shadow-teal-500/10 relative overflow-hidden group">
+        <div class="absolute -right-4 -bottom-4 text-white/10 transform rotate-12 group-hover:scale-110 transition-transform">
+          <i class="fa-solid fa-star-and-crescent text-8xl"></i>
+        </div>
+        <div class="relative z-10">
+          <p class="text-xs text-teal-100 font-semibold tracking-wider uppercase">Rata-Rata Tahfidz</p>
+          <h3 class="text-3xl font-extrabold mt-1" id="kpi-dn-avg-tahfidz">91.5</h3>
+          <p class="text-[11px] text-teal-200 mt-2 flex items-center gap-1">
+            <i class="fa-solid fa-circle-check text-[10px]"></i> Standar Tajwid & Makhraj
+          </p>
+        </div>
+      </div>
+
+      <div class="bg-gradient-to-br from-blue-600 to-indigo-700 p-5 rounded-2xl text-white shadow-lg shadow-blue-500/10 relative overflow-hidden group">
+        <div class="absolute -right-4 -bottom-4 text-white/10 transform rotate-12 group-hover:scale-110 transition-transform">
+          <i class="fa-solid fa-hands-praying text-8xl"></i>
+        </div>
+        <div class="relative z-10">
+          <p class="text-xs text-blue-100 font-semibold tracking-wider uppercase">Adab Mumtaz (A)</p>
+          <h3 class="text-3xl font-extrabold mt-1" id="kpi-dn-adab-mumtaz">9 Santri</h3>
+          <p class="text-[11px] text-blue-200 mt-2 flex items-center gap-1">
+            <i class="fa-solid fa-award text-[10px]"></i> 75% Santri Berpredikat Mumtaz
+          </p>
+        </div>
+      </div>
+
+      <div class="bg-gradient-to-br from-amber-500 to-orange-600 p-5 rounded-2xl text-white shadow-lg shadow-amber-500/10 relative overflow-hidden group">
+        <div class="absolute -right-4 -bottom-4 text-white/10 transform rotate-12 group-hover:scale-110 transition-transform">
+          <i class="fa-solid fa-language text-8xl"></i>
+        </div>
+        <div class="relative z-10">
+          <p class="text-xs text-amber-100 font-semibold tracking-wider uppercase">Rata-Rata B. Arab</p>
+          <h3 class="text-3xl font-extrabold mt-1" id="kpi-dn-avg-arab">89.3</h3>
+          <p class="text-[11px] text-amber-200 mt-2 flex items-center gap-1">
+            <i class="fa-solid fa-comments text-[10px]"></i> Mufrodat & Muhadatsah
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Split Grid: Rekapitulasi Tahfidz & Pengumuman Halaqah -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div class="lg:col-span-2 bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-4">
+        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+          <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+            <i class="fa-solid fa-quran text-emerald-600"></i>
+            <span>Rekapitulasi Capaian Ziyadah & Muroja'ah</span>
+          </h3>
+          <button onclick="switchView('diniyah')" class="text-xs font-bold text-emerald-600 hover:text-emerald-800 flex items-center gap-1">
+            <span>Buka Modul Diniyah</span> <i class="fa-solid fa-arrow-right text-[10px]"></i>
+          </button>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-slate-50 text-slate-600 font-semibold border-b border-slate-200">
+              <tr>
+                <th class="py-2.5 px-3">Nama Santri</th>
+                <th class="py-2.5 px-3">Ziyadah (Baru)</th>
+                <th class="py-2.5 px-3">Muroja'ah (Mutqin)</th>
+                <th class="py-2.5 px-2 text-center">Nilai Tahfidz</th>
+                <th class="py-2.5 px-2 text-center">Adab Harian</th>
+                <th class="py-2.5 px-2 text-center">B. Arab</th>
+              </tr>
+            </thead>
+            <tbody id="dash-diniyah-tbody" class="divide-y divide-slate-100">
+              <!-- Render dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Right Column: Mading Halaqah & Musyrif -->
+      <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-4 flex flex-col justify-between">
+        <div>
+          <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2 mb-3 border-b border-slate-100 pb-2.5">
+            <i class="fa-solid fa-moon text-emerald-600"></i>
+            <span>Mading & Agenda Halaqah</span>
+          </h3>
+          <div class="space-y-3 text-xs">
+            <div class="p-3 bg-emerald-50/70 border border-emerald-100 rounded-xl">
+              <span class="text-[10px] font-bold text-emerald-700 uppercase block">Target Tahfidz</span>
+              <h4 class="font-bold text-slate-900 mt-0.5">Simaan & Tasmi' 1 Juz Sekali Duduk</h4>
+              <p class="text-slate-600 text-[11px] mt-1">Santri yang telah menyelesaikan Ziyadah wajib mengikuti ujian tasmi' mutqin.</p>
+            </div>
+            <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl">
+              <span class="text-[10px] font-bold text-slate-500 uppercase block">Bahasa Arab</span>
+              <h4 class="font-bold text-slate-900 mt-0.5">Yaumul Lughoh Al-Arabiyyah</h4>
+              <p class="text-slate-600 text-[11px] mt-1">Penerapan wajib percakapan bahasa Arab di lingkungan asrama dan kelas.</p>
+            </div>
+          </div>
+        </div>
+
+        <button onclick="switchView('diniyah')" class="w-full py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow transition flex items-center justify-center gap-2">
           <i class="fa-solid fa-quran"></i>
-          <span>Input Diniyah & Tahfidz</span>
-        </button>
-        <button onclick="switchView('rapor')" class="px-4 py-2 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-xl text-xs backdrop-blur-md transition-all flex items-center gap-2">
-          <i class="fa-solid fa-print"></i>
-          <span>Pratinjau & Cetak Rapor</span>
+          <span>Kelola Nilai Diniyah</span>
         </button>
       </div>
     </div>
   </div>
 
-  <!-- Primary Stats Grid (4 Cards) -->
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-    
-    <!-- Card 1: Total Santri -->
-    <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md transition-shadow">
-      <div class="flex items-center justify-between mb-3">
-        <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Total Santri</span>
-        <div class="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center text-base">
-          <i class="fa-solid fa-user-graduate"></i>
+  <!-- SECTION 3: DASHBOARD KEPEMIMPINAN & KARAKTER -->
+  <div id="dashPanelKepemimpinan" class="dash-category-panel space-y-6 hidden">
+    <!-- 4 KPI Gradient Cards (Kepemimpinan) -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+      <div class="bg-gradient-to-br from-amber-500 to-orange-600 p-5 rounded-2xl text-white shadow-lg shadow-amber-500/10 relative overflow-hidden group">
+        <div class="absolute -right-4 -bottom-4 text-white/10 transform rotate-12 group-hover:scale-110 transition-transform">
+          <i class="fa-solid fa-award text-8xl"></i>
+        </div>
+        <div class="relative z-10">
+          <p class="text-xs text-amber-100 font-semibold tracking-wider uppercase">Santri Terbina</p>
+          <h3 class="text-3xl font-extrabold mt-1" id="kpi-kp-santri">12</h3>
+          <p class="text-[11px] text-amber-200 mt-2 flex items-center gap-1">
+            <i class="fa-solid fa-house-chimney text-[10px]"></i> Asrama Putra & Putri
+          </p>
         </div>
       </div>
-      <div class="flex items-baseline gap-2">
-        <span class="text-2xl sm:text-3xl font-bold text-slate-900" id="stat-total-santri">0</span>
-        <span class="text-xs font-medium text-slate-500">Santri Terdaftar</span>
+
+      <div class="bg-gradient-to-br from-emerald-500 to-teal-600 p-5 rounded-2xl text-white shadow-lg shadow-emerald-500/10 relative overflow-hidden group">
+        <div class="absolute -right-4 -bottom-4 text-white/10 transform rotate-12 group-hover:scale-110 transition-transform">
+          <i class="fa-solid fa-clock-check text-8xl"></i>
+        </div>
+        <div class="relative z-10">
+          <p class="text-xs text-emerald-100 font-semibold tracking-wider uppercase">Disiplin Sangat Baik (A)</p>
+          <h3 class="text-3xl font-extrabold mt-1" id="kpi-kp-disiplin-a">7 Santri</h3>
+          <p class="text-[11px] text-emerald-200 mt-2 flex items-center gap-1">
+            <i class="fa-solid fa-circle-check text-[10px]"></i> Tertib Sholat & Piket
+          </p>
+        </div>
       </div>
-      <div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
-        <span>Jumlah Rombel/Kelas:</span>
-        <strong class="text-slate-800" id="stat-total-kelas">0 Kelas</strong>
+
+      <div class="bg-gradient-to-br from-blue-600 to-indigo-700 p-5 rounded-2xl text-white shadow-lg shadow-blue-500/10 relative overflow-hidden group">
+        <div class="absolute -right-4 -bottom-4 text-white/10 transform rotate-12 group-hover:scale-110 transition-transform">
+          <i class="fa-solid fa-people-group text-8xl"></i>
+        </div>
+        <div class="relative z-10">
+          <p class="text-xs text-blue-100 font-semibold tracking-wider uppercase">Organisasi Aktif</p>
+          <h3 class="text-3xl font-extrabold mt-1" id="kpi-kp-organisasi-a">6 Santri</h3>
+          <p class="text-[11px] text-blue-200 mt-2 flex items-center gap-1">
+            <i class="fa-solid fa-sitemap text-[10px]"></i> Pengurus OSIS / BEM Santri
+          </p>
+        </div>
+      </div>
+
+      <div class="bg-gradient-to-br from-purple-600 to-pink-600 p-5 rounded-2xl text-white shadow-lg shadow-purple-500/10 relative overflow-hidden group">
+        <div class="absolute -right-4 -bottom-4 text-white/10 transform rotate-12 group-hover:scale-110 transition-transform">
+          <i class="fa-solid fa-heart-pulse text-8xl"></i>
+        </div>
+        <div class="relative z-10">
+          <p class="text-xs text-purple-100 font-semibold tracking-wider uppercase">Karakter Unggul</p>
+          <h3 class="text-3xl font-extrabold mt-1" id="kpi-kp-karakter-rate">100%</h3>
+          <p class="text-[11px] text-purple-200 mt-2 flex items-center gap-1">
+            <i class="fa-solid fa-hand-holding-heart text-[10px]"></i> Predikat A & B Terbina
+          </p>
+        </div>
       </div>
     </div>
 
-    <!-- Card 2: Rata-Rata Akademik -->
-    <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md transition-shadow">
-      <div class="flex items-center justify-between mb-3">
-        <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Rata-Rata Akademik</span>
-        <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-base">
-          <i class="fa-solid fa-chart-line"></i>
+    <!-- Split Grid: Rekapitulasi Kepemimpinan & Mading Asrama -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div class="lg:col-span-2 bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-4">
+        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+          <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+            <i class="fa-solid fa-award text-amber-600"></i>
+            <span>Rekapitulasi 4 Pilar Karakter Santri</span>
+          </h3>
+          <button onclick="switchView('kepemimpinan')" class="text-xs font-bold text-amber-600 hover:text-amber-800 flex items-center gap-1">
+            <span>Buka Modul Kepemimpinan</span> <i class="fa-solid fa-arrow-right text-[10px]"></i>
+          </button>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-slate-50 text-slate-600 font-semibold border-b border-slate-200">
+              <tr>
+                <th class="py-2.5 px-3">Nama Santri</th>
+                <th class="py-2.5 px-3">Kedisiplinan</th>
+                <th class="py-2.5 px-3">Keorganisasian</th>
+                <th class="py-2.5 px-3">Karakter & Adab</th>
+                <th class="py-2.5 px-3">Kemandirian</th>
+              </tr>
+            </thead>
+            <tbody id="dash-kepemimpinan-tbody" class="divide-y divide-slate-100">
+              <!-- Render dynamically -->
+            </tbody>
+          </table>
         </div>
       </div>
-      <div class="flex items-baseline gap-2">
-        <span class="text-2xl sm:text-3xl font-bold text-slate-900" id="stat-avg-akademik">0</span>
-        <span class="text-xs font-medium text-blue-600 font-semibold bg-blue-50 px-2 py-0.5 rounded-md">Skala 100</span>
-      </div>
-      <div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
-        <span>Total Record Nilai:</span>
-        <strong class="text-slate-800" id="stat-total-nilai-ak">0</strong>
-      </div>
-    </div>
 
-    <!-- Card 3: Kelengkapan Rapor (3 Aspek) -->
-    <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md transition-shadow">
-      <div class="flex items-center justify-between mb-3">
-        <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Kelengkapan Rapor</span>
-        <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-base">
-          <i class="fa-solid fa-list-check"></i>
-        </div>
-      </div>
-      <div class="flex items-baseline gap-2">
-        <span class="text-2xl sm:text-3xl font-bold text-slate-900" id="stat-progress-percent">0%</span>
-        <span class="text-xs font-medium text-emerald-600 font-semibold bg-emerald-50 px-2 py-0.5 rounded-md">Siap Cetak</span>
-      </div>
-      <div class="mt-3 pt-3 border-t border-slate-100">
-        <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
-          <div id="stat-progress-bar" class="bg-emerald-500 h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Card 4: Status Periode -->
-    <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md transition-shadow">
-      <div class="flex items-center justify-between mb-3">
-        <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Periode Aktif</span>
-        <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-base">
-          <i class="fa-solid fa-calendar-days"></i>
-        </div>
-      </div>
-      <div class="flex items-baseline gap-2">
-        <span class="text-xl sm:text-2xl font-bold text-slate-900" id="stat-current-semester">Ganjil</span>
-        <span class="text-xs text-slate-500" id="stat-current-year">2025/2026</span>
-      </div>
-      <div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
-        <span>Titimangsa Rapor:</span>
-        <strong class="text-slate-800" id="stat-report-date">-</strong>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- Three Pillars Section (Akademik, Kepemimpinan, Diniyah) -->
-  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-    
-    <!-- Pillar 1: Akademik -->
-    <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm flex flex-col justify-between hover:border-blue-300 transition">
-      <div>
-        <div class="flex items-center justify-between mb-4">
-          <div class="w-12 h-12 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center text-xl font-bold">
-            <i class="fa-solid fa-book-open"></i>
+      <!-- Right Column: Mading Asrama & Pembina -->
+      <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-4 flex flex-col justify-between">
+        <div>
+          <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2 mb-3 border-b border-slate-100 pb-2.5">
+            <i class="fa-solid fa-shield-halved text-amber-600"></i>
+            <span>Mading & Agenda Keasramaan</span>
+          </h3>
+          <div class="space-y-3 text-xs">
+            <div class="p-3 bg-amber-50/70 border border-amber-100 rounded-xl">
+              <span class="text-[10px] font-bold text-amber-700 uppercase block">Pembinaan Karakter</span>
+              <h4 class="font-bold text-slate-900 mt-0.5">Penilaian Kedisiplinan & Qiyamullail</h4>
+              <p class="text-slate-600 text-[11px] mt-1">Piket kamar, kerapian lemari, dan kehadiran sholat berjamaah tepat waktu.</p>
+            </div>
+            <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl">
+              <span class="text-[10px] font-bold text-slate-500 uppercase block">Organisasi</span>
+              <h4 class="font-bold text-slate-900 mt-0.5">Sidang Pleno Evaluasi OSIS</h4>
+              <p class="text-slate-600 text-[11px] mt-1">Laporan pertanggungjawaban divisi kebersihan, kebahasaan, dan kedisiplinan santri.</p>
+            </div>
           </div>
-          <span class="text-xs font-semibold px-2.5 py-1 bg-blue-50 text-blue-700 rounded-full">Pilar 1</span>
         </div>
-        <h3 class="text-base font-bold text-slate-900 mb-1.5">Penilaian Akademik</h3>
-        <p class="text-xs text-slate-500 leading-relaxed mb-4">
-          Pengelolaan nilai mata pelajaran umum: Tugas Harian, UTS, Nilai Akhir, dan predikat standar kurikulum nasional/sekolah.
-        </p>
-      </div>
-      <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
-        <span class="text-xs text-slate-500 font-medium"><strong id="summary-ak-count" class="text-blue-600">0</strong> Entri Nilai</span>
-        <button onclick="switchView('akademik')" class="text-xs font-bold text-blue-600 hover:text-blue-700 inline-flex items-center gap-1">
-          Buka Modul <i class="fa-solid fa-arrow-right text-[10px]"></i>
+
+        <button onclick="switchView('kepemimpinan')" class="w-full py-2 bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs rounded-xl shadow transition flex items-center justify-center gap-2">
+          <i class="fa-solid fa-award"></i>
+          <span>Kelola Nilai Kepemimpinan</span>
         </button>
       </div>
     </div>
-
-    <!-- Pillar 2: Kepemimpinan -->
-    <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm flex flex-col justify-between hover:border-amber-300 transition">
-      <div>
-        <div class="flex items-center justify-between mb-4">
-          <div class="w-12 h-12 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center text-xl font-bold">
-            <i class="fa-solid fa-award"></i>
-          </div>
-          <span class="text-xs font-semibold px-2.5 py-1 bg-amber-50 text-amber-700 rounded-full">Pilar 2</span>
-        </div>
-        <h3 class="text-base font-bold text-slate-900 mb-1.5">Penilaian Kepemimpinan</h3>
-        <p class="text-xs text-slate-500 leading-relaxed mb-4">
-          Evaluasi kedisiplinan, keorganisasian santri, soft-skills, karakter adab islami, serta inisiatif kemandirian santri asrama.
-        </p>
-      </div>
-      <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
-        <span class="text-xs text-slate-500 font-medium"><strong id="summary-kp-count" class="text-amber-600">0</strong> Entri Nilai</span>
-        <button onclick="switchView('kepemimpinan')" class="text-xs font-bold text-amber-600 hover:text-amber-700 inline-flex items-center gap-1">
-          Buka Modul <i class="fa-solid fa-arrow-right text-[10px]"></i>
-        </button>
-      </div>
-    </div>
-
-    <!-- Pillar 3: Diniyah & Tahfidz -->
-    <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm flex flex-col justify-between hover:border-emerald-300 transition">
-      <div>
-        <div class="flex items-center justify-between mb-4">
-          <div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-xl font-bold">
-            <i class="fa-solid fa-quran"></i>
-          </div>
-          <span class="text-xs font-semibold px-2.5 py-1 bg-emerald-50 text-emerald-700 rounded-full">Pilar 3</span>
-        </div>
-        <h3 class="text-base font-bold text-slate-900 mb-1.5">Penilaian Diniyah & Tahfidz</h3>
-        <p class="text-xs text-slate-500 leading-relaxed mb-4">
-          Pencapaian Ziyadah hafalan Al-Qur'an baru, kelancaran Muroja'ah mutqin, pengamalan ibadah harian, adab santri, dan Bahasa Arab.
-        </p>
-      </div>
-      <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
-        <span class="text-xs text-slate-500 font-medium"><strong id="summary-dn-count" class="text-emerald-600">0</strong> Entri Nilai</span>
-        <button onclick="switchView('diniyah')" class="text-xs font-bold text-emerald-600 hover:text-emerald-700 inline-flex items-center gap-1">
-          Buka Modul <i class="fa-solid fa-arrow-right text-[10px]"></i>
-        </button>
-      </div>
-    </div>
-
   </div>
 
 </div>
