@@ -2804,305 +2804,439 @@
 
   <!-- Interactive Guide Onboarding Modal -->
   <!-- Modal Panduan Interaktif Penggunaan Aplikasi (Interactive Onboarding Guide) -->
-<div id="modal-interactive-guide" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/70 backdrop-blur-sm hidden">
-  <div class="bg-white rounded-2xl shadow-2xl border border-slate-100 max-w-2xl w-full overflow-hidden flex flex-col max-h-[90vh] animate-in fade-in zoom-in-95 duration-200">
+<div id="modal-interactive-guide" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/80 backdrop-blur-md hidden">
+  <div class="bg-white rounded-3xl shadow-2xl border border-slate-200/80 max-w-3xl w-full overflow-hidden flex flex-col max-h-[92vh] animate-in fade-in zoom-in-95 duration-200">
     
     <!-- Top Progress Bar & Header -->
-    <div class="bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900 text-white p-5 relative">
+    <div class="bg-gradient-to-r from-slate-900 via-blue-950 to-indigo-950 text-white p-5 sm:p-6 relative border-b border-blue-800/40">
       <div class="flex items-center justify-between">
-        <div class="flex items-center gap-2.5">
-          <span class="w-8 h-8 rounded-lg bg-blue-500/20 border border-blue-400/30 flex items-center justify-center text-blue-400 text-sm">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-lg shadow-lg shadow-blue-500/30 border border-white/20">
             <i class="fa-solid fa-graduation-cap"></i>
-          </span>
+          </div>
           <div>
-            <h3 class="text-sm font-bold text-white leading-tight">Panduan Interaktif Penggunaan Aplikasi</h3>
-            <p class="text-[11px] text-blue-200/80">Sistem Rapor Tengah Semester SMP Al-Imam (AI IS)</p>
+            <div class="flex items-center gap-2">
+              <h3 class="text-base font-bold text-white leading-tight">Panduan Interaktif Penggunaan Aplikasi</h3>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">v2.5 Official</span>
+            </div>
+            <p class="text-xs text-blue-200/80 mt-0.5">Sistem Rapor Tengah Semester & Portofolio SMP Al-Imam (AI IS)</p>
           </div>
         </div>
         <div class="flex items-center gap-3">
-          <span class="text-[11px] font-semibold bg-blue-500/30 text-blue-200 px-2.5 py-1 rounded-full border border-blue-400/20" id="guide-step-counter">
+          <span class="text-xs font-bold bg-blue-500/20 text-blue-200 px-3 py-1 rounded-full border border-blue-400/30 shadow-inner" id="guide-step-counter">
             Langkah 1 dari 8
           </span>
-          <button onclick="closeInteractiveGuide()" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition">
-            <i class="fa-solid fa-xmark text-base"></i>
+          <button onclick="closeInteractiveGuide()" class="text-slate-400 hover:text-white p-1.5 rounded-xl hover:bg-white/10 transition" title="Tutup Panduan">
+            <i class="fa-solid fa-xmark text-lg"></i>
           </button>
         </div>
       </div>
 
+      <!-- Quick Step Jump Tabs (Pills) -->
+      <div class="flex items-center gap-1.5 mt-4 overflow-x-auto pb-1 scrollbar-none text-[11px] font-semibold text-slate-300">
+        <button onclick="goToGuideStep(1)" class="guide-tab-pill px-2.5 py-1 rounded-lg transition whitespace-nowrap bg-blue-500 text-white shadow" data-tab-step="1">1. Alur & Konsep</button>
+        <button onclick="goToGuideStep(2)" class="guide-tab-pill px-2.5 py-1 rounded-lg transition whitespace-nowrap bg-slate-800/80 text-slate-300 hover:bg-slate-700" data-tab-step="2">2. Data Siswa</button>
+        <button onclick="goToGuideStep(3)" class="guide-tab-pill px-2.5 py-1 rounded-lg transition whitespace-nowrap bg-slate-800/80 text-slate-300 hover:bg-slate-700" data-tab-step="3">3. 16 Mapel</button>
+        <button onclick="goToGuideStep(4)" class="guide-tab-pill px-2.5 py-1 rounded-lg transition whitespace-nowrap bg-slate-800/80 text-slate-300 hover:bg-slate-700" data-tab-step="4">4. Kepribadian</button>
+        <button onclick="goToGuideStep(5)" class="guide-tab-pill px-2.5 py-1 rounded-lg transition whitespace-nowrap bg-slate-800/80 text-slate-300 hover:bg-slate-700" data-tab-step="5">5. Diniyah</button>
+        <button onclick="goToGuideStep(6)" class="guide-tab-pill px-2.5 py-1 rounded-lg transition whitespace-nowrap bg-slate-800/80 text-slate-300 hover:bg-slate-700" data-tab-step="6">6. SKL 28 Karakter</button>
+        <button onclick="goToGuideStep(7)" class="guide-tab-pill px-2.5 py-1 rounded-lg transition whitespace-nowrap bg-slate-800/80 text-slate-300 hover:bg-slate-700" data-tab-step="7">7. Cetak Rapor</button>
+        <button onclick="goToGuideStep(8)" class="guide-tab-pill px-2.5 py-1 rounded-lg transition whitespace-nowrap bg-slate-800/80 text-slate-300 hover:bg-slate-700" data-tab-step="8">8. Role & Sync</button>
+      </div>
+
       <!-- Animated Step Progress Bar -->
-      <div class="w-full bg-slate-800 h-1.5 rounded-full mt-4 overflow-hidden">
-        <div id="guide-progress-fill" class="bg-gradient-to-r from-blue-400 to-emerald-400 h-full rounded-full transition-all duration-300" style="width: 12.5%;"></div>
+      <div class="w-full bg-slate-800/80 h-1.5 rounded-full mt-2.5 overflow-hidden">
+        <div id="guide-progress-fill" class="bg-gradient-to-r from-blue-400 via-indigo-400 to-emerald-400 h-full rounded-full transition-all duration-300" style="width: 12.5%;"></div>
       </div>
     </div>
 
     <!-- Main Content Container for 8 Steps -->
-    <div class="p-6 overflow-y-auto flex-1 space-y-4" id="guide-content-body">
+    <div class="p-6 sm:p-7 overflow-y-auto flex-1 space-y-4" id="guide-content-body">
 
-      <!-- STEP 1: Pengenalan Aplikasi -->
+      <!-- STEP 1: Pengenalan & Alur Kerja Resmi Al-Imam -->
       <div class="guide-step-card" data-step="1">
-        <div class="flex items-center gap-3 p-3 bg-blue-50 border border-blue-100 rounded-xl mb-4">
-          <div class="w-12 h-12 rounded-xl bg-blue-600 text-white flex items-center justify-center text-xl shrink-0 shadow-md">
+        <div class="flex items-center gap-3.5 p-3.5 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100/80 rounded-2xl mb-4">
+          <div class="w-12 h-12 rounded-2xl bg-blue-600 text-white flex items-center justify-center text-xl shrink-0 shadow-md shadow-blue-500/20">
             <i class="fa-solid fa-sparkles"></i>
           </div>
           <div>
-            <h4 class="text-sm font-bold text-blue-950">Selamat Datang di Sistem Rapor SMP Al-Imam</h4>
-            <p class="text-xs text-blue-700">Aplikasi meniru struktur resmi Excel SMP Al-Imam: Data Siswa ➔ Nilai ➔ Ahlaq & Kepribadian ➔ Cetak Rapor.</p>
+            <h4 class="text-sm font-bold text-slate-900">Selamat Datang di Sistem Rapor Digital SMP Al-Imam</h4>
+            <p class="text-xs text-blue-700">Aplikasi meniru 100% struktur buku kerja Excel resmi: Data Siswa ➔ Rekap Nilai ➔ Kepribadian ➔ Print Rapor.</p>
           </div>
         </div>
 
         <p class="text-xs text-slate-600 leading-relaxed">
-          Aplikasi ini dirancang khusus dengan antarmuka modern yang mempermudah Guru dan Wali Kelas dalam menginput data secara massal sekelas (spreadsheet grid), menghasilkan narasi capaian kompetensi secara otomatis, serta mencetak dokumen Rapor Portofolio resmi.
+          Aplikasi ini dirancang khusus untuk memfasilitasi Dewan Guru dan Wali Kelas SMP Al-Imam Islamic School dalam mengelola penilaian Tengah Semester secara terpadu, otomatis, dan presisi tinggi sesuai Kurikulum Merdeka & Kurikulum Khas Al-Imam.
         </p>
 
-        <div class="grid grid-cols-4 gap-2 pt-2">
-          <div class="p-2 bg-slate-50 border border-slate-200 rounded-xl text-center">
-            <i class="fa-solid fa-users text-purple-600 text-sm mb-1"></i>
-            <h5 class="text-[10px] font-bold text-slate-800">1. Data Siswa</h5>
-            <p class="text-[9px] text-slate-500">NISN & Absen UTS</p>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-2">
+          <div class="p-3 bg-slate-50 hover:bg-purple-50/50 border border-slate-200 hover:border-purple-200 rounded-2xl text-center transition cursor-pointer" onclick="goToGuideStep(2)">
+            <div class="w-8 h-8 mx-auto rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center text-sm mb-1.5 font-bold">1</div>
+            <h5 class="text-xs font-bold text-slate-800">Data Siswa</h5>
+            <p class="text-[10px] text-slate-500 mt-0.5">NISN, S/I/A, 3 Ekskul</p>
           </div>
-          <div class="p-2 bg-slate-50 border border-slate-200 rounded-xl text-center">
-            <i class="fa-solid fa-book-open text-blue-600 text-sm mb-1"></i>
-            <h5 class="text-[10px] font-bold text-slate-800">2. Rekap Nilai</h5>
-            <p class="text-[9px] text-slate-500">KKM & Capaian</p>
+          <div class="p-3 bg-slate-50 hover:bg-blue-50/50 border border-slate-200 hover:border-blue-200 rounded-2xl text-center transition cursor-pointer" onclick="goToGuideStep(3)">
+            <div class="w-8 h-8 mx-auto rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center text-sm mb-1.5 font-bold">2</div>
+            <h5 class="text-xs font-bold text-slate-800">Rekap 16 Mapel</h5>
+            <p class="text-[10px] text-slate-500 mt-0.5">Leger & Capaian Otomatis</p>
           </div>
-          <div class="p-2 bg-slate-50 border border-slate-200 rounded-xl text-center">
-            <i class="fa-solid fa-heart-pulse text-amber-600 text-sm mb-1"></i>
-            <h5 class="text-[10px] font-bold text-slate-800">3. Kepribadian</h5>
-            <p class="text-[9px] text-slate-500">6 Aspek Al-Imam</p>
+          <div class="p-3 bg-slate-50 hover:bg-amber-50/50 border border-slate-200 hover:border-amber-200 rounded-2xl text-center transition cursor-pointer" onclick="goToGuideStep(4)">
+            <div class="w-8 h-8 mx-auto rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center text-sm mb-1.5 font-bold">3</div>
+            <h5 class="text-xs font-bold text-slate-800">Kepribadian</h5>
+            <p class="text-[10px] text-slate-500 mt-0.5">6 Aspek & Bank Mutiara</p>
           </div>
-          <div class="p-2 bg-slate-50 border border-slate-200 rounded-xl text-center">
-            <i class="fa-solid fa-print text-indigo-600 text-sm mb-1"></i>
-            <h5 class="text-[10px] font-bold text-slate-800">4. Cetak Rapor</h5>
-            <p class="text-[9px] text-slate-500">Portofolio UTS</p>
+          <div class="p-3 bg-slate-50 hover:bg-indigo-50/50 border border-slate-200 hover:border-indigo-200 rounded-2xl text-center transition cursor-pointer" onclick="goToGuideStep(7)">
+            <div class="w-8 h-8 mx-auto rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center text-sm mb-1.5 font-bold">4</div>
+            <h5 class="text-xs font-bold text-slate-800">Cetak Rapor</h5>
+            <p class="text-[10px] text-slate-500 mt-0.5">Standar A4 & 3 Kolom TTD</p>
+          </div>
+        </div>
+
+        <div class="p-3 bg-emerald-50 border border-emerald-200 rounded-xl flex items-center justify-between mt-2">
+          <div class="flex items-center gap-2 text-xs text-emerald-900 font-medium">
+            <i class="fa-solid fa-circle-check text-emerald-600 text-sm"></i>
+            <span>Tersedia data lengkap kelas <strong>VII UTSMAN</strong>, <strong>VII AISYAH</strong>, <strong>VIII KHADIJAH</strong>, <strong>IX ABU BAKAR</strong>, dan <strong>IX UMMU SALAMAH</strong>.</span>
           </div>
         </div>
       </div>
 
-      <!-- STEP 2: Dashboard Ringkasan & Metrik -->
+      <!-- STEP 2: Master Data Siswa & Presensi -->
       <div class="guide-step-card hidden" data-step="2">
-        <div class="flex items-center gap-3 p-3 bg-indigo-50 border border-indigo-100 rounded-xl mb-4">
-          <div class="w-12 h-12 rounded-xl bg-indigo-600 text-white flex items-center justify-center text-xl shrink-0 shadow-md">
-            <i class="fa-solid fa-chart-pie"></i>
+        <div class="flex items-center gap-3.5 p-3.5 bg-purple-50 border border-purple-100 rounded-2xl mb-4">
+          <div class="w-12 h-12 rounded-2xl bg-purple-600 text-white flex items-center justify-center text-xl shrink-0 shadow-md shadow-purple-500/20">
+            <i class="fa-solid fa-user-graduate"></i>
           </div>
           <div>
-            <h4 class="text-sm font-bold text-indigo-950">3 Dashboard Terpisah (Akademik, Diniyah, Kepemimpinan)</h4>
-            <p class="text-xs text-indigo-700">Pantau perkembangan seluruh murid secara seketika melalui widget ringkasan dan tab switch.</p>
+            <h4 class="text-sm font-bold text-purple-950">Master Data Siswa, Presensi & Ekstrakurikuler</h4>
+            <p class="text-xs text-purple-700">Identitas lengkap santri/siswi, rekap ketidakhadiran (S/I/A), dan pilihan 3 ekskul.</p>
           </div>
         </div>
 
-        <ul class="text-xs text-slate-600 space-y-2.5">
-          <li class="flex items-start gap-2">
-            <i class="fa-solid fa-check text-emerald-600 mt-0.5"></i>
-            <span><strong>3-Way Tab Switcher:</strong> Beralih seketika antara Dashboard Akademik, Diniyah & Tahfidz, dan Kepemimpinan Karakter.</span>
-          </li>
-          <li class="flex items-start gap-2">
-            <i class="fa-solid fa-check text-emerald-600 mt-0.5"></i>
-            <span><strong>Kartu Statistik Gradient:</strong> Menampilkan total murid aktif, rata-rata nilai akademik, ketuntasan KKM, dan jumlah entri nilai.</span>
-          </li>
-          <li class="flex items-start gap-2">
-            <i class="fa-solid fa-check text-emerald-600 mt-0.5"></i>
-            <span><strong>Tabel Capaian Terkini:</strong> Ringkasan nilai murid terkini langsung di dashboard beranda.</span>
-          </li>
-        </ul>
+        <div class="space-y-2.5 text-xs text-slate-600">
+          <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
+            <div class="font-bold text-slate-800 flex items-center justify-between">
+              <span>Komponen Data Siswa:</span>
+              <span class="text-[11px] text-purple-700 bg-purple-100/60 px-2 py-0.5 rounded-md font-semibold">Sheet: DATA SISWA</span>
+            </div>
+            <ul class="space-y-1.5 text-slate-600 text-[11px]">
+              <li class="flex items-start gap-2">
+                <i class="fa-solid fa-check text-purple-600 mt-0.5"></i>
+                <span><strong>Identitas Baku:</strong> NIS, NISN resmi Dapodik, Nama Lengkap Santri/Siswi, Kelas, dan Jenis Kelamin (L/P).</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <i class="fa-solid fa-check text-purple-600 mt-0.5"></i>
+                <span><strong>Presensi Tengah Semester:</strong> Input jumlah Sakit (S), Izin (I), dan Tanpa Keterangan (A).</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <i class="fa-solid fa-check text-purple-600 mt-0.5"></i>
+                <span><strong>3 Ekstrakurikuler Pilihan:</strong> Pramuka (Wajib), Ekskul Pilihan 1 (Wushu, dll), dan Ekskul Pilihan 2 (Basket, English Club, Panahan, Desain Grafis, Futsal) beserta predikat (*Sangat Baik / Baik*).</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <i class="fa-solid fa-check text-purple-600 mt-0.5"></i>
+                <span><strong>Wali Kelas Terdaftar:</strong> Otomatis menyesuaikan wali kelas resmi per jenjang (contoh: <em>Andrew Syaputra</em> untuk VII UTSMAN, <em>Tri Yuli Aryani, S.Pd., Gr.</em> untuk VII AISYAH).</span>
+              </li>
+            </ul>
+          </div>
+        </div>
 
-        <div class="pt-2">
-          <button onclick="switchViewAndHighlight('dashboard')" class="inline-flex items-center gap-1.5 text-xs font-bold text-indigo-600 hover:text-indigo-800 bg-indigo-50 px-3 py-1.5 rounded-lg border border-indigo-200 transition">
+        <div class="pt-2 flex items-center gap-2">
+          <button onclick="switchViewAndHighlight('murid')" class="inline-flex items-center gap-1.5 text-xs font-bold text-purple-700 hover:text-purple-900 bg-purple-100/80 hover:bg-purple-200/80 px-3.5 py-2 rounded-xl transition">
             <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-            <span>Buka Dashboard Beranda</span>
+            <span>Buka Master Data Siswa</span>
           </button>
         </div>
       </div>
 
-      <!-- STEP 3: Nilai Akademik -->
+      <!-- STEP 3: Rekap Nilai 16 Mata Pelajaran & Generator Capaian -->
       <div class="guide-step-card hidden" data-step="3">
-        <div class="flex items-center gap-3 p-3 bg-blue-50 border border-blue-100 rounded-xl mb-4">
-          <div class="w-12 h-12 rounded-xl bg-blue-600 text-white flex items-center justify-center text-xl shrink-0 shadow-md">
+        <div class="flex items-center gap-3.5 p-3.5 bg-blue-50 border border-blue-100 rounded-2xl mb-4">
+          <div class="w-12 h-12 rounded-2xl bg-blue-600 text-white flex items-center justify-center text-xl shrink-0 shadow-md shadow-blue-500/20">
             <i class="fa-solid fa-book-open"></i>
           </div>
           <div>
-            <h4 class="text-sm font-bold text-blue-950">Mode Input Leger Sekelas & Capaian Kompetensi Otomatis</h4>
-            <p class="text-xs text-blue-700">Dibuat sangat mudah untuk guru: input nilai per mapel untuk seluruh kelas sekaligus.</p>
+            <h4 class="text-sm font-bold text-blue-950">Rekap Nilai 16 Mapel & Capaian Kompetensi Otomatis</h4>
+            <p class="text-xs text-blue-700">Input nilai sekelas dalam bentuk tabel leger dengan generator deskripsi capaian otomatis.</p>
           </div>
         </div>
 
-        <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs space-y-2 mb-3">
-          <div class="font-bold text-slate-800 border-b border-slate-200 pb-1.5 flex items-center justify-between">
-            <span>Fitur Cepat Untuk Guru:</span>
-            <span class="text-emerald-700 font-black">⚡ Super Cepat</span>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs mb-3">
+          <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1.5">
+            <span class="font-bold text-blue-950 flex items-center gap-1.5">
+              <i class="fa-solid fa-moon text-amber-500"></i> 5 Mapel Diniyah:
+            </span>
+            <p class="text-[11px] text-slate-600">Akidah, Akhlak, Hadits, Fikih, SKI (Sejarah Kebudayaan Islam).</p>
           </div>
-          <ul class="space-y-1.5 text-slate-600 text-[11px]">
-            <li class="flex items-center gap-1.5"><i class="fa-solid fa-keyboard text-blue-600"></i> Tekan <strong>Enter</strong> atau <strong>Panah Bawah</strong> untuk pindah ke nilai murid berikutnya.</li>
-            <li class="flex items-center gap-1.5"><i class="fa-solid fa-wand-magic-sparkles text-emerald-600"></i> Tombol <strong>Auto-Generate Capaian</strong> menghasilkan deskripsi kompetensi 1 kelas dalam 1-klik!</li>
-            <li class="flex items-center gap-1.5"><i class="fa-solid fa-floppy-disk text-indigo-600"></i> Tombol <strong>Simpan Nilai Sekelas</strong> menyimpan seluruh data seketika.</li>
+          <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1.5">
+            <span class="font-bold text-blue-950 flex items-center gap-1.5">
+              <i class="fa-solid fa-book text-blue-600"></i> 11 Mapel Umum & Muatan:
+            </span>
+            <p class="text-[11px] text-slate-600">Pancasila, B. Indonesia, B. Inggris, Matematika, IPA, IPS, Prakarya, PJOK, B. Sunda, Informatika, Bahasa Arab.</p>
+          </div>
+        </div>
+
+        <div class="bg-gradient-to-r from-blue-500/10 to-indigo-500/10 p-3.5 rounded-xl border border-blue-200 text-xs space-y-2">
+          <div class="font-bold text-blue-950 flex items-center justify-between">
+            <span class="flex items-center gap-1.5"><i class="fa-solid fa-bolt text-amber-500"></i> Fitur Percepatan Input Guru:</span>
+            <span class="text-[10px] bg-blue-600 text-white px-2 py-0.5 rounded font-bold">1-Klik Sekelas</span>
+          </div>
+          <ul class="space-y-1 text-slate-700 text-[11px]">
+            <li>• <strong>Tombol Auto-Generate Capaian:</strong> Menghasilkan narasi kompetensi baku resmi Al-Imam berdasarkan nilai (Sangat Baik / Baik / Cukup / Perlu Bimbingan).</li>
+            <li>• <strong>Navigasi Keyboard Cepat:</strong> Tekan <strong>Enter</strong> atau <strong>Panah Bawah</strong> pada input nilai untuk langsung melompat ke siswa berikutnya.</li>
+            <li>• <strong>Simpan Nilai Sekelas:</strong> Menyimpan seluruh nilai 16 mapel untuk seluruh siswa secara batch seketika.</li>
           </ul>
         </div>
 
         <div class="pt-2">
-          <button onclick="switchViewAndHighlight('akademik')" class="inline-flex items-center gap-1.5 text-xs font-bold text-blue-600 hover:text-blue-800 bg-blue-50 px-3 py-1.5 rounded-lg border border-blue-200 transition">
+          <button onclick="switchViewAndHighlight('akademik')" class="inline-flex items-center gap-1.5 text-xs font-bold text-blue-700 hover:text-blue-900 bg-blue-100/80 hover:bg-blue-200/80 px-3.5 py-2 rounded-xl transition">
             <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-            <span>Buka Modul Nilai Akademik</span>
+            <span>Buka Rekap Nilai Akademik</span>
           </button>
         </div>
       </div>
 
-      <!-- STEP 4: Ahlaq & Kepribadian -->
+      <!-- STEP 4: Ahlaq & Kepribadian (6 Aspek Al-Imam) -->
       <div class="guide-step-card hidden" data-step="4">
-        <div class="flex items-center gap-3 p-3 bg-amber-50 border border-amber-100 rounded-xl mb-4">
-          <div class="w-12 h-12 rounded-xl bg-amber-600 text-white flex items-center justify-center text-xl shrink-0 shadow-md">
+        <div class="flex items-center gap-3.5 p-3.5 bg-amber-50 border border-amber-100 rounded-2xl mb-4">
+          <div class="w-12 h-12 rounded-2xl bg-amber-600 text-white flex items-center justify-center text-xl shrink-0 shadow-md shadow-amber-500/20">
             <i class="fa-solid fa-heart-pulse"></i>
           </div>
           <div>
-            <h4 class="text-sm font-bold text-amber-950">Ahlaq & Kepribadian (6 Aspek Al-Imam + Bank Kalimat)</h4>
-            <p class="text-xs text-amber-700">Terapkan kalimat mutiara & evaluasi karakter Al-Imam untuk seluruh murid sekelas dalam 1-klik.</p>
+            <h4 class="text-sm font-bold text-amber-950">Ahlaq & Kepribadian (6 Aspek Al-Imam & Bank Mutiara)</h4>
+            <p class="text-xs text-amber-700">Pencatatan perkembangan karakter santri/siswi dengan kalimat pembinaan resmi Al-Imam.</p>
           </div>
         </div>
 
-        <div class="grid grid-cols-3 gap-2 text-xs mb-3">
-          <div class="p-2 bg-slate-50 border border-slate-200 rounded-lg text-center font-bold text-slate-800 text-[10px]">1. Ibadah</div>
-          <div class="p-2 bg-slate-50 border border-slate-200 rounded-lg text-center font-bold text-slate-800 text-[10px]">2. Akhlak</div>
-          <div class="p-2 bg-slate-50 border border-slate-200 rounded-lg text-center font-bold text-slate-800 text-[10px]">3. Kedisiplinan</div>
-          <div class="p-2 bg-slate-50 border border-slate-200 rounded-lg text-center font-bold text-slate-800 text-[10px]">4. Kerapihan</div>
-          <div class="p-2 bg-slate-50 border border-slate-200 rounded-lg text-center font-bold text-slate-800 text-[10px]">5. Kepemimpinan</div>
-          <div class="p-2 bg-slate-50 border border-slate-200 rounded-lg text-center font-bold text-slate-800 text-[10px]">6. Kerja Sama</div>
+        <p class="text-xs text-slate-600 leading-relaxed mb-2.5">
+          Lembar Rapor Kepribadian SMP Al-Imam mengevaluasi 6 pilar akhlak mulia dengan narasi bimbingan yang menyemangati:
+        </p>
+
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs mb-3">
+          <div class="p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-center">
+            <span class="block font-bold text-slate-800 text-[11px]">1. Ibadah</span>
+            <span class="text-[10px] text-slate-500">Shalat & Dzikir Harian</span>
+          </div>
+          <div class="p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-center">
+            <span class="block font-bold text-slate-800 text-[11px]">2. Akhlak</span>
+            <span class="text-[10px] text-slate-500">Adab & Kesantunan</span>
+          </div>
+          <div class="p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-center">
+            <span class="block font-bold text-slate-800 text-[11px]">3. Kedisiplinan</span>
+            <span class="text-[10px] text-slate-500">Ketepatan Waktu</span>
+          </div>
+          <div class="p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-center">
+            <span class="block font-bold text-slate-800 text-[11px]">4. Kerapihan</span>
+            <span class="text-[10px] text-slate-500">Kebersihan Diri & Kamar</span>
+          </div>
+          <div class="p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-center">
+            <span class="block font-bold text-slate-800 text-[11px]">5. Kepemimpinan</span>
+            <span class="text-[10px] text-slate-500">Inisiatif & Teladan</span>
+          </div>
+          <div class="p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-center">
+            <span class="block font-bold text-slate-800 text-[11px]">6. Kerja Sama</span>
+            <span class="text-[10px] text-slate-500">Tolong-menolong</span>
+          </div>
+        </div>
+
+        <div class="p-3 bg-amber-500/10 border border-amber-200 rounded-xl text-xs space-y-1 text-slate-700">
+          <div class="font-bold text-amber-950 flex items-center gap-1.5">
+            <i class="fa-solid fa-lightbulb text-amber-600"></i> Fitur Bank Kalimat Mutiara:
+          </div>
+          <p class="text-[11px]">Wali kelas dapat memilih langsung dari Bank Kalimat resmi atau menginput catatan khusus yang menyentuh hati orang tua dan santri.</p>
         </div>
 
         <div class="pt-2">
-          <button onclick="switchViewAndHighlight('kepemimpinan')" class="inline-flex items-center gap-1.5 text-xs font-bold text-amber-600 hover:text-amber-800 bg-amber-50 px-3 py-1.5 rounded-lg border border-amber-200 transition">
+          <button onclick="switchViewAndHighlight('kepemimpinan')" class="inline-flex items-center gap-1.5 text-xs font-bold text-amber-800 hover:text-amber-950 bg-amber-100/80 hover:bg-amber-200/80 px-3.5 py-2 rounded-xl transition">
             <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
             <span>Buka Modul Ahlaq & Kepribadian</span>
           </button>
         </div>
       </div>
 
-      <!-- STEP 5: Nilai Diniyah & Tahfidz -->
+      <!-- STEP 5: Penilaian Diniyah, Tahfidz & Bahasa Arab -->
       <div class="guide-step-card hidden" data-step="5">
-        <div class="flex items-center gap-3 p-3 bg-emerald-50 border border-emerald-100 rounded-xl mb-4">
-          <div class="w-12 h-12 rounded-xl bg-emerald-600 text-white flex items-center justify-center text-xl shrink-0 shadow-md">
+        <div class="flex items-center gap-3.5 p-3.5 bg-emerald-50 border border-emerald-100 rounded-2xl mb-4">
+          <div class="w-12 h-12 rounded-2xl bg-emerald-600 text-white flex items-center justify-center text-xl shrink-0 shadow-md shadow-emerald-500/20">
             <i class="fa-solid fa-quran"></i>
           </div>
           <div>
-            <h4 class="text-sm font-bold text-emerald-950">Penilaian Diniyah, Tahfidz & Bahasa Arab</h4>
-            <p class="text-xs text-emerald-700">Pencatatan ziyadah hafalan baru, kelancaran muroja'ah mutqin, dan ibadah harian.</p>
+            <h4 class="text-sm font-bold text-emerald-950">Penilaian Diniyah, Tahfidz Al-Qur'an & Bahasa Arab</h4>
+            <p class="text-xs text-emerald-700">Pencatatan ziyadah hafalan baru, kelancaran muroja'ah mutqin, dan adab halaqah.</p>
           </div>
         </div>
 
         <ul class="text-xs text-slate-600 space-y-2 mb-3">
-          <li class="flex items-start gap-2">
-            <i class="fa-solid fa-check text-emerald-600 mt-0.5"></i>
-            <span><strong>Ziyadah & Muroja'ah:</strong> Catat pencapaian juz/surah (misal: <em>Juz 30 & Juz 29 Lancar</em>).</span>
+          <li class="flex items-start gap-2.5 p-2.5 bg-slate-50 rounded-xl border border-slate-200">
+            <i class="fa-solid fa-book-quran text-emerald-600 text-base mt-0.5"></i>
+            <div>
+              <strong class="text-slate-800 block text-[11px]">1. Ziyadah & Muroja'ah:</strong>
+              <span class="text-[11px] text-slate-600">Catat capaian target hafalan baru (misal: <em>Juz 28 & Juz 29 Lancar</em>) dan surah mutqin (misal: <em>Juz 30 Mutqin</em>).</span>
+            </div>
           </li>
-          <li class="flex items-start gap-2">
-            <i class="fa-solid fa-check text-emerald-600 mt-0.5"></i>
-            <span><strong>Nilai Angka & Kategori:</strong> Masukkan nilai angka tahfidz (0-100), adab harian (Mumtaz/Jayyid Jiddan/Jayyid/Maqbul), ibadah harian, dan nilai bahasa Arab.</span>
+          <li class="flex items-start gap-2.5 p-2.5 bg-slate-50 rounded-xl border border-slate-200">
+            <i class="fa-solid fa-star-and-crescent text-emerald-600 text-base mt-0.5"></i>
+            <div>
+              <strong class="text-slate-800 block text-[11px]">2. Adab & Ibadah Harian:</strong>
+              <span class="text-[11px] text-slate-600">Predikat kualitatif islami: <strong>Mumtaz (A)</strong>, <strong>Jayyid Jiddan (B)</strong>, <strong>Jayyid (C)</strong>, atau <strong>Maqbul (D)</strong>.</span>
+            </div>
           </li>
-          <li class="flex items-start gap-2">
-            <i class="fa-solid fa-check text-emerald-600 mt-0.5"></i>
-            <span><strong>Catatan Musyrif:</strong> Evaluasi makharijul huruf, sifat huruf, kaidah tajwid, dan kelancaran talaqqi murid.</span>
+          <li class="flex items-start gap-2.5 p-2.5 bg-slate-50 rounded-xl border border-slate-200">
+            <i class="fa-solid fa-comment-dots text-emerald-600 text-base mt-0.5"></i>
+            <div>
+              <strong class="text-slate-800 block text-[11px]">3. Catatan Musyrif Halaqah:</strong>
+              <span class="text-[11px] text-slate-600">Evaluasi tajwid, kelancaran makharijul huruf, ketertiban tilawah, dan adab terhadap guru Al-Qur'an.</span>
+            </div>
           </li>
         </ul>
 
         <div class="pt-2">
-          <button onclick="switchViewAndHighlight('diniyah')" class="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-600 hover:text-emerald-800 bg-emerald-50 px-3 py-1.5 rounded-lg border border-emerald-200 transition">
+          <button onclick="switchViewAndHighlight('diniyah')" class="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-800 hover:text-emerald-950 bg-emerald-100/80 hover:bg-emerald-200/80 px-3.5 py-2 rounded-xl transition">
             <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
             <span>Buka Modul Nilai Diniyah</span>
           </button>
         </div>
       </div>
 
-      <!-- STEP 6: Master Data Murid -->
+      <!-- STEP 6: SKL Kepemimpinan Karakter (28 Indikator) -->
       <div class="guide-step-card hidden" data-step="6">
-        <div class="flex items-center gap-3 p-3 bg-purple-50 border border-purple-100 rounded-xl mb-4">
-          <div class="w-12 h-12 rounded-xl bg-purple-600 text-white flex items-center justify-center text-xl shrink-0 shadow-md">
-            <i class="fa-solid fa-user-graduate"></i>
+        <div class="flex items-center gap-3.5 p-3.5 bg-cyan-50 border border-cyan-100 rounded-2xl mb-4">
+          <div class="w-12 h-12 rounded-2xl bg-cyan-600 text-white flex items-center justify-center text-xl shrink-0 shadow-md shadow-cyan-500/20">
+            <i class="fa-solid fa-medal"></i>
           </div>
           <div>
-            <h4 class="text-sm font-bold text-purple-950">Master Data Murid & Kelas</h4>
-            <p class="text-xs text-purple-700">Pusat data induk murid, identitas wali, nomor kontak, dan cetak cepat.</p>
+            <h4 class="text-sm font-bold text-cyan-950">SKL Kepemimpinan & Portofolio Karakter (28 Indikator)</h4>
+            <p class="text-xs text-cyan-700">Standar Kompetensi Lulusan (SKL) Karakter Khusus SMP Al-Imam.</p>
           </div>
         </div>
 
-        <p class="text-xs text-slate-600 leading-relaxed">
-          Di modul ini Anda dapat mengelola seluruh murid di kelas 7A, 7B, 8A, 8B, 9A, dan 9B. Terdapat tombol aksi langsung pada setiap murid untuk mencetak rapor atau mengedit profil.
+        <p class="text-xs text-slate-600 leading-relaxed mb-3">
+          Memetakan 28 butir indikator kepemimpinan ke dalam 7 pilar dimensi pembentukan karakter unggul Al-Imam:
         </p>
 
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs mb-3">
+          <div class="p-2 bg-slate-50 border border-slate-200 rounded-xl">
+            <strong class="text-cyan-900 text-[11px] block">1. Disiplin (d1-d7)</strong>
+            <span class="text-[10px] text-slate-500">Waktu, shalat, aturan</span>
+          </div>
+          <div class="p-2 bg-slate-50 border border-slate-200 rounded-xl">
+            <strong class="text-cyan-900 text-[11px] block">2. Kebersihan (k1-k5)</strong>
+            <span class="text-[10px] text-slate-500">Rapi, bersih lingkungan</span>
+          </div>
+          <div class="p-2 bg-slate-50 border border-slate-200 rounded-xl">
+            <strong class="text-cyan-900 text-[11px] block">3. Percaya Diri (p1-p5)</strong>
+            <span class="text-[10px] text-slate-500">Public speaking, inisiatif</span>
+          </div>
+          <div class="p-2 bg-slate-50 border border-slate-200 rounded-xl">
+            <strong class="text-cyan-900 text-[11px] block">4. Santun (s1-s2)</strong>
+            <span class="text-[10px] text-slate-500">Senyum, sapa, sopan</span>
+          </div>
+          <div class="p-2 bg-slate-50 border border-slate-200 rounded-xl">
+            <strong class="text-cyan-900 text-[11px] block">5. Mandiri (m1-m2)</strong>
+            <span class="text-[10px] text-slate-500">Tanggung jawab pribadi</span>
+          </div>
+          <div class="p-2 bg-slate-50 border border-slate-200 rounded-xl">
+            <strong class="text-cyan-900 text-[11px] block">6. Rajin & Hebat (r, j, h)</strong>
+            <span class="text-[10px] text-slate-500">Jujur, gigih, pantang menyerah</span>
+          </div>
+        </div>
+
         <div class="pt-2">
-          <button onclick="switchViewAndHighlight('murid')" class="inline-flex items-center gap-1.5 text-xs font-bold text-purple-600 hover:text-purple-800 bg-purple-50 px-3 py-1.5 rounded-lg border border-purple-200 transition">
+          <button onclick="switchViewAndHighlight('kepemimpinan')" class="inline-flex items-center gap-1.5 text-xs font-bold text-cyan-800 hover:text-cyan-950 bg-cyan-100/80 hover:bg-cyan-200/80 px-3.5 py-2 rounded-xl transition">
             <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-            <span>Buka Master Data Murid</span>
+            <span>Buka Modul SKL Kepemimpinan</span>
           </button>
         </div>
       </div>
 
-      <!-- STEP 7: Cetak Rapor Terpadu (A4) -->
+      <!-- STEP 7: Pratinjau & Cetak Lembar Rapor Portofolio (A4) -->
       <div class="guide-step-card hidden" data-step="7">
-        <div class="flex items-center gap-3 p-3 bg-slate-100 border border-slate-200 rounded-xl mb-4">
-          <div class="w-12 h-12 rounded-xl bg-slate-900 text-white flex items-center justify-center text-xl shrink-0 shadow-md">
+        <div class="flex items-center gap-3.5 p-3.5 bg-slate-100 border border-slate-200 rounded-2xl mb-4">
+          <div class="w-12 h-12 rounded-2xl bg-slate-900 text-white flex items-center justify-center text-xl shrink-0 shadow-md shadow-slate-900/20">
             <i class="fa-solid fa-file-invoice"></i>
           </div>
           <div>
-            <h4 class="text-sm font-bold text-slate-900">Format Cetak Rapor Resmi Terpadu (Standar A4)</h4>
-            <p class="text-xs text-slate-600">Dokumen tunggal yang menggabungkan seluruh pilar penilaian murid.</p>
+            <h4 class="text-sm font-bold text-slate-950">Pratinjau & Cetak Rapor Resmi Terpadu (Standar A4)</h4>
+            <p class="text-xs text-slate-700">Format cetak siap cetak/ekspor PDF sesuai sheet Print Excel resmi Al-Imam.</p>
           </div>
         </div>
 
-        <ul class="text-xs text-slate-600 space-y-2 mb-3">
-          <li class="flex items-start gap-2">
-            <i class="fa-solid fa-check text-emerald-600 mt-0.5"></i>
-            <span><strong>Kop Surat Resmi:</strong> Memuat logo sekolah, alamat lengkap, kontak, dan website resmi SMP Al-Imam (AI IS).</span>
-          </li>
-          <li class="flex items-start gap-2">
-            <i class="fa-solid fa-check text-emerald-600 mt-0.5"></i>
-            <span><strong>Susunan Lengkap 3 Pilar:</strong> Tabel Nilai Akademik dengan KKM, Tabel Nilai Diniyah & Tahfidz, serta Tabel Karakter & Kepemimpinan.</span>
-          </li>
-          <li class="flex items-start gap-2">
-            <i class="fa-solid fa-check text-emerald-600 mt-0.5"></i>
-            <span><strong>3 Kolom Pengesahan:</strong> Tanda tangan Orang Tua / Wali Murid, Wali Kelas / Pendidik, dan Kepala Sekolah.</span>
-          </li>
-        </ul>
+        <div class="space-y-2.5 text-xs text-slate-600">
+          <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
+            <div class="font-bold text-slate-800 flex items-center justify-between">
+              <span>Keunggulan Format Cetak:</span>
+              <span class="text-[10px] bg-slate-200 text-slate-800 px-2 py-0.5 rounded font-bold">Standard A4 Layout</span>
+            </div>
+            <ul class="space-y-1.5 text-slate-600 text-[11px]">
+              <li class="flex items-start gap-2">
+                <i class="fa-solid fa-circle-check text-emerald-600 mt-0.5"></i>
+                <span><strong>Kop Surat Resmi AI IS:</strong> Logo resmi sekolah, alamat lengkap, dan identitas lembaga.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <i class="fa-solid fa-circle-check text-emerald-600 mt-0.5"></i>
+                <span><strong>Tabel Terpadu Lengkap:</strong> 16 Nilai Mapel + KKM + Capaian, Presensi S/I/A, 3 Ekstrakurikuler, dan 6 Aspek Kepribadian.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <i class="fa-solid fa-circle-check text-emerald-600 mt-0.5"></i>
+                <span><strong>3 Kolom Pengesahan Tanda Tangan:</strong> Orang Tua/Wali Murid, Wali Kelas, dan Kepala Sekolah (<em>Bambang Setyono, S.T.</em>) lengkap dengan titimangsa resmi (<em>Bogor, 17 Oktober 2025</em>).</span>
+              </li>
+            </ul>
+          </div>
+        </div>
 
         <div class="pt-2">
-          <button onclick="switchViewAndHighlight('rapor')" class="inline-flex items-center gap-1.5 text-xs font-bold text-slate-800 hover:text-black bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-300 transition">
+          <button onclick="switchViewAndHighlight('rapor')" class="inline-flex items-center gap-1.5 text-xs font-bold text-slate-900 hover:text-black bg-slate-200/90 hover:bg-slate-300 px-3.5 py-2 rounded-xl transition">
             <i class="fa-solid fa-print text-[10px]"></i>
             <span>Pratinjau Lembar Cetak Rapor</span>
           </button>
         </div>
       </div>
 
-      <!-- STEP 8: Akses Login Multi-Role (Admin, Kepsek, Guru, Wali Murid) -->
+      <!-- STEP 8: Akses Login Multi-Role, Sinkronisasi Cloud & Pengaturan CMS -->
       <div class="guide-step-card hidden" data-step="8">
-        <div class="flex items-center gap-3 p-3 bg-rose-50 border border-rose-100 rounded-xl mb-4">
-          <div class="w-12 h-12 rounded-xl bg-rose-600 text-white flex items-center justify-center text-xl shrink-0 shadow-md">
-            <i class="fa-solid fa-user-shield"></i>
+        <div class="flex items-center gap-3.5 p-3.5 bg-rose-50 border border-rose-100 rounded-2xl mb-4">
+          <div class="w-12 h-12 rounded-2xl bg-rose-600 text-white flex items-center justify-center text-xl shrink-0 shadow-md shadow-rose-500/20">
+            <i class="fa-solid fa-shield-halved"></i>
           </div>
           <div>
-            <h4 class="text-sm font-bold text-rose-950">Akses Login 4 Role & Kustomisasi CMS</h4>
-            <p class="text-xs text-rose-700">Autentikasi terpisah untuk Admin, Kepala Sekolah, Guru, dan Wali Murid.</p>
+            <h4 class="text-sm font-bold text-rose-950">Akses Login 4 Role, Cloud Sync & Pengaturan CMS</h4>
+            <p class="text-xs text-rose-700">Sistem keamanan multi-role, sinkronisasi Google Sheets, dan CMS kustomisasi.</p>
           </div>
         </div>
 
-        <div class="grid grid-cols-2 gap-2 text-xs mb-3">
-          <div class="p-2.5 bg-purple-50 border border-purple-200 rounded-lg">
-            <strong class="text-purple-950 block text-[11px]">1. Admin</strong>
-            <span class="text-[10px] text-purple-700">Akses penuh CRUD, CMS, Pengguna, dan Reset DB.</span>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs mb-3">
+          <div class="p-2.5 bg-purple-50/80 border border-purple-200/80 rounded-xl">
+            <strong class="text-purple-950 block text-[11px] font-bold">1. Administrator (Admin)</strong>
+            <span class="text-[10px] text-purple-700">Akses penuh CRUD, Manajemen Pengguna, Reset Database, dan CMS Branding.</span>
           </div>
-          <div class="p-2.5 bg-indigo-50 border border-indigo-200 rounded-lg">
-            <strong class="text-indigo-950 block text-[11px]">2. Kepala Sekolah</strong>
-            <span class="text-[10px] text-indigo-700">Monitoring seluruh dashboard, leger nilai, dan pengesahan rapor.</span>
+          <div class="p-2.5 bg-indigo-50/80 border border-indigo-200/80 rounded-xl">
+            <strong class="text-indigo-950 block text-[11px] font-bold">2. Kepala Sekolah</strong>
+            <span class="text-[10px] text-indigo-700">Supervisi seluruh jenjang kelas, rekap kelulusan, dan monitoring leger nilai.</span>
           </div>
-          <div class="p-2.5 bg-blue-50 border border-blue-200 rounded-lg">
-            <strong class="text-blue-950 block text-[11px]">3. Guru / Pendidik</strong>
-            <span class="text-[10px] text-blue-700">Input dan kelola nilai 3 kategori serta data kelasnya.</span>
+          <div class="p-2.5 bg-blue-50/80 border border-blue-200/80 rounded-xl">
+            <strong class="text-blue-950 block text-[11px] font-bold">3. Guru / Wali Kelas</strong>
+            <span class="text-[10px] text-blue-700">Input nilai 16 mapel, generate capaian otomatis, evaluasi kepribadian, cetak rapor kelas.</span>
           </div>
-          <div class="p-2.5 bg-emerald-50 border border-emerald-200 rounded-lg">
-            <strong class="text-emerald-950 block text-[11px]">4. Wali Murid</strong>
-            <span class="text-[10px] text-emerald-700">Melihat rekapitulasi nilai dan mengunduh e-rapor anak.</span>
+          <div class="p-2.5 bg-emerald-50/80 border border-emerald-200/80 rounded-xl">
+            <strong class="text-emerald-950 block text-[11px] font-bold">4. Orang Tua / Wali Murid</strong>
+            <span class="text-[10px] text-emerald-700">Melihat rekap nilai anak, portofolio perkembangan karakter, dan download e-rapor.</span>
           </div>
         </div>
 
-        <div class="pt-2 flex gap-2">
-          <button onclick="openLoginModal()" class="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 px-3 py-1.5 rounded-lg shadow transition">
+        <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs space-y-1.5 text-slate-700">
+          <div class="font-bold text-slate-800 flex items-center justify-between">
+            <span>⚙️ Pengaturan CMS & Cloud Sync:</span>
+            <span class="text-[10px] text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">Google Sheets Sync Active</span>
+          </div>
+          <p class="text-[11px] text-slate-600">Ubah Kop Surat, Nama Kepala Sekolah, Tanggal Titimangsa Rapor, serta Tema Warna aplikasi langsung melalui menu <strong>Pengaturan CMS</strong>.</p>
+        </div>
+
+        <div class="pt-2 flex flex-wrap gap-2">
+          <button onclick="openLoginModal()" class="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 px-3.5 py-2 rounded-xl shadow transition">
             <i class="fa-solid fa-key text-[10px]"></i>
-            <span>Buka Portal Login / Ganti Role</span>
+            <span>Portal Login / Ganti Role</span>
+          </button>
+          <button onclick="switchViewAndHighlight('cms')" class="inline-flex items-center gap-1.5 text-xs font-bold text-slate-700 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 px-3.5 py-2 rounded-xl border border-slate-300 transition">
+            <i class="fa-solid fa-gear text-[10px]"></i>
+            <span>Buka Pengaturan CMS</span>
           </button>
         </div>
       </div>
@@ -3110,18 +3244,18 @@
     </div>
 
     <!-- Bottom Navigation Controls -->
-    <div class="bg-slate-50 px-6 py-4 border-t border-slate-200 flex items-center justify-between">
+    <div class="bg-slate-50 px-6 py-4 border-t border-slate-200/80 flex items-center justify-between">
       <div>
         <button id="btn-guide-prev" onclick="changeGuideStep(-1)" class="px-3.5 py-2 text-xs font-semibold text-slate-600 hover:text-slate-900 bg-white border border-slate-200 hover:bg-slate-100 rounded-xl transition hidden">
           <i class="fa-solid fa-arrow-left mr-1.5"></i> Sebelumnya
         </button>
       </div>
 
-      <div class="flex items-center gap-2">
+      <div class="flex items-center gap-2.5">
         <button onclick="closeInteractiveGuide(true)" class="px-3 py-2 text-xs font-medium text-slate-500 hover:text-slate-700 transition">
           Lewati Panduan
         </button>
-        <button id="btn-guide-next" onclick="changeGuideStep(1)" class="px-4 py-2 text-xs font-bold text-white bg-theme-primary hover:opacity-90 rounded-xl shadow-md transition flex items-center gap-1.5">
+        <button id="btn-guide-next" onclick="changeGuideStep(1)" class="px-4 py-2 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-xl shadow-md transition flex items-center gap-1.5">
           <span>Selanjutnya</span>
           <i class="fa-solid fa-arrow-right text-[10px]"></i>
         </button>
@@ -6873,6 +7007,12 @@ function closeInteractiveGuide(dismissForever = false) {
   }
 }
 
+function goToGuideStep(step) {
+  if (step < 1 || step > TOTAL_GUIDE_STEPS) return;
+  currentGuideStep = step;
+  renderGuideStep(currentGuideStep);
+}
+
 function changeGuideStep(delta) {
   const nextStep = currentGuideStep + delta;
   if (nextStep < 1) return;
@@ -6900,6 +7040,14 @@ function renderGuideStep(step) {
     }
   });
 
+  document.querySelectorAll('.guide-tab-pill').forEach(pill => {
+    if (parseInt(pill.getAttribute('data-tab-step')) === step) {
+      pill.className = 'guide-tab-pill px-2.5 py-1 rounded-lg transition whitespace-nowrap bg-blue-500 text-white shadow font-bold';
+    } else {
+      pill.className = 'guide-tab-pill px-2.5 py-1 rounded-lg transition whitespace-nowrap bg-slate-800/80 text-slate-300 hover:bg-slate-700';
+    }
+  });
+
   const btnPrev = document.getElementById('btn-guide-prev');
   const btnNext = document.getElementById('btn-guide-next');
   if (btnPrev) {
@@ -6912,7 +7060,7 @@ function renderGuideStep(step) {
       btnNext.className = 'px-4 py-2 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-xl shadow-md transition flex items-center gap-1.5';
     } else {
       btnNext.innerHTML = '<span>Selanjutnya</span> <i class="fa-solid fa-arrow-right text-[10px]"></i>';
-      btnNext.className = 'px-4 py-2 text-xs font-bold text-white bg-theme-primary hover:opacity-90 rounded-xl shadow-md transition flex items-center gap-1.5';
+      btnNext.className = 'px-4 py-2 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-xl shadow-md transition flex items-center gap-1.5';
     }
   }
 }

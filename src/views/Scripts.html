@@ -3627,6 +3627,12 @@ function closeInteractiveGuide(dismissForever = false) {
   }
 }
 
+function goToGuideStep(step) {
+  if (step < 1 || step > TOTAL_GUIDE_STEPS) return;
+  currentGuideStep = step;
+  renderGuideStep(currentGuideStep);
+}
+
 function changeGuideStep(delta) {
   const nextStep = currentGuideStep + delta;
   if (nextStep < 1) return;
@@ -3654,6 +3660,14 @@ function renderGuideStep(step) {
     }
   });
 
+  document.querySelectorAll('.guide-tab-pill').forEach(pill => {
+    if (parseInt(pill.getAttribute('data-tab-step')) === step) {
+      pill.className = 'guide-tab-pill px-2.5 py-1 rounded-lg transition whitespace-nowrap bg-blue-500 text-white shadow font-bold';
+    } else {
+      pill.className = 'guide-tab-pill px-2.5 py-1 rounded-lg transition whitespace-nowrap bg-slate-800/80 text-slate-300 hover:bg-slate-700';
+    }
+  });
+
   const btnPrev = document.getElementById('btn-guide-prev');
   const btnNext = document.getElementById('btn-guide-next');
   if (btnPrev) {
@@ -3666,7 +3680,7 @@ function renderGuideStep(step) {
       btnNext.className = 'px-4 py-2 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-xl shadow-md transition flex items-center gap-1.5';
     } else {
       btnNext.innerHTML = '<span>Selanjutnya</span> <i class="fa-solid fa-arrow-right text-[10px]"></i>';
-      btnNext.className = 'px-4 py-2 text-xs font-bold text-white bg-theme-primary hover:opacity-90 rounded-xl shadow-md transition flex items-center gap-1.5';
+      btnNext.className = 'px-4 py-2 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-xl shadow-md transition flex items-center gap-1.5';
     }
   }
 }
