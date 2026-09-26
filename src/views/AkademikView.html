@@ -1,4 +1,4 @@
-<!-- Dashboard & Form Nilai Akademik (Tiru Format Excel SMP Al-Imam) -->
+<!-- Dashboard & Form Nilai Akademik (Tiru Format Excel Rekap SMP Al-Imam) -->
 <div id="view-akademik" class="view-panel hidden space-y-6">
   
   <!-- Header & Mode Switcher -->
@@ -7,9 +7,9 @@
       <div>
         <div class="flex items-center gap-2">
           <span class="w-2.5 h-2.5 rounded-full bg-blue-600"></span>
-          <h2 class="text-lg font-bold text-slate-900">Penilaian Akademik (Rekap Nilai & Capaian Kompetensi)</h2>
+          <h2 class="text-lg font-bold text-slate-900">Rekap Nilai & Capaian Kompetensi (16 Mata Pelajaran)</h2>
         </div>
-        <p class="text-xs text-slate-500 mt-0.5">Sesuai Format Excel SMP Al-Imam: Input KKM, Nilai, dan Deskripsi Capaian Kompetensi Mata Pelajaran.</p>
+        <p class="text-xs text-slate-500 mt-0.5">Sesuai Format Sheet Rekap Excel SMP Al-Imam: Input Nilai UTS & Narasi Capaian Kompetensi per Rombel.</p>
       </div>
 
       <!-- Mode Switcher Tabs -->
@@ -22,7 +22,7 @@
         <button id="btn-mode-akademik-list" onclick="switchAkademikInputMode('list')" 
                 class="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 transition flex items-center gap-2">
           <i class="fa-solid fa-list-check"></i>
-          <span>Tabel Riwayat Entri</span>
+          <span>Tabel Riwayat Nilai</span>
         </button>
       </div>
     </div>
@@ -42,13 +42,13 @@
         <span class="text-lg font-extrabold text-indigo-950" id="widget-ak-pass-rate">100%</span>
       </div>
       <div class="bg-amber-50/70 border border-amber-100 p-3 rounded-xl">
-        <span class="text-[10px] font-bold text-amber-700 uppercase tracking-wider block">Predikat A / Mumtaz</span>
+        <span class="text-[10px] font-bold text-amber-700 uppercase tracking-wider block">Predikat A (Mumtaz)</span>
         <span class="text-lg font-extrabold text-amber-950" id="widget-ak-count-a">0</span>
       </div>
     </div>
   </div>
 
-  <!-- SECTION 1: MODE INPUT LEGER SEKELAS (GURU-FIRST WORKFLOW) -->
+  <!-- SECTION 1: MODE INPUT LEGER SEKELAS (GURU-FIRST SPREADSHEET WORKFLOW) -->
   <div id="section-akademik-leger" class="space-y-4">
     <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
       
@@ -68,22 +68,24 @@
           </div>
 
           <div>
-            <label class="block text-[10px] font-bold text-slate-500 uppercase">Mata Pelajaran</label>
-            <select id="leger-akademik-mapel" onchange="onLegerMapelChange()" class="text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 font-bold text-slate-800 focus:ring-2 focus:ring-blue-500">
-              <option value="Akidah">Akidah</option>
-              <option value="Akhlak">Akhlak</option>
-              <option value="Hadis">Hadis</option>
-              <option value="Fiqih">Fiqih</option>
-              <option value="Bahasa Arab">Bahasa Arab</option>
-              <option value="Bahasa Indonesia">Bahasa Indonesia</option>
-              <option value="Bahasa Inggris">Bahasa Inggris</option>
-              <option value="Matematika">Matematika</option>
-              <option value="IPA">Ilmu Pengetahuan Alam (IPA)</option>
-              <option value="IPS">Ilmu Pengetahuan Sosial (IPS)</option>
-              <option value="Informatika">Informatika</option>
-              <option value="PPKn">Pendidikan Pancasila & Kewarganegaraan</option>
-              <option value="PJOK">Pendidikan Jasmani (PJOK)</option>
-              <option value="Seni Budaya">Seni Budaya</option>
+            <label class="block text-[10px] font-bold text-slate-500 uppercase">Mata Pelajaran (16 Mapel)</label>
+            <select id="leger-akademik-mapel" onchange="onLegerMapelChange()" class="text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 font-bold text-slate-800 focus:ring-2 focus:ring-blue-500 min-w-[220px]">
+              <option value="Akidah">1. Akidah (KKM 70)</option>
+              <option value="Akhlak">2. Akhlak (KKM 72)</option>
+              <option value="Hadits">3. Hadits (KKM 75)</option>
+              <option value="Fikih">4. Fikih (KKM 75)</option>
+              <option value="SKI">5. SKI (KKM 75)</option>
+              <option value="Pendidikan Pancasila">6. Pendidikan Pancasila (KKM 75)</option>
+              <option value="Bahasa Indonesia">7. Bahasa Indonesia (KKM 75)</option>
+              <option value="Bahasa Inggris">8. Bahasa Inggris (KKM 73)</option>
+              <option value="Matematika">9. Matematika (KKM 75)</option>
+              <option value="Ilmu Pengetahuan Alam">10. Ilmu Pengetahuan Alam (KKM 75)</option>
+              <option value="Ilmu Pengetahuan Sosial">11. Ilmu Pengetahuan Sosial (KKM 75)</option>
+              <option value="Prakarya">12. Prakarya (KKM 70)</option>
+              <option value="Pendidikan Jasmani, Olahraga, dan Kesehatan">13. PJOK (KKM 72)</option>
+              <option value="Bahasa Sunda">14. Bahasa Sunda (KKM 75)</option>
+              <option value="Informatika">15. Informatika (KKM 75)</option>
+              <option value="Bahasa Arab">16. Bahasa Arab (KKM 75)</option>
             </select>
           </div>
 
@@ -97,7 +99,7 @@
         <!-- Quick Generator & Fast-Fill Tools -->
         <div class="flex flex-wrap items-center gap-2">
           <button onclick="autoGenerateAllLegerCapaian()" 
-                  class="px-3 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-300 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm"
+                  class="px-3.5 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-300 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm"
                   title="Generate otomatis narasi capaian kompetensi sesuai nilai murid">
             <i class="fa-solid fa-wand-magic-sparkles text-emerald-600"></i>
             <span>Auto-Generate Capaian Sekelas</span>
@@ -111,11 +113,11 @@
         </div>
       </div>
 
-      <!-- Quick Bank Kalimat Template Preview -->
+      <!-- Quick Tips Card -->
       <div class="p-3 bg-blue-50/60 border border-blue-100 rounded-xl text-xs text-blue-900 flex flex-col md:flex-row md:items-center justify-between gap-2">
         <div class="flex items-center gap-2">
           <i class="fa-solid fa-lightbulb text-amber-500 text-sm"></i>
-          <span><strong>Petunjuk Pengisian:</strong> Tekan <kbd class="px-1.5 py-0.5 bg-white border border-blue-200 rounded text-[10px] font-mono">Enter</kbd> atau <kbd class="px-1.5 py-0.5 bg-white border border-blue-200 rounded text-[10px] font-mono">Panah Bawah</kbd> pada kolom Nilai untuk berpindah ke murid berikutnya dengan cepat.</span>
+          <span><strong>Navigasi Cepat:</strong> Ketik nilai murid lalu tekan <kbd class="px-1.5 py-0.5 bg-white border border-blue-200 rounded text-[10px] font-mono">Enter</kbd> atau <kbd class="px-1.5 py-0.5 bg-white border border-blue-200 rounded text-[10px] font-mono">Panah Bawah</kbd> untuk berpindah ke baris murid berikutnya.</span>
         </div>
         <div class="text-[11px] font-semibold text-blue-700">
           Total Murid: <span id="leger-student-count" class="font-bold">12</span>
@@ -130,10 +132,10 @@
               <th class="w-12 px-3 py-3 text-center border-r border-slate-200">No</th>
               <th class="w-32 px-3 py-3 border-r border-slate-200">NISN</th>
               <th class="w-64 px-4 py-3 border-r border-slate-200">Nama Peserta Didik</th>
-              <th class="w-24 px-3 py-3 text-center border-r border-slate-200">KKM</th>
-              <th class="w-28 px-3 py-3 text-center border-r border-slate-200 bg-blue-100/50 text-blue-900">Nilai (UTS)</th>
+              <th class="w-20 px-3 py-3 text-center border-r border-slate-200">KKM</th>
+              <th class="w-28 px-3 py-3 text-center border-r border-slate-200 bg-blue-100/50 text-blue-900 font-black">Nilai (UTS)</th>
               <th class="w-24 px-3 py-3 text-center border-r border-slate-200">Predikat</th>
-              <th class="px-4 py-3">Capaian Kompetensi (Deskripsi Kemampuan)</th>
+              <th class="px-4 py-3">Capaian Kompetensi (Narasi Pembelajaran)</th>
             </tr>
           </thead>
           <tbody id="leger-akademik-tbody" class="divide-y divide-slate-200 bg-white">
@@ -143,7 +145,7 @@
       </div>
 
       <div class="flex items-center justify-between pt-2 text-xs text-slate-500">
-        <span>Semua data nilai dan capaian kompetensi akan langsung tersinkronisasi ke Rapor Portofolio.</span>
+        <span>Seluruh 16 mata pelajaran langsung tersimpan dan dicetak pada Rapor Portofolio Tengah Semester.</span>
         <button onclick="saveBulkLegerAkademik()" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold shadow transition flex items-center gap-2">
           <i class="fa-solid fa-floppy-disk"></i>
           <span>Simpan Nilai Sekelas</span>
@@ -161,7 +163,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 flex-1">
           <div>
             <label class="block text-[11px] font-semibold text-slate-600 mb-1">Filter Kelas</label>
-            <select id="filter-akademik-kelas" onchange="loadNilaiAkademik()" class="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <select id="filter-akademik-kelas" onchange="loadNilaiAkademik()" class="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 font-bold">
               <option value="Semua">Semua Kelas</option>
               <option value="IX ABU BAKAR">Kelas IX ABU BAKAR</option>
               <option value="7A">Kelas 7A (Ikhwan)</option>
@@ -175,22 +177,24 @@
 
           <div>
             <label class="block text-[11px] font-semibold text-slate-600 mb-1">Filter Mata Pelajaran</label>
-            <select id="filter-akademik-mapel" onchange="loadNilaiAkademik()" class="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <select id="filter-akademik-mapel" onchange="loadNilaiAkademik()" class="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 font-bold">
               <option value="Semua">Semua Mata Pelajaran</option>
-              <option value="Akidah">Akidah</option>
-              <option value="Akhlak">Akhlak</option>
-              <option value="Hadis">Hadis</option>
-              <option value="Fiqih">Fiqih</option>
-              <option value="Bahasa Arab">Bahasa Arab</option>
-              <option value="Bahasa Indonesia">Bahasa Indonesia</option>
-              <option value="Bahasa Inggris">Bahasa Inggris</option>
-              <option value="Matematika">Matematika</option>
-              <option value="IPA">Ilmu Pengetahuan Alam (IPA)</option>
-              <option value="IPS">Ilmu Pengetahuan Sosial (IPS)</option>
-              <option value="Informatika">Informatika</option>
-              <option value="PPKn">PPKn</option>
-              <option value="PJOK">PJOK</option>
-              <option value="Seni Budaya">Seni Budaya</option>
+              <option value="Akidah">1. Akidah</option>
+              <option value="Akhlak">2. Akhlak</option>
+              <option value="Hadits">3. Hadits</option>
+              <option value="Fikih">4. Fikih</option>
+              <option value="SKI">5. SKI</option>
+              <option value="Pendidikan Pancasila">6. Pendidikan Pancasila</option>
+              <option value="Bahasa Indonesia">7. Bahasa Indonesia</option>
+              <option value="Bahasa Inggris">8. Bahasa Inggris</option>
+              <option value="Matematika">9. Matematika</option>
+              <option value="Ilmu Pengetahuan Alam">10. Ilmu Pengetahuan Alam</option>
+              <option value="Ilmu Pengetahuan Sosial">11. Ilmu Pengetahuan Sosial</option>
+              <option value="Prakarya">12. Prakarya</option>
+              <option value="Pendidikan Jasmani, Olahraga, dan Kesehatan">13. PJOK</option>
+              <option value="Bahasa Sunda">14. Bahasa Sunda</option>
+              <option value="Informatika">15. Informatika</option>
+              <option value="Bahasa Arab">16. Bahasa Arab</option>
             </select>
           </div>
 
@@ -225,7 +229,7 @@
                 <th class="px-3 py-3.5">Kelas</th>
                 <th class="px-3 py-3.5">Mata Pelajaran</th>
                 <th class="px-3 py-3.5 text-center">KKM</th>
-                <th class="px-3 py-3.5 text-center">Nilai Akhir</th>
+                <th class="px-3 py-3.5 text-center">Nilai</th>
                 <th class="px-3 py-3.5 text-center">Predikat</th>
                 <th class="px-4 py-3.5">Capaian Kompetensi</th>
                 <th class="px-4 py-3.5 text-right">Aksi</th>
@@ -266,28 +270,30 @@
 
       <div>
         <label class="block text-xs font-bold text-slate-700 mb-1">Pilih Murid *</label>
-        <select id="akademik-nis" required class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-blue-500">
+        <select id="akademik-nis" required class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-blue-500 font-bold">
           <!-- Populated dynamically via JS -->
         </select>
       </div>
 
       <div>
         <label class="block text-xs font-bold text-slate-700 mb-1">Mata Pelajaran *</label>
-        <select id="akademik-mapel" required onchange="onModalMapelChange()" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-blue-500">
-          <option value="Akidah">Akidah</option>
-          <option value="Akhlak">Akhlak</option>
-          <option value="Hadis">Hadis</option>
-          <option value="Fiqih">Fiqih</option>
-          <option value="Bahasa Arab">Bahasa Arab</option>
-          <option value="Bahasa Indonesia">Bahasa Indonesia</option>
-          <option value="Bahasa Inggris">Bahasa Inggris</option>
-          <option value="Matematika">Matematika</option>
-          <option value="IPA">Ilmu Pengetahuan Alam (IPA)</option>
-          <option value="IPS">Ilmu Pengetahuan Sosial (IPS)</option>
-          <option value="Informatika">Informatika</option>
-          <option value="PPKn">Pendidikan Pancasila & Kewarganegaraan</option>
-          <option value="PJOK">Pendidikan Jasmani (PJOK)</option>
-          <option value="Seni Budaya">Seni Budaya</option>
+        <select id="akademik-mapel" required onchange="onModalMapelChange()" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-blue-500 font-bold">
+          <option value="Akidah">1. Akidah (KKM 70)</option>
+          <option value="Akhlak">2. Akhlak (KKM 72)</option>
+          <option value="Hadits">3. Hadits (KKM 75)</option>
+          <option value="Fikih">4. Fikih (KKM 75)</option>
+          <option value="SKI">5. SKI (KKM 75)</option>
+          <option value="Pendidikan Pancasila">6. Pendidikan Pancasila (KKM 75)</option>
+          <option value="Bahasa Indonesia">7. Bahasa Indonesia (KKM 75)</option>
+          <option value="Bahasa Inggris">8. Bahasa Inggris (KKM 73)</option>
+          <option value="Matematika">9. Matematika (KKM 75)</option>
+          <option value="Ilmu Pengetahuan Alam">10. Ilmu Pengetahuan Alam (KKM 75)</option>
+          <option value="Ilmu Pengetahuan Sosial">11. Ilmu Pengetahuan Sosial (KKM 75)</option>
+          <option value="Prakarya">12. Prakarya (KKM 70)</option>
+          <option value="Pendidikan Jasmani, Olahraga, dan Kesehatan">13. PJOK (KKM 72)</option>
+          <option value="Bahasa Sunda">14. Bahasa Sunda (KKM 75)</option>
+          <option value="Informatika">15. Informatika (KKM 75)</option>
+          <option value="Bahasa Arab">16. Bahasa Arab (KKM 75)</option>
         </select>
       </div>
 

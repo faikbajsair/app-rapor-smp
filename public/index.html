@@ -763,7 +763,7 @@
 
 
         <!-- View 2: Nilai Akademik -->
-        <!-- Dashboard & Form Nilai Akademik (Tiru Format Excel SMP Al-Imam) -->
+        <!-- Dashboard & Form Nilai Akademik (Tiru Format Excel Rekap SMP Al-Imam) -->
 <div id="view-akademik" class="view-panel hidden space-y-6">
   
   <!-- Header & Mode Switcher -->
@@ -772,9 +772,9 @@
       <div>
         <div class="flex items-center gap-2">
           <span class="w-2.5 h-2.5 rounded-full bg-blue-600"></span>
-          <h2 class="text-lg font-bold text-slate-900">Penilaian Akademik (Rekap Nilai & Capaian Kompetensi)</h2>
+          <h2 class="text-lg font-bold text-slate-900">Rekap Nilai & Capaian Kompetensi (16 Mata Pelajaran)</h2>
         </div>
-        <p class="text-xs text-slate-500 mt-0.5">Sesuai Format Excel SMP Al-Imam: Input KKM, Nilai, dan Deskripsi Capaian Kompetensi Mata Pelajaran.</p>
+        <p class="text-xs text-slate-500 mt-0.5">Sesuai Format Sheet Rekap Excel SMP Al-Imam: Input Nilai UTS & Narasi Capaian Kompetensi per Rombel.</p>
       </div>
 
       <!-- Mode Switcher Tabs -->
@@ -787,7 +787,7 @@
         <button id="btn-mode-akademik-list" onclick="switchAkademikInputMode('list')" 
                 class="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 transition flex items-center gap-2">
           <i class="fa-solid fa-list-check"></i>
-          <span>Tabel Riwayat Entri</span>
+          <span>Tabel Riwayat Nilai</span>
         </button>
       </div>
     </div>
@@ -807,13 +807,13 @@
         <span class="text-lg font-extrabold text-indigo-950" id="widget-ak-pass-rate">100%</span>
       </div>
       <div class="bg-amber-50/70 border border-amber-100 p-3 rounded-xl">
-        <span class="text-[10px] font-bold text-amber-700 uppercase tracking-wider block">Predikat A / Mumtaz</span>
+        <span class="text-[10px] font-bold text-amber-700 uppercase tracking-wider block">Predikat A (Mumtaz)</span>
         <span class="text-lg font-extrabold text-amber-950" id="widget-ak-count-a">0</span>
       </div>
     </div>
   </div>
 
-  <!-- SECTION 1: MODE INPUT LEGER SEKELAS (GURU-FIRST WORKFLOW) -->
+  <!-- SECTION 1: MODE INPUT LEGER SEKELAS (GURU-FIRST SPREADSHEET WORKFLOW) -->
   <div id="section-akademik-leger" class="space-y-4">
     <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
       
@@ -833,22 +833,24 @@
           </div>
 
           <div>
-            <label class="block text-[10px] font-bold text-slate-500 uppercase">Mata Pelajaran</label>
-            <select id="leger-akademik-mapel" onchange="onLegerMapelChange()" class="text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 font-bold text-slate-800 focus:ring-2 focus:ring-blue-500">
-              <option value="Akidah">Akidah</option>
-              <option value="Akhlak">Akhlak</option>
-              <option value="Hadis">Hadis</option>
-              <option value="Fiqih">Fiqih</option>
-              <option value="Bahasa Arab">Bahasa Arab</option>
-              <option value="Bahasa Indonesia">Bahasa Indonesia</option>
-              <option value="Bahasa Inggris">Bahasa Inggris</option>
-              <option value="Matematika">Matematika</option>
-              <option value="IPA">Ilmu Pengetahuan Alam (IPA)</option>
-              <option value="IPS">Ilmu Pengetahuan Sosial (IPS)</option>
-              <option value="Informatika">Informatika</option>
-              <option value="PPKn">Pendidikan Pancasila & Kewarganegaraan</option>
-              <option value="PJOK">Pendidikan Jasmani (PJOK)</option>
-              <option value="Seni Budaya">Seni Budaya</option>
+            <label class="block text-[10px] font-bold text-slate-500 uppercase">Mata Pelajaran (16 Mapel)</label>
+            <select id="leger-akademik-mapel" onchange="onLegerMapelChange()" class="text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 font-bold text-slate-800 focus:ring-2 focus:ring-blue-500 min-w-[220px]">
+              <option value="Akidah">1. Akidah (KKM 70)</option>
+              <option value="Akhlak">2. Akhlak (KKM 72)</option>
+              <option value="Hadits">3. Hadits (KKM 75)</option>
+              <option value="Fikih">4. Fikih (KKM 75)</option>
+              <option value="SKI">5. SKI (KKM 75)</option>
+              <option value="Pendidikan Pancasila">6. Pendidikan Pancasila (KKM 75)</option>
+              <option value="Bahasa Indonesia">7. Bahasa Indonesia (KKM 75)</option>
+              <option value="Bahasa Inggris">8. Bahasa Inggris (KKM 73)</option>
+              <option value="Matematika">9. Matematika (KKM 75)</option>
+              <option value="Ilmu Pengetahuan Alam">10. Ilmu Pengetahuan Alam (KKM 75)</option>
+              <option value="Ilmu Pengetahuan Sosial">11. Ilmu Pengetahuan Sosial (KKM 75)</option>
+              <option value="Prakarya">12. Prakarya (KKM 70)</option>
+              <option value="Pendidikan Jasmani, Olahraga, dan Kesehatan">13. PJOK (KKM 72)</option>
+              <option value="Bahasa Sunda">14. Bahasa Sunda (KKM 75)</option>
+              <option value="Informatika">15. Informatika (KKM 75)</option>
+              <option value="Bahasa Arab">16. Bahasa Arab (KKM 75)</option>
             </select>
           </div>
 
@@ -862,7 +864,7 @@
         <!-- Quick Generator & Fast-Fill Tools -->
         <div class="flex flex-wrap items-center gap-2">
           <button onclick="autoGenerateAllLegerCapaian()" 
-                  class="px-3 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-300 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm"
+                  class="px-3.5 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-300 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm"
                   title="Generate otomatis narasi capaian kompetensi sesuai nilai murid">
             <i class="fa-solid fa-wand-magic-sparkles text-emerald-600"></i>
             <span>Auto-Generate Capaian Sekelas</span>
@@ -876,11 +878,11 @@
         </div>
       </div>
 
-      <!-- Quick Bank Kalimat Template Preview -->
+      <!-- Quick Tips Card -->
       <div class="p-3 bg-blue-50/60 border border-blue-100 rounded-xl text-xs text-blue-900 flex flex-col md:flex-row md:items-center justify-between gap-2">
         <div class="flex items-center gap-2">
           <i class="fa-solid fa-lightbulb text-amber-500 text-sm"></i>
-          <span><strong>Petunjuk Pengisian:</strong> Tekan <kbd class="px-1.5 py-0.5 bg-white border border-blue-200 rounded text-[10px] font-mono">Enter</kbd> atau <kbd class="px-1.5 py-0.5 bg-white border border-blue-200 rounded text-[10px] font-mono">Panah Bawah</kbd> pada kolom Nilai untuk berpindah ke murid berikutnya dengan cepat.</span>
+          <span><strong>Navigasi Cepat:</strong> Ketik nilai murid lalu tekan <kbd class="px-1.5 py-0.5 bg-white border border-blue-200 rounded text-[10px] font-mono">Enter</kbd> atau <kbd class="px-1.5 py-0.5 bg-white border border-blue-200 rounded text-[10px] font-mono">Panah Bawah</kbd> untuk berpindah ke baris murid berikutnya.</span>
         </div>
         <div class="text-[11px] font-semibold text-blue-700">
           Total Murid: <span id="leger-student-count" class="font-bold">12</span>
@@ -895,10 +897,10 @@
               <th class="w-12 px-3 py-3 text-center border-r border-slate-200">No</th>
               <th class="w-32 px-3 py-3 border-r border-slate-200">NISN</th>
               <th class="w-64 px-4 py-3 border-r border-slate-200">Nama Peserta Didik</th>
-              <th class="w-24 px-3 py-3 text-center border-r border-slate-200">KKM</th>
-              <th class="w-28 px-3 py-3 text-center border-r border-slate-200 bg-blue-100/50 text-blue-900">Nilai (UTS)</th>
+              <th class="w-20 px-3 py-3 text-center border-r border-slate-200">KKM</th>
+              <th class="w-28 px-3 py-3 text-center border-r border-slate-200 bg-blue-100/50 text-blue-900 font-black">Nilai (UTS)</th>
               <th class="w-24 px-3 py-3 text-center border-r border-slate-200">Predikat</th>
-              <th class="px-4 py-3">Capaian Kompetensi (Deskripsi Kemampuan)</th>
+              <th class="px-4 py-3">Capaian Kompetensi (Narasi Pembelajaran)</th>
             </tr>
           </thead>
           <tbody id="leger-akademik-tbody" class="divide-y divide-slate-200 bg-white">
@@ -908,7 +910,7 @@
       </div>
 
       <div class="flex items-center justify-between pt-2 text-xs text-slate-500">
-        <span>Semua data nilai dan capaian kompetensi akan langsung tersinkronisasi ke Rapor Portofolio.</span>
+        <span>Seluruh 16 mata pelajaran langsung tersimpan dan dicetak pada Rapor Portofolio Tengah Semester.</span>
         <button onclick="saveBulkLegerAkademik()" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold shadow transition flex items-center gap-2">
           <i class="fa-solid fa-floppy-disk"></i>
           <span>Simpan Nilai Sekelas</span>
@@ -926,7 +928,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 flex-1">
           <div>
             <label class="block text-[11px] font-semibold text-slate-600 mb-1">Filter Kelas</label>
-            <select id="filter-akademik-kelas" onchange="loadNilaiAkademik()" class="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <select id="filter-akademik-kelas" onchange="loadNilaiAkademik()" class="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 font-bold">
               <option value="Semua">Semua Kelas</option>
               <option value="IX ABU BAKAR">Kelas IX ABU BAKAR</option>
               <option value="7A">Kelas 7A (Ikhwan)</option>
@@ -940,22 +942,24 @@
 
           <div>
             <label class="block text-[11px] font-semibold text-slate-600 mb-1">Filter Mata Pelajaran</label>
-            <select id="filter-akademik-mapel" onchange="loadNilaiAkademik()" class="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <select id="filter-akademik-mapel" onchange="loadNilaiAkademik()" class="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 font-bold">
               <option value="Semua">Semua Mata Pelajaran</option>
-              <option value="Akidah">Akidah</option>
-              <option value="Akhlak">Akhlak</option>
-              <option value="Hadis">Hadis</option>
-              <option value="Fiqih">Fiqih</option>
-              <option value="Bahasa Arab">Bahasa Arab</option>
-              <option value="Bahasa Indonesia">Bahasa Indonesia</option>
-              <option value="Bahasa Inggris">Bahasa Inggris</option>
-              <option value="Matematika">Matematika</option>
-              <option value="IPA">Ilmu Pengetahuan Alam (IPA)</option>
-              <option value="IPS">Ilmu Pengetahuan Sosial (IPS)</option>
-              <option value="Informatika">Informatika</option>
-              <option value="PPKn">PPKn</option>
-              <option value="PJOK">PJOK</option>
-              <option value="Seni Budaya">Seni Budaya</option>
+              <option value="Akidah">1. Akidah</option>
+              <option value="Akhlak">2. Akhlak</option>
+              <option value="Hadits">3. Hadits</option>
+              <option value="Fikih">4. Fikih</option>
+              <option value="SKI">5. SKI</option>
+              <option value="Pendidikan Pancasila">6. Pendidikan Pancasila</option>
+              <option value="Bahasa Indonesia">7. Bahasa Indonesia</option>
+              <option value="Bahasa Inggris">8. Bahasa Inggris</option>
+              <option value="Matematika">9. Matematika</option>
+              <option value="Ilmu Pengetahuan Alam">10. Ilmu Pengetahuan Alam</option>
+              <option value="Ilmu Pengetahuan Sosial">11. Ilmu Pengetahuan Sosial</option>
+              <option value="Prakarya">12. Prakarya</option>
+              <option value="Pendidikan Jasmani, Olahraga, dan Kesehatan">13. PJOK</option>
+              <option value="Bahasa Sunda">14. Bahasa Sunda</option>
+              <option value="Informatika">15. Informatika</option>
+              <option value="Bahasa Arab">16. Bahasa Arab</option>
             </select>
           </div>
 
@@ -990,7 +994,7 @@
                 <th class="px-3 py-3.5">Kelas</th>
                 <th class="px-3 py-3.5">Mata Pelajaran</th>
                 <th class="px-3 py-3.5 text-center">KKM</th>
-                <th class="px-3 py-3.5 text-center">Nilai Akhir</th>
+                <th class="px-3 py-3.5 text-center">Nilai</th>
                 <th class="px-3 py-3.5 text-center">Predikat</th>
                 <th class="px-4 py-3.5">Capaian Kompetensi</th>
                 <th class="px-4 py-3.5 text-right">Aksi</th>
@@ -1031,28 +1035,30 @@
 
       <div>
         <label class="block text-xs font-bold text-slate-700 mb-1">Pilih Murid *</label>
-        <select id="akademik-nis" required class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-blue-500">
+        <select id="akademik-nis" required class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-blue-500 font-bold">
           <!-- Populated dynamically via JS -->
         </select>
       </div>
 
       <div>
         <label class="block text-xs font-bold text-slate-700 mb-1">Mata Pelajaran *</label>
-        <select id="akademik-mapel" required onchange="onModalMapelChange()" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-blue-500">
-          <option value="Akidah">Akidah</option>
-          <option value="Akhlak">Akhlak</option>
-          <option value="Hadis">Hadis</option>
-          <option value="Fiqih">Fiqih</option>
-          <option value="Bahasa Arab">Bahasa Arab</option>
-          <option value="Bahasa Indonesia">Bahasa Indonesia</option>
-          <option value="Bahasa Inggris">Bahasa Inggris</option>
-          <option value="Matematika">Matematika</option>
-          <option value="IPA">Ilmu Pengetahuan Alam (IPA)</option>
-          <option value="IPS">Ilmu Pengetahuan Sosial (IPS)</option>
-          <option value="Informatika">Informatika</option>
-          <option value="PPKn">Pendidikan Pancasila & Kewarganegaraan</option>
-          <option value="PJOK">Pendidikan Jasmani (PJOK)</option>
-          <option value="Seni Budaya">Seni Budaya</option>
+        <select id="akademik-mapel" required onchange="onModalMapelChange()" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-blue-500 font-bold">
+          <option value="Akidah">1. Akidah (KKM 70)</option>
+          <option value="Akhlak">2. Akhlak (KKM 72)</option>
+          <option value="Hadits">3. Hadits (KKM 75)</option>
+          <option value="Fikih">4. Fikih (KKM 75)</option>
+          <option value="SKI">5. SKI (KKM 75)</option>
+          <option value="Pendidikan Pancasila">6. Pendidikan Pancasila (KKM 75)</option>
+          <option value="Bahasa Indonesia">7. Bahasa Indonesia (KKM 75)</option>
+          <option value="Bahasa Inggris">8. Bahasa Inggris (KKM 73)</option>
+          <option value="Matematika">9. Matematika (KKM 75)</option>
+          <option value="Ilmu Pengetahuan Alam">10. Ilmu Pengetahuan Alam (KKM 75)</option>
+          <option value="Ilmu Pengetahuan Sosial">11. Ilmu Pengetahuan Sosial (KKM 75)</option>
+          <option value="Prakarya">12. Prakarya (KKM 70)</option>
+          <option value="Pendidikan Jasmani, Olahraga, dan Kesehatan">13. PJOK (KKM 72)</option>
+          <option value="Bahasa Sunda">14. Bahasa Sunda (KKM 75)</option>
+          <option value="Informatika">15. Informatika (KKM 75)</option>
+          <option value="Bahasa Arab">16. Bahasa Arab (KKM 75)</option>
         </select>
       </div>
 
@@ -2174,7 +2180,7 @@
 
 
         <!-- View 7: Cetak Rapor -->
-        <!-- Template Cetak Rapor Portofolio Tengah Semester (Persis Format Resmi Excel SMP Al-Imam) -->
+        <!-- Template Cetak Rapor Portofolio Tengah Semester (Persis Format Resmi Sheet Print Excel SMP Al-Imam) -->
 <div id="view-rapor" class="view-panel hidden space-y-6">
   
   <!-- Print Control Bar (Non-Printable) -->
@@ -2184,14 +2190,14 @@
         <i class="fa-solid fa-file-invoice"></i>
       </div>
       <div>
-        <h2 class="text-sm font-bold text-slate-900">Pratinjau & Cetak Rapor Portofolio Tengah Semester</h2>
-        <p class="text-xs text-slate-500">Tata letak standar resmi SMP Al-Imam Islamic School siap cetak atau simpan PDF.</p>
+        <h2 class="text-sm font-bold text-slate-900">Pratinjau & Cetak Rapor Tengah Semester</h2>
+        <p class="text-xs text-slate-500">Format Resmi Excel SMP Al-Imam: 16 Mata Pelajaran, 6 Aspek Kepribadian, Presensi & Ekskul.</p>
       </div>
     </div>
 
     <div class="flex flex-wrap items-center gap-2">
       <!-- Murid Selector for Print -->
-      <select id="rapor-murid-select" onchange="loadMuridReportForPrint(this.value)" class="text-xs bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-slate-800 font-bold focus:ring-2 focus:ring-indigo-500 min-w-[220px]">
+      <select id="rapor-murid-select" onchange="loadMuridReportForPrint(this.value)" class="text-xs bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-slate-800 font-bold focus:ring-2 focus:ring-indigo-500 min-w-[240px]">
         <!-- Populated via JS -->
       </select>
 
@@ -2209,76 +2215,73 @@
   <!-- Main Report Card Container (Printable Paper Sheet A4) -->
   <div class="print-container bg-white mx-auto max-w-4xl p-6 sm:p-10 rounded-2xl border border-slate-300 shadow-lg text-slate-900 font-sans text-xs">
     
-    <!-- 1. KOP SURAT RESMI EXCEL AL-IMAM (Tut Wuri - Judul - Logo Al-Imam) -->
+    <!-- 1. KOP SURAT RESMI EXCEL AL-IMAM (Logo Kiri - Judul Tengah - No Urut Kanan) -->
     <div class="pb-3 mb-4 border-b-2 border-slate-900 flex items-center justify-between gap-4">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Logo_Tut_Wuri_Handayani.png/240px-Logo_Tut_Wuri_Handayani.png" 
-           alt="Logo Tut Wuri" class="h-16 w-16 object-contain" />
+      <img id="print-school-logo" src="https://alimamischool.com/wp-content/uploads/2020/08/Al-Imam-Islamic-School-alimamischool.com-sekolah-sunnah-logo.png" 
+           alt="Logo Al-Imam" class="h-16 w-auto max-w-[130px] object-contain" />
       
       <div class="text-center flex-1">
-        <h2 class="text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-800 leading-tight">RAPOR TENGAH SEMESTER</h2>
-        <h2 class="text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-800 leading-tight">PROGRAM PORTOFOLIO</h2>
-        <h1 class="text-sm sm:text-base font-black text-slate-950 uppercase tracking-wide mt-0.5">SMP AL IMAM ISLAMIC SCHOOL</h1>
+        <h1 class="text-sm sm:text-base font-black text-slate-950 uppercase tracking-wide">
+          SEKOLAH MENENGAH PERTAMA AL IMAM ISLAMIC SCHOOL
+        </h1>
+        <h2 class="text-xs sm:text-sm font-extrabold uppercase tracking-wider text-slate-900 leading-tight mt-0.5">
+          LAPORAN HASIL BELAJAR SISWA TENGAH SEMESTER
+        </h2>
+        <h2 class="text-xs sm:text-sm font-extrabold uppercase tracking-wider text-slate-800 leading-tight">
+          TAHUN PELAJARAN <span id="print-tahun-ajaran-kop">2025/2026</span>
+        </h2>
       </div>
-      
-      <img id="print-school-logo" src="https://alimamischool.com/wp-content/uploads/2020/08/Al-Imam-Islamic-School-alimamischool.com-sekolah-sunnah-logo.png" 
-           alt="Logo Al-Imam" class="h-16 w-auto max-w-[120px] object-contain" />
+
+      <!-- No Urut Box (Persis Sheet Print Excel) -->
+      <div class="border-2 border-slate-800 rounded-lg overflow-hidden text-center w-16 shrink-0 shadow-sm">
+        <div class="bg-amber-300 text-slate-900 text-[10px] font-black uppercase py-0.5 border-b border-slate-800">No Urut</div>
+        <div class="bg-sky-400 text-white text-xl font-black py-1" id="print-no-urut">12</div>
+      </div>
     </div>
 
-    <!-- 2. IDENTITAS PESERTA DIDIK & RAPOR -->
-    <div class="grid grid-cols-2 gap-x-8 gap-y-1 text-[11px] p-2.5 bg-slate-50/60 rounded-lg border border-slate-200 mb-4">
+    <!-- 2. IDENTITAS PESERTA DIDIK & KELAS -->
+    <div class="grid grid-cols-2 gap-x-8 gap-y-1 text-[11px] p-2.5 bg-slate-50/60 rounded-lg border border-slate-200 mb-4 font-medium">
       <div class="space-y-1">
         <div class="flex">
-          <span class="w-32 font-bold text-slate-600">Nama Peserta Didik</span>
-          <span class="font-extrabold text-slate-900">: <span id="print-murid-nama">AHMAD YAZID ILMANY RAMADHAN</span></span>
+          <span class="w-36 font-semibold text-slate-600">Nama Peserta Didik</span>
+          <span class="font-extrabold text-slate-900">: <span id="print-murid-nama">NADHIF SYAFWAN RIFAAT</span></span>
         </div>
         <div class="flex">
-          <span class="w-32 font-semibold text-slate-600">NISN</span>
-          <span class="font-bold text-slate-900">: <span id="print-murid-nisn">0113408257</span></span>
+          <span class="w-36 font-semibold text-slate-600">NISN</span>
+          <span class="font-bold text-slate-900">: <span id="print-murid-nisn">0103456069</span></span>
         </div>
+      </div>
+
+      <div class="space-y-1">
         <div class="flex">
-          <span class="w-32 font-semibold text-slate-600">Kelas</span>
+          <span class="w-28 font-semibold text-slate-600">Kelas</span>
           <span class="font-bold text-slate-900">: <span id="print-murid-kelas">IX ABU BAKAR</span></span>
         </div>
-      </div>
-
-      <div class="space-y-1">
         <div class="flex">
-          <span class="w-28 font-semibold text-slate-600">Semester ke</span>
+          <span class="w-28 font-semibold text-slate-600">Semester</span>
           <span class="font-bold text-slate-900">: <span id="print-semester">I (Satu)</span></span>
-        </div>
-        <div class="flex">
-          <span class="w-28 font-semibold text-slate-600">Tahun Pelajaran</span>
-          <span class="font-bold text-slate-900">: <span id="print-tahun-ajaran">2025/2026</span></span>
-        </div>
-        <div class="flex">
-          <span class="w-28 font-semibold text-slate-600">Wali Kelas</span>
-          <span class="font-bold text-slate-900">: <span id="print-wali-kelas-nama">Kahlil Gibran, S.Pd.</span></span>
         </div>
       </div>
     </div>
 
-    <!-- 3. BAGIAN I: REKAP NILAI & CAPAIAN KOMPETENSI (SEPERTI SHEET REKAP EXCEL) -->
+    <!-- 3. BAGIAN I: TABEL NILAI & CAPAIAN KOMPETENSI (16 MATA PELAJARAN) -->
     <div class="mb-5 page-break-inside-avoid">
-      <div class="bg-slate-800 text-white px-3 py-1.5 font-bold uppercase text-[11px] tracking-wider rounded-t-lg">
-        A. Capaian Kompetensi Mata Pelajaran
-      </div>
-      <table class="w-full text-left text-[11px] border border-slate-300">
-        <thead class="bg-slate-100 text-slate-800 font-bold border-b border-slate-300 text-center">
+      <table class="w-full text-left text-[11px] border border-slate-400">
+        <thead class="bg-emerald-100/90 text-slate-900 font-extrabold border-b border-slate-400 text-center">
           <tr>
-            <th class="w-8 py-2 px-1 border-r border-slate-300">No</th>
-            <th class="w-48 py-2 px-2 text-left border-r border-slate-300">Mata Pelajaran</th>
-            <th class="w-14 py-2 px-1 border-r border-slate-300">KKM</th>
-            <th class="w-14 py-2 px-1 border-r border-slate-300 bg-blue-50 text-blue-950 font-black">Nilai</th>
-            <th class="py-2 px-3 text-left">Capaian Kompetensi</th>
+            <th class="w-8 py-2 px-1 border-r border-slate-400">No</th>
+            <th class="w-64 py-2 px-3 text-left border-r border-slate-400">Mata Pelajaran</th>
+            <th class="w-14 py-2 px-1 border-r border-slate-400">Nilai</th>
+            <th class="py-2 px-3 text-center">Capaian Kompetensi</th>
           </tr>
         </thead>
-        <tbody id="print-akademik-tbody" class="divide-y divide-slate-200">
-          <!-- Populated dynamically via JS -->
+        <tbody id="print-akademik-tbody" class="divide-y divide-slate-300">
+          <!-- Populated dynamically with 16 subjects via JS -->
         </tbody>
-        <tfoot class="bg-slate-50 font-bold border-t border-slate-300">
+        <tfoot class="bg-slate-50 font-bold border-t border-slate-400">
           <tr>
-            <td colspan="3" class="py-1.5 px-3 text-right border-r border-slate-300">Rata-Rata Nilai Akademik:</td>
-            <td id="print-akademik-avg" class="py-1.5 px-1 text-center text-blue-800 font-black border-r border-slate-300">86.4</td>
+            <td colspan="2" class="py-1.5 px-3 text-right border-r border-slate-400">Rata-Rata Nilai:</td>
+            <td id="print-akademik-avg" class="py-1.5 px-1 text-center text-blue-900 font-black border-r border-slate-400">84.8</td>
             <td class="py-1.5 px-3 text-slate-500 font-normal italic text-[10px]" id="print-akademik-total-info">
               Hasil evaluasi capaian kompetensi tengah semester ganjil.
             </td>
@@ -2289,112 +2292,112 @@
 
     <!-- 4. BAGIAN II: AHLAQ & KEPRIBADIAN (6 ASPEK AL-IMAM + CATATAN DIPERHATIKAN) -->
     <div class="mb-5 page-break-inside-avoid">
-      <div class="bg-amber-800 text-white px-3 py-1.5 font-bold uppercase text-[11px] tracking-wider rounded-t-lg">
-        B. Ahlaq & Kepribadian
+      <div class="bg-slate-800 text-white px-3 py-1 font-bold uppercase text-[11px] tracking-wider rounded-t-lg">
+        Ahlaq & Kepribadian
       </div>
-      <table class="w-full text-left text-[11px] border border-slate-300">
-        <thead class="bg-slate-100 text-slate-800 font-bold border-b border-slate-300 text-center">
+      <table class="w-full text-left text-[11px] border border-slate-400">
+        <thead class="bg-slate-100 text-slate-900 font-bold border-b border-slate-400 text-center">
           <tr>
-            <th class="w-8 py-2 px-1 border-r border-slate-300">No</th>
-            <th class="w-48 py-2 px-2 text-left border-r border-slate-300">Aspek Perkembangan</th>
-            <th class="py-2 px-3 text-left">Deskripsi / Uraian</th>
+            <th class="w-8 py-1.5 px-1 border-r border-slate-400">No</th>
+            <th class="w-56 py-1.5 px-2 text-left border-r border-slate-400">Aspek Perkembangan</th>
+            <th class="py-1.5 px-3 text-left">Deskripsi / Uraian</th>
           </tr>
         </thead>
-        <tbody class="divide-y divide-slate-200">
+        <tbody class="divide-y divide-slate-300">
           <tr>
-            <td class="py-1.5 px-1 text-center font-bold border-r border-slate-300">1</td>
-            <td class="py-1.5 px-2 font-bold text-slate-800 border-r border-slate-300">Ibadah</td>
+            <td class="py-1.5 px-1 text-center font-bold border-r border-slate-400">1</td>
+            <td class="py-1.5 px-2 font-bold text-slate-800 border-r border-slate-400">Ibadah</td>
             <td id="print-kp-ibadah" class="py-1.5 px-3 text-slate-900 leading-tight">Jadikan ibadah sebagai kebutuhan, bukan hanya kewajiban.</td>
           </tr>
           <tr>
-            <td class="py-1.5 px-1 text-center font-bold border-r border-slate-300">2</td>
-            <td class="py-1.5 px-2 font-bold text-slate-800 border-r border-slate-300">Akhlak</td>
+            <td class="py-1.5 px-1 text-center font-bold border-r border-slate-400">2</td>
+            <td class="py-1.5 px-2 font-bold text-slate-800 border-r border-slate-400">Akhlak</td>
             <td id="print-kp-akhlak" class="py-1.5 px-3 text-slate-900 leading-tight">Keseimbangan antara kemampuan akademis serta sikap & akhlak mulia menjadikanmu insan yang lebih baik.</td>
           </tr>
           <tr>
-            <td class="py-1.5 px-1 text-center font-bold border-r border-slate-300">3</td>
-            <td class="py-1.5 px-2 font-bold text-slate-800 border-r border-slate-300">Kedisiplinan & Kerajinan</td>
+            <td class="py-1.5 px-1 text-center font-bold border-r border-slate-400">3</td>
+            <td class="py-1.5 px-2 font-bold text-slate-800 border-r border-slate-400">Kedisiplinan & Kerajinan</td>
             <td id="print-kp-kedisiplinan" class="py-1.5 px-3 text-slate-900 leading-tight">Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita.</td>
           </tr>
           <tr>
-            <td class="py-1.5 px-1 text-center font-bold border-r border-slate-300">4</td>
-            <td class="py-1.5 px-2 font-bold text-slate-800 border-r border-slate-300">Kerapihan & Kebersihan</td>
+            <td class="py-1.5 px-1 text-center font-bold border-r border-slate-400">4</td>
+            <td class="py-1.5 px-2 font-bold text-slate-800 border-r border-slate-400">Kerapihan & Kebersihan</td>
             <td id="print-kp-kerapihan" class="py-1.5 px-3 text-slate-900 leading-tight">Kerapihan & kebersihan diri merupakan cermin pribadi seorang muslim, jadikanlah itu sebagai identitasmu.</td>
           </tr>
           <tr>
-            <td class="py-1.5 px-1 text-center font-bold border-r border-slate-300">5</td>
-            <td class="py-1.5 px-2 font-bold text-slate-800 border-r border-slate-300">Kepemimpinan</td>
+            <td class="py-1.5 px-1 text-center font-bold border-r border-slate-400">5</td>
+            <td class="py-1.5 px-2 font-bold text-slate-800 border-r border-slate-400">Kepemimpinan</td>
             <td id="print-kp-kepemimpinan" class="py-1.5 px-3 text-slate-900 leading-tight">Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan.</td>
           </tr>
           <tr>
-            <td class="py-1.5 px-1 text-center font-bold border-r border-slate-300">6</td>
-            <td class="py-1.5 px-2 font-bold text-slate-800 border-r border-slate-300">Kerja Sama</td>
+            <td class="py-1.5 px-1 text-center font-bold border-r border-slate-400">6</td>
+            <td class="py-1.5 px-2 font-bold text-slate-800 border-r border-slate-400">Kerja Sama</td>
             <td id="print-kp-kerjasama" class="py-1.5 px-3 text-slate-900 leading-tight">Berbagi peran dalam kerjasama kelompok akan menciptakan keharmonisan.</td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <!-- 5. BAGIAN III: KEHADIRAN (PRESENSI) & EKSTRAKURIKULER -->
+    <!-- 5. BAGIAN III: KEHADIRAN & EKSTRAKURIKULER -->
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5 page-break-inside-avoid">
       
       <!-- Kehadiran Box -->
-      <div class="border border-slate-300 rounded-lg overflow-hidden">
-        <div class="bg-slate-100 text-slate-800 px-3 py-1.5 font-bold uppercase text-[10px] tracking-wider border-b border-slate-300 flex items-center justify-between">
-          <span>C. Kehadiran (s.d. Pekan UTS)</span>
+      <div class="border border-slate-400 rounded-lg overflow-hidden">
+        <div class="bg-slate-100 text-slate-900 px-3 py-1 font-bold uppercase text-[10px] tracking-wider border-b border-slate-400">
+          Kehadiran (Absen sampai pekan UTS)
         </div>
-        <div class="p-3 text-[11px] space-y-1.5 bg-white">
-          <div class="flex justify-between border-b border-slate-100 pb-1">
-            <span class="text-slate-600 font-medium">1. Sakit (S)</span>
-            <span class="font-bold text-slate-900"><span id="print-absen-s">2</span> hari</span>
+        <div class="p-2.5 text-[11px] space-y-1 bg-white">
+          <div class="flex justify-between border-b border-slate-100 pb-0.5">
+            <span class="text-slate-700">1. Sakit (S)</span>
+            <span class="font-bold text-slate-900"><span id="print-absen-s">0</span> hari</span>
           </div>
-          <div class="flex justify-between border-b border-slate-100 pb-1">
-            <span class="text-slate-600 font-medium">2. Izin (I)</span>
-            <span class="font-bold text-slate-900"><span id="print-absen-i">0</span> hari</span>
+          <div class="flex justify-between border-b border-slate-100 pb-0.5">
+            <span class="text-slate-700">2. Izin (I)</span>
+            <span class="font-bold text-slate-900"><span id="print-absen-i">3</span> hari</span>
           </div>
           <div class="flex justify-between">
-            <span class="text-slate-600 font-medium">3. Tanpa Keterangan / Alpa (A)</span>
+            <span class="text-slate-700">3. Tanpa Keterangan / Alpa (A)</span>
             <span class="font-bold text-slate-900"><span id="print-absen-a">0</span> hari</span>
           </div>
         </div>
       </div>
 
       <!-- Ekstrakurikuler Box -->
-      <div class="border border-slate-300 rounded-lg overflow-hidden">
-        <div class="bg-slate-100 text-slate-800 px-3 py-1.5 font-bold uppercase text-[10px] tracking-wider border-b border-slate-300">
-          <span>D. Kegiatan Ekstrakurikuler</span>
+      <div class="border border-slate-400 rounded-lg overflow-hidden">
+        <div class="bg-slate-100 text-slate-900 px-3 py-1 font-bold uppercase text-[10px] tracking-wider border-b border-slate-400">
+          Kegiatan Ekstrakurikuler
         </div>
-        <div class="p-3 text-[11px] space-y-1.5 bg-white">
-          <div class="flex justify-between border-b border-slate-100 pb-1">
-            <span class="text-slate-600 font-medium">1. Ekstrakurikuler 1</span>
-            <span class="font-bold text-slate-900" id="print-ekskul-1">Pramuka</span>
+        <div class="p-2.5 text-[11px] space-y-1 bg-white">
+          <div class="flex justify-between border-b border-slate-100 pb-0.5">
+            <span class="text-slate-700 font-medium">1. <span id="print-ekskul-1-nama">Pramuka</span></span>
+            <span class="font-bold text-emerald-800" id="print-ekskul-1-nilai">Baik</span>
           </div>
-          <div class="flex justify-between border-b border-slate-100 pb-1">
-            <span class="text-slate-600 font-medium">2. Ekstrakurikuler 2</span>
-            <span class="font-bold text-slate-900" id="print-ekskul-2">Wushu</span>
+          <div class="flex justify-between border-b border-slate-100 pb-0.5">
+            <span class="text-slate-700 font-medium">2. <span id="print-ekskul-2-nama">Wushu</span></span>
+            <span class="font-bold text-emerald-800" id="print-ekskul-2-nilai">Baik</span>
           </div>
           <div class="flex justify-between">
-            <span class="text-slate-600 font-medium">3. Ekstrakurikuler 3</span>
-            <span class="font-bold text-slate-900" id="print-ekskul-3">Futsal</span>
+            <span class="text-slate-700 font-medium">3. <span id="print-ekskul-3-nama">Basket</span></span>
+            <span class="font-bold text-emerald-800" id="print-ekskul-3-nilai">Baik</span>
           </div>
         </div>
       </div>
 
     </div>
 
-    <!-- 6. CATATAN YG DIPERHATIKAN (WALI KELAS / PEMBINA) -->
-    <div class="mb-6 p-3.5 bg-slate-50 border border-slate-300 rounded-lg page-break-inside-avoid">
-      <span class="font-bold block text-[11px] text-slate-900 uppercase tracking-wide mb-1">
-        E. Catatan yg Diperhatikan (Wali Kelas / Pembina):
+    <!-- 6. CATATAN YG DIPERHATIKAN -->
+    <div class="mb-6 p-3 bg-slate-50 border border-slate-400 rounded-lg page-break-inside-avoid">
+      <span class="font-bold block text-[11px] text-slate-900 uppercase tracking-wide mb-0.5">
+        Catatan yg Diperhatikan (Wali Kelas / Pembina):
       </span>
       <p id="print-kp-catatan" class="text-[11px] text-slate-800 leading-relaxed font-medium italic">
-        "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Tingkatkan semangat belajarmu."
+        "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal & cita-cita di masa depan. Tingkatkan semangat belajarmu."
       </p>
     </div>
 
     <!-- 7. TANDA TANGAN RESMI 3 PIHAK -->
-    <div class="page-break-inside-avoid mt-6 pt-4 border-t border-slate-300">
-      <div class="text-right text-[11px] mb-4 font-medium">
+    <div class="page-break-inside-avoid mt-6 pt-3 border-t border-slate-400">
+      <div class="text-right text-[11px] mb-3 font-medium">
         <span id="print-report-place">Bogor</span>, <span id="print-report-date">17 Oktober 2025</span>
       </div>
 
@@ -2404,7 +2407,7 @@
           <span>Mengetahui,<br><strong>Orang Tua / Wali Murid</strong></span>
           <div>
             <div class="w-36 border-b border-slate-800 mx-auto"></div>
-            <span class="text-[10px] text-slate-500 mt-1 block">( ........................................ )</span>
+            <span class="text-[10px] text-slate-500 mt-0.5 block">( ........................................ )</span>
           </div>
         </div>
 
@@ -2413,7 +2416,7 @@
           <span>Wali Kelas,<br><strong>SMP Al-Imam</strong></span>
           <div>
             <div class="w-36 border-b border-slate-800 mx-auto"></div>
-            <span class="text-[11px] font-bold text-slate-900 mt-1 block" id="print-ttd-wali-kelas">Kahlil Gibran, S.Pd.</span>
+            <span class="text-[11px] font-bold text-slate-900 mt-0.5 block" id="print-ttd-wali-kelas">Kahlil Gibran, S.Pd.</span>
           </div>
         </div>
 
@@ -2423,7 +2426,7 @@
           
           <div class="relative">
             <div class="w-40 border-b border-slate-800 mx-auto"></div>
-            <span class="text-[11px] font-bold text-slate-900 mt-1 block" id="print-headmaster-name">Ust. Ahmad Fauzi, M.Pd.</span>
+            <span class="text-[11px] font-bold text-slate-900 mt-0.5 block" id="print-headmaster-name">Ust. Ahmad Fauzi, M.Pd.</span>
             <span class="text-[9px] text-slate-600 block" id="print-headmaster-nip">NIP. 198204152008011005</span>
           </div>
         </div>
@@ -2893,96 +2896,127 @@
  * ============================================================================
  */
 
-// 1. DEFAULT CONFIG & RICH DEMO DATASET (MIRRORING OFFICIAL EXCEL SMP AL-IMAM)
+// 1. DEFAULT CONFIG & EXACT DATASET (MIRRORING OFFICIAL EXCEL SMP AL-IMAM 16 MAPEL)
 const DEFAULT_GAS_URL = 'https://script.google.com/a/macros/alimamischool.com/s/AKfycbwKuFLvyP-SSwwbkOVfvGiaTL2Vvb7Ni583ahgjQVjUZGo5hz25Zj58wI4p5Df0Gu-X/exec';
+
+const MAPEL_LIST_16 = [
+  'Akidah',
+  'Akhlak',
+  'Hadits',
+  'Fikih',
+  'SKI',
+  'Pendidikan Pancasila',
+  'Bahasa Indonesia',
+  'Bahasa Inggris',
+  'Matematika',
+  'Ilmu Pengetahuan Alam',
+  'Ilmu Pengetahuan Sosial',
+  'Prakarya',
+  'Pendidikan Jasmani, Olahraga, dan Kesehatan',
+  'Bahasa Sunda',
+  'Informatika',
+  'Bahasa Arab'
+];
 
 const MAPEL_KKM_DEFAULT = {
   'Akidah': 70,
   'Akhlak': 72,
-  'Hadis': 75,
-  'Fiqih': 75,
-  'Bahasa Arab': 75,
+  'Hadits': 75,
+  'Fikih': 75,
+  'SKI': 75,
+  'Pendidikan Pancasila': 75,
   'Bahasa Indonesia': 75,
-  'Bahasa Inggris': 75,
-  'Matematika': 72,
-  'IPA': 72,
-  'IPS': 72,
+  'Bahasa Inggris': 73,
+  'Matematika': 75,
+  'Ilmu Pengetahuan Alam': 75,
+  'Ilmu Pengetahuan Sosial': 75,
+  'Prakarya': 70,
+  'Pendidikan Jasmani, Olahraga, dan Kesehatan': 72,
+  'Bahasa Sunda': 75,
   'Informatika': 75,
-  'PPKn': 75,
-  'PJOK': 75,
-  'Seni Budaya': 75
+  'Bahasa Arab': 75
 };
 
 const BANK_CAPAIAN_MAPEL = {
   'Akidah': {
     tinggi: "Ananda menunjukkan pemahaman sangat baik tentang adab dalam menyebut Asma' Allah, Al-Qur'an, dan Rasul-Nya serta sangat baik dalam memahami makna bersyukur.",
     sedang: "Ananda menunjukkan pemahaman baik tentang adab dalam menyebut Asma' Allah, Al-Qur'an, dan Rasul-Nya serta baik dalam memahami makna bersyukur.",
-    cukup: "Ananda cukup memahami adab menyebut Asma' Allah dan Rasul-Nya, perlu peningkatan dalam memahami makna bersyukur."
+    cukup: "Ananda cukup baik dalam memahami adab menyebut Asma' Allah dan Rasul-Nya serta makna bersyukur."
   },
   'Akhlak': {
-    tinggi: "Ananda sangat baik dalam memahami adab berteman, menghormati orang tua dan guru, serta menjaga lisan dan akhlak terpuji.",
-    sedang: "Ananda baik dalam memahami adab berteman, menghormati orang tua dan guru, serta menjaga lisan dan akhlak terpuji.",
-    cukup: "Ananda cukup baik dalam adab berteman, perlu terus diingatkan untuk menjaga lisan dan sikap tawadhu."
+    tinggi: "Ananda sangat baik dalam memahami sikap jujur sebagai seorang muslim, dan etika bersyukur dalam islam sesuai syariat.",
+    sedang: "Ananda baik dalam memahami sikap jujur sebagai seorang muslim, dan etika bersyukur dalam islam sesuai syariat.",
+    cukup: "Ananda cukup baik dalam memahami sikap jujur sebagai seorang muslim, dan etika bersyukur dalam islam sesuai syariat."
   },
-  'Hadis': {
-    tinggi: "Ananda menunjukkan penguasaan sangat baik dalam menghafal matan hadis-hadis pilihan dan memahami intisari pengamalannya.",
-    sedang: "Ananda menunjukkan penguasaan baik dalam menghafal dan memahami matan hadis-hadis pilihan dan pengamalannya.",
-    cukup: "Ananda cukup menguasai hafalan hadis, perlu peningkatan dalam kelancaran lafadz hadis."
+  'Hadits': {
+    tinggi: "Ananda sangat baik dalam memahami hadits nabi tentang perintah zuhud dan hal hal yang membahayakan orang lain.",
+    sedang: "Ananda baik dalam memahami hadits nabi tentang perintah zuhud dan hal hal yang membahayakan orang lain.",
+    cukup: "Ananda cukup baik dalam memahami hadits nabi tentang perintah zuhud dan hal hal yang membahayakan orang lain."
   },
-  'Fiqih': {
-    tinggi: "Ananda sangat menguasai kaidah thoharoh, rukun sholat fardhu dan sunnah, serta tertib dalam pelaksanaan ibadah yaumiyyah.",
-    sedang: "Ananda baik dalam memahami kaidah thoharoh, sholat berjamaah, dan rukun ibadah yaumiyyah.",
-    cukup: "Ananda cukup memahami kaidah ibadah, perlu bimbingan praktik wudhu dan sholat secara istiqomah."
+  'Fikih': {
+    tinggi: "Ananda sangat baik dalam memahami pengertian, hukum, syarat, rukun, wajib haji dan umrah. Mampu menjelaskan tata cara pelaksanaan manasik haji dan umrah serta menunjukkan sikap keinginan untuk melaksanakan ibadah haji dan umrah sebagai bentuk ketaatan kepada Allah SWT.",
+    sedang: "Ananda baik dalam memahami pengertian, hukum, syarat, rukun, wajib haji dan umrah. Mampu menjelaskan tata cara pelaksanaan manasik haji dan umrah serta menunjukkan sikap keinginan untuk melaksanakan ibadah haji dan umrah sebagai bentuk ketaatan kepada Allah SWT.",
+    cukup: "Ananda cukup baik dalam memahami pengertian, hukum, syarat, rukun, wajib haji dan umrah."
   },
-  'Bahasa Arab': {
-    tinggi: "Ananda sangat mahir dalam penguasaan mufrodat, percakapan yaumiyyah (hiwar), dan pemahaman kaidah dasar qowaid nahwu.",
-    sedang: "Ananda baik dalam penguasaan mufrodat, percakapan dasar (hiwar), dan tata bahasa dasar (qowaid).",
-    cukup: "Ananda cukup menguasai kosa kata dasar, perlu latihan intensif dalam percakapan dan menyusun kalimat."
+  'SKI': {
+    tinggi: "Ananda sangat baik dalam memahami perkembangan islam, upaya penaklukan, peperangan dengan murtadin dan sistem pemerintahan pada masa khulafa rasyidin.",
+    sedang: "Ananda baik dalam memahami perkembangan islam, upaya penaklukan, peperangan dengan murtadin dan sistem pemerintahan pada masa khulafa rasyidin.",
+    cukup: "Ananda cukup baik dalam memahami perkembangan islam, upaya penaklukan, peperangan dengan murtadin dan sistem pemerintahan pada masa khulafa rasyidin."
+  },
+  'Pendidikan Pancasila': {
+    tinggi: "Ananda sangat baik dalam memahami hubungan pancasila dengan bhineka tunggal ika, dan menelaah hak serta kewajiban sebagai warga negara.",
+    sedang: "Ananda baik dalam memahami hubungan pancasila dengan bhineka tunggal ika, dan menelaah hak serta kewajiban sebagai warga negara.",
+    cukup: "Ananda cukup baik dalam memahami hubungan pancasila dengan bhineka tunggal ika, dan menelaah hak serta kewajiban sebagai warga negara."
   },
   'Bahasa Indonesia': {
-    tinggi: "Ananda sangat terampil dalam mengidentifikasi ide pokok teks deskripsi, menelaah struktur teks, dan menulis gagasan secara kritis.",
-    sedang: "Ananda mampu mengidentifikasi ide pokok teks deskripsi dan menyampaikan gagasan secara runtut.",
-    cukup: "Ananda cukup memahami teks bacaan, perlu memperkaya kosa kata dan keterampilan menulis karangan."
+    tinggi: "Ananda sangat baik dalam memahami struktur teks laporan percobaan, dan menelaah unsur kebahasaan teks rekon.",
+    sedang: "Ananda baik dalam memahami struktur teks laporan percobaan, dan menelaah unsur kebahasaan teks rekon.",
+    cukup: "Ananda cukup baik dalam memahami struktur teks laporan percobaan dan unsur kebahasaan teks rekon."
   },
   'Bahasa Inggris': {
-    tinggi: "Ananda sangat fasih dalam memahami teks naratif, percakapan interaktif sehari-hari, dan tata bahasa (grammar) dasar.",
-    sedang: "Ananda baik dalam memahami teks naratif, percakapan sehari-hari, dan kosa kata fungsional.",
-    cukup: "Ananda cukup dalam memahami instruksi bahasa Inggris, perlu lebih percaya diri dalam berbicara (speaking)."
+    tinggi: "Ananda sangat baik dalam menggunakan berbagai ungkapan untuk menyatakan kepastian dan ketidakpastian, serta menerapkan Simple Future Tense, Passive Voice, Exclamatory Sentences, Expressing Surprise and Disbelief, dan Past Continuous Tense dengan baik dalam konteks komunikasi bahasa Inggris.",
+    sedang: "Ananda baik dalam menggunakan berbagai ungkapan untuk menyatakan kepastian dan ketidakpastian, serta menerapkan Simple Future Tense, Passive Voice, Exclamatory Sentences, Expressing Surprise and Disbelief, dan Past Continuous Tense dengan baik dalam konteks komunikasi bahasa Inggris.",
+    cukup: "Ananda cukup baik dalam menggunakan berbagai ungkapan untuk menyatakan kepastian dan ketidakpastian, serta menerapkan Simple Future Tense, Passive Voice, Exclamatory Sentences, Expressing Surprise and Disbelief, dan Past Continuous Tense dengan baik dalam konteks komunikasi bahasa Inggris."
   },
   'Matematika': {
-    tinggi: "Ananda sangat cakap dan logis dalam menyelesaikan operasi bilangan bulat, aljabar, dan penalaran soal cerita kontekstual.",
-    sedang: "Ananda mampu menyelesaikan persoalan aljabar dan bilangan bulat dengan metode yang tepat.",
-    cukup: "Ananda cukup memahami konsep dasar bilangan, perlu banyak berlatih menyelesaikan soal-soal penalaran."
+    tinggi: "Ananda sangat baik dalam mengenali, menggeneralisasi pola dalam bentuk susunan bilangan, dan mampu menyelesaikan sistem persamaan linier dua variabel.",
+    sedang: "Ananda baik dalam mengenali, menggeneralisasi pola dalam bentuk susunan bilangan, dan mampu menyelesaikan sistem persamaan linier dua variabel.",
+    cukup: "Ananda cukup baik dalam mengenali pola susunan bilangan dan menyelesaikan sistem persamaan linier dua variabel."
   },
-  'IPA': {
-    tinggi: "Ananda menunjukkan pemahaman sangat baik terhadap klasifikasi makhluk hidup, organisasi kehidupan, dan antusias dalam observasi sains.",
-    sedang: "Ananda memahami konsep dasar klasifikasi makhluk hidup dan sistem organisasi kehidupan.",
-    cukup: "Ananda cukup memahami materi sains, perlu peningkatan ketelitian saat memahami konsep mikroskopis."
+  'Ilmu Pengetahuan Alam': {
+    tinggi: "Ananda sangat baik dalam memahami ciri makhluk hidup pertumbuhan dan perkembangan, memahami sistem reproduksi dan koordinasi manusia, dan menganalisis tekanan.",
+    sedang: "Ananda baik dalam memahami ciri makhluk hidup pertumbuhan dan perkembangan, memahami sistem reproduksi dan koordinasi manusia, dan menganalisis tekanan.",
+    cukup: "Ananda cukup baik dalam memahami ciri makhluk hidup pertumbuhan dan perkembangan, memahami sistem reproduksi dan koordinasi manusia, dan menganalisis tekanan."
   },
-  'IPS': {
-    tinggi: "Ananda sangat memahami konsep ruang, interaksi antarruang di Indonesia, serta dinamika kependudukan dan sosial budaya.",
-    sedang: "Ananda memahami interaksi antarruang dan dinamika kependudukan dengan baik.",
-    cukup: "Ananda cukup memahami materi geografis dan sosial, perlu membaca lebih banyak literatur IPS."
+  'Ilmu Pengetahuan Sosial': {
+    tinggi: "Ananda sangat baik dalam memahami keberagaman kondisi geografis Indonesia, konektivitas antarruang terhadap upaya pemanfaatan dan pelestarian potensi sumber daya alam, faktor aktivitas manusia terhadap perubahan iklim dan potensi bencana alam.",
+    sedang: "Ananda baik dalam memahami keberagaman kondisi geografis Indonesia, konektivitas antarruang terhadap upaya pemanfaatan dan pelestarian potensi sumber daya alam, faktor aktivitas manusia terhadap perubahan iklim dan potensi bencana alam.",
+    cukup: "Ananda cukup baik dalam memahami keberagaman kondisi geografis Indonesia dan pelestarian potensi sumber daya alam."
+  },
+  'Prakarya': {
+    tinggi: "Ananda sangat baik dalam Membuat karya rupa berdasarkan gagasannya sendiri atau mengambil inspirasi dan membuat produk kerajinan modifikasi yang bernilai ekonomis dan ergonomis.",
+    sedang: "Ananda baik dalam Membuat karya rupa berdasarkan gagasannya sendiri atau mengambil inspirasi dan membuat produk kerajinan modifikasi yang bernilai ekonomis dan ergonomis.",
+    cukup: "Ananda cukup baik dalam Membuat karya rupa berdasarkan gagasannya sendiri atau mengambil inspirasi dan membuat produk kerajinan modifikasi yang bernilai ekonomis dan ergonomis."
+  },
+  'Pendidikan Jasmani, Olahraga, dan Kesehatan': {
+    tinggi: "Ananda sangat baik dalam mempraktikkan Permainan Invasi Sepak bola dan Permainan net bola Voli.",
+    sedang: "Ananda baik dalam mempraktikkan Permainan Invasi Sepak bola dan Permainan net bola Voli.",
+    cukup: "Ananda cukup baik dalam mempraktikkan Permainan Invasi Sepak bola dan Permainan net bola Voli."
+  },
+  'Bahasa Sunda': {
+    tinggi: "Ananda sangat baik dalam menganalisis dan mengidentifikasi Biantara.",
+    sedang: "Ananda baik dalam menganalisis dan mengidentifikasi Biantara.",
+    cukup: "Ananda cukup baik dalam menganalisis dan mengidentifikasi Biantara."
   },
   'Informatika': {
-    tinggi: "Ananda sangat terampil dalam logika berpikir komputasional (computational thinking) dan terampil mengoperasikan aplikasi produktivitas.",
-    sedang: "Ananda mampu memahami computational thinking dan pengolahan data sederhana.",
-    cukup: "Ananda cukup memahami pengoperasian komputer, perlu bimbingan lebih lanjut dalam logika algoritma."
+    tinggi: "Ananda sangat baik dalam menuliskan sekumpulan instruksi dengan menggunakan algoritma dan pemrograman untuk menyelesaikan persoalan komputasional.",
+    sedang: "Ananda baik dalam menuliskan sekumpulan instruksi dengan menggunakan algoritma dan pemrograman untuk menyelesaikan persoalan.",
+    cukup: "Ananda cukup baik dalam memahami dasar algoritma dan pemrograman komputer."
   },
-  'PPKn': {
-    tinggi: "Ananda sangat baik dalam mengamalkan nilai-nilai luhur Pancasila, menaati norma hukum, dan menunjukkan sikap toleransi.",
-    sedang: "Ananda memahami nilai-nilai Pancasila dan norma kehidupan bermasyarakat.",
-    cukup: "Ananda cukup memahami norma sosial, perlu peningkatan kesadaran disiplin konstitusional di sekolah."
-  },
-  'PJOK': {
-    tinggi: "Ananda sangat aktif, bugar, dan menguasai teknik dasar olahraga atletik, permainan bola besar, serta menjaga kebugaran jasmani.",
-    sedang: "Ananda aktif dalam kebugaran jasmani dan mempraktikkan keterampilan gerak spesifik.",
-    cukup: "Ananda berpartisipasi dalam olahraga jasmani, perlu menjaga stamina dan kelincahan motorik."
-  },
-  'Seni Budaya': {
-    tinggi: "Ananda sangat kreatif dalam berekspresi seni rupa, mengapresiasi karya seni daerah, dan memiliki cita rasa estetika tinggi.",
-    sedang: "Ananda menunjukkan kreativitas dalam apresiasi dan berkarya seni rupa dan musik.",
-    cukup: "Ananda cukup mampu membuat karya seni dasar, perlu melatih kerapian dan eksplorasi warna."
+  'Bahasa Arab': {
+    tinggi: "Ananda sangat baik dalam penguasaan mufrodat, percakapan yaumiyyah (hiwar), dan pemahaman kaidah dasar qowaid nahwu.",
+    sedang: "Ananda baik dalam penguasaan mufrodat, percakapan dasar (hiwar), dan tata bahasa dasar (qowaid).",
+    cukup: "Ananda cukup baik dalam penguasaan mufrodat dan percakapan dasar bahasa Arab."
   }
 };
 
@@ -3026,9 +3060,25 @@ const BANK_KEPRIBADIAN_ALIMAM = {
   ]
 };
 
+// 12 Students Exact Excel Dataset (Class IX ABU BAKAR)
+const EXCEL_STUDENTS_DATA = [
+  { no: 1, nisn: '0113408257', nama: 'AHMAD YAZID ILMANY RAMADHAN', s: 2, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Futsal', e3n: 'Baik', scores: [87, 88, 82, 84, 80, 85, 93, 78, 84, 85, 89, 86, 89, 90, 85, 76] },
+  { no: 2, nisn: '0116425792', nama: 'AL AZIZ BENZAVEIRO SUNARYO', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Basket', e3n: 'Sangat Baik', scores: [89, 86, 84, 90, 86, 90, 93, 85, 90, 86, 93, 87, 89, 91, 88, 78] },
+  { no: 3, nisn: '0113811055', nama: 'ALWAN IBRAHIM', s: 2, i: 3, a: 4, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Futsal', e3n: 'Sangat Baik', scores: [86, 85, 83, 90, 78, 84, 86, 76, 80, 83, 86, 84, 92, 89, 82, 76] },
+  { no: 4, nisn: '0114838409', nama: 'AZKA DWI ABDHUL GHANIY', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Basket', e3n: 'Sangat Baik', scores: [86, 87, 85, 87, 86, 88, 88, 84, 91, 87, 93, 85, 89, 92, 86, 80] },
+  { no: 5, nisn: '0118589769', nama: 'DZAKI AQEELA ALIFANDRA', s: 2, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Basket', e3n: 'Sangat Baik', scores: [88, 86, 87, 89, 90, 87, 90, 87, 89, 84, 88, 85, 89, 89, 85, 86] },
+  { no: 6, nisn: '0113915620', nama: 'FARHAN PUTRA NOVRIANSYAH', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Futsal', e3n: 'Baik', scores: [92, 83, 87, 91, 90, 88, 88, 81, 89, 92, 96, 85, 91, 92, 91, 93] },
+  { no: 7, nisn: '0118560424', nama: 'GHAISAN FARRELLUZ SUKARNO', s: 0, i: 3, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Basket', e3n: 'Baik', scores: [91, 85, 85, 93, 90, 88, 91, 94, 85, 88, 98, 87, 91, 94, 88, 86] },
+  { no: 8, nisn: '0119042818', nama: 'GIBRAN ARGA PUTRAKU', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Futsal', e3n: 'Sangat Baik', scores: [88, 88, 84, 97, 97, 85, 89, 88, 90, 87, 96, 85, 93, 94, 86, 90] },
+  { no: 9, nisn: '0107305756', nama: 'LUTHFI FAEYZA SATRIOPUTRA', s: 0, i: 1, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Futsal', e3n: 'Sangat Baik', scores: [88, 86, 86, 93, 86, 84, 93, 81, 93, 85, 90, 86, 91, 90, 89, 88] },
+  { no: 10, nisn: '0108446122', nama: 'MOHAMAD MIRZA RADITYA', s: 2, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Futsal', e3n: 'Sangat Baik', scores: [88, 83, 89, 81, 80, 88, 90, 75, 83, 83, 85, 88, 94, 81, 85, 78] },
+  { no: 11, nisn: '0113743973', nama: 'MUHAMMAD ALFAJRI', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Basket', e3n: 'Baik', scores: [87, 88, 84, 85, 78, 89, 90, 78, 80, 88, 85, 86, 88, 83, 82, 76] },
+  { no: 12, nisn: '0103456069', nama: 'NADHIF SYAFWAN RIFAAT', s: 0, i: 3, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Basket', e3n: 'Baik', scores: [86, 77, 83, 86, 78, 84, 90, 79, 88, 81, 85, 82, 89, 84, 85, 78] }
+];
+
 const DEMO_DATA = {
   settings: {
-    school_name: 'SMP AL IMAM ISLAMIC SCHOOL',
+    school_name: 'SEKOLAH MENENGAH PERTAMA AL IMAM ISLAMIC SCHOOL',
     school_logo_url: 'https://alimamischool.com/wp-content/uploads/2020/08/Al-Imam-Islamic-School-alimamischool.com-sekolah-sunnah-logo.png',
     school_address: 'Jl. KH. M. Usman No. 128, Kukusan, Beji, Kota Depok, Jawa Barat',
     school_phone: '(021) 8775-4321 / 0812-9876-5432',
@@ -3046,67 +3096,70 @@ const DEMO_DATA = {
     theme_secondary_color: '#0284c7',
     theme_accent_color: '#10b981'
   },
-  murid: [
-    { nis: '202509001', nisn: '0113408257', nama_murid: 'AHMAD YAZID ILMANY RAMADHAN', nama_santri: 'AHMAD YAZID ILMANY RAMADHAN', kelas: 'IX ABU BAKAR', jenis_kelamin: 'L', kehadiran_s: 2, kehadiran_i: 0, kehadiran_a: 0, ekskul_1: 'Pramuka', ekskul_2: 'Wushu', ekskul_3: 'Futsal', nama_wali: 'Bpk. Ramadhan', kontak_wali: '081234567801', status: 'Aktif' },
-    { nis: '202509002', nisn: '0116425792', nama_murid: 'AL AZIZ BENZAVEIRO SUNARYO', nama_santri: 'AL AZIZ BENZAVEIRO SUNARYO', kelas: 'IX ABU BAKAR', jenis_kelamin: 'L', kehadiran_s: 0, kehadiran_i: 0, kehadiran_a: 0, ekskul_1: 'Pramuka', ekskul_2: 'Wushu', ekskul_3: 'Basket', nama_wali: 'Bpk. Sunaryo', kontak_wali: '081234567802', status: 'Aktif' },
-    { nis: '202509003', nisn: '0113811055', nama_murid: 'ALWAN IBRAHIM', nama_santri: 'ALWAN IBRAHIM', kelas: 'IX ABU BAKAR', jenis_kelamin: 'L', kehadiran_s: 2, kehadiran_i: 3, kehadiran_a: 4, ekskul_1: 'Pramuka', ekskul_2: 'Wushu', ekskul_3: 'Futsal', nama_wali: 'Bpk. Ibrahim', kontak_wali: '081234567803', status: 'Aktif' },
-    { nis: '202509004', nisn: '0114838409', nama_murid: 'AZKA DWI ABDHUL GHANIY', nama_santri: 'AZKA DWI ABDHUL GHANIY', kelas: 'IX ABU BAKAR', jenis_kelamin: 'L', kehadiran_s: 0, kehadiran_i: 0, kehadiran_a: 0, ekskul_1: 'Pramuka', ekskul_2: 'Wushu', ekskul_3: 'Basket', nama_wali: 'Bpk. Ghaniy', kontak_wali: '081234567804', status: 'Aktif' },
-    { nis: '202509005', nisn: '0118589769', nama_murid: 'DZAKI AQEELA ALIFANDRA', nama_santri: 'DZAKI AQEELA ALIFANDRA', kelas: 'IX ABU BAKAR', jenis_kelamin: 'L', kehadiran_s: 2, kehadiran_i: 0, kehadiran_a: 0, ekskul_1: 'Pramuka', ekskul_2: 'Wushu', ekskul_3: 'Basket', nama_wali: 'Bpk. Alifandra', kontak_wali: '081234567805', status: 'Aktif' },
-    { nis: '202509006', nisn: '0113915620', nama_murid: 'FARHAN PUTRA NOVRIANSYAH', nama_santri: 'FARHAN PUTRA NOVRIANSYAH', kelas: 'IX ABU BAKAR', jenis_kelamin: 'L', kehadiran_s: 0, kehadiran_i: 0, kehadiran_a: 0, ekskul_1: 'Pramuka', ekskul_2: 'Wushu', ekskul_3: 'Futsal', nama_wali: 'Bpk. Novriansyah', kontak_wali: '081234567806', status: 'Aktif' },
-    { nis: '202509007', nisn: '0118560424', nama_murid: 'GHAISAN FARRELLUZ SUKARNO', nama_santri: 'GHAISAN FARRELLUZ SUKARNO', kelas: 'IX ABU BAKAR', jenis_kelamin: 'L', kehadiran_s: 0, kehadiran_i: 3, kehadiran_a: 0, ekskul_1: 'Pramuka', ekskul_2: 'Wushu', ekskul_3: 'Basket', nama_wali: 'Bpk. Sukarno', kontak_wali: '081234567807', status: 'Aktif' },
-    { nis: '202509008', nisn: '0119042818', nama_murid: 'GIBRAN ARGA PUTRAKU', nama_santri: 'GIBRAN ARGA PUTRAKU', kelas: 'IX ABU BAKAR', jenis_kelamin: 'L', kehadiran_s: 0, kehadiran_i: 0, kehadiran_a: 0, ekskul_1: 'Pramuka', ekskul_2: 'Wushu', ekskul_3: 'Futsal', nama_wali: 'Bpk. Putraku', kontak_wali: '081234567808', status: 'Aktif' },
-    { nis: '202509009', nisn: '0107305756', nama_murid: 'LUTHFI FAEYZA SATRIOPUTRA', nama_santri: 'LUTHFI FAEYZA SATRIOPUTRA', kelas: 'IX ABU BAKAR', jenis_kelamin: 'L', kehadiran_s: 0, kehadiran_i: 1, kehadiran_a: 0, ekskul_1: 'Pramuka', ekskul_2: 'Wushu', ekskul_3: 'Futsal', nama_wali: 'Bpk. Satrioputra', kontak_wali: '081234567809', status: 'Aktif' },
-    { nis: '202509010', nisn: '0108446122', nama_murid: 'MOHAMAD MIRZA RADITYA', nama_santri: 'MOHAMAD MIRZA RADITYA', kelas: 'IX ABU BAKAR', jenis_kelamin: 'L', kehadiran_s: 2, kehadiran_i: 0, kehadiran_a: 0, ekskul_1: 'Pramuka', ekskul_2: 'Wushu', ekskul_3: 'Futsal', nama_wali: 'Bpk. Raditya', kontak_wali: '081234567810', status: 'Aktif' },
-    { nis: '202509011', nisn: '0113743973', nama_murid: 'MUHAMMAD ALFAJRI', nama_santri: 'MUHAMMAD ALFAJRI', kelas: 'IX ABU BAKAR', jenis_kelamin: 'L', kehadiran_s: 0, kehadiran_i: 0, kehadiran_a: 0, ekskul_1: 'Pramuka', ekskul_2: 'Wushu', ekskul_3: 'Basket', nama_wali: 'Bpk. Alfajri', kontak_wali: '081234567811', status: 'Aktif' },
-    { nis: '202509012', nisn: '0103456069', nama_murid: 'NADHIF SYAFWAN RIFAAT', nama_santri: 'NADHIF SYAFWAN RIFAAT', kelas: 'IX ABU BAKAR', jenis_kelamin: 'L', kehadiran_s: 0, kehadiran_i: 3, kehadiran_a: 0, ekskul_1: 'Pramuka', ekskul_2: 'Wushu', ekskul_3: 'Basket', nama_wali: 'Bpk. Rifaat', kontak_wali: '081234567812', status: 'Aktif' }
-  ],
+  murid: [],
   akademik: [],
   kepemimpinan: [],
-  diniyah: [
-    { id: 'ND-001', nis: '202509001', nama_murid: 'AHMAD YAZID ILMANY RAMADHAN', kelas: 'IX ABU BAKAR', semester: 'I (Satu)', tahun_ajaran: '2025/2026', ziyadah_juz: 'Juz 28 & Juz 29 (Lancar)', murojaah_juz: 'Juz 30 (Mutqin)', nilai_tahfidz: 94, adab_harian: 'Mumtaz (A)', ibadah_harian: 'Mumtaz (A)', bahasa_arab: 90, catatan_musyrif: 'Alhamdulillah capaian ziyadah melampaui target. Makhraj huruf dan tajwid sangat baik.' }
-  ],
+  diniyah: [],
   users: [
     { id: 'USR-001', username: 'admin', nama_lengkap: 'Administrator Utama', role: 'admin', status: 'aktif' },
     { id: 'USR-002', username: 'kepsek', nama_lengkap: 'Ust. Ahmad Fauzi, M.Pd.', role: 'kepala_sekolah', status: 'aktif' },
     { id: 'USR-003', username: 'guru', nama_lengkap: 'Kahlil Gibran, S.Pd.', role: 'guru', status: 'aktif' },
-    { id: 'USR-004', username: 'walimurid', nama_lengkap: 'Bpk. Ramadhan', role: 'wali_murid', status: 'aktif', nis: '202509001' }
+    { id: 'USR-004', username: 'walimurid', nama_lengkap: 'Bpk. Rifaat', role: 'wali_murid', status: 'aktif', nis: '202509012' }
   ]
 };
 
-// Seed full academic and kepribadian records for IX ABU BAKAR
-function buildDemoSeedData() {
-  const mapelList = ['Akidah', 'Akhlak', 'Hadis', 'Fiqih', 'Bahasa Arab', 'Bahasa Indonesia', 'Bahasa Inggris', 'Matematika', 'IPA', 'IPS', 'Informatika', 'PPKn', 'PJOK', 'Seni Budaya'];
+// Populate DEMO_DATA from exact Excel structure
+function buildExactAlImamDataset() {
+  const mList = [];
   const akList = [];
   const kpList = [];
+  const dnList = [];
 
-  const akidahScores = [87, 89, 86, 86, 88, 92, 91, 88, 88, 88, 87, 86];
-  const akhlakScores = [88, 86, 85, 87, 86, 83, 85, 88, 86, 83, 88, 77];
-  const hadisScores  = [82, 84, 83, 85, 87, 87, 85, 84, 86, 89, 84, 83];
+  EXCEL_STUDENTS_DATA.forEach((st, idx) => {
+    const nis = `202509${String(st.no).padStart(3, '0')}`;
+    
+    // Murid
+    mList.push({
+      nis: nis,
+      no_urut: st.no,
+      nisn: st.nisn,
+      nama_murid: st.nama,
+      nama_santri: st.nama,
+      kelas: 'IX ABU BAKAR',
+      jenis_kelamin: 'L',
+      kehadiran_s: st.s,
+      kehadiran_i: st.i,
+      kehadiran_a: st.a,
+      ekskul_1: st.e1,
+      ekskul_1_nilai: st.e1n,
+      ekskul_2: st.e2,
+      ekskul_2_nilai: st.e2n,
+      ekskul_3: st.e3,
+      ekskul_3_nilai: st.e3n,
+      nama_wali: `Orang Tua / Wali ${st.nama.split(' ')[0]}`,
+      kontak_wali: `081234567${String(st.no).padStart(3, '0')}`,
+      status: 'Aktif'
+    });
 
-  DEMO_DATA.murid.forEach((m, mIdx) => {
-    // Akademik
-    mapelList.forEach((mapel) => {
+    // 16 Akademik Mapel Records per Student
+    MAPEL_LIST_16.forEach((mapel, mapelIdx) => {
+      const score = st.scores[mapelIdx] || 85;
       const kkm = MAPEL_KKM_DEFAULT[mapel] || 75;
-      let score = 85;
-      if (mapel === 'Akidah') score = akidahScores[mIdx] || 87;
-      else if (mapel === 'Akhlak') score = akhlakScores[mIdx] || 86;
-      else if (mapel === 'Hadis') score = hadisScores[mIdx] || 84;
-      else score = Math.floor(Math.random() * (95 - kkm + 1)) + kkm;
 
       let predikat = 'D';
       if (score >= 90) predikat = 'A';
       else if (score >= 80) predikat = 'B';
       else if (score >= kkm) predikat = 'C';
 
-      let capTemplate = BANK_CAPAIAN_MAPEL[mapel] || BANK_CAPAIAN_MAPEL['Akidah'];
-      let capaian = score >= 88 ? capTemplate.tinggi : (score >= kkm ? capTemplate.sedang : capTemplate.cukup);
+      const capTemplate = BANK_CAPAIAN_MAPEL[mapel] || BANK_CAPAIAN_MAPEL['Akidah'];
+      const capaian = score >= 90 ? capTemplate.tinggi : (score >= kkm ? capTemplate.sedang : capTemplate.cukup);
 
       akList.push({
-        id: `NA-${m.nis}-${mapel.replace(/\s+/g, '')}`,
-        nis: m.nis,
-        nama_murid: m.nama_murid,
-        nama_santri: m.nama_murid,
-        kelas: m.kelas,
+        id: `NA-${nis}-${mapel.replace(/\s+/g, '')}`,
+        nis: nis,
+        nama_murid: st.nama,
+        nama_santri: st.nama,
+        kelas: 'IX ABU BAKAR',
         mata_pelajaran: mapel,
         kkm: kkm,
         nilai_tugas: score,
@@ -3120,30 +3173,50 @@ function buildDemoSeedData() {
 
     // Kepribadian (6 Aspek + Catatan)
     kpList.push({
-      id: `NK-${m.nis}`,
-      nis: m.nis,
-      nama_murid: m.nama_murid,
-      nama_santri: m.nama_murid,
-      kelas: m.kelas,
+      id: `NK-${nis}`,
+      nis: nis,
+      nama_murid: st.nama,
+      nama_santri: st.nama,
+      kelas: 'IX ABU BAKAR',
       semester: 'I (Satu)',
       tahun_ajaran: '2025/2026',
       ibadah: BANK_KEPRIBADIAN_ALIMAM.ibadah[0],
-      akhlak: mIdx === 5 ? BANK_KEPRIBADIAN_ALIMAM.akhlak[1] : (mIdx === 6 ? BANK_KEPRIBADIAN_ALIMAM.akhlak[2] : BANK_KEPRIBADIAN_ALIMAM.akhlak[0]),
+      akhlak: idx === 5 ? BANK_KEPRIBADIAN_ALIMAM.akhlak[1] : (idx === 6 ? BANK_KEPRIBADIAN_ALIMAM.akhlak[2] : BANK_KEPRIBADIAN_ALIMAM.akhlak[0]),
       kedisiplinan_kerajinan: BANK_KEPRIBADIAN_ALIMAM.kedisiplinan[0],
       kedisiplinan: BANK_KEPRIBADIAN_ALIMAM.kedisiplinan[0],
       kerapihan_kebersihan: BANK_KEPRIBADIAN_ALIMAM.kerapihan[0],
       kepemimpinan: BANK_KEPRIBADIAN_ALIMAM.kepemimpinan[0],
-      kerjasama: (mIdx === 1 || mIdx === 4 || mIdx === 7 || mIdx === 10) ? BANK_KEPRIBADIAN_ALIMAM.kerjasama[1] : BANK_KEPRIBADIAN_ALIMAM.kerjasama[0],
-      catatan_diperhatikan: (mIdx === 2 || mIdx === 4 || mIdx === 6) ? BANK_KEPRIBADIAN_ALIMAM.catatan_diperhatikan[1] : (mIdx === 3 ? BANK_KEPRIBADIAN_ALIMAM.catatan_diperhatikan[2] : (mIdx === 8 ? BANK_KEPRIBADIAN_ALIMAM.catatan_diperhatikan[3] : BANK_KEPRIBADIAN_ALIMAM.catatan_diperhatikan[0])),
+      kerjasama: (idx === 1 || idx === 4 || idx === 7 || idx === 10) ? BANK_KEPRIBADIAN_ALIMAM.kerjasama[1] : BANK_KEPRIBADIAN_ALIMAM.kerjasama[0],
+      catatan_diperhatikan: (idx === 2 || idx === 4 || idx === 6) ? BANK_KEPRIBADIAN_ALIMAM.catatan_diperhatikan[1] : (idx === 3 ? BANK_KEPRIBADIAN_ALIMAM.catatan_diperhatikan[2] : (idx === 8 ? BANK_KEPRIBADIAN_ALIMAM.catatan_diperhatikan[3] : BANK_KEPRIBADIAN_ALIMAM.catatan_diperhatikan[0])),
       catatan_pembina: BANK_KEPRIBADIAN_ALIMAM.catatan_diperhatikan[0]
+    });
+
+    // Diniyah & Tahfidz
+    dnList.push({
+      id: `ND-${nis}`,
+      nis: nis,
+      nama_murid: st.nama,
+      nama_santri: st.nama,
+      kelas: 'IX ABU BAKAR',
+      semester: 'I (Satu)',
+      tahun_ajaran: '2025/2026',
+      ziyadah_juz: 'Juz 28 & Juz 29 (Lancar)',
+      murojaah_juz: 'Juz 30 (Mutqin)',
+      nilai_tahfidz: st.scores[0] || 90,
+      adab_harian: 'Mumtaz (A)',
+      ibadah_harian: 'Mumtaz (A)',
+      bahasa_arab: st.scores[15] || 85,
+      catatan_musyrif: 'Alhamdulillah capaian ziyadah dan hafalan Al-Qur\'an sangat baik. Tajwid tertib.'
     });
   });
 
+  DEMO_DATA.murid = mList;
   DEMO_DATA.akademik = akList;
   DEMO_DATA.kepemimpinan = kpList;
+  DEMO_DATA.diniyah = dnList;
 }
 
-buildDemoSeedData();
+buildExactAlImamDataset();
 
 // 2. GLOBAL APPLICATION STATE
 const AppState = {
@@ -3162,7 +3235,7 @@ const AppState = {
   kepemimpinanList: [...DEMO_DATA.kepemimpinan],
   diniyahList: [...DEMO_DATA.diniyah],
   usersList: [...DEMO_DATA.users],
-  activePrintNis: '202509001'
+  activePrintNis: '202509012' // Nadhif Syafwan Rifaat (No Urut 12 dari screenshot)
 };
 
 // 3. API CALL WRAPPER (Auto-detect google.script.run or Fetch REST)
@@ -3375,9 +3448,9 @@ function quickLoginRole(roleKey) {
     'wali_murid': {
       username: 'walimurid',
       role: 'wali_murid',
-      nama_lengkap: 'Bpk. Ramadhan',
-      subtitle: 'Wali Murid (Ahmad Yazid)',
-      nis: '202509001'
+      nama_lengkap: 'Bpk. Rifaat',
+      subtitle: 'Wali Murid (Nadhif Syafwan)',
+      nis: '202509012'
     }
   };
 
@@ -3398,7 +3471,7 @@ function quickLoginRole(roleKey) {
   showToast(`Berhasil login sebagai: ${preset.nama_lengkap}`, 'success');
 
   if (preset.role === 'wali_murid') {
-    AppState.activePrintNis = preset.nis || (AppState.muridList[0]?.nis || '202509001');
+    AppState.activePrintNis = preset.nis || '202509012';
     switchView('rapor');
   } else {
     switchView('dashboard');
@@ -3433,7 +3506,7 @@ function handleManualLogin(e) {
         closeLoginModal();
         showToast(`Selamat datang, ${u.nama_lengkap}!`, 'success');
         if (u.role === 'wali_murid') {
-          AppState.activePrintNis = AppState.currentUser.nis || '202509001';
+          AppState.activePrintNis = AppState.currentUser.nis || '202509012';
           switchView('rapor');
         } else {
           switchView('dashboard');
@@ -3509,7 +3582,7 @@ function applyCmsTheme(settings) {
   if (settings.theme_secondary_color) root.style.setProperty('--secondary-color', settings.theme_secondary_color);
   if (settings.theme_accent_color) root.style.setProperty('--accent-color', settings.theme_accent_color);
 
-  const schoolName = settings.school_name || 'SMP AL IMAM ISLAMIC SCHOOL';
+  const schoolName = settings.school_name || 'SEKOLAH MENENGAH PERTAMA AL IMAM ISLAMIC SCHOOL';
   const logoUrl = settings.school_logo_url || 'https://alimamischool.com/wp-content/uploads/2020/08/Al-Imam-Islamic-School-alimamischool.com-sekolah-sunnah-logo.png';
 
   const navLogo = document.getElementById('nav-school-logo');
@@ -3566,7 +3639,7 @@ function switchDashboardTab(tabName) {
   }
 
   const titles = {
-    'Akademik': { title: 'Dashboard Akademik', subtitle: 'Status rekapitulasi nilai mata pelajaran, KKM, dan capaian kompetensi murid.' },
+    'Akademik': { title: 'Dashboard Rekap Nilai Akademik (16 Mapel)', subtitle: 'Status rekapitulasi nilai 16 mata pelajaran, KKM, dan capaian kompetensi murid.' },
     'Diniyah': { title: 'Dashboard Diniyah & Tahfidz', subtitle: 'Status capaian hafalan Al-Qur\'an Ziyadah, Muroja\'ah Mutqin, Adab, dan Bahasa Arab.' },
     'Kepemimpinan': { title: 'Dashboard Ahlaq & Kepribadian', subtitle: 'Evaluasi 6 aspek karakter Al-Imam (Ibadah, Akhlak, Kedisiplinan, Kerapihan, Kepemimpinan, Kerja Sama).' }
   };
@@ -3599,18 +3672,18 @@ function updateDashboardWithStats(stats) {
   let akSum = 0, akCountA = 0, akPass = 0;
   akList.forEach(a => {
     const val = Number(a.nilai_akhir || a.nilai_uts) || 0;
-    const kkm = Number(a.kkm) || 70;
+    const kkm = Number(a.kkm) || 75;
     akSum += val;
     if (a.predikat === 'A') akCountA++;
     if (val >= kkm) akPass++;
   });
-  const akAvg = akList.length > 0 ? (akSum / akList.length).toFixed(1) : (stats?.avgAkademik || '86.4');
+  const akAvg = akList.length > 0 ? (akSum / akList.length).toFixed(1) : '85.9';
   const akKkmRate = akList.length > 0 ? Math.round((akPass / akList.length) * 100) + '%' : '100%';
 
   if (document.getElementById('kpi-ak-murid')) document.getElementById('kpi-ak-murid').innerText = totalMurid;
   if (document.getElementById('kpi-ak-avg')) document.getElementById('kpi-ak-avg').innerText = akAvg;
   if (document.getElementById('kpi-ak-kkm')) document.getElementById('kpi-ak-kkm').innerText = akKkmRate;
-  if (document.getElementById('kpi-ak-total')) document.getElementById('kpi-ak-total').innerText = akList.length || 168;
+  if (document.getElementById('kpi-ak-total')) document.getElementById('kpi-ak-total').innerText = akList.length || 192;
 
   // 2. KPI Diniyah
   let dnSumTahfidz = 0, dnSumArab = 0, dnAdabMumtaz = 0;
@@ -3628,19 +3701,13 @@ function updateDashboardWithStats(stats) {
   if (document.getElementById('kpi-dn-avg-arab')) document.getElementById('kpi-dn-avg-arab').innerText = dnAvgArab;
 
   // 3. KPI Kepemimpinan / Kepribadian
-  let kpIbadah = 0, kpAkhlak = 0;
-  kpList.forEach(k => {
-    if (k.ibadah) kpIbadah++;
-    if (k.akhlak) kpAkhlak++;
-  });
-
   if (document.getElementById('kpi-kp-murid')) document.getElementById('kpi-kp-murid').innerText = totalMurid;
   if (document.getElementById('kpi-kp-disiplin-a')) document.getElementById('kpi-kp-disiplin-a').innerText = totalMurid + ' Murid';
   if (document.getElementById('kpi-kp-organisasi-a')) document.getElementById('kpi-kp-organisasi-a').innerText = totalMurid + ' Murid';
   if (document.getElementById('kpi-kp-karakter-rate')) document.getElementById('kpi-kp-karakter-rate').innerText = '100%';
 
   // Update Badges on Sidebar
-  if (document.getElementById('badge-count-akademik')) document.getElementById('badge-count-akademik').innerText = akList.length || 168;
+  if (document.getElementById('badge-count-akademik')) document.getElementById('badge-count-akademik').innerText = akList.length || 192;
   if (document.getElementById('badge-count-kepemimpinan')) document.getElementById('badge-count-kepemimpinan').innerText = kpList.length || 12;
   if (document.getElementById('badge-count-diniyah')) document.getElementById('badge-count-diniyah').innerText = dnList.length || 12;
 
@@ -3657,7 +3724,7 @@ function renderDashboardMiniTables() {
       <tr class="hover:bg-slate-50 transition">
         <td class="py-2 px-3 font-semibold text-slate-900">${nama} <span class="text-[10px] text-slate-400">(${i.kelas})</span></td>
         <td class="py-2 px-3 text-slate-700 font-bold text-blue-700">${i.mata_pelajaran}</td>
-        <td class="py-2 px-2 text-center font-mono font-bold">${i.kkm || 70}</td>
+        <td class="py-2 px-2 text-center font-mono font-bold">${i.kkm || 75}</td>
         <td class="py-2 px-2 text-center font-mono font-black text-slate-900">${i.nilai_akhir || i.nilai_uts}</td>
         <td class="py-2 px-2 text-center"><span class="badge-predikat-${i.predikat} px-2 py-0.5 rounded-full text-[10px] font-bold">${i.predikat}</span></td>
       </tr>
@@ -3738,14 +3805,14 @@ function renderMuridTable(list) {
 
   tbody.innerHTML = list.map((s, idx) => {
     const nama = s.nama_murid || s.nama_santri || '-';
-    const sAbsen = s.kehadiran_s || 0;
-    const iAbsen = s.kehadiran_i || 0;
-    const aAbsen = s.kehadiran_a || 0;
+    const sAbsen = s.kehadiran_s ?? 0;
+    const iAbsen = s.kehadiran_i ?? 0;
+    const aAbsen = s.kehadiran_a ?? 0;
     const ekskulStr = [s.ekskul_1, s.ekskul_2, s.ekskul_3].filter(Boolean).join(', ') || '-';
 
     return `
     <tr class="hover:bg-slate-50 transition">
-      <td class="px-3 py-3 text-center font-mono font-bold text-slate-500">${idx + 1}</td>
+      <td class="px-3 py-3 text-center font-mono font-bold text-slate-500">${s.no_urut || (idx + 1)}</td>
       <td class="px-3 py-3 font-mono font-bold text-slate-800">${s.nisn || s.nis || '-'}</td>
       <td class="px-4 py-3 font-bold text-slate-900">${nama}</td>
       <td class="px-3 py-3 text-center"><span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-purple-50 text-purple-700 border border-purple-200">${s.kelas}</span></td>
@@ -3788,7 +3855,7 @@ function filterTableMuridLocal() {
 function populateMuridDropdowns() {
   const optionsHtml = AppState.muridList.map(s => {
     const nama = s.nama_murid || s.nama_santri || '-';
-    return `<option value="${s.nis}">${nama} (${s.kelas} - ${s.nisn || s.nis})</option>`;
+    return `<option value="${s.nis}">${s.no_urut || ''}. ${nama} (${s.nisn || s.nis})</option>`;
   }).join('');
 
   const dropdowns = ['akademik-nis', 'kepemimpinan-nis', 'diniyah-nis', 'rapor-murid-select'];
@@ -3892,17 +3959,17 @@ function renderBulkPresensiGrid() {
 
   tbody.innerHTML = students.map((s, idx) => `
     <tr class="hover:bg-slate-50 transition" data-nis="${s.nis}">
-      <td class="px-2 py-2 text-center font-mono text-slate-500">${idx + 1}</td>
+      <td class="px-2 py-2 text-center font-mono text-slate-500">${s.no_urut || (idx + 1)}</td>
       <td class="px-3 py-2 font-mono font-bold text-slate-800">${s.nisn || s.nis}</td>
       <td class="px-3 py-2 font-bold text-slate-900">${s.nama_murid || s.nama_santri}</td>
       <td class="px-2 py-2 text-center bg-rose-50/50">
-        <input type="number" class="bulk-absen-s w-12 text-center font-bold text-xs bg-white border border-rose-200 rounded p-1" value="${s.kehadiran_s || 0}" min="0" />
+        <input type="number" class="bulk-absen-s w-12 text-center font-bold text-xs bg-white border border-rose-200 rounded p-1" value="${s.kehadiran_s ?? 0}" min="0" />
       </td>
       <td class="px-2 py-2 text-center bg-amber-50/50">
-        <input type="number" class="bulk-absen-i w-12 text-center font-bold text-xs bg-white border border-amber-200 rounded p-1" value="${s.kehadiran_i || 0}" min="0" />
+        <input type="number" class="bulk-absen-i w-12 text-center font-bold text-xs bg-white border border-amber-200 rounded p-1" value="${s.kehadiran_i ?? 0}" min="0" />
       </td>
       <td class="px-2 py-2 text-center bg-slate-100">
-        <input type="number" class="bulk-absen-a w-12 text-center font-bold text-xs bg-white border border-slate-300 rounded p-1" value="${s.kehadiran_a || 0}" min="0" />
+        <input type="number" class="bulk-absen-a w-12 text-center font-bold text-xs bg-white border border-slate-300 rounded p-1" value="${s.kehadiran_a ?? 0}" min="0" />
       </td>
       <td class="px-2 py-2">
         <input type="text" class="bulk-ekskul-1 w-full text-xs bg-white border border-slate-200 rounded p-1" value="${s.ekskul_1 || 'Pramuka'}" />
@@ -4014,12 +4081,12 @@ function renderLegerGrid() {
     else if (score >= kkm) predikat = 'C';
 
     const capTemplate = BANK_CAPAIAN_MAPEL[mapel] || BANK_CAPAIAN_MAPEL['Akidah'];
-    const defaultCapaian = score >= 88 ? capTemplate.tinggi : (score >= kkm ? capTemplate.sedang : capTemplate.cukup);
+    const defaultCapaian = score >= 90 ? capTemplate.tinggi : (score >= kkm ? capTemplate.sedang : capTemplate.cukup);
     const capaian = existing?.capaian_kompetensi || existing?.catatan_guru || defaultCapaian;
 
     return `
     <tr class="hover:bg-blue-50/40 transition leger-row" data-nis="${s.nis}">
-      <td class="px-3 py-2 text-center font-mono text-slate-500 border-r border-slate-200">${idx + 1}</td>
+      <td class="px-3 py-2 text-center font-mono text-slate-500 border-r border-slate-200">${s.no_urut || (idx + 1)}</td>
       <td class="px-3 py-2 font-mono font-bold text-slate-700 border-r border-slate-200">${s.nisn || s.nis}</td>
       <td class="px-4 py-2 font-bold text-slate-900 border-r border-slate-200">${s.nama_murid || s.nama_santri}</td>
       <td class="px-3 py-2 text-center font-bold text-amber-900 bg-amber-50/40 border-r border-slate-200">${kkm}</td>
@@ -4032,7 +4099,7 @@ function renderLegerGrid() {
         <span class="leger-badge-predikat px-2.5 py-0.5 rounded-full text-xs font-black badge-predikat-${predikat}">${predikat}</span>
       </td>
       <td class="px-4 py-2">
-        <textarea rows="2" class="leger-input-capaian w-full text-xs bg-slate-50/80 border border-slate-200 rounded-lg p-2 text-slate-800 focus:ring-2 focus:ring-blue-500 focus:bg-white">${capaian}</textarea>
+        <textarea rows="2" class="leger-input-capaian w-full text-xs bg-slate-50/80 border border-slate-200 rounded-lg p-2 text-slate-800 focus:ring-2 focus:ring-blue-500 focus:bg-white leading-snug">${capaian}</textarea>
       </td>
     </tr>
     `;
@@ -4088,7 +4155,7 @@ function autoGenerateAllLegerCapaian() {
   const rows = document.querySelectorAll('.leger-row');
   rows.forEach(row => {
     const score = Number(row.querySelector('.leger-input-score')?.value) || 0;
-    const capaian = score >= 88 ? capTemplate.tinggi : (score >= kkm ? capTemplate.sedang : capTemplate.cukup);
+    const capaian = score >= 90 ? capTemplate.tinggi : (score >= kkm ? capTemplate.sedang : capTemplate.cukup);
     const textarea = row.querySelector('.leger-input-capaian');
     if (textarea) textarea.value = capaian;
   });
@@ -4101,7 +4168,7 @@ function autoGenerateModalCapaian() {
   const score = Number(document.getElementById('akademik-uts')?.value) || 85;
   const kkm = Number(document.getElementById('akademik-kkm')?.value) || 70;
   const capTemplate = BANK_CAPAIAN_MAPEL[mapel] || BANK_CAPAIAN_MAPEL['Akidah'];
-  const capaian = score >= 88 ? capTemplate.tinggi : (score >= kkm ? capTemplate.sedang : capTemplate.cukup);
+  const capaian = score >= 90 ? capTemplate.tinggi : (score >= kkm ? capTemplate.sedang : capTemplate.cukup);
 
   const catatanEl = document.getElementById('akademik-catatan');
   if (catatanEl) catatanEl.value = capaian;
@@ -4191,7 +4258,7 @@ function updateAkademikWidgets(list) {
   let sum = 0, countA = 0, countPass = 0;
   list.forEach(i => {
     const val = Number(i.nilai_akhir || i.nilai_uts) || 0;
-    const kkm = Number(i.kkm) || 70;
+    const kkm = Number(i.kkm) || 75;
     sum += val;
     if (i.predikat === 'A') countA++;
     if (val >= kkm) countPass++;
@@ -4224,7 +4291,7 @@ function renderTableAkademik(list) {
       </td>
       <td class="px-3 py-3 font-semibold text-slate-700">${item.kelas}</td>
       <td class="px-3 py-3 font-bold text-blue-700">${item.mata_pelajaran}</td>
-      <td class="px-3 py-3 text-center font-bold text-amber-900">${item.kkm || 70}</td>
+      <td class="px-3 py-3 text-center font-bold text-amber-900">${item.kkm || 75}</td>
       <td class="px-3 py-3 text-center font-bold text-slate-900 font-mono text-sm">${item.nilai_akhir || item.nilai_uts}</td>
       <td class="px-3 py-3 text-center">
         <span class="px-2.5 py-0.5 rounded-full text-xs font-black badge-predikat-${item.predikat}">${item.predikat}</span>
@@ -4270,7 +4337,7 @@ function closeModalAkademik() {
 
 function recalcAkademikPreview() {
   const score = Number(document.getElementById('akademik-uts')?.value) || 0;
-  const kkm = Number(document.getElementById('akademik-kkm')?.value) || 70;
+  const kkm = Number(document.getElementById('akademik-kkm')?.value) || 75;
   
   let predikat = 'D';
   if (score >= 90) predikat = 'A';
@@ -4302,7 +4369,7 @@ function editNilaiAkademikModal(id) {
   document.getElementById('akademik-id').value = item.id;
   document.getElementById('akademik-nis').value = item.nis;
   document.getElementById('akademik-mapel').value = item.mata_pelajaran;
-  document.getElementById('akademik-kkm').value = item.kkm || 70;
+  document.getElementById('akademik-kkm').value = item.kkm || 75;
   document.getElementById('akademik-uts').value = item.nilai_akhir || item.nilai_uts || 85;
   document.getElementById('akademik-catatan').value = item.capaian_kompetensi || item.catatan_guru || '';
   recalcAkademikPreview();
@@ -4314,7 +4381,7 @@ function submitFormAkademik(e) {
   const nis = document.getElementById('akademik-nis').value;
   const m = AppState.muridList.find(x => String(x.nis) === String(nis)) || {};
   const score = Number(document.getElementById('akademik-uts').value) || 0;
-  const kkm = Number(document.getElementById('akademik-kkm').value) || 70;
+  const kkm = Number(document.getElementById('akademik-kkm').value) || 75;
   const mapel = document.getElementById('akademik-mapel').value;
   
   let predikat = 'D';
@@ -4409,7 +4476,7 @@ function renderKepribadianGrid() {
     <div class="bg-slate-50/70 border border-slate-200 rounded-xl p-4 space-y-3 kp-student-card" data-nis="${s.nis}">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-2 border-b border-slate-200 gap-2">
         <div class="flex items-center gap-2">
-          <span class="w-6 h-6 rounded-full bg-amber-600 text-white font-bold text-xs flex items-center justify-center">${idx + 1}</span>
+          <span class="w-6 h-6 rounded-full bg-amber-600 text-white font-bold text-xs flex items-center justify-center">${s.no_urut || (idx + 1)}</span>
           <span class="font-extrabold text-slate-900 text-sm">${s.nama_murid || s.nama_santri}</span>
           <span class="text-xs text-slate-500 font-mono">(${s.nisn || s.nis})</span>
         </div>
@@ -4419,33 +4486,33 @@ function renderKepribadianGrid() {
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 text-xs">
         <div>
           <label class="block font-bold text-slate-700 mb-1">1. Ibadah</label>
-          <textarea rows="2" class="kp-card-ibadah w-full bg-white border border-slate-300 rounded-lg p-2 text-slate-800 focus:ring-2 focus:ring-amber-500">${ibadah}</textarea>
+          <textarea rows="2" class="kp-card-ibadah w-full bg-white border border-slate-300 rounded-lg p-2 text-slate-800 focus:ring-2 focus:ring-amber-500 leading-snug">${ibadah}</textarea>
         </div>
         <div>
           <label class="block font-bold text-slate-700 mb-1">2. Akhlak</label>
-          <textarea rows="2" class="kp-card-akhlak w-full bg-white border border-slate-300 rounded-lg p-2 text-slate-800 focus:ring-2 focus:ring-amber-500">${akhlak}</textarea>
+          <textarea rows="2" class="kp-card-akhlak w-full bg-white border border-slate-300 rounded-lg p-2 text-slate-800 focus:ring-2 focus:ring-amber-500 leading-snug">${akhlak}</textarea>
         </div>
         <div>
           <label class="block font-bold text-slate-700 mb-1">3. Kedisiplinan & Kerajinan</label>
-          <textarea rows="2" class="kp-card-kedisiplinan w-full bg-white border border-slate-300 rounded-lg p-2 text-slate-800 focus:ring-2 focus:ring-amber-500">${kedisiplinan}</textarea>
+          <textarea rows="2" class="kp-card-kedisiplinan w-full bg-white border border-slate-300 rounded-lg p-2 text-slate-800 focus:ring-2 focus:ring-amber-500 leading-snug">${kedisiplinan}</textarea>
         </div>
         <div>
           <label class="block font-bold text-slate-700 mb-1">4. Kerapihan & Kebersihan</label>
-          <textarea rows="2" class="kp-card-kerapihan w-full bg-white border border-slate-300 rounded-lg p-2 text-slate-800 focus:ring-2 focus:ring-amber-500">${kerapihan}</textarea>
+          <textarea rows="2" class="kp-card-kerapihan w-full bg-white border border-slate-300 rounded-lg p-2 text-slate-800 focus:ring-2 focus:ring-amber-500 leading-snug">${kerapihan}</textarea>
         </div>
         <div>
           <label class="block font-bold text-slate-700 mb-1">5. Kepemimpinan</label>
-          <textarea rows="2" class="kp-card-kepemimpinan w-full bg-white border border-slate-300 rounded-lg p-2 text-slate-800 focus:ring-2 focus:ring-amber-500">${kepemimpinan}</textarea>
+          <textarea rows="2" class="kp-card-kepemimpinan w-full bg-white border border-slate-300 rounded-lg p-2 text-slate-800 focus:ring-2 focus:ring-amber-500 leading-snug">${kepemimpinan}</textarea>
         </div>
         <div>
           <label class="block font-bold text-slate-700 mb-1">6. Kerja Sama</label>
-          <textarea rows="2" class="kp-card-kerjasama w-full bg-white border border-slate-300 rounded-lg p-2 text-slate-800 focus:ring-2 focus:ring-amber-500">${kerjasama}</textarea>
+          <textarea rows="2" class="kp-card-kerjasama w-full bg-white border border-slate-300 rounded-lg p-2 text-slate-800 focus:ring-2 focus:ring-amber-500 leading-snug">${kerjasama}</textarea>
         </div>
       </div>
 
       <div>
         <label class="block font-bold text-slate-700 mb-1 text-xs">Catatan yg Diperhatikan (Wali Kelas / Pembina):</label>
-        <textarea rows="2" class="kp-card-catatan w-full bg-white border border-slate-300 rounded-lg p-2 text-xs text-slate-800 focus:ring-2 focus:ring-amber-500 font-medium">${catatan}</textarea>
+        <textarea rows="2" class="kp-card-catatan w-full bg-white border border-slate-300 rounded-lg p-2 text-xs text-slate-800 focus:ring-2 focus:ring-amber-500 font-medium leading-snug">${catatan}</textarea>
       </div>
     </div>
     `;
@@ -5017,7 +5084,7 @@ function deleteUserAction(id) {
   callApi('deleteUser', { id: id });
 }
 
-// 15. CETAK RAPOR PORTOFOLIO TENGAH SEMESTER (PERSIS SHEET EXCEL AL-IMAM)
+// 15. CETAK RAPOR PORTOFOLIO TENGAH SEMESTER (PERSIS SHEET PRINT EXCEL AL-IMAM)
 function previewRaporDirect(nis) {
   AppState.activePrintNis = nis;
   switchView('rapor');
@@ -5035,10 +5102,19 @@ function loadMuridReportForPrint(nis) {
   if (select && select.value !== nis) select.value = nis;
 
   const m = AppState.muridList.find(x => String(x.nis) === String(nis)) || AppState.muridList[0];
-  const akItems = AppState.akademikList.filter(x => String(x.nis) === String(nis));
+  
+  // Get all 16 subjects in order
+  const akItems = [];
   let totalAk = 0;
-  akItems.forEach(a => totalAk += Number(a.nilai_akhir || a.nilai_uts) || 0);
-  const avgAk = akItems.length > 0 ? (totalAk / akItems.length).toFixed(1) : '86.4';
+  MAPEL_LIST_16.forEach(mapel => {
+    const existing = AppState.akademikList.find(a => String(a.nis) === String(nis) && a.mata_pelajaran === mapel);
+    if (existing) {
+      akItems.push(existing);
+      totalAk += Number(existing.nilai_akhir || existing.nilai_uts) || 0;
+    }
+  });
+
+  const avgAk = akItems.length > 0 ? (totalAk / akItems.length).toFixed(1) : '84.8';
   const kp = AppState.kepemimpinanList.find(x => String(x.nis) === String(nis)) || DEMO_DATA.kepemimpinan[0];
   const dn = AppState.diniyahList.find(x => String(x.nis) === String(nis)) || DEMO_DATA.diniyah[0];
 
@@ -5071,29 +5147,28 @@ function renderRaporSheet(report) {
   if (document.getElementById('print-murid-nama')) document.getElementById('print-murid-nama').innerText = namaMurid;
   if (document.getElementById('print-murid-nisn')) document.getElementById('print-murid-nisn').innerText = m.nisn || m.nis || '-';
   if (document.getElementById('print-murid-kelas')) document.getElementById('print-murid-kelas').innerText = m.kelas || 'IX ABU BAKAR';
-  if (document.getElementById('print-tahun-ajaran')) document.getElementById('print-tahun-ajaran').innerText = set.academic_year || '2025/2026';
+  if (document.getElementById('print-tahun-ajaran-kop')) document.getElementById('print-tahun-ajaran-kop').innerText = set.academic_year || '2025/2026';
   if (document.getElementById('print-semester')) document.getElementById('print-semester').innerText = set.semester_active || 'I (Satu)';
-  if (document.getElementById('print-wali-kelas-nama')) document.getElementById('print-wali-kelas-nama').innerText = set.wali_kelas_default || 'Kahlil Gibran, S.Pd.';
   if (document.getElementById('print-ttd-wali-kelas')) document.getElementById('print-ttd-wali-kelas').innerText = set.wali_kelas_default || 'Kahlil Gibran, S.Pd.';
+  if (document.getElementById('print-no-urut')) document.getElementById('print-no-urut').innerText = m.no_urut || (AppState.muridList.findIndex(x => String(x.nis) === String(m.nis)) + 1 || 12);
 
-  // Section 1: Akademik (Tabel Nilai & Capaian Kompetensi)
+  // Section 1: Akademik (Tabel 16 Mapel & Capaian Kompetensi)
   const tbodyAk = document.getElementById('print-akademik-tbody');
   if (tbodyAk) {
     if (ak.items.length === 0) {
-      tbodyAk.innerHTML = `<tr><td colspan="5" class="py-3 px-3 text-center text-slate-400 italic">Belum ada input nilai akademik untuk murid ini.</td></tr>`;
+      tbodyAk.innerHTML = `<tr><td colspan="4" class="py-3 px-3 text-center text-slate-400 italic">Belum ada input nilai akademik untuk murid ini.</td></tr>`;
     } else {
       tbodyAk.innerHTML = ak.items.map((item, idx) => `
-        <tr>
-          <td class="py-1.5 px-1 text-center border-r border-slate-300 font-mono">${idx + 1}</td>
-          <td class="py-1.5 px-2 border-r border-slate-300 font-bold text-slate-900">${item.mata_pelajaran}</td>
-          <td class="py-1.5 px-1 text-center border-r border-slate-300 font-bold text-amber-900">${item.kkm || 70}</td>
-          <td class="py-1.5 px-1 text-center border-r border-slate-300 font-black text-slate-900 bg-blue-50/50">${item.nilai_akhir || item.nilai_uts}</td>
-          <td class="py-1.5 px-3 text-slate-800 text-[11px] leading-tight">${item.capaian_kompetensi || item.catatan_guru || '-'}</td>
+        <tr class="hover:bg-slate-50/60">
+          <td class="py-1.5 px-1 text-center border-r border-slate-300 font-mono font-bold text-slate-600">${idx + 1}</td>
+          <td class="py-1.5 px-3 border-r border-slate-300 font-bold text-slate-900">${item.mata_pelajaran}</td>
+          <td class="py-1.5 px-1 text-center border-r border-slate-300 font-black text-slate-950 font-mono text-xs">${item.nilai_akhir || item.nilai_uts}</td>
+          <td class="py-1.5 px-3 text-slate-800 text-[11px] leading-snug font-medium text-justify">${item.capaian_kompetensi || item.catatan_guru || '-'}</td>
         </tr>
       `).join('');
     }
   }
-  if (document.getElementById('print-akademik-avg')) document.getElementById('print-akademik-avg').innerText = ak.rataRata || '86.4';
+  if (document.getElementById('print-akademik-avg')) document.getElementById('print-akademik-avg').innerText = ak.rataRata || '84.8';
 
   // Section 2: Ahlaq & Kepribadian (6 Aspek Al-Imam)
   if (document.getElementById('print-kp-ibadah')) document.getElementById('print-kp-ibadah').innerText = kp.ibadah || BANK_KEPRIBADIAN_ALIMAM.ibadah[0];
@@ -5108,9 +5183,12 @@ function renderRaporSheet(report) {
   if (document.getElementById('print-absen-i')) document.getElementById('print-absen-i').innerText = m.kehadiran_i ?? 0;
   if (document.getElementById('print-absen-a')) document.getElementById('print-absen-a').innerText = m.kehadiran_a ?? 0;
 
-  if (document.getElementById('print-ekskul-1')) document.getElementById('print-ekskul-1').innerText = m.ekskul_1 || 'Pramuka';
-  if (document.getElementById('print-ekskul-2')) document.getElementById('print-ekskul-2').innerText = m.ekskul_2 || 'Wushu';
-  if (document.getElementById('print-ekskul-3')) document.getElementById('print-ekskul-3').innerText = m.ekskul_3 || 'Futsal';
+  if (document.getElementById('print-ekskul-1-nama')) document.getElementById('print-ekskul-1-nama').innerText = m.ekskul_1 || 'Pramuka';
+  if (document.getElementById('print-ekskul-1-nilai')) document.getElementById('print-ekskul-1-nilai').innerText = m.ekskul_1_nilai || 'Baik';
+  if (document.getElementById('print-ekskul-2-nama')) document.getElementById('print-ekskul-2-nama').innerText = m.ekskul_2 || 'Wushu';
+  if (document.getElementById('print-ekskul-2-nilai')) document.getElementById('print-ekskul-2-nilai').innerText = m.ekskul_2_nilai || 'Baik';
+  if (document.getElementById('print-ekskul-3-nama')) document.getElementById('print-ekskul-3-nama').innerText = m.ekskul_3 || 'Basket';
+  if (document.getElementById('print-ekskul-3-nilai')) document.getElementById('print-ekskul-3-nilai').innerText = m.ekskul_3_nilai || 'Baik';
 
   // Section 4: Catatan yg Diperhatikan
   if (document.getElementById('print-kp-catatan')) {
@@ -5229,7 +5307,7 @@ function switchViewAndHighlight(viewName) {
   closeInteractiveGuide(false);
   const titles = {
     'dashboard': 'Dashboard Beranda',
-    'akademik': 'Nilai Akademik',
+    'akademik': 'Rekap Nilai (16 Mapel)',
     'kepemimpinan': 'Ahlaq & Kepribadian',
     'diniyah': 'Nilai Diniyah & Tahfidz',
     'murid': 'Data Siswa & Presensi',
