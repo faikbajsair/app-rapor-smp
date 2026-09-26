@@ -13,6 +13,7 @@ const DB_CONFIG = {
   SHEET_SANTRI_LEGACY: 'Santri',
   SHEET_AKADEMIK: 'Nilai_Akademik',
   SHEET_KEPEMIMPINAN: 'Nilai_Kepemimpinan',
+  SHEET_SKL_KEPEMIMPINAN: 'Nilai_SKL_Kepemimpinan',
   SHEET_DINIYAH: 'Nilai_Diniyah'
 };
 
@@ -172,19 +173,19 @@ function initDatabase() {
   ]);
   if (sheetMurid.getLastRow() <= 1) {
     const defaultMurid = [
-      // IX ABU BAKAR (12 Murid)
-      ['202509001', '0113408257', 'AHMAD YAZID ILMANY RAMADHAN', 'IX ABU BAKAR', 'L', 'Bpk. Ramadhan', '081234567801', 'Aktif', '2', '-', '-', 'Pramuka', 'Wushu', 'Futsal', 'Kahlil Gibran, S.Pd.'],
-      ['202509002', '0116425792', 'AL AZIZ BENZAVEIRO SUNARYO', 'IX ABU BAKAR', 'L', 'Bpk. Sunaryo', '081234567802', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Basket', 'Kahlil Gibran, S.Pd.'],
-      ['202509003', '0113811055', 'ALWAN IBRAHIM', 'IX ABU BAKAR', 'L', 'Bpk. Ibrahim', '081234567803', 'Aktif', '2', '3', '4', 'Pramuka', 'Wushu', 'Futsal', 'Kahlil Gibran, S.Pd.'],
-      ['202509004', '0114838409', 'AZKA DWI ABDHUL GHANIY', 'IX ABU BAKAR', 'L', 'Bpk. Ghaniy', '081234567804', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Basket', 'Kahlil Gibran, S.Pd.'],
-      ['202509005', '0118589769', 'DZAKI AQEELA ALIFANDRA', 'IX ABU BAKAR', 'L', 'Bpk. Alifandra', '081234567805', 'Aktif', '2', '-', '-', 'Pramuka', 'Wushu', 'Basket', 'Kahlil Gibran, S.Pd.'],
-      ['202509006', '0113915620', 'FARHAN PUTRA NOVRIANSYAH', 'IX ABU BAKAR', 'L', 'Bpk. Novriansyah', '081234567806', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Futsal', 'Kahlil Gibran, S.Pd.'],
-      ['202509007', '0118560424', 'GHAISAN FARRELLUZ SUKARNO', 'IX ABU BAKAR', 'L', 'Bpk. Sukarno', '081234567807', 'Aktif', '-', '3', '-', 'Pramuka', 'Wushu', 'Basket', 'Kahlil Gibran, S.Pd.'],
-      ['202509008', '0119042818', 'GIBRAN ARGA PUTRAKU', 'IX ABU BAKAR', 'L', 'Bpk. Putraku', '081234567808', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Futsal', 'Kahlil Gibran, S.Pd.'],
-      ['202509009', '0107305756', 'LUTHFI FAEYZA SATRIOPUTRA', 'IX ABU BAKAR', 'L', 'Bpk. Satrioputra', '081234567809', 'Aktif', '-', '1', '-', 'Pramuka', 'Wushu', 'Futsal', 'Kahlil Gibran, S.Pd.'],
-      ['202509010', '0108446122', 'MOHAMAD MIRZA RADITYA', 'IX ABU BAKAR', 'L', 'Bpk. Raditya', '081234567810', 'Aktif', '2', '-', '-', 'Pramuka', 'Wushu', 'Futsal', 'Kahlil Gibran, S.Pd.'],
-      ['202509011', '0113743973', 'MUHAMMAD ALFAJRI', 'IX ABU BAKAR', 'L', 'Bpk. Alfajri', '081234567811', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Basket', 'Kahlil Gibran, S.Pd.'],
-      ['202509012', '0103456069', 'NADHIF SYAFWAN RIFAAT', 'IX ABU BAKAR', 'L', 'Bpk. Rifaat', '081234567812', 'Aktif', '-', '3', '-', 'Pramuka', 'Wushu', 'Basket', 'Kahlil Gibran, S.Pd.'],
+      // IX ABU BAKAR (12 Murid Resmi Format Excel)
+      ['232407021', '0113408257', 'AHMAD YAZID ILMANY RAMADHAN', 'IX ABU BAKAR', 'L', 'Bpk. Ramadhan', '081234567801', 'Aktif', '2', '-', '-', 'Pramuka', 'Wushu', 'Futsal', 'Kahlil Gibran, S.Pd.'],
+      ['232407020', '0116425792', 'AL AZIZ BENZAVEIRO SUNARYO', 'IX ABU BAKAR', 'L', 'Bpk. Sunaryo', '081234567802', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Basket', 'Kahlil Gibran, S.Pd.'],
+      ['232407051', '0113811055', 'ALWAN IBRAHIM', 'IX ABU BAKAR', 'L', 'Bpk. Ibrahim', '081234567803', 'Aktif', '2', '3', '4', 'Pramuka', 'Wushu', 'Futsal', 'Kahlil Gibran, S.Pd.'],
+      ['232407057', '0114838409', 'AZKA DWI ABDHUL GHANIY', 'IX ABU BAKAR', 'L', 'Bpk. Ghaniy', '081234567804', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Basket', 'Kahlil Gibran, S.Pd.'],
+      ['232407019', '0118589769', 'DZAKI AQEELA ALIFANDRA', 'IX ABU BAKAR', 'L', 'Bpk. Alifandra', '081234567805', 'Aktif', '2', '-', '-', 'Pramuka', 'Wushu', 'Basket', 'Kahlil Gibran, S.Pd.'],
+      ['232407023', '0113915620', 'FARHAN PUTRA NOVRIANSYAH', 'IX ABU BAKAR', 'L', 'Bpk. Novriansyah', '081234567806', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Futsal', 'Kahlil Gibran, S.Pd.'],
+      ['232407024', '0118560424', 'GHAISAN FARRELLUZ SUKARNO', 'IX ABU BAKAR', 'L', 'Bpk. Sukarno', '081234567807', 'Aktif', '-', '3', '-', 'Pramuka', 'Wushu', 'Basket', 'Kahlil Gibran, S.Pd.'],
+      ['232407018', '0119042818', 'GIBRAN ARGA PUTRAKU', 'IX ABU BAKAR', 'L', 'Bpk. Putraku', '081234567808', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Futsal', 'Kahlil Gibran, S.Pd.'],
+      ['232407032', '0107305756', 'LUTHFI FAEYZA SATRIOPUTRA', 'IX ABU BAKAR', 'L', 'Bpk. Satrioputra', '081234567809', 'Aktif', '-', '1', '-', 'Pramuka', 'Wushu', 'Futsal', 'Kahlil Gibran, S.Pd.'],
+      ['242507041', '0108446122', 'MOHAMAD MIRZA RADITYA', 'IX ABU BAKAR', 'L', 'Bpk. Raditya', '081234567810', 'Aktif', '2', '-', '-', 'Pramuka', 'Wushu', 'Futsal', 'Kahlil Gibran, S.Pd.'],
+      ['232407022', '0113743973', 'MUHAMMAD ALFAJRI', 'IX ABU BAKAR', 'L', 'Bpk. Alfajri', '081234567811', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Basket', 'Kahlil Gibran, S.Pd.'],
+      ['232407058', '0103456069', 'NADHIF SYAFWAN RIFAAT', 'IX ABU BAKAR', 'L', 'Bpk. Rifaat', '081234567812', 'Aktif', '-', '3', '-', 'Pramuka', 'Wushu', 'Basket', 'Kahlil Gibran, S.Pd.'],
       
       // IX UMMU SALAMAH (16 Murid)
       ['202509101', '0112522587', 'ALIZA FAIDA NUR AZMI', 'IX UMMU SALAMAH', 'P', 'Bpk. Azmi', '081234567901', 'Aktif', '1', '-', '-', 'Pramuka', 'Wushu', 'Desain Grafis', 'Dewi Fitria Nugraheni, S.Pd., Gr.'],
@@ -213,22 +214,22 @@ function initDatabase() {
   ]);
   if (sheetAkademik.getLastRow() <= 1) {
     const defaultAkademik = [
-      ['NA-001', '202509001', 'Ganjil', '2025/2026', 'Akidah', 70, 87, 87, 87, 'A', 'Ananda menunjukkan pemahaman baik tentang adab dalam menyebut Asma\' Allah, Al-Qur\'an, dan Rasul-Nya serta baik dalam memahami makna bersyukur.', 'Sangat aktif dalam pembelajaran.'],
-      ['NA-002', '202509001', 'Ganjil', '2025/2026', 'Akhlak', 72, 88, 88, 88, 'A', 'Ananda baik dalam menerapkan adab terhadap orang tua dan guru.', 'Pertahankan akhlak terpuji.'],
-      ['NA-003', '202509001', 'Ganjil', '2025/2026', 'Hadits', 75, 82, 82, 82, 'B', 'Ananda baik dalam menghafal matan dan terjemah hadits kebersihan.', 'Tingkatkan muroja\'ah hadits.'],
-      ['NA-004', '202509001', 'Ganjil', '2025/2026', 'Fikih', 75, 90, 92, 91, 'A', 'Ananda menguasai tata cara thaharah dan sholat fardhu secara sempurna.', 'Praktik ibadah sangat baik.'],
-      ['NA-005', '202509001', 'Ganjil', '2025/2026', 'SKI', 75, 80, 80, 80, 'B', 'Ananda memahami sejarah perkembangan islam.', 'Terus tingkatkan literasi sejarah.'],
-      ['NA-006', '202509001', 'Ganjil', '2025/2026', 'Pendidikan Pancasila', 75, 85, 85, 85, 'B', 'Ananda memiliki pemahaman wawasan kebangsaan yang baik.', 'Sikap toleran dan beradab.'],
-      ['NA-007', '202509001', 'Ganjil', '2025/2026', 'Bahasa Indonesia', 75, 93, 93, 93, 'A', 'Ananda sangat baik dalam memahami struktur teks laporan percobaan.', 'Literasi sangat baik.'],
-      ['NA-008', '202509001', 'Ganjil', '2025/2026', 'Bahasa Inggris', 73, 78, 78, 78, 'B', 'Ananda cukup baik dalam menggunakan berbagai ungkapan bahasa Inggris.', 'Tingkatkan conversation.'],
-      ['NA-009', '202509001', 'Ganjil', '2025/2026', 'Matematika', 75, 84, 84, 84, 'B', 'Ananda baik dalam mengenali pola susunan bilangan.', 'Penalaran baik.'],
-      ['NA-010', '202509001', 'Ganjil', '2025/2026', 'Ilmu Pengetahuan Alam', 75, 85, 85, 85, 'B', 'Ananda baik dalam memahami ciri makhluk hidup dan sistem reproduksi.', 'Eksperimen baik.'],
-      ['NA-011', '202509001', 'Ganjil', '2025/2026', 'Ilmu Pengetahuan Sosial', 75, 89, 89, 89, 'B', 'Ananda baik dalam memahami kondisi geografis Indonesia.', 'Analisis spasial baik.'],
-      ['NA-012', '202509001', 'Ganjil', '2025/2026', 'Prakarya', 70, 86, 86, 86, 'B', 'Ananda baik dalam membuat karya seni rupa modifikasi.', 'Kreatif.'],
-      ['NA-013', '202509001', 'Ganjil', '2025/2026', 'Pendidikan Jasmani, Olahraga, dan Kesehatan', 72, 89, 89, 89, 'B', 'Ananda baik dalam mempraktikkan permainan bola voli dan sepak bola.', 'Sportif.'],
-      ['NA-014', '202509001', 'Ganjil', '2025/2026', 'Bahasa Sunda', 75, 90, 90, 90, 'A', 'Ananda sangat baik dalam menganalisis biantara.', 'Sangat baik.'],
-      ['NA-015', '202509001', 'Ganjil', '2025/2026', 'Informatika', 75, 85, 85, 85, 'B', 'Ananda baik dalam pemecahan persoalan komputasional.', 'Logika baik.'],
-      ['NA-016', '202509001', 'Ganjil', '2025/2026', 'Bahasa Arab', 75, 76, 76, 76, 'C', 'Ananda cukup baik dalam penguasaan mufrodat dan dhomir.', 'Tingkatkan hafalan mufrodat.']
+      ['NA-001', '232407021', 'Ganjil', '2025/2026', 'Akidah', 70, 87, 87, 87, 'A', 'Ananda menunjukkan pemahaman baik tentang adab dalam menyebut Asma\' Allah, Al-Qur\'an, dan Rasul-Nya serta baik dalam memahami makna bersyukur.', 'Sangat aktif dalam pembelajaran.'],
+      ['NA-002', '232407021', 'Ganjil', '2025/2026', 'Akhlak', 72, 88, 88, 88, 'A', 'Ananda baik dalam menerapkan adab terhadap orang tua dan guru.', 'Pertahankan akhlak terpuji.'],
+      ['NA-003', '232407021', 'Ganjil', '2025/2026', 'Hadits', 75, 82, 82, 82, 'B', 'Ananda baik dalam menghafal matan dan terjemah hadits kebersihan.', 'Tingkatkan muroja\'ah hadits.'],
+      ['NA-004', '232407021', 'Ganjil', '2025/2026', 'Fikih', 75, 90, 92, 91, 'A', 'Ananda menguasai tata cara thaharah dan sholat fardhu secara sempurna.', 'Praktik ibadah sangat baik.'],
+      ['NA-005', '232407021', 'Ganjil', '2025/2026', 'SKI', 75, 80, 80, 80, 'B', 'Ananda memahami sejarah perkembangan islam.', 'Terus tingkatkan literasi sejarah.'],
+      ['NA-006', '232407021', 'Ganjil', '2025/2026', 'Pendidikan Pancasila', 75, 85, 85, 85, 'B', 'Ananda memiliki pemahaman wawasan kebangsaan yang baik.', 'Sikap toleran dan beradab.'],
+      ['NA-007', '232407021', 'Ganjil', '2025/2026', 'Bahasa Indonesia', 75, 93, 93, 93, 'A', 'Ananda sangat baik dalam memahami struktur teks laporan percobaan.', 'Literasi sangat baik.'],
+      ['NA-008', '232407021', 'Ganjil', '2025/2026', 'Bahasa Inggris', 73, 78, 78, 78, 'B', 'Ananda cukup baik dalam menggunakan berbagai ungkapan bahasa Inggris.', 'Tingkatkan conversation.'],
+      ['NA-009', '232407021', 'Ganjil', '2025/2026', 'Matematika', 75, 84, 84, 84, 'B', 'Ananda baik dalam mengenali pola susunan bilangan.', 'Penalaran baik.'],
+      ['NA-010', '232407021', 'Ganjil', '2025/2026', 'Ilmu Pengetahuan Alam', 75, 85, 85, 85, 'B', 'Ananda baik dalam memahami ciri makhluk hidup dan sistem reproduksi.', 'Eksperimen baik.'],
+      ['NA-011', '232407021', 'Ganjil', '2025/2026', 'Ilmu Pengetahuan Sosial', 75, 89, 89, 89, 'B', 'Ananda baik dalam memahami kondisi geografis Indonesia.', 'Analisis spasial baik.'],
+      ['NA-012', '232407021', 'Ganjil', '2025/2026', 'Prakarya', 70, 86, 86, 86, 'B', 'Ananda baik dalam membuat karya seni rupa modifikasi.', 'Kreatif.'],
+      ['NA-013', '232407021', 'Ganjil', '2025/2026', 'Pendidikan Jasmani, Olahraga, dan Kesehatan', 72, 89, 89, 89, 'B', 'Ananda baik dalam mempraktikkan permainan bola voli dan sepak bola.', 'Sportif.'],
+      ['NA-014', '232407021', 'Ganjil', '2025/2026', 'Bahasa Sunda', 75, 90, 90, 90, 'A', 'Ananda sangat baik dalam menganalisis biantara.', 'Sangat baik.'],
+      ['NA-015', '232407021', 'Ganjil', '2025/2026', 'Informatika', 75, 85, 85, 85, 'B', 'Ananda baik dalam pemecahan persoalan komputasional.', 'Logika baik.'],
+      ['NA-016', '232407021', 'Ganjil', '2025/2026', 'Bahasa Arab', 75, 76, 76, 76, 'C', 'Ananda cukup baik dalam penguasaan mufrodat dan dhomir.', 'Tingkatkan hafalan mufrodat.']
     ];
     sheetAkademik.getRange(2, 1, defaultAkademik.length, 12).setValues(defaultAkademik);
   }
@@ -240,7 +241,7 @@ function initDatabase() {
   if (sheetKepemimpinan.getLastRow() <= 1) {
     const defaultKepemimpinan = [
       [
-        'NK-001', '202509001', 'Ganjil', '2025/2026',
+        'NK-001', '232407021', 'Ganjil', '2025/2026',
         'Jadikan ibadah sebagai kebutuhan, bukan hanya kewajiban.',
         'Alhamdulillah, pertahankan akhlak baikmu di mana saja Ananda berada',
         'Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita',
@@ -264,15 +265,25 @@ function initDatabase() {
     ];
     sheetKepemimpinan.getRange(2, 1, defaultKepemimpinan.length, 12).setValues(defaultKepemimpinan);
   }
+
+  // 6. Skema Nilai_SKL_Kepemimpinan (28 INDIKATOR KEPEMIMPINAN EXCEL AL-IMAM)
+  const sklHeaders = ['id', 'nis', 'semester', 'tahun_ajaran', 'catatan_walas', 'd1','d2','d3','d4','d5','d6','d7','k1','k2','k3','k4','k5','p1','p2','p3','p4','p5','s1','s2','t1','t2','m1','m2','r1','r2','r3','j1','j2','h1'];
+  const sheetSkl = getOrCreateSheet(DB_CONFIG.SHEET_SKL_KEPEMIMPINAN, sklHeaders);
+  if (sheetSkl.getLastRow() <= 1) {
+    const defaultSkl = [
+      ['SKL-232407051', '232407051', 'Tengah Semester 1', '2025/2026', 'Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan', 'B','B','B','B','B','B','B', 'B','B','B','B','B', 'A','A','A','A','A', 'A','A', 'A','A', 'A','A', 'A','A','A', 'A','A', 'A']
+    ];
+    sheetSkl.getRange(2, 1, defaultSkl.length, sklHeaders.length).setValues(defaultSkl);
+  }
   
-  // 6. Skema Nilai_Diniyah
+  // 7. Skema Nilai_Diniyah
   const sheetDiniyah = getOrCreateSheet(DB_CONFIG.SHEET_DINIYAH, [
     'id', 'nis', 'semester', 'tahun_ajaran', 'ziyadah_juz', 'murojaah_juz', 'nilai_tahfidz', 'adab_harian', 'ibadah_harian', 'bahasa_arab', 'catatan_musyrif'
   ]);
   if (sheetDiniyah.getLastRow() <= 1) {
     const defaultDiniyah = [
-      ['ND-001', '202507001', 'Ganjil', '2025/2026', 'Juz 30 & Juz 29 (Lancar)', 'Juz 30 (Mutqin)', 94, 'Mumtaz (A)', 'Mumtaz (A)', 90, 'Alhamdulillah capaian ziyadah melampaui target tengah semester. Makhraj huruf, kaidah mad, dan tajwid sangat baik.'],
-      ['ND-002', '202507002', 'Ganjil', '2025/2026', 'Juz 30 (15 Halaman)', 'Juz 30 (Surah An-Naba s.d At-Takwir)', 86, 'Jayyid Jiddan (B)', 'Mumtaz (A)', 84, 'Konsisten dalam halaqah tahfidz. Perlu penekanan pada kelancaran murojaah juz 30 secara mandiri.']
+      ['ND-001', '232407021', 'Ganjil', '2025/2026', 'Juz 30 & Juz 29 (Lancar)', 'Juz 30 (Mutqin)', 94, 'Mumtaz (A)', 'Mumtaz (A)', 90, 'Alhamdulillah capaian ziyadah melampaui target tengah semester. Makhraj huruf, kaidah mad, dan tajwid sangat baik.'],
+      ['ND-002', '202509101', 'Ganjil', '2025/2026', 'Juz 30 (15 Halaman)', 'Juz 30 (Surah An-Naba s.d At-Takwir)', 86, 'Jayyid Jiddan (B)', 'Mumtaz (A)', 84, 'Konsisten dalam halaqah tahfidz. Perlu penekanan pada kelancaran murojaah juz 30 secara mandiri.']
     ];
     sheetDiniyah.getRange(2, 1, defaultDiniyah.length, 11).setValues(defaultDiniyah);
   }
@@ -647,6 +658,101 @@ function deleteNilaiKepemimpinan(id) {
     return { status: 'success', message: 'Nilai kepribadian berhasil dihapus' };
   }
   return { status: 'error', message: 'Data kepribadian tidak ditemukan' };
+}
+
+/**
+ * ============================================================================
+ * MODEL: SKL KEPEMIMPINAN (28 INDIKATOR EXCEL AL-IMAM)
+ * ============================================================================
+ */
+function getSklKepemimpinanList(filters = {}) {
+  const sklHeaders = ['id', 'nis', 'semester', 'tahun_ajaran', 'catatan_walas', 'd1','d2','d3','d4','d5','d6','d7','k1','k2','k3','k4','k5','p1','p2','p3','p4','p5','s1','s2','t1','t2','m1','m2','r1','r2','r3','j1','j2','h1'];
+  const sheet = getOrCreateSheet(DB_CONFIG.SHEET_SKL_KEPEMIMPINAN, sklHeaders);
+  let list = sheetToObjects(sheet);
+  
+  const muridList = getAllMurid();
+  const muridMap = {};
+  muridList.forEach(s => { muridMap[s.nis] = s; });
+  
+  list = list.map(item => {
+    const s = muridMap[item.nis] || {};
+    const scores = {};
+    const sklKeys = ['d1','d2','d3','d4','d5','d6','d7','k1','k2','k3','k4','k5','p1','p2','p3','p4','p5','s1','s2','t1','t2','m1','m2','r1','r2','r3','j1','j2','h1'];
+    sklKeys.forEach(k => {
+      scores[k] = item[k] || (k.startsWith('k') ? 'B' : 'A');
+    });
+    return {
+      id: item.id || ('SKL-' + item.nis),
+      nis: item.nis,
+      nama_murid: s.nama_murid || s.nama_santri || 'Tidak Diketahui',
+      nama_santri: s.nama_murid || s.nama_santri || 'Tidak Diketahui',
+      kelas: s.kelas || '-',
+      semester: item.semester || 'Tengah Semester 1',
+      tahun_ajaran: item.tahun_ajaran || '2025/2026',
+      catatan_walas: item.catatan_walas || 'Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan',
+      scores: scores
+    };
+  });
+  
+  if (filters.nis) list = list.filter(item => String(item.nis) === String(filters.nis));
+  if (filters.kelas && filters.kelas !== 'Semua') list = list.filter(item => String(item.kelas) === String(filters.kelas));
+  
+  return list;
+}
+
+function saveSklKepemimpinan(data) {
+  const sklHeaders = ['id', 'nis', 'semester', 'tahun_ajaran', 'catatan_walas', 'd1','d2','d3','d4','d5','d6','d7','k1','k2','k3','k4','k5','p1','p2','p3','p4','p5','s1','s2','t1','t2','m1','m2','r1','r2','r3','j1','j2','h1'];
+  const sheet = getOrCreateSheet(DB_CONFIG.SHEET_SKL_KEPEMIMPINAN, sklHeaders);
+  const id = data.id || ('SKL-' + data.nis);
+  
+  const existing = findRowByField(sheet, 'id', id);
+  const scores = data.scores || {};
+  
+  const rowDataObj = {
+    id: id,
+    nis: data.nis,
+    semester: data.semester || 'Tengah Semester 1',
+    tahun_ajaran: data.tahun_ajaran || '2025/2026',
+    catatan_walas: data.catatan_walas || 'Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan'
+  };
+  
+  const sklKeys = ['d1','d2','d3','d4','d5','d6','d7','k1','k2','k3','k4','k5','p1','p2','p3','p4','p5','s1','s2','t1','t2','m1','m2','r1','r2','r3','j1','j2','h1'];
+  sklKeys.forEach(k => {
+    rowDataObj[k] = (scores[k] !== undefined) ? scores[k] : (data[k] || (k.startsWith('k') ? 'B' : 'A'));
+  });
+  
+  if (existing) {
+    const rowIdx = existing.rowIndex;
+    const headers = existing.headers;
+    headers.forEach((h, colIdx) => {
+      if (rowDataObj[h] !== undefined) {
+        sheet.getRange(rowIdx, colIdx + 1).setValue(rowDataObj[h]);
+      }
+    });
+  } else {
+    const rowArr = sklHeaders.map(h => rowDataObj[h] !== undefined ? rowDataObj[h] : '');
+    sheet.appendRow(rowArr);
+  }
+  
+  return { status: 'success', message: 'Nilai SKL Kepemimpinan berhasil disimpan', id: id };
+}
+
+function saveBulkSklKepemimpinan(items) {
+  if (!items || !Array.isArray(items)) return { status: 'error', message: 'Data SKL Kepemimpinan tidak valid' };
+  items.forEach(item => {
+    saveSklKepemimpinan(item);
+  });
+  return { status: 'success', message: 'Berhasil menyimpan SKL Kepemimpinan untuk ' + items.length + ' murid' };
+}
+
+function deleteSklKepemimpinan(id) {
+  const sheet = getOrCreateSheet(DB_CONFIG.SHEET_SKL_KEPEMIMPINAN);
+  const match = findRowByField(sheet, 'id', id);
+  if (match) {
+    sheet.deleteRow(match.rowIndex);
+    return { status: 'success', message: 'Nilai SKL Kepemimpinan berhasil dihapus' };
+  }
+  return { status: 'error', message: 'Data SKL Kepemimpinan tidak ditemukan' };
 }
 
 /**

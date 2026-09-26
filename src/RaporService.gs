@@ -64,6 +64,16 @@ function getMuridReportData(nis) {
     catatan_musyrif: 'Alhamdulillah capaian hafalan dan adab sangat baik.'
   };
   
+  // 4. Data SKL Kepemimpinan (28 Indikator)
+  const rawSkl = getSklKepemimpinanList({ nis: nis });
+  const sklEntry = rawSkl.find(n => 
+    String(n.semester).toLowerCase() === currentSemester.toLowerCase() &&
+    String(n.tahun_ajaran) === currentYear
+  ) || rawSkl[0] || {
+    scores: {},
+    catatan_walas: 'Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan'
+  };
+
   return {
     success: true,
     data: {
@@ -90,6 +100,7 @@ function getMuridReportData(nis) {
       },
       kepribadian: kepribadian,
       kepemimpinan: kepribadian, // alias
+      skl: sklEntry,
       diniyah: diniyah,
       generatedAt: Utilities.formatDate(new Date(), 'Asia/Jakarta', 'dd MMMM yyyy HH:mm')
     }

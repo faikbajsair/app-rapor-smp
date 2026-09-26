@@ -1125,16 +1125,26 @@
       </div>
 
       <!-- Mode Switcher Tabs -->
-      <div class="flex items-center gap-2 bg-slate-100 p-1 rounded-xl">
+      <div class="flex items-center gap-1.5 bg-slate-100 p-1 rounded-xl flex-wrap">
         <button id="btn-mode-kp-leger" onclick="switchKepribadianInputMode('leger')" 
-                class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-2 bg-white text-amber-800 shadow-sm">
+                class="px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 bg-white text-amber-800 shadow-sm">
           <i class="fa-solid fa-table-cells"></i>
-          <span>Mode Input Sekelas (Bank Kalimat)</span>
+          <span>Mode 6 Aspek Karakter</span>
+        </button>
+        <button id="btn-mode-kp-skl" onclick="switchKepribadianInputMode('skl')" 
+                class="px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 transition flex items-center gap-1.5">
+          <i class="fa-solid fa-medal text-amber-600"></i>
+          <span>Leger SKL 28 Indikator (Excel)</span>
         </button>
         <button id="btn-mode-kp-list" onclick="switchKepribadianInputMode('list')" 
-                class="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 transition flex items-center gap-2">
+                class="px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 transition flex items-center gap-1.5">
           <i class="fa-solid fa-list-check"></i>
-          <span>Tabel Riwayat Entri</span>
+          <span>Tabel Riwayat</span>
+        </button>
+        <button onclick="openPrintKepemimpinanDirect()" 
+                class="px-3 py-1.5 rounded-lg text-xs font-bold text-amber-700 hover:bg-amber-100 transition flex items-center gap-1.5 border border-amber-300 ml-1">
+          <i class="fa-solid fa-print"></i>
+          <span>Cetak Rapor SKL</span>
         </button>
       </div>
     </div>
@@ -1150,8 +1160,8 @@
         <span class="text-lg font-extrabold text-emerald-950" id="widget-kp-ibadah-count">100%</span>
       </div>
       <div class="bg-blue-50/70 border border-blue-100 p-3 rounded-xl">
-        <span class="text-[10px] font-bold text-blue-700 uppercase tracking-wider block">Aspek Akhlak Lengkap</span>
-        <span class="text-lg font-extrabold text-blue-950" id="widget-kp-akhlak-count">100%</span>
+        <span class="text-[10px] font-bold text-blue-700 uppercase tracking-wider block">28 Indikator SKL</span>
+        <span class="text-lg font-extrabold text-blue-950" id="widget-kp-akhlak-count">28 / 28</span>
       </div>
       <div class="bg-purple-50/70 border border-purple-100 p-3 rounded-xl">
         <span class="text-[10px] font-bold text-purple-700 uppercase tracking-wider block">Catatan Terisi</span>
@@ -1169,8 +1179,8 @@
           <div>
             <label class="block text-[10px] font-bold text-slate-500 uppercase">Pilih Kelas</label>
             <select id="leger-kp-kelas" onchange="renderKepribadianGrid()" class="text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 font-bold text-slate-800 focus:ring-2 focus:ring-amber-500">
-              <option value="IX ABU BAKAR">IX ABU BAKAR (9 Ikhwan)</option>
-              <option value="IX UMMU SALAMAH">IX UMMU SALAMAH (9 Akhwat)</option>
+              <option value="IX ABU BAKAR">IX ABU BAKAR (12 Ikhwan)</option>
+              <option value="IX UMMU SALAMAH">IX UMMU SALAMAH (16 Akhwat)</option>
               <option value="VIII THALHAH">VIII THALHAH (8 Ikhwan)</option>
               <option value="VIII AISYAH">VIII AISYAH (8 Akhwat)</option>
               <option value="VII BILAL">VII BILAL (7 Ikhwan)</option>
@@ -1185,7 +1195,7 @@
                   class="px-3.5 py-2 bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-300 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm"
                   title="Terapkan kalimat standar Ahlaq & Kepribadian Al-Imam untuk semua murid sekelas dalam 1-klik">
             <i class="fa-solid fa-wand-magic-sparkles text-amber-600"></i>
-            <span>Terapkan Bank Kalimat Al-Imam (Sekelas)</span>
+            <span>Terapkan Bank Kalimat Al-Imam</span>
           </button>
           
           <button onclick="saveBulkKepribadianGrid()" id="btn-save-bulk-kp"
@@ -1200,7 +1210,7 @@
       <div class="p-3 bg-amber-50/60 border border-amber-100 rounded-xl text-xs text-amber-900 flex flex-col md:flex-row md:items-center justify-between gap-2">
         <div class="flex items-center gap-2">
           <i class="fa-solid fa-circle-check text-amber-600 text-sm"></i>
-          <span><strong>Bank Kalimat Otomatis:</strong> Guru dapat memilih opsi template kalimat atau mengedit teks sesuai karakteristik masing-masing murid.</span>
+          <span><strong>Bank Kalimat Otomatis:</strong> Guru dapat memilih opsi template kalimat naratif untuk dicetak pada Rapor Portofolio.</span>
         </div>
         <div class="text-[11px] font-semibold text-amber-800">
           Total Murid: <span id="kp-student-count" class="font-bold">12</span>
@@ -1213,7 +1223,7 @@
       </div>
 
       <div class="flex items-center justify-between pt-3 border-t border-slate-100 text-xs text-slate-500">
-        <span>Semua 6 aspek kepribadian & catatan diperhatikan akan dicetak pada Rapor Portofolio.</span>
+        <span>Semua 6 aspek kepribadian narasi akan dicetak pada Rapor Portofolio.</span>
         <button onclick="saveBulkKepribadianGrid()" class="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs font-bold shadow transition flex items-center gap-2">
           <i class="fa-solid fa-floppy-disk"></i>
           <span>Simpan Kepribadian Sekelas</span>
@@ -1223,7 +1233,139 @@
     </div>
   </div>
 
-  <!-- SECTION 2: MODE RIWAYAT / DETAIL (TABLE LIST) -->
+  <!-- SECTION 2: LEGER MATRIKS SKL 28 INDIKATOR (SESUAI SHEET NILAI RAPORT KEPEMIMPINAN EXCEL) -->
+  <div id="section-kp-skl" class="space-y-4 hidden">
+    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+      
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
+        <div class="flex items-center gap-3">
+          <div>
+            <label class="block text-[10px] font-bold text-slate-500 uppercase">Pilih Kelas</label>
+            <select id="skl-kp-kelas" onchange="renderSklLegerGrid()" class="text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 font-bold text-slate-800 focus:ring-2 focus:ring-amber-500">
+              <option value="IX ABU BAKAR">IX ABU BAKAR (12 Ikhwan)</option>
+              <option value="IX UMMU SALAMAH">IX UMMU SALAMAH (16 Akhwat)</option>
+              <option value="VIII THALHAH">VIII THALHAH (8 Ikhwan)</option>
+              <option value="VIII AISYAH">VIII AISYAH (8 Akhwat)</option>
+              <option value="VII BILAL">VII BILAL (7 Ikhwan)</option>
+              <option value="VII KHADIJAH">VII KHADIJAH (7 Akhwat)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Fast Fill Tools for SKL Leger -->
+        <div class="flex flex-wrap items-center gap-2">
+          <button onclick="applyFastSklPresets('all_a')" 
+                  class="px-3 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
+            <i class="fa-solid fa-check-double text-emerald-600"></i>
+            <span>Set Semua "A"</span>
+          </button>
+          
+          <button onclick="applyFastSklPresets('default_alimam')" 
+                  class="px-3 py-2 bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-300 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm"
+                  title="Format standar: Kebersihan bernilai B, aspek lainnya bernilai A">
+            <i class="fa-solid fa-wand-magic-sparkles text-amber-600"></i>
+            <span>Standar Excel (Kebersihan B, Lainnya A)</span>
+          </button>
+          
+          <button onclick="saveSklLegerGrid()" id="btn-save-skl-grid"
+                  class="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs font-bold shadow-md transition flex items-center gap-2">
+            <i class="fa-solid fa-floppy-disk"></i>
+            <span>Simpan Nilai SKL 28 Indikator</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- SKL Leger Table Container (Horizontal Scrollable Grid) -->
+      <div class="border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+        <div class="overflow-x-auto max-h-[600px] overflow-y-auto">
+          <table class="w-full text-center text-[11px] border-collapse" id="skl-leger-table">
+            <thead class="bg-slate-800 text-white font-bold sticky top-0 z-10 text-[10px]">
+              <!-- Header Baris 1: Grup Kategori Sikap -->
+              <tr>
+                <th rowspan="2" class="py-2 px-2 border border-slate-700 w-8 bg-slate-900 sticky left-0 z-20">NO</th>
+                <th rowspan="2" class="py-2 px-3 border border-slate-700 text-left min-w-[200px] bg-slate-900 sticky left-8 z-20">NAMA MURID</th>
+                <th rowspan="2" class="py-2 px-2 border border-slate-700 min-w-[90px] bg-slate-900">NIS</th>
+                
+                <th colspan="7" class="py-1 px-1 border border-slate-700 bg-sky-900 text-sky-200">Disiplin & Tanggung Jawab (1-7)</th>
+                <th colspan="5" class="py-1 px-1 border border-slate-700 bg-teal-900 text-teal-200">Kebersihan & Kerapihan (1-5)</th>
+                <th colspan="5" class="py-1 px-1 border border-slate-700 bg-indigo-900 text-indigo-200">Pembiasaan (1-5)</th>
+                <th colspan="2" class="py-1 px-1 border border-slate-700 bg-rose-900 text-rose-200">Kesopanan (1-2)</th>
+                <th colspan="2" class="py-1 px-1 border border-slate-700 bg-amber-900 text-amber-200">Ketaatan (1-2)</th>
+                <th colspan="2" class="py-1 px-1 border border-slate-700 bg-blue-900 text-blue-200">Kemandirian (1-2)</th>
+                <th colspan="3" class="py-1 px-1 border border-slate-700 bg-violet-900 text-violet-200">Kerajinan (1-3)</th>
+                <th colspan="2" class="py-1 px-1 border border-slate-700 bg-emerald-900 text-emerald-200">Kejujuran (1-2)</th>
+                <th class="py-1 px-1 border border-slate-700 bg-fuchsia-900 text-fuchsia-200">Muhadharah</th>
+                <th rowspan="2" class="py-2 px-3 border border-slate-700 text-left min-w-[260px] bg-yellow-900 text-yellow-200">Catatan Wali Kelas</th>
+              </tr>
+              <!-- Header Baris 2: Sub-Indikator 1..28 -->
+              <tr class="bg-slate-700 text-slate-200 text-[9.5px]">
+                <!-- Disiplin 1-7 -->
+                <th class="py-1 px-1 border border-slate-600 w-8" title="1. Hadir di sekolah tepat waktu">1</th>
+                <th class="py-1 px-1 border border-slate-600 w-8" title="2. Menghindari perbuatan yg merusak">2</th>
+                <th class="py-1 px-1 border border-slate-600 w-8" title="3. Terbiasa antri dlm segala hal">3</th>
+                <th class="py-1 px-1 border border-slate-600 w-8" title="4. Menyelesaikan tugas sesuai jadwal">4</th>
+                <th class="py-1 px-1 border border-slate-600 w-8" title="5. Meletakkan benda pd tempatnya">5</th>
+                <th class="py-1 px-1 border border-slate-600 w-8" title="6. Mengemasi peralatan belajar">6</th>
+                <th class="py-1 px-1 border border-slate-600 w-8" title="7. Tertib wudlu dan shalat">7</th>
+
+                <!-- Kebersihan 1-5 -->
+                <th class="py-1 px-1 border border-slate-600 w-8" title="1. Kebersihan pakaian">1</th>
+                <th class="py-1 px-1 border border-slate-600 w-8" title="2. Kebersihan badan">2</th>
+                <th class="py-1 px-1 border border-slate-600 w-8" title="3. Kerapihan peralatan">3</th>
+                <th class="py-1 px-1 border border-slate-600 w-8" title="4. Kerapihan meja belajar">4</th>
+                <th class="py-1 px-1 border border-slate-600 w-8" title="5. Kebersihan lingkungan">5</th>
+
+                <!-- Pembiasaan 1-5 -->
+                <th class="py-1 px-1 border border-slate-600 w-8" title="1. Dzikir pagi petang">1</th>
+                <th class="py-1 px-1 border border-slate-600 w-8" title="2. Sholat dhuha">2</th>
+                <th class="py-1 px-1 border border-slate-600 w-8" title="3. Literasi membaca buku">3</th>
+                <th class="py-1 px-1 border border-slate-600 w-8" title="4. Berdo'a">4</th>
+                <th class="py-1 px-1 border border-slate-600 w-8" title="5. Memberi & menjawab salam">5</th>
+
+                <!-- Kesopanan 1-2 -->
+                <th class="py-1 px-1 border border-slate-600 w-8" title="1. Berbahasa baik dan sopan">1</th>
+                <th class="py-1 px-1 border border-slate-600 w-8" title="2. Berperilaku baik dan sopan">2</th>
+
+                <!-- Ketaatan 1-2 -->
+                <th class="py-1 px-1 border border-slate-600 w-8" title="1. Taat petunjuk guru">1</th>
+                <th class="py-1 px-1 border border-slate-600 w-8" title="2. Taat tata tertib">2</th>
+
+                <!-- Kemandirian 1-2 -->
+                <th class="py-1 px-1 border border-slate-600 w-8" title="1. Mandiri dlm tugas">1</th>
+                <th class="py-1 px-1 border border-slate-600 w-8" title="2. Mandiri dlm masalah">2</th>
+
+                <!-- Kerajinan 1-3 -->
+                <th class="py-1 px-1 border border-slate-600 w-8" title="1. Rajin masuk sekolah">1</th>
+                <th class="py-1 px-1 border border-slate-600 w-8" title="2. Rajin belajar">2</th>
+                <th class="py-1 px-1 border border-slate-600 w-8" title="3. Rajin mengerjakan tugas">3</th>
+
+                <!-- Kejujuran 1-2 -->
+                <th class="py-1 px-1 border border-slate-600 w-8" title="1. Berkata benar">1</th>
+                <th class="py-1 px-1 border border-slate-600 w-8" title="2. Tidak mencontek">2</th>
+
+                <!-- Muhadharah 1 -->
+                <th class="py-1 px-1 border border-slate-600 w-8" title="1. Mengikuti kegiatan muhadharah">1</th>
+              </tr>
+            </thead>
+            <tbody id="skl-leger-tbody" class="divide-y divide-slate-200 text-[11px]">
+              <!-- Populated dynamically via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between pt-2 text-xs text-slate-500">
+        <span>Gunakan opsi nilai A (Sangatbaik), B (Baik), C (Cukup Baik), D (Kurang).</span>
+        <button onclick="saveSklLegerGrid()" class="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs font-bold shadow transition flex items-center gap-2">
+          <i class="fa-solid fa-floppy-disk"></i>
+          <span>Simpan Nilai SKL 28 Indikator</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SECTION 3: MODE RIWAYAT / DETAIL (TABLE LIST) -->
   <div id="section-kp-list" class="space-y-4 hidden">
     <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
       
@@ -2173,30 +2315,44 @@
 
 
         <!-- View 7: Cetak Rapor -->
-        <!-- Template Cetak Rapor Portofolio Tengah Semester (Persis Format Resmi Sheet Print Excel SMP Al-Imam) -->
+        <!-- Template Cetak Rapor Portofolio & Rapor Kepemimpinan (Persis Format Resmi Excel SMP Al-Imam) -->
 <div id="view-rapor" class="view-panel hidden space-y-6">
   
   <!-- Print Control Bar (Non-Printable) -->
-  <div class="no-print bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+  <div class="no-print bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
     <div class="flex items-center gap-3">
-      <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-700 flex items-center justify-center text-lg">
+      <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-700 flex items-center justify-center text-lg shadow-sm">
         <i class="fa-solid fa-file-invoice"></i>
       </div>
       <div>
-        <h2 class="text-sm font-bold text-slate-900">Pratinjau & Cetak Rapor Tengah Semester</h2>
-        <p class="text-xs text-slate-500">Format Resmi Excel SMP Al-Imam: 16 Mata Pelajaran, 6 Aspek Kepribadian, Presensi & Ekskul.</p>
+        <h2 class="text-sm font-bold text-slate-900">Pratinjau & Cetak Rapor SMP Al-Imam</h2>
+        <p class="text-xs text-slate-500">Pilih jenis format rapor: Rapor Portofolio (16 Mapel + Karakter) atau Rapor Kepemimpinan (28 Indikator SKL).</p>
       </div>
     </div>
 
     <div class="flex flex-wrap items-center gap-2">
+      <!-- Rapor Format Switcher (Tabs) -->
+      <div class="flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200">
+        <button id="btn-print-tab-portofolio" onclick="switchPrintFormat('portofolio')" 
+                class="px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 bg-white text-indigo-700 shadow-sm">
+          <i class="fa-solid fa-book-open"></i>
+          <span>Rapor Portofolio (Akademik)</span>
+        </button>
+        <button id="btn-print-tab-kepemimpinan" onclick="switchPrintFormat('kepemimpinan')" 
+                class="px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 transition flex items-center gap-1.5">
+          <i class="fa-solid fa-medal"></i>
+          <span>Rapor Kepemimpinan (SKL)</span>
+        </button>
+      </div>
+
       <!-- Murid Selector for Print -->
-      <select id="rapor-murid-select" onchange="loadMuridReportForPrint(this.value)" class="text-xs bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-slate-800 font-bold focus:ring-2 focus:ring-indigo-500 min-w-[240px]">
+      <select id="rapor-murid-select" onchange="loadMuridReportForPrint(this.value)" class="text-xs bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-slate-800 font-bold focus:ring-2 focus:ring-indigo-500 min-w-[220px]">
         <!-- Populated via JS -->
       </select>
 
       <button onclick="window.print()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-xs shadow flex items-center gap-2">
         <i class="fa-solid fa-print"></i>
-        <span>Cetak Rapor / PDF</span>
+        <span>Cetak / PDF</span>
       </button>
 
       <button onclick="switchView('dashboard')" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-xl text-xs">
@@ -2205,10 +2361,12 @@
     </div>
   </div>
 
-  <!-- Main Report Card Container (Printable Paper Sheet A4) -->
-  <div class="print-container bg-white mx-auto max-w-4xl p-6 sm:p-10 rounded-2xl border border-slate-300 shadow-lg text-slate-900 font-sans text-xs">
+  <!-- ========================================================================= -->
+  <!-- 1. FORMAT RAPOR PORTOFOLIO TENGAH SEMESTER (16 MAPEL + 6 KARAKTER + EKSKUL) -->
+  <!-- ========================================================================= -->
+  <div id="print-sheet-portofolio" class="print-container bg-white mx-auto max-w-4xl p-6 sm:p-10 rounded-2xl border border-slate-300 shadow-lg text-slate-900 font-sans text-xs">
     
-    <!-- 1. KOP SURAT RESMI EXCEL AL-IMAM (Logo Kiri - Judul Tengah - No Urut Kanan) -->
+    <!-- Kop Surat Resmi Portofolio (Logo Kiri - Judul Tengah - No Urut Kanan) -->
     <div class="pb-3 mb-4 border-b-2 border-slate-900 flex items-center justify-between gap-4">
       <img id="print-school-logo" src="https://alimamischool.com/wp-content/uploads/2020/08/Al-Imam-Islamic-School-alimamischool.com-sekolah-sunnah-logo.png" 
            alt="Logo Al-Imam" class="h-16 w-auto max-w-[130px] object-contain" />
@@ -2225,14 +2383,14 @@
         </h2>
       </div>
 
-      <!-- No Urut Box (Persis Sheet Print Excel) -->
+      <!-- No Urut Box -->
       <div class="border-2 border-slate-800 rounded-lg overflow-hidden text-center w-16 shrink-0 shadow-sm">
         <div class="bg-amber-300 text-slate-900 text-[10px] font-black uppercase py-0.5 border-b border-slate-800">No Urut</div>
         <div class="bg-sky-400 text-white text-xl font-black py-1" id="print-no-urut">12</div>
       </div>
     </div>
 
-    <!-- 2. IDENTITAS PESERTA DIDIK & KELAS -->
+    <!-- Identitas Murid -->
     <div class="grid grid-cols-2 gap-x-8 gap-y-1 text-[11px] p-2.5 bg-slate-50/60 rounded-lg border border-slate-200 mb-4 font-medium">
       <div class="space-y-1">
         <div class="flex">
@@ -2257,7 +2415,7 @@
       </div>
     </div>
 
-    <!-- 3. BAGIAN I: TABEL NILAI & CAPAIAN KOMPETENSI (16 MATA PELAJARAN) -->
+    <!-- Bagian I: Tabel 16 Mata Pelajaran & Capaian Kompetensi -->
     <div class="mb-4 page-break-inside-avoid">
       <table class="w-full text-left text-[11px] border border-black border-collapse">
         <thead class="bg-[#c6e0b4] text-slate-900 font-bold border-b border-black text-center">
@@ -2269,12 +2427,12 @@
           </tr>
         </thead>
         <tbody id="print-akademik-tbody">
-          <!-- Populated dynamically with 16 subjects via JS -->
+          <!-- Populated dynamically via JS -->
         </tbody>
       </table>
     </div>
 
-    <!-- 4. BAGIAN II: EKSTRAKURIKULER (Persis Baris 28-31 Excel) -->
+    <!-- Bagian II: Ekstrakurikuler -->
     <div class="mb-4 page-break-inside-avoid">
       <table class="w-full text-left text-[11px] border border-black border-collapse">
         <thead class="bg-[#c6e0b4] text-slate-900 font-bold border-b border-black">
@@ -2298,13 +2456,13 @@
           <tr>
             <td class="py-1 px-1 text-center border border-black font-medium">3</td>
             <td class="py-1 px-3 border border-black font-medium" id="print-ekskul-3-nama">Basket</td>
-            <td class="py-1 px-3 border border-black text-center font-medium" id="print-ekskul-3-nilai">BAIK</td>
+            <td class="py-1 px-3 border border-black text-center font-medium" id="print-ekskul-3-nilai">Baik</td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <!-- 5. BAGIAN III: PENILAIAN SIKAP OLEH WALI KELAS (Persis Baris 33-39 Excel) -->
+    <!-- Bagian III: Penilaian Sikap Oleh Wali Kelas -->
     <div class="mb-4 page-break-inside-avoid">
       <table class="w-full text-left text-[11px] border border-black border-collapse">
         <thead class="bg-[#c6e0b4] text-slate-900 font-bold border-b border-black text-center">
@@ -2355,10 +2513,8 @@
       </table>
     </div>
 
-    <!-- 6. BAGIAN IV: CATATAN UNTUK DIPERHATIKAN & KETIDAKHADIRAN (Persis Baris 41-44 Excel) -->
+    <!-- Bagian IV: Catatan Untuk Diperhatikan & Ketidakhadiran -->
     <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 mb-6 page-break-inside-avoid">
-      
-      <!-- Catatan Untuk Diperhatikan (7 Kolom) -->
       <div class="sm:col-span-7 border border-black flex flex-col">
         <div class="bg-[#c6e0b4] text-slate-900 px-3 py-1.5 font-bold text-center border-b border-black text-[11px]">
           Catatan Untuk Diperhatikan
@@ -2370,7 +2526,6 @@
         </div>
       </div>
 
-      <!-- Ketidakhadiran (5 Kolom) -->
       <div class="sm:col-span-5 border border-black flex flex-col">
         <div class="bg-[#c6e0b4] text-slate-900 px-3 py-1.5 font-bold text-center border-b border-black text-[11px]">
           Ketidakhadiran
@@ -2396,17 +2551,15 @@
           </div>
         </div>
       </div>
-
     </div>
 
-    <!-- 7. TANDA TANGAN RESMI 2 PIHAK (Persis Baris 46-52 Excel) -->
+    <!-- Tanda Tangan Resmi Portofolio (Kepala Sekolah & Wali Kelas) -->
     <div class="page-break-inside-avoid mt-6 pt-2">
       <div class="text-right text-[11px] mb-4 font-medium pr-12">
         <span id="print-report-place">Bogor</span>, <span id="print-report-date">17 Oktober 2025</span>
       </div>
 
       <div class="grid grid-cols-2 text-[11px] gap-8">
-        <!-- Kolom 1: Kepala Sekolah -->
         <div class="flex flex-col justify-between h-28 pl-4">
           <span class="font-medium">Kepala Sekolah</span>
           <div>
@@ -2415,7 +2568,6 @@
           </div>
         </div>
 
-        <!-- Kolom 2: Wali Kelas -->
         <div class="flex flex-col justify-between h-28 pr-4 text-left sm:pl-20">
           <span class="font-medium">Wali Kelas,</span>
           <div>
@@ -2428,7 +2580,137 @@
 
   </div>
 
+  <!-- ========================================================================= -->
+  <!-- 2. FORMAT RAPOR KEPEMIMPINAN (SKL KEPEMIMPINAN 9 SIKAP & 28 INDIKATOR)   -->
+  <!-- ========================================================================= -->
+  <div id="print-sheet-kepemimpinan" class="print-container hidden bg-white mx-auto max-w-4xl p-6 sm:p-10 rounded-2xl border border-slate-300 shadow-lg text-slate-900 font-serif text-[11px]">
+    
+    <!-- Kop Resmi Yayasan & Akreditasi -->
+    <div class="pb-3 mb-3 border-b-2 border-black flex items-center justify-between gap-4">
+      <img src="https://alimamischool.com/wp-content/uploads/2020/08/Al-Imam-Islamic-School-alimamischool.com-sekolah-sunnah-logo.png" 
+           alt="Logo Al-Imam" class="h-16 w-auto max-w-[120px] object-contain" />
+      
+      <div class="text-center flex-1">
+        <div class="text-[10px] tracking-widest text-slate-700 font-arabic font-bold mb-0.5">مؤسسة الأطفال الأذكياء دار السلام</div>
+        <h3 class="text-[11px] font-bold tracking-wider text-slate-900 uppercase">YAYASAN SEKOLAH ANAK PINTAR DARUSSALAM</h3>
+        <h1 class="text-sm sm:text-base font-black text-slate-950 uppercase tracking-wide">
+          SMP AL-IMAM ISLAMIC SCHOOL
+        </h1>
+        <p class="text-[9px] text-slate-700 font-sans mt-0.5">TERAKREDITASI "B" No.SK: 02.00/347/SK/BAP-SM/XI/2017</p>
+      </div>
+
+      <div class="w-16 shrink-0"></div>
+    </div>
+
+    <!-- Judul Rapor Kepemimpinan -->
+    <div class="text-center mb-4">
+      <h2 class="text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-950">
+        RAPORT KEPEMIMPINAN SMP AI IS
+      </h2>
+      <h3 class="text-xs font-bold uppercase tracking-wider text-slate-800">
+        TAHUN AJARAN <span id="print-skl-tahun-ajaran">2025/2026</span>
+      </h3>
+    </div>
+
+    <!-- Identitas Murid & Info Sekolah -->
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-4 text-[11px] mb-4 pb-2 border-b border-slate-300">
+      <div class="md:col-span-7 space-y-1 font-sans">
+        <div class="flex">
+          <span class="w-48 font-medium text-slate-700">Nama</span>
+          <span class="font-bold text-slate-950">: <span id="print-skl-nama">ALWAN IBRAHIM</span></span>
+        </div>
+        <div class="flex">
+          <span class="w-48 font-medium text-slate-700">Kelas</span>
+          <span class="font-bold text-slate-950">: <span id="print-skl-kelas">IX ABU BAKAR</span></span>
+        </div>
+        <div class="flex">
+          <span class="w-48 font-medium text-slate-700">Nomor Induk Siswa</span>
+          <span class="font-bold text-slate-950">: <span id="print-skl-nis">232407051</span></span>
+        </div>
+        <div class="flex">
+          <span class="w-48 font-medium text-slate-700">Nomor Induk Siswa Nasional</span>
+          <span class="font-bold text-slate-950">: <span id="print-skl-nisn">0113811055</span></span>
+        </div>
+        <div class="flex">
+          <span class="w-48 font-medium text-slate-700">Semester</span>
+          <span class="font-bold text-slate-950">: <span id="print-skl-semester">Tengah Semester 1</span></span>
+        </div>
+      </div>
+
+      <div class="md:col-span-5 space-y-1 font-sans text-right md:text-left bg-slate-50 p-2 rounded border border-slate-200 text-[10px]">
+        <div><span class="text-slate-500 font-semibold">Nomor:</span> <span id="print-skl-no-surat" class="font-bold text-slate-800">421.3/079/SMP.AIIS/VI/2022</span></div>
+        <div><span class="text-slate-500 font-semibold">Nama Sekolah:</span> <span class="font-bold text-slate-800">SMP AL-IMAM ISLAMIC SCHOOL</span></div>
+        <div><span class="text-slate-500 font-semibold">NPSN:</span> <span class="font-bold text-slate-800">69915055</span></div>
+        <div><span class="text-slate-500 font-semibold">Walas:</span> <span id="print-skl-walas-info" class="font-bold text-slate-800">Kahlil Gibran, S.Pd.</span></div>
+      </div>
+    </div>
+
+    <!-- Tabel 9 Sikap & 28 Indikator SKL -->
+    <div class="mb-4 page-break-inside-avoid">
+      <table class="w-full text-left text-[10.5px] border border-black border-collapse font-sans">
+        <thead class="bg-slate-100 text-slate-950 font-bold border-b border-black text-center">
+          <tr>
+            <th class="w-8 py-1 px-1 border border-black">NO</th>
+            <th class="w-48 py-1 px-2 text-left border border-black">SIKAP</th>
+            <th class="py-1 px-2 text-left border border-black">INDIKATOR</th>
+            <th class="w-14 py-1 px-1 border border-black">NILAI</th>
+          </tr>
+        </thead>
+        <tbody id="print-skl-tbody">
+          <!-- Populated dynamically via JS -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Keterangan Nilai A/B/C/D -->
+    <div class="mb-4 text-[10px] font-sans font-bold text-slate-800">
+      Keterangan : &nbsp;&nbsp;&nbsp; A : Sangatbaik &nbsp;&nbsp;&nbsp; B : Baik &nbsp;&nbsp;&nbsp; C : Cukup Baik &nbsp;&nbsp;&nbsp; D : Kurang
+    </div>
+
+    <!-- Catatan Wali Kelas & Orang Tua (Persis Baris 57-63 Excel) -->
+    <div class="space-y-2 mb-6 font-sans page-break-inside-avoid">
+      <div class="border border-black p-2 bg-white">
+        <span class="font-bold block text-[10px] text-slate-800 mb-1">Catatan Wali Kelas:</span>
+        <p id="print-skl-catatan-walas" class="text-[10.5px] italic text-slate-900 min-h-[30px] flex items-center">
+          Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan.
+        </p>
+      </div>
+
+      <div class="border border-black p-2 bg-white">
+        <span class="font-bold block text-[10px] text-slate-800 mb-1">Catatan Orang Tua:</span>
+        <div class="min-h-[30px] border-b border-dotted border-slate-400"></div>
+      </div>
+    </div>
+
+    <!-- Tanda Tangan 3 Pihak (Orang Tua - Walas - Kepsek) -->
+    <div class="grid grid-cols-3 text-[10.5px] font-sans gap-4 pt-2 text-center page-break-inside-avoid">
+      <div class="flex flex-col justify-between h-28">
+        <span class="font-medium text-slate-800">Orang Tua/Wali</span>
+        <div class="text-slate-800 font-medium">( ........................................ )</div>
+      </div>
+
+      <div class="flex flex-col justify-between h-28">
+        <span class="font-medium text-slate-800">Wali Kelas</span>
+        <div>
+          <span class="font-bold underline text-slate-950 block" id="print-skl-ttd-walas">Kahlil Gibran, S.Pd.</span>
+        </div>
+      </div>
+
+      <div class="flex flex-col justify-between h-28">
+        <div>
+          <span class="text-slate-600 block text-[9.5px]">Mengetahui,</span>
+          <span class="font-medium text-slate-800">Kepala Sekolah</span>
+        </div>
+        <div>
+          <span class="font-bold underline text-slate-950 block" id="print-skl-ttd-kepsek">Arif Rohman, M.Pd.</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
 </div>
+
 
 
       </div>
@@ -3068,20 +3350,107 @@ const WALI_KELAS_MAP = {
   'VII KHADIJAH': 'Usth. Maryam Al-Qibtiyyah, S.Pd.'
 };
 
-// 1. Dataset Resmi Kelas IX ABU BAKAR (12 Murid Ikhwan)
+// 1. Dataset Resmi Kelas IX ABU BAKAR (12 Murid Ikhwan - Sesuai File Excel RAPORT KEPEMIMPINAN IX ABU)
 const EXCEL_STUDENTS_IX_ABU_BAKAR = [
-  { no: 1, nisn: '0113408257', nama: 'AHMAD YAZID ILMANY RAMADHAN', s: 2, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Futsal', e3n: 'Baik', scores: [87, 88, 82, 84, 80, 85, 93, 78, 84, 85, 89, 86, 89, 90, 85, 76] },
-  { no: 2, nisn: '0116425792', nama: 'AL AZIZ BENZAVEIRO SUNARYO', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Basket', e3n: 'Sangat Baik', scores: [89, 86, 84, 90, 86, 90, 93, 85, 90, 86, 93, 87, 89, 91, 88, 78] },
-  { no: 3, nisn: '0113811055', nama: 'ALWAN IBRAHIM', s: 2, i: 3, a: 4, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Futsal', e3n: 'Sangat Baik', scores: [86, 85, 83, 90, 78, 84, 86, 76, 80, 83, 86, 84, 92, 89, 82, 76] },
-  { no: 4, nisn: '0114838409', nama: 'AZKA DWI ABDHUL GHANIY', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Basket', e3n: 'Sangat Baik', scores: [86, 87, 85, 87, 86, 88, 88, 84, 91, 87, 93, 85, 89, 92, 86, 80] },
-  { no: 5, nisn: '0118589769', nama: 'DZAKI AQEELA ALIFANDRA', s: 2, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Basket', e3n: 'Sangat Baik', scores: [88, 86, 87, 89, 90, 87, 90, 87, 89, 84, 88, 85, 89, 89, 85, 86] },
-  { no: 6, nisn: '0113915620', nama: 'FARHAN PUTRA NOVRIANSYAH', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Futsal', e3n: 'Baik', scores: [92, 83, 87, 91, 90, 88, 88, 81, 89, 92, 96, 85, 91, 92, 91, 93] },
-  { no: 7, nisn: '0118560424', nama: 'GHAISAN FARRELLUZ SUKARNO', s: 0, i: 3, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Basket', e3n: 'Baik', scores: [91, 85, 85, 93, 90, 88, 91, 94, 85, 88, 98, 87, 91, 94, 88, 86] },
-  { no: 8, nisn: '0119042818', nama: 'GIBRAN ARGA PUTRAKU', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Futsal', e3n: 'Sangat Baik', scores: [88, 88, 84, 97, 97, 85, 89, 88, 90, 87, 96, 85, 93, 94, 86, 90] },
-  { no: 9, nisn: '0107305756', nama: 'LUTHFI FAEYZA SATRIOPUTRA', s: 0, i: 1, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Futsal', e3n: 'Sangat Baik', scores: [88, 86, 86, 93, 86, 84, 93, 81, 93, 85, 90, 86, 91, 90, 89, 88] },
-  { no: 10, nisn: '0108446122', nama: 'MOHAMAD MIRZA RADITYA', s: 2, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Futsal', e3n: 'Sangat Baik', scores: [88, 83, 89, 81, 80, 88, 90, 75, 83, 83, 85, 88, 94, 81, 85, 78] },
-  { no: 11, nisn: '0113743973', nama: 'MUHAMMAD ALFAJRI', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Basket', e3n: 'Baik', scores: [87, 88, 84, 85, 78, 89, 90, 78, 80, 88, 85, 86, 88, 83, 82, 76] },
-  { no: 12, nisn: '0103456069', nama: 'NADHIF SYAFWAN RIFAAT', s: 0, i: 3, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Basket', e3n: 'Baik', scores: [86, 77, 83, 86, 78, 84, 90, 79, 88, 81, 85, 82, 89, 84, 85, 78] }
+  { no: 1, nis: '232407021', nisn: '0113408257', nama: 'AHMAD YAZID ILMANY RAMADHAN', s: 2, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Futsal', e3n: 'Baik', scores: [87, 88, 82, 84, 80, 85, 93, 78, 84, 85, 89, 86, 89, 90, 85, 76] },
+  { no: 2, nis: '232407020', nisn: '0116425792', nama: 'AL AZIZ BENZAVEIRO SUNARYO', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Basket', e3n: 'Sangat Baik', scores: [89, 86, 84, 90, 86, 90, 93, 85, 90, 86, 93, 87, 89, 91, 88, 78] },
+  { no: 3, nis: '232407051', nisn: '0113811055', nama: 'ALWAN IBRAHIM', s: 2, i: 3, a: 4, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Futsal', e3n: 'Sangat Baik', scores: [86, 85, 83, 90, 78, 84, 86, 76, 80, 83, 86, 84, 92, 89, 82, 76], skl_custom: { d1:'B', d2:'B', d3:'B', d4:'B', d5:'B', d6:'B', d7:'B', k1:'B', k2:'B', k3:'B', k4:'B', k5:'B' } },
+  { no: 4, nis: '232407057', nisn: '0114838409', nama: 'AZKA DWI ABDHUL GHANIY', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Basket', e3n: 'Sangat Baik', scores: [86, 87, 85, 87, 86, 88, 88, 84, 91, 87, 93, 85, 89, 92, 86, 80] },
+  { no: 5, nis: '232407019', nisn: '0118589769', nama: 'DZAKI AQEELA ALIFANDRA', s: 2, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Basket', e3n: 'Sangat Baik', scores: [88, 86, 87, 89, 90, 87, 90, 87, 89, 84, 88, 85, 89, 89, 85, 86] },
+  { no: 6, nis: '232407023', nisn: '0113915620', nama: 'FARHAN PUTRA NOVRIANSYAH', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Futsal', e3n: 'Baik', scores: [92, 83, 87, 91, 90, 88, 88, 81, 89, 92, 96, 85, 91, 92, 91, 93] },
+  { no: 7, nis: '232407024', nisn: '0118560424', nama: 'GHAISAN FARRELLUZ SUKARNO', s: 0, i: 3, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Basket', e3n: 'Baik', scores: [91, 85, 85, 93, 90, 88, 91, 94, 85, 88, 98, 87, 91, 94, 88, 86] },
+  { no: 8, nis: '232407018', nisn: '0119042818', nama: 'GIBRAN ARGA PUTRAKU', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Futsal', e3n: 'Sangat Baik', scores: [88, 88, 84, 97, 97, 85, 89, 88, 90, 87, 96, 85, 93, 94, 86, 90] },
+  { no: 9, nis: '232407032', nisn: '0107305756', nama: 'LUTHFI FAEYZA SATRIOPUTRA', s: 0, i: 1, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Futsal', e3n: 'Sangat Baik', scores: [88, 86, 86, 93, 86, 84, 93, 81, 93, 85, 90, 86, 91, 90, 89, 88] },
+  { no: 10, nis: '242507041', nisn: '0108446122', nama: 'MOHAMAD MIRZA RADITYA', s: 2, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Futsal', e3n: 'Sangat Baik', scores: [88, 83, 89, 81, 80, 88, 90, 75, 83, 83, 85, 88, 94, 81, 85, 78] },
+  { no: 11, nis: '232407022', nisn: '0113743973', nama: 'MUHAMMAD ALFAJRI', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Basket', e3n: 'Baik', scores: [87, 88, 84, 85, 78, 89, 90, 78, 80, 88, 85, 86, 88, 83, 82, 76] },
+  { no: 12, nis: '232407058', nisn: '0103456069', nama: 'NADHIF SYAFWAN RIFAAT', s: 0, i: 3, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Basket', e3n: 'Baik', scores: [86, 77, 83, 86, 78, 84, 90, 79, 88, 81, 85, 82, 89, 84, 85, 78] }
+];
+
+// Struktur 9 Sikap & 28 Indikator SKL Kepemimpinan (Format Resmi RAPORT KEPEMIMPINAN IX ABU .XLSM)
+const SKL_KEPEMIMPINAN_28 = [
+  {
+    no: 1,
+    kategori: "Disiplin dan tanggungjawab",
+    items: [
+      { id: "d1", no_sub: 1, text: "Hadir di sekolah tepat waktu" },
+      { id: "d2", no_sub: 2, text: "Menghindari perbuatan yang merusak" },
+      { id: "d3", no_sub: 3, text: "Terbiasa antri dalam segala hal" },
+      { id: "d4", no_sub: 4, text: "Menyelesaikan tugas sesuai jadwal" },
+      { id: "d5", no_sub: 5, text: "Meletakkan benda/barang pada tempatnya" },
+      { id: "d6", no_sub: 6, text: "Menyiapkan dan mengemasi peralatan belajar" },
+      { id: "d7", no_sub: 7, text: "Tertib ketika wudlu dan shalat" }
+    ]
+  },
+  {
+    no: 2,
+    kategori: "Kebersihan dan kerapihan",
+    items: [
+      { id: "k1", no_sub: 1, text: "Menjaga kebersihan dan kerapihan dalam berpakaian" },
+      { id: "k2", no_sub: 2, text: "Menjaga kebersihan badan" },
+      { id: "k3", no_sub: 3, text: "Menjaga kerapihan peralatan sekolah" },
+      { id: "k4", no_sub: 4, text: "Menjaga kerapihan meja belajar" },
+      { id: "k5", no_sub: 5, text: "Menjaga kebersihan lingkungan sekolah" }
+    ]
+  },
+  {
+    no: 3,
+    kategori: "Pembiasaan",
+    items: [
+      { id: "p1", no_sub: 1, text: "Dzikir pagi petang" },
+      { id: "p2", no_sub: 2, text: "Sholat dhuha" },
+      { id: "p3", no_sub: 3, text: "Literasi (membaca buku)" },
+      { id: "p4", no_sub: 4, text: "Berdo'a" },
+      { id: "p5", no_sub: 5, text: "Memberi dan menjawab salam" }
+    ]
+  },
+  {
+    no: 4,
+    kategori: "Kesopanan",
+    items: [
+      { id: "s1", no_sub: 1, text: "Berbahasa yang baik dan sopan" },
+      { id: "s2", no_sub: 2, text: "Berperilaku baik dan sopan" }
+    ]
+  },
+  {
+    no: 5,
+    kategori: "Ketaatan",
+    items: [
+      { id: "t1", no_sub: 1, text: "Taat terhadap petunjuk dan nasehat guru" },
+      { id: "t2", no_sub: 2, text: "Taat terhadap tata tertib kelas dan sekolah" }
+    ]
+  },
+  {
+    no: 6,
+    kategori: "Kemandirian",
+    items: [
+      { id: "m1", no_sub: 1, text: "Mandiri dalam menyelesaikan tugas" },
+      { id: "m2", no_sub: 2, text: "Mandiri dalam menyelesaikan masalah" }
+    ]
+  },
+  {
+    no: 7,
+    kategori: "Kerajinan",
+    items: [
+      { id: "r1", no_sub: 1, text: "Rajin masuk sekolah" },
+      { id: "r2", no_sub: 2, text: "Rajin belajar" },
+      { id: "r3", no_sub: 3, text: "Rajin mengerjakan tugas" }
+    ]
+  },
+  {
+    no: 8,
+    kategori: "Kejujuran",
+    items: [
+      { id: "j1", no_sub: 1, text: "Berkata benar" },
+      { id: "j2", no_sub: 2, text: "Tidak mencontek" }
+    ]
+  },
+  {
+    no: 9,
+    kategori: "Muhadharah",
+    items: [
+      { id: "h1", no_sub: 1, text: "Mengikuti kegiatan" }
+    ]
+  }
 ];
 
 // 2. Dataset Resmi Kelas IX UMMU SALAMAH (16 Murid Akhwat)
@@ -3163,12 +3532,13 @@ function buildExactAlImamDataset() {
   const akList = [];
   const kpList = [];
   const dnList = [];
+  const sklList = [];
 
   const addCohortToData = (students, kelasName, prefixNis, jk) => {
     const waliKelas = WALI_KELAS_MAP[kelasName] || 'Kahlil Gibran, S.Pd.';
     
     students.forEach((st) => {
-      const nis = `${prefixNis}${String(st.no).padStart(3, '0')}`;
+      const nis = st.nis || `${prefixNis}${String(st.no).padStart(3, '0')}`;
       
       // 1. Murid Record
       mList.push({
@@ -3262,6 +3632,25 @@ function buildExactAlImamDataset() {
         bahasa_arab: (st.scores && st.scores[15]) || 85,
         catatan_musyrif: 'Alhamdulillah capaian ziyadah dan hafalan Al-Qur\'an sangat baik. Tajwid tertib.'
       });
+
+      // 5. SKL Kepemimpinan Record (28 Indikator)
+      const sklCustom = st.skl_custom || {};
+      const sklScores = {};
+      const sklKeys = ['d1', 'd2', 'd3', 'd4', 'd5', 'd6', 'd7', 'k1', 'k2', 'k3', 'k4', 'k5', 'p1', 'p2', 'p3', 'p4', 'p5', 's1', 's2', 't1', 't2', 'm1', 'm2', 'r1', 'r2', 'r3', 'j1', 'j2', 'h1'];
+      sklKeys.forEach(k => {
+        sklScores[k] = sklCustom[k] || (k.startsWith('k') ? 'B' : 'A');
+      });
+
+      sklList.push({
+        id: `SKL-${nis}`,
+        nis: nis,
+        nama_murid: st.nama,
+        kelas: kelasName,
+        semester: 'Tengah Semester 1',
+        tahun_ajaran: '2025/2026',
+        scores: sklScores,
+        catatan_walas: (st.kp && st.kp.catatan) || 'Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan'
+      });
     });
   };
 
@@ -3277,6 +3666,7 @@ function buildExactAlImamDataset() {
   DEMO_DATA.akademik = akList;
   DEMO_DATA.kepemimpinan = kpList;
   DEMO_DATA.diniyah = dnList;
+  DEMO_DATA.skl = sklList;
 }
 
 buildExactAlImamDataset();
@@ -3297,8 +3687,9 @@ const AppState = {
   akademikList: [...DEMO_DATA.akademik],
   kepemimpinanList: [...DEMO_DATA.kepemimpinan],
   diniyahList: [...DEMO_DATA.diniyah],
+  sklList: [...(DEMO_DATA.skl || [])],
   usersList: [...DEMO_DATA.users],
-  activePrintNis: '202509012' // Nadhif Syafwan Rifaat (No Urut 12 IX ABU BAKAR)
+  activePrintNis: '232407051' // ALWAN IBRAHIM (IX ABU BAKAR)
 };
 
 // 3. API CALL WRAPPER (Auto-detect google.script.run or Fetch REST)
@@ -4502,30 +4893,155 @@ function deleteAkademikAction(id) {
   callApi('deleteNilaiAkademik', { id: id });
 }
 
-// 11. AHLAQ & KEPRIBADIAN MODULE (6 ASPEK AL-IMAM + CATATAN)
+// 11. AHLAQ & KEPRIBADIAN MODULE (6 ASPEK AL-IMAM + CATATAN & 28 INDIKATOR SKL)
 function switchKepribadianInputMode(mode) {
   const secLeger = document.getElementById('section-kp-leger');
+  const secSkl = document.getElementById('section-kp-skl');
   const secList = document.getElementById('section-kp-list');
   const btnLeger = document.getElementById('btn-mode-kp-leger');
+  const btnSkl = document.getElementById('btn-mode-kp-skl');
   const btnList = document.getElementById('btn-mode-kp-list');
+
+  // Reset all
+  secLeger?.classList.add('hidden');
+  secSkl?.classList.add('hidden');
+  secList?.classList.add('hidden');
+  
+  btnLeger?.classList.remove('bg-white', 'text-amber-800', 'shadow-sm');
+  btnLeger?.classList.add('text-slate-600');
+  btnSkl?.classList.remove('bg-white', 'text-amber-800', 'shadow-sm');
+  btnSkl?.classList.add('text-slate-600');
+  btnList?.classList.remove('bg-white', 'text-amber-800', 'shadow-sm');
+  btnList?.classList.add('text-slate-600');
 
   if (mode === 'leger') {
     secLeger?.classList.remove('hidden');
-    secList?.classList.add('hidden');
     btnLeger?.classList.add('bg-white', 'text-amber-800', 'shadow-sm');
     btnLeger?.classList.remove('text-slate-600');
-    btnList?.classList.remove('bg-white', 'text-amber-800', 'shadow-sm');
-    btnList?.classList.add('text-slate-600');
     renderKepribadianGrid();
+  } else if (mode === 'skl') {
+    secSkl?.classList.remove('hidden');
+    btnSkl?.classList.add('bg-white', 'text-amber-800', 'shadow-sm');
+    btnSkl?.classList.remove('text-slate-600');
+    renderSklLegerGrid();
   } else {
-    secLeger?.classList.add('hidden');
     secList?.classList.remove('hidden');
     btnList?.classList.add('bg-white', 'text-amber-800', 'shadow-sm');
     btnList?.classList.remove('text-slate-600');
-    btnLeger?.classList.remove('bg-white', 'text-amber-800', 'shadow-sm');
-    btnLeger?.classList.add('text-slate-600');
     loadNilaiKepemimpinan();
   }
+}
+
+// 11B. RENDER LEGER SKL 28 INDIKATOR (SESUAI EXCEL RAPORT KEPEMIMPINAN IX ABU)
+function renderSklLegerGrid() {
+  const kelasSelect = document.getElementById('skl-kp-kelas');
+  const currentKelas = kelasSelect ? kelasSelect.value : 'IX ABU BAKAR';
+  const students = AppState.muridList.filter(x => x.kelas === currentKelas);
+
+  const tbody = document.getElementById('skl-leger-tbody');
+  if (!tbody) return;
+
+  if (students.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="32" class="py-6 text-center text-slate-400 italic">Belum ada murid di kelas ini.</td></tr>`;
+    return;
+  }
+
+  const sklKeys = ['d1', 'd2', 'd3', 'd4', 'd5', 'd6', 'd7', 'k1', 'k2', 'k3', 'k4', 'k5', 'p1', 'p2', 'p3', 'p4', 'p5', 's1', 's2', 't1', 't2', 'm1', 'm2', 'r1', 'r2', 'r3', 'j1', 'j2', 'h1'];
+
+  tbody.innerHTML = students.map((st, idx) => {
+    const sklEntry = AppState.sklList.find(x => String(x.nis) === String(st.nis)) || { scores: {}, catatan_walas: '' };
+    const catatan = sklEntry.catatan_walas || 'Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan';
+
+    let rowCols = `
+      <td class="py-2 px-1 text-center font-bold text-slate-600 bg-slate-50 sticky left-0 z-10 border border-slate-200">${st.no_urut || (idx + 1)}</td>
+      <td class="py-2 px-2 text-left font-bold text-slate-900 bg-slate-50 sticky left-8 z-10 border border-slate-200">${st.nama_murid || st.nama_santri}</td>
+      <td class="py-2 px-1 text-center font-mono text-slate-600 border border-slate-200 text-[10px]">${st.nis}</td>
+    `;
+
+    sklKeys.forEach(k => {
+      const defaultVal = (sklEntry.scores && sklEntry.scores[k]) ? sklEntry.scores[k] : (k.startsWith('k') ? 'B' : 'A');
+      rowCols += `
+        <td class="py-1 px-0.5 border border-slate-200">
+          <select data-nis="${st.nis}" data-skl-key="${k}" class="skl-input-cell w-full bg-transparent text-center font-bold font-mono text-xs focus:bg-amber-50 focus:ring-1 focus:ring-amber-500 rounded cursor-pointer ${defaultVal === 'A' ? 'text-emerald-700' : 'text-blue-700'}">
+            <option value="A" ${defaultVal === 'A' ? 'selected' : ''}>A</option>
+            <option value="B" ${defaultVal === 'B' ? 'selected' : ''}>B</option>
+            <option value="C" ${defaultVal === 'C' ? 'selected' : ''}>C</option>
+            <option value="D" ${defaultVal === 'D' ? 'selected' : ''}>D</option>
+          </select>
+        </td>
+      `;
+    });
+
+    rowCols += `
+      <td class="py-1 px-2 border border-slate-200 text-left">
+        <input type="text" data-nis="${st.nis}" class="skl-catatan-cell w-full text-xs bg-slate-50 border border-slate-200 rounded px-2 py-1 text-slate-800 focus:bg-white focus:ring-1 focus:ring-amber-500" value="${catatan}" />
+      </td>
+    `;
+
+    return `<tr class="hover:bg-amber-50/40 transition">${rowCols}</tr>`;
+  }).join('');
+}
+
+function applyFastSklPresets(type) {
+  const cells = document.querySelectorAll('.skl-input-cell');
+  cells.forEach(cell => {
+    const key = cell.getAttribute('data-skl-key');
+    if (type === 'all_a') {
+      cell.value = 'A';
+      cell.className = 'skl-input-cell w-full bg-transparent text-center font-bold font-mono text-xs text-emerald-700 rounded cursor-pointer';
+    } else {
+      // Standar Al-Imam: Kebersihan bernilai B, aspek lainnya bernilai A
+      if (key && key.startsWith('k')) {
+        cell.value = 'B';
+        cell.className = 'skl-input-cell w-full bg-transparent text-center font-bold font-mono text-xs text-blue-700 rounded cursor-pointer';
+      } else {
+        cell.value = 'A';
+        cell.className = 'skl-input-cell w-full bg-transparent text-center font-bold font-mono text-xs text-emerald-700 rounded cursor-pointer';
+      }
+    }
+  });
+
+  showToast(type === 'all_a' ? 'Semua 28 indikator SKL diatur ke nilai "A"!' : 'Standar Al-Imam (Kebersihan B, lainnya A) berhasil diterapkan!', 'success');
+}
+
+function saveSklLegerGrid() {
+  const kelasSelect = document.getElementById('skl-kp-kelas');
+  const currentKelas = kelasSelect ? kelasSelect.value : 'IX ABU BAKAR';
+  const students = AppState.muridList.filter(x => x.kelas === currentKelas);
+
+  const updatedEntries = [];
+
+  students.forEach(st => {
+    const cells = document.querySelectorAll(`.skl-input-cell[data-nis="${st.nis}"]`);
+    const catatanInput = document.querySelector(`.skl-catatan-cell[data-nis="${st.nis}"]`);
+    const scores = {};
+
+    cells.forEach(c => {
+      const k = c.getAttribute('data-skl-key');
+      if (k) scores[k] = c.value;
+    });
+
+    const entry = {
+      id: `SKL-${st.nis}`,
+      nis: st.nis,
+      nama_murid: st.nama_murid || st.nama_santri,
+      kelas: currentKelas,
+      semester: 'Tengah Semester 1',
+      tahun_ajaran: '2025/2026',
+      scores: scores,
+      catatan_walas: catatanInput ? catatanInput.value : 'Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan'
+    };
+
+    updatedEntries.push(entry);
+
+    const idx = AppState.sklList.findIndex(x => String(x.nis) === String(st.nis));
+    if (idx !== -1) AppState.sklList[idx] = entry;
+    else AppState.sklList.push(entry);
+  });
+
+  showToast(`Alhamdulillah, nilai SKL Kepemimpinan untuk ${updatedEntries.length} murid kelas ${currentKelas} berhasil disimpan!`, 'success');
+
+  callApi('saveBulkSklKepemimpinan', { items: updatedEntries });
 }
 
 function renderKepribadianGrid() {
@@ -5159,14 +5675,55 @@ function deleteUserAction(id) {
   callApi('deleteUser', { id: id });
 }
 
-// 15. CETAK RAPOR PORTOFOLIO TENGAH SEMESTER (PERSIS SHEET PRINT EXCEL AL-IMAM)
+// 15. CETAK RAPOR (DUAL FORMAT: PORTOFOLIO AKADEMIK & RAPOR KEPEMIMPINAN SKL)
 function previewRaporDirect(nis) {
   AppState.activePrintNis = nis;
   switchView('rapor');
+  switchPrintFormat('portofolio');
+  loadMuridReportForPrint(nis);
 }
 
 function openQuickPrintModal() {
   switchView('rapor');
+  switchPrintFormat('portofolio');
+  if (AppState.activePrintNis) loadMuridReportForPrint(AppState.activePrintNis);
+  else if (AppState.muridList.length > 0) loadMuridReportForPrint(AppState.muridList[0].nis);
+}
+
+function openPrintKepemimpinanDirect(nis) {
+  if (nis) {
+    AppState.activePrintNis = nis;
+  } else if (!AppState.activePrintNis && AppState.muridList.length > 0) {
+    AppState.activePrintNis = AppState.muridList[0].nis;
+  }
+  switchView('rapor');
+  switchPrintFormat('kepemimpinan');
+  loadMuridReportForPrint(AppState.activePrintNis);
+}
+
+function switchPrintFormat(format) {
+  const btnPortofolio = document.getElementById('btn-print-tab-portofolio');
+  const btnKepemimpinan = document.getElementById('btn-print-tab-kepemimpinan');
+  const sheetPortofolio = document.getElementById('print-sheet-portofolio');
+  const sheetKepemimpinan = document.getElementById('print-sheet-kepemimpinan');
+
+  if (format === 'kepemimpinan') {
+    sheetPortofolio?.classList.add('hidden');
+    sheetKepemimpinan?.classList.remove('hidden');
+
+    btnKepemimpinan?.classList.add('bg-white', 'text-indigo-700', 'shadow-sm');
+    btnKepemimpinan?.classList.remove('text-slate-600');
+    btnPortofolio?.classList.remove('bg-white', 'text-indigo-700', 'shadow-sm');
+    btnPortofolio?.classList.add('text-slate-600');
+  } else {
+    sheetPortofolio?.classList.remove('hidden');
+    sheetKepemimpinan?.classList.add('hidden');
+
+    btnPortofolio?.classList.add('bg-white', 'text-indigo-700', 'shadow-sm');
+    btnPortofolio?.classList.remove('text-slate-600');
+    btnKepemimpinan?.classList.remove('bg-white', 'text-indigo-700', 'shadow-sm');
+    btnKepemimpinan?.classList.add('text-slate-600');
+  }
 }
 
 function loadMuridReportForPrint(nis) {
@@ -5191,22 +5748,28 @@ function loadMuridReportForPrint(nis) {
 
   const avgAk = akItems.length > 0 ? (totalAk / akItems.length).toFixed(1) : '84.8';
   const kp = AppState.kepemimpinanList.find(x => String(x.nis) === String(nis)) || DEMO_DATA.kepemimpinan[0];
+  const skl = AppState.sklList.find(x => String(x.nis) === String(nis)) || DEMO_DATA.skl[0];
   const dn = AppState.diniyahList.find(x => String(x.nis) === String(nis)) || DEMO_DATA.diniyah[0];
 
-  // Render immediately with local/demo state
-  renderRaporSheet({
+  const localReport = {
     settings: AppState.cmsSettings,
     murid: m,
     akademik: { items: akItems, totalNilai: totalAk, rataRata: avgAk, jumlahMapel: akItems.length },
     kepemimpinan: kp,
+    skl: skl,
     diniyah: dn
-  });
+  };
+
+  // Render both sheet formats immediately with local state
+  renderRaporSheet(localReport);
+  renderRaporKepemimpinanSheet(localReport);
 
   // Fetch updated data from backend if available
   callApi('getMuridReport', { nis: nis })
     .then(res => {
       if (res && res.success && res.data) {
         renderRaporSheet(res.data);
+        renderRaporKepemimpinanSheet(res.data);
       }
     })
     .catch(() => {});
@@ -5277,6 +5840,60 @@ function renderRaporSheet(report) {
   if (document.getElementById('print-report-date')) document.getElementById('print-report-date').innerText = set.report_date || '17 Oktober 2025';
   if (document.getElementById('print-headmaster-name')) document.getElementById('print-headmaster-name').innerText = set.headmaster_name || 'Arif Rohman, M.Pd.';
   if (document.getElementById('print-headmaster-nip')) document.getElementById('print-headmaster-nip').innerText = set.headmaster_nip ? `NIP. ${set.headmaster_nip}` : 'NIP.';
+}
+
+function renderRaporKepemimpinanSheet(report) {
+  const m = report.murid || report.santri || {};
+  const set = report.settings || AppState.cmsSettings || {};
+  const sklEntry = report.skl || AppState.sklList.find(x => String(x.nis) === String(m.nis)) || { scores: {}, catatan_walas: '' };
+  const scores = sklEntry.scores || {};
+
+  const namaMurid = m.nama_murid || m.nama_santri || '-';
+  if (document.getElementById('print-skl-nama')) document.getElementById('print-skl-nama').innerText = namaMurid;
+  if (document.getElementById('print-skl-kelas')) document.getElementById('print-skl-kelas').innerText = m.kelas || 'IX ABU BAKAR';
+  if (document.getElementById('print-skl-nis')) document.getElementById('print-skl-nis').innerText = m.nis || '-';
+  if (document.getElementById('print-skl-nisn')) document.getElementById('print-skl-nisn').innerText = m.nisn || '-';
+  if (document.getElementById('print-skl-semester')) document.getElementById('print-skl-semester').innerText = sklEntry.semester || 'Tengah Semester 1';
+  if (document.getElementById('print-skl-tahun-ajaran')) document.getElementById('print-skl-tahun-ajaran').innerText = set.academic_year || sklEntry.tahun_ajaran || '2025/2026';
+
+  const waliKelasMurid = m.wali_kelas || WALI_KELAS_MAP[m.kelas] || set.wali_kelas_default || 'Kahlil Gibran, S.Pd.';
+  if (document.getElementById('print-skl-walas-info')) document.getElementById('print-skl-walas-info').innerText = waliKelasMurid;
+  if (document.getElementById('print-skl-ttd-walas')) document.getElementById('print-skl-ttd-walas').innerText = waliKelasMurid;
+  if (document.getElementById('print-skl-ttd-kepsek')) document.getElementById('print-skl-ttd-kepsek').innerText = set.headmaster_name || 'Arif Rohman, M.Pd.';
+
+  if (document.getElementById('print-skl-catatan-walas')) {
+    document.getElementById('print-skl-catatan-walas').innerText = sklEntry.catatan_walas || 'Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan';
+  }
+
+  const tbody = document.getElementById('print-skl-tbody');
+  if (!tbody) return;
+
+  let rowsHtml = '';
+  SKL_KEPEMIMPINAN_28.forEach(cat => {
+    const rowSpan = cat.items.length;
+    cat.items.forEach((item, itemIdx) => {
+      const defaultVal = (scores && scores[item.id]) ? scores[item.id] : (item.id.startsWith('k') ? 'B' : 'A');
+      if (itemIdx === 0) {
+        rowsHtml += `
+          <tr>
+            <td rowspan="${rowSpan}" class="py-1 px-1 text-center border border-black font-semibold text-slate-800 align-top">${cat.no}</td>
+            <td rowspan="${rowSpan}" class="py-1 px-2 border border-black font-semibold text-slate-900 align-top">${cat.kategori}</td>
+            <td class="py-1 px-2 border border-black text-slate-900">${item.text}</td>
+            <td class="py-1 px-1 text-center border border-black font-bold font-mono text-slate-950">${defaultVal}</td>
+          </tr>
+        `;
+      } else {
+        rowsHtml += `
+          <tr>
+            <td class="py-1 px-2 border border-black text-slate-900">${item.text}</td>
+            <td class="py-1 px-1 text-center border border-black font-bold font-mono text-slate-950">${defaultVal}</td>
+          </tr>
+        `;
+      }
+    });
+  });
+
+  tbody.innerHTML = rowsHtml;
 }
 
 // 16. DATABASE INITIALIZATION TRIGGER

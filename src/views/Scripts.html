@@ -185,20 +185,107 @@ const WALI_KELAS_MAP = {
   'VII KHADIJAH': 'Usth. Maryam Al-Qibtiyyah, S.Pd.'
 };
 
-// 1. Dataset Resmi Kelas IX ABU BAKAR (12 Murid Ikhwan)
+// 1. Dataset Resmi Kelas IX ABU BAKAR (12 Murid Ikhwan - Sesuai File Excel RAPORT KEPEMIMPINAN IX ABU)
 const EXCEL_STUDENTS_IX_ABU_BAKAR = [
-  { no: 1, nisn: '0113408257', nama: 'AHMAD YAZID ILMANY RAMADHAN', s: 2, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Futsal', e3n: 'Baik', scores: [87, 88, 82, 84, 80, 85, 93, 78, 84, 85, 89, 86, 89, 90, 85, 76] },
-  { no: 2, nisn: '0116425792', nama: 'AL AZIZ BENZAVEIRO SUNARYO', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Basket', e3n: 'Sangat Baik', scores: [89, 86, 84, 90, 86, 90, 93, 85, 90, 86, 93, 87, 89, 91, 88, 78] },
-  { no: 3, nisn: '0113811055', nama: 'ALWAN IBRAHIM', s: 2, i: 3, a: 4, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Futsal', e3n: 'Sangat Baik', scores: [86, 85, 83, 90, 78, 84, 86, 76, 80, 83, 86, 84, 92, 89, 82, 76] },
-  { no: 4, nisn: '0114838409', nama: 'AZKA DWI ABDHUL GHANIY', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Basket', e3n: 'Sangat Baik', scores: [86, 87, 85, 87, 86, 88, 88, 84, 91, 87, 93, 85, 89, 92, 86, 80] },
-  { no: 5, nisn: '0118589769', nama: 'DZAKI AQEELA ALIFANDRA', s: 2, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Basket', e3n: 'Sangat Baik', scores: [88, 86, 87, 89, 90, 87, 90, 87, 89, 84, 88, 85, 89, 89, 85, 86] },
-  { no: 6, nisn: '0113915620', nama: 'FARHAN PUTRA NOVRIANSYAH', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Futsal', e3n: 'Baik', scores: [92, 83, 87, 91, 90, 88, 88, 81, 89, 92, 96, 85, 91, 92, 91, 93] },
-  { no: 7, nisn: '0118560424', nama: 'GHAISAN FARRELLUZ SUKARNO', s: 0, i: 3, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Basket', e3n: 'Baik', scores: [91, 85, 85, 93, 90, 88, 91, 94, 85, 88, 98, 87, 91, 94, 88, 86] },
-  { no: 8, nisn: '0119042818', nama: 'GIBRAN ARGA PUTRAKU', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Futsal', e3n: 'Sangat Baik', scores: [88, 88, 84, 97, 97, 85, 89, 88, 90, 87, 96, 85, 93, 94, 86, 90] },
-  { no: 9, nisn: '0107305756', nama: 'LUTHFI FAEYZA SATRIOPUTRA', s: 0, i: 1, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Futsal', e3n: 'Sangat Baik', scores: [88, 86, 86, 93, 86, 84, 93, 81, 93, 85, 90, 86, 91, 90, 89, 88] },
-  { no: 10, nisn: '0108446122', nama: 'MOHAMAD MIRZA RADITYA', s: 2, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Futsal', e3n: 'Sangat Baik', scores: [88, 83, 89, 81, 80, 88, 90, 75, 83, 83, 85, 88, 94, 81, 85, 78] },
-  { no: 11, nisn: '0113743973', nama: 'MUHAMMAD ALFAJRI', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Basket', e3n: 'Baik', scores: [87, 88, 84, 85, 78, 89, 90, 78, 80, 88, 85, 86, 88, 83, 82, 76] },
-  { no: 12, nisn: '0103456069', nama: 'NADHIF SYAFWAN RIFAAT', s: 0, i: 3, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Basket', e3n: 'Baik', scores: [86, 77, 83, 86, 78, 84, 90, 79, 88, 81, 85, 82, 89, 84, 85, 78] }
+  { no: 1, nis: '232407021', nisn: '0113408257', nama: 'AHMAD YAZID ILMANY RAMADHAN', s: 2, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Futsal', e3n: 'Baik', scores: [87, 88, 82, 84, 80, 85, 93, 78, 84, 85, 89, 86, 89, 90, 85, 76] },
+  { no: 2, nis: '232407020', nisn: '0116425792', nama: 'AL AZIZ BENZAVEIRO SUNARYO', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Basket', e3n: 'Sangat Baik', scores: [89, 86, 84, 90, 86, 90, 93, 85, 90, 86, 93, 87, 89, 91, 88, 78] },
+  { no: 3, nis: '232407051', nisn: '0113811055', nama: 'ALWAN IBRAHIM', s: 2, i: 3, a: 4, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Futsal', e3n: 'Sangat Baik', scores: [86, 85, 83, 90, 78, 84, 86, 76, 80, 83, 86, 84, 92, 89, 82, 76], skl_custom: { d1:'B', d2:'B', d3:'B', d4:'B', d5:'B', d6:'B', d7:'B', k1:'B', k2:'B', k3:'B', k4:'B', k5:'B' } },
+  { no: 4, nis: '232407057', nisn: '0114838409', nama: 'AZKA DWI ABDHUL GHANIY', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Basket', e3n: 'Sangat Baik', scores: [86, 87, 85, 87, 86, 88, 88, 84, 91, 87, 93, 85, 89, 92, 86, 80] },
+  { no: 5, nis: '232407019', nisn: '0118589769', nama: 'DZAKI AQEELA ALIFANDRA', s: 2, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Basket', e3n: 'Sangat Baik', scores: [88, 86, 87, 89, 90, 87, 90, 87, 89, 84, 88, 85, 89, 89, 85, 86] },
+  { no: 6, nis: '232407023', nisn: '0113915620', nama: 'FARHAN PUTRA NOVRIANSYAH', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Futsal', e3n: 'Baik', scores: [92, 83, 87, 91, 90, 88, 88, 81, 89, 92, 96, 85, 91, 92, 91, 93] },
+  { no: 7, nis: '232407024', nisn: '0118560424', nama: 'GHAISAN FARRELLUZ SUKARNO', s: 0, i: 3, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Basket', e3n: 'Baik', scores: [91, 85, 85, 93, 90, 88, 91, 94, 85, 88, 98, 87, 91, 94, 88, 86] },
+  { no: 8, nis: '232407018', nisn: '0119042818', nama: 'GIBRAN ARGA PUTRAKU', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Futsal', e3n: 'Sangat Baik', scores: [88, 88, 84, 97, 97, 85, 89, 88, 90, 87, 96, 85, 93, 94, 86, 90] },
+  { no: 9, nis: '232407032', nisn: '0107305756', nama: 'LUTHFI FAEYZA SATRIOPUTRA', s: 0, i: 1, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Futsal', e3n: 'Sangat Baik', scores: [88, 86, 86, 93, 86, 84, 93, 81, 93, 85, 90, 86, 91, 90, 89, 88] },
+  { no: 10, nis: '242507041', nisn: '0108446122', nama: 'MOHAMAD MIRZA RADITYA', s: 2, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Futsal', e3n: 'Sangat Baik', scores: [88, 83, 89, 81, 80, 88, 90, 75, 83, 83, 85, 88, 94, 81, 85, 78] },
+  { no: 11, nis: '232407022', nisn: '0113743973', nama: 'MUHAMMAD ALFAJRI', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Basket', e3n: 'Baik', scores: [87, 88, 84, 85, 78, 89, 90, 78, 80, 88, 85, 86, 88, 83, 82, 76] },
+  { no: 12, nis: '232407058', nisn: '0103456069', nama: 'NADHIF SYAFWAN RIFAAT', s: 0, i: 3, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Basket', e3n: 'Baik', scores: [86, 77, 83, 86, 78, 84, 90, 79, 88, 81, 85, 82, 89, 84, 85, 78] }
+];
+
+// Struktur 9 Sikap & 28 Indikator SKL Kepemimpinan (Format Resmi RAPORT KEPEMIMPINAN IX ABU .XLSM)
+const SKL_KEPEMIMPINAN_28 = [
+  {
+    no: 1,
+    kategori: "Disiplin dan tanggungjawab",
+    items: [
+      { id: "d1", no_sub: 1, text: "Hadir di sekolah tepat waktu" },
+      { id: "d2", no_sub: 2, text: "Menghindari perbuatan yang merusak" },
+      { id: "d3", no_sub: 3, text: "Terbiasa antri dalam segala hal" },
+      { id: "d4", no_sub: 4, text: "Menyelesaikan tugas sesuai jadwal" },
+      { id: "d5", no_sub: 5, text: "Meletakkan benda/barang pada tempatnya" },
+      { id: "d6", no_sub: 6, text: "Menyiapkan dan mengemasi peralatan belajar" },
+      { id: "d7", no_sub: 7, text: "Tertib ketika wudlu dan shalat" }
+    ]
+  },
+  {
+    no: 2,
+    kategori: "Kebersihan dan kerapihan",
+    items: [
+      { id: "k1", no_sub: 1, text: "Menjaga kebersihan dan kerapihan dalam berpakaian" },
+      { id: "k2", no_sub: 2, text: "Menjaga kebersihan badan" },
+      { id: "k3", no_sub: 3, text: "Menjaga kerapihan peralatan sekolah" },
+      { id: "k4", no_sub: 4, text: "Menjaga kerapihan meja belajar" },
+      { id: "k5", no_sub: 5, text: "Menjaga kebersihan lingkungan sekolah" }
+    ]
+  },
+  {
+    no: 3,
+    kategori: "Pembiasaan",
+    items: [
+      { id: "p1", no_sub: 1, text: "Dzikir pagi petang" },
+      { id: "p2", no_sub: 2, text: "Sholat dhuha" },
+      { id: "p3", no_sub: 3, text: "Literasi (membaca buku)" },
+      { id: "p4", no_sub: 4, text: "Berdo'a" },
+      { id: "p5", no_sub: 5, text: "Memberi dan menjawab salam" }
+    ]
+  },
+  {
+    no: 4,
+    kategori: "Kesopanan",
+    items: [
+      { id: "s1", no_sub: 1, text: "Berbahasa yang baik dan sopan" },
+      { id: "s2", no_sub: 2, text: "Berperilaku baik dan sopan" }
+    ]
+  },
+  {
+    no: 5,
+    kategori: "Ketaatan",
+    items: [
+      { id: "t1", no_sub: 1, text: "Taat terhadap petunjuk dan nasehat guru" },
+      { id: "t2", no_sub: 2, text: "Taat terhadap tata tertib kelas dan sekolah" }
+    ]
+  },
+  {
+    no: 6,
+    kategori: "Kemandirian",
+    items: [
+      { id: "m1", no_sub: 1, text: "Mandiri dalam menyelesaikan tugas" },
+      { id: "m2", no_sub: 2, text: "Mandiri dalam menyelesaikan masalah" }
+    ]
+  },
+  {
+    no: 7,
+    kategori: "Kerajinan",
+    items: [
+      { id: "r1", no_sub: 1, text: "Rajin masuk sekolah" },
+      { id: "r2", no_sub: 2, text: "Rajin belajar" },
+      { id: "r3", no_sub: 3, text: "Rajin mengerjakan tugas" }
+    ]
+  },
+  {
+    no: 8,
+    kategori: "Kejujuran",
+    items: [
+      { id: "j1", no_sub: 1, text: "Berkata benar" },
+      { id: "j2", no_sub: 2, text: "Tidak mencontek" }
+    ]
+  },
+  {
+    no: 9,
+    kategori: "Muhadharah",
+    items: [
+      { id: "h1", no_sub: 1, text: "Mengikuti kegiatan" }
+    ]
+  }
 ];
 
 // 2. Dataset Resmi Kelas IX UMMU SALAMAH (16 Murid Akhwat)
@@ -280,12 +367,13 @@ function buildExactAlImamDataset() {
   const akList = [];
   const kpList = [];
   const dnList = [];
+  const sklList = [];
 
   const addCohortToData = (students, kelasName, prefixNis, jk) => {
     const waliKelas = WALI_KELAS_MAP[kelasName] || 'Kahlil Gibran, S.Pd.';
     
     students.forEach((st) => {
-      const nis = `${prefixNis}${String(st.no).padStart(3, '0')}`;
+      const nis = st.nis || `${prefixNis}${String(st.no).padStart(3, '0')}`;
       
       // 1. Murid Record
       mList.push({
@@ -379,6 +467,25 @@ function buildExactAlImamDataset() {
         bahasa_arab: (st.scores && st.scores[15]) || 85,
         catatan_musyrif: 'Alhamdulillah capaian ziyadah dan hafalan Al-Qur\'an sangat baik. Tajwid tertib.'
       });
+
+      // 5. SKL Kepemimpinan Record (28 Indikator)
+      const sklCustom = st.skl_custom || {};
+      const sklScores = {};
+      const sklKeys = ['d1', 'd2', 'd3', 'd4', 'd5', 'd6', 'd7', 'k1', 'k2', 'k3', 'k4', 'k5', 'p1', 'p2', 'p3', 'p4', 'p5', 's1', 's2', 't1', 't2', 'm1', 'm2', 'r1', 'r2', 'r3', 'j1', 'j2', 'h1'];
+      sklKeys.forEach(k => {
+        sklScores[k] = sklCustom[k] || (k.startsWith('k') ? 'B' : 'A');
+      });
+
+      sklList.push({
+        id: `SKL-${nis}`,
+        nis: nis,
+        nama_murid: st.nama,
+        kelas: kelasName,
+        semester: 'Tengah Semester 1',
+        tahun_ajaran: '2025/2026',
+        scores: sklScores,
+        catatan_walas: (st.kp && st.kp.catatan) || 'Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan'
+      });
     });
   };
 
@@ -394,6 +501,7 @@ function buildExactAlImamDataset() {
   DEMO_DATA.akademik = akList;
   DEMO_DATA.kepemimpinan = kpList;
   DEMO_DATA.diniyah = dnList;
+  DEMO_DATA.skl = sklList;
 }
 
 buildExactAlImamDataset();
@@ -414,8 +522,9 @@ const AppState = {
   akademikList: [...DEMO_DATA.akademik],
   kepemimpinanList: [...DEMO_DATA.kepemimpinan],
   diniyahList: [...DEMO_DATA.diniyah],
+  sklList: [...(DEMO_DATA.skl || [])],
   usersList: [...DEMO_DATA.users],
-  activePrintNis: '202509012' // Nadhif Syafwan Rifaat (No Urut 12 IX ABU BAKAR)
+  activePrintNis: '232407051' // ALWAN IBRAHIM (IX ABU BAKAR)
 };
 
 // 3. API CALL WRAPPER (Auto-detect google.script.run or Fetch REST)
@@ -1619,30 +1728,155 @@ function deleteAkademikAction(id) {
   callApi('deleteNilaiAkademik', { id: id });
 }
 
-// 11. AHLAQ & KEPRIBADIAN MODULE (6 ASPEK AL-IMAM + CATATAN)
+// 11. AHLAQ & KEPRIBADIAN MODULE (6 ASPEK AL-IMAM + CATATAN & 28 INDIKATOR SKL)
 function switchKepribadianInputMode(mode) {
   const secLeger = document.getElementById('section-kp-leger');
+  const secSkl = document.getElementById('section-kp-skl');
   const secList = document.getElementById('section-kp-list');
   const btnLeger = document.getElementById('btn-mode-kp-leger');
+  const btnSkl = document.getElementById('btn-mode-kp-skl');
   const btnList = document.getElementById('btn-mode-kp-list');
+
+  // Reset all
+  secLeger?.classList.add('hidden');
+  secSkl?.classList.add('hidden');
+  secList?.classList.add('hidden');
+  
+  btnLeger?.classList.remove('bg-white', 'text-amber-800', 'shadow-sm');
+  btnLeger?.classList.add('text-slate-600');
+  btnSkl?.classList.remove('bg-white', 'text-amber-800', 'shadow-sm');
+  btnSkl?.classList.add('text-slate-600');
+  btnList?.classList.remove('bg-white', 'text-amber-800', 'shadow-sm');
+  btnList?.classList.add('text-slate-600');
 
   if (mode === 'leger') {
     secLeger?.classList.remove('hidden');
-    secList?.classList.add('hidden');
     btnLeger?.classList.add('bg-white', 'text-amber-800', 'shadow-sm');
     btnLeger?.classList.remove('text-slate-600');
-    btnList?.classList.remove('bg-white', 'text-amber-800', 'shadow-sm');
-    btnList?.classList.add('text-slate-600');
     renderKepribadianGrid();
+  } else if (mode === 'skl') {
+    secSkl?.classList.remove('hidden');
+    btnSkl?.classList.add('bg-white', 'text-amber-800', 'shadow-sm');
+    btnSkl?.classList.remove('text-slate-600');
+    renderSklLegerGrid();
   } else {
-    secLeger?.classList.add('hidden');
     secList?.classList.remove('hidden');
     btnList?.classList.add('bg-white', 'text-amber-800', 'shadow-sm');
     btnList?.classList.remove('text-slate-600');
-    btnLeger?.classList.remove('bg-white', 'text-amber-800', 'shadow-sm');
-    btnLeger?.classList.add('text-slate-600');
     loadNilaiKepemimpinan();
   }
+}
+
+// 11B. RENDER LEGER SKL 28 INDIKATOR (SESUAI EXCEL RAPORT KEPEMIMPINAN IX ABU)
+function renderSklLegerGrid() {
+  const kelasSelect = document.getElementById('skl-kp-kelas');
+  const currentKelas = kelasSelect ? kelasSelect.value : 'IX ABU BAKAR';
+  const students = AppState.muridList.filter(x => x.kelas === currentKelas);
+
+  const tbody = document.getElementById('skl-leger-tbody');
+  if (!tbody) return;
+
+  if (students.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="32" class="py-6 text-center text-slate-400 italic">Belum ada murid di kelas ini.</td></tr>`;
+    return;
+  }
+
+  const sklKeys = ['d1', 'd2', 'd3', 'd4', 'd5', 'd6', 'd7', 'k1', 'k2', 'k3', 'k4', 'k5', 'p1', 'p2', 'p3', 'p4', 'p5', 's1', 's2', 't1', 't2', 'm1', 'm2', 'r1', 'r2', 'r3', 'j1', 'j2', 'h1'];
+
+  tbody.innerHTML = students.map((st, idx) => {
+    const sklEntry = AppState.sklList.find(x => String(x.nis) === String(st.nis)) || { scores: {}, catatan_walas: '' };
+    const catatan = sklEntry.catatan_walas || 'Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan';
+
+    let rowCols = `
+      <td class="py-2 px-1 text-center font-bold text-slate-600 bg-slate-50 sticky left-0 z-10 border border-slate-200">${st.no_urut || (idx + 1)}</td>
+      <td class="py-2 px-2 text-left font-bold text-slate-900 bg-slate-50 sticky left-8 z-10 border border-slate-200">${st.nama_murid || st.nama_santri}</td>
+      <td class="py-2 px-1 text-center font-mono text-slate-600 border border-slate-200 text-[10px]">${st.nis}</td>
+    `;
+
+    sklKeys.forEach(k => {
+      const defaultVal = (sklEntry.scores && sklEntry.scores[k]) ? sklEntry.scores[k] : (k.startsWith('k') ? 'B' : 'A');
+      rowCols += `
+        <td class="py-1 px-0.5 border border-slate-200">
+          <select data-nis="${st.nis}" data-skl-key="${k}" class="skl-input-cell w-full bg-transparent text-center font-bold font-mono text-xs focus:bg-amber-50 focus:ring-1 focus:ring-amber-500 rounded cursor-pointer ${defaultVal === 'A' ? 'text-emerald-700' : 'text-blue-700'}">
+            <option value="A" ${defaultVal === 'A' ? 'selected' : ''}>A</option>
+            <option value="B" ${defaultVal === 'B' ? 'selected' : ''}>B</option>
+            <option value="C" ${defaultVal === 'C' ? 'selected' : ''}>C</option>
+            <option value="D" ${defaultVal === 'D' ? 'selected' : ''}>D</option>
+          </select>
+        </td>
+      `;
+    });
+
+    rowCols += `
+      <td class="py-1 px-2 border border-slate-200 text-left">
+        <input type="text" data-nis="${st.nis}" class="skl-catatan-cell w-full text-xs bg-slate-50 border border-slate-200 rounded px-2 py-1 text-slate-800 focus:bg-white focus:ring-1 focus:ring-amber-500" value="${catatan}" />
+      </td>
+    `;
+
+    return `<tr class="hover:bg-amber-50/40 transition">${rowCols}</tr>`;
+  }).join('');
+}
+
+function applyFastSklPresets(type) {
+  const cells = document.querySelectorAll('.skl-input-cell');
+  cells.forEach(cell => {
+    const key = cell.getAttribute('data-skl-key');
+    if (type === 'all_a') {
+      cell.value = 'A';
+      cell.className = 'skl-input-cell w-full bg-transparent text-center font-bold font-mono text-xs text-emerald-700 rounded cursor-pointer';
+    } else {
+      // Standar Al-Imam: Kebersihan bernilai B, aspek lainnya bernilai A
+      if (key && key.startsWith('k')) {
+        cell.value = 'B';
+        cell.className = 'skl-input-cell w-full bg-transparent text-center font-bold font-mono text-xs text-blue-700 rounded cursor-pointer';
+      } else {
+        cell.value = 'A';
+        cell.className = 'skl-input-cell w-full bg-transparent text-center font-bold font-mono text-xs text-emerald-700 rounded cursor-pointer';
+      }
+    }
+  });
+
+  showToast(type === 'all_a' ? 'Semua 28 indikator SKL diatur ke nilai "A"!' : 'Standar Al-Imam (Kebersihan B, lainnya A) berhasil diterapkan!', 'success');
+}
+
+function saveSklLegerGrid() {
+  const kelasSelect = document.getElementById('skl-kp-kelas');
+  const currentKelas = kelasSelect ? kelasSelect.value : 'IX ABU BAKAR';
+  const students = AppState.muridList.filter(x => x.kelas === currentKelas);
+
+  const updatedEntries = [];
+
+  students.forEach(st => {
+    const cells = document.querySelectorAll(`.skl-input-cell[data-nis="${st.nis}"]`);
+    const catatanInput = document.querySelector(`.skl-catatan-cell[data-nis="${st.nis}"]`);
+    const scores = {};
+
+    cells.forEach(c => {
+      const k = c.getAttribute('data-skl-key');
+      if (k) scores[k] = c.value;
+    });
+
+    const entry = {
+      id: `SKL-${st.nis}`,
+      nis: st.nis,
+      nama_murid: st.nama_murid || st.nama_santri,
+      kelas: currentKelas,
+      semester: 'Tengah Semester 1',
+      tahun_ajaran: '2025/2026',
+      scores: scores,
+      catatan_walas: catatanInput ? catatanInput.value : 'Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan'
+    };
+
+    updatedEntries.push(entry);
+
+    const idx = AppState.sklList.findIndex(x => String(x.nis) === String(st.nis));
+    if (idx !== -1) AppState.sklList[idx] = entry;
+    else AppState.sklList.push(entry);
+  });
+
+  showToast(`Alhamdulillah, nilai SKL Kepemimpinan untuk ${updatedEntries.length} murid kelas ${currentKelas} berhasil disimpan!`, 'success');
+
+  callApi('saveBulkSklKepemimpinan', { items: updatedEntries });
 }
 
 function renderKepribadianGrid() {
@@ -2276,14 +2510,55 @@ function deleteUserAction(id) {
   callApi('deleteUser', { id: id });
 }
 
-// 15. CETAK RAPOR PORTOFOLIO TENGAH SEMESTER (PERSIS SHEET PRINT EXCEL AL-IMAM)
+// 15. CETAK RAPOR (DUAL FORMAT: PORTOFOLIO AKADEMIK & RAPOR KEPEMIMPINAN SKL)
 function previewRaporDirect(nis) {
   AppState.activePrintNis = nis;
   switchView('rapor');
+  switchPrintFormat('portofolio');
+  loadMuridReportForPrint(nis);
 }
 
 function openQuickPrintModal() {
   switchView('rapor');
+  switchPrintFormat('portofolio');
+  if (AppState.activePrintNis) loadMuridReportForPrint(AppState.activePrintNis);
+  else if (AppState.muridList.length > 0) loadMuridReportForPrint(AppState.muridList[0].nis);
+}
+
+function openPrintKepemimpinanDirect(nis) {
+  if (nis) {
+    AppState.activePrintNis = nis;
+  } else if (!AppState.activePrintNis && AppState.muridList.length > 0) {
+    AppState.activePrintNis = AppState.muridList[0].nis;
+  }
+  switchView('rapor');
+  switchPrintFormat('kepemimpinan');
+  loadMuridReportForPrint(AppState.activePrintNis);
+}
+
+function switchPrintFormat(format) {
+  const btnPortofolio = document.getElementById('btn-print-tab-portofolio');
+  const btnKepemimpinan = document.getElementById('btn-print-tab-kepemimpinan');
+  const sheetPortofolio = document.getElementById('print-sheet-portofolio');
+  const sheetKepemimpinan = document.getElementById('print-sheet-kepemimpinan');
+
+  if (format === 'kepemimpinan') {
+    sheetPortofolio?.classList.add('hidden');
+    sheetKepemimpinan?.classList.remove('hidden');
+
+    btnKepemimpinan?.classList.add('bg-white', 'text-indigo-700', 'shadow-sm');
+    btnKepemimpinan?.classList.remove('text-slate-600');
+    btnPortofolio?.classList.remove('bg-white', 'text-indigo-700', 'shadow-sm');
+    btnPortofolio?.classList.add('text-slate-600');
+  } else {
+    sheetPortofolio?.classList.remove('hidden');
+    sheetKepemimpinan?.classList.add('hidden');
+
+    btnPortofolio?.classList.add('bg-white', 'text-indigo-700', 'shadow-sm');
+    btnPortofolio?.classList.remove('text-slate-600');
+    btnKepemimpinan?.classList.remove('bg-white', 'text-indigo-700', 'shadow-sm');
+    btnKepemimpinan?.classList.add('text-slate-600');
+  }
 }
 
 function loadMuridReportForPrint(nis) {
@@ -2308,22 +2583,28 @@ function loadMuridReportForPrint(nis) {
 
   const avgAk = akItems.length > 0 ? (totalAk / akItems.length).toFixed(1) : '84.8';
   const kp = AppState.kepemimpinanList.find(x => String(x.nis) === String(nis)) || DEMO_DATA.kepemimpinan[0];
+  const skl = AppState.sklList.find(x => String(x.nis) === String(nis)) || DEMO_DATA.skl[0];
   const dn = AppState.diniyahList.find(x => String(x.nis) === String(nis)) || DEMO_DATA.diniyah[0];
 
-  // Render immediately with local/demo state
-  renderRaporSheet({
+  const localReport = {
     settings: AppState.cmsSettings,
     murid: m,
     akademik: { items: akItems, totalNilai: totalAk, rataRata: avgAk, jumlahMapel: akItems.length },
     kepemimpinan: kp,
+    skl: skl,
     diniyah: dn
-  });
+  };
+
+  // Render both sheet formats immediately with local state
+  renderRaporSheet(localReport);
+  renderRaporKepemimpinanSheet(localReport);
 
   // Fetch updated data from backend if available
   callApi('getMuridReport', { nis: nis })
     .then(res => {
       if (res && res.success && res.data) {
         renderRaporSheet(res.data);
+        renderRaporKepemimpinanSheet(res.data);
       }
     })
     .catch(() => {});
@@ -2394,6 +2675,60 @@ function renderRaporSheet(report) {
   if (document.getElementById('print-report-date')) document.getElementById('print-report-date').innerText = set.report_date || '17 Oktober 2025';
   if (document.getElementById('print-headmaster-name')) document.getElementById('print-headmaster-name').innerText = set.headmaster_name || 'Arif Rohman, M.Pd.';
   if (document.getElementById('print-headmaster-nip')) document.getElementById('print-headmaster-nip').innerText = set.headmaster_nip ? `NIP. ${set.headmaster_nip}` : 'NIP.';
+}
+
+function renderRaporKepemimpinanSheet(report) {
+  const m = report.murid || report.santri || {};
+  const set = report.settings || AppState.cmsSettings || {};
+  const sklEntry = report.skl || AppState.sklList.find(x => String(x.nis) === String(m.nis)) || { scores: {}, catatan_walas: '' };
+  const scores = sklEntry.scores || {};
+
+  const namaMurid = m.nama_murid || m.nama_santri || '-';
+  if (document.getElementById('print-skl-nama')) document.getElementById('print-skl-nama').innerText = namaMurid;
+  if (document.getElementById('print-skl-kelas')) document.getElementById('print-skl-kelas').innerText = m.kelas || 'IX ABU BAKAR';
+  if (document.getElementById('print-skl-nis')) document.getElementById('print-skl-nis').innerText = m.nis || '-';
+  if (document.getElementById('print-skl-nisn')) document.getElementById('print-skl-nisn').innerText = m.nisn || '-';
+  if (document.getElementById('print-skl-semester')) document.getElementById('print-skl-semester').innerText = sklEntry.semester || 'Tengah Semester 1';
+  if (document.getElementById('print-skl-tahun-ajaran')) document.getElementById('print-skl-tahun-ajaran').innerText = set.academic_year || sklEntry.tahun_ajaran || '2025/2026';
+
+  const waliKelasMurid = m.wali_kelas || WALI_KELAS_MAP[m.kelas] || set.wali_kelas_default || 'Kahlil Gibran, S.Pd.';
+  if (document.getElementById('print-skl-walas-info')) document.getElementById('print-skl-walas-info').innerText = waliKelasMurid;
+  if (document.getElementById('print-skl-ttd-walas')) document.getElementById('print-skl-ttd-walas').innerText = waliKelasMurid;
+  if (document.getElementById('print-skl-ttd-kepsek')) document.getElementById('print-skl-ttd-kepsek').innerText = set.headmaster_name || 'Arif Rohman, M.Pd.';
+
+  if (document.getElementById('print-skl-catatan-walas')) {
+    document.getElementById('print-skl-catatan-walas').innerText = sklEntry.catatan_walas || 'Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan';
+  }
+
+  const tbody = document.getElementById('print-skl-tbody');
+  if (!tbody) return;
+
+  let rowsHtml = '';
+  SKL_KEPEMIMPINAN_28.forEach(cat => {
+    const rowSpan = cat.items.length;
+    cat.items.forEach((item, itemIdx) => {
+      const defaultVal = (scores && scores[item.id]) ? scores[item.id] : (item.id.startsWith('k') ? 'B' : 'A');
+      if (itemIdx === 0) {
+        rowsHtml += `
+          <tr>
+            <td rowspan="${rowSpan}" class="py-1 px-1 text-center border border-black font-semibold text-slate-800 align-top">${cat.no}</td>
+            <td rowspan="${rowSpan}" class="py-1 px-2 border border-black font-semibold text-slate-900 align-top">${cat.kategori}</td>
+            <td class="py-1 px-2 border border-black text-slate-900">${item.text}</td>
+            <td class="py-1 px-1 text-center border border-black font-bold font-mono text-slate-950">${defaultVal}</td>
+          </tr>
+        `;
+      } else {
+        rowsHtml += `
+          <tr>
+            <td class="py-1 px-2 border border-black text-slate-900">${item.text}</td>
+            <td class="py-1 px-1 text-center border border-black font-bold font-mono text-slate-950">${defaultVal}</td>
+          </tr>
+        `;
+      }
+    });
+  });
+
+  tbody.innerHTML = rowsHtml;
 }
 
 // 16. DATABASE INITIALIZATION TRIGGER

@@ -191,6 +191,16 @@ function dispatchApiAction(action, payload) {
         return saveNilaiDiniyah(payload);
       case 'deleteNilaiDiniyah':
         return deleteNilaiDiniyah(payload.id);
+
+      // SKL Kepemimpinan (28 Indikator)
+      case 'getSklKepemimpinan':
+        return { success: true, data: getSklKepemimpinanList(payload) };
+      case 'saveBulkSklKepemimpinan':
+        return saveBulkSklKepemimpinan(payload.items || payload);
+      case 'saveSklKepemimpinan':
+        return saveSklKepemimpinan(payload);
+      case 'deleteSklKepemimpinan':
+        return deleteSklKepemimpinan(payload.id);
         
       // Rapor Lengkap
       case 'getMuridReport':
@@ -245,6 +255,11 @@ function apiSaveNilaiKepribadian(data) { return dispatchApiAction('saveNilaiKepr
 function apiSaveBulkKepribadian(data) { return dispatchApiAction('saveBulkKepribadian', data); }
 function apiDeleteNilaiKepemimpinan(id) { return dispatchApiAction('deleteNilaiKepemimpinan', { id: id }); }
 function apiDeleteNilaiKepribadian(id) { return dispatchApiAction('deleteNilaiKepribadian', { id: id }); }
+
+function apiGetSklKepemimpinan(filters) { return dispatchApiAction('getSklKepemimpinan', filters || {}); }
+function apiSaveBulkSklKepemimpinan(data) { return dispatchApiAction('saveBulkSklKepemimpinan', data); }
+function apiSaveSklKepemimpinan(data) { return dispatchApiAction('saveSklKepemimpinan', data); }
+function apiDeleteSklKepemimpinan(id) { return dispatchApiAction('deleteSklKepemimpinan', { id: id }); }
 
 function apiGetNilaiDiniyah(filters) { return dispatchApiAction('getNilaiDiniyah', filters || {}); }
 function apiSaveNilaiDiniyah(data) { return dispatchApiAction('saveNilaiDiniyah', data); }
