@@ -16,7 +16,7 @@ function getMuridReportData(nis) {
   
   const settings = getSettings();
   const currentSemester = settings.semester_active || 'Ganjil';
-  const currentYear = settings.academic_year || '2025/2026';
+  const currentYear = settings.academic_year || '2026/2027';
   
   // 1. Data Rekap Nilai Akademik & Capaian Kompetensi
   const rawAkademik = getNilaiAkademikList({ nis: nis });
@@ -129,7 +129,7 @@ function getDashboardSummaryStats() {
   const avgAkademik = akademikList.length > 0 ? (sumAkademik / akademikList.length).toFixed(1) : 0;
   
   const currentSemester = settings.semester_active || 'Ganjil';
-  const currentYear = settings.academic_year || '2025/2026';
+  const currentYear = settings.academic_year || '2026/2027';
   
   let muridLengkapCount = 0;
   muridList.forEach(s => {

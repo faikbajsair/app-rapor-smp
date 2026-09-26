@@ -25,13 +25,15 @@
       <!-- Center / Right: Academic Badge & User Quick Controls -->
       <div class="flex items-center space-x-2 sm:space-x-3">
         
-        <!-- Active Period Pill -->
-        <div class="hidden md:flex items-center bg-slate-100 border border-slate-200 px-3 py-1.5 rounded-full text-xs font-medium text-slate-700">
-          <i class="fa-regular fa-calendar-check text-theme-primary mr-1.5"></i>
-          <span>T.A. <strong id="nav-academic-year">2025/2026</strong></span>
-          <span class="mx-1.5 text-slate-300">|</span>
+        <!-- Active Period Pill (Clickable to switch / add academic year) -->
+        <button onclick="openAcademicYearModal()" title="Klik untuk mengganti atau menambah Tahun Ajaran Baru"
+                class="hidden md:flex items-center gap-1.5 bg-blue-50/80 hover:bg-blue-100 border border-blue-200/80 hover:border-blue-300 px-3 py-1.5 rounded-full text-xs font-medium text-slate-700 hover:text-blue-900 transition shadow-sm group">
+          <i class="fa-regular fa-calendar-check text-blue-600 group-hover:scale-110 transition-transform"></i>
+          <span>T.A. <strong id="nav-academic-year" class="text-blue-900 font-bold">2026/2027</strong></span>
+          <span class="text-slate-300">|</span>
           <span class="text-emerald-700 font-semibold" id="nav-semester">Ganjil</span>
-        </div>
+          <i class="fa-solid fa-chevron-down text-[9px] text-slate-400 group-hover:text-blue-600 ml-0.5"></i>
+        </button>
 
         <!-- Interactive Guide Button -->
         <button onclick="openInteractiveGuide(1)" class="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 rounded-lg text-xs font-bold transition-all shadow-sm">

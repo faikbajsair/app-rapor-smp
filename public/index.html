@@ -150,13 +150,15 @@
       <!-- Center / Right: Academic Badge & User Quick Controls -->
       <div class="flex items-center space-x-2 sm:space-x-3">
         
-        <!-- Active Period Pill -->
-        <div class="hidden md:flex items-center bg-slate-100 border border-slate-200 px-3 py-1.5 rounded-full text-xs font-medium text-slate-700">
-          <i class="fa-regular fa-calendar-check text-theme-primary mr-1.5"></i>
-          <span>T.A. <strong id="nav-academic-year">2025/2026</strong></span>
-          <span class="mx-1.5 text-slate-300">|</span>
+        <!-- Active Period Pill (Clickable to switch / add academic year) -->
+        <button onclick="openAcademicYearModal()" title="Klik untuk mengganti atau menambah Tahun Ajaran Baru"
+                class="hidden md:flex items-center gap-1.5 bg-blue-50/80 hover:bg-blue-100 border border-blue-200/80 hover:border-blue-300 px-3 py-1.5 rounded-full text-xs font-medium text-slate-700 hover:text-blue-900 transition shadow-sm group">
+          <i class="fa-regular fa-calendar-check text-blue-600 group-hover:scale-110 transition-transform"></i>
+          <span>T.A. <strong id="nav-academic-year" class="text-blue-900 font-bold">2026/2027</strong></span>
+          <span class="text-slate-300">|</span>
           <span class="text-emerald-700 font-semibold" id="nav-semester">Ganjil</span>
-        </div>
+          <i class="fa-solid fa-chevron-down text-[9px] text-slate-400 group-hover:text-blue-600 ml-0.5"></i>
+        </button>
 
         <!-- Interactive Guide Button -->
         <button onclick="openInteractiveGuide(1)" class="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 rounded-lg text-xs font-bold transition-all shadow-sm">
@@ -782,7 +784,12 @@
         <button id="btn-mode-akademik-leger" onclick="switchAkademikInputMode('leger')" 
                 class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-2 bg-white text-blue-700 shadow-sm">
           <i class="fa-solid fa-table-cells"></i>
-          <span>Mode Input Leger Sekelas (Cepat)</span>
+          <span>Mode Input Leger Sekelas</span>
+        </button>
+        <button id="btn-mode-akademik-upload" onclick="switchAkademikInputMode('upload')" 
+                class="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 transition flex items-center gap-2">
+          <i class="fa-solid fa-file-arrow-up text-emerald-600"></i>
+          <span>Upload Nilai Baru (Excel/CSV/Paste)</span>
         </button>
         <button id="btn-mode-akademik-list" onclick="switchAkademikInputMode('list')" 
                 class="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 transition flex items-center gap-2">
@@ -1007,6 +1014,167 @@
                   <p>Memuat data nilai akademik...</p>
                 </td>
               </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SECTION 3: MODE UPLOAD NILAI SISWA (EXCEL / CSV / PASTE WORKFLOW T.A. 2026/2027) -->
+  <div id="section-akademik-upload" class="hidden space-y-4">
+    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+      
+      <!-- Upload Header & Settings Filter -->
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-emerald-100 text-emerald-800 border border-emerald-300">
+              <i class="fa-solid fa-sparkles text-emerald-600"></i> Fitur T.A. Baru
+            </span>
+            <h3 class="text-base font-bold text-slate-900">Upload & Import Nilai Siswa Massal</h3>
+          </div>
+          <p class="text-xs text-slate-500 mt-0.5">Upload nilai siswa dari file Excel/CSV atau copy-paste langsung dari spreadsheet untuk Tahun Pelajaran Baru.</p>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2">
+          <button onclick="downloadUploadTemplate()" 
+                  class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 rounded-xl text-xs font-bold transition flex items-center gap-2 shadow-sm">
+            <i class="fa-solid fa-file-csv text-emerald-600"></i>
+            <span>Download Template Excel/CSV</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Filter Target Upload (Tahun Ajaran, Semester, Kelas, Mapel) -->
+      <div class="grid grid-cols-1 sm:grid-cols-4 gap-3 bg-slate-50 p-4 rounded-xl border border-slate-200">
+        <div>
+          <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Tahun Ajaran Target</label>
+          <select id="upload-tahun-ajaran" class="w-full text-xs bg-white border border-slate-300 rounded-lg px-3 py-2 font-bold text-slate-800 focus:ring-2 focus:ring-blue-500">
+            <option value="2026/2027" selected>2026/2027 (Aktif)</option>
+            <option value="2025/2026">2025/2026</option>
+            <option value="2027/2028">2027/2028</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Semester Target</label>
+          <select id="upload-semester" class="w-full text-xs bg-white border border-slate-300 rounded-lg px-3 py-2 font-bold text-slate-800 focus:ring-2 focus:ring-blue-500">
+            <option value="I (Satu)" selected>I (Satu) / Ganjil</option>
+            <option value="II (Dua)">II (Dua) / Genap</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Target Kelas</label>
+          <select id="upload-target-kelas" class="w-full text-xs bg-white border border-slate-300 rounded-lg px-3 py-2 font-bold text-slate-800 focus:ring-2 focus:ring-blue-500">
+            <option value="Semua">Semua Kelas (Sesuai File)</option>
+            <option value="VII UTSMAN">VII UTSMAN (15 Ikhwan)</option>
+            <option value="VII AISYAH">VII AISYAH (18 Akhwat)</option>
+            <option value="VIII KHADIJAH">VIII KHADIJAH (21 Akhwat)</option>
+            <option value="IX ABU BAKAR">IX ABU BAKAR (12 Ikhwan)</option>
+            <option value="IX UMMU SALAMAH">IX UMMU SALAMAH (16 Akhwat)</option>
+            <option value="VIII THALHAH">VIII THALHAH</option>
+            <option value="VII BILAL">VII BILAL</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Mata Pelajaran</label>
+          <select id="upload-target-mapel" class="w-full text-xs bg-white border border-slate-300 rounded-lg px-3 py-2 font-bold text-slate-800 focus:ring-2 focus:ring-blue-500">
+            <option value="Sesuai File">Sesuai Kolom File</option>
+            <option value="Akidah">1. Akidah</option>
+            <option value="Akhlak">2. Akhlak</option>
+            <option value="Hadits">3. Hadits</option>
+            <option value="Fikih">4. Fikih</option>
+            <option value="SKI">5. SKI</option>
+            <option value="Pendidikan Pancasila">6. Pendidikan Pancasila</option>
+            <option value="Bahasa Indonesia">7. Bahasa Indonesia</option>
+            <option value="Bahasa Inggris">8. Bahasa Inggris</option>
+            <option value="Matematika">9. Matematika</option>
+            <option value="Ilmu Pengetahuan Alam">10. IPA</option>
+            <option value="Ilmu Pengetahuan Sosial">11. IPS</option>
+            <option value="Prakarya">12. Prakarya</option>
+            <option value="Pendidikan Jasmani, Olahraga, dan Kesehatan">13. PJOK</option>
+            <option value="Bahasa Sunda">14. Bahasa Sunda</option>
+            <option value="Informatika">15. Informatika</option>
+            <option value="Bahasa Arab">16. Bahasa Arab</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Upload Tabs: File Upload vs Paste Textarea -->
+      <div class="space-y-3">
+        <div class="flex items-center gap-2 border-b border-slate-200 pb-2 text-xs font-bold">
+          <button type="button" id="tab-upload-file" onclick="switchUploadMethod('file')" class="px-3.5 py-1.5 rounded-lg bg-blue-600 text-white flex items-center gap-1.5 shadow-sm">
+            <i class="fa-solid fa-file-arrow-up"></i>
+            <span>Upload File (Excel / CSV)</span>
+          </button>
+          <button type="button" id="tab-upload-paste" onclick="switchUploadMethod('paste')" class="px-3.5 py-1.5 rounded-lg bg-slate-100 text-slate-600 hover:text-slate-900 flex items-center gap-1.5">
+            <i class="fa-solid fa-paste"></i>
+            <span>Copy-Paste dari Spreadsheet</span>
+          </button>
+        </div>
+
+        <!-- Method 1: File Dropzone -->
+        <div id="upload-method-file" class="border-2 border-dashed border-slate-300 hover:border-blue-500 rounded-2xl p-6 text-center bg-slate-50/50 transition cursor-pointer" onclick="document.getElementById('file-upload-input').click()">
+          <input type="file" id="file-upload-input" accept=".csv, .xlsx, .xls, .txt" class="hidden" onchange="handleFileUpload(event)" />
+          <div class="w-12 h-12 rounded-2xl bg-blue-100 text-blue-600 flex items-center justify-center text-xl mx-auto mb-2 shadow-inner">
+            <i class="fa-solid fa-cloud-arrow-up"></i>
+          </div>
+          <h4 class="text-xs font-bold text-slate-800">Klik untuk memilih file atau seret file ke sini</h4>
+          <p class="text-[11px] text-slate-500 mt-0.5">Mendukung format <strong>.CSV</strong>, <strong>.XLSX</strong>, <strong>.XLS</strong>, atau <strong>.TXT</strong> (Tab-separated)</p>
+        </div>
+
+        <!-- Method 2: Paste Box -->
+        <div id="upload-method-paste" class="hidden space-y-2">
+          <label class="block text-xs font-semibold text-slate-700">Paste Baris Nilai dari Excel / Google Sheets:</label>
+          <textarea id="paste-upload-textarea" rows="5" oninput="handlePasteUpload()" 
+                    class="w-full text-xs font-mono bg-slate-50 border border-slate-300 rounded-xl p-3 text-slate-800 focus:ring-2 focus:ring-blue-500" 
+                    placeholder="Contoh format kolom (bisa langsung copy sebaris/tabel dari Excel):
+NIS	Nama Murid	Mata Pelajaran	KKM	Nilai UTS
+252607038	Achmed Syathir Elhayba	Informatika	75	77
+252607022	Ali Zatrio Ikhwantoro	Informatika	75	85"></textarea>
+          <p class="text-[10px] text-slate-400">Copy baris tabel dari Microsoft Excel atau Google Sheets lalu paste di kolom atas.</p>
+        </div>
+      </div>
+
+      <!-- Preview Section -->
+      <div id="upload-preview-container" class="hidden space-y-3 pt-3 border-t border-slate-200">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            <h4 class="text-xs font-bold text-slate-800">Pratinjau Hasil Pembacaan Data (<span id="upload-preview-count" class="text-blue-600 font-bold">0</span> Data Terbaca)</h4>
+          </div>
+          <div class="flex items-center gap-2">
+            <button type="button" onclick="resetUploadData()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-semibold rounded-lg">
+              Reset
+            </button>
+            <button type="button" onclick="saveUploadedGrades()" id="btn-save-uploaded-grades" class="px-4 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow flex items-center gap-1.5 transition">
+              <i class="fa-solid fa-floppy-disk"></i>
+              <span>Simpan & Import Nilai ke Database</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto rounded-xl border border-slate-200 max-h-72">
+          <table class="w-full text-left text-xs text-slate-700">
+            <thead class="bg-slate-100 text-slate-800 uppercase text-[10px] font-extrabold sticky top-0 border-b border-slate-200">
+              <tr>
+                <th class="px-3 py-2 text-center w-10">No</th>
+                <th class="px-3 py-2">NIS</th>
+                <th class="px-4 py-2">Nama Siswa</th>
+                <th class="px-3 py-2">Kelas</th>
+                <th class="px-3 py-2">Mata Pelajaran</th>
+                <th class="px-3 py-2 text-center">KKM</th>
+                <th class="px-3 py-2 text-center bg-blue-50 text-blue-900 font-bold">Nilai UTS</th>
+                <th class="px-3 py-2 text-center">Predikat</th>
+                <th class="px-4 py-2">Capaian Kompetensi (Auto-Generated)</th>
+              </tr>
+            </thead>
+            <tbody id="upload-preview-tbody" class="divide-y divide-slate-100 bg-white">
+              <!-- Populated dynamically via JS -->
             </tbody>
           </table>
         </div>
@@ -2262,14 +2430,19 @@
 
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Tahun Ajaran Aktif</label>
-            <input type="text" id="cms-academic-year" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-amber-500" placeholder="2025/2026" />
+            <div class="flex items-center justify-between mb-1">
+              <label class="text-xs font-bold text-slate-700">Tahun Ajaran Aktif</label>
+              <button type="button" onclick="openAcademicYearModal()" class="text-[10px] text-blue-600 hover:text-blue-800 font-bold flex items-center gap-1">
+                <i class="fa-solid fa-plus-circle"></i> Tambah T.A.
+              </button>
+            </div>
+            <input type="text" id="cms-academic-year" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-amber-500 font-bold" placeholder="2026/2027" />
           </div>
           <div>
             <label class="block text-xs font-bold text-slate-700 mb-1">Semester Aktif</label>
-            <select id="cms-semester-active" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-amber-500">
-              <option value="Ganjil">Semester Ganjil</option>
-              <option value="Genap">Semester Genap</option>
+            <select id="cms-semester-active" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-amber-500 font-bold">
+              <option value="I (Satu)">Semester I (Satu) / Ganjil</option>
+              <option value="II (Dua)">Semester II (Dua) / Genap</option>
             </select>
           </div>
         </div>
@@ -2817,7 +2990,7 @@
           <div>
             <div class="flex items-center gap-2">
               <h3 class="text-base font-bold text-white leading-tight">Panduan Interaktif Penggunaan Aplikasi</h3>
-              <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">v2.5 Official</span>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">T.A. 2026/2027 Official</span>
             </div>
             <p class="text-xs text-blue-200/80 mt-0.5">Sistem Rapor Tengah Semester & Portofolio SMP Al-Imam (AI IS)</p>
           </div>
@@ -2834,14 +3007,14 @@
 
       <!-- Quick Step Jump Tabs (Pills) -->
       <div class="flex items-center gap-1.5 mt-4 overflow-x-auto pb-1 scrollbar-none text-[11px] font-semibold text-slate-300">
-        <button onclick="goToGuideStep(1)" class="guide-tab-pill px-2.5 py-1 rounded-lg transition whitespace-nowrap bg-blue-500 text-white shadow" data-tab-step="1">1. Alur & Konsep</button>
+        <button onclick="goToGuideStep(1)" class="guide-tab-pill px-2.5 py-1 rounded-lg transition whitespace-nowrap bg-blue-500 text-white shadow font-bold" data-tab-step="1">1. Alur & Konsep</button>
         <button onclick="goToGuideStep(2)" class="guide-tab-pill px-2.5 py-1 rounded-lg transition whitespace-nowrap bg-slate-800/80 text-slate-300 hover:bg-slate-700" data-tab-step="2">2. Data Siswa</button>
-        <button onclick="goToGuideStep(3)" class="guide-tab-pill px-2.5 py-1 rounded-lg transition whitespace-nowrap bg-slate-800/80 text-slate-300 hover:bg-slate-700" data-tab-step="3">3. 16 Mapel</button>
+        <button onclick="goToGuideStep(3)" class="guide-tab-pill px-2.5 py-1 rounded-lg transition whitespace-nowrap bg-slate-800/80 text-slate-300 hover:bg-slate-700" data-tab-step="3">3. 16 Mapel & Upload</button>
         <button onclick="goToGuideStep(4)" class="guide-tab-pill px-2.5 py-1 rounded-lg transition whitespace-nowrap bg-slate-800/80 text-slate-300 hover:bg-slate-700" data-tab-step="4">4. Kepribadian</button>
         <button onclick="goToGuideStep(5)" class="guide-tab-pill px-2.5 py-1 rounded-lg transition whitespace-nowrap bg-slate-800/80 text-slate-300 hover:bg-slate-700" data-tab-step="5">5. Diniyah</button>
         <button onclick="goToGuideStep(6)" class="guide-tab-pill px-2.5 py-1 rounded-lg transition whitespace-nowrap bg-slate-800/80 text-slate-300 hover:bg-slate-700" data-tab-step="6">6. SKL 28 Karakter</button>
         <button onclick="goToGuideStep(7)" class="guide-tab-pill px-2.5 py-1 rounded-lg transition whitespace-nowrap bg-slate-800/80 text-slate-300 hover:bg-slate-700" data-tab-step="7">7. Cetak Rapor</button>
-        <button onclick="goToGuideStep(8)" class="guide-tab-pill px-2.5 py-1 rounded-lg transition whitespace-nowrap bg-slate-800/80 text-slate-300 hover:bg-slate-700" data-tab-step="8">8. Role & Sync</button>
+        <button onclick="goToGuideStep(8)" class="guide-tab-pill px-2.5 py-1 rounded-lg transition whitespace-nowrap bg-slate-800/80 text-slate-300 hover:bg-slate-700" data-tab-step="8">8. Tambah T.A. & Role</button>
       </div>
 
       <!-- Animated Step Progress Bar -->
@@ -2853,20 +3026,20 @@
     <!-- Main Content Container for 8 Steps -->
     <div class="p-6 sm:p-7 overflow-y-auto flex-1 space-y-4" id="guide-content-body">
 
-      <!-- STEP 1: Pengenalan & Alur Kerja Resmi Al-Imam -->
+      <!-- STEP 1: Pengenalan & Alur Kerja Resmi Al-Imam (T.A. 2026/2027) -->
       <div class="guide-step-card" data-step="1">
         <div class="flex items-center gap-3.5 p-3.5 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100/80 rounded-2xl mb-4">
           <div class="w-12 h-12 rounded-2xl bg-blue-600 text-white flex items-center justify-center text-xl shrink-0 shadow-md shadow-blue-500/20">
             <i class="fa-solid fa-sparkles"></i>
           </div>
           <div>
-            <h4 class="text-sm font-bold text-slate-900">Selamat Datang di Sistem Rapor Digital SMP Al-Imam</h4>
+            <h4 class="text-sm font-bold text-slate-900">Selamat Datang di Sistem Rapor Digital T.A. 2026/2027</h4>
             <p class="text-xs text-blue-700">Aplikasi meniru 100% struktur buku kerja Excel resmi: Data Siswa ➔ Rekap Nilai ➔ Kepribadian ➔ Print Rapor.</p>
           </div>
         </div>
 
         <p class="text-xs text-slate-600 leading-relaxed">
-          Aplikasi ini dirancang khusus untuk memfasilitasi Dewan Guru dan Wali Kelas SMP Al-Imam Islamic School dalam mengelola penilaian Tengah Semester secara terpadu, otomatis, dan presisi tinggi sesuai Kurikulum Merdeka & Kurikulum Khas Al-Imam.
+          Aplikasi ini dirancang khusus untuk memfasilitasi Dewan Guru, Wali Kelas, dan Kepala Sekolah SMP Al-Imam Islamic School dalam mengelola penilaian Tahun Ajaran <strong>2026/2027</strong> secara terpadu, otomatis, dan presisi tinggi sesuai Kurikulum Merdeka & Kurikulum Khas Al-Imam.
         </p>
 
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-2">
@@ -2877,8 +3050,8 @@
           </div>
           <div class="p-3 bg-slate-50 hover:bg-blue-50/50 border border-slate-200 hover:border-blue-200 rounded-2xl text-center transition cursor-pointer" onclick="goToGuideStep(3)">
             <div class="w-8 h-8 mx-auto rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center text-sm mb-1.5 font-bold">2</div>
-            <h5 class="text-xs font-bold text-slate-800">Rekap 16 Mapel</h5>
-            <p class="text-[10px] text-slate-500 mt-0.5">Leger & Capaian Otomatis</p>
+            <h5 class="text-xs font-bold text-slate-800">16 Mapel & Upload</h5>
+            <p class="text-[10px] text-slate-500 mt-0.5">Leger & Import Nilai Baru</p>
           </div>
           <div class="p-3 bg-slate-50 hover:bg-amber-50/50 border border-slate-200 hover:border-amber-200 rounded-2xl text-center transition cursor-pointer" onclick="goToGuideStep(4)">
             <div class="w-8 h-8 mx-auto rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center text-sm mb-1.5 font-bold">3</div>
@@ -2895,7 +3068,7 @@
         <div class="p-3 bg-emerald-50 border border-emerald-200 rounded-xl flex items-center justify-between mt-2">
           <div class="flex items-center gap-2 text-xs text-emerald-900 font-medium">
             <i class="fa-solid fa-circle-check text-emerald-600 text-sm"></i>
-            <span>Tersedia data lengkap kelas <strong>VII UTSMAN</strong>, <strong>VII AISYAH</strong>, <strong>VIII KHADIJAH</strong>, <strong>IX ABU BAKAR</strong>, dan <strong>IX UMMU SALAMAH</strong>.</span>
+            <span>Tahun Ajaran Aktif: <strong>2026/2027</strong> | Semester: <strong>I (Satu) / Ganjil</strong></span>
           </div>
         </div>
       </div>
@@ -2947,49 +3120,51 @@
         </div>
       </div>
 
-      <!-- STEP 3: Rekap Nilai 16 Mata Pelajaran & Generator Capaian -->
+      <!-- STEP 3: Rekap Nilai 16 Mapel & Fitur Upload Nilai Baru -->
       <div class="guide-step-card hidden" data-step="3">
         <div class="flex items-center gap-3.5 p-3.5 bg-blue-50 border border-blue-100 rounded-2xl mb-4">
           <div class="w-12 h-12 rounded-2xl bg-blue-600 text-white flex items-center justify-center text-xl shrink-0 shadow-md shadow-blue-500/20">
             <i class="fa-solid fa-book-open"></i>
           </div>
           <div>
-            <h4 class="text-sm font-bold text-blue-950">Rekap Nilai 16 Mapel & Capaian Kompetensi Otomatis</h4>
-            <p class="text-xs text-blue-700">Input nilai sekelas dalam bentuk tabel leger dengan generator deskripsi capaian otomatis.</p>
+            <h4 class="text-sm font-bold text-blue-950">Rekap 16 Mapel & Fitur Baru Upload Nilai Massal</h4>
+            <p class="text-xs text-blue-700">Input nilai melalui tabel leger cepat atau upload langsung dari file Excel/CSV/Paste.</p>
           </div>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs mb-3">
           <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1.5">
             <span class="font-bold text-blue-950 flex items-center gap-1.5">
-              <i class="fa-solid fa-moon text-amber-500"></i> 5 Mapel Diniyah:
+              <i class="fa-solid fa-table-cells text-blue-600"></i> Mode 1: Input Leger Sekelas
             </span>
-            <p class="text-[11px] text-slate-600">Akidah, Akhlak, Hadits, Fikih, SKI (Sejarah Kebudayaan Islam).</p>
+            <p class="text-[11px] text-slate-600">Ketik nilai langsung di tabel. Tekan <strong>Enter / Panah Bawah</strong> untuk pindah siswa. Klik <strong>Auto-Generate Capaian</strong>.</p>
           </div>
-          <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1.5">
-            <span class="font-bold text-blue-950 flex items-center gap-1.5">
-              <i class="fa-solid fa-book text-blue-600"></i> 11 Mapel Umum & Muatan:
+          <div class="p-3 bg-emerald-50/70 border border-emerald-200 rounded-xl space-y-1.5">
+            <span class="font-bold text-emerald-950 flex items-center gap-1.5">
+              <i class="fa-solid fa-file-arrow-up text-emerald-600"></i> Mode 2: Upload Nilai Massal (Baru)
             </span>
-            <p class="text-[11px] text-slate-600">Pancasila, B. Indonesia, B. Inggris, Matematika, IPA, IPS, Prakarya, PJOK, B. Sunda, Informatika, Bahasa Arab.</p>
+            <p class="text-[11px] text-emerald-800">Upload file Excel/CSV atau paste baris dari spreadsheet untuk Tahun Ajaran <strong>2026/2027</strong> dalam hitungan detik!</p>
           </div>
         </div>
 
         <div class="bg-gradient-to-r from-blue-500/10 to-indigo-500/10 p-3.5 rounded-xl border border-blue-200 text-xs space-y-2">
           <div class="font-bold text-blue-950 flex items-center justify-between">
-            <span class="flex items-center gap-1.5"><i class="fa-solid fa-bolt text-amber-500"></i> Fitur Percepatan Input Guru:</span>
-            <span class="text-[10px] bg-blue-600 text-white px-2 py-0.5 rounded font-bold">1-Klik Sekelas</span>
+            <span class="flex items-center gap-1.5"><i class="fa-solid fa-bolt text-amber-500"></i> Langkah Upload Nilai Tahun Ajaran Baru:</span>
+            <span class="text-[10px] bg-emerald-600 text-white px-2 py-0.5 rounded font-bold">Panduan Upload</span>
           </div>
-          <ul class="space-y-1 text-slate-700 text-[11px]">
-            <li>• <strong>Tombol Auto-Generate Capaian:</strong> Menghasilkan narasi kompetensi baku resmi Al-Imam berdasarkan nilai (Sangat Baik / Baik / Cukup / Perlu Bimbingan).</li>
-            <li>• <strong>Navigasi Keyboard Cepat:</strong> Tekan <strong>Enter</strong> atau <strong>Panah Bawah</strong> pada input nilai untuk langsung melompat ke siswa berikutnya.</li>
-            <li>• <strong>Simpan Nilai Sekelas:</strong> Menyimpan seluruh nilai 16 mapel untuk seluruh siswa secara batch seketika.</li>
-          </ul>
+          <ol class="space-y-1 text-slate-700 text-[11px] list-decimal list-inside">
+            <li>Buka tab <strong>Upload Nilai Baru (Excel/CSV/Paste)</strong> di modul Rekap Nilai.</li>
+            <li>Klik tombol <strong>Download Template Excel/CSV</strong> untuk mendapatkan format resmi.</li>
+            <li>Isi nilai siswa pada template, lalu upload file atau paste data barisnya.</li>
+            <li>Periksa tabel pratinjau yang otomatis memvalidasi KKM dan capaian kompetensi.</li>
+            <li>Klik <strong>Simpan & Import Nilai ke Database</strong> untuk menyimpan ke server.</li>
+          </ol>
         </div>
 
-        <div class="pt-2">
+        <div class="pt-2 flex gap-2">
           <button onclick="switchViewAndHighlight('akademik')" class="inline-flex items-center gap-1.5 text-xs font-bold text-blue-700 hover:text-blue-900 bg-blue-100/80 hover:bg-blue-200/80 px-3.5 py-2 rounded-xl transition">
             <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-            <span>Buka Rekap Nilai Akademik</span>
+            <span>Buka Rekap & Upload Nilai</span>
           </button>
         </div>
       </div>
@@ -3163,7 +3338,7 @@
           <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
             <div class="font-bold text-slate-800 flex items-center justify-between">
               <span>Keunggulan Format Cetak:</span>
-              <span class="text-[10px] bg-slate-200 text-slate-800 px-2 py-0.5 rounded font-bold">Standard A4 Layout</span>
+              <span class="text-[10px] bg-slate-200 text-slate-800 px-2 py-0.5 rounded font-bold">T.A. 2026/2027 A4 Layout</span>
             </div>
             <ul class="space-y-1.5 text-slate-600 text-[11px]">
               <li class="flex items-start gap-2">
@@ -3176,7 +3351,7 @@
               </li>
               <li class="flex items-start gap-2">
                 <i class="fa-solid fa-circle-check text-emerald-600 mt-0.5"></i>
-                <span><strong>3 Kolom Pengesahan Tanda Tangan:</strong> Orang Tua/Wali Murid, Wali Kelas, dan Kepala Sekolah (<em>Bambang Setyono, S.T.</em>) lengkap dengan titimangsa resmi (<em>Bogor, 17 Oktober 2025</em>).</span>
+                <span><strong>3 Kolom Pengesahan Tanda Tangan:</strong> Orang Tua/Wali Murid, Wali Kelas, dan Kepala Sekolah (<em>Bambang Setyono, S.T.</em>) lengkap dengan titimangsa resmi (<em>Bogor, 17 Oktober 2026</em>).</span>
               </li>
             </ul>
           </div>
@@ -3190,46 +3365,53 @@
         </div>
       </div>
 
-      <!-- STEP 8: Akses Login Multi-Role, Sinkronisasi Cloud & Pengaturan CMS -->
+      <!-- STEP 8: Tambah Tahun Ajaran Baru, Multi-Role & CMS -->
       <div class="guide-step-card hidden" data-step="8">
         <div class="flex items-center gap-3.5 p-3.5 bg-rose-50 border border-rose-100 rounded-2xl mb-4">
           <div class="w-12 h-12 rounded-2xl bg-rose-600 text-white flex items-center justify-center text-xl shrink-0 shadow-md shadow-rose-500/20">
-            <i class="fa-solid fa-shield-halved"></i>
+            <i class="fa-solid fa-calendar-plus"></i>
           </div>
           <div>
-            <h4 class="text-sm font-bold text-rose-950">Akses Login 4 Role, Cloud Sync & Pengaturan CMS</h4>
-            <p class="text-xs text-rose-700">Sistem keamanan multi-role, sinkronisasi Google Sheets, dan CMS kustomisasi.</p>
+            <h4 class="text-sm font-bold text-rose-950">Kelola Tahun Ajaran Baru & Akses Login Multi-Role</h4>
+            <p class="text-xs text-rose-700">Fitur penambahan Tahun Ajaran Baru setiap tahun oleh Kepsek & Guru, serta sinkronisasi Cloud.</p>
           </div>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs mb-3">
-          <div class="p-2.5 bg-purple-50/80 border border-purple-200/80 rounded-xl">
-            <strong class="text-purple-950 block text-[11px] font-bold">1. Administrator (Admin)</strong>
-            <span class="text-[10px] text-purple-700">Akses penuh CRUD, Manajemen Pengguna, Reset Database, dan CMS Branding.</span>
+        <div class="p-3 bg-blue-50 border border-blue-200 rounded-xl text-xs space-y-1.5 mb-3 text-slate-700">
+          <div class="font-bold text-blue-950 flex items-center gap-1.5">
+            <i class="fa-regular fa-calendar-check text-blue-600"></i> Cara Menambah Tahun Ajaran Baru:
           </div>
-          <div class="p-2.5 bg-indigo-50/80 border border-indigo-200/80 rounded-xl">
-            <strong class="text-indigo-950 block text-[11px] font-bold">2. Kepala Sekolah</strong>
-            <span class="text-[10px] text-indigo-700">Supervisi seluruh jenjang kelas, rekap kelulusan, dan monitoring leger nilai.</span>
-          </div>
-          <div class="p-2.5 bg-blue-50/80 border border-blue-200/80 rounded-xl">
-            <strong class="text-blue-950 block text-[11px] font-bold">3. Guru / Wali Kelas</strong>
-            <span class="text-[10px] text-blue-700">Input nilai 16 mapel, generate capaian otomatis, evaluasi kepribadian, cetak rapor kelas.</span>
-          </div>
-          <div class="p-2.5 bg-emerald-50/80 border border-emerald-200/80 rounded-xl">
-            <strong class="text-emerald-950 block text-[11px] font-bold">4. Orang Tua / Wali Murid</strong>
-            <span class="text-[10px] text-emerald-700">Melihat rekap nilai anak, portofolio perkembangan karakter, dan download e-rapor.</span>
-          </div>
+          <ul class="space-y-1 text-slate-600 text-[11px]">
+            <li>• Klik badge periode <strong>T.A. 2026/2027</strong> di bagian navbar atas atau menu CMS.</li>
+            <li>• Masukkan format tahun ajaran baru (contoh: <code>2027/2028</code>).</li>
+            <li>• Klik <strong>Tambah & Terapkan Sebagai T.A. Aktif</strong>. Seluruh rekap dan format cetak langsung otomatis menyesuaikan!</li>
+          </ul>
         </div>
 
-        <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs space-y-1.5 text-slate-700">
-          <div class="font-bold text-slate-800 flex items-center justify-between">
-            <span>⚙️ Pengaturan CMS & Cloud Sync:</span>
-            <span class="text-[10px] text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">Google Sheets Sync Active</span>
+        <div class="grid grid-cols-2 gap-2 text-xs mb-3">
+          <div class="p-2 bg-purple-50 border border-purple-200 rounded-lg">
+            <strong class="text-purple-950 block text-[11px]">1. Admin</strong>
+            <span class="text-[10px] text-purple-700">Akses penuh CRUD, CMS, Pengguna, dan Reset DB.</span>
           </div>
-          <p class="text-[11px] text-slate-600">Ubah Kop Surat, Nama Kepala Sekolah, Tanggal Titimangsa Rapor, serta Tema Warna aplikasi langsung melalui menu <strong>Pengaturan CMS</strong>.</p>
+          <div class="p-2 bg-indigo-50 border border-indigo-200 rounded-lg">
+            <strong class="text-indigo-950 block text-[11px]">2. Kepala Sekolah</strong>
+            <span class="text-[10px] text-indigo-700">Monitoring seluruh dashboard, leger nilai, kelola T.A. baru.</span>
+          </div>
+          <div class="p-2 bg-blue-50 border border-blue-200 rounded-lg">
+            <strong class="text-blue-950 block text-[11px]">3. Guru / Pendidik</strong>
+            <span class="text-[10px] text-blue-700">Input leger nilai, upload massal, evaluasi kepribadian, kelola T.A.</span>
+          </div>
+          <div class="p-2 bg-emerald-50 border border-emerald-200 rounded-lg">
+            <strong class="text-emerald-950 block text-[11px]">4. Wali Murid</strong>
+            <span class="text-[10px] text-emerald-700">Melihat rekapitulasi nilai dan mengunduh e-rapor anak.</span>
+          </div>
         </div>
 
         <div class="pt-2 flex flex-wrap gap-2">
+          <button onclick="openAcademicYearModal()" class="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 px-3.5 py-2 rounded-xl shadow transition">
+            <i class="fa-regular fa-calendar-check text-[10px]"></i>
+            <span>Buka Pengelola Tahun Ajaran</span>
+          </button>
           <button onclick="openLoginModal()" class="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 px-3.5 py-2 rounded-xl shadow transition">
             <i class="fa-solid fa-key text-[10px]"></i>
             <span>Portal Login / Ganti Role</span>
@@ -3260,6 +3442,105 @@
           <i class="fa-solid fa-arrow-right text-[10px]"></i>
         </button>
       </div>
+    </div>
+
+  </div>
+</div>
+
+
+  <!-- Academic Year Management Modal -->
+  <!-- Modal Kelola & Tambah Tahun Ajaran Baru (Academic Year Management) -->
+<div id="modal-academic-year" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/75 backdrop-blur-sm hidden">
+  <div class="bg-white rounded-3xl shadow-2xl border border-slate-200 max-w-lg w-full overflow-hidden flex flex-col max-h-[90vh] animate-in fade-in zoom-in-95 duration-200">
+    
+    <!-- Modal Header -->
+    <div class="bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 text-white p-5 relative border-b border-blue-800">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-2xl bg-blue-500/20 border border-blue-400/30 flex items-center justify-center text-blue-300 text-lg shadow-inner">
+            <i class="fa-regular fa-calendar-check"></i>
+          </div>
+          <div>
+            <h3 class="text-sm font-bold text-white leading-tight">Kelola Tahun Ajaran Baru</h3>
+            <p class="text-[11px] text-blue-200/80">Pengaturan Periode & Tahun Pelajaran SMP Al-Imam</p>
+          </div>
+        </div>
+        <button onclick="closeAcademicYearModal()" class="text-slate-400 hover:text-white p-1 rounded-xl hover:bg-white/10 transition">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Modal Body -->
+    <div class="p-6 overflow-y-auto space-y-5 text-xs">
+      
+      <!-- Current Active Period Banner -->
+      <div class="p-4 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-2xl flex items-center justify-between">
+        <div>
+          <span class="text-[10px] font-bold uppercase tracking-wider text-blue-700 block">Tahun Ajaran Aktif Saat Ini:</span>
+          <span class="text-lg font-black text-blue-950" id="modal-active-year-display">2026/2027</span>
+          <span class="text-xs text-blue-700 font-medium ml-1.5" id="modal-active-sem-display">(Semester Ganjil)</span>
+        </div>
+        <span class="px-2.5 py-1 rounded-full text-[10px] font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-300 flex items-center gap-1">
+          <i class="fa-solid fa-circle-check text-emerald-600"></i> Aktif
+        </span>
+      </div>
+
+      <!-- Quick Switch Available Academic Years -->
+      <div class="space-y-2">
+        <label class="block text-xs font-bold text-slate-700">Pilih Tahun Ajaran yang Sudah Terdaftar:</label>
+        <div id="academic-years-chips-container" class="grid grid-cols-3 gap-2">
+          <!-- Populated dynamically via JS -->
+        </div>
+      </div>
+
+      <div class="border-t border-slate-100 my-2"></div>
+
+      <!-- Form Tambah Tahun Ajaran Baru (Kepsek & Guru) -->
+      <form id="form-add-academic-year" onsubmit="submitNewAcademicYear(event)" class="space-y-3.5 bg-slate-50 p-4 rounded-2xl border border-slate-200">
+        <div class="flex items-center justify-between">
+          <span class="font-bold text-slate-800 flex items-center gap-1.5">
+            <i class="fa-solid fa-plus-circle text-blue-600"></i> Tambah Tahun Ajaran Baru:
+          </span>
+          <span class="text-[10px] text-slate-500 font-medium">Bisa ditambah setiap tahun</span>
+        </div>
+
+        <div>
+          <label class="block text-[11px] font-semibold text-slate-700 mb-1">Format Tahun Ajaran (Contoh: 2026/2027, 2027/2028) *</label>
+          <input type="text" id="input-new-academic-year" required placeholder="Contoh: 2027/2028" pattern="[0-9]{4}/[0-9]{4}" 
+                 class="w-full text-xs bg-white border border-slate-300 rounded-xl px-3 py-2 font-bold text-slate-800 focus:ring-2 focus:ring-blue-500 shadow-sm" />
+          <p class="text-[10px] text-slate-400 mt-1">Gunakan format 4 digit tahun / 4 digit tahun (contoh: <strong>2026/2027</strong>)</p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block text-[11px] font-semibold text-slate-700 mb-1">Semester Awal</label>
+            <select id="input-new-academic-sem" class="w-full text-xs bg-white border border-slate-300 rounded-xl px-3 py-2 font-bold text-slate-800 focus:ring-2 focus:ring-blue-500 shadow-sm">
+              <option value="I (Satu)">I (Satu) / Ganjil</option>
+              <option value="II (Dua)">II (Dua) / Genap</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-[11px] font-semibold text-slate-700 mb-1">Titimangsa Rapor</label>
+            <input type="text" id="input-new-academic-date" placeholder="17 Oktober 2026" value="17 Oktober 2026"
+                   class="w-full text-xs bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-800 focus:ring-2 focus:ring-blue-500 shadow-sm" />
+          </div>
+        </div>
+
+        <button type="submit" id="btn-submit-add-year" class="w-full py-2.5 px-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl font-bold text-xs shadow-md transition flex items-center justify-center gap-2">
+          <i class="fa-solid fa-circle-plus"></i>
+          <span>Tambah & Terapkan Sebagai T.A. Aktif</span>
+        </button>
+      </form>
+
+    </div>
+
+    <!-- Modal Footer -->
+    <div class="bg-slate-50 px-6 py-3.5 border-t border-slate-200 flex items-center justify-between text-xs text-slate-500">
+      <span>Perubahan periode langsung diterapkan pada seluruh rekap nilai & cetak rapor.</span>
+      <button onclick="closeAcademicYearModal()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold rounded-xl transition">
+        Tutup
+      </button>
     </div>
 
   </div>
@@ -4449,12 +4730,13 @@ const DEMO_DATA = {
     school_address: 'Jl. KH. M. Usman No. 128, Kukusan, Beji, Kota Depok, Jawa Barat',
     school_phone: '(021) 8775-4321 / 0812-9876-5432',
     school_website: 'https://alimamischool.com',
-    academic_year: '2025/2026',
+    academic_year: '2026/2027',
+    academic_years_list: '2026/2027,2025/2026,2024/2025',
     semester_active: 'I (Satu)',
     report_place: 'Bogor',
-    report_date: '17 Oktober 2025',
+    report_date: '17 Oktober 2026',
     wali_kelas_default: 'Kahlil Gibran, S.Pd.',
-    headmaster_name: 'Arif Rohman, M.Pd.',
+    headmaster_name: 'Bambang Setyono, S.T.',
     headmaster_nip: '',
     headmaster_signature_url: '',
     report_footer_text: 'RAPOR TENGAH SEMESTER PROGRAM PORTOFOLIO SMP AL IMAM ISLAMIC SCHOOL',
@@ -4552,7 +4834,7 @@ function buildExactAlImamDataset() {
         nama_santri: st.nama,
         kelas: kelasName,
         semester: 'I (Satu)',
-        tahun_ajaran: '2025/2026',
+        tahun_ajaran: '2026/2027',
         ibadah: kpCustom.ibadah || BANK_KEPRIBADIAN_ALIMAM.ibadah[0],
         akhlak: kpCustom.akhlak || BANK_KEPRIBADIAN_ALIMAM.akhlak[0],
         kedisiplinan_kerajinan: kpCustom.kedisiplinan || BANK_KEPRIBADIAN_ALIMAM.kedisiplinan[0],
@@ -4572,7 +4854,7 @@ function buildExactAlImamDataset() {
         nama_santri: st.nama,
         kelas: kelasName,
         semester: 'I (Satu)',
-        tahun_ajaran: '2025/2026',
+        tahun_ajaran: '2026/2027',
         ziyadah_juz: 'Juz 28 & Juz 29 (Lancar)',
         murojaah_juz: 'Juz 30 (Mutqin)',
         nilai_tahfidz: (st.scores && st.scores[0]) || 90,
@@ -4597,7 +4879,7 @@ function buildExactAlImamDataset() {
         nama_murid: st.nama,
         kelas: kelasName,
         semester: 'Tengah Semester 1',
-        tahun_ajaran: '2025/2026',
+        tahun_ajaran: '2026/2027',
         scores: sklScores,
         catatan_walas: st.catatan_walas || (st.kp && st.kp.catatan) || 'Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan'
       });
@@ -5437,24 +5719,31 @@ function saveBulkPresensiData() {
 function switchAkademikInputMode(mode) {
   const secLeger = document.getElementById('section-akademik-leger');
   const secList = document.getElementById('section-akademik-list');
+  const secUpload = document.getElementById('section-akademik-upload');
   const btnLeger = document.getElementById('btn-mode-akademik-leger');
   const btnList = document.getElementById('btn-mode-akademik-list');
+  const btnUpload = document.getElementById('btn-mode-akademik-upload');
+
+  [secLeger, secList, secUpload].forEach(el => el?.classList.add('hidden'));
+  [btnLeger, btnList, btnUpload].forEach(btn => {
+    btn?.classList.remove('bg-white', 'text-blue-700', 'shadow-sm', 'text-emerald-700');
+    btn?.classList.add('text-slate-600');
+  });
 
   if (mode === 'leger') {
     secLeger?.classList.remove('hidden');
-    secList?.classList.add('hidden');
     btnLeger?.classList.add('bg-white', 'text-blue-700', 'shadow-sm');
     btnLeger?.classList.remove('text-slate-600');
-    btnList?.classList.remove('bg-white', 'text-blue-700', 'shadow-sm');
-    btnList?.classList.add('text-slate-600');
     renderLegerGrid();
+  } else if (mode === 'upload') {
+    secUpload?.classList.remove('hidden');
+    btnUpload?.classList.add('bg-white', 'text-emerald-700', 'shadow-sm');
+    btnUpload?.classList.remove('text-slate-600');
+    initUploadView();
   } else {
-    secLeger?.classList.add('hidden');
     secList?.classList.remove('hidden');
     btnList?.classList.add('bg-white', 'text-blue-700', 'shadow-sm');
     btnList?.classList.remove('text-slate-600');
-    btnLeger?.classList.remove('bg-white', 'text-blue-700', 'shadow-sm');
-    btnLeger?.classList.add('text-slate-600');
     loadNilaiAkademik();
   }
 }
@@ -5842,6 +6131,423 @@ function deleteAkademikAction(id) {
   updateAkademikWidgets(AppState.akademikList);
   loadDashboardStats();
   callApi('deleteNilaiAkademik', { id: id });
+}
+
+// 10B. FITUR UPLOAD NILAI SISWA MASSAL (EXCEL / CSV / PASTE IMPORT T.A. BARU)
+let uploadedGradeItems = [];
+
+function initUploadView() {
+  const currentYear = AppState.cmsSettings.academic_year || '2026/2027';
+  const uploadYear = document.getElementById('upload-tahun-ajaran');
+  if (uploadYear) {
+    if (![...uploadYear.options].some(o => o.value === currentYear)) {
+      uploadYear.add(new Option(currentYear + ' (Aktif)', currentYear, true, true));
+    }
+    uploadYear.value = currentYear;
+  }
+}
+
+function switchUploadMethod(method) {
+  const tabFile = document.getElementById('tab-upload-file');
+  const tabPaste = document.getElementById('tab-upload-paste');
+  const methodFile = document.getElementById('upload-method-file');
+  const methodPaste = document.getElementById('upload-method-paste');
+
+  if (method === 'file') {
+    tabFile?.classList.add('bg-blue-600', 'text-white');
+    tabFile?.classList.remove('bg-slate-100', 'text-slate-600');
+    tabPaste?.classList.remove('bg-blue-600', 'text-white');
+    tabPaste?.classList.add('bg-slate-100', 'text-slate-600');
+    methodFile?.classList.remove('hidden');
+    methodPaste?.classList.add('hidden');
+  } else {
+    tabPaste?.classList.add('bg-blue-600', 'text-white');
+    tabPaste?.classList.remove('bg-slate-100', 'text-slate-600');
+    tabFile?.classList.remove('bg-blue-600', 'text-white');
+    tabFile?.classList.add('bg-slate-100', 'text-slate-600');
+    methodPaste?.classList.remove('hidden');
+    methodFile?.classList.add('hidden');
+  }
+}
+
+function downloadUploadTemplate() {
+  const targetKelas = document.getElementById('upload-target-kelas')?.value || 'Semua';
+  const targetMapel = document.getElementById('upload-target-mapel')?.value || 'Informatika';
+  const targetYear = document.getElementById('upload-tahun-ajaran')?.value || '2026/2027';
+  const targetSem = document.getElementById('upload-semester')?.value || 'I (Satu)';
+
+  let students = AppState.muridList;
+  if (targetKelas !== 'Semua') {
+    students = students.filter(m => String(m.kelas) === String(targetKelas));
+  }
+
+  const mapelName = targetMapel === 'Sesuai File' ? 'Informatika' : targetMapel;
+  const kkmVal = MAPEL_KKM_DEFAULT[mapelName] || 75;
+
+  let csvContent = "data:text/csv;charset=utf-8,";
+  csvContent += "NIS,Nama Siswa,Kelas,Mata Pelajaran,KKM,Nilai UTS,Catatan Guru\r\n";
+
+  students.forEach(s => {
+    const row = `"${s.nis}","${s.nama_murid || s.nama_santri}","${s.kelas}","${mapelName}","${kkmVal}","85",""`;
+    csvContent += row + "\r\n";
+  });
+
+  const encodedUri = encodeURI(csvContent);
+  const link = document.createElement("a");
+  link.setAttribute("href", encodedUri);
+  link.setAttribute("download", `Template_Nilai_${targetKelas.replace(/\s+/g, '_')}_${mapelName}_${targetYear.replace('/', '-')}.csv`);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  showToast('Template CSV nilai berhasil diunduh!', 'success');
+}
+
+function handleFileUpload(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const content = e.target.result;
+    parseSpreadsheetText(content);
+  };
+  reader.readAsText(file);
+}
+
+function handlePasteUpload() {
+  const text = document.getElementById('paste-upload-textarea')?.value;
+  if (!text || !text.trim()) {
+    resetUploadData();
+    return;
+  }
+  parseSpreadsheetText(text);
+}
+
+function parseSpreadsheetText(text) {
+  const lines = text.trim().split(/\r?\n/);
+  if (lines.length === 0) return;
+
+  const targetKelas = document.getElementById('upload-target-kelas')?.value || 'Semua';
+  const targetMapel = document.getElementById('upload-target-mapel')?.value || 'Sesuai File';
+  const targetYear = document.getElementById('upload-tahun-ajaran')?.value || '2026/2027';
+  const targetSem = document.getElementById('upload-semester')?.value || 'I (Satu)';
+
+  uploadedGradeItems = [];
+
+  const muridMap = {};
+  AppState.muridList.forEach(m => {
+    muridMap[String(m.nis)] = m;
+    muridMap[(m.nama_murid || m.nama_santri || '').toLowerCase().trim()] = m;
+  });
+
+  lines.forEach((line, index) => {
+    if (!line.trim()) return;
+    let cols = [];
+    if (line.includes('\t')) cols = line.split('\t');
+    else if (line.includes(',')) cols = parseCsvLine(line);
+    else if (line.includes(';')) cols = line.split(';');
+    else cols = line.split(/\s{2,}/);
+
+    cols = cols.map(c => c.trim().replace(/^["']|["']$/g, ''));
+    if (cols.length < 2) return;
+
+    const firstCol = cols[0].toLowerCase();
+    if (firstCol === 'nis' || firstCol === 'no' || firstCol === 'nama' || firstCol.includes('peserta')) {
+      return;
+    }
+
+    let nis = '';
+    let nama = '';
+    let kelas = targetKelas !== 'Semua' ? targetKelas : '';
+    let mapel = targetMapel !== 'Sesuai File' ? targetMapel : 'Informatika';
+    let kkm = 75;
+    let nilaiUts = 85;
+
+    if (/^\d{6,}$/.test(cols[0])) {
+      nis = cols[0];
+      nama = cols[1] || '';
+      if (cols.length >= 5) {
+        if (isNaN(cols[2])) {
+          if (cols[2].toUpperCase().includes('VII') || cols[2].toUpperCase().includes('VIII') || cols[2].toUpperCase().includes('IX')) {
+            kelas = cols[2];
+            mapel = cols[3] || mapel;
+            kkm = Number(cols[4]) || 75;
+            nilaiUts = Number(cols[5] || cols[4]) || 85;
+          } else {
+            mapel = cols[2];
+            kkm = Number(cols[3]) || 75;
+            nilaiUts = Number(cols[4]) || 85;
+          }
+        } else {
+          kkm = Number(cols[2]) || 75;
+          nilaiUts = Number(cols[3]) || 85;
+        }
+      } else if (cols.length === 3) {
+        nilaiUts = Number(cols[2]) || 85;
+      } else if (cols.length === 4) {
+        kkm = Number(cols[2]) || 75;
+        nilaiUts = Number(cols[3]) || 85;
+      }
+    } else {
+      nama = cols[0];
+      if (/^\d+$/.test(cols[1])) {
+        nilaiUts = Number(cols[1]);
+      } else if (/^\d{6,}$/.test(cols[1])) {
+        nis = cols[1];
+        nilaiUts = Number(cols[2] || 85);
+      }
+    }
+
+    if (nis && muridMap[nis]) {
+      const s = muridMap[nis];
+      nama = s.nama_murid || s.nama_santri;
+      if (!kelas) kelas = s.kelas;
+    } else if (nama && muridMap[nama.toLowerCase()]) {
+      const s = muridMap[nama.toLowerCase()];
+      nis = s.nis;
+      if (!kelas) kelas = s.kelas;
+    }
+
+    if (!nis) nis = `262707${String(index + 1).padStart(3, '0')}`;
+    if (!nama) nama = `Siswa #${index + 1}`;
+    if (!kelas) kelas = targetKelas !== 'Semua' ? targetKelas : 'VII UTSMAN';
+    if (targetMapel !== 'Sesuai File') mapel = targetMapel;
+
+    kkm = MAPEL_KKM_DEFAULT[mapel] || kkm || 75;
+
+    let predikat = 'D';
+    if (nilaiUts >= 90) predikat = 'A';
+    else if (nilaiUts >= 80) predikat = 'B';
+    else if (nilaiUts >= kkm) predikat = 'C';
+
+    const capTemplate = BANK_CAPAIAN_MAPEL[mapel] || BANK_CAPAIAN_MAPEL['Akidah'];
+    const capaian = nilaiUts >= 90 ? capTemplate.tinggi : (nilaiUts >= kkm ? capTemplate.sedang : capTemplate.cukup);
+
+    uploadedGradeItems.push({
+      id: `NA-${nis}-${mapel.replace(/\s+/g, '')}`,
+      nis: nis,
+      nama_murid: nama,
+      kelas: kelas,
+      mata_pelajaran: mapel,
+      kkm: kkm,
+      semester: targetSem,
+      tahun_ajaran: targetYear,
+      nilai_tugas: nilaiUts,
+      nilai_uts: nilaiUts,
+      nilai_akhir: nilaiUts,
+      predikat: predikat,
+      capaian_kompetensi: capaian,
+      catatan_guru: capaian
+    });
+  });
+
+  renderUploadPreview();
+}
+
+function parseCsvLine(text) {
+  let p = '', c = false, r = [];
+  for (let i = 0; i < text.length; i++) {
+    let ch = text[i];
+    if (ch === '"') { c = !c; }
+    else if (ch === ',' && !c) { r.push(p); p = ''; }
+    else { p += ch; }
+  }
+  r.push(p);
+  return r;
+}
+
+function renderUploadPreview() {
+  const container = document.getElementById('upload-preview-container');
+  const countEl = document.getElementById('upload-preview-count');
+  const tbody = document.getElementById('upload-preview-tbody');
+
+  if (!container || !tbody) return;
+
+  if (uploadedGradeItems.length === 0) {
+    container.classList.add('hidden');
+    return;
+  }
+
+  container.classList.remove('hidden');
+  if (countEl) countEl.innerText = uploadedGradeItems.length;
+
+  tbody.innerHTML = uploadedGradeItems.map((item, idx) => `
+    <tr class="hover:bg-blue-50/30 transition">
+      <td class="px-3 py-2 text-center text-slate-400 font-mono">${idx + 1}</td>
+      <td class="px-3 py-2 font-mono font-bold text-slate-800">${item.nis}</td>
+      <td class="px-4 py-2 font-bold text-slate-900">${item.nama_murid}</td>
+      <td class="px-3 py-2"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-700">${item.kelas}</span></td>
+      <td class="px-3 py-2 font-semibold text-blue-900">${item.mata_pelajaran}</td>
+      <td class="px-3 py-2 text-center font-bold text-amber-900">${item.kkm}</td>
+      <td class="px-3 py-2 text-center font-black text-blue-900 bg-blue-50/60">${item.nilai_uts}</td>
+      <td class="px-3 py-2 text-center">
+        <span class="px-2 py-0.5 rounded-full text-[10px] font-black badge-predikat-${item.predikat}">${item.predikat}</span>
+      </td>
+      <td class="px-4 py-2 text-slate-600 text-[11px] leading-snug">${item.capaian_kompetensi}</td>
+    </tr>
+  `).join('');
+}
+
+function resetUploadData() {
+  uploadedGradeItems = [];
+  const fileInput = document.getElementById('file-upload-input');
+  if (fileInput) fileInput.value = '';
+  const textarea = document.getElementById('paste-upload-textarea');
+  if (textarea) textarea.value = '';
+  renderUploadPreview();
+}
+
+function saveUploadedGrades() {
+  if (uploadedGradeItems.length === 0) {
+    showToast('Tidak ada data nilai yang siap diimpor.', 'warning');
+    return;
+  }
+
+  const btn = document.getElementById('btn-save-uploaded-grades');
+  if (btn) {
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...';
+  }
+
+  uploadedGradeItems.forEach(newItem => {
+    const existingIdx = AppState.akademikList.findIndex(a => 
+      String(a.nis) === String(newItem.nis) && 
+      a.mata_pelajaran === newItem.mata_pelajaran &&
+      a.tahun_ajaran === newItem.tahun_ajaran
+    );
+    if (existingIdx >= 0) {
+      AppState.akademikList[existingIdx] = newItem;
+    } else {
+      AppState.akademikList.unshift(newItem);
+    }
+  });
+
+  saveAkademikListLocally();
+  loadDashboardStats();
+
+  callApi('saveBulkUploadNilaiAkademik', {
+    items: uploadedGradeItems,
+    tahun_ajaran: document.getElementById('upload-tahun-ajaran')?.value || '2026/2027',
+    semester: document.getElementById('upload-semester')?.value || 'I (Satu)'
+  });
+
+  setTimeout(() => {
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> <span>Simpan & Import Nilai ke Database</span>';
+    }
+    showToast(`Alhamdulillah! Berhasil mengimpor ${uploadedGradeItems.length} nilai siswa untuk T.A. Baru ke Database!`, 'success');
+    resetUploadData();
+    switchAkademikInputMode('leger');
+  }, 600);
+}
+
+// 10C. KELOLA & TAMBAH TAHUN AJARAN BARU (KEPALA SEKOLAH & GURU WORKFLOW)
+function openAcademicYearModal() {
+  const modal = document.getElementById('modal-academic-year');
+  if (!modal) return;
+  modal.classList.remove('hidden');
+  renderAcademicYearsModal();
+}
+
+function closeAcademicYearModal() {
+  const modal = document.getElementById('modal-academic-year');
+  if (modal) modal.classList.add('hidden');
+}
+
+function renderAcademicYearsModal() {
+  const currentYear = AppState.cmsSettings.academic_year || '2026/2027';
+  const currentSem = AppState.cmsSettings.semester_active || 'I (Satu)';
+  
+  const displayYear = document.getElementById('modal-active-year-display');
+  if (displayYear) displayYear.innerText = currentYear;
+  
+  const displaySem = document.getElementById('modal-active-sem-display');
+  if (displaySem) displaySem.innerText = `(${currentSem})`;
+
+  let listStr = AppState.cmsSettings.academic_years_list || '2026/2027,2025/2026,2024/2025';
+  let years = listStr.split(',').map(s => s.trim()).filter(Boolean);
+  if (!years.includes(currentYear)) years.unshift(currentYear);
+
+  const container = document.getElementById('academic-years-chips-container');
+  if (container) {
+    container.innerHTML = years.map(yr => {
+      const isActive = yr === currentYear;
+      return `
+        <button type="button" onclick="selectAcademicYear('${yr}')" 
+                class="p-2.5 rounded-xl border text-center font-bold text-xs transition flex flex-col items-center justify-center gap-1 ${isActive ? 'bg-blue-600 text-white border-blue-600 shadow-md ring-2 ring-blue-300' : 'bg-white text-slate-700 border-slate-200 hover:border-blue-400 hover:bg-blue-50'}">
+          <span>${yr}</span>
+          ${isActive ? '<span class="text-[9px] bg-white/20 px-1.5 py-0.5 rounded-full">Aktif</span>' : '<span class="text-[9px] text-slate-400">Pilih</span>'}
+        </button>
+      `;
+    }).join('');
+  }
+}
+
+function selectAcademicYear(year) {
+  AppState.cmsSettings.academic_year = year;
+  saveCmsSettingsLocally();
+  updateAllAcademicYearUI(year);
+  renderAcademicYearsModal();
+  showToast(`Tahun Ajaran Aktif berhasil diubah ke ${year}!`, 'success');
+  callApi('saveCmsSettings', { settings: AppState.cmsSettings });
+}
+
+function submitNewAcademicYear(event) {
+  event.preventDefault();
+  const inputYear = document.getElementById('input-new-academic-year');
+  const inputSem = document.getElementById('input-new-academic-sem');
+  const inputDate = document.getElementById('input-new-academic-date');
+  if (!inputYear || !inputYear.value.trim()) {
+    showToast('Harap masukkan format tahun ajaran dengan benar (contoh: 2026/2027)', 'warning');
+    return;
+  }
+  const newYear = inputYear.value.trim();
+  const newSem = inputSem ? inputSem.value : 'I (Satu)';
+  const newDate = inputDate ? inputDate.value.trim() : '17 Oktober 2026';
+
+  let listStr = AppState.cmsSettings.academic_years_list || '2026/2027,2025/2026,2024/2025';
+  let years = listStr.split(',').map(s => s.trim()).filter(Boolean);
+  if (!years.includes(newYear)) years.unshift(newYear);
+
+  AppState.cmsSettings.academic_year = newYear;
+  AppState.cmsSettings.academic_years_list = years.join(',');
+  AppState.cmsSettings.semester_active = newSem;
+  AppState.cmsSettings.report_date = newDate;
+
+  saveCmsSettingsLocally();
+  updateAllAcademicYearUI(newYear);
+  renderAcademicYearsModal();
+
+  inputYear.value = '';
+  showToast(`Alhamdulillah! Tahun Ajaran ${newYear} berhasil ditambahkan dan diaktifkan!`, 'success');
+
+  callApi('saveCmsSettings', { settings: AppState.cmsSettings });
+}
+
+function updateAllAcademicYearUI(year) {
+  const navYear = document.getElementById('nav-academic-year');
+  if (navYear) navYear.innerText = year;
+  
+  const navSem = document.getElementById('nav-semester');
+  if (navSem) navSem.innerText = (AppState.cmsSettings.semester_active || 'I (Satu)').includes('II') ? 'Genap' : 'Ganjil';
+
+  const cmsYear = document.getElementById('cms-academic-year');
+  if (cmsYear) cmsYear.value = year;
+
+  const printKop = document.getElementById('print-tahun-ajaran-kop');
+  if (printKop) printKop.innerText = year;
+
+  const printSkl = document.getElementById('print-skl-tahun-ajaran');
+  if (printSkl) printSkl.innerText = year;
+
+  const uploadYear = document.getElementById('upload-tahun-ajaran');
+  if (uploadYear) {
+    if (![...uploadYear.options].some(o => o.value === year)) {
+      uploadYear.add(new Option(year + ' (Aktif)', year, true, true));
+    }
+    uploadYear.value = year;
+  }
 }
 
 // 11. AHLAQ & KEPRIBADIAN MODULE (6 ASPEK AL-IMAM + CATATAN & 28 INDIKATOR SKL)

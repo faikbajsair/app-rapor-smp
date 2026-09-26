@@ -12,7 +12,7 @@
           <div>
             <div class="flex items-center gap-2">
               <h3 class="text-base font-bold text-white leading-tight">Panduan Interaktif Penggunaan Aplikasi</h3>
-              <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">v2.5 Official</span>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">T.A. 2026/2027 Official</span>
             </div>
             <p class="text-xs text-blue-200/80 mt-0.5">Sistem Rapor Tengah Semester & Portofolio SMP Al-Imam (AI IS)</p>
           </div>
@@ -29,14 +29,14 @@
 
       <!-- Quick Step Jump Tabs (Pills) -->
       <div class="flex items-center gap-1.5 mt-4 overflow-x-auto pb-1 scrollbar-none text-[11px] font-semibold text-slate-300">
-        <button onclick="goToGuideStep(1)" class="guide-tab-pill px-2.5 py-1 rounded-lg transition whitespace-nowrap bg-blue-500 text-white shadow" data-tab-step="1">1. Alur & Konsep</button>
+        <button onclick="goToGuideStep(1)" class="guide-tab-pill px-2.5 py-1 rounded-lg transition whitespace-nowrap bg-blue-500 text-white shadow font-bold" data-tab-step="1">1. Alur & Konsep</button>
         <button onclick="goToGuideStep(2)" class="guide-tab-pill px-2.5 py-1 rounded-lg transition whitespace-nowrap bg-slate-800/80 text-slate-300 hover:bg-slate-700" data-tab-step="2">2. Data Siswa</button>
-        <button onclick="goToGuideStep(3)" class="guide-tab-pill px-2.5 py-1 rounded-lg transition whitespace-nowrap bg-slate-800/80 text-slate-300 hover:bg-slate-700" data-tab-step="3">3. 16 Mapel</button>
+        <button onclick="goToGuideStep(3)" class="guide-tab-pill px-2.5 py-1 rounded-lg transition whitespace-nowrap bg-slate-800/80 text-slate-300 hover:bg-slate-700" data-tab-step="3">3. 16 Mapel & Upload</button>
         <button onclick="goToGuideStep(4)" class="guide-tab-pill px-2.5 py-1 rounded-lg transition whitespace-nowrap bg-slate-800/80 text-slate-300 hover:bg-slate-700" data-tab-step="4">4. Kepribadian</button>
         <button onclick="goToGuideStep(5)" class="guide-tab-pill px-2.5 py-1 rounded-lg transition whitespace-nowrap bg-slate-800/80 text-slate-300 hover:bg-slate-700" data-tab-step="5">5. Diniyah</button>
         <button onclick="goToGuideStep(6)" class="guide-tab-pill px-2.5 py-1 rounded-lg transition whitespace-nowrap bg-slate-800/80 text-slate-300 hover:bg-slate-700" data-tab-step="6">6. SKL 28 Karakter</button>
         <button onclick="goToGuideStep(7)" class="guide-tab-pill px-2.5 py-1 rounded-lg transition whitespace-nowrap bg-slate-800/80 text-slate-300 hover:bg-slate-700" data-tab-step="7">7. Cetak Rapor</button>
-        <button onclick="goToGuideStep(8)" class="guide-tab-pill px-2.5 py-1 rounded-lg transition whitespace-nowrap bg-slate-800/80 text-slate-300 hover:bg-slate-700" data-tab-step="8">8. Role & Sync</button>
+        <button onclick="goToGuideStep(8)" class="guide-tab-pill px-2.5 py-1 rounded-lg transition whitespace-nowrap bg-slate-800/80 text-slate-300 hover:bg-slate-700" data-tab-step="8">8. Tambah T.A. & Role</button>
       </div>
 
       <!-- Animated Step Progress Bar -->
@@ -48,20 +48,20 @@
     <!-- Main Content Container for 8 Steps -->
     <div class="p-6 sm:p-7 overflow-y-auto flex-1 space-y-4" id="guide-content-body">
 
-      <!-- STEP 1: Pengenalan & Alur Kerja Resmi Al-Imam -->
+      <!-- STEP 1: Pengenalan & Alur Kerja Resmi Al-Imam (T.A. 2026/2027) -->
       <div class="guide-step-card" data-step="1">
         <div class="flex items-center gap-3.5 p-3.5 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100/80 rounded-2xl mb-4">
           <div class="w-12 h-12 rounded-2xl bg-blue-600 text-white flex items-center justify-center text-xl shrink-0 shadow-md shadow-blue-500/20">
             <i class="fa-solid fa-sparkles"></i>
           </div>
           <div>
-            <h4 class="text-sm font-bold text-slate-900">Selamat Datang di Sistem Rapor Digital SMP Al-Imam</h4>
+            <h4 class="text-sm font-bold text-slate-900">Selamat Datang di Sistem Rapor Digital T.A. 2026/2027</h4>
             <p class="text-xs text-blue-700">Aplikasi meniru 100% struktur buku kerja Excel resmi: Data Siswa ➔ Rekap Nilai ➔ Kepribadian ➔ Print Rapor.</p>
           </div>
         </div>
 
         <p class="text-xs text-slate-600 leading-relaxed">
-          Aplikasi ini dirancang khusus untuk memfasilitasi Dewan Guru dan Wali Kelas SMP Al-Imam Islamic School dalam mengelola penilaian Tengah Semester secara terpadu, otomatis, dan presisi tinggi sesuai Kurikulum Merdeka & Kurikulum Khas Al-Imam.
+          Aplikasi ini dirancang khusus untuk memfasilitasi Dewan Guru, Wali Kelas, dan Kepala Sekolah SMP Al-Imam Islamic School dalam mengelola penilaian Tahun Ajaran <strong>2026/2027</strong> secara terpadu, otomatis, dan presisi tinggi sesuai Kurikulum Merdeka & Kurikulum Khas Al-Imam.
         </p>
 
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-2">
@@ -72,8 +72,8 @@
           </div>
           <div class="p-3 bg-slate-50 hover:bg-blue-50/50 border border-slate-200 hover:border-blue-200 rounded-2xl text-center transition cursor-pointer" onclick="goToGuideStep(3)">
             <div class="w-8 h-8 mx-auto rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center text-sm mb-1.5 font-bold">2</div>
-            <h5 class="text-xs font-bold text-slate-800">Rekap 16 Mapel</h5>
-            <p class="text-[10px] text-slate-500 mt-0.5">Leger & Capaian Otomatis</p>
+            <h5 class="text-xs font-bold text-slate-800">16 Mapel & Upload</h5>
+            <p class="text-[10px] text-slate-500 mt-0.5">Leger & Import Nilai Baru</p>
           </div>
           <div class="p-3 bg-slate-50 hover:bg-amber-50/50 border border-slate-200 hover:border-amber-200 rounded-2xl text-center transition cursor-pointer" onclick="goToGuideStep(4)">
             <div class="w-8 h-8 mx-auto rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center text-sm mb-1.5 font-bold">3</div>
@@ -90,7 +90,7 @@
         <div class="p-3 bg-emerald-50 border border-emerald-200 rounded-xl flex items-center justify-between mt-2">
           <div class="flex items-center gap-2 text-xs text-emerald-900 font-medium">
             <i class="fa-solid fa-circle-check text-emerald-600 text-sm"></i>
-            <span>Tersedia data lengkap kelas <strong>VII UTSMAN</strong>, <strong>VII AISYAH</strong>, <strong>VIII KHADIJAH</strong>, <strong>IX ABU BAKAR</strong>, dan <strong>IX UMMU SALAMAH</strong>.</span>
+            <span>Tahun Ajaran Aktif: <strong>2026/2027</strong> | Semester: <strong>I (Satu) / Ganjil</strong></span>
           </div>
         </div>
       </div>
@@ -142,49 +142,51 @@
         </div>
       </div>
 
-      <!-- STEP 3: Rekap Nilai 16 Mata Pelajaran & Generator Capaian -->
+      <!-- STEP 3: Rekap Nilai 16 Mapel & Fitur Upload Nilai Baru -->
       <div class="guide-step-card hidden" data-step="3">
         <div class="flex items-center gap-3.5 p-3.5 bg-blue-50 border border-blue-100 rounded-2xl mb-4">
           <div class="w-12 h-12 rounded-2xl bg-blue-600 text-white flex items-center justify-center text-xl shrink-0 shadow-md shadow-blue-500/20">
             <i class="fa-solid fa-book-open"></i>
           </div>
           <div>
-            <h4 class="text-sm font-bold text-blue-950">Rekap Nilai 16 Mapel & Capaian Kompetensi Otomatis</h4>
-            <p class="text-xs text-blue-700">Input nilai sekelas dalam bentuk tabel leger dengan generator deskripsi capaian otomatis.</p>
+            <h4 class="text-sm font-bold text-blue-950">Rekap 16 Mapel & Fitur Baru Upload Nilai Massal</h4>
+            <p class="text-xs text-blue-700">Input nilai melalui tabel leger cepat atau upload langsung dari file Excel/CSV/Paste.</p>
           </div>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs mb-3">
           <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1.5">
             <span class="font-bold text-blue-950 flex items-center gap-1.5">
-              <i class="fa-solid fa-moon text-amber-500"></i> 5 Mapel Diniyah:
+              <i class="fa-solid fa-table-cells text-blue-600"></i> Mode 1: Input Leger Sekelas
             </span>
-            <p class="text-[11px] text-slate-600">Akidah, Akhlak, Hadits, Fikih, SKI (Sejarah Kebudayaan Islam).</p>
+            <p class="text-[11px] text-slate-600">Ketik nilai langsung di tabel. Tekan <strong>Enter / Panah Bawah</strong> untuk pindah siswa. Klik <strong>Auto-Generate Capaian</strong>.</p>
           </div>
-          <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1.5">
-            <span class="font-bold text-blue-950 flex items-center gap-1.5">
-              <i class="fa-solid fa-book text-blue-600"></i> 11 Mapel Umum & Muatan:
+          <div class="p-3 bg-emerald-50/70 border border-emerald-200 rounded-xl space-y-1.5">
+            <span class="font-bold text-emerald-950 flex items-center gap-1.5">
+              <i class="fa-solid fa-file-arrow-up text-emerald-600"></i> Mode 2: Upload Nilai Massal (Baru)
             </span>
-            <p class="text-[11px] text-slate-600">Pancasila, B. Indonesia, B. Inggris, Matematika, IPA, IPS, Prakarya, PJOK, B. Sunda, Informatika, Bahasa Arab.</p>
+            <p class="text-[11px] text-emerald-800">Upload file Excel/CSV atau paste baris dari spreadsheet untuk Tahun Ajaran <strong>2026/2027</strong> dalam hitungan detik!</p>
           </div>
         </div>
 
         <div class="bg-gradient-to-r from-blue-500/10 to-indigo-500/10 p-3.5 rounded-xl border border-blue-200 text-xs space-y-2">
           <div class="font-bold text-blue-950 flex items-center justify-between">
-            <span class="flex items-center gap-1.5"><i class="fa-solid fa-bolt text-amber-500"></i> Fitur Percepatan Input Guru:</span>
-            <span class="text-[10px] bg-blue-600 text-white px-2 py-0.5 rounded font-bold">1-Klik Sekelas</span>
+            <span class="flex items-center gap-1.5"><i class="fa-solid fa-bolt text-amber-500"></i> Langkah Upload Nilai Tahun Ajaran Baru:</span>
+            <span class="text-[10px] bg-emerald-600 text-white px-2 py-0.5 rounded font-bold">Panduan Upload</span>
           </div>
-          <ul class="space-y-1 text-slate-700 text-[11px]">
-            <li>• <strong>Tombol Auto-Generate Capaian:</strong> Menghasilkan narasi kompetensi baku resmi Al-Imam berdasarkan nilai (Sangat Baik / Baik / Cukup / Perlu Bimbingan).</li>
-            <li>• <strong>Navigasi Keyboard Cepat:</strong> Tekan <strong>Enter</strong> atau <strong>Panah Bawah</strong> pada input nilai untuk langsung melompat ke siswa berikutnya.</li>
-            <li>• <strong>Simpan Nilai Sekelas:</strong> Menyimpan seluruh nilai 16 mapel untuk seluruh siswa secara batch seketika.</li>
-          </ul>
+          <ol class="space-y-1 text-slate-700 text-[11px] list-decimal list-inside">
+            <li>Buka tab <strong>Upload Nilai Baru (Excel/CSV/Paste)</strong> di modul Rekap Nilai.</li>
+            <li>Klik tombol <strong>Download Template Excel/CSV</strong> untuk mendapatkan format resmi.</li>
+            <li>Isi nilai siswa pada template, lalu upload file atau paste data barisnya.</li>
+            <li>Periksa tabel pratinjau yang otomatis memvalidasi KKM dan capaian kompetensi.</li>
+            <li>Klik <strong>Simpan & Import Nilai ke Database</strong> untuk menyimpan ke server.</li>
+          </ol>
         </div>
 
-        <div class="pt-2">
+        <div class="pt-2 flex gap-2">
           <button onclick="switchViewAndHighlight('akademik')" class="inline-flex items-center gap-1.5 text-xs font-bold text-blue-700 hover:text-blue-900 bg-blue-100/80 hover:bg-blue-200/80 px-3.5 py-2 rounded-xl transition">
             <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-            <span>Buka Rekap Nilai Akademik</span>
+            <span>Buka Rekap & Upload Nilai</span>
           </button>
         </div>
       </div>
@@ -358,7 +360,7 @@
           <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
             <div class="font-bold text-slate-800 flex items-center justify-between">
               <span>Keunggulan Format Cetak:</span>
-              <span class="text-[10px] bg-slate-200 text-slate-800 px-2 py-0.5 rounded font-bold">Standard A4 Layout</span>
+              <span class="text-[10px] bg-slate-200 text-slate-800 px-2 py-0.5 rounded font-bold">T.A. 2026/2027 A4 Layout</span>
             </div>
             <ul class="space-y-1.5 text-slate-600 text-[11px]">
               <li class="flex items-start gap-2">
@@ -371,7 +373,7 @@
               </li>
               <li class="flex items-start gap-2">
                 <i class="fa-solid fa-circle-check text-emerald-600 mt-0.5"></i>
-                <span><strong>3 Kolom Pengesahan Tanda Tangan:</strong> Orang Tua/Wali Murid, Wali Kelas, dan Kepala Sekolah (<em>Bambang Setyono, S.T.</em>) lengkap dengan titimangsa resmi (<em>Bogor, 17 Oktober 2025</em>).</span>
+                <span><strong>3 Kolom Pengesahan Tanda Tangan:</strong> Orang Tua/Wali Murid, Wali Kelas, dan Kepala Sekolah (<em>Bambang Setyono, S.T.</em>) lengkap dengan titimangsa resmi (<em>Bogor, 17 Oktober 2026</em>).</span>
               </li>
             </ul>
           </div>
@@ -385,46 +387,53 @@
         </div>
       </div>
 
-      <!-- STEP 8: Akses Login Multi-Role, Sinkronisasi Cloud & Pengaturan CMS -->
+      <!-- STEP 8: Tambah Tahun Ajaran Baru, Multi-Role & CMS -->
       <div class="guide-step-card hidden" data-step="8">
         <div class="flex items-center gap-3.5 p-3.5 bg-rose-50 border border-rose-100 rounded-2xl mb-4">
           <div class="w-12 h-12 rounded-2xl bg-rose-600 text-white flex items-center justify-center text-xl shrink-0 shadow-md shadow-rose-500/20">
-            <i class="fa-solid fa-shield-halved"></i>
+            <i class="fa-solid fa-calendar-plus"></i>
           </div>
           <div>
-            <h4 class="text-sm font-bold text-rose-950">Akses Login 4 Role, Cloud Sync & Pengaturan CMS</h4>
-            <p class="text-xs text-rose-700">Sistem keamanan multi-role, sinkronisasi Google Sheets, dan CMS kustomisasi.</p>
+            <h4 class="text-sm font-bold text-rose-950">Kelola Tahun Ajaran Baru & Akses Login Multi-Role</h4>
+            <p class="text-xs text-rose-700">Fitur penambahan Tahun Ajaran Baru setiap tahun oleh Kepsek & Guru, serta sinkronisasi Cloud.</p>
           </div>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs mb-3">
-          <div class="p-2.5 bg-purple-50/80 border border-purple-200/80 rounded-xl">
-            <strong class="text-purple-950 block text-[11px] font-bold">1. Administrator (Admin)</strong>
-            <span class="text-[10px] text-purple-700">Akses penuh CRUD, Manajemen Pengguna, Reset Database, dan CMS Branding.</span>
+        <div class="p-3 bg-blue-50 border border-blue-200 rounded-xl text-xs space-y-1.5 mb-3 text-slate-700">
+          <div class="font-bold text-blue-950 flex items-center gap-1.5">
+            <i class="fa-regular fa-calendar-check text-blue-600"></i> Cara Menambah Tahun Ajaran Baru:
           </div>
-          <div class="p-2.5 bg-indigo-50/80 border border-indigo-200/80 rounded-xl">
-            <strong class="text-indigo-950 block text-[11px] font-bold">2. Kepala Sekolah</strong>
-            <span class="text-[10px] text-indigo-700">Supervisi seluruh jenjang kelas, rekap kelulusan, dan monitoring leger nilai.</span>
-          </div>
-          <div class="p-2.5 bg-blue-50/80 border border-blue-200/80 rounded-xl">
-            <strong class="text-blue-950 block text-[11px] font-bold">3. Guru / Wali Kelas</strong>
-            <span class="text-[10px] text-blue-700">Input nilai 16 mapel, generate capaian otomatis, evaluasi kepribadian, cetak rapor kelas.</span>
-          </div>
-          <div class="p-2.5 bg-emerald-50/80 border border-emerald-200/80 rounded-xl">
-            <strong class="text-emerald-950 block text-[11px] font-bold">4. Orang Tua / Wali Murid</strong>
-            <span class="text-[10px] text-emerald-700">Melihat rekap nilai anak, portofolio perkembangan karakter, dan download e-rapor.</span>
-          </div>
+          <ul class="space-y-1 text-slate-600 text-[11px]">
+            <li>• Klik badge periode <strong>T.A. 2026/2027</strong> di bagian navbar atas atau menu CMS.</li>
+            <li>• Masukkan format tahun ajaran baru (contoh: <code>2027/2028</code>).</li>
+            <li>• Klik <strong>Tambah & Terapkan Sebagai T.A. Aktif</strong>. Seluruh rekap dan format cetak langsung otomatis menyesuaikan!</li>
+          </ul>
         </div>
 
-        <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs space-y-1.5 text-slate-700">
-          <div class="font-bold text-slate-800 flex items-center justify-between">
-            <span>⚙️ Pengaturan CMS & Cloud Sync:</span>
-            <span class="text-[10px] text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">Google Sheets Sync Active</span>
+        <div class="grid grid-cols-2 gap-2 text-xs mb-3">
+          <div class="p-2 bg-purple-50 border border-purple-200 rounded-lg">
+            <strong class="text-purple-950 block text-[11px]">1. Admin</strong>
+            <span class="text-[10px] text-purple-700">Akses penuh CRUD, CMS, Pengguna, dan Reset DB.</span>
           </div>
-          <p class="text-[11px] text-slate-600">Ubah Kop Surat, Nama Kepala Sekolah, Tanggal Titimangsa Rapor, serta Tema Warna aplikasi langsung melalui menu <strong>Pengaturan CMS</strong>.</p>
+          <div class="p-2 bg-indigo-50 border border-indigo-200 rounded-lg">
+            <strong class="text-indigo-950 block text-[11px]">2. Kepala Sekolah</strong>
+            <span class="text-[10px] text-indigo-700">Monitoring seluruh dashboard, leger nilai, kelola T.A. baru.</span>
+          </div>
+          <div class="p-2 bg-blue-50 border border-blue-200 rounded-lg">
+            <strong class="text-blue-950 block text-[11px]">3. Guru / Pendidik</strong>
+            <span class="text-[10px] text-blue-700">Input leger nilai, upload massal, evaluasi kepribadian, kelola T.A.</span>
+          </div>
+          <div class="p-2 bg-emerald-50 border border-emerald-200 rounded-lg">
+            <strong class="text-emerald-950 block text-[11px]">4. Wali Murid</strong>
+            <span class="text-[10px] text-emerald-700">Melihat rekapitulasi nilai dan mengunduh e-rapor anak.</span>
+          </div>
         </div>
 
         <div class="pt-2 flex flex-wrap gap-2">
+          <button onclick="openAcademicYearModal()" class="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 px-3.5 py-2 rounded-xl shadow transition">
+            <i class="fa-regular fa-calendar-check text-[10px]"></i>
+            <span>Buka Pengelola Tahun Ajaran</span>
+          </button>
           <button onclick="openLoginModal()" class="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 px-3.5 py-2 rounded-xl shadow transition">
             <i class="fa-solid fa-key text-[10px]"></i>
             <span>Portal Login / Ganti Role</span>

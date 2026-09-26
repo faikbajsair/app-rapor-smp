@@ -17,7 +17,12 @@
         <button id="btn-mode-akademik-leger" onclick="switchAkademikInputMode('leger')" 
                 class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-2 bg-white text-blue-700 shadow-sm">
           <i class="fa-solid fa-table-cells"></i>
-          <span>Mode Input Leger Sekelas (Cepat)</span>
+          <span>Mode Input Leger Sekelas</span>
+        </button>
+        <button id="btn-mode-akademik-upload" onclick="switchAkademikInputMode('upload')" 
+                class="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 transition flex items-center gap-2">
+          <i class="fa-solid fa-file-arrow-up text-emerald-600"></i>
+          <span>Upload Nilai Baru (Excel/CSV/Paste)</span>
         </button>
         <button id="btn-mode-akademik-list" onclick="switchAkademikInputMode('list')" 
                 class="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 transition flex items-center gap-2">
@@ -242,6 +247,167 @@
                   <p>Memuat data nilai akademik...</p>
                 </td>
               </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SECTION 3: MODE UPLOAD NILAI SISWA (EXCEL / CSV / PASTE WORKFLOW T.A. 2026/2027) -->
+  <div id="section-akademik-upload" class="hidden space-y-4">
+    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+      
+      <!-- Upload Header & Settings Filter -->
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-emerald-100 text-emerald-800 border border-emerald-300">
+              <i class="fa-solid fa-sparkles text-emerald-600"></i> Fitur T.A. Baru
+            </span>
+            <h3 class="text-base font-bold text-slate-900">Upload & Import Nilai Siswa Massal</h3>
+          </div>
+          <p class="text-xs text-slate-500 mt-0.5">Upload nilai siswa dari file Excel/CSV atau copy-paste langsung dari spreadsheet untuk Tahun Pelajaran Baru.</p>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2">
+          <button onclick="downloadUploadTemplate()" 
+                  class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 rounded-xl text-xs font-bold transition flex items-center gap-2 shadow-sm">
+            <i class="fa-solid fa-file-csv text-emerald-600"></i>
+            <span>Download Template Excel/CSV</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Filter Target Upload (Tahun Ajaran, Semester, Kelas, Mapel) -->
+      <div class="grid grid-cols-1 sm:grid-cols-4 gap-3 bg-slate-50 p-4 rounded-xl border border-slate-200">
+        <div>
+          <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Tahun Ajaran Target</label>
+          <select id="upload-tahun-ajaran" class="w-full text-xs bg-white border border-slate-300 rounded-lg px-3 py-2 font-bold text-slate-800 focus:ring-2 focus:ring-blue-500">
+            <option value="2026/2027" selected>2026/2027 (Aktif)</option>
+            <option value="2025/2026">2025/2026</option>
+            <option value="2027/2028">2027/2028</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Semester Target</label>
+          <select id="upload-semester" class="w-full text-xs bg-white border border-slate-300 rounded-lg px-3 py-2 font-bold text-slate-800 focus:ring-2 focus:ring-blue-500">
+            <option value="I (Satu)" selected>I (Satu) / Ganjil</option>
+            <option value="II (Dua)">II (Dua) / Genap</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Target Kelas</label>
+          <select id="upload-target-kelas" class="w-full text-xs bg-white border border-slate-300 rounded-lg px-3 py-2 font-bold text-slate-800 focus:ring-2 focus:ring-blue-500">
+            <option value="Semua">Semua Kelas (Sesuai File)</option>
+            <option value="VII UTSMAN">VII UTSMAN (15 Ikhwan)</option>
+            <option value="VII AISYAH">VII AISYAH (18 Akhwat)</option>
+            <option value="VIII KHADIJAH">VIII KHADIJAH (21 Akhwat)</option>
+            <option value="IX ABU BAKAR">IX ABU BAKAR (12 Ikhwan)</option>
+            <option value="IX UMMU SALAMAH">IX UMMU SALAMAH (16 Akhwat)</option>
+            <option value="VIII THALHAH">VIII THALHAH</option>
+            <option value="VII BILAL">VII BILAL</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Mata Pelajaran</label>
+          <select id="upload-target-mapel" class="w-full text-xs bg-white border border-slate-300 rounded-lg px-3 py-2 font-bold text-slate-800 focus:ring-2 focus:ring-blue-500">
+            <option value="Sesuai File">Sesuai Kolom File</option>
+            <option value="Akidah">1. Akidah</option>
+            <option value="Akhlak">2. Akhlak</option>
+            <option value="Hadits">3. Hadits</option>
+            <option value="Fikih">4. Fikih</option>
+            <option value="SKI">5. SKI</option>
+            <option value="Pendidikan Pancasila">6. Pendidikan Pancasila</option>
+            <option value="Bahasa Indonesia">7. Bahasa Indonesia</option>
+            <option value="Bahasa Inggris">8. Bahasa Inggris</option>
+            <option value="Matematika">9. Matematika</option>
+            <option value="Ilmu Pengetahuan Alam">10. IPA</option>
+            <option value="Ilmu Pengetahuan Sosial">11. IPS</option>
+            <option value="Prakarya">12. Prakarya</option>
+            <option value="Pendidikan Jasmani, Olahraga, dan Kesehatan">13. PJOK</option>
+            <option value="Bahasa Sunda">14. Bahasa Sunda</option>
+            <option value="Informatika">15. Informatika</option>
+            <option value="Bahasa Arab">16. Bahasa Arab</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Upload Tabs: File Upload vs Paste Textarea -->
+      <div class="space-y-3">
+        <div class="flex items-center gap-2 border-b border-slate-200 pb-2 text-xs font-bold">
+          <button type="button" id="tab-upload-file" onclick="switchUploadMethod('file')" class="px-3.5 py-1.5 rounded-lg bg-blue-600 text-white flex items-center gap-1.5 shadow-sm">
+            <i class="fa-solid fa-file-arrow-up"></i>
+            <span>Upload File (Excel / CSV)</span>
+          </button>
+          <button type="button" id="tab-upload-paste" onclick="switchUploadMethod('paste')" class="px-3.5 py-1.5 rounded-lg bg-slate-100 text-slate-600 hover:text-slate-900 flex items-center gap-1.5">
+            <i class="fa-solid fa-paste"></i>
+            <span>Copy-Paste dari Spreadsheet</span>
+          </button>
+        </div>
+
+        <!-- Method 1: File Dropzone -->
+        <div id="upload-method-file" class="border-2 border-dashed border-slate-300 hover:border-blue-500 rounded-2xl p-6 text-center bg-slate-50/50 transition cursor-pointer" onclick="document.getElementById('file-upload-input').click()">
+          <input type="file" id="file-upload-input" accept=".csv, .xlsx, .xls, .txt" class="hidden" onchange="handleFileUpload(event)" />
+          <div class="w-12 h-12 rounded-2xl bg-blue-100 text-blue-600 flex items-center justify-center text-xl mx-auto mb-2 shadow-inner">
+            <i class="fa-solid fa-cloud-arrow-up"></i>
+          </div>
+          <h4 class="text-xs font-bold text-slate-800">Klik untuk memilih file atau seret file ke sini</h4>
+          <p class="text-[11px] text-slate-500 mt-0.5">Mendukung format <strong>.CSV</strong>, <strong>.XLSX</strong>, <strong>.XLS</strong>, atau <strong>.TXT</strong> (Tab-separated)</p>
+        </div>
+
+        <!-- Method 2: Paste Box -->
+        <div id="upload-method-paste" class="hidden space-y-2">
+          <label class="block text-xs font-semibold text-slate-700">Paste Baris Nilai dari Excel / Google Sheets:</label>
+          <textarea id="paste-upload-textarea" rows="5" oninput="handlePasteUpload()" 
+                    class="w-full text-xs font-mono bg-slate-50 border border-slate-300 rounded-xl p-3 text-slate-800 focus:ring-2 focus:ring-blue-500" 
+                    placeholder="Contoh format kolom (bisa langsung copy sebaris/tabel dari Excel):
+NIS	Nama Murid	Mata Pelajaran	KKM	Nilai UTS
+252607038	Achmed Syathir Elhayba	Informatika	75	77
+252607022	Ali Zatrio Ikhwantoro	Informatika	75	85"></textarea>
+          <p class="text-[10px] text-slate-400">Copy baris tabel dari Microsoft Excel atau Google Sheets lalu paste di kolom atas.</p>
+        </div>
+      </div>
+
+      <!-- Preview Section -->
+      <div id="upload-preview-container" class="hidden space-y-3 pt-3 border-t border-slate-200">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            <h4 class="text-xs font-bold text-slate-800">Pratinjau Hasil Pembacaan Data (<span id="upload-preview-count" class="text-blue-600 font-bold">0</span> Data Terbaca)</h4>
+          </div>
+          <div class="flex items-center gap-2">
+            <button type="button" onclick="resetUploadData()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-semibold rounded-lg">
+              Reset
+            </button>
+            <button type="button" onclick="saveUploadedGrades()" id="btn-save-uploaded-grades" class="px-4 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow flex items-center gap-1.5 transition">
+              <i class="fa-solid fa-floppy-disk"></i>
+              <span>Simpan & Import Nilai ke Database</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto rounded-xl border border-slate-200 max-h-72">
+          <table class="w-full text-left text-xs text-slate-700">
+            <thead class="bg-slate-100 text-slate-800 uppercase text-[10px] font-extrabold sticky top-0 border-b border-slate-200">
+              <tr>
+                <th class="px-3 py-2 text-center w-10">No</th>
+                <th class="px-3 py-2">NIS</th>
+                <th class="px-4 py-2">Nama Siswa</th>
+                <th class="px-3 py-2">Kelas</th>
+                <th class="px-3 py-2">Mata Pelajaran</th>
+                <th class="px-3 py-2 text-center">KKM</th>
+                <th class="px-3 py-2 text-center bg-blue-50 text-blue-900 font-bold">Nilai UTS</th>
+                <th class="px-3 py-2 text-center">Predikat</th>
+                <th class="px-4 py-2">Capaian Kompetensi (Auto-Generated)</th>
+              </tr>
+            </thead>
+            <tbody id="upload-preview-tbody" class="divide-y divide-slate-100 bg-white">
+              <!-- Populated dynamically via JS -->
             </tbody>
           </table>
         </div>

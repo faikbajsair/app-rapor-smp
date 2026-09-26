@@ -141,12 +141,13 @@ function initDatabase() {
       ['theme_secondary_color', '#0284c7', 'appearance', 'Warna Sekunder (Hex)'],
       ['theme_accent_color', '#10b981', 'appearance', 'Warna Aksen (Hex)'],
       ['theme_sidebar_dark', 'true', 'appearance', 'Mode Gelap Sidebar (true/false)'],
-      ['academic_year', '2025/2026', 'academic', 'Tahun Ajaran Aktif'],
+      ['academic_year', '2026/2027', 'academic', 'Tahun Ajaran Aktif'],
+      ['academic_years_list', '2026/2027,2025/2026,2024/2025', 'academic', 'Daftar Pilihan Tahun Ajaran'],
       ['semester_active', 'I (Satu)', 'academic', 'Semester Aktif (I (Satu) / II (Dua))'],
-      ['report_date', '17 Oktober 2025', 'academic', 'Tanggal Titimangsa Rapor'],
+      ['report_date', '17 Oktober 2026', 'academic', 'Tanggal Titimangsa Rapor'],
       ['report_place', 'Bogor', 'academic', 'Kota Pembagian Rapor'],
       ['wali_kelas_default', 'Kahlil Gibran, S.Pd.', 'academic', 'Wali Kelas Default'],
-      ['headmaster_name', 'Arif Rohman, M.Pd.', 'signatory', 'Nama Kepala Sekolah'],
+      ['headmaster_name', 'Bambang Setyono, S.T.', 'signatory', 'Nama Kepala Sekolah'],
       ['headmaster_nip', '', 'signatory', 'NIP/NIY Kepala Sekolah'],
       ['headmaster_signature_url', '', 'signatory', 'URL Gambar TTD Kepala Sekolah (Opsional)'],
       ['report_footer_text', 'RAPOR TENGAH SEMESTER PROGRAM PORTOFOLIO SMP AL IMAM ISLAMIC SCHOOL', 'general', 'Teks Footer Rapor']
@@ -395,6 +396,44 @@ function updateSettings(newSettings) {
 }
 
 /**
+ * Kelola dan Tambah Tahun Ajaran Baru (Dapat digunakan Kepala Sekolah & Guru)
+ */
+function addAcademicYearSetting(newYear, semester) {
+  if (!newYear || !newYear.trim()) return { status: 'error', message: 'Tahun ajaran tidak valid' };
+  newYear = newYear.trim();
+  const settings = getSettings();
+  let listStr = settings.academic_years_list || '2026/2027,2025/2026,2024/2025';
+  const list = listStr.split(',').map(s => s.trim()).filter(Boolean);
+  if (!list.includes(newYear)) {
+    list.unshift(newYear);
+  }
+  const payload = {
+    academic_year: newYear,
+    academic_years_list: list.join(',')
+  };
+  if (semester) payload.semester_active = semester;
+  updateSettings(payload);
+  return { 
+    status: 'success', 
+    message: 'Tahun Ajaran ' + newYear + ' berhasil ditambahkan dan diaktifkan!', 
+    currentYear: newYear, 
+    list: list 
+  };
+}
+
+function getAcademicYearsList() {
+  const settings = getSettings();
+  let listStr = settings.academic_years_list || '2026/2027,2025/2026,2024/2025';
+  const list = listStr.split(',').map(s => s.trim()).filter(Boolean);
+  return {
+    status: 'success',
+    currentYear: settings.academic_year || '2026/2027',
+    currentSemester: settings.semester_active || 'I (Satu)',
+    list: list
+  };
+}
+
+/**
  * ============================================================================
  * MODEL: USERS MANAGEMENT
  * ============================================================================
@@ -596,7 +635,7 @@ function saveNilaiAkademik(data) {
       id,
       data.nis,
       data.semester || 'Ganjil',
-      data.tahun_ajaran || '2025/2026',
+      data.tahun_ajaran || '2026/2027',
       data.mata_pelajaran || '',
       kkm,
       tugas,
@@ -624,7 +663,7 @@ function saveBulkNilaiAkademik(payload) {
       mata_pelajaran: mata_pelajaran,
       kkm: kkm || 75,
       semester: semester || 'Ganjil',
-      tahun_ajaran: tahun_ajaran || '2025/2026',
+      tahun_ajaran: tahun_ajaran || '2026/2027',
       nilai_tugas: item.nilai_tugas || item.nilai || 0,
       nilai_uts: item.nilai_uts || item.nilai || 0,
       nilai_akhir: item.nilai_akhir || item.nilai || 0,
@@ -635,6 +674,37 @@ function saveBulkNilaiAkademik(payload) {
   });
   
   return { status: 'success', message: 'Berhasil menyimpan nilai mata pelajaran ' + mata_pelajaran + ' untuk ' + items.length + ' murid!' };
+}
+
+/**
+ * Bulk Upload Nilai Siswa untuk Tahun Ajaran Baru (Excel / CSV / Multi-Mapel Batch)
+ */
+function saveBulkUploadNilaiAkademik(payload) {
+  const { items, tahun_ajaran, semester } = payload;
+  if (!items || !Array.isArray(items) || items.length === 0) {
+    return { status: 'error', message: 'Data upload nilai tidak boleh kosong' };
+  }
+  let successCount = 0;
+  items.forEach(item => {
+    saveNilaiAkademik({
+      nis: item.nis,
+      mata_pelajaran: item.mata_pelajaran,
+      kkm: Number(item.kkm) || 75,
+      semester: item.semester || semester || 'I (Satu)',
+      tahun_ajaran: item.tahun_ajaran || tahun_ajaran || '2026/2027',
+      nilai_tugas: Number(item.nilai_tugas || item.nilai_uts || item.nilai || 0),
+      nilai_uts: Number(item.nilai_uts || item.nilai || 0),
+      nilai_akhir: Number(item.nilai_akhir || item.nilai_uts || item.nilai || 0),
+      predikat: item.predikat || '',
+      capaian_kompetensi: item.capaian_kompetensi || '',
+      catatan_guru: item.catatan_guru || item.capaian_kompetensi || ''
+    });
+    successCount++;
+  });
+  return { 
+    status: 'success', 
+    message: 'Alhamdulillah! Berhasil mengunggah ' + successCount + ' data nilai untuk Tahun Ajaran ' + (tahun_ajaran || '2026/2027') + '!' 
+  };
 }
 
 function deleteNilaiAkademik(id) {
@@ -695,7 +765,7 @@ function saveNilaiKepemimpinan(data) {
       id,
       data.nis,
       data.semester || 'Ganjil',
-      data.tahun_ajaran || '2025/2026',
+      data.tahun_ajaran || '2026/2027',
       data.ibadah || 'Jadikan ibadah sebagai kebutuhan, bukan hanya kewajiban.',
       data.akhlak || 'Keseimbangan antara kemampuan akademis serta sikap & akhlak mulia menjadikanmu insan yang lebih baik.',
       data.kedisiplinan_kerajinan || data.kedisiplinan || 'Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita.',
@@ -755,7 +825,7 @@ function getSklKepemimpinanList(filters = {}) {
       nama_santri: s.nama_murid || s.nama_santri || 'Tidak Diketahui',
       kelas: s.kelas || '-',
       semester: item.semester || 'Tengah Semester 1',
-      tahun_ajaran: item.tahun_ajaran || '2025/2026',
+      tahun_ajaran: item.tahun_ajaran || '2026/2027',
       catatan_walas: item.catatan_walas || 'Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan',
       scores: scores
     };
@@ -779,7 +849,7 @@ function saveSklKepemimpinan(data) {
     id: id,
     nis: data.nis,
     semester: data.semester || 'Tengah Semester 1',
-    tahun_ajaran: data.tahun_ajaran || '2025/2026',
+    tahun_ajaran: data.tahun_ajaran || '2026/2027',
     catatan_walas: data.catatan_walas || 'Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan'
   };
   
@@ -870,7 +940,7 @@ function saveNilaiDiniyah(data) {
       id,
       data.nis,
       data.semester || 'Ganjil',
-      data.tahun_ajaran || '2025/2026',
+      data.tahun_ajaran || '2026/2027',
       data.ziyadah_juz || '-',
       data.murojaah_juz || '-',
       Number(data.nilai_tahfidz) || 0,

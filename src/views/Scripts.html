@@ -1069,12 +1069,13 @@ const DEMO_DATA = {
     school_address: 'Jl. KH. M. Usman No. 128, Kukusan, Beji, Kota Depok, Jawa Barat',
     school_phone: '(021) 8775-4321 / 0812-9876-5432',
     school_website: 'https://alimamischool.com',
-    academic_year: '2025/2026',
+    academic_year: '2026/2027',
+    academic_years_list: '2026/2027,2025/2026,2024/2025',
     semester_active: 'I (Satu)',
     report_place: 'Bogor',
-    report_date: '17 Oktober 2025',
+    report_date: '17 Oktober 2026',
     wali_kelas_default: 'Kahlil Gibran, S.Pd.',
-    headmaster_name: 'Arif Rohman, M.Pd.',
+    headmaster_name: 'Bambang Setyono, S.T.',
     headmaster_nip: '',
     headmaster_signature_url: '',
     report_footer_text: 'RAPOR TENGAH SEMESTER PROGRAM PORTOFOLIO SMP AL IMAM ISLAMIC SCHOOL',
@@ -1172,7 +1173,7 @@ function buildExactAlImamDataset() {
         nama_santri: st.nama,
         kelas: kelasName,
         semester: 'I (Satu)',
-        tahun_ajaran: '2025/2026',
+        tahun_ajaran: '2026/2027',
         ibadah: kpCustom.ibadah || BANK_KEPRIBADIAN_ALIMAM.ibadah[0],
         akhlak: kpCustom.akhlak || BANK_KEPRIBADIAN_ALIMAM.akhlak[0],
         kedisiplinan_kerajinan: kpCustom.kedisiplinan || BANK_KEPRIBADIAN_ALIMAM.kedisiplinan[0],
@@ -1192,7 +1193,7 @@ function buildExactAlImamDataset() {
         nama_santri: st.nama,
         kelas: kelasName,
         semester: 'I (Satu)',
-        tahun_ajaran: '2025/2026',
+        tahun_ajaran: '2026/2027',
         ziyadah_juz: 'Juz 28 & Juz 29 (Lancar)',
         murojaah_juz: 'Juz 30 (Mutqin)',
         nilai_tahfidz: (st.scores && st.scores[0]) || 90,
@@ -1217,7 +1218,7 @@ function buildExactAlImamDataset() {
         nama_murid: st.nama,
         kelas: kelasName,
         semester: 'Tengah Semester 1',
-        tahun_ajaran: '2025/2026',
+        tahun_ajaran: '2026/2027',
         scores: sklScores,
         catatan_walas: st.catatan_walas || (st.kp && st.kp.catatan) || 'Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan'
       });
@@ -2057,24 +2058,31 @@ function saveBulkPresensiData() {
 function switchAkademikInputMode(mode) {
   const secLeger = document.getElementById('section-akademik-leger');
   const secList = document.getElementById('section-akademik-list');
+  const secUpload = document.getElementById('section-akademik-upload');
   const btnLeger = document.getElementById('btn-mode-akademik-leger');
   const btnList = document.getElementById('btn-mode-akademik-list');
+  const btnUpload = document.getElementById('btn-mode-akademik-upload');
+
+  [secLeger, secList, secUpload].forEach(el => el?.classList.add('hidden'));
+  [btnLeger, btnList, btnUpload].forEach(btn => {
+    btn?.classList.remove('bg-white', 'text-blue-700', 'shadow-sm', 'text-emerald-700');
+    btn?.classList.add('text-slate-600');
+  });
 
   if (mode === 'leger') {
     secLeger?.classList.remove('hidden');
-    secList?.classList.add('hidden');
     btnLeger?.classList.add('bg-white', 'text-blue-700', 'shadow-sm');
     btnLeger?.classList.remove('text-slate-600');
-    btnList?.classList.remove('bg-white', 'text-blue-700', 'shadow-sm');
-    btnList?.classList.add('text-slate-600');
     renderLegerGrid();
+  } else if (mode === 'upload') {
+    secUpload?.classList.remove('hidden');
+    btnUpload?.classList.add('bg-white', 'text-emerald-700', 'shadow-sm');
+    btnUpload?.classList.remove('text-slate-600');
+    initUploadView();
   } else {
-    secLeger?.classList.add('hidden');
     secList?.classList.remove('hidden');
     btnList?.classList.add('bg-white', 'text-blue-700', 'shadow-sm');
     btnList?.classList.remove('text-slate-600');
-    btnLeger?.classList.remove('bg-white', 'text-blue-700', 'shadow-sm');
-    btnLeger?.classList.add('text-slate-600');
     loadNilaiAkademik();
   }
 }
@@ -2462,6 +2470,423 @@ function deleteAkademikAction(id) {
   updateAkademikWidgets(AppState.akademikList);
   loadDashboardStats();
   callApi('deleteNilaiAkademik', { id: id });
+}
+
+// 10B. FITUR UPLOAD NILAI SISWA MASSAL (EXCEL / CSV / PASTE IMPORT T.A. BARU)
+let uploadedGradeItems = [];
+
+function initUploadView() {
+  const currentYear = AppState.cmsSettings.academic_year || '2026/2027';
+  const uploadYear = document.getElementById('upload-tahun-ajaran');
+  if (uploadYear) {
+    if (![...uploadYear.options].some(o => o.value === currentYear)) {
+      uploadYear.add(new Option(currentYear + ' (Aktif)', currentYear, true, true));
+    }
+    uploadYear.value = currentYear;
+  }
+}
+
+function switchUploadMethod(method) {
+  const tabFile = document.getElementById('tab-upload-file');
+  const tabPaste = document.getElementById('tab-upload-paste');
+  const methodFile = document.getElementById('upload-method-file');
+  const methodPaste = document.getElementById('upload-method-paste');
+
+  if (method === 'file') {
+    tabFile?.classList.add('bg-blue-600', 'text-white');
+    tabFile?.classList.remove('bg-slate-100', 'text-slate-600');
+    tabPaste?.classList.remove('bg-blue-600', 'text-white');
+    tabPaste?.classList.add('bg-slate-100', 'text-slate-600');
+    methodFile?.classList.remove('hidden');
+    methodPaste?.classList.add('hidden');
+  } else {
+    tabPaste?.classList.add('bg-blue-600', 'text-white');
+    tabPaste?.classList.remove('bg-slate-100', 'text-slate-600');
+    tabFile?.classList.remove('bg-blue-600', 'text-white');
+    tabFile?.classList.add('bg-slate-100', 'text-slate-600');
+    methodPaste?.classList.remove('hidden');
+    methodFile?.classList.add('hidden');
+  }
+}
+
+function downloadUploadTemplate() {
+  const targetKelas = document.getElementById('upload-target-kelas')?.value || 'Semua';
+  const targetMapel = document.getElementById('upload-target-mapel')?.value || 'Informatika';
+  const targetYear = document.getElementById('upload-tahun-ajaran')?.value || '2026/2027';
+  const targetSem = document.getElementById('upload-semester')?.value || 'I (Satu)';
+
+  let students = AppState.muridList;
+  if (targetKelas !== 'Semua') {
+    students = students.filter(m => String(m.kelas) === String(targetKelas));
+  }
+
+  const mapelName = targetMapel === 'Sesuai File' ? 'Informatika' : targetMapel;
+  const kkmVal = MAPEL_KKM_DEFAULT[mapelName] || 75;
+
+  let csvContent = "data:text/csv;charset=utf-8,";
+  csvContent += "NIS,Nama Siswa,Kelas,Mata Pelajaran,KKM,Nilai UTS,Catatan Guru\r\n";
+
+  students.forEach(s => {
+    const row = `"${s.nis}","${s.nama_murid || s.nama_santri}","${s.kelas}","${mapelName}","${kkmVal}","85",""`;
+    csvContent += row + "\r\n";
+  });
+
+  const encodedUri = encodeURI(csvContent);
+  const link = document.createElement("a");
+  link.setAttribute("href", encodedUri);
+  link.setAttribute("download", `Template_Nilai_${targetKelas.replace(/\s+/g, '_')}_${mapelName}_${targetYear.replace('/', '-')}.csv`);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  showToast('Template CSV nilai berhasil diunduh!', 'success');
+}
+
+function handleFileUpload(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const content = e.target.result;
+    parseSpreadsheetText(content);
+  };
+  reader.readAsText(file);
+}
+
+function handlePasteUpload() {
+  const text = document.getElementById('paste-upload-textarea')?.value;
+  if (!text || !text.trim()) {
+    resetUploadData();
+    return;
+  }
+  parseSpreadsheetText(text);
+}
+
+function parseSpreadsheetText(text) {
+  const lines = text.trim().split(/\r?\n/);
+  if (lines.length === 0) return;
+
+  const targetKelas = document.getElementById('upload-target-kelas')?.value || 'Semua';
+  const targetMapel = document.getElementById('upload-target-mapel')?.value || 'Sesuai File';
+  const targetYear = document.getElementById('upload-tahun-ajaran')?.value || '2026/2027';
+  const targetSem = document.getElementById('upload-semester')?.value || 'I (Satu)';
+
+  uploadedGradeItems = [];
+
+  const muridMap = {};
+  AppState.muridList.forEach(m => {
+    muridMap[String(m.nis)] = m;
+    muridMap[(m.nama_murid || m.nama_santri || '').toLowerCase().trim()] = m;
+  });
+
+  lines.forEach((line, index) => {
+    if (!line.trim()) return;
+    let cols = [];
+    if (line.includes('\t')) cols = line.split('\t');
+    else if (line.includes(',')) cols = parseCsvLine(line);
+    else if (line.includes(';')) cols = line.split(';');
+    else cols = line.split(/\s{2,}/);
+
+    cols = cols.map(c => c.trim().replace(/^["']|["']$/g, ''));
+    if (cols.length < 2) return;
+
+    const firstCol = cols[0].toLowerCase();
+    if (firstCol === 'nis' || firstCol === 'no' || firstCol === 'nama' || firstCol.includes('peserta')) {
+      return;
+    }
+
+    let nis = '';
+    let nama = '';
+    let kelas = targetKelas !== 'Semua' ? targetKelas : '';
+    let mapel = targetMapel !== 'Sesuai File' ? targetMapel : 'Informatika';
+    let kkm = 75;
+    let nilaiUts = 85;
+
+    if (/^\d{6,}$/.test(cols[0])) {
+      nis = cols[0];
+      nama = cols[1] || '';
+      if (cols.length >= 5) {
+        if (isNaN(cols[2])) {
+          if (cols[2].toUpperCase().includes('VII') || cols[2].toUpperCase().includes('VIII') || cols[2].toUpperCase().includes('IX')) {
+            kelas = cols[2];
+            mapel = cols[3] || mapel;
+            kkm = Number(cols[4]) || 75;
+            nilaiUts = Number(cols[5] || cols[4]) || 85;
+          } else {
+            mapel = cols[2];
+            kkm = Number(cols[3]) || 75;
+            nilaiUts = Number(cols[4]) || 85;
+          }
+        } else {
+          kkm = Number(cols[2]) || 75;
+          nilaiUts = Number(cols[3]) || 85;
+        }
+      } else if (cols.length === 3) {
+        nilaiUts = Number(cols[2]) || 85;
+      } else if (cols.length === 4) {
+        kkm = Number(cols[2]) || 75;
+        nilaiUts = Number(cols[3]) || 85;
+      }
+    } else {
+      nama = cols[0];
+      if (/^\d+$/.test(cols[1])) {
+        nilaiUts = Number(cols[1]);
+      } else if (/^\d{6,}$/.test(cols[1])) {
+        nis = cols[1];
+        nilaiUts = Number(cols[2] || 85);
+      }
+    }
+
+    if (nis && muridMap[nis]) {
+      const s = muridMap[nis];
+      nama = s.nama_murid || s.nama_santri;
+      if (!kelas) kelas = s.kelas;
+    } else if (nama && muridMap[nama.toLowerCase()]) {
+      const s = muridMap[nama.toLowerCase()];
+      nis = s.nis;
+      if (!kelas) kelas = s.kelas;
+    }
+
+    if (!nis) nis = `262707${String(index + 1).padStart(3, '0')}`;
+    if (!nama) nama = `Siswa #${index + 1}`;
+    if (!kelas) kelas = targetKelas !== 'Semua' ? targetKelas : 'VII UTSMAN';
+    if (targetMapel !== 'Sesuai File') mapel = targetMapel;
+
+    kkm = MAPEL_KKM_DEFAULT[mapel] || kkm || 75;
+
+    let predikat = 'D';
+    if (nilaiUts >= 90) predikat = 'A';
+    else if (nilaiUts >= 80) predikat = 'B';
+    else if (nilaiUts >= kkm) predikat = 'C';
+
+    const capTemplate = BANK_CAPAIAN_MAPEL[mapel] || BANK_CAPAIAN_MAPEL['Akidah'];
+    const capaian = nilaiUts >= 90 ? capTemplate.tinggi : (nilaiUts >= kkm ? capTemplate.sedang : capTemplate.cukup);
+
+    uploadedGradeItems.push({
+      id: `NA-${nis}-${mapel.replace(/\s+/g, '')}`,
+      nis: nis,
+      nama_murid: nama,
+      kelas: kelas,
+      mata_pelajaran: mapel,
+      kkm: kkm,
+      semester: targetSem,
+      tahun_ajaran: targetYear,
+      nilai_tugas: nilaiUts,
+      nilai_uts: nilaiUts,
+      nilai_akhir: nilaiUts,
+      predikat: predikat,
+      capaian_kompetensi: capaian,
+      catatan_guru: capaian
+    });
+  });
+
+  renderUploadPreview();
+}
+
+function parseCsvLine(text) {
+  let p = '', c = false, r = [];
+  for (let i = 0; i < text.length; i++) {
+    let ch = text[i];
+    if (ch === '"') { c = !c; }
+    else if (ch === ',' && !c) { r.push(p); p = ''; }
+    else { p += ch; }
+  }
+  r.push(p);
+  return r;
+}
+
+function renderUploadPreview() {
+  const container = document.getElementById('upload-preview-container');
+  const countEl = document.getElementById('upload-preview-count');
+  const tbody = document.getElementById('upload-preview-tbody');
+
+  if (!container || !tbody) return;
+
+  if (uploadedGradeItems.length === 0) {
+    container.classList.add('hidden');
+    return;
+  }
+
+  container.classList.remove('hidden');
+  if (countEl) countEl.innerText = uploadedGradeItems.length;
+
+  tbody.innerHTML = uploadedGradeItems.map((item, idx) => `
+    <tr class="hover:bg-blue-50/30 transition">
+      <td class="px-3 py-2 text-center text-slate-400 font-mono">${idx + 1}</td>
+      <td class="px-3 py-2 font-mono font-bold text-slate-800">${item.nis}</td>
+      <td class="px-4 py-2 font-bold text-slate-900">${item.nama_murid}</td>
+      <td class="px-3 py-2"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-700">${item.kelas}</span></td>
+      <td class="px-3 py-2 font-semibold text-blue-900">${item.mata_pelajaran}</td>
+      <td class="px-3 py-2 text-center font-bold text-amber-900">${item.kkm}</td>
+      <td class="px-3 py-2 text-center font-black text-blue-900 bg-blue-50/60">${item.nilai_uts}</td>
+      <td class="px-3 py-2 text-center">
+        <span class="px-2 py-0.5 rounded-full text-[10px] font-black badge-predikat-${item.predikat}">${item.predikat}</span>
+      </td>
+      <td class="px-4 py-2 text-slate-600 text-[11px] leading-snug">${item.capaian_kompetensi}</td>
+    </tr>
+  `).join('');
+}
+
+function resetUploadData() {
+  uploadedGradeItems = [];
+  const fileInput = document.getElementById('file-upload-input');
+  if (fileInput) fileInput.value = '';
+  const textarea = document.getElementById('paste-upload-textarea');
+  if (textarea) textarea.value = '';
+  renderUploadPreview();
+}
+
+function saveUploadedGrades() {
+  if (uploadedGradeItems.length === 0) {
+    showToast('Tidak ada data nilai yang siap diimpor.', 'warning');
+    return;
+  }
+
+  const btn = document.getElementById('btn-save-uploaded-grades');
+  if (btn) {
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...';
+  }
+
+  uploadedGradeItems.forEach(newItem => {
+    const existingIdx = AppState.akademikList.findIndex(a => 
+      String(a.nis) === String(newItem.nis) && 
+      a.mata_pelajaran === newItem.mata_pelajaran &&
+      a.tahun_ajaran === newItem.tahun_ajaran
+    );
+    if (existingIdx >= 0) {
+      AppState.akademikList[existingIdx] = newItem;
+    } else {
+      AppState.akademikList.unshift(newItem);
+    }
+  });
+
+  saveAkademikListLocally();
+  loadDashboardStats();
+
+  callApi('saveBulkUploadNilaiAkademik', {
+    items: uploadedGradeItems,
+    tahun_ajaran: document.getElementById('upload-tahun-ajaran')?.value || '2026/2027',
+    semester: document.getElementById('upload-semester')?.value || 'I (Satu)'
+  });
+
+  setTimeout(() => {
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> <span>Simpan & Import Nilai ke Database</span>';
+    }
+    showToast(`Alhamdulillah! Berhasil mengimpor ${uploadedGradeItems.length} nilai siswa untuk T.A. Baru ke Database!`, 'success');
+    resetUploadData();
+    switchAkademikInputMode('leger');
+  }, 600);
+}
+
+// 10C. KELOLA & TAMBAH TAHUN AJARAN BARU (KEPALA SEKOLAH & GURU WORKFLOW)
+function openAcademicYearModal() {
+  const modal = document.getElementById('modal-academic-year');
+  if (!modal) return;
+  modal.classList.remove('hidden');
+  renderAcademicYearsModal();
+}
+
+function closeAcademicYearModal() {
+  const modal = document.getElementById('modal-academic-year');
+  if (modal) modal.classList.add('hidden');
+}
+
+function renderAcademicYearsModal() {
+  const currentYear = AppState.cmsSettings.academic_year || '2026/2027';
+  const currentSem = AppState.cmsSettings.semester_active || 'I (Satu)';
+  
+  const displayYear = document.getElementById('modal-active-year-display');
+  if (displayYear) displayYear.innerText = currentYear;
+  
+  const displaySem = document.getElementById('modal-active-sem-display');
+  if (displaySem) displaySem.innerText = `(${currentSem})`;
+
+  let listStr = AppState.cmsSettings.academic_years_list || '2026/2027,2025/2026,2024/2025';
+  let years = listStr.split(',').map(s => s.trim()).filter(Boolean);
+  if (!years.includes(currentYear)) years.unshift(currentYear);
+
+  const container = document.getElementById('academic-years-chips-container');
+  if (container) {
+    container.innerHTML = years.map(yr => {
+      const isActive = yr === currentYear;
+      return `
+        <button type="button" onclick="selectAcademicYear('${yr}')" 
+                class="p-2.5 rounded-xl border text-center font-bold text-xs transition flex flex-col items-center justify-center gap-1 ${isActive ? 'bg-blue-600 text-white border-blue-600 shadow-md ring-2 ring-blue-300' : 'bg-white text-slate-700 border-slate-200 hover:border-blue-400 hover:bg-blue-50'}">
+          <span>${yr}</span>
+          ${isActive ? '<span class="text-[9px] bg-white/20 px-1.5 py-0.5 rounded-full">Aktif</span>' : '<span class="text-[9px] text-slate-400">Pilih</span>'}
+        </button>
+      `;
+    }).join('');
+  }
+}
+
+function selectAcademicYear(year) {
+  AppState.cmsSettings.academic_year = year;
+  saveCmsSettingsLocally();
+  updateAllAcademicYearUI(year);
+  renderAcademicYearsModal();
+  showToast(`Tahun Ajaran Aktif berhasil diubah ke ${year}!`, 'success');
+  callApi('saveCmsSettings', { settings: AppState.cmsSettings });
+}
+
+function submitNewAcademicYear(event) {
+  event.preventDefault();
+  const inputYear = document.getElementById('input-new-academic-year');
+  const inputSem = document.getElementById('input-new-academic-sem');
+  const inputDate = document.getElementById('input-new-academic-date');
+  if (!inputYear || !inputYear.value.trim()) {
+    showToast('Harap masukkan format tahun ajaran dengan benar (contoh: 2026/2027)', 'warning');
+    return;
+  }
+  const newYear = inputYear.value.trim();
+  const newSem = inputSem ? inputSem.value : 'I (Satu)';
+  const newDate = inputDate ? inputDate.value.trim() : '17 Oktober 2026';
+
+  let listStr = AppState.cmsSettings.academic_years_list || '2026/2027,2025/2026,2024/2025';
+  let years = listStr.split(',').map(s => s.trim()).filter(Boolean);
+  if (!years.includes(newYear)) years.unshift(newYear);
+
+  AppState.cmsSettings.academic_year = newYear;
+  AppState.cmsSettings.academic_years_list = years.join(',');
+  AppState.cmsSettings.semester_active = newSem;
+  AppState.cmsSettings.report_date = newDate;
+
+  saveCmsSettingsLocally();
+  updateAllAcademicYearUI(newYear);
+  renderAcademicYearsModal();
+
+  inputYear.value = '';
+  showToast(`Alhamdulillah! Tahun Ajaran ${newYear} berhasil ditambahkan dan diaktifkan!`, 'success');
+
+  callApi('saveCmsSettings', { settings: AppState.cmsSettings });
+}
+
+function updateAllAcademicYearUI(year) {
+  const navYear = document.getElementById('nav-academic-year');
+  if (navYear) navYear.innerText = year;
+  
+  const navSem = document.getElementById('nav-semester');
+  if (navSem) navSem.innerText = (AppState.cmsSettings.semester_active || 'I (Satu)').includes('II') ? 'Genap' : 'Ganjil';
+
+  const cmsYear = document.getElementById('cms-academic-year');
+  if (cmsYear) cmsYear.value = year;
+
+  const printKop = document.getElementById('print-tahun-ajaran-kop');
+  if (printKop) printKop.innerText = year;
+
+  const printSkl = document.getElementById('print-skl-tahun-ajaran');
+  if (printSkl) printSkl.innerText = year;
+
+  const uploadYear = document.getElementById('upload-tahun-ajaran');
+  if (uploadYear) {
+    if (![...uploadYear.options].some(o => o.value === year)) {
+      uploadYear.add(new Option(year + ' (Aktif)', year, true, true));
+    }
+    uploadYear.value = year;
+  }
 }
 
 // 11. AHLAQ & KEPRIBADIAN MODULE (6 ASPEK AL-IMAM + CATATAN & 28 INDIKATOR SKL)
