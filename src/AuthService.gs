@@ -7,18 +7,17 @@
 
 const ROLES = {
   ADMIN: 'admin',
-  GURU_AKADEMIK: 'guru_akademik',
-  PEMBINA_KEPEMIMPINAN: 'pembina_kepemimpinan',
-  PEMBINA_DINIYAH: 'pembina_diniyah',
-  SANTRI: 'santri'
+  KEPALA_SEKOLAH: 'kepala_sekolah',
+  GURU: 'guru',
+  WALI_MURID: 'wali_murid'
 };
 
 /**
- * Autentikasi Pengguna berdasarkan Username & Password
+ * Autentikasi Pengguna berdasarkan Username / NIS & Password
  */
 function authenticateUser(username, password) {
   if (!username || !password) {
-    return { success: false, message: 'Username dan password wajib diisi.' };
+    return { success: false, message: 'Username/NIS dan password wajib diisi.' };
   }
   
   const sheet = getOrCreateSheet(DB_CONFIG.SHEET_USERS);
@@ -30,7 +29,38 @@ function authenticateUser(username, password) {
   );
   
   if (!user) {
-    return { success: false, message: 'Username atau password tidak sesuai.' };
+    // Cek apakah login sebagai Wali Murid menggunakan NIS
+    const sheetMurid = getOrCreateSheet(DB_CONFIG.SHEET_MURID);
+    const muridList = sheetToObjects(sheetMurid);
+    const murid = muridList.find(m => String(m.nis).trim() === String(username).trim());
+    
+    if (murid && String(password) === 'wali123') {
+      const sessionToken = Utilities.base64Encode(
+        JSON.stringify({
+          id: 'WALI-' + murid.nis,
+          username: murid.nis,
+          nama_lengkap: 'Wali dari ' + (murid.nama_murid || murid.nama_santri),
+          role: ROLES.WALI_MURID,
+          nis_murid: murid.nis,
+          loginAt: new Date().getTime()
+        })
+      );
+      
+      return {
+        success: true,
+        message: 'Login sebagai Wali Murid berhasil.',
+        user: {
+          id: 'WALI-' + murid.nis,
+          username: murid.nis,
+          nama_lengkap: 'Wali dari ' + (murid.nama_murid || murid.nama_santri),
+          role: ROLES.WALI_MURID,
+          nis_murid: murid.nis
+        },
+        token: sessionToken
+      };
+    }
+    
+    return { success: false, message: 'Username/NIS atau password tidak sesuai.' };
   }
   
   if (user.status !== 'aktif') {
@@ -66,20 +96,20 @@ function authenticateUser(username, password) {
  */
 function hasPermission(userRole, moduleName) {
   if (!userRole) return false;
-  if (userRole === ROLES.ADMIN) return true; // Admin punya akses penuh
+  if (userRole === ROLES.ADMIN) return true; // Admin punya akses penuh ke semua modul
   
   switch (moduleName) {
     case 'dashboard':
     case 'rapor_cetak':
-      return true; // Semua role dapat melihat ringkasan dan cetak rapor
+      return true; // Admin, Kepala Sekolah, Guru, Wali Murid dapat melihat ringkasan & cetak
     case 'akademik':
-      return userRole === ROLES.GURU_AKADEMIK;
     case 'kepemimpinan':
-      return userRole === ROLES.PEMBINA_KEPEMIMPINAN;
     case 'diniyah':
-      return userRole === ROLES.PEMBINA_DINIYAH;
-    case 'santri_management':
+      return userRole === ROLES.ADMIN || userRole === ROLES.GURU || userRole === ROLES.KEPALA_SEKOLAH;
+    case 'murid_management':
+      return userRole === ROLES.ADMIN || userRole === ROLES.GURU;
     case 'cms':
+    case 'users_management':
       return userRole === ROLES.ADMIN;
     default:
       return false;

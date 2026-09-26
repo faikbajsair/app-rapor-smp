@@ -39,7 +39,6 @@ function doGet(e) {
   try {
     template.cmsSettings = getSettings();
   } catch (err) {
-    // Jika sheet belum terinisialisasi
     template.cmsSettings = {
       school_name: 'SMP Al-Imam Islamic School (AI IS)',
       school_logo_url: 'https://alimamischool.com/wp-content/uploads/2020/08/Al-Imam-Islamic-School-alimamischool.com-sekolah-sunnah-logo.png',
@@ -139,13 +138,16 @@ function dispatchApiAction(action, payload) {
       case 'getSummaryStats':
         return getDashboardSummaryStats();
         
-      // Santri
+      // Murid / Santri
+      case 'getMurid':
       case 'getSantri':
-        return { success: true, data: getAllSantri(payload.kelas) };
+        return { success: true, data: getAllMurid(payload.kelas) };
+      case 'saveMurid':
       case 'saveSantri':
-        return saveSantri(payload);
+        return saveMurid(payload);
+      case 'deleteMurid':
       case 'deleteSantri':
-        return deleteSantri(payload.nis);
+        return deleteMurid(payload.nis);
         
       // Users
       case 'getUsers':
@@ -182,8 +184,9 @@ function dispatchApiAction(action, payload) {
         return deleteNilaiDiniyah(payload.id);
         
       // Rapor Lengkap
+      case 'getMuridReport':
       case 'getSantriReport':
-        return getSantriReportData(payload.nis);
+        return getMuridReportData(payload.nis);
         
       default:
         return { success: false, message: 'Action API tidak dikenali: ' + action };
@@ -204,9 +207,16 @@ function apiGetSettings() { return dispatchApiAction('getSettings', {}); }
 function apiUpdateSettings(settings) { return dispatchApiAction('updateSettings', settings); }
 function apiGetSummaryStats() { return dispatchApiAction('getSummaryStats', {}); }
 
-function apiGetSantri(kelas) { return dispatchApiAction('getSantri', { kelas: kelas }); }
-function apiSaveSantri(data) { return dispatchApiAction('saveSantri', data); }
-function apiDeleteSantri(nis) { return dispatchApiAction('deleteSantri', { nis: nis }); }
+function apiGetMurid(kelas) { return dispatchApiAction('getMurid', { kelas: kelas }); }
+function apiSaveMurid(data) { return dispatchApiAction('saveMurid', data); }
+function apiDeleteMurid(nis) { return dispatchApiAction('deleteMurid', { nis: nis }); }
+function apiGetMuridReport(nis) { return dispatchApiAction('getMuridReport', { nis: nis }); }
+
+// Legacy aliases
+function apiGetSantri(kelas) { return apiGetMurid(kelas); }
+function apiSaveSantri(data) { return apiSaveMurid(data); }
+function apiDeleteSantri(nis) { return apiDeleteMurid(nis); }
+function apiGetSantriReport(nis) { return apiGetMuridReport(nis); }
 
 function apiGetUsers() { return dispatchApiAction('getUsers', {}); }
 function apiSaveUser(data) { return dispatchApiAction('saveUser', data); }
@@ -224,5 +234,3 @@ function apiDeleteNilaiKepemimpinan(id) { return dispatchApiAction('deleteNilaiK
 function apiGetNilaiDiniyah(filters) { return dispatchApiAction('getNilaiDiniyah', filters || {}); }
 function apiSaveNilaiDiniyah(data) { return dispatchApiAction('saveNilaiDiniyah', data); }
 function apiDeleteNilaiDiniyah(id) { return dispatchApiAction('deleteNilaiDiniyah', { id: id }); }
-
-function apiGetSantriReport(nis) { return dispatchApiAction('getSantriReport', { nis: nis }); }

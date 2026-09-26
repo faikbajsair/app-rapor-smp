@@ -21,12 +21,12 @@
         <span>Dashboard Ringkasan</span>
       </a>
 
-      <!-- 2. Tiga Kategori Penilaian Utama -->
-      <div class="pt-4 px-3 py-1 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Kategori Penilaian</div>
+      <!-- 2. Tiga Kategori Penilaian Utama (Akademik, Kepemimpinan, Diniyah) -->
+      <div class="pt-4 px-3 py-1 text-[11px] font-semibold text-slate-400 uppercase tracking-wider menu-assessment-header">Kategori Penilaian</div>
       
       <!-- Akademik -->
       <a href="javascript:void(0)" onclick="switchView('akademik')" id="nav-item-akademik" 
-         class="sidebar-nav-link flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition-colors">
+         class="sidebar-nav-link menu-assessment-item flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition-colors">
         <div class="flex items-center gap-3">
           <i class="fa-solid fa-book-open w-4 text-center text-blue-400 text-sm"></i>
           <span>Nilai Akademik</span>
@@ -36,7 +36,7 @@
 
       <!-- Kepemimpinan -->
       <a href="javascript:void(0)" onclick="switchView('kepemimpinan')" id="nav-item-kepemimpinan" 
-         class="sidebar-nav-link flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition-colors">
+         class="sidebar-nav-link menu-assessment-item flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition-colors">
         <div class="flex items-center gap-3">
           <i class="fa-solid fa-award w-4 text-center text-amber-400 text-sm"></i>
           <span>Nilai Kepemimpinan</span>
@@ -46,7 +46,7 @@
 
       <!-- Diniyah -->
       <a href="javascript:void(0)" onclick="switchView('diniyah')" id="nav-item-diniyah" 
-         class="sidebar-nav-link flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition-colors">
+         class="sidebar-nav-link menu-assessment-item flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition-colors">
         <div class="flex items-center gap-3">
           <i class="fa-solid fa-quran w-4 text-center text-emerald-400 text-sm"></i>
           <span>Nilai Diniyah & Tahfidz</span>
@@ -64,11 +64,11 @@
         <span>Cetak Rapor Terpadu</span>
       </a>
 
-      <!-- Data Santri -->
-      <a href="javascript:void(0)" onclick="switchView('santri')" id="nav-item-santri" 
-         class="sidebar-nav-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition-colors">
+      <!-- Data Murid -->
+      <a href="javascript:void(0)" onclick="switchView('murid')" id="nav-item-murid" 
+         class="sidebar-nav-link menu-murid-management flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition-colors">
         <i class="fa-solid fa-user-graduate w-4 text-center text-purple-400 text-sm"></i>
-        <span>Data Santri & Kelas</span>
+        <span>Data Murid & Kelas</span>
       </a>
 
       <!-- 4. Konfigurasi CMS (SaaS Ready) -->
@@ -82,22 +82,25 @@
     </nav>
   </div>
 
-  <!-- Sidebar Footer: Sheet Connection & Database Status -->
-  <div class="p-4 bg-slate-950 border-t border-slate-800 text-[11px]">
-    <div class="flex items-center justify-between mb-2">
-      <span class="text-slate-400">Status Database</span>
-      <span class="inline-flex items-center gap-1 text-emerald-400 font-medium">
-        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
-        Google Sheets
+  <!-- Sidebar Footer: Sheet Connection & Account Switch -->
+  <div class="p-4 bg-slate-950 border-t border-slate-800 text-[11px] space-y-2">
+    <div class="flex items-center justify-between">
+      <span class="text-slate-400">Status Role:</span>
+      <span class="inline-flex items-center gap-1.5 text-blue-400 font-bold" id="sidebar-role-indicator">
+        <span class="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse"></span>
+        Admin
       </span>
     </div>
-    <button onclick="triggerInitDb()" class="w-full py-1.5 px-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg text-center text-[10px] font-semibold flex items-center justify-center gap-1.5 border border-slate-700 transition">
-      <i class="fa-solid fa-arrows-rotate text-[10px]"></i>
-      <span>Sinkron / Reset Data Awal</span>
-    </button>
+    <div class="grid grid-cols-2 gap-1.5">
+      <button onclick="openLoginModal()" class="py-1.5 px-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg text-center text-[10px] font-semibold flex items-center justify-center gap-1 border border-slate-700 transition">
+        <i class="fa-solid fa-key text-[9px]"></i>
+        <span>Ganti Akun</span>
+      </button>
+      <button onclick="triggerInitDb()" class="py-1.5 px-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg text-center text-[10px] font-semibold flex items-center justify-center gap-1 border border-slate-700 transition">
+        <i class="fa-solid fa-arrows-rotate text-[9px]"></i>
+        <span>Reset DB</span>
+      </button>
+    </div>
   </div>
 
 </aside>
-
-<!-- Mobile Overlay Backdrop -->
-<div id="sidebar-backdrop" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-10 hidden lg:hidden" onclick="toggleSidebar()"></div>

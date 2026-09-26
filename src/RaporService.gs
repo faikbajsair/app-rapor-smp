@@ -6,13 +6,13 @@
  */
 
 /**
- * Mengambil Seluruh Data Rapor Lengkap untuk 1 Santri
+ * Mengambil Seluruh Data Rapor Lengkap untuk 1 Murid
  */
-function getSantriReportData(nis) {
-  if (!nis) return { success: false, message: 'NIS Santri wajib diisi.' };
+function getMuridReportData(nis) {
+  if (!nis) return { success: false, message: 'NIS Murid wajib diisi.' };
   
-  const santri = getSantriByNis(nis);
-  if (!santri) return { success: false, message: 'Data santri dengan NIS ' + nis + ' tidak ditemukan.' };
+  const murid = getMuridByNis(nis);
+  if (!murid) return { success: false, message: 'Data murid dengan NIS ' + nis + ' tidak ditemukan.' };
   
   const settings = getSettings();
   const currentSemester = settings.semester_active || 'Ganjil';
@@ -65,7 +65,8 @@ function getSantriReportData(nis) {
     success: true,
     data: {
       settings: settings,
-      santri: santri,
+      murid: murid,
+      santri: murid, // alias
       akademik: {
         items: akademikFiltered,
         totalNilai: totalNilaiAkhir,
@@ -79,53 +80,60 @@ function getSantriReportData(nis) {
   };
 }
 
+// Alias for backward compatibility
+function getSantriReportData(nis) {
+  return getMuridReportData(nis);
+}
+
 /**
  * Mengambil Ringkasan Statistik untuk Dashboard Beranda
  */
 function getDashboardSummaryStats() {
-  const santriList = getAllSantri();
+  const muridList = getAllMurid();
   const akademikList = getNilaiAkademikList();
   const kepemimpinanList = getNilaiKepemimpinanList();
   const diniyahList = getNilaiDiniyahList();
   const settings = getSettings();
   
-  const totalSantri = santriList.length;
+  const totalMurid = muridList.length;
   
   // Hitung jumlah kelas unik
-  const kelasSet = new Set(santriList.map(s => s.kelas).filter(k => Boolean(k)));
+  const kelasSet = new Set(muridList.map(s => s.kelas).filter(k => Boolean(k)));
   
   // Rata-rata nilai akademik keseluruhan
   let sumAkademik = 0;
   akademikList.forEach(a => { sumAkademik += Number(a.nilai_akhir) || 0; });
   const avgAkademik = akademikList.length > 0 ? (sumAkademik / akademikList.length).toFixed(1) : 0;
   
-  // Santri yang sudah memiliki nilai lengkap 3 aspek
+  // Murid yang sudah memiliki nilai lengkap 3 aspek
   const currentSemester = settings.semester_active || 'Ganjil';
   const currentYear = settings.academic_year || '2025/2026';
   
-  let santriLengkapCount = 0;
-  santriList.forEach(s => {
+  let muridLengkapCount = 0;
+  muridList.forEach(s => {
     const hasAk = akademikList.some(a => String(a.nis) === String(s.nis));
     const hasKp = kepemimpinanList.some(k => String(k.nis) === String(s.nis));
     const hasDn = diniyahList.some(d => String(d.nis) === String(s.nis));
     if (hasAk && hasKp && hasDn) {
-      santriLengkapCount++;
+      muridLengkapCount++;
     }
   });
   
-  const progressPercent = totalSantri > 0 ? Math.round((santriLengkapCount / totalSantri) * 100) : 0;
+  const progressPercent = totalMurid > 0 ? Math.round((muridLengkapCount / totalMurid) * 100) : 0;
   
   return {
     success: true,
     stats: {
-      totalSantri: totalSantri,
+      totalMurid: totalMurid,
+      totalSantri: totalMurid, // alias
       totalKelas: kelasSet.size,
       daftarKelas: Array.from(kelasSet).sort(),
       avgAkademik: avgAkademik,
       totalNilaiAkademikInput: akademikList.length,
       totalKepemimpinanInput: kepemimpinanList.length,
       totalDiniyahInput: diniyahList.length,
-      santriLengkapCount: santriLengkapCount,
+      muridLengkapCount: muridLengkapCount,
+      santriLengkapCount: muridLengkapCount,
       progressPercent: progressPercent,
       activeSemester: currentSemester,
       activeYear: currentYear,

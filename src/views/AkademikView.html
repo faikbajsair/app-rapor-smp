@@ -9,11 +9,11 @@
           <span class="w-2.5 h-2.5 rounded-full bg-blue-600"></span>
           <h2 class="text-lg font-bold text-slate-900">Dashboard Penilaian Akademik</h2>
         </div>
-        <p class="text-xs text-slate-500 mt-0.5">Kelola data nilai mata pelajaran umum, tugas (40%), UTS (60%), dan capaian kompetensi santri.</p>
+        <p class="text-xs text-slate-500 mt-0.5">Kelola data nilai mata pelajaran umum, tugas (40%), UTS (60%), dan capaian kompetensi murid.</p>
       </div>
 
       <div class="flex items-center gap-2">
-        <button onclick="openModalAkademik()" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl text-xs shadow transition flex items-center gap-2">
+        <button onclick="openModalAkademik()" class="btn-action-input px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl text-xs shadow transition flex items-center gap-2">
           <i class="fa-solid fa-plus"></i>
           <span>Input Nilai Akademik</span>
         </button>
@@ -68,14 +68,17 @@
           <option value="Bahasa Inggris">Bahasa Inggris</option>
           <option value="Ilmu Pengetahuan Sosial (IPS)">Ilmu Pengetahuan Sosial (IPS)</option>
           <option value="Informatika & Coding">Informatika & Coding</option>
-          <option value="Pendidikan Pancasila">Pendidikan Pancasila</option>
+          <option value="Pendidikan Agama Islam (PAI)">Pendidikan Agama Islam (PAI)</option>
+          <option value="Pendidikan Pancasila & Kewarganegaraan">Pendidikan Pancasila & Kewarganegaraan</option>
+          <option value="Pendidikan Jasmani (PJOK)">Pendidikan Jasmani (PJOK)</option>
+          <option value="Seni Budaya & Prakarya">Seni Budaya & Prakarya</option>
         </select>
       </div>
 
       <div>
-        <label class="block text-[11px] font-semibold text-slate-600 mb-1">Cari Santri</label>
+        <label class="block text-[11px] font-semibold text-slate-600 mb-1">Cari Murid</label>
         <div class="relative">
-          <input type="text" id="filter-akademik-search" oninput="filterTableAkademikLocal()" placeholder="Ketik nama atau NIS..." 
+          <input type="text" id="filter-akademik-search" oninput="filterTableAkademikLocal()" placeholder="Ketik nama atau NIS murid..." 
                  class="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg pl-8 pr-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500" />
           <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-2.5 text-slate-400 text-xs"></i>
         </div>
@@ -89,7 +92,7 @@
       <table class="w-full text-left text-xs text-slate-700">
         <thead class="bg-slate-50 text-slate-600 uppercase text-[10px] font-bold tracking-wider border-b border-slate-200">
           <tr>
-            <th class="px-4 py-3.5">Santri / NIS</th>
+            <th class="px-4 py-3.5">Murid / NIS</th>
             <th class="px-3 py-3.5">Kelas</th>
             <th class="px-3 py-3.5">Mata Pelajaran</th>
             <th class="px-3 py-3.5 text-center">Tugas (40%)</th>
@@ -131,7 +134,7 @@
       <input type="hidden" id="akademik-id" />
 
       <div>
-        <label class="block text-xs font-bold text-slate-700 mb-1">Pilih Santri *</label>
+        <label class="block text-xs font-bold text-slate-700 mb-1">Pilih Murid *</label>
         <select id="akademik-nis" required class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-blue-500">
           <!-- Populated dynamically via JS -->
         </select>
@@ -146,7 +149,9 @@
           <option value="Bahasa Inggris">Bahasa Inggris</option>
           <option value="Ilmu Pengetahuan Sosial (IPS)">Ilmu Pengetahuan Sosial (IPS)</option>
           <option value="Informatika & Coding">Informatika & Coding</option>
-          <option value="Pendidikan Pancasila">Pendidikan Pancasila</option>
+          <option value="Pendidikan Agama Islam (PAI)">Pendidikan Agama Islam (PAI)</option>
+          <option value="Pendidikan Pancasila & Kewarganegaraan">Pendidikan Pancasila & Kewarganegaraan</option>
+          <option value="Pendidikan Jasmani (PJOK)">Pendidikan Jasmani (PJOK)</option>
           <option value="Seni Budaya & Prakarya">Seni Budaya & Prakarya</option>
         </select>
       </div>
@@ -178,7 +183,7 @@
 
       <div>
         <label class="block text-xs font-bold text-slate-700 mb-1">Catatan Guru / Deskripsi Kemajuan</label>
-        <textarea id="akademik-catatan" rows="3" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-blue-500" placeholder="Tuliskan catatan pencapaian kompetensi atau evaluasi belajar santri..."></textarea>
+        <textarea id="akademik-catatan" rows="3" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-blue-500" placeholder="Tuliskan catatan pencapaian kompetensi atau evaluasi belajar murid..."></textarea>
       </div>
 
       <div class="pt-3 border-t border-slate-100 flex items-center justify-end gap-2">

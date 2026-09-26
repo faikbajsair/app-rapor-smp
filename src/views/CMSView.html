@@ -10,7 +10,7 @@
           <span>Multi-Tenant & SaaS Ready</span>
         </div>
         <h2 class="text-xl sm:text-2xl font-black">CMS & Pengaturan Aplikasi</h2>
-        <p class="text-xs text-slate-300 mt-1">Kustomisasi identitas sekolah, branding warna, tanda tangan, manajemen pengguna, dan periode rapor.</p>
+        <p class="text-xs text-slate-300 mt-1">Kustomisasi identitas sekolah, branding warna, tanda tangan, manajemen pengguna (Admin, Kepsek, Guru, Wali Murid), dan periode rapor.</p>
       </div>
 
       <div class="flex items-center gap-2">
@@ -164,7 +164,7 @@
             <i class="fa-solid fa-users-gear text-blue-600"></i>
             <span>Daftar Pengguna & Hak Akses</span>
           </h3>
-          <p class="text-xs text-slate-500 mt-0.5">Kelola akun admin, guru akademik, pembina kepemimpinan, musyrif diniyah, dan santri.</p>
+          <p class="text-xs text-slate-500 mt-0.5">Kelola akun Admin, Kepala Sekolah, Guru / Pendidik, dan Orang Tua / Wali Murid.</p>
         </div>
         <button onclick="openModalUser()" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs shadow flex items-center gap-2">
           <i class="fa-solid fa-user-plus"></i>
@@ -297,11 +297,10 @@
         <div>
           <label class="block text-xs font-bold text-slate-700 mb-1">Role / Hak Akses *</label>
           <select id="user-role" required class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-blue-500">
-            <option value="admin">Administrator / CMS</option>
-            <option value="guru_akademik">Guru Akademik</option>
-            <option value="pembina_kepemimpinan">Pembina Kepemimpinan</option>
-            <option value="pembina_diniyah">Pembina Diniyah / Musyrif</option>
-            <option value="santri">Santri / Wali</option>
+            <option value="admin">Admin Utama / CMS</option>
+            <option value="kepala_sekolah">Kepala Sekolah</option>
+            <option value="guru">Guru / Pendidik</option>
+            <option value="wali_murid">Orang Tua / Wali Murid</option>
           </select>
         </div>
         <div>

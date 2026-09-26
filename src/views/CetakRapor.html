@@ -9,13 +9,13 @@
       </div>
       <div>
         <h2 class="text-sm font-bold text-slate-900">Pratinjau & Cetak Rapor Tengah Semester</h2>
-        <p class="text-xs text-slate-500">Pilih santri untuk melihat dan mencetak dokumen rapor 3 pilar terpadu.</p>
+        <p class="text-xs text-slate-500">Pilih murid untuk melihat dan mencetak dokumen rapor 3 pilar terpadu.</p>
       </div>
     </div>
 
     <div class="flex flex-wrap items-center gap-2">
-      <!-- Santri Selector for Print -->
-      <select id="rapor-santri-select" onchange="loadSantriReportForPrint(this.value)" class="text-xs bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-slate-800 font-semibold focus:ring-2 focus:ring-indigo-500 min-w-[200px]">
+      <!-- Murid Selector for Print -->
+      <select id="rapor-murid-select" onchange="loadMuridReportForPrint(this.value)" class="text-xs bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-slate-800 font-semibold focus:ring-2 focus:ring-indigo-500 min-w-[200px]">
         <!-- Populated via JS -->
       </select>
 
@@ -52,11 +52,11 @@
       <div class="w-20 hidden sm:block"></div> <!-- Spacer balance -->
     </div>
 
-    <!-- 2. IDENTITAS SANTRI -->
+    <!-- 2. IDENTITAS MURID -->
     <div class="grid grid-cols-2 gap-y-1.5 gap-x-6 text-xs bg-slate-50 p-3 rounded-lg border border-slate-200 mb-5">
       <div class="flex">
-        <span class="w-32 font-semibold text-slate-600">Nama Santri</span>
-        <span class="font-bold text-slate-900">: <span id="print-santri-nama">-</span></span>
+        <span class="w-32 font-semibold text-slate-600">Nama Murid</span>
+        <span class="font-bold text-slate-900">: <span id="print-murid-nama">-</span></span>
       </div>
       <div class="flex">
         <span class="w-32 font-semibold text-slate-600">Tahun Ajaran</span>
@@ -64,7 +64,7 @@
       </div>
       <div class="flex">
         <span class="w-32 font-semibold text-slate-600">NIS / NISN</span>
-        <span class="font-medium text-slate-900">: <span id="print-santri-nis">-</span> / <span id="print-santri-nisn">-</span></span>
+        <span class="font-medium text-slate-900">: <span id="print-murid-nis">-</span> / <span id="print-murid-nisn">-</span></span>
       </div>
       <div class="flex">
         <span class="w-32 font-semibold text-slate-600">Semester</span>
@@ -72,11 +72,11 @@
       </div>
       <div class="flex">
         <span class="w-32 font-semibold text-slate-600">Kelas / Rombel</span>
-        <span class="font-bold text-slate-900">: <span id="print-santri-kelas">-</span></span>
+        <span class="font-bold text-slate-900">: <span id="print-murid-kelas">-</span></span>
       </div>
       <div class="flex">
         <span class="w-32 font-semibold text-slate-600">Jenis Kelamin</span>
-        <span class="font-medium text-slate-900">: <span id="print-santri-jk">-</span></span>
+        <span class="font-medium text-slate-900">: <span id="print-murid-jk">-</span></span>
       </div>
     </div>
 
@@ -194,7 +194,7 @@
       <div class="grid grid-cols-3 text-center text-xs gap-4">
         <!-- Kolom 1: Orang Tua -->
         <div class="flex flex-col justify-between h-32">
-          <span>Mengetahui,<br><strong>Orang Tua / Wali Santri</strong></span>
+          <span>Mengetahui,<br><strong>Orang Tua / Wali Murid</strong></span>
           <div>
             <div class="w-36 border-b border-slate-800 mx-auto"></div>
             <span class="text-[11px] text-slate-500 mt-1 block">( ........................................ )</span>
@@ -203,10 +203,10 @@
 
         <!-- Kolom 2: Wali Kelas / Pembina -->
         <div class="flex flex-col justify-between h-32">
-          <span>Wali Kelas /<br><strong>Pembina Asrama</strong></span>
+          <span>Wali Kelas /<br><strong>Pendidik</strong></span>
           <div>
             <div class="w-36 border-b border-slate-800 mx-auto"></div>
-            <span class="text-[11px] font-bold text-slate-800 mt-1 block" id="print-wali-kelas-nama">( Ust. Budi Santoso, S.Si. )</span>
+            <span class="text-[11px] font-bold text-slate-800 mt-1 block" id="print-wali-kelas-nama">( Ust. Budi Santoso, M.Pd. )</span>
           </div>
         </div>
 

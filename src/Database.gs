@@ -8,7 +8,8 @@
 const DB_CONFIG = {
   SHEET_SETTINGS: 'Settings_CMS',
   SHEET_USERS: 'Users',
-  SHEET_SANTRI: 'Santri',
+  SHEET_MURID: 'Murid',
+  SHEET_SANTRI_LEGACY: 'Santri',
   SHEET_AKADEMIK: 'Nilai_Akademik',
   SHEET_KEPEMIMPINAN: 'Nilai_Kepemimpinan',
   SHEET_DINIYAH: 'Nilai_Diniyah'
@@ -16,8 +17,6 @@ const DB_CONFIG = {
 
 /**
  * Mendapatkan referensi Spreadsheet aktif.
- * Jika script di-bind dengan sheet, otomatis menggunakan getActiveSpreadsheet().
- * Jika script standalone, bisa menggunakan SCRIPT_PROP atau ID sheet.
  */
 function getDb() {
   try {
@@ -32,7 +31,6 @@ function getDb() {
     return SpreadsheetApp.openById(prop);
   }
   
-  // Jika belum ada ID, buat spreadsheet baru atau throw info
   throw new Error('Spreadsheet belum terhubung. Pastikan script terikat dengan Google Sheets atau set Script Property SPREADSHEET_ID.');
 }
 
@@ -42,6 +40,11 @@ function getDb() {
 function getOrCreateSheet(sheetName, headers = []) {
   const ss = getDb();
   let sheet = ss.getSheetByName(sheetName);
+  
+  // Backward compatibility check for Murid / Santri
+  if (!sheet && sheetName === DB_CONFIG.SHEET_MURID) {
+    sheet = ss.getSheetByName(DB_CONFIG.SHEET_SANTRI_LEGACY);
+  }
   
   if (!sheet) {
     sheet = ss.insertSheet(sheetName);
@@ -74,12 +77,15 @@ function sheetToObjects(sheet) {
     const obj = { _rowNumber: rowIndex + 2 };
     headers.forEach((header, colIndex) => {
       let val = row[colIndex];
-      // Format tanggal menjadi ISO string jika Date object
       if (val instanceof Date) {
         val = Utilities.formatDate(val, Session.getScriptTimeZone() || 'Asia/Jakarta', 'yyyy-MM-dd');
       }
       obj[header] = val !== undefined ? val : '';
     });
+    // Normalisasi nama_murid jika kolomnya nama_santri
+    if (!obj.nama_murid && obj.nama_santri) {
+      obj.nama_murid = obj.nama_santri;
+    }
     return obj;
   });
 }
@@ -92,7 +98,12 @@ function findRowByField(sheet, fieldName, fieldValue) {
   if (data.length <= 1) return null;
   
   const headers = data[0].map(h => String(h).trim());
-  const colIndex = headers.indexOf(fieldName);
+  let colIndex = headers.indexOf(fieldName);
+  
+  // Fallback field check
+  if (colIndex === -1 && fieldName === 'nama_murid') {
+    colIndex = headers.indexOf('nama_santri');
+  }
   if (colIndex === -1) return null;
   
   for (let i = 1; i < data.length; i++) {
@@ -140,26 +151,24 @@ function initDatabase() {
     sheetSettings.getRange(2, 1, defaultSettings.length, 4).setValues(defaultSettings);
   }
   
-  // 2. Skema Users
+  // 2. Skema Users (4 Role: Admin, Kepala Sekolah, Guru, Wali Murid)
   const sheetUsers = getOrCreateSheet(DB_CONFIG.SHEET_USERS, ['id', 'username', 'password_hash', 'nama_lengkap', 'role', 'status', 'created_at']);
   if (sheetUsers.getLastRow() <= 1) {
     const defaultUsers = [
       ['USR-001', 'admin', 'admin123', 'Administrator Utama', 'admin', 'aktif', '2025-01-01'],
-      ['USR-002', 'guru.matematika', 'guru123', 'Ust. Budi Santoso, M.Pd.', 'guru_akademik', 'aktif', '2025-01-01'],
-      ['USR-003', 'guru.ipa', 'guru123', 'Ustdz. Nurul Hidayah, S.Si.', 'guru_akademik', 'aktif', '2025-01-01'],
-      ['USR-004', 'guru.bahasa', 'guru123', 'Ust. Farhan Ramadhan, S.Pd.', 'guru_akademik', 'aktif', '2025-01-01'],
-      ['USR-005', 'pembina.asrama', 'pembina123', 'Ust. Ridwan Kamil, S.Pd.I.', 'pembina_kepemimpinan', 'aktif', '2025-01-01'],
-      ['USR-006', 'pembina.putri', 'pembina123', 'Ustdz. Fatimah Azzahra, S.Sos.', 'pembina_kepemimpinan', 'aktif', '2025-01-01'],
-      ['USR-007', 'musyrif.tahfidz', 'musyrif123', 'Ust. Muhammad Ihsan, Lc., Al-Hafizh', 'pembina_diniyah', 'aktif', '2025-01-01'],
-      ['USR-008', 'santri.demo', 'santri123', 'Muhammad Zaidan Al-Fatih', 'santri', 'aktif', '2025-01-01']
+      ['USR-002', 'kepsek', 'kepsek123', 'Ust. Ahmad Fauzi, M.Pd.', 'kepala_sekolah', 'aktif', '2025-01-01'],
+      ['USR-003', 'guru', 'guru123', 'Ust. Budi Santoso, M.Pd.', 'guru', 'aktif', '2025-01-01'],
+      ['USR-004', 'guru.ipa', 'guru123', 'Ustdz. Nurul Hidayah, S.Si.', 'guru', 'aktif', '2025-01-01'],
+      ['USR-005', 'guru.bahasa', 'guru123', 'Ust. Farhan Ramadhan, S.Pd.', 'guru', 'aktif', '2025-01-01'],
+      ['USR-006', 'walimurid', 'wali123', 'Ir. Abdullah Pratama (Wali Zaidan)', 'wali_murid', 'aktif', '2025-01-01']
     ];
     sheetUsers.getRange(2, 1, defaultUsers.length, 7).setValues(defaultUsers);
   }
   
-  // 3. Skema Santri
-  const sheetSantri = getOrCreateSheet(DB_CONFIG.SHEET_SANTRI, ['nis', 'nisn', 'nama_santri', 'kelas', 'jenis_kelamin', 'nama_wali', 'kontak_wali', 'status']);
-  if (sheetSantri.getLastRow() <= 1) {
-    const defaultSantri = [
+  // 3. Skema Murid
+  const sheetMurid = getOrCreateSheet(DB_CONFIG.SHEET_MURID, ['nis', 'nisn', 'nama_murid', 'kelas', 'jenis_kelamin', 'nama_wali', 'kontak_wali', 'status']);
+  if (sheetMurid.getLastRow() <= 1) {
+    const defaultMurid = [
       ['202507001', '0091234561', 'Muhammad Zaidan Al-Fatih', '7A', 'L', 'Ir. Abdullah Pratama', '081299887766', 'Aktif'],
       ['202507002', '0091234562', 'Abdullah Hanif Azzam', '7A', 'L', 'H. Bambang Soediro', '081311223344', 'Aktif'],
       ['202507003', '0091234563', 'Fatih Rayyan Al-Ghifari', '7A', 'L', 'Dr. Hendra Gunawan', '085612349876', 'Aktif'],
@@ -173,7 +182,7 @@ function initDatabase() {
       ['202309001', '0071234561', 'Ali Imran Al-Qasimi', '9A', 'L', 'Drs. Syarifuddin', '081822334455', 'Aktif'],
       ['202309002', '0071234562', 'Maryam Qurrata Ayun', '9B', 'P', 'M. Fadli, S.T.', '081900112233', 'Aktif']
     ];
-    sheetSantri.getRange(2, 1, defaultSantri.length, 8).setValues(defaultSantri);
+    sheetMurid.getRange(2, 1, defaultMurid.length, 8).setValues(defaultMurid);
   }
   
   // 4. Skema Nilai_Akademik
@@ -182,7 +191,6 @@ function initDatabase() {
   ]);
   if (sheetAkademik.getLastRow() <= 1) {
     const defaultAkademik = [
-      // Santri 1 (7A): Muhammad Zaidan Al-Fatih
       ['NA-001', '202507001', 'Ganjil', '2025/2026', 'Pendidikan Agama Islam (PAI)', 92, 94, 93, 'A', 'Sangat mendalam dalam pemahaman akidah akhlak dan fiqih ibadah.'],
       ['NA-002', '202507001', 'Ganjil', '2025/2026', 'Pendidikan Pancasila & Kewarganegaraan', 88, 90, 89, 'A', 'Memiliki pemahaman wawasan kebangsaan dan keteladanan yang kuat.'],
       ['NA-003', '202507001', 'Ganjil', '2025/2026', 'Bahasa Indonesia', 90, 94, 92, 'A', 'Kemampuan literasi, retorika, dan penulisan esai sangat menonjol.'],
@@ -194,7 +202,6 @@ function initDatabase() {
       ['NA-009', '202507001', 'Ganjil', '2025/2026', 'Pendidikan Jasmani (PJOK)', 88, 85, 86, 'B', 'Kebugaran jasmani dan sportivitas dalam olahraga beregu sangat baik.'],
       ['NA-010', '202507001', 'Ganjil', '2025/2026', 'Seni Budaya & Prakarya', 86, 88, 87, 'B', 'Kreatif dalam pembuatan kaligrafi dan karya seni terapan.'],
       
-      // Santri 2 (7A): Abdullah Hanif Azzam
       ['NA-011', '202507002', 'Ganjil', '2025/2026', 'Pendidikan Agama Islam (PAI)', 90, 92, 91, 'A', 'Menguasai materi sejarah peradaban islam dan tajwid.'],
       ['NA-012', '202507002', 'Ganjil', '2025/2026', 'Bahasa Indonesia', 88, 86, 87, 'B', 'Mampu menyusun teks deskripsi dan laporan hasil observasi dengan runtut.'],
       ['NA-013', '202507002', 'Ganjil', '2025/2026', 'Bahasa Inggris', 80, 84, 82, 'B', 'Penguasaan grammar baik, perlu diperbanyak latihan percakapan aktif.'],
@@ -202,7 +209,6 @@ function initDatabase() {
       ['NA-015', '202507002', 'Ganjil', '2025/2026', 'Ilmu Pengetahuan Alam (IPA)', 85, 85, 85, 'B', 'Konsisten dalam pengamatan mikroskop dan klasifikasi materi.'],
       ['NA-016', '202507002', 'Ganjil', '2025/2026', 'Informatika & Coding', 88, 90, 89, 'A', 'Antusias dalam pemrograman dasar Scratch dan pengenalan perangkat keras.'],
       
-      // Santri 4 (7B): Aisyah Humaira Azzahra
       ['NA-017', '202507004', 'Ganjil', '2025/2026', 'Pendidikan Agama Islam (PAI)', 95, 96, 96, 'A', 'Sangat teladan dalam penerapan adab islami dan pemahaman syariat.'],
       ['NA-018', '202507004', 'Ganjil', '2025/2026', 'Bahasa Indonesia', 92, 94, 93, 'A', 'Diksi dan tata kalimat dalam menyusun resensi buku sangat memukau.'],
       ['NA-019', '202507004', 'Ganjil', '2025/2026', 'Bahasa Inggris', 90, 92, 91, 'A', 'Sangat lancar dalam listening and reading comprehension.'],
@@ -210,13 +216,11 @@ function initDatabase() {
       ['NA-021', '202507004', 'Ganjil', '2025/2026', 'Ilmu Pengetahuan Alam (IPA)', 90, 92, 91, 'A', 'Sangat teliti dalam eksperimen biotik-abiotik dan analisa ekosistem.'],
       ['NA-022', '202507004', 'Ganjil', '2025/2026', 'Informatika & Coding', 90, 92, 91, 'A', 'Sangat terampil dalam menyusun presentasi data dan desain digital.'],
 
-      // Santri 7 (8A): Umar Farouq Al-Khattab
       ['NA-023', '202408001', 'Ganjil', '2025/2026', 'Matematika', 94, 96, 95, 'A', 'Sangat unggul dalam persamaan linear dan teorema phytagoras.'],
       ['NA-024', '202408001', 'Ganjil', '2025/2026', 'Ilmu Pengetahuan Alam (IPA)', 90, 94, 92, 'A', 'Memahami konsep hukum Newton dan sistem gerak makhluk hidup dengan sangat baik.'],
       ['NA-025', '202408001', 'Ganjil', '2025/2026', 'Bahasa Inggris', 88, 90, 89, 'A', 'Mampu berpidato bahasa Inggris (speech) dengan artikulasi yang jelas.'],
       ['NA-026', '202408001', 'Ganjil', '2025/2026', 'Informatika & Coding', 96, 98, 97, 'A', 'Sangat berbakat dalam web development dan logika database dasar.'],
 
-      // Santri 11 (9A): Ali Imran Al-Qasimi
       ['NA-027', '202309001', 'Ganjil', '2025/2026', 'Matematika', 92, 95, 94, 'A', 'Menguasai materi fungsi kuadrat dan transformasi geometri tingkat lanjut.'],
       ['NA-028', '202309001', 'Ganjil', '2025/2026', 'Ilmu Pengetahuan Alam (IPA)', 90, 92, 91, 'A', 'Sangat baik dalam memahami konsep listrik dinamis dan bioteknologi.'],
       ['NA-029', '202309001', 'Ganjil', '2025/2026', 'Bahasa Indonesia', 88, 90, 89, 'A', 'Kemampuan menulis teks tanggapan kritis dan pidato persuasif sangat baik.'],
@@ -231,18 +235,18 @@ function initDatabase() {
   ]);
   if (sheetKepemimpinan.getLastRow() <= 1) {
     const defaultKepemimpinan = [
-      ['NK-001', '202507001', 'Ganjil', '2025/2026', 'Sangat Baik (A)', 'Sangat Aktif (A)', 'Sangat Baik (A)', 'Mandiri & Proaktif (A)', 'Menunjukkan jiwa kepemimpinan yang tangguh, disegani teman, serta selalu tepat waktu dalam kegiatan qiyamullail, sholat berjamaah di shaf pertama, dan piket asrama.'],
-      ['NK-002', '202507002', 'Ganjil', '2025/2026', 'Baik (B)', 'Aktif (B)', 'Sangat Baik (A)', 'Mandiri (B)', 'Santri yang sopan, santun kepada guru dan musyrif, taat peraturan asrama, dan selalu kooperatif dalam kerja kelompok santri.'],
-      ['NK-003', '202507003', 'Ganjil', '2025/2026', 'Baik (B)', 'Aktif (B)', 'Baik (B)', 'Mandiri (B)', 'Menunjukkan perkembangan kemandirian yang positif dalam merapikan kamar dan menjaga kebersihan barang pribadi.'],
-      ['NK-004', '202507004', 'Ganjil', '2025/2026', 'Sangat Baik (A)', 'Sangat Aktif (A)', 'Sangat Baik (A)', 'Mandiri & Proaktif (A)', 'Menjadi teladan bagi santriwati lainnya, aktif mengkoordinir halaqah tilawah keputrian, dan memiliki kepribadian yang ramah serta berakhlak mulia.'],
-      ['NK-005', '202507005', 'Ganjil', '2025/2026', 'Sangat Baik (A)', 'Aktif (B)', 'Sangat Baik (A)', 'Mandiri (B)', 'Disiplin dalam jadwal belajar mandiri asrama putri dan selalu menjaga lisan serta kerapian asrama.'],
-      ['NK-006', '202507006', 'Ganjil', '2025/2026', 'Baik (B)', 'Aktif (B)', 'Baik (B)', 'Mandiri (B)', 'Memiliki rasa empati yang tinggi, suka membantu teman yang membutuhkan, dan giat dalam kegiatan ekstrakurikuler keputrian.'],
-      ['NK-007', '202408001', 'Ganjil', '2025/2026', 'Sangat Baik (A)', 'Sangat Aktif (A)', 'Sangat Baik (A)', 'Mandiri & Proaktif (A)', 'Menjabat sebagai ketua komdis Organisasi Santri, bertanggung jawab tinggi, adil dalam bersikap, dan amanah dalam menjalankan tugas.'],
-      ['NK-008', '202408002', 'Ganjil', '2025/2026', 'Baik (B)', 'Aktif (B)', 'Sangat Baik (A)', 'Mandiri (B)', 'Berperilaku santun, aktif dalam kepanitiaan pekan olahraga santri, dan selalu menjaga keharmonisan kamar asrama.'],
-      ['NK-009', '202408003', 'Ganjil', '2025/2026', 'Sangat Baik (A)', 'Sangat Aktif (A)', 'Sangat Baik (A)', 'Mandiri & Proaktif (A)', 'Pengurus bagian kebahasaan santriwati, aktif membimbing adik kelas dalam percakapan Yaumiyyah Bahasa Arab.'],
+      ['NK-001', '202507001', 'Ganjil', '2025/2026', 'Sangat Baik (A)', 'Sangat Aktif (A)', 'Sangat Baik (A)', 'Mandiri & Proaktif (A)', 'Menunjukkan jiwa kepemimpinan yang tangguh, disegani teman, serta selalu tepat waktu dalam kegiatan qiyamullail, sholat berjamaah di shaf pertama, dan piket kelas/asrama.'],
+      ['NK-002', '202507002', 'Ganjil', '2025/2026', 'Baik (B)', 'Aktif (B)', 'Sangat Baik (A)', 'Mandiri (B)', 'Murid yang sopan, santun kepada guru dan musyrif, taat peraturan sekolah, dan selalu kooperatif dalam kerja kelompok murid.'],
+      ['NK-003', '202507003', 'Ganjil', '2025/2026', 'Baik (B)', 'Aktif (B)', 'Baik (B)', 'Mandiri (B)', 'Menunjukkan perkembangan kemandirian yang positif dalam merapikan perlengkapan belajar dan menjaga kebersihan lingkungan sekolah.'],
+      ['NK-004', '202507004', 'Ganjil', '2025/2026', 'Sangat Baik (A)', 'Sangat Aktif (A)', 'Sangat Baik (A)', 'Mandiri & Proaktif (A)', 'Menjadi teladan bagi murid putri lainnya, aktif mengkoordinir halaqah tilawah keputrian, dan memiliki kepribadian yang ramah serta berakhlak mulia.'],
+      ['NK-005', '202507005', 'Ganjil', '2025/2026', 'Sangat Baik (A)', 'Aktif (B)', 'Sangat Baik (A)', 'Mandiri (B)', 'Disiplin dalam jadwal belajar mandiri dan selalu menjaga lisan serta kerapian kelas.'],
+      ['NK-006', '202507006', 'Ganjil', '2025/2026', 'Baik (B)', 'Aktif (B)', 'Baik (B)', 'Mandiri (B)', 'Memiliki rasa empati yang tinggi, suka membantu teman yang membutuhkan, dan giat dalam kegiatan ekstrakurikuler.'],
+      ['NK-007', '202408001', 'Ganjil', '2025/2026', 'Sangat Baik (A)', 'Sangat Aktif (A)', 'Sangat Baik (A)', 'Mandiri & Proaktif (A)', 'Menjabat sebagai ketua komdis Organisasi Murid, bertanggung jawab tinggi, adil dalam bersikap, dan amanah dalam menjalankan tugas.'],
+      ['NK-008', '202408002', 'Ganjil', '2025/2026', 'Baik (B)', 'Aktif (B)', 'Sangat Baik (A)', 'Mandiri (B)', 'Berperilaku santun, aktif dalam kepanitiaan pekan olahraga sekolah, dan selalu menjaga keharmonisan kelas.'],
+      ['NK-009', '202408003', 'Ganjil', '2025/2026', 'Sangat Baik (A)', 'Sangat Aktif (A)', 'Sangat Baik (A)', 'Mandiri & Proaktif (A)', 'Pengurus bagian kebahasaan murid putri, aktif membimbing adik kelas dalam percakapan Yaumiyyah Bahasa Arab.'],
       ['NK-010', '202408004', 'Ganjil', '2025/2026', 'Baik (B)', 'Aktif (B)', 'Baik (B)', 'Mandiri (B)', 'Rajin dan tertib dalam mengikuti agenda halaqah tarbiyah serta menjaga komitmen ibadah sunnah.'],
-      ['NK-011', '202309001', 'Ganjil', '2025/2026', 'Sangat Baik (A)', 'Sangat Aktif (A)', 'Sangat Baik (A)', 'Mandiri & Proaktif (A)', 'Ketua Umum Badan Eksekutif Santri (BEM), visioner, mampu menjadi inspirasi bagi adik kelas, dan matang dalam mengambil keputusan.'],
-      ['NK-012', '202309002', 'Ganjil', '2025/2026', 'Sangat Baik (A)', 'Sangat Aktif (A)', 'Sangat Baik (A)', 'Mandiri & Proaktif (A)', 'Ketua Keputrian Santriwati, teladan dalam adab tholabul ilmi, berprestasi, dan disegani seluruh warga pondok pesantren.']
+      ['NK-011', '202309001', 'Ganjil', '2025/2026', 'Sangat Baik (A)', 'Sangat Aktif (A)', 'Sangat Baik (A)', 'Mandiri & Proaktif (A)', 'Ketua Umum Organisasi Siswa Intra Sekolah (OSIS), visioner, mampu menjadi inspirasi bagi adik kelas, dan matang dalam mengambil keputusan.'],
+      ['NK-012', '202309002', 'Ganjil', '2025/2026', 'Sangat Baik (A)', 'Sangat Aktif (A)', 'Sangat Baik (A)', 'Mandiri & Proaktif (A)', 'Ketua Keputrian Murid, teladan dalam adab tholabul ilmi, berprestasi, dan disegani seluruh warga sekolah.']
     ];
     sheetKepemimpinan.getRange(2, 1, defaultKepemimpinan.length, 9).setValues(defaultKepemimpinan);
   }
@@ -263,15 +267,15 @@ function initDatabase() {
       ['ND-008', '202408002', 'Ganjil', '2025/2026', 'Juz 29 (Lancar)', 'Juz 30 (Mutqin)', 89, 'Jayyid Jiddan (B)', 'Mumtaz (A)', 88, 'Aktif bertanya seputar kaidah tajwid Tuhfatul Athfal dan rajin menghadiri majelis ilmu diniyah.'],
       ['ND-009', '202408003', 'Ganjil', '2025/2026', 'Juz 28 & Juz 27 (Lancar)', 'Juz 30, 29, 28 (Mutqin)', 97, 'Mumtaz (A)', 'Mumtaz (A)', 95, 'Capaian tahfidz mencapai 4 Juz Mutqin. Sangat menguasai gramatika bahasa Arab dan muhadatsah yaumiyyah.'],
       ['ND-010', '202408004', 'Ganjil', '2025/2026', 'Juz 29 (10 Halaman)', 'Juz 30 (Mutqin)', 87, 'Mumtaz (A)', 'Jayyid Jiddan (B)', 85, 'Memiliki intonasi tilawah yang tenang, istiqomah dalam dzikir pagi petang dan sholat sunnah rawatib.'],
-      ['ND-011', '202309001', 'Ganjil', '2025/2026', 'Juz 1 s.d 5 (Lancar)', 'Juz 30, 29, 28, 27 (Mutqin)', 98, 'Mumtaz (A)', 'Mumtaz (A)', 96, 'Santri teladan hafalan 7 Juz Al-Qur\'an bersanad, siap menjadi imam sholat rawatib dan khatib jumat.'],
-      ['ND-012', '202309002', 'Ganjil', '2025/2026', 'Juz 1 s.d 5 (Lancar)', 'Juz 30, 29, 28, 27 (Mutqin)', 98, 'Mumtaz (A)', 'Mumtaz (A)', 97, 'Hafidzah 7 Juz mutqin, berakhlak mulia, dan aktif menjadi penguji sima\'an tahfidz santriwati junior.']
+      ['ND-011', '202309001', 'Ganjil', '2025/2026', 'Juz 1 s.d 5 (Lancar)', 'Juz 30, 29, 28, 27 (Mutqin)', 98, 'Mumtaz (A)', 'Mumtaz (A)', 96, 'Murid teladan hafalan 7 Juz Al-Qur\'an bersanad, siap menjadi imam sholat rawatib dan khatib jumat.'],
+      ['ND-012', '202309002', 'Ganjil', '2025/2026', 'Juz 1 s.d 5 (Lancar)', 'Juz 30, 29, 28, 27 (Mutqin)', 98, 'Mumtaz (A)', 'Mumtaz (A)', 97, 'Hafidzah 7 Juz mutqin, berakhlak mulia, dan aktif menjadi penguji sima\'an tahfidz murid junior.']
     ];
     sheetDiniyah.getRange(2, 1, defaultDiniyah.length, 11).setValues(defaultDiniyah);
   }
   
   return {
     status: 'success',
-    message: 'Database berhasil diinisialisasi beserta skema dan data awal.'
+    message: 'Database berhasil diinisialisasi beserta skema dan data awal Murid & 4 Role Pengguna.'
   };
 }
 
@@ -336,7 +340,6 @@ function saveUser(userData) {
   
   const existing = findRowByField(sheet, 'id', id);
   if (existing) {
-    // Update
     const rowIdx = existing.rowIndex;
     const headers = existing.headers;
     headers.forEach((h, colIdx) => {
@@ -345,14 +348,13 @@ function saveUser(userData) {
       }
     });
   } else {
-    // Insert
     const today = Utilities.formatDate(new Date(), 'Asia/Jakarta', 'yyyy-MM-dd');
     sheet.appendRow([
       id,
       userData.username || '',
       userData.password_hash || userData.password || '123456',
       userData.nama_lengkap || '',
-      userData.role || 'guru_akademik',
+      userData.role || 'guru',
       userData.status || 'aktif',
       today
     ]);
@@ -372,11 +374,11 @@ function deleteUser(userId) {
 
 /**
  * ============================================================================
- * MODEL: SANTRI
+ * MODEL: MURID
  * ============================================================================
  */
-function getAllSantri(filterClass = '') {
-  const sheet = getOrCreateSheet(DB_CONFIG.SHEET_SANTRI);
+function getAllMurid(filterClass = '') {
+  const sheet = getOrCreateSheet(DB_CONFIG.SHEET_MURID);
   if (sheet.getLastRow() <= 1) {
     initDatabase();
   }
@@ -387,8 +389,8 @@ function getAllSantri(filterClass = '') {
   return list;
 }
 
-function getSantriByNis(nis) {
-  const sheet = getOrCreateSheet(DB_CONFIG.SHEET_SANTRI);
+function getMuridByNis(nis) {
+  const sheet = getOrCreateSheet(DB_CONFIG.SHEET_MURID);
   const match = findRowByField(sheet, 'nis', nis);
   if (!match) return null;
   
@@ -396,45 +398,57 @@ function getSantriByNis(nis) {
   match.headers.forEach((h, idx) => {
     obj[h] = match.values[idx];
   });
+  if (!obj.nama_murid && obj.nama_santri) {
+    obj.nama_murid = obj.nama_santri;
+  }
   return obj;
 }
 
-function saveSantri(santriData) {
-  const sheet = getOrCreateSheet(DB_CONFIG.SHEET_SANTRI);
-  const existing = findRowByField(sheet, 'nis', santriData.nis);
+function saveMurid(muridData) {
+  const sheet = getOrCreateSheet(DB_CONFIG.SHEET_MURID);
+  const existing = findRowByField(sheet, 'nis', muridData.nis);
+  const namaMuridVal = muridData.nama_murid || muridData.nama_santri || '';
   
   if (existing) {
     const rowIdx = existing.rowIndex;
     const headers = existing.headers;
     headers.forEach((h, colIdx) => {
-      if (santriData[h] !== undefined) {
-        sheet.getRange(rowIdx, colIdx + 1).setValue(santriData[h]);
+      if (h === 'nama_murid' || h === 'nama_santri') {
+        sheet.getRange(rowIdx, colIdx + 1).setValue(namaMuridVal);
+      } else if (muridData[h] !== undefined) {
+        sheet.getRange(rowIdx, colIdx + 1).setValue(muridData[h]);
       }
     });
   } else {
     sheet.appendRow([
-      santriData.nis,
-      santriData.nisn || '',
-      santriData.nama_santri || '',
-      santriData.kelas || '7A',
-      santriData.jenis_kelamin || 'L',
-      santriData.nama_wali || '',
-      santriData.kontak_wali || '',
-      santriData.status || 'Aktif'
+      muridData.nis,
+      muridData.nisn || '',
+      namaMuridVal,
+      muridData.kelas || '7A',
+      muridData.jenis_kelamin || 'L',
+      muridData.nama_wali || '',
+      muridData.kontak_wali || '',
+      muridData.status || 'Aktif'
     ]);
   }
-  return { status: 'success', message: 'Data santri berhasil disimpan' };
+  return { status: 'success', message: 'Data murid berhasil disimpan' };
 }
 
-function deleteSantri(nis) {
-  const sheet = getOrCreateSheet(DB_CONFIG.SHEET_SANTRI);
+function deleteMurid(nis) {
+  const sheet = getOrCreateSheet(DB_CONFIG.SHEET_MURID);
   const match = findRowByField(sheet, 'nis', nis);
   if (match) {
     sheet.deleteRow(match.rowIndex);
-    return { status: 'success', message: 'Data santri berhasil dihapus' };
+    return { status: 'success', message: 'Data murid berhasil dihapus' };
   }
-  return { status: 'error', message: 'Santri tidak ditemukan' };
+  return { status: 'error', message: 'Murid tidak ditemukan' };
 }
+
+// Aliases for backward compatibility
+function getAllSantri(f) { return getAllMurid(f); }
+function getSantriByNis(n) { return getMuridByNis(n); }
+function saveSantri(d) { return saveMurid(d); }
+function deleteSantri(n) { return deleteMurid(n); }
 
 /**
  * ============================================================================
@@ -445,16 +459,16 @@ function getNilaiAkademikList(filters = {}) {
   const sheet = getOrCreateSheet(DB_CONFIG.SHEET_AKADEMIK);
   let list = sheetToObjects(sheet);
   
-  // Join dengan data santri untuk mendapatkan nama santri dan kelas
-  const santriList = getAllSantri();
-  const santriMap = {};
-  santriList.forEach(s => { santriMap[s.nis] = s; });
+  const muridList = getAllMurid();
+  const muridMap = {};
+  muridList.forEach(s => { muridMap[s.nis] = s; });
   
   list = list.map(item => {
-    const s = santriMap[item.nis] || {};
+    const s = muridMap[item.nis] || {};
     return {
       ...item,
-      nama_santri: s.nama_santri || 'Tidak Diketahui',
+      nama_murid: s.nama_murid || s.nama_santri || 'Tidak Diketahui',
+      nama_santri: s.nama_murid || s.nama_santri || 'Tidak Diketahui',
       kelas: s.kelas || '-'
     };
   });
@@ -473,7 +487,6 @@ function saveNilaiAkademik(data) {
   const isNew = !data.id;
   const id = isNew ? 'NA-' + Utilities.getUuid().substring(0, 6).toUpperCase() : data.id;
   
-  // Hitung Nilai Akhir & Predikat Otomatis jika tidak disediakan
   const tugas = Number(data.nilai_tugas) || 0;
   const uts = Number(data.nilai_uts) || 0;
   const akhir = data.nilai_akhir !== undefined && data.nilai_akhir !== '' ? Number(data.nilai_akhir) : Math.round((tugas * 0.4) + (uts * 0.6));
@@ -539,15 +552,16 @@ function getNilaiKepemimpinanList(filters = {}) {
   const sheet = getOrCreateSheet(DB_CONFIG.SHEET_KEPEMIMPINAN);
   let list = sheetToObjects(sheet);
   
-  const santriList = getAllSantri();
-  const santriMap = {};
-  santriList.forEach(s => { santriMap[s.nis] = s; });
+  const muridList = getAllMurid();
+  const muridMap = {};
+  muridList.forEach(s => { muridMap[s.nis] = s; });
   
   list = list.map(item => {
-    const s = santriMap[item.nis] || {};
+    const s = muridMap[item.nis] || {};
     return {
       ...item,
-      nama_santri: s.nama_santri || 'Tidak Diketahui',
+      nama_murid: s.nama_murid || s.nama_santri || 'Tidak Diketahui',
+      nama_santri: s.nama_murid || s.nama_santri || 'Tidak Diketahui',
       kelas: s.kelas || '-'
     };
   });
@@ -607,15 +621,16 @@ function getNilaiDiniyahList(filters = {}) {
   const sheet = getOrCreateSheet(DB_CONFIG.SHEET_DINIYAH);
   let list = sheetToObjects(sheet);
   
-  const santriList = getAllSantri();
-  const santriMap = {};
-  santriList.forEach(s => { santriMap[s.nis] = s; });
+  const muridList = getAllMurid();
+  const muridMap = {};
+  muridList.forEach(s => { muridMap[s.nis] = s; });
   
   list = list.map(item => {
-    const s = santriMap[item.nis] || {};
+    const s = muridMap[item.nis] || {};
     return {
       ...item,
-      nama_santri: s.nama_santri || 'Tidak Diketahui',
+      nama_murid: s.nama_murid || s.nama_santri || 'Tidak Diketahui',
+      nama_santri: s.nama_murid || s.nama_santri || 'Tidak Diketahui',
       kelas: s.kelas || '-'
     };
   });
