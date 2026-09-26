@@ -83,169 +83,169 @@
     </div>
 
     <!-- 3. BAGIAN I: TABEL NILAI & CAPAIAN KOMPETENSI (16 MATA PELAJARAN) -->
-    <div class="mb-5 page-break-inside-avoid">
-      <table class="w-full text-left text-[11px] border border-slate-400">
-        <thead class="bg-emerald-100/90 text-slate-900 font-extrabold border-b border-slate-400 text-center">
+    <div class="mb-4 page-break-inside-avoid">
+      <table class="w-full text-left text-[11px] border border-black border-collapse">
+        <thead class="bg-[#c6e0b4] text-slate-900 font-bold border-b border-black text-center">
           <tr>
-            <th class="w-8 py-2 px-1 border-r border-slate-400">No</th>
-            <th class="w-64 py-2 px-3 text-left border-r border-slate-400">Mata Pelajaran</th>
-            <th class="w-14 py-2 px-1 border-r border-slate-400">Nilai</th>
-            <th class="py-2 px-3 text-center">Capaian Kompetensi</th>
+            <th class="w-8 py-1.5 px-1 border border-black">No</th>
+            <th class="w-64 py-1.5 px-3 text-left border border-black">Mata Pelajaran</th>
+            <th class="w-14 py-1.5 px-1 border border-black">Nilai</th>
+            <th class="py-1.5 px-3 text-center border border-black">Capaian Kompetensi</th>
           </tr>
         </thead>
-        <tbody id="print-akademik-tbody" class="divide-y divide-slate-300">
+        <tbody id="print-akademik-tbody">
           <!-- Populated dynamically with 16 subjects via JS -->
         </tbody>
-        <tfoot class="bg-slate-50 font-bold border-t border-slate-400">
-          <tr>
-            <td colspan="2" class="py-1.5 px-3 text-right border-r border-slate-400">Rata-Rata Nilai:</td>
-            <td id="print-akademik-avg" class="py-1.5 px-1 text-center text-blue-900 font-black border-r border-slate-400">84.8</td>
-            <td class="py-1.5 px-3 text-slate-500 font-normal italic text-[10px]" id="print-akademik-total-info">
-              Hasil evaluasi capaian kompetensi tengah semester ganjil.
-            </td>
-          </tr>
-        </tfoot>
       </table>
     </div>
 
-    <!-- 4. BAGIAN II: AHLAQ & KEPRIBADIAN (6 ASPEK AL-IMAM + CATATAN DIPERHATIKAN) -->
-    <div class="mb-5 page-break-inside-avoid">
-      <div class="bg-slate-800 text-white px-3 py-1 font-bold uppercase text-[11px] tracking-wider rounded-t-lg">
-        Ahlaq & Kepribadian
-      </div>
-      <table class="w-full text-left text-[11px] border border-slate-400">
-        <thead class="bg-slate-100 text-slate-900 font-bold border-b border-slate-400 text-center">
+    <!-- 4. BAGIAN II: EKSTRAKURIKULER (Persis Baris 28-31 Excel) -->
+    <div class="mb-4 page-break-inside-avoid">
+      <table class="w-full text-left text-[11px] border border-black border-collapse">
+        <thead class="bg-[#c6e0b4] text-slate-900 font-bold border-b border-black">
           <tr>
-            <th class="w-8 py-1.5 px-1 border-r border-slate-400">No</th>
-            <th class="w-56 py-1.5 px-2 text-left border-r border-slate-400">Aspek Perkembangan</th>
-            <th class="py-1.5 px-3 text-left">Deskripsi / Uraian</th>
+            <th class="w-8 py-1.5 px-1 text-center border border-black">No</th>
+            <th class="py-1.5 px-3 border border-black">Ekstrakurikuler</th>
+            <th class="w-56 py-1.5 px-3 text-center border border-black">Keterangan</th>
           </tr>
         </thead>
-        <tbody class="divide-y divide-slate-300">
+        <tbody>
           <tr>
-            <td class="py-1.5 px-1 text-center font-bold border-r border-slate-400">1</td>
-            <td class="py-1.5 px-2 font-bold text-slate-800 border-r border-slate-400">Ibadah</td>
-            <td id="print-kp-ibadah" class="py-1.5 px-3 text-slate-900 leading-tight">Jadikan ibadah sebagai kebutuhan, bukan hanya kewajiban.</td>
+            <td class="py-1 px-1 text-center border border-black font-medium">1</td>
+            <td class="py-1 px-3 border border-black font-medium" id="print-ekskul-1-nama">Pramuka</td>
+            <td class="py-1 px-3 border border-black text-center font-medium" id="print-ekskul-1-nilai">Baik</td>
           </tr>
           <tr>
-            <td class="py-1.5 px-1 text-center font-bold border-r border-slate-400">2</td>
-            <td class="py-1.5 px-2 font-bold text-slate-800 border-r border-slate-400">Akhlak</td>
-            <td id="print-kp-akhlak" class="py-1.5 px-3 text-slate-900 leading-tight">Keseimbangan antara kemampuan akademis serta sikap & akhlak mulia menjadikanmu insan yang lebih baik.</td>
+            <td class="py-1 px-1 text-center border border-black font-medium">2</td>
+            <td class="py-1 px-3 border border-black font-medium" id="print-ekskul-2-nama">Wushu</td>
+            <td class="py-1 px-3 border border-black text-center font-medium" id="print-ekskul-2-nilai">Baik</td>
           </tr>
           <tr>
-            <td class="py-1.5 px-1 text-center font-bold border-r border-slate-400">3</td>
-            <td class="py-1.5 px-2 font-bold text-slate-800 border-r border-slate-400">Kedisiplinan & Kerajinan</td>
-            <td id="print-kp-kedisiplinan" class="py-1.5 px-3 text-slate-900 leading-tight">Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita.</td>
-          </tr>
-          <tr>
-            <td class="py-1.5 px-1 text-center font-bold border-r border-slate-400">4</td>
-            <td class="py-1.5 px-2 font-bold text-slate-800 border-r border-slate-400">Kerapihan & Kebersihan</td>
-            <td id="print-kp-kerapihan" class="py-1.5 px-3 text-slate-900 leading-tight">Kerapihan & kebersihan diri merupakan cermin pribadi seorang muslim, jadikanlah itu sebagai identitasmu.</td>
-          </tr>
-          <tr>
-            <td class="py-1.5 px-1 text-center font-bold border-r border-slate-400">5</td>
-            <td class="py-1.5 px-2 font-bold text-slate-800 border-r border-slate-400">Kepemimpinan</td>
-            <td id="print-kp-kepemimpinan" class="py-1.5 px-3 text-slate-900 leading-tight">Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan.</td>
-          </tr>
-          <tr>
-            <td class="py-1.5 px-1 text-center font-bold border-r border-slate-400">6</td>
-            <td class="py-1.5 px-2 font-bold text-slate-800 border-r border-slate-400">Kerja Sama</td>
-            <td id="print-kp-kerjasama" class="py-1.5 px-3 text-slate-900 leading-tight">Berbagi peran dalam kerjasama kelompok akan menciptakan keharmonisan.</td>
+            <td class="py-1 px-1 text-center border border-black font-medium">3</td>
+            <td class="py-1 px-3 border border-black font-medium" id="print-ekskul-3-nama">Basket</td>
+            <td class="py-1 px-3 border border-black text-center font-medium" id="print-ekskul-3-nilai">BAIK</td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <!-- 5. BAGIAN III: KEHADIRAN & EKSTRAKURIKULER -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5 page-break-inside-avoid">
+    <!-- 5. BAGIAN III: PENILAIAN SIKAP OLEH WALI KELAS (Persis Baris 33-39 Excel) -->
+    <div class="mb-4 page-break-inside-avoid">
+      <table class="w-full text-left text-[11px] border border-black border-collapse">
+        <thead class="bg-[#c6e0b4] text-slate-900 font-bold border-b border-black text-center">
+          <tr>
+            <th colspan="2" class="py-1.5 px-3 border border-black uppercase text-center tracking-wide">
+              Penilaian Sikap Oleh Wali Kelas
+            </th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-black">
+          <tr>
+            <td class="w-52 py-1 px-3 font-medium border border-black">Ibadah</td>
+            <td class="py-1 px-3 border border-black text-slate-900 font-medium">
+              : <span id="print-kp-ibadah">Jadikan ibadah sebagai kebutuhan, bukan hanya kewajiban.</span>
+            </td>
+          </tr>
+          <tr>
+            <td class="w-52 py-1 px-3 font-medium border border-black">Akhlak</td>
+            <td class="py-1 px-3 border border-black text-slate-900 font-medium">
+              : <span id="print-kp-akhlak">Alhamdulillah, pertahankan akhlak baikmu di mana saja Ananda berada</span>
+            </td>
+          </tr>
+          <tr>
+            <td class="w-52 py-1 px-3 font-medium border border-black">Kedisiplinan & Kerajinan</td>
+            <td class="py-1 px-3 border border-black text-slate-900 font-medium">
+              : <span id="print-kp-kedisiplinan">Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita</span>
+            </td>
+          </tr>
+          <tr>
+            <td class="w-52 py-1 px-3 font-medium border border-black">Kerapihan & Kebersihan</td>
+            <td class="py-1 px-3 border border-black text-slate-900 font-medium">
+              : <span id="print-kp-kerapihan">Kerapihan & kebersihan diri merupakan cermin pribadi seorang muslim, jadikanlah itu sebagai identitasmu</span>
+            </td>
+          </tr>
+          <tr>
+            <td class="w-52 py-1 px-3 font-medium border border-black">Kepemimpinan</td>
+            <td class="py-1 px-3 border border-black text-slate-900 font-medium">
+              : <span id="print-kp-kepemimpinan">Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan</span>
+            </td>
+          </tr>
+          <tr>
+            <td class="w-52 py-1 px-3 font-medium border border-black">Kerja Sama</td>
+            <td class="py-1 px-3 border border-black text-slate-900 font-medium">
+              : <span id="print-kp-kerjasama">Tolong-menolonglah kamu dalam kebaikan dan jangan tolong-menolong dalam keburukan</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 6. BAGIAN IV: CATATAN UNTUK DIPERHATIKAN & KETIDAKHADIRAN (Persis Baris 41-44 Excel) -->
+    <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 mb-6 page-break-inside-avoid">
       
-      <!-- Kehadiran Box -->
-      <div class="border border-slate-400 rounded-lg overflow-hidden">
-        <div class="bg-slate-100 text-slate-900 px-3 py-1 font-bold uppercase text-[10px] tracking-wider border-b border-slate-400">
-          Kehadiran (Absen sampai pekan UTS)
+      <!-- Catatan Untuk Diperhatikan (7 Kolom) -->
+      <div class="sm:col-span-7 border border-black flex flex-col">
+        <div class="bg-[#c6e0b4] text-slate-900 px-3 py-1.5 font-bold text-center border-b border-black text-[11px]">
+          Catatan Untuk Diperhatikan
         </div>
-        <div class="p-2.5 text-[11px] space-y-1 bg-white">
-          <div class="flex justify-between border-b border-slate-100 pb-0.5">
-            <span class="text-slate-700">1. Sakit (S)</span>
-            <span class="font-bold text-slate-900"><span id="print-absen-s">0</span> hari</span>
-          </div>
-          <div class="flex justify-between border-b border-slate-100 pb-0.5">
-            <span class="text-slate-700">2. Izin (I)</span>
-            <span class="font-bold text-slate-900"><span id="print-absen-i">3</span> hari</span>
-          </div>
-          <div class="flex justify-between">
-            <span class="text-slate-700">3. Tanpa Keterangan / Alpa (A)</span>
-            <span class="font-bold text-slate-900"><span id="print-absen-a">0</span> hari</span>
-          </div>
+        <div class="p-3 bg-white text-[11px] text-slate-900 flex-1 flex items-center justify-center text-center font-medium leading-relaxed">
+          <p id="print-kp-catatan">
+            Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal & cita-cita di masa depan.
+          </p>
         </div>
       </div>
 
-      <!-- Ekstrakurikuler Box -->
-      <div class="border border-slate-400 rounded-lg overflow-hidden">
-        <div class="bg-slate-100 text-slate-900 px-3 py-1 font-bold uppercase text-[10px] tracking-wider border-b border-slate-400">
-          Kegiatan Ekstrakurikuler
+      <!-- Ketidakhadiran (5 Kolom) -->
+      <div class="sm:col-span-5 border border-black flex flex-col">
+        <div class="bg-[#c6e0b4] text-slate-900 px-3 py-1.5 font-bold text-center border-b border-black text-[11px]">
+          Ketidakhadiran
         </div>
-        <div class="p-2.5 text-[11px] space-y-1 bg-white">
-          <div class="flex justify-between border-b border-slate-100 pb-0.5">
-            <span class="text-slate-700 font-medium">1. <span id="print-ekskul-1-nama">Pramuka</span></span>
-            <span class="font-bold text-emerald-800" id="print-ekskul-1-nilai">Baik</span>
+        <div class="p-2.5 text-[11px] space-y-1.5 bg-white font-medium">
+          <div class="flex items-center">
+            <span class="w-24 text-slate-800">1. Sakit</span>
+            <span class="w-6 text-center">:</span>
+            <span class="w-8 text-center font-bold" id="print-absen-s">-</span>
+            <span class="text-slate-800">hari</span>
           </div>
-          <div class="flex justify-between border-b border-slate-100 pb-0.5">
-            <span class="text-slate-700 font-medium">2. <span id="print-ekskul-2-nama">Wushu</span></span>
-            <span class="font-bold text-emerald-800" id="print-ekskul-2-nilai">Baik</span>
+          <div class="flex items-center">
+            <span class="w-24 text-slate-800">2. Izin</span>
+            <span class="w-6 text-center">:</span>
+            <span class="w-8 text-center font-bold" id="print-absen-i">3</span>
+            <span class="text-slate-800">hari</span>
           </div>
-          <div class="flex justify-between">
-            <span class="text-slate-700 font-medium">3. <span id="print-ekskul-3-nama">Basket</span></span>
-            <span class="font-bold text-emerald-800" id="print-ekskul-3-nilai">Baik</span>
+          <div class="flex items-center">
+            <span class="w-24 text-slate-800">3. Alfa</span>
+            <span class="w-6 text-center">:</span>
+            <span class="w-8 text-center font-bold" id="print-absen-a">-</span>
+            <span class="text-slate-800">hari</span>
           </div>
         </div>
       </div>
 
     </div>
 
-    <!-- 6. CATATAN YG DIPERHATIKAN -->
-    <div class="mb-6 p-3 bg-slate-50 border border-slate-400 rounded-lg page-break-inside-avoid">
-      <span class="font-bold block text-[11px] text-slate-900 uppercase tracking-wide mb-0.5">
-        Catatan yg Diperhatikan (Wali Kelas / Pembina):
-      </span>
-      <p id="print-kp-catatan" class="text-[11px] text-slate-800 leading-relaxed font-medium italic">
-        "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal & cita-cita di masa depan. Tingkatkan semangat belajarmu."
-      </p>
-    </div>
-
-    <!-- 7. TANDA TANGAN RESMI 3 PIHAK -->
-    <div class="page-break-inside-avoid mt-6 pt-3 border-t border-slate-400">
-      <div class="text-right text-[11px] mb-3 font-medium">
+    <!-- 7. TANDA TANGAN RESMI 2 PIHAK (Persis Baris 46-52 Excel) -->
+    <div class="page-break-inside-avoid mt-6 pt-2">
+      <div class="text-right text-[11px] mb-4 font-medium pr-12">
         <span id="print-report-place">Bogor</span>, <span id="print-report-date">17 Oktober 2025</span>
       </div>
 
-      <div class="grid grid-cols-3 text-center text-[11px] gap-4">
-        <!-- Kolom 1: Orang Tua -->
-        <div class="flex flex-col justify-between h-28">
-          <span>Mengetahui,<br><strong>Orang Tua / Wali Murid</strong></span>
+      <div class="grid grid-cols-2 text-[11px] gap-8">
+        <!-- Kolom 1: Kepala Sekolah -->
+        <div class="flex flex-col justify-between h-28 pl-4">
+          <span class="font-medium">Kepala Sekolah</span>
           <div>
-            <div class="w-36 border-b border-slate-800 mx-auto"></div>
-            <span class="text-[10px] text-slate-500 mt-0.5 block">( ........................................ )</span>
+            <span class="font-bold underline text-slate-950 block" id="print-headmaster-name">Arif Rohman, M.Pd.</span>
+            <span class="text-[10px] text-slate-700 block" id="print-headmaster-nip">NIP.</span>
           </div>
         </div>
 
         <!-- Kolom 2: Wali Kelas -->
-        <div class="flex flex-col justify-between h-28">
-          <span>Wali Kelas,<br><strong>SMP Al-Imam</strong></span>
+        <div class="flex flex-col justify-between h-28 pr-4 text-left sm:pl-20">
+          <span class="font-medium">Wali Kelas,</span>
           <div>
-            <div class="w-36 border-b border-slate-800 mx-auto"></div>
-            <span class="text-[11px] font-bold text-slate-900 mt-0.5 block" id="print-ttd-wali-kelas">Kahlil Gibran, S.Pd.</span>
-          </div>
-        </div>
-
-        <!-- Kolom 3: Kepala Sekolah -->
-        <div class="flex flex-col justify-between h-28 relative">
-          <span>Mengetahui,<br><strong id="print-signatory-school">Kepala Sekolah SMP Al-Imam</strong></span>
-          
-          <div class="relative">
-            <div class="w-40 border-b border-slate-800 mx-auto"></div>
-            <span class="text-[11px] font-bold text-slate-900 mt-0.5 block" id="print-headmaster-name">Ust. Ahmad Fauzi, M.Pd.</span>
-            <span class="text-[9px] text-slate-600 block" id="print-headmaster-nip">NIP. 198204152008011005</span>
+            <span class="font-bold underline text-slate-950 block" id="print-ttd-wali-kelas">Kahlil Gibran, S.Pd.</span>
+            <span class="text-[10px] text-slate-700 block">NIP.</span>
           </div>
         </div>
       </div>

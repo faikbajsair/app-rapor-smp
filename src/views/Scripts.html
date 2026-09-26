@@ -2266,19 +2266,18 @@ function renderRaporSheet(report) {
   const tbodyAk = document.getElementById('print-akademik-tbody');
   if (tbodyAk) {
     if (ak.items.length === 0) {
-      tbodyAk.innerHTML = `<tr><td colspan="4" class="py-3 px-3 text-center text-slate-400 italic">Belum ada input nilai akademik untuk murid ini.</td></tr>`;
+      tbodyAk.innerHTML = `<tr><td colspan="4" class="py-3 px-3 text-center text-slate-400 italic border border-black">Belum ada input nilai akademik untuk murid ini.</td></tr>`;
     } else {
       tbodyAk.innerHTML = ak.items.map((item, idx) => `
-        <tr class="hover:bg-slate-50/60">
-          <td class="py-1.5 px-1 text-center border-r border-slate-300 font-mono font-bold text-slate-600">${idx + 1}</td>
-          <td class="py-1.5 px-3 border-r border-slate-300 font-bold text-slate-900">${item.mata_pelajaran}</td>
-          <td class="py-1.5 px-1 text-center border-r border-slate-300 font-black text-slate-950 font-mono text-xs">${item.nilai_akhir || item.nilai_uts}</td>
-          <td class="py-1.5 px-3 text-slate-800 text-[11px] leading-snug font-medium text-justify">${item.capaian_kompetensi || item.catatan_guru || '-'}</td>
+        <tr>
+          <td class="py-1 px-1 text-center border border-black font-medium text-slate-700">${idx + 1}</td>
+          <td class="py-1 px-3 border border-black font-medium text-slate-900">${item.mata_pelajaran}</td>
+          <td class="py-1 px-1 text-center border border-black font-medium text-slate-950 font-mono">${item.nilai_akhir || item.nilai_uts}</td>
+          <td class="py-1 px-3 border border-black text-slate-800 text-[11px] leading-snug font-medium text-justify">${item.capaian_kompetensi || item.catatan_guru || '-'}</td>
         </tr>
       `).join('');
     }
   }
-  if (document.getElementById('print-akademik-avg')) document.getElementById('print-akademik-avg').innerText = ak.rataRata || '84.8';
 
   // Section 2: Ahlaq & Kepribadian (6 Aspek Al-Imam)
   if (document.getElementById('print-kp-ibadah')) document.getElementById('print-kp-ibadah').innerText = kp.ibadah || BANK_KEPRIBADIAN_ALIMAM.ibadah[0];
@@ -2289,27 +2288,28 @@ function renderRaporSheet(report) {
   if (document.getElementById('print-kp-kerjasama')) document.getElementById('print-kp-kerjasama').innerText = kp.kerjasama || BANK_KEPRIBADIAN_ALIMAM.kerjasama[0];
 
   // Section 3: Kehadiran (S, I, A) & Ekskul
-  if (document.getElementById('print-absen-s')) document.getElementById('print-absen-s').innerText = m.kehadiran_s ?? 0;
-  if (document.getElementById('print-absen-i')) document.getElementById('print-absen-i').innerText = m.kehadiran_i ?? 0;
-  if (document.getElementById('print-absen-a')) document.getElementById('print-absen-a').innerText = m.kehadiran_a ?? 0;
+  const formatAbsen = (val) => (!val || Number(val) === 0) ? '-' : val;
+  if (document.getElementById('print-absen-s')) document.getElementById('print-absen-s').innerText = formatAbsen(m.kehadiran_s);
+  if (document.getElementById('print-absen-i')) document.getElementById('print-absen-i').innerText = formatAbsen(m.kehadiran_i);
+  if (document.getElementById('print-absen-a')) document.getElementById('print-absen-a').innerText = formatAbsen(m.kehadiran_a);
 
   if (document.getElementById('print-ekskul-1-nama')) document.getElementById('print-ekskul-1-nama').innerText = m.ekskul_1 || 'Pramuka';
   if (document.getElementById('print-ekskul-1-nilai')) document.getElementById('print-ekskul-1-nilai').innerText = m.ekskul_1_nilai || 'Baik';
   if (document.getElementById('print-ekskul-2-nama')) document.getElementById('print-ekskul-2-nama').innerText = m.ekskul_2 || 'Wushu';
   if (document.getElementById('print-ekskul-2-nilai')) document.getElementById('print-ekskul-2-nilai').innerText = m.ekskul_2_nilai || 'Baik';
   if (document.getElementById('print-ekskul-3-nama')) document.getElementById('print-ekskul-3-nama').innerText = m.ekskul_3 || 'Basket';
-  if (document.getElementById('print-ekskul-3-nilai')) document.getElementById('print-ekskul-3-nilai').innerText = m.ekskul_3_nilai || 'Baik';
+  if (document.getElementById('print-ekskul-3-nilai')) document.getElementById('print-ekskul-3-nilai').innerText = m.ekskul_3_nilai || 'BAIK';
 
-  // Section 4: Catatan yg Diperhatikan
+  // Section 4: Catatan Untuk Diperhatikan
   if (document.getElementById('print-kp-catatan')) {
-    document.getElementById('print-kp-catatan').innerText = `"${kp.catatan_diperhatikan || kp.catatan_pembina || BANK_KEPRIBADIAN_ALIMAM.catatan_diperhatikan[0]}"`;
+    document.getElementById('print-kp-catatan').innerText = kp.catatan_diperhatikan || kp.catatan_pembina || BANK_KEPRIBADIAN_ALIMAM.catatan_diperhatikan[0];
   }
 
   // Signatures
   if (document.getElementById('print-report-place')) document.getElementById('print-report-place').innerText = set.report_place || 'Bogor';
   if (document.getElementById('print-report-date')) document.getElementById('print-report-date').innerText = set.report_date || '17 Oktober 2025';
-  if (document.getElementById('print-headmaster-name')) document.getElementById('print-headmaster-name').innerText = set.headmaster_name || 'Ust. Ahmad Fauzi, M.Pd.';
-  if (document.getElementById('print-headmaster-nip')) document.getElementById('print-headmaster-nip').innerText = set.headmaster_nip ? `NIP. ${set.headmaster_nip}` : 'NIP. 198204152008011005';
+  if (document.getElementById('print-headmaster-name')) document.getElementById('print-headmaster-name').innerText = set.headmaster_name || 'Arif Rohman, M.Pd.';
+  if (document.getElementById('print-headmaster-nip')) document.getElementById('print-headmaster-nip').innerText = set.headmaster_nip ? `NIP. ${set.headmaster_nip}` : 'NIP.';
 }
 
 // 16. DATABASE INITIALIZATION TRIGGER
