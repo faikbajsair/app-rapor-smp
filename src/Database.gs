@@ -187,23 +187,23 @@ function initDatabase() {
       ['232407022', '0113743973', 'MUHAMMAD ALFAJRI', 'IX ABU BAKAR', 'L', 'Bpk. Alfajri', '081234567811', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Basket', 'Kahlil Gibran, S.Pd.'],
       ['232407058', '0103456069', 'NADHIF SYAFWAN RIFAAT', 'IX ABU BAKAR', 'L', 'Bpk. Rifaat', '081234567812', 'Aktif', '-', '3', '-', 'Pramuka', 'Wushu', 'Basket', 'Kahlil Gibran, S.Pd.'],
       
-      // IX UMMU SALAMAH (16 Murid)
-      ['202509101', '0112522587', 'ALIZA FAIDA NUR AZMI', 'IX UMMU SALAMAH', 'P', 'Bpk. Azmi', '081234567901', 'Aktif', '1', '-', '-', 'Pramuka', 'Wushu', 'Desain Grafis', 'Dewi Fitria Nugraheni, S.Pd., Gr.'],
-      ['202509102', '0117401882', 'ALMIRA SYIFA RAHMADINI', 'IX UMMU SALAMAH', 'P', 'Bpk. Rahmadini', '081234567902', 'Aktif', '6', '-', '-', 'Pramuka', 'Wushu', 'English Club', 'Dewi Fitria Nugraheni, S.Pd., Gr.'],
-      ['202509103', '0118273422', 'ANDI ATHIFA KHANSA TABINA', 'IX UMMU SALAMAH', 'P', 'Bpk. Pangerang', '081234567903', 'Aktif', '1', '-', '-', 'Pramuka', 'Wushu', 'English Club', 'Dewi Fitria Nugraheni, S.Pd., Gr.'],
-      ['202509104', '3109536735', 'ANNISA GEMINTANG NOVIANI', 'IX UMMU SALAMAH', 'P', 'Bpk. Noviani', '081234567904', 'Aktif', '1', '1', '-', 'Pramuka', 'Wushu', 'Basket', 'Dewi Fitria Nugraheni, S.Pd., Gr.'],
-      ['202509105', '0117636003', 'AYESHA ALFIRA RAFANDA', 'IX UMMU SALAMAH', 'P', 'Bpk. Rafanda', '081234567905', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Basket', 'Dewi Fitria Nugraheni, S.Pd., Gr.'],
-      ['202509106', '0103651480', 'AYRA FARADINA MUMTAZAH', 'IX UMMU SALAMAH', 'P', 'Bpk. Mumtazah', '081234567906', 'Aktif', '3', '-', '-', 'Pramuka', 'Wushu', 'Desain Grafis', 'Dewi Fitria Nugraheni, S.Pd., Gr.'],
-      ['202509107', '0115212757', 'CALISTA HUMAIRA NOOR KHAIRANI', 'IX UMMU SALAMAH', 'P', 'Bpk. Khairani', '081234567907', 'Aktif', '2', '-', '-', 'Pramuka', 'Wushu', 'Panahan', 'Dewi Fitria Nugraheni, S.Pd., Gr.'],
-      ['202509108', '0101875317', 'DAFINA ANGGUN KHAIRUNNISA', 'IX UMMU SALAMAH', 'P', 'Bpk. Khairunnisa', '081234567908', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'English Club', 'Dewi Fitria Nugraheni, S.Pd., Gr.'],
-      ['202509109', '0105915404', 'FATHIAH NUR AMALINA GHASSANI', 'IX UMMU SALAMAH', 'P', 'Bpk. Ghassani', '081234567909', 'Aktif', '2', '-', '-', 'Pramuka', 'Wushu', 'English Club', 'Dewi Fitria Nugraheni, S.Pd., Gr.'],
-      ['202509110', '0109433278', 'FEIYAZ SABRINA', 'IX UMMU SALAMAH', 'P', 'Bpk. Sabrina', '081234567910', 'Aktif', '-', '1', '-', 'Pramuka', 'Wushu', 'Desain Grafis', 'Dewi Fitria Nugraheni, S.Pd., Gr.'],
-      ['202509111', '0102134181', 'HANA NADIAH', 'IX UMMU SALAMAH', 'P', 'Bpk. Nadiah', '081234567911', 'Aktif', '2', '-', '-', 'Pramuka', 'Wushu', 'Panahan', 'Dewi Fitria Nugraheni, S.Pd., Gr.'],
-      ['202509112', '0116883089', 'LINZIA KENIVAEL', 'IX UMMU SALAMAH', 'P', 'Bpk. Kenivael', '081234567912', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Desain Grafis', 'Dewi Fitria Nugraheni, S.Pd., Gr.'],
-      ['202509113', '0105697995', 'RAEESA AMEERA ALSHAN', 'IX UMMU SALAMAH', 'P', 'Bpk. Alshan', '081234567913', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'English Club', 'Dewi Fitria Nugraheni, S.Pd., Gr.'],
-      ['202509114', '3117690947', 'ZAHRA RIZQI SYAHBANIA', 'IX UMMU SALAMAH', 'P', 'Bpk. Syahbania', '081234567914', 'Aktif', '1', '-', '-', 'Pramuka', 'Wushu', 'English Club', 'Dewi Fitria Nugraheni, S.Pd., Gr.'],
-      ['202509115', '0111672076', 'ZAMEENA SARAH QANITA', 'IX UMMU SALAMAH', 'P', 'Bpk. Qanita', '081234567915', 'Aktif', '1', '-', '-', 'Pramuka', 'Wushu', 'Desain Grafis', 'Dewi Fitria Nugraheni, S.Pd., Gr.'],
-      ['202509116', '0111010746', 'ZANIRA ATHAYALITA YUSUF', 'IX UMMU SALAMAH', 'P', 'Bpk. Yusuf', '081234567916', 'Aktif', '4', '-', '-', 'Pramuka', 'Wushu', 'Desain Grafis', 'Dewi Fitria Nugraheni, S.Pd., Gr.']
+      // IX UMMU SALAMAH (16 Murid Resmi Format Excel)
+      ['232407001', '0112522587', 'ALIZA FAIDA NUR AZMI', 'IX UMMU SALAMAH', 'P', 'Bpk. Azmi', '081234567901', 'Aktif', '1', '-', '-', 'Pramuka', 'Wushu', 'Desain Grafis', 'Dewi Fitria Nugraheni, S.Pd., Gr.'],
+      ['232407002', '0117401882', 'ALMIRA SYIFA RAHMADINI', 'IX UMMU SALAMAH', 'P', 'Bpk. Rahmadini', '081234567902', 'Aktif', '6', '-', '-', 'Pramuka', 'Wushu', 'English Club', 'Dewi Fitria Nugraheni, S.Pd., Gr.'],
+      ['232407003', '0118273422', 'ANDI ATHIFA KHANSA TABINA PANGERANG', 'IX UMMU SALAMAH', 'P', 'Bpk. Pangerang', '081234567903', 'Aktif', '1', '-', '-', 'Pramuka', 'Wushu', 'English Club', 'Dewi Fitria Nugraheni, S.Pd., Gr.'],
+      ['232407004', '3109536735', 'ANNISA GEMINTANG NOVIANI', 'IX UMMU SALAMAH', 'P', 'Bpk. Noviani', '081234567904', 'Aktif', '1', '1', '-', 'Pramuka', 'Wushu', 'Basket', 'Dewi Fitria Nugraheni, S.Pd., Gr.'],
+      ['232407005', '0117636003', 'AYESHA ALFIRA RAFANDA', 'IX UMMU SALAMAH', 'P', 'Bpk. Rafanda', '081234567905', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Basket', 'Dewi Fitria Nugraheni, S.Pd., Gr.'],
+      ['232407006', '0103651480', 'AYRA FARADINA MUMTAZAH', 'IX UMMU SALAMAH', 'P', 'Bpk. Mumtazah', '081234567906', 'Aktif', '3', '-', '-', 'Pramuka', 'Wushu', 'Desain Grafis', 'Dewi Fitria Nugraheni, S.Pd., Gr.'],
+      ['232497997', '0115212757', 'CALISTA HUMAIRA NOOR KHAIRANI', 'IX UMMU SALAMAH', 'P', 'Bpk. Khairani', '081234567907', 'Aktif', '2', '-', '-', 'Pramuka', 'Wushu', 'Panahan', 'Dewi Fitria Nugraheni, S.Pd., Gr.'],
+      ['232407008', '0101875317', 'DAFINA ANGGUN KHAIRUNNISA', 'IX UMMU SALAMAH', 'P', 'Bpk. Khairunnisa', '081234567908', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'English Club', 'Dewi Fitria Nugraheni, S.Pd., Gr.'],
+      ['232407009', '0105915404', 'FATHIAH NUR AMALINA GHASSANI', 'IX UMMU SALAMAH', 'P', 'Bpk. Ghassani', '081234567909', 'Aktif', '2', '-', '-', 'Pramuka', 'Wushu', 'English Club', 'Dewi Fitria Nugraheni, S.Pd., Gr.'],
+      ['232407010', '0109433278', 'FEIYAZ SABRINA', 'IX UMMU SALAMAH', 'P', 'Bpk. Sabrina', '081234567910', 'Aktif', '-', '1', '-', 'Pramuka', 'Wushu', 'Desain Grafis', 'Dewi Fitria Nugraheni, S.Pd., Gr.'],
+      ['232407011', '0102134181', 'HANA NADIAH', 'IX UMMU SALAMAH', 'P', 'Bpk. Nadiah', '081234567911', 'Aktif', '2', '-', '-', 'Pramuka', 'Wushu', 'Panahan', 'Dewi Fitria Nugraheni, S.Pd., Gr.'],
+      ['232407012', '0116883089', 'LINZIA KENIVAEL', 'IX UMMU SALAMAH', 'P', 'Bpk. Kenivael', '081234567912', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Desain Grafis', 'Dewi Fitria Nugraheni, S.Pd., Gr.'],
+      ['232407013', '0105697995', 'RAEESA AMEERA ALSHAN', 'IX UMMU SALAMAH', 'P', 'Bpk. Alshan', '081234567913', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'English Club', 'Dewi Fitria Nugraheni, S.Pd., Gr.'],
+      ['232407014', '3117690947', 'ZAHRA RIZQI SYAHBANIA', 'IX UMMU SALAMAH', 'P', 'Bpk. Syahbania', '081234567914', 'Aktif', '1', '-', '-', 'Pramuka', 'Wushu', 'English Club', 'Dewi Fitria Nugraheni, S.Pd., Gr.'],
+      ['232407015', '0111672076', 'ZAMEENA SARAH QANITA', 'IX UMMU SALAMAH', 'P', 'Bpk. Qanita', '081234567915', 'Aktif', '1', '-', '-', 'Pramuka', 'Wushu', 'Desain Grafis', 'Dewi Fitria Nugraheni, S.Pd., Gr.'],
+      ['232407016', '0111010746', 'ZANIRA ATHAYALITA YUSUF', 'IX UMMU SALAMAH', 'P', 'Bpk. Yusuf', '081234567916', 'Aktif', '4', '-', '-', 'Pramuka', 'Wushu', 'Desain Grafis', 'Dewi Fitria Nugraheni, S.Pd., Gr.']
     ];
     sheetMurid.getRange(2, 1, defaultMurid.length, 15).setValues(defaultMurid);
   }
@@ -252,7 +252,7 @@ function initDatabase() {
         'Sangat disiplin dan menunjukkan keteladanan yang baik bagi teman-temannya.'
       ],
       [
-        'NK-002', '202509101', 'Ganjil', '2025/2026',
+        'NK-002', '232407001', 'Ganjil', '2025/2026',
         'Jadikan ibadah sebagai kebutuhan, bukan hanya kewajiban.',
         'Alhamdulillah, pertahankan akhlak baikmu di mana saja Ananda berada',
         'Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita',
@@ -271,7 +271,9 @@ function initDatabase() {
   const sheetSkl = getOrCreateSheet(DB_CONFIG.SHEET_SKL_KEPEMIMPINAN, sklHeaders);
   if (sheetSkl.getLastRow() <= 1) {
     const defaultSkl = [
-      ['SKL-232407051', '232407051', 'Tengah Semester 1', '2025/2026', 'Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan', 'B','B','B','B','B','B','B', 'B','B','B','B','B', 'A','A','A','A','A', 'A','A', 'A','A', 'A','A', 'A','A','A', 'A','A', 'A']
+      ['SKL-232407001', '232407001', 'Tengah Semester 1', '2025/2026', 'Sudah memiliki potensi kepemimpinan alami; perlu ditingkatkan kemampuan mengambil keputusan dan mengatur waktu.', 'B','A','A','A','A','A','A', 'A','A','A','A','A', 'A','A','A','A','A', 'A','A', 'A','B', 'A','A', 'A','A','A', 'A','A', 'A'],
+      ['SKL-232407005', '232407005', 'Tengah Semester 1', '2025/2026', 'Telah menunjukkan sikap tanggung jawab dan disiplin; terus latih kemampuan komunikasi agar lebih efektif dalam memimpin.', 'A','A','A','A','A','A','A', 'A','A','A','A','A', 'A','B','A','A','A', 'A','A', 'A','B', 'A','A', 'A','A','A', 'A','A', 'A'],
+      ['SKL-232407021', '232407021', 'Tengah Semester 1', '2025/2026', 'Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan', 'A','A','A','A','A','A','A', 'B','B','B','B','B', 'A','A','A','A','A', 'A','A', 'A','A', 'A','A', 'A','A','A', 'A','A', 'A']
     ];
     sheetSkl.getRange(2, 1, defaultSkl.length, sklHeaders.length).setValues(defaultSkl);
   }
@@ -283,7 +285,7 @@ function initDatabase() {
   if (sheetDiniyah.getLastRow() <= 1) {
     const defaultDiniyah = [
       ['ND-001', '232407021', 'Ganjil', '2025/2026', 'Juz 30 & Juz 29 (Lancar)', 'Juz 30 (Mutqin)', 94, 'Mumtaz (A)', 'Mumtaz (A)', 90, 'Alhamdulillah capaian ziyadah melampaui target tengah semester. Makhraj huruf, kaidah mad, dan tajwid sangat baik.'],
-      ['ND-002', '202509101', 'Ganjil', '2025/2026', 'Juz 30 (15 Halaman)', 'Juz 30 (Surah An-Naba s.d At-Takwir)', 86, 'Jayyid Jiddan (B)', 'Mumtaz (A)', 84, 'Konsisten dalam halaqah tahfidz. Perlu penekanan pada kelancaran murojaah juz 30 secara mandiri.']
+      ['ND-002', '232407001', 'Ganjil', '2025/2026', 'Juz 30 (15 Halaman)', 'Juz 30 (Surah An-Naba s.d At-Takwir)', 86, 'Jayyid Jiddan (B)', 'Mumtaz (A)', 84, 'Konsisten dalam halaqah tahfidz. Perlu penekanan pada kelancaran murojaah juz 30 secara mandiri.']
     ];
     sheetDiniyah.getRange(2, 1, defaultDiniyah.length, 11).setValues(defaultDiniyah);
   }
