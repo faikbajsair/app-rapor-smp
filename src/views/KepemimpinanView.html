@@ -79,11 +79,18 @@
 
         <!-- Quick Generator & Fast-Fill Tools -->
         <div class="flex flex-wrap items-center gap-2">
+          <button onclick="openTemplateCatalogModal()" 
+                  class="px-3.5 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-800 border border-indigo-300 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm"
+                  title="Lihat seluruh 32 variasi kalimat catatan wali kelas resmi SMP Al-Imam">
+            <i class="fa-solid fa-book-bookmark text-indigo-600"></i>
+            <span>32 Template Walas (Excel)</span>
+          </button>
+
           <button onclick="applyDefaultAlImamBankKalimat()" 
                   class="px-3.5 py-2 bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-300 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm"
-                  title="Terapkan kalimat standar Ahlaq & Kepribadian Al-Imam untuk semua murid sekelas dalam 1-klik">
+                  title="Terapkan 32 kalimat standar Ahlaq & Kepribadian Al-Imam secara berurutan untuk murid sekelas dalam 1-klik">
             <i class="fa-solid fa-wand-magic-sparkles text-amber-600"></i>
-            <span>Terapkan Bank Kalimat Al-Imam</span>
+            <span>Terapkan Template Berurutan (1-Klik)</span>
           </button>
           
           <button onclick="saveBulkKepribadianGrid()" id="btn-save-bulk-kp"
@@ -404,5 +411,53 @@
         </button>
       </div>
     </form>
+  </div>
+</div>
+
+<!-- MODAL KATALOG 32 TEMPLATE CATATAN WALAS (PERSIS SHEET TEMPLETE CATATAN WALAS EXCEL) -->
+<div id="modal-template-walas-catalog" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+  <div class="bg-white w-full max-w-4xl rounded-2xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[90vh]">
+    <div class="p-4 bg-indigo-900 text-white flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center text-amber-400">
+          <i class="fa-solid fa-book-bookmark text-base"></i>
+        </div>
+        <div>
+          <h3 class="font-bold text-sm">Katalog 32 Template Catatan Wali Kelas</h3>
+          <p class="text-[11px] text-indigo-200">Sesuai sheet <strong>Templete Catatan Walas</strong> pada buku Excel resmi RAPORT KEPEMIMPINAN IX ABU</p>
+        </div>
+      </div>
+      <button onclick="closeTemplateCatalogModal()" class="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <!-- Search & Fast Action Bar -->
+    <div class="p-3 bg-slate-50 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+      <div class="relative flex-1">
+        <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-xs text-slate-400"></i>
+        <input type="text" id="search-catalog-template" oninput="filterTemplateCatalog(this.value)" placeholder="Cari kata kunci kalimat catatan..." 
+               class="w-full text-xs bg-white border border-slate-300 rounded-xl pl-8 pr-3 py-1.5 focus:ring-2 focus:ring-indigo-500 text-slate-800" />
+      </div>
+      <div class="flex items-center gap-2">
+        <button onclick="applyDefaultAlImamBankKalimat(); closeTemplateCatalogModal();" 
+                class="px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs font-bold shadow-sm transition flex items-center gap-1.5">
+          <i class="fa-solid fa-wand-magic-sparkles"></i>
+          <span>Pasang ke Seluruh Kelas</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Table of 32 Templates List -->
+    <div class="flex-1 overflow-y-auto p-4 space-y-3" id="catalog-template-list">
+      <!-- Populated via JS -->
+    </div>
+
+    <div class="p-3 bg-slate-50 border-t border-slate-200 flex items-center justify-between text-xs text-slate-600">
+      <span>Total 32 kombinasi standar karakter Al-Imam.</span>
+      <button onclick="closeTemplateCatalogModal()" class="px-4 py-1.5 bg-slate-200 hover:bg-slate-300 text-slate-800 rounded-xl font-semibold">
+        Tutup
+      </button>
+    </div>
   </div>
 </div>
