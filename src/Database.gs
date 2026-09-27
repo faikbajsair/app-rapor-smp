@@ -158,17 +158,17 @@ function initDatabase() {
   }
   
   // 2. Skema Users (4 Role: Admin, Kepala Sekolah, Guru, Wali Murid)
-  const sheetUsers = getOrCreateSheet(DB_CONFIG.SHEET_USERS, ['id', 'username', 'password_hash', 'nama_lengkap', 'role', 'status', 'created_at']);
+  const sheetUsers = getOrCreateSheet(DB_CONFIG.SHEET_USERS, ['id', 'username', 'password_hash', 'nama_lengkap', 'role', 'status', 'created_at', 'nis']);
   if (sheetUsers.getLastRow() <= 1) {
     const defaultUsers = [
-      ['USR-001', 'admin', 'admin123', 'Administrator Utama', 'admin', 'aktif', '2025-01-01'],
-      ['USR-002', 'kepsek', 'kepsek123', 'Arif Rohman, M.Pd.', 'kepala_sekolah', 'aktif', '2025-01-01'],
-      ['USR-003', 'guru', 'guru123', 'Kahlil Gibran, S.Pd.', 'guru', 'aktif', '2025-01-01'],
-      ['USR-004', 'dewi', 'dewi123', 'Dewi Fitria Nugraheni, S.Pd., Gr.', 'guru', 'aktif', '2025-01-01'],
-      ['USR-005', 'walimurid', 'wali123', 'Bpk. Rifaat (Wali Nadhif)', 'wali_murid', 'aktif', '2025-01-01'],
-      ['USR-006', 'triyuli', 'tri123', 'Tri Yuli Aryani, S.Pd., Gr.', 'guru', 'aktif', '2025-01-01']
+      ['USR-001', 'admin', 'admin123', 'Administrator Utama', 'admin', 'aktif', '2025-01-01', ''],
+      ['USR-002', 'kepsek', 'kepsek123', 'Arif Rohman, M.Pd.', 'kepala_sekolah', 'aktif', '2025-01-01', ''],
+      ['USR-003', 'guru', 'guru123', 'Kahlil Gibran, S.Pd.', 'guru', 'aktif', '2025-01-01', ''],
+      ['USR-004', 'dewi', 'dewi123', 'Dewi Fitria Nugraheni, S.Pd., Gr.', 'guru', 'aktif', '2025-01-01', ''],
+      ['USR-005', 'walimurid', 'wali123', 'Bpk. Rifaat (Wali Nadhif)', 'wali_murid', 'aktif', '2025-01-01', '232407058'],
+      ['USR-006', 'triyuli', 'tri123', 'Tri Yuli Aryani, S.Pd., Gr.', 'guru', 'aktif', '2025-01-01', '']
     ];
-    sheetUsers.getRange(2, 1, defaultUsers.length, 7).setValues(defaultUsers);
+    sheetUsers.getRange(2, 1, defaultUsers.length, 8).setValues(defaultUsers);
   }
   
   // 3. Skema Murid (DATA SISWA SESUAI EXCEL AL-IMAM)

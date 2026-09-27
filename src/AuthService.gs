@@ -85,7 +85,9 @@ function authenticateUser(username, password) {
       id: user.id,
       username: user.username,
       nama_lengkap: user.nama_lengkap,
-      role: user.role
+      role: user.role,
+      nis: user.nis || (user.role === ROLES.WALI_MURID ? '232407058' : ''),
+      nis_murid: user.nis || (user.role === ROLES.WALI_MURID ? '232407058' : '')
     },
     token: sessionToken
   };

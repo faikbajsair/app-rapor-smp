@@ -4876,7 +4876,7 @@ const DEMO_DATA = {
     { id: 'USR-002', username: 'kepsek', nama_lengkap: 'Arif Rohman, M.Pd.', role: 'kepala_sekolah', status: 'aktif' },
     { id: 'USR-003', username: 'guru', nama_lengkap: 'Kahlil Gibran, S.Pd.', role: 'guru', status: 'aktif' },
     { id: 'USR-004', username: 'dewi', nama_lengkap: 'Dewi Fitria Nugraheni, S.Pd., Gr.', role: 'guru', status: 'aktif' },
-    { id: 'USR-005', username: 'walimurid', nama_lengkap: 'Bpk. Rifaat', role: 'wali_murid', status: 'aktif', nis: '202509012' }
+    { id: 'USR-005', username: 'walimurid', nama_lengkap: 'Bpk. Rifaat', role: 'wali_murid', status: 'aktif', nis: '232407058' }
   ]
 };
 
@@ -5207,7 +5207,12 @@ function switchView(viewName) {
     case 'murid': loadMuridList(); break;
     case 'cms': loadCmsSettings(); break;
     case 'rapor':
-      if (AppState.activePrintNis) {
+      if (AppState.currentUser.role === 'wali_murid') {
+        const childNis = AppState.currentUser.nis || '232407058';
+        AppState.activePrintNis = childNis;
+        populateMuridDropdowns();
+        loadMuridReportForPrint(childNis);
+      } else if (AppState.activePrintNis) {
         loadMuridReportForPrint(AppState.activePrintNis);
       } else if (AppState.muridList.length > 0) {
         loadMuridReportForPrint(AppState.muridList[0].nis);
@@ -5260,7 +5265,7 @@ function quickLoginRole(roleKey) {
       role: 'wali_murid',
       nama_lengkap: 'Bpk. Rifaat',
       subtitle: 'Wali Murid (Nadhif Syafwan)',
-      nis: '202509012'
+      nis: '232407058'
     }
   };
 
@@ -5281,7 +5286,7 @@ function quickLoginRole(roleKey) {
   showToast(`Berhasil login sebagai: ${preset.nama_lengkap}`, 'success');
 
   if (preset.role === 'wali_murid') {
-    AppState.activePrintNis = preset.nis || '202509012';
+    AppState.activePrintNis = preset.nis || '232407058';
     switchView('rapor');
   } else {
     switchView('dashboard');
@@ -5310,13 +5315,13 @@ function handleManualLogin(e) {
           nama_lengkap: u.nama_lengkap,
           role: u.role,
           subtitle: u.role.toUpperCase(),
-          nis: u.nis || (u.role === 'wali_murid' ? username : null)
+          nis: u.nis || u.nis_murid || (u.role === 'wali_murid' ? username : null)
         };
         applyRoleUIPermissions(u.role);
         closeLoginModal();
         showToast(`Selamat datang, ${u.nama_lengkap}!`, 'success');
         if (u.role === 'wali_murid') {
-          AppState.activePrintNis = AppState.currentUser.nis || '202509012';
+          AppState.activePrintNis = AppState.currentUser.nis || '232407058';
           switchView('rapor');
         } else {
           switchView('dashboard');
@@ -5375,10 +5380,28 @@ function applyRoleUIPermissions(role) {
     else el.classList.add('hidden');
   });
 
-  // Wali Murid Lock
+  // Wali Murid Lock and Auto Selection
+  const isWali = (role === 'wali_murid');
+  const childNis = user.nis || '232407058';
+  
+  if (isWali) {
+    AppState.activePrintNis = childNis;
+    const filterKelas = document.getElementById('filter-rapor-kelas');
+    if (filterKelas) {
+      const childMurid = AppState.muridList.find(s => String(s.nis).trim() === String(childNis).trim());
+      if (childMurid && childMurid.kelas) filterKelas.value = childMurid.kelas;
+    }
+  }
+
   const muridSelect = document.getElementById('rapor-murid-select');
   if (muridSelect) {
-    muridSelect.disabled = (role === 'wali_murid');
+    muridSelect.disabled = isWali;
+  }
+
+  populateMuridDropdowns();
+  
+  if (isWali) {
+    loadMuridReportForPrint(childNis);
   }
 }
 
@@ -5668,8 +5691,21 @@ function filterTableMuridLocal() {
 }
 
 function populateMuridDropdowns() {
+  const isWali = AppState.currentUser?.role === 'wali_murid';
+  const childNis = AppState.currentUser?.nis || '232407058';
+
+  let listToRender = AppState.muridList;
+  if (isWali) {
+    const found = AppState.muridList.filter(s => 
+      String(s.nis).trim() === String(childNis).trim() || 
+      String(s.nisn).trim() === String(childNis).trim() ||
+      (s.nama_murid || s.nama || '').toLowerCase().includes('nadhif')
+    );
+    listToRender = found.length > 0 ? found : AppState.muridList.slice(0, 1);
+  }
+
   const grouped = {};
-  AppState.muridList.forEach((s, globalIdx) => {
+  listToRender.forEach((s, globalIdx) => {
     const k = s.kelas || 'Lainnya';
     if (!grouped[k]) grouped[k] = [];
     grouped[k].push({ ...s, _fallbackIdx: globalIdx + 1 });
@@ -5691,8 +5727,12 @@ function populateMuridDropdowns() {
     const el = document.getElementById(id);
     if (el) {
       el.innerHTML = optionsHtml;
-      if (AppState.activePrintNis && id === 'rapor-murid-select') {
-        el.value = AppState.activePrintNis;
+      if (id === 'rapor-murid-select') {
+        const targetVal = isWali ? (listToRender[0]?.nis || childNis) : (AppState.activePrintNis || listToRender[0]?.nis);
+        if (targetVal) {
+          el.value = targetVal;
+          AppState.activePrintNis = targetVal;
+        }
       }
     }
   });
@@ -7740,6 +7780,9 @@ function switchPrintFormat(format) {
 }
 
 function onRaporFilterChange() {
+  const isWali = AppState.currentUser?.role === 'wali_murid';
+  const childNis = AppState.currentUser?.nis || '232407058';
+
   const ta = document.getElementById('filter-rapor-tahun-ajaran')?.value || AppState.cmsSettings.academic_year || '2026/2027';
   const kelas = document.getElementById('filter-rapor-kelas')?.value || 'Semua';
   const search = (document.getElementById('filter-rapor-search')?.value || '').toLowerCase().trim();
@@ -7752,14 +7795,23 @@ function onRaporFilterChange() {
 
   // Filter students for select dropdown
   let filtered = AppState.muridList;
-  if (kelas !== 'Semua') {
-    filtered = filtered.filter(s => String(s.kelas) === String(kelas));
-  }
-  if (search) {
-    filtered = filtered.filter(s => {
-      const nama = (s.nama_murid || s.nama_santri || s.nama || s.nama_lengkap || '').toLowerCase();
-      return nama.includes(search) || String(s.nis || '').includes(search) || String(s.nisn || '').includes(search);
-    });
+  if (isWali) {
+    const found = AppState.muridList.filter(s => 
+      String(s.nis).trim() === String(childNis).trim() || 
+      String(s.nisn).trim() === String(childNis).trim() ||
+      (s.nama_murid || s.nama || '').toLowerCase().includes('nadhif')
+    );
+    filtered = found.length > 0 ? found : AppState.muridList.slice(0, 1);
+  } else {
+    if (kelas !== 'Semua') {
+      filtered = filtered.filter(s => String(s.kelas) === String(kelas));
+    }
+    if (search) {
+      filtered = filtered.filter(s => {
+        const nama = (s.nama_murid || s.nama_santri || s.nama || s.nama_lengkap || '').toLowerCase();
+        return nama.includes(search) || String(s.nis || '').includes(search) || String(s.nisn || '').includes(search);
+      });
+    }
   }
 
   const select = document.getElementById('rapor-murid-select');
@@ -7778,7 +7830,7 @@ function onRaporFilterChange() {
 
   // Keep selected or pick first
   const exists = filtered.some(s => String(s.nis).trim() === String(AppState.activePrintNis).trim());
-  const targetNis = exists ? AppState.activePrintNis : filtered[0].nis;
+  const targetNis = isWali ? (filtered[0]?.nis || childNis) : (exists ? AppState.activePrintNis : filtered[0].nis);
   select.value = targetNis;
   loadMuridReportForPrint(targetNis);
 }
