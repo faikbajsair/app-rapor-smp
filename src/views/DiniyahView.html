@@ -43,8 +43,18 @@
       </div>
     </div>
 
-    <!-- Filters Row -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4 pt-4 border-t border-slate-100">
+    <!-- Filters Row: Tahun Ajaran, Kelas, dan Cari Murid -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4 pt-4 border-t border-slate-100">
+      <div>
+        <label class="block text-[11px] font-semibold text-slate-600 mb-1">Tahun Ajaran</label>
+        <select id="filter-diniyah-tahun-ajaran" onchange="loadNilaiDiniyah()" class="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-bold">
+          <option value="Semua">Semua Tahun Ajaran</option>
+          <option value="2026/2027" selected>2026/2027 (Aktif)</option>
+          <option value="2025/2026">2025/2026</option>
+          <option value="2024/2025">2024/2025</option>
+        </select>
+      </div>
+
       <div>
         <label class="block text-[11px] font-semibold text-slate-600 mb-1">Filter Kelas</label>
         <select id="filter-diniyah-kelas" onchange="loadNilaiDiniyah()" class="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-bold">
@@ -60,7 +70,7 @@
       </div>
 
       <div>
-        <label class="block text-[11px] font-semibold text-slate-600 mb-1">Cari Murid</label>
+        <label class="block text-[11px] font-semibold text-slate-600 mb-1">Cari Murid / NIS</label>
         <div class="relative">
           <input type="text" id="filter-diniyah-search" oninput="filterTableDiniyahLocal()" placeholder="Ketik nama atau NIS murid..." 
                  class="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg pl-8 pr-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500" />

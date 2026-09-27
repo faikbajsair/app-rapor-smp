@@ -62,8 +62,17 @@
   <div id="section-kp-leger" class="space-y-4">
     <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
       
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
-        <div class="flex items-center gap-3">
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 pb-3 border-b border-slate-100">
+        <div class="flex flex-wrap items-center gap-3">
+          <div>
+            <label class="block text-[10px] font-bold text-slate-500 uppercase">Tahun Ajaran</label>
+            <select id="leger-kp-tahun-ajaran" onchange="renderKepribadianGrid()" class="text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 font-bold text-slate-800 focus:ring-2 focus:ring-amber-500">
+              <option value="2026/2027" selected>2026/2027 (Aktif)</option>
+              <option value="2025/2026">2025/2026</option>
+              <option value="2024/2025">2024/2025</option>
+            </select>
+          </div>
+
           <div>
             <label class="block text-[10px] font-bold text-slate-500 uppercase">Pilih Kelas</label>
             <select id="leger-kp-kelas" onchange="renderKepribadianGrid()" class="text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 font-bold text-slate-800 focus:ring-2 focus:ring-amber-500">
@@ -75,6 +84,15 @@
               <option value="VIII KHADIJAH">VIII KHADIJAH (21 Akhwat)</option>
               <option value="VII BILAL">VII BILAL (Ikhwan)</option>
             </select>
+          </div>
+
+          <div>
+            <label class="block text-[10px] font-bold text-slate-500 uppercase">Cari Siswa di Tabel</label>
+            <div class="relative">
+              <input type="text" id="filter-leger-kp-search" oninput="filterKepribadianGridStudents()" placeholder="Cari nama siswa..." 
+                     class="text-xs bg-slate-50 border border-slate-300 rounded-lg pl-7 pr-2.5 py-2 font-medium text-slate-800 focus:ring-2 focus:ring-amber-500 w-44" />
+              <i class="fa-solid fa-magnifying-glass absolute left-2 top-2.5 text-slate-400 text-xs"></i>
+            </div>
           </div>
         </div>
 
@@ -133,8 +151,17 @@
   <div id="section-kp-skl" class="space-y-4 hidden">
     <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
       
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
-        <div class="flex items-center gap-3">
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 pb-3 border-b border-slate-100">
+        <div class="flex flex-wrap items-center gap-3">
+          <div>
+            <label class="block text-[10px] font-bold text-slate-500 uppercase">Tahun Ajaran</label>
+            <select id="skl-kp-tahun-ajaran" onchange="renderSklLegerGrid()" class="text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 font-bold text-slate-800 focus:ring-2 focus:ring-amber-500">
+              <option value="2026/2027" selected>2026/2027 (Aktif)</option>
+              <option value="2025/2026">2025/2026</option>
+              <option value="2024/2025">2024/2025</option>
+            </select>
+          </div>
+
           <div>
             <label class="block text-[10px] font-bold text-slate-500 uppercase">Pilih Kelas</label>
             <select id="skl-kp-kelas" onchange="renderSklLegerGrid()" class="text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 font-bold text-slate-800 focus:ring-2 focus:ring-amber-500">
@@ -146,6 +173,15 @@
               <option value="VIII KHADIJAH">VIII KHADIJAH (21 Akhwat)</option>
               <option value="VII BILAL">VII BILAL (Ikhwan)</option>
             </select>
+          </div>
+
+          <div>
+            <label class="block text-[10px] font-bold text-slate-500 uppercase">Cari Siswa di SKL</label>
+            <div class="relative">
+              <input type="text" id="filter-skl-kp-search" oninput="filterSklGridStudents()" placeholder="Cari nama siswa..." 
+                     class="text-xs bg-slate-50 border border-slate-300 rounded-lg pl-7 pr-2.5 py-2 font-medium text-slate-800 focus:ring-2 focus:ring-amber-500 w-44" />
+              <i class="fa-solid fa-magnifying-glass absolute left-2 top-2.5 text-slate-400 text-xs"></i>
+            </div>
           </div>
         </div>
 
@@ -267,7 +303,17 @@
     <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
       
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 flex-1">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 flex-1">
+          <div>
+            <label class="block text-[11px] font-semibold text-slate-600 mb-1">Tahun Ajaran</label>
+            <select id="filter-kepemimpinan-tahun-ajaran" onchange="loadNilaiKepemimpinan()" class="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500 font-bold">
+              <option value="Semua">Semua Tahun Ajaran</option>
+              <option value="2026/2027" selected>2026/2027 (Aktif)</option>
+              <option value="2025/2026">2025/2026</option>
+              <option value="2024/2025">2024/2025</option>
+            </select>
+          </div>
+
           <div>
             <label class="block text-[11px] font-semibold text-slate-600 mb-1">Filter Kelas</label>
             <select id="filter-kepemimpinan-kelas" onchange="loadNilaiKepemimpinan()" class="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500 font-bold">

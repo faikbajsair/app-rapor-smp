@@ -1797,26 +1797,23 @@ function renderDashboardMiniTables() {
 // 9. MURID & PRESENSI & EKSKUL MANAGEMENT
 function loadMuridList() {
   const kelas = document.getElementById('filter-murid-kelas')?.value || 'Semua';
+  const ta = document.getElementById('filter-murid-tahun-ajaran')?.value || 'Semua';
   const tbody = document.getElementById('table-murid-body');
   if (tbody && AppState.muridList.length === 0) {
     tbody.innerHTML = `<tr><td colspan="8" class="px-4 py-8 text-center text-slate-400"><i class="fa-solid fa-spinner fa-spin text-lg mb-2"></i><p>Memuat data murid...</p></td></tr>`;
   }
 
-  callApi('getMurid', { kelas: kelas })
+  callApi('getMurid', { kelas: kelas, tahun_ajaran: ta })
     .then(res => {
       if (res && res.data && res.data.length > 0) {
         AppState.muridList = res.data;
       }
       populateMuridDropdowns();
-      let list = AppState.muridList;
-      if (kelas !== 'Semua') list = list.filter(m => String(m.kelas) === String(kelas));
-      renderMuridTable(list);
+      filterTableMuridLocal();
     })
     .catch(() => {
       populateMuridDropdowns();
-      let list = AppState.muridList;
-      if (kelas !== 'Semua') list = list.filter(m => String(m.kelas) === String(kelas));
-      renderMuridTable(list);
+      filterTableMuridLocal();
     });
 }
 
@@ -1868,12 +1865,20 @@ function renderMuridTable(list) {
 }
 
 function filterTableMuridLocal() {
-  const query = (document.getElementById('filter-murid-search')?.value || '').toLowerCase();
+  const query = (document.getElementById('filter-murid-search')?.value || '').toLowerCase().trim();
+  const kelas = document.getElementById('filter-murid-kelas')?.value || 'Semua';
+  const ta = document.getElementById('filter-murid-tahun-ajaran')?.value || 'Semua';
+
   const filtered = AppState.muridList.filter(s => {
+    if (kelas !== 'Semua' && String(s.kelas) !== String(kelas)) return false;
+    if (ta !== 'Semua' && s.tahun_ajaran && String(s.tahun_ajaran) !== String(ta)) return false;
+
+    if (!query) return true;
     const nama = (s.nama_murid || s.nama_santri || '').toLowerCase();
     return nama.includes(query) ||
-      String(s.nis).toLowerCase().includes(query) ||
-      String(s.nisn || '').toLowerCase().includes(query);
+      String(s.nis || '').toLowerCase().includes(query) ||
+      String(s.nisn || '').toLowerCase().includes(query) ||
+      String(s.kelas || '').toLowerCase().includes(query);
   });
   renderMuridTable(filtered);
 }
@@ -2149,6 +2154,21 @@ function renderLegerGrid() {
     </tr>
     `;
   }).join('');
+
+  filterLegerGridStudents();
+}
+
+function filterLegerGridStudents() {
+  const query = (document.getElementById('filter-leger-akademik-search')?.value || '').toLowerCase().trim();
+  const rows = document.querySelectorAll('#leger-akademik-tbody tr');
+  rows.forEach(tr => {
+    if (!query) {
+      tr.style.display = '';
+      return;
+    }
+    const text = tr.innerText.toLowerCase();
+    tr.style.display = text.includes(query) ? '' : 'none';
+  });
 }
 
 function onLegerScoreInput(inputEl) {
@@ -2265,36 +2285,31 @@ function saveBulkLegerAkademik() {
   showToast(`Alhamdulillah, nilai mapel ${mapel} kelas ${kelas} berhasil disimpan! (${items.length} murid)`);
   loadDashboardStats();
 
+  const selectedYear = document.getElementById('leger-akademik-tahun-ajaran')?.value || AppState.cmsSettings.academic_year || '2026/2027';
+
   callApi('saveBulkNilaiAkademik', {
     mata_pelajaran: mapel,
     kkm: kkm,
-    semester: 'I (Satu)',
-    tahun_ajaran: '2025/2026',
+    semester: AppState.cmsSettings.semester_active || 'I (Satu)',
+    tahun_ajaran: selectedYear,
     items: items
   });
 }
 
 function loadNilaiAkademik() {
+  const ta = document.getElementById('filter-akademik-tahun-ajaran')?.value || 'Semua';
   const kelas = document.getElementById('filter-akademik-kelas')?.value || 'Semua';
   const mapel = document.getElementById('filter-akademik-mapel')?.value || 'Semua';
 
-  callApi('getNilaiAkademik', { kelas: kelas, mata_pelajaran: mapel })
+  callApi('getNilaiAkademik', { tahun_ajaran: ta, kelas: kelas, mata_pelajaran: mapel })
     .then(res => {
       if (res && res.data && res.data.length > 0) {
         AppState.akademikList = res.data;
       }
-      let list = AppState.akademikList;
-      if (kelas !== 'Semua') list = list.filter(i => String(i.kelas) === String(kelas));
-      if (mapel !== 'Semua') list = list.filter(i => String(i.mata_pelajaran).toLowerCase() === String(mapel).toLowerCase());
-      renderTableAkademik(list);
-      updateAkademikWidgets(list);
+      filterTableAkademikLocal();
     })
     .catch(() => {
-      let list = AppState.akademikList;
-      if (kelas !== 'Semua') list = list.filter(i => String(i.kelas) === String(kelas));
-      if (mapel !== 'Semua') list = list.filter(i => String(i.mata_pelajaran).toLowerCase() === String(mapel).toLowerCase());
-      renderTableAkademik(list);
-      updateAkademikWidgets(list);
+      filterTableAkademikLocal();
     });
 }
 
@@ -2356,15 +2371,25 @@ function renderTableAkademik(list) {
 }
 
 function filterTableAkademikLocal() {
-  const query = (document.getElementById('filter-akademik-search')?.value || '').toLowerCase();
+  const query = (document.getElementById('filter-akademik-search')?.value || '').toLowerCase().trim();
+  const ta = document.getElementById('filter-akademik-tahun-ajaran')?.value || 'Semua';
+  const kelas = document.getElementById('filter-akademik-kelas')?.value || 'Semua';
+  const mapel = document.getElementById('filter-akademik-mapel')?.value || 'Semua';
+
   const filtered = AppState.akademikList.filter(item => {
+    if (ta !== 'Semua' && item.tahun_ajaran && String(item.tahun_ajaran) !== String(ta)) return false;
+    if (kelas !== 'Semua' && String(item.kelas) !== String(kelas)) return false;
+    if (mapel !== 'Semua' && String(item.mata_pelajaran).toLowerCase() !== String(mapel).toLowerCase()) return false;
+
+    if (!query) return true;
     const nama = (item.nama_murid || item.nama_santri || '').toLowerCase();
     return nama.includes(query) ||
-      String(item.nis).toLowerCase().includes(query) ||
+      String(item.nis || '').toLowerCase().includes(query) ||
       String(item.nisn || '').toLowerCase().includes(query) ||
-      item.mata_pelajaran.toLowerCase().includes(query);
+      String(item.mata_pelajaran || '').toLowerCase().includes(query);
   });
   renderTableAkademik(filtered);
+  updateAkademikWidgets(filtered);
 }
 
 function openModalAkademik() {
@@ -2880,13 +2905,59 @@ function updateAllAcademicYearUI(year) {
   const printSkl = document.getElementById('print-skl-tahun-ajaran');
   if (printSkl) printSkl.innerText = year;
 
-  const uploadYear = document.getElementById('upload-tahun-ajaran');
-  if (uploadYear) {
-    if (![...uploadYear.options].some(o => o.value === year)) {
-      uploadYear.add(new Option(year + ' (Aktif)', year, true, true));
+  populateAcademicYearsFilterDropdowns(year);
+}
+
+function populateAcademicYearsFilterDropdowns(selectedYear) {
+  const activeYear = selectedYear || AppState.cmsSettings.academic_year || '2026/2027';
+  let listStr = AppState.cmsSettings.academic_years_list || '2026/2027,2025/2026,2024/2025';
+  let years = listStr.split(',').map(s => s.trim()).filter(Boolean);
+  if (!years.includes(activeYear)) years.unshift(activeYear);
+
+  // 1. Filter dropdowns with "Semua" option
+  const filterDropdownIds = [
+    'filter-murid-tahun-ajaran',
+    'filter-akademik-tahun-ajaran',
+    'filter-diniyah-tahun-ajaran',
+    'filter-kepemimpinan-tahun-ajaran'
+  ];
+
+  filterDropdownIds.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+      const currentVal = el.value || activeYear;
+      let html = '<option value="Semua">Semua Tahun Ajaran</option>';
+      years.forEach(yr => {
+        const isAktif = yr === activeYear ? ' (Aktif)' : '';
+        html += `<option value="${yr}">${yr}${isAktif}</option>`;
+      });
+      el.innerHTML = html;
+      el.value = currentVal;
     }
-    uploadYear.value = year;
-  }
+  });
+
+  // 2. Direct Target Selectors
+  const directDropdownIds = [
+    'leger-akademik-tahun-ajaran',
+    'upload-tahun-ajaran',
+    'leger-kp-tahun-ajaran',
+    'skl-kp-tahun-ajaran',
+    'filter-rapor-tahun-ajaran'
+  ];
+
+  directDropdownIds.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+      const currentVal = el.value || activeYear;
+      let html = '';
+      years.forEach(yr => {
+        const isAktif = yr === activeYear ? ' (Aktif)' : '';
+        html += `<option value="${yr}">${yr}${isAktif}</option>`;
+      });
+      el.innerHTML = html;
+      el.value = currentVal;
+    }
+  });
 }
 
 // 11. AHLAQ & KEPRIBADIAN MODULE (6 ASPEK AL-IMAM + CATATAN & 28 INDIKATOR SKL)
@@ -3003,6 +3074,7 @@ function applyFastSklPresets(type) {
 function saveSklLegerGrid() {
   const kelasSelect = document.getElementById('skl-kp-kelas');
   const currentKelas = kelasSelect ? kelasSelect.value : 'IX ABU BAKAR';
+  const selectedYear = document.getElementById('skl-kp-tahun-ajaran')?.value || AppState.cmsSettings.academic_year || '2026/2027';
   const students = AppState.muridList.filter(x => x.kelas === currentKelas);
 
   const updatedEntries = [];
@@ -3023,7 +3095,7 @@ function saveSklLegerGrid() {
       nama_murid: st.nama_murid || st.nama_santri,
       kelas: currentKelas,
       semester: 'Tengah Semester 1',
-      tahun_ajaran: '2025/2026',
+      tahun_ajaran: selectedYear,
       scores: scores,
       catatan_walas: catatanInput ? catatanInput.value : 'Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan'
     };
@@ -3038,6 +3110,19 @@ function saveSklLegerGrid() {
   showToast(`Alhamdulillah, nilai SKL Kepemimpinan untuk ${updatedEntries.length} murid kelas ${currentKelas} berhasil disimpan!`, 'success');
 
   callApi('saveBulkSklKepemimpinan', { items: updatedEntries });
+}
+
+function filterSklGridStudents() {
+  const query = (document.getElementById('filter-skl-kp-search')?.value || '').toLowerCase().trim();
+  const rows = document.querySelectorAll('#skl-leger-tbody tr');
+  rows.forEach(tr => {
+    if (!query) {
+      tr.style.display = '';
+      return;
+    }
+    const text = tr.innerText.toLowerCase();
+    tr.style.display = text.includes(query) ? '' : 'none';
+  });
 }
 
 function renderKepribadianGrid() {
@@ -3109,12 +3194,27 @@ function renderKepribadianGrid() {
       </div>
 
       <div>
-        <label class="block font-bold text-slate-700 mb-1 text-xs">Catatan yg Diperhatikan (Wali Kelas / Pembina):</label>
-        <textarea rows="2" class="kp-card-catatan w-full bg-white border border-slate-300 rounded-lg p-2 text-xs text-slate-800 focus:ring-2 focus:ring-amber-500 font-medium leading-snug">${catatan}</textarea>
+        <label class="block font-bold text-slate-700 mb-1">Catatan Yang Diperhatikan (Wali Kelas / Pembina)</label>
+        <textarea rows="2" class="kp-card-catatan w-full bg-amber-50/60 border border-amber-200 rounded-lg p-2 text-slate-900 font-medium focus:bg-white focus:ring-2 focus:ring-amber-500 leading-snug">${catatan}</textarea>
       </div>
     </div>
     `;
   }).join('');
+
+  filterKepribadianGridStudents();
+}
+
+function filterKepribadianGridStudents() {
+  const query = (document.getElementById('filter-leger-kp-search')?.value || '').toLowerCase().trim();
+  const cards = document.querySelectorAll('.kp-student-card');
+  cards.forEach(card => {
+    if (!query) {
+      card.style.display = '';
+      return;
+    }
+    const text = card.innerText.toLowerCase();
+    card.style.display = text.includes(query) ? '' : 'none';
+  });
 }
 
 function applyTemplateToCard(nis, templateNo) {
@@ -3227,6 +3327,7 @@ function copyTemplateCatatan(templateNo) {
 function saveBulkKepribadianGrid() {
   const cards = document.querySelectorAll('.kp-student-card');
   const items = [];
+  const selectedYear = document.getElementById('leger-kp-tahun-ajaran')?.value || AppState.cmsSettings.academic_year || '2026/2027';
 
   cards.forEach(card => {
     const nis = card.getAttribute('data-nis');
@@ -3237,8 +3338,8 @@ function saveBulkKepribadianGrid() {
       nis: nis,
       nama_murid: m.nama_murid || m.nama_santri || 'Murid',
       kelas: m.kelas || 'IX ABU BAKAR',
-      semester: 'I (Satu)',
-      tahun_ajaran: '2025/2026',
+      semester: AppState.cmsSettings.semester_active || 'I (Satu)',
+      tahun_ajaran: selectedYear,
       ibadah: card.querySelector('.kp-card-ibadah')?.value || '',
       akhlak: card.querySelector('.kp-card-akhlak')?.value || '',
       kedisiplinan_kerajinan: card.querySelector('.kp-card-kedisiplinan')?.value || '',
@@ -3264,23 +3365,18 @@ function saveBulkKepribadianGrid() {
 }
 
 function loadNilaiKepemimpinan() {
+  const ta = document.getElementById('filter-kepemimpinan-tahun-ajaran')?.value || 'Semua';
   const kelas = document.getElementById('filter-kepemimpinan-kelas')?.value || 'Semua';
 
-  callApi('getNilaiKepemimpinan', { kelas: kelas })
+  callApi('getNilaiKepemimpinan', { tahun_ajaran: ta, kelas: kelas })
     .then(res => {
       if (res && res.data && res.data.length > 0) {
         AppState.kepemimpinanList = res.data;
       }
-      let list = AppState.kepemimpinanList;
-      if (kelas !== 'Semua') list = list.filter(i => String(i.kelas) === String(kelas));
-      renderTableKepemimpinan(list);
-      updateKepemimpinanWidgets(list);
+      filterTableKepemimpinanLocal();
     })
     .catch(() => {
-      let list = AppState.kepemimpinanList;
-      if (kelas !== 'Semua') list = list.filter(i => String(i.kelas) === String(kelas));
-      renderTableKepemimpinan(list);
-      updateKepemimpinanWidgets(list);
+      filterTableKepemimpinanLocal();
     });
 }
 
@@ -3330,12 +3426,22 @@ function renderTableKepemimpinan(list) {
 }
 
 function filterTableKepemimpinanLocal() {
-  const query = (document.getElementById('filter-kepemimpinan-search')?.value || '').toLowerCase();
+  const query = (document.getElementById('filter-kepemimpinan-search')?.value || '').toLowerCase().trim();
+  const ta = document.getElementById('filter-kepemimpinan-tahun-ajaran')?.value || 'Semua';
+  const kelas = document.getElementById('filter-kepemimpinan-kelas')?.value || 'Semua';
+
   const filtered = AppState.kepemimpinanList.filter(item => {
+    if (ta !== 'Semua' && item.tahun_ajaran && String(item.tahun_ajaran) !== String(ta)) return false;
+    if (kelas !== 'Semua' && String(item.kelas) !== String(kelas)) return false;
+
+    if (!query) return true;
     const nama = (item.nama_murid || item.nama_santri || '').toLowerCase();
-    return nama.includes(query) || String(item.nis).toLowerCase().includes(query);
+    return nama.includes(query) ||
+      String(item.nis || '').toLowerCase().includes(query) ||
+      String(item.nisn || '').toLowerCase().includes(query);
   });
   renderTableKepemimpinan(filtered);
+  updateKepemimpinanWidgets(filtered);
 }
 
 function openModalKepemimpinan() {
@@ -3370,13 +3476,15 @@ function submitFormKepemimpinan(e) {
   e.preventDefault();
   const nis = document.getElementById('kepemimpinan-nis').value;
   const m = AppState.muridList.find(x => String(x.nis) === String(nis)) || {};
+  const selectedYear = AppState.cmsSettings.academic_year || '2026/2027';
+
   const payload = {
     id: document.getElementById('kepemimpinan-id').value || ('NK-' + nis),
     nis: nis,
     nama_murid: m.nama_murid || m.nama_santri || 'Murid',
     kelas: m.kelas || 'IX ABU BAKAR',
-    semester: 'I (Satu)',
-    tahun_ajaran: '2025/2026',
+    semester: AppState.cmsSettings.semester_active || 'I (Satu)',
+    tahun_ajaran: selectedYear,
     ibadah: document.getElementById('kp-ibadah').value,
     akhlak: document.getElementById('kp-akhlak').value,
     kedisiplinan_kerajinan: document.getElementById('kp-kedisiplinan').value,
@@ -3413,24 +3521,40 @@ function deleteKepemimpinanAction(id) {
 
 // 12. DINIYAH & TAHFIDZ MODULE
 function loadNilaiDiniyah() {
+  const ta = document.getElementById('filter-diniyah-tahun-ajaran')?.value || 'Semua';
   const kelas = document.getElementById('filter-diniyah-kelas')?.value || 'Semua';
 
-  callApi('getNilaiDiniyah', { kelas: kelas })
+  callApi('getNilaiDiniyah', { tahun_ajaran: ta, kelas: kelas })
     .then(res => {
       if (res && res.data && res.data.length > 0) {
         AppState.diniyahList = res.data;
       }
-      let list = AppState.diniyahList;
-      if (kelas !== 'Semua') list = list.filter(i => String(i.kelas) === String(kelas));
-      renderTableDiniyah(list);
-      updateDiniyahWidgets(list);
+      filterTableDiniyahLocal();
     })
     .catch(() => {
-      let list = AppState.diniyahList;
-      if (kelas !== 'Semua') list = list.filter(i => String(i.kelas) === String(kelas));
-      renderTableDiniyah(list);
-      updateDiniyahWidgets(list);
+      filterTableDiniyahLocal();
     });
+}
+
+function filterTableDiniyahLocal() {
+  const query = (document.getElementById('filter-diniyah-search')?.value || '').toLowerCase().trim();
+  const ta = document.getElementById('filter-diniyah-tahun-ajaran')?.value || 'Semua';
+  const kelas = document.getElementById('filter-diniyah-kelas')?.value || 'Semua';
+
+  const filtered = AppState.diniyahList.filter(item => {
+    if (ta !== 'Semua' && item.tahun_ajaran && String(item.tahun_ajaran) !== String(ta)) return false;
+    if (kelas !== 'Semua' && String(item.kelas) !== String(kelas)) return false;
+
+    if (!query) return true;
+    const nama = (item.nama_murid || item.nama_santri || '').toLowerCase();
+    return nama.includes(query) ||
+      String(item.nis || '').toLowerCase().includes(query) ||
+      String(item.nisn || '').toLowerCase().includes(query) ||
+      String(item.ziyadah_juz || '').toLowerCase().includes(query) ||
+      String(item.murojaah_juz || '').toLowerCase().includes(query);
+  });
+  renderTableDiniyah(filtered);
+  updateDiniyahWidgets(filtered);
 }
 
 function updateDiniyahWidgets(list) {
@@ -3825,6 +3949,53 @@ function switchPrintFormat(format) {
   }
 }
 
+function onRaporFilterChange() {
+  const ta = document.getElementById('filter-rapor-tahun-ajaran')?.value || AppState.cmsSettings.academic_year || '2026/2027';
+  const kelas = document.getElementById('filter-rapor-kelas')?.value || 'Semua';
+  const search = (document.getElementById('filter-rapor-search')?.value || '').toLowerCase().trim();
+
+  // Update header display if applicable
+  const kopYear = document.getElementById('print-tahun-ajaran-kop');
+  if (kopYear) kopYear.innerText = ta;
+  const sklYear = document.getElementById('print-skl-tahun-ajaran');
+  if (sklYear) sklYear.innerText = ta;
+
+  // Filter students for select dropdown
+  let filtered = AppState.muridList;
+  if (kelas !== 'Semua') {
+    filtered = filtered.filter(s => String(s.kelas) === String(kelas));
+  }
+  if (search) {
+    filtered = filtered.filter(s => {
+      const nama = (s.nama_murid || s.nama_santri || '').toLowerCase();
+      return nama.includes(search) || String(s.nis || '').includes(search) || String(s.nisn || '').includes(search);
+    });
+  }
+
+  const select = document.getElementById('rapor-murid-select');
+  if (!select) return;
+
+  if (filtered.length === 0) {
+    select.innerHTML = '<option value="">(Tidak ada siswa cocok)</option>';
+    return;
+  }
+
+  select.innerHTML = filtered.map(s => {
+    const nama = s.nama_murid || s.nama_santri || '-';
+    return `<option value="${s.nis}">${s.no_urut ? s.no_urut + '. ' : ''}${nama} (${s.kelas})</option>`;
+  }).join('');
+
+  // Keep selected or pick first
+  const exists = filtered.some(s => String(s.nis) === String(AppState.activePrintNis));
+  const targetNis = exists ? AppState.activePrintNis : filtered[0].nis;
+  select.value = targetNis;
+  loadMuridReportForPrint(targetNis);
+}
+
+function onRaporSearchInput() {
+  onRaporFilterChange();
+}
+
 function loadMuridReportForPrint(nis) {
   if (!nis) return;
   AppState.activePrintNis = nis;
@@ -4132,6 +4303,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // Instantly apply demo/default state
   applyCmsTheme(AppState.cmsSettings);
+  populateAcademicYearsFilterDropdowns();
   populateMuridDropdowns();
   renderMuridTable(AppState.muridList);
   renderTableUsers(AppState.usersList);
