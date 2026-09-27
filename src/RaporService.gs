@@ -11,19 +11,26 @@
 function getMuridReportData(nis) {
   if (!nis) return { success: false, message: 'NIS Murid wajib diisi.' };
   
-  const murid = getMuridByNis(nis);
-  if (!murid) return { success: false, message: 'Data murid dengan NIS ' + nis + ' tidak ditemukan.' };
+  const cleanNis = String(nis).trim();
+  const murid = getMuridByNis(cleanNis);
+  if (!murid) return { success: false, message: 'Data murid dengan NIS ' + cleanNis + ' tidak ditemukan.' };
   
   const settings = getSettings();
-  const currentSemester = settings.semester_active || 'Ganjil';
+  const currentSemester = settings.semester_active || 'I (Satu)';
   const currentYear = settings.academic_year || '2026/2027';
   
   // 1. Data Rekap Nilai Akademik & Capaian Kompetensi
-  const rawAkademik = getNilaiAkademikList({ nis: nis });
-  const akademikFiltered = rawAkademik.filter(n => 
-    String(n.semester).toLowerCase() === currentSemester.toLowerCase() &&
-    String(n.tahun_ajaran) === currentYear
+  const rawAkademik = getNilaiAkademikList({ nis: cleanNis });
+  let akademikFiltered = rawAkademik.filter(n => 
+    (String(n.semester).toLowerCase() === currentSemester.toLowerCase() || 
+     String(n.semester).toLowerCase().includes('ganjil') || 
+     String(n.semester).toLowerCase().includes('1') || 
+     String(n.semester).toLowerCase().includes('satu')) &&
+    (String(n.tahun_ajaran) === currentYear || !n.tahun_ajaran)
   );
+  if (akademikFiltered.length === 0 && rawAkademik.length > 0) {
+    akademikFiltered = rawAkademik;
+  }
   
   let totalNilaiAkhir = 0;
   akademikFiltered.forEach(item => {

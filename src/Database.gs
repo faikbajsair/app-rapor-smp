@@ -84,10 +84,12 @@ function sheetToObjects(sheet) {
       }
       obj[header] = val !== undefined ? val : '';
     });
-    // Normalisasi nama_murid jika kolomnya nama_santri
-    if (!obj.nama_murid && obj.nama_santri) {
-      obj.nama_murid = obj.nama_santri;
+    // Normalisasi nama_murid jika nama kolom bervariasi
+    if (!obj.nama_murid) {
+      obj.nama_murid = obj.nama_santri || obj.nama || obj.nama_lengkap || obj['Nama Siswa'] || obj['Nama Murid'] || '';
     }
+    if (!obj.nis && obj.NIS) obj.nis = obj.NIS;
+    if (!obj.nisn && obj.NISN) obj.nisn = obj.NISN;
     return obj;
   });
 }
@@ -501,7 +503,13 @@ function getAllMurid(kelasFilter) {
 function getMuridByNis(nis) {
   const sheet = getOrCreateSheet(DB_CONFIG.SHEET_MURID);
   const list = sheetToObjects(sheet);
-  return list.find(s => String(s.nis) === String(nis) || String(s.nisn) === String(nis)) || null;
+  const cleanNis = String(nis || '').trim();
+  return list.find(s => 
+    String(s.nis || '').trim() === cleanNis || 
+    String(s.nisn || '').trim() === cleanNis ||
+    String(s.id || '').trim() === cleanNis ||
+    String(s.no || '').trim() === cleanNis
+  ) || null;
 }
 
 function saveMurid(murid) {
