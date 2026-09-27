@@ -152,12 +152,14 @@
         <table class="w-full text-left text-xs text-slate-700">
           <thead class="bg-slate-100 text-slate-800 uppercase text-[10px] font-extrabold tracking-wider border-b border-slate-200">
             <tr>
-              <th class="w-12 px-3 py-3 text-center border-r border-slate-200">No</th>
-              <th class="w-32 px-3 py-3 border-r border-slate-200">NISN</th>
-              <th class="w-64 px-4 py-3 border-r border-slate-200">Nama Peserta Didik</th>
-              <th class="w-20 px-3 py-3 text-center border-r border-slate-200">KKM</th>
-              <th class="w-28 px-3 py-3 text-center border-r border-slate-200 bg-blue-100/50 text-blue-900 font-black">Nilai (UTS)</th>
-              <th class="w-24 px-3 py-3 text-center border-r border-slate-200">Predikat</th>
+              <th class="w-10 px-2 py-3 text-center border-r border-slate-200">No</th>
+              <th class="w-28 px-3 py-3 border-r border-slate-200">NISN</th>
+              <th class="w-56 px-3 py-3 border-r border-slate-200">Nama Peserta Didik</th>
+              <th class="w-16 px-2 py-3 text-center border-r border-slate-200">KKM</th>
+              <th class="w-24 px-2 py-3 text-center border-r border-slate-200 bg-amber-100/70 text-amber-950 font-black">Tugas (Harian)</th>
+              <th class="w-24 px-2 py-3 text-center border-r border-slate-200 bg-blue-100/70 text-blue-950 font-black">UTS (STS)</th>
+              <th class="w-20 px-2 py-3 text-center border-r border-slate-200 bg-emerald-100/70 text-emerald-950 font-black">Nilai Akhir</th>
+              <th class="w-16 px-2 py-3 text-center border-r border-slate-200">Predikat</th>
               <th class="px-4 py-3">Capaian Kompetensi (Narasi Pembelajaran)</th>
             </tr>
           </thead>
@@ -261,9 +263,11 @@
                 <th class="px-4 py-3.5">Murid / NISN</th>
                 <th class="px-3 py-3.5">Kelas</th>
                 <th class="px-3 py-3.5">Mata Pelajaran</th>
-                <th class="px-3 py-3.5 text-center">KKM</th>
-                <th class="px-3 py-3.5 text-center">Nilai</th>
-                <th class="px-3 py-3.5 text-center">Predikat</th>
+                <th class="px-2 py-3.5 text-center">KKM</th>
+                <th class="px-2 py-3.5 text-center font-bold text-amber-900 bg-amber-50/50">Tugas</th>
+                <th class="px-2 py-3.5 text-center font-bold text-blue-900 bg-blue-50/50">UTS</th>
+                <th class="px-2 py-3.5 text-center font-black text-emerald-950 bg-emerald-50/50">Nilai Akhir</th>
+                <th class="px-2 py-3.5 text-center">Predikat</th>
                 <th class="px-4 py-3.5">Capaian Kompetensi</th>
                 <th class="px-4 py-3.5 text-right">Aksi</th>
               </tr>
@@ -428,9 +432,11 @@ NIS	Nama Murid	Mata Pelajaran	KKM	Nilai UTS
                 <th class="px-4 py-2">Nama Siswa</th>
                 <th class="px-3 py-2">Kelas</th>
                 <th class="px-3 py-2">Mata Pelajaran</th>
-                <th class="px-3 py-2 text-center">KKM</th>
-                <th class="px-3 py-2 text-center bg-blue-50 text-blue-900 font-bold">Nilai UTS</th>
-                <th class="px-3 py-2 text-center">Predikat</th>
+                <th class="px-2 py-2 text-center">KKM</th>
+                <th class="px-2 py-2 text-center bg-amber-50 text-amber-900 font-bold">Tugas</th>
+                <th class="px-2 py-2 text-center bg-blue-50 text-blue-900 font-bold">UTS</th>
+                <th class="px-2 py-2 text-center bg-emerald-50 text-emerald-900 font-bold">Nilai Akhir</th>
+                <th class="px-2 py-2 text-center">Predikat</th>
                 <th class="px-4 py-2">Capaian Kompetensi (Auto-Generated)</th>
               </tr>
             </thead>
@@ -491,28 +497,37 @@ NIS	Nama Murid	Mata Pelajaran	KKM	Nilai UTS
         </select>
       </div>
 
-      <div class="grid grid-cols-2 gap-3">
+      <div class="grid grid-cols-3 gap-3">
         <div>
           <label class="block text-xs font-bold text-slate-700 mb-1">KKM *</label>
           <input type="number" id="akademik-kkm" value="70" min="50" max="100" required oninput="recalcAkademikPreview()" 
-                 class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-blue-500 text-center font-bold" />
+                 class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-2 text-slate-800 focus:ring-2 focus:ring-blue-500 text-center font-bold" />
         </div>
         <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">Nilai UTS (0-100) *</label>
+          <label class="block text-xs font-bold text-amber-900 mb-1">Nilai Tugas (Harian)</label>
+          <input type="number" id="akademik-tugas" min="0" max="100" oninput="recalcAkademikPreview()" 
+                 class="w-full text-xs bg-amber-50/70 border border-amber-300 rounded-lg px-2.5 py-2 text-slate-800 focus:ring-2 focus:ring-amber-500 text-center font-black text-amber-950" placeholder="85" />
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-blue-900 mb-1">Nilai UTS (STS) *</label>
           <input type="number" id="akademik-uts" min="0" max="100" required oninput="recalcAkademikPreview()" 
-                 class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-blue-500 text-center font-black text-blue-900" placeholder="85" />
+                 class="w-full text-xs bg-blue-50/70 border border-blue-300 rounded-lg px-2.5 py-2 text-slate-800 focus:ring-2 focus:ring-blue-500 text-center font-black text-blue-950" placeholder="85" />
         </div>
       </div>
 
       <!-- Live Calculation Card -->
-      <div class="bg-blue-50 border border-blue-200 rounded-xl p-3 flex items-center justify-between">
+      <div class="bg-blue-50 border border-blue-200 rounded-xl p-3 grid grid-cols-3 gap-2 text-center">
         <div>
-          <span class="text-[11px] text-blue-700 font-semibold block">Status Kelulusan KKM</span>
-          <span class="text-sm font-extrabold text-blue-900" id="akademik-preview-kkm-status">Tuntas KKM (≥70)</span>
+          <span class="text-[10px] text-slate-600 font-semibold block uppercase">Nilai Akhir Rapor</span>
+          <span class="text-base font-black text-blue-950 font-mono" id="akademik-preview-nilai-akhir">85</span>
         </div>
-        <div class="text-right">
-          <span class="text-[11px] text-blue-700 font-semibold block">Predikat Otomatis</span>
-          <span class="inline-block px-3 py-0.5 rounded-full font-bold text-xs bg-blue-200 text-blue-900" id="akademik-preview-predikat">B</span>
+        <div>
+          <span class="text-[10px] text-slate-600 font-semibold block uppercase">Status KKM</span>
+          <span class="text-xs font-extrabold text-emerald-700 block mt-0.5" id="akademik-preview-kkm-status">Tuntas KKM (≥70)</span>
+        </div>
+        <div>
+          <span class="text-[10px] text-slate-600 font-semibold block uppercase">Predikat</span>
+          <span class="inline-block px-2.5 py-0.5 rounded-full font-black text-xs badge-predikat-B mt-0.5" id="akademik-preview-predikat">B</span>
         </div>
       </div>
 

@@ -919,12 +919,14 @@
         <table class="w-full text-left text-xs text-slate-700">
           <thead class="bg-slate-100 text-slate-800 uppercase text-[10px] font-extrabold tracking-wider border-b border-slate-200">
             <tr>
-              <th class="w-12 px-3 py-3 text-center border-r border-slate-200">No</th>
-              <th class="w-32 px-3 py-3 border-r border-slate-200">NISN</th>
-              <th class="w-64 px-4 py-3 border-r border-slate-200">Nama Peserta Didik</th>
-              <th class="w-20 px-3 py-3 text-center border-r border-slate-200">KKM</th>
-              <th class="w-28 px-3 py-3 text-center border-r border-slate-200 bg-blue-100/50 text-blue-900 font-black">Nilai (UTS)</th>
-              <th class="w-24 px-3 py-3 text-center border-r border-slate-200">Predikat</th>
+              <th class="w-10 px-2 py-3 text-center border-r border-slate-200">No</th>
+              <th class="w-28 px-3 py-3 border-r border-slate-200">NISN</th>
+              <th class="w-56 px-3 py-3 border-r border-slate-200">Nama Peserta Didik</th>
+              <th class="w-16 px-2 py-3 text-center border-r border-slate-200">KKM</th>
+              <th class="w-24 px-2 py-3 text-center border-r border-slate-200 bg-amber-100/70 text-amber-950 font-black">Tugas (Harian)</th>
+              <th class="w-24 px-2 py-3 text-center border-r border-slate-200 bg-blue-100/70 text-blue-950 font-black">UTS (STS)</th>
+              <th class="w-20 px-2 py-3 text-center border-r border-slate-200 bg-emerald-100/70 text-emerald-950 font-black">Nilai Akhir</th>
+              <th class="w-16 px-2 py-3 text-center border-r border-slate-200">Predikat</th>
               <th class="px-4 py-3">Capaian Kompetensi (Narasi Pembelajaran)</th>
             </tr>
           </thead>
@@ -1028,9 +1030,11 @@
                 <th class="px-4 py-3.5">Murid / NISN</th>
                 <th class="px-3 py-3.5">Kelas</th>
                 <th class="px-3 py-3.5">Mata Pelajaran</th>
-                <th class="px-3 py-3.5 text-center">KKM</th>
-                <th class="px-3 py-3.5 text-center">Nilai</th>
-                <th class="px-3 py-3.5 text-center">Predikat</th>
+                <th class="px-2 py-3.5 text-center">KKM</th>
+                <th class="px-2 py-3.5 text-center font-bold text-amber-900 bg-amber-50/50">Tugas</th>
+                <th class="px-2 py-3.5 text-center font-bold text-blue-900 bg-blue-50/50">UTS</th>
+                <th class="px-2 py-3.5 text-center font-black text-emerald-950 bg-emerald-50/50">Nilai Akhir</th>
+                <th class="px-2 py-3.5 text-center">Predikat</th>
                 <th class="px-4 py-3.5">Capaian Kompetensi</th>
                 <th class="px-4 py-3.5 text-right">Aksi</th>
               </tr>
@@ -1195,9 +1199,11 @@ NIS	Nama Murid	Mata Pelajaran	KKM	Nilai UTS
                 <th class="px-4 py-2">Nama Siswa</th>
                 <th class="px-3 py-2">Kelas</th>
                 <th class="px-3 py-2">Mata Pelajaran</th>
-                <th class="px-3 py-2 text-center">KKM</th>
-                <th class="px-3 py-2 text-center bg-blue-50 text-blue-900 font-bold">Nilai UTS</th>
-                <th class="px-3 py-2 text-center">Predikat</th>
+                <th class="px-2 py-2 text-center">KKM</th>
+                <th class="px-2 py-2 text-center bg-amber-50 text-amber-900 font-bold">Tugas</th>
+                <th class="px-2 py-2 text-center bg-blue-50 text-blue-900 font-bold">UTS</th>
+                <th class="px-2 py-2 text-center bg-emerald-50 text-emerald-900 font-bold">Nilai Akhir</th>
+                <th class="px-2 py-2 text-center">Predikat</th>
                 <th class="px-4 py-2">Capaian Kompetensi (Auto-Generated)</th>
               </tr>
             </thead>
@@ -1258,28 +1264,37 @@ NIS	Nama Murid	Mata Pelajaran	KKM	Nilai UTS
         </select>
       </div>
 
-      <div class="grid grid-cols-2 gap-3">
+      <div class="grid grid-cols-3 gap-3">
         <div>
           <label class="block text-xs font-bold text-slate-700 mb-1">KKM *</label>
           <input type="number" id="akademik-kkm" value="70" min="50" max="100" required oninput="recalcAkademikPreview()" 
-                 class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-blue-500 text-center font-bold" />
+                 class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-2 text-slate-800 focus:ring-2 focus:ring-blue-500 text-center font-bold" />
         </div>
         <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">Nilai UTS (0-100) *</label>
+          <label class="block text-xs font-bold text-amber-900 mb-1">Nilai Tugas (Harian)</label>
+          <input type="number" id="akademik-tugas" min="0" max="100" oninput="recalcAkademikPreview()" 
+                 class="w-full text-xs bg-amber-50/70 border border-amber-300 rounded-lg px-2.5 py-2 text-slate-800 focus:ring-2 focus:ring-amber-500 text-center font-black text-amber-950" placeholder="85" />
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-blue-900 mb-1">Nilai UTS (STS) *</label>
           <input type="number" id="akademik-uts" min="0" max="100" required oninput="recalcAkademikPreview()" 
-                 class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-blue-500 text-center font-black text-blue-900" placeholder="85" />
+                 class="w-full text-xs bg-blue-50/70 border border-blue-300 rounded-lg px-2.5 py-2 text-slate-800 focus:ring-2 focus:ring-blue-500 text-center font-black text-blue-950" placeholder="85" />
         </div>
       </div>
 
       <!-- Live Calculation Card -->
-      <div class="bg-blue-50 border border-blue-200 rounded-xl p-3 flex items-center justify-between">
+      <div class="bg-blue-50 border border-blue-200 rounded-xl p-3 grid grid-cols-3 gap-2 text-center">
         <div>
-          <span class="text-[11px] text-blue-700 font-semibold block">Status Kelulusan KKM</span>
-          <span class="text-sm font-extrabold text-blue-900" id="akademik-preview-kkm-status">Tuntas KKM (≥70)</span>
+          <span class="text-[10px] text-slate-600 font-semibold block uppercase">Nilai Akhir Rapor</span>
+          <span class="text-base font-black text-blue-950 font-mono" id="akademik-preview-nilai-akhir">85</span>
         </div>
-        <div class="text-right">
-          <span class="text-[11px] text-blue-700 font-semibold block">Predikat Otomatis</span>
-          <span class="inline-block px-3 py-0.5 rounded-full font-bold text-xs bg-blue-200 text-blue-900" id="akademik-preview-predikat">B</span>
+        <div>
+          <span class="text-[10px] text-slate-600 font-semibold block uppercase">Status KKM</span>
+          <span class="text-xs font-extrabold text-emerald-700 block mt-0.5" id="akademik-preview-kkm-status">Tuntas KKM (≥70)</span>
+        </div>
+        <div>
+          <span class="text-[10px] text-slate-600 font-semibold block uppercase">Predikat</span>
+          <span class="inline-block px-2.5 py-0.5 rounded-full font-black text-xs badge-predikat-B mt-0.5" id="akademik-preview-predikat">B</span>
         </div>
       </div>
 
@@ -5953,30 +5968,45 @@ function renderLegerGrid() {
   tbody.innerHTML = students.map((s, idx) => {
     // Find existing grade
     const existing = AppState.akademikList.find(a => String(a.nis) === String(s.nis) && a.mata_pelajaran === mapel);
-    const score = existing ? (existing.nilai_akhir || existing.nilai_uts || 85) : 85;
+    const tugasVal = existing && existing.nilai_tugas !== undefined && existing.nilai_tugas !== null && existing.nilai_tugas !== '' 
+      ? existing.nilai_tugas 
+      : (existing?.nilai_uts || existing?.nilai_akhir || 85);
+    const utsVal = existing && existing.nilai_uts !== undefined && existing.nilai_uts !== null && existing.nilai_uts !== '' 
+      ? existing.nilai_uts 
+      : (existing?.nilai_akhir || 85);
+    
+    const akhirVal = existing?.nilai_akhir || Math.round((Number(tugasVal) + Number(utsVal)) / 2);
     
     let predikat = 'D';
-    if (score >= 90) predikat = 'A';
-    else if (score >= 80) predikat = 'B';
-    else if (score >= kkm) predikat = 'C';
+    if (akhirVal >= 90) predikat = 'A';
+    else if (akhirVal >= 80) predikat = 'B';
+    else if (akhirVal >= kkm) predikat = 'C';
 
     const capTemplate = BANK_CAPAIAN_MAPEL[mapel] || BANK_CAPAIAN_MAPEL['Akidah'];
-    const defaultCapaian = score >= 90 ? capTemplate.tinggi : (score >= kkm ? capTemplate.sedang : capTemplate.cukup);
+    const defaultCapaian = akhirVal >= 90 ? capTemplate.tinggi : (akhirVal >= kkm ? capTemplate.sedang : capTemplate.cukup);
     const capaian = existing?.capaian_kompetensi || existing?.catatan_guru || defaultCapaian;
 
     return `
     <tr class="hover:bg-blue-50/40 transition leger-row" data-nis="${s.nis}">
-      <td class="px-3 py-2 text-center font-mono text-slate-500 border-r border-slate-200">${s.no_urut || (idx + 1)}</td>
+      <td class="px-2 py-2 text-center font-mono text-slate-500 border-r border-slate-200">${s.no_urut || (idx + 1)}</td>
       <td class="px-3 py-2 font-mono font-bold text-slate-700 border-r border-slate-200">${s.nisn || s.nis}</td>
       <td class="px-4 py-2 font-bold text-slate-900 border-r border-slate-200">${s.nama_murid || s.nama_santri}</td>
-      <td class="px-3 py-2 text-center font-bold text-amber-900 bg-amber-50/40 border-r border-slate-200">${kkm}</td>
-      <td class="px-3 py-2 text-center border-r border-slate-200 bg-blue-50/60">
-        <input type="number" min="0" max="100" value="${score}" 
-               oninput="onLegerScoreInput(this)" onkeydown="onLegerScoreKeydown(event, this)"
-               class="leger-input-score w-20 text-center font-black text-sm bg-white border border-blue-300 rounded-lg p-1.5 text-blue-900 focus:ring-2 focus:ring-blue-500 shadow-sm" />
+      <td class="px-2 py-2 text-center font-bold text-amber-900 bg-amber-50/40 border-r border-slate-200">${kkm}</td>
+      <td class="px-2 py-2 text-center border-r border-slate-200 bg-amber-50/60">
+        <input type="number" min="0" max="100" value="${tugasVal}" 
+               oninput="onLegerScoreInput(this)" onkeydown="onLegerScoreKeydown(event, this, 'tugas')"
+               class="leger-input-tugas w-16 text-center font-black text-sm bg-white border border-amber-300 rounded-lg p-1.5 text-amber-950 focus:ring-2 focus:ring-amber-500 shadow-sm" placeholder="Tugas" />
       </td>
-      <td class="px-3 py-2 text-center border-r border-slate-200">
-        <span class="leger-badge-predikat px-2.5 py-0.5 rounded-full text-xs font-black badge-predikat-${predikat}">${predikat}</span>
+      <td class="px-2 py-2 text-center border-r border-slate-200 bg-blue-50/60">
+        <input type="number" min="0" max="100" value="${utsVal}" 
+               oninput="onLegerScoreInput(this)" onkeydown="onLegerScoreKeydown(event, this, 'uts')"
+               class="leger-input-uts w-16 text-center font-black text-sm bg-white border border-blue-300 rounded-lg p-1.5 text-blue-950 focus:ring-2 focus:ring-blue-500 shadow-sm" placeholder="UTS" />
+      </td>
+      <td class="px-2 py-2 text-center border-r border-slate-200 bg-emerald-50/40">
+        <span class="leger-text-akhir font-mono font-black text-sm text-emerald-950">${akhirVal}</span>
+      </td>
+      <td class="px-2 py-2 text-center border-r border-slate-200">
+        <span class="leger-badge-predikat px-2 py-0.5 rounded-full text-xs font-black badge-predikat-${predikat}">${predikat}</span>
       </td>
       <td class="px-4 py-2">
         <textarea rows="2" class="leger-input-capaian w-full text-xs bg-slate-50/80 border border-slate-200 rounded-lg p-2 text-slate-800 focus:ring-2 focus:ring-blue-500 focus:bg-white leading-snug">${capaian}</textarea>
@@ -6003,13 +6033,31 @@ function filterLegerGridStudents() {
 
 function onLegerScoreInput(inputEl) {
   const row = inputEl.closest('tr');
-  const score = Number(inputEl.value) || 0;
+  if (!row) return;
+  const tugasInput = row.querySelector('.leger-input-tugas');
+  const utsInput = row.querySelector('.leger-input-uts');
+  const tugasVal = Number(tugasInput?.value);
+  const utsVal = Number(utsInput?.value);
   const kkm = Number(document.getElementById('leger-akademik-kkm')?.value) || 70;
   
+  let akhir = 0;
+  if (tugasInput && tugasInput.value !== '' && utsInput && utsInput.value !== '') {
+    akhir = Math.round((tugasVal + utsVal) / 2);
+  } else if (utsInput && utsInput.value !== '') {
+    akhir = utsVal;
+  } else if (tugasInput && tugasInput.value !== '') {
+    akhir = tugasVal;
+  }
+
+  const akhirSpan = row.querySelector('.leger-text-akhir');
+  if (akhirSpan) {
+    akhirSpan.innerText = akhir;
+  }
+
   let predikat = 'D';
-  if (score >= 90) predikat = 'A';
-  else if (score >= 80) predikat = 'B';
-  else if (score >= kkm) predikat = 'C';
+  if (akhir >= 90) predikat = 'A';
+  else if (akhir >= 80) predikat = 'B';
+  else if (akhir >= kkm) predikat = 'C';
 
   const badge = row.querySelector('.leger-badge-predikat');
   if (badge) {
@@ -6018,10 +6066,11 @@ function onLegerScoreInput(inputEl) {
   }
 }
 
-function onLegerScoreKeydown(event, inputEl) {
+function onLegerScoreKeydown(event, inputEl, fieldType) {
+  const selector = fieldType ? `.leger-input-${fieldType}` : '.leger-input-uts, .leger-input-tugas';
   if (event.key === 'Enter' || event.key === 'ArrowDown') {
     event.preventDefault();
-    const allScoreInputs = Array.from(document.querySelectorAll('.leger-input-score'));
+    const allScoreInputs = Array.from(document.querySelectorAll(selector));
     const currIdx = allScoreInputs.indexOf(inputEl);
     if (currIdx !== -1 && currIdx + 1 < allScoreInputs.length) {
       allScoreInputs[currIdx + 1].focus();
@@ -6029,7 +6078,7 @@ function onLegerScoreKeydown(event, inputEl) {
     }
   } else if (event.key === 'ArrowUp') {
     event.preventDefault();
-    const allScoreInputs = Array.from(document.querySelectorAll('.leger-input-score'));
+    const allScoreInputs = Array.from(document.querySelectorAll(selector));
     const currIdx = allScoreInputs.indexOf(inputEl);
     if (currIdx > 0) {
       allScoreInputs[currIdx - 1].focus();
@@ -6039,7 +6088,10 @@ function onLegerScoreKeydown(event, inputEl) {
 }
 
 function updateLegerPredikats() {
-  document.querySelectorAll('.leger-input-score').forEach(input => onLegerScoreInput(input));
+  document.querySelectorAll('.leger-row').forEach(row => {
+    const input = row.querySelector('.leger-input-uts') || row.querySelector('.leger-input-tugas');
+    if (input) onLegerScoreInput(input);
+  });
 }
 
 function autoGenerateAllLegerCapaian() {
@@ -6049,8 +6101,8 @@ function autoGenerateAllLegerCapaian() {
 
   const rows = document.querySelectorAll('.leger-row');
   rows.forEach(row => {
-    const score = Number(row.querySelector('.leger-input-score')?.value) || 0;
-    const capaian = score >= 90 ? capTemplate.tinggi : (score >= kkm ? capTemplate.sedang : capTemplate.cukup);
+    const akhir = Number(row.querySelector('.leger-text-akhir')?.innerText) || Number(row.querySelector('.leger-input-uts')?.value) || 0;
+    const capaian = akhir >= 90 ? capTemplate.tinggi : (akhir >= kkm ? capTemplate.sedang : capTemplate.cukup);
     const textarea = row.querySelector('.leger-input-capaian');
     if (textarea) textarea.value = capaian;
   });
@@ -6060,7 +6112,9 @@ function autoGenerateAllLegerCapaian() {
 
 function autoGenerateModalCapaian() {
   const mapel = document.getElementById('akademik-mapel')?.value || 'Akidah';
-  const score = Number(document.getElementById('akademik-uts')?.value) || 85;
+  const tugas = Number(document.getElementById('akademik-tugas')?.value) || 0;
+  const uts = Number(document.getElementById('akademik-uts')?.value) || 85;
+  const score = document.getElementById('akademik-tugas')?.value !== '' ? Math.round((tugas + uts) / 2) : uts;
   const kkm = Number(document.getElementById('akademik-kkm')?.value) || 70;
   const capTemplate = BANK_CAPAIAN_MAPEL[mapel] || BANK_CAPAIAN_MAPEL['Akidah'];
   const capaian = score >= 90 ? capTemplate.tinggi : (score >= kkm ? capTemplate.sedang : capTemplate.cukup);
@@ -6079,13 +6133,17 @@ function saveBulkLegerAkademik() {
 
   rows.forEach(row => {
     const nis = row.getAttribute('data-nis');
-    const score = Number(row.querySelector('.leger-input-score')?.value) || 0;
+    const tugas = Number(row.querySelector('.leger-input-tugas')?.value) || 0;
+    const uts = Number(row.querySelector('.leger-input-uts')?.value) || 0;
+    const akhir = (row.querySelector('.leger-input-tugas')?.value !== '' && row.querySelector('.leger-input-uts')?.value !== '') 
+      ? Math.round((tugas + uts) / 2) 
+      : (uts || tugas || 0);
     const capaian = row.querySelector('.leger-input-capaian')?.value || '';
     
     let predikat = 'D';
-    if (score >= 90) predikat = 'A';
-    else if (score >= 80) predikat = 'B';
-    else if (score >= kkm) predikat = 'C';
+    if (akhir >= 90) predikat = 'A';
+    else if (akhir >= 80) predikat = 'B';
+    else if (akhir >= kkm) predikat = 'C';
 
     const m = AppState.muridList.find(x => String(x.nis) === String(nis)) || {};
 
@@ -6096,9 +6154,9 @@ function saveBulkLegerAkademik() {
       kelas: kelas,
       mata_pelajaran: mapel,
       kkm: kkm,
-      nilai_tugas: score,
-      nilai_uts: score,
-      nilai_akhir: score,
+      nilai_tugas: tugas,
+      nilai_uts: uts,
+      nilai_akhir: akhir,
       predikat: predikat,
       capaian_kompetensi: capaian,
       catatan_guru: capaian
@@ -6112,7 +6170,7 @@ function saveBulkLegerAkademik() {
     else AppState.akademikList.push(entry);
   });
 
-  showToast(`Alhamdulillah, nilai mapel ${mapel} kelas ${kelas} berhasil disimpan! (${items.length} murid)`);
+  showToast(`Alhamdulillah, nilai Tugas & UTS mapel ${mapel} kelas ${kelas} berhasil disimpan! (${items.length} murid)`);
   loadDashboardStats();
 
   const selectedYear = document.getElementById('leger-akademik-tahun-ajaran')?.value || AppState.cmsSettings.academic_year || '2026/2027';
@@ -6167,12 +6225,15 @@ function renderTableAkademik(list) {
   if (!tbody) return;
 
   if (list.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="8" class="px-4 py-8 text-center text-slate-400">Tidak ada data nilai yang sesuai dengan filter.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="10" class="px-4 py-8 text-center text-slate-400">Tidak ada data nilai yang sesuai dengan filter.</td></tr>`;
     return;
   }
 
   tbody.innerHTML = list.map(item => {
     const nama = item.nama_murid || item.nama_santri || '-';
+    const tugasVal = item.nilai_tugas !== undefined && item.nilai_tugas !== null ? item.nilai_tugas : '-';
+    const utsVal = item.nilai_uts !== undefined && item.nilai_uts !== null ? item.nilai_uts : '-';
+    const akhirVal = item.nilai_akhir || item.nilai_uts || '-';
     return `
     <tr class="hover:bg-slate-50 transition">
       <td class="px-4 py-3">
@@ -6181,10 +6242,12 @@ function renderTableAkademik(list) {
       </td>
       <td class="px-3 py-3 font-semibold text-slate-700">${item.kelas}</td>
       <td class="px-3 py-3 font-bold text-blue-700">${item.mata_pelajaran}</td>
-      <td class="px-3 py-3 text-center font-bold text-amber-900">${item.kkm || 75}</td>
-      <td class="px-3 py-3 text-center font-bold text-slate-900 font-mono text-sm">${item.nilai_akhir || item.nilai_uts}</td>
-      <td class="px-3 py-3 text-center">
-        <span class="px-2.5 py-0.5 rounded-full text-xs font-black badge-predikat-${item.predikat}">${item.predikat}</span>
+      <td class="px-2 py-3 text-center font-bold text-amber-900">${item.kkm || 75}</td>
+      <td class="px-2 py-3 text-center font-bold text-amber-950 bg-amber-50/40 font-mono text-xs">${tugasVal}</td>
+      <td class="px-2 py-3 text-center font-bold text-blue-950 bg-blue-50/40 font-mono text-xs">${utsVal}</td>
+      <td class="px-2 py-3 text-center font-black text-emerald-950 bg-emerald-50/40 font-mono text-sm">${akhirVal}</td>
+      <td class="px-2 py-3 text-center">
+        <span class="px-2 py-0.5 rounded-full text-xs font-black badge-predikat-${item.predikat}">${item.predikat}</span>
       </td>
       <td class="px-4 py-3 text-slate-700 text-[11px] max-w-xs truncate">${item.capaian_kompetensi || item.catatan_guru || '-'}</td>
       <td class="px-4 py-3 text-right space-x-1">
@@ -6227,6 +6290,8 @@ function openModalAkademik() {
   document.getElementById('modal-akademik-title').innerText = 'Input Nilai Akademik Murid';
   document.getElementById('form-akademik').reset();
   document.getElementById('akademik-id').value = '';
+  document.getElementById('akademik-tugas').value = '';
+  document.getElementById('akademik-uts').value = '';
   recalcAkademikPreview();
   document.getElementById('modal-akademik').classList.remove('hidden');
 }
@@ -6236,8 +6301,23 @@ function closeModalAkademik() {
 }
 
 function recalcAkademikPreview() {
-  const score = Number(document.getElementById('akademik-uts')?.value) || 0;
+  const tugasInput = document.getElementById('akademik-tugas')?.value;
+  const utsInput = document.getElementById('akademik-uts')?.value;
+  const tugas = Number(tugasInput) || 0;
+  const uts = Number(utsInput) || 0;
   const kkm = Number(document.getElementById('akademik-kkm')?.value) || 75;
+
+  let score = 0;
+  if (tugasInput !== '' && utsInput !== '') {
+    score = Math.round((tugas + uts) / 2);
+  } else if (utsInput !== '') {
+    score = uts;
+  } else if (tugasInput !== '') {
+    score = tugas;
+  }
+
+  const previewScore = document.getElementById('akademik-preview-nilai-akhir');
+  if (previewScore) previewScore.innerText = score;
   
   let predikat = 'D';
   if (score >= 90) predikat = 'A';
@@ -6248,17 +6328,17 @@ function recalcAkademikPreview() {
   if (previewStatus) {
     if (score >= kkm) {
       previewStatus.innerText = `Tuntas KKM (≥${kkm})`;
-      previewStatus.className = 'text-sm font-extrabold text-emerald-700';
+      previewStatus.className = 'text-xs font-extrabold text-emerald-700 block mt-0.5';
     } else {
       previewStatus.innerText = `Di bawah KKM (<${kkm})`;
-      previewStatus.className = 'text-sm font-extrabold text-rose-700';
+      previewStatus.className = 'text-xs font-extrabold text-rose-700 block mt-0.5';
     }
   }
 
   const previewPredikat = document.getElementById('akademik-preview-predikat');
   if (previewPredikat) {
     previewPredikat.innerText = predikat;
-    previewPredikat.className = `inline-block px-3 py-0.5 rounded-full font-bold text-xs badge-predikat-${predikat}`;
+    previewPredikat.className = `inline-block px-2.5 py-0.5 rounded-full font-black text-xs badge-predikat-${predikat} mt-0.5`;
   }
 }
 
@@ -6270,7 +6350,8 @@ function editNilaiAkademikModal(id) {
   document.getElementById('akademik-nis').value = item.nis;
   document.getElementById('akademik-mapel').value = item.mata_pelajaran;
   document.getElementById('akademik-kkm').value = item.kkm || 75;
-  document.getElementById('akademik-uts').value = item.nilai_akhir || item.nilai_uts || 85;
+  document.getElementById('akademik-tugas').value = item.nilai_tugas !== undefined && item.nilai_tugas !== null ? item.nilai_tugas : (item.nilai_uts || 85);
+  document.getElementById('akademik-uts').value = item.nilai_uts !== undefined && item.nilai_uts !== null ? item.nilai_uts : 85;
   document.getElementById('akademik-catatan').value = item.capaian_kompetensi || item.catatan_guru || '';
   recalcAkademikPreview();
   document.getElementById('modal-akademik').classList.remove('hidden');
@@ -6280,14 +6361,16 @@ function submitFormAkademik(e) {
   e.preventDefault();
   const nis = document.getElementById('akademik-nis').value;
   const m = AppState.muridList.find(x => String(x.nis) === String(nis)) || {};
-  const score = Number(document.getElementById('akademik-uts').value) || 0;
+  const tugas = Number(document.getElementById('akademik-tugas').value) || 0;
+  const uts = Number(document.getElementById('akademik-uts').value) || 0;
   const kkm = Number(document.getElementById('akademik-kkm').value) || 75;
   const mapel = document.getElementById('akademik-mapel').value;
+  const akhir = document.getElementById('akademik-tugas').value !== '' ? Math.round((tugas + uts) / 2) : uts;
   
   let predikat = 'D';
-  if (score >= 90) predikat = 'A';
-  else if (score >= 80) predikat = 'B';
-  else if (score >= kkm) predikat = 'C';
+  if (akhir >= 90) predikat = 'A';
+  else if (akhir >= 80) predikat = 'B';
+  else if (akhir >= kkm) predikat = 'C';
 
   const payload = {
     id: document.getElementById('akademik-id').value || `NA-${nis}-${mapel.replace(/\s+/g, '')}`,
@@ -6296,9 +6379,9 @@ function submitFormAkademik(e) {
     kelas: m.kelas || 'IX ABU BAKAR',
     mata_pelajaran: mapel,
     kkm: kkm,
-    nilai_tugas: score,
-    nilai_uts: score,
-    nilai_akhir: score,
+    nilai_tugas: tugas,
+    nilai_uts: uts,
+    nilai_akhir: akhir,
     predikat: predikat,
     capaian_kompetensi: document.getElementById('akademik-catatan').value,
     catatan_guru: document.getElementById('akademik-catatan').value
@@ -6379,10 +6462,10 @@ function downloadUploadTemplate() {
   const kkmVal = MAPEL_KKM_DEFAULT[mapelName] || 75;
 
   let csvContent = "data:text/csv;charset=utf-8,";
-  csvContent += "NIS,Nama Siswa,Kelas,Mata Pelajaran,KKM,Nilai UTS,Catatan Guru\r\n";
+  csvContent += "NIS,Nama Siswa,Kelas,Mata Pelajaran,KKM,Nilai Tugas,Nilai UTS,Catatan Guru\r\n";
 
   students.forEach(s => {
-    const row = `"${s.nis}","${s.nama_murid || s.nama_santri}","${s.kelas}","${mapelName}","${kkmVal}","85",""`;
+    const row = `"${s.nis}","${s.nama_murid || s.nama_santri}","${s.kelas}","${mapelName}","${kkmVal}","85","85",""`;
     csvContent += row + "\r\n";
   });
 
@@ -6455,40 +6538,63 @@ function parseSpreadsheetText(text) {
     let kelas = targetKelas !== 'Semua' ? targetKelas : '';
     let mapel = targetMapel !== 'Sesuai File' ? targetMapel : 'Informatika';
     let kkm = 75;
+    let nilaiTugas = 85;
     let nilaiUts = 85;
 
     if (/^\d{6,}$/.test(cols[0])) {
       nis = cols[0];
       nama = cols[1] || '';
-      if (cols.length >= 5) {
+      if (cols.length >= 7) {
         if (isNaN(cols[2])) {
-          if (cols[2].toUpperCase().includes('VII') || cols[2].toUpperCase().includes('VIII') || cols[2].toUpperCase().includes('IX')) {
-            kelas = cols[2];
-            mapel = cols[3] || mapel;
-            kkm = Number(cols[4]) || 75;
-            nilaiUts = Number(cols[5] || cols[4]) || 85;
-          } else {
-            mapel = cols[2];
-            kkm = Number(cols[3]) || 75;
-            nilaiUts = Number(cols[4]) || 85;
-          }
+          kelas = cols[2];
+          mapel = cols[3] || mapel;
+          kkm = Number(cols[4]) || 75;
+          nilaiTugas = Number(cols[5]) || 85;
+          nilaiUts = Number(cols[6]) || 85;
         } else {
           kkm = Number(cols[2]) || 75;
-          nilaiUts = Number(cols[3]) || 85;
+          nilaiTugas = Number(cols[3]) || 85;
+          nilaiUts = Number(cols[4]) || 85;
         }
-      } else if (cols.length === 3) {
-        nilaiUts = Number(cols[2]) || 85;
+      } else if (cols.length === 6) {
+        if (isNaN(cols[2])) {
+          mapel = cols[2];
+          kkm = Number(cols[3]) || 75;
+          nilaiTugas = Number(cols[4]) || 85;
+          nilaiUts = Number(cols[5]) || 85;
+        } else {
+          kkm = Number(cols[2]) || 75;
+          nilaiTugas = Number(cols[3]) || 85;
+          nilaiUts = Number(cols[4]) || 85;
+        }
+      } else if (cols.length === 5) {
+        if (isNaN(cols[2])) {
+          mapel = cols[2];
+          kkm = Number(cols[3]) || 75;
+          nilaiUts = Number(cols[4]) || 85;
+          nilaiTugas = nilaiUts;
+        } else {
+          kkm = Number(cols[2]) || 75;
+          nilaiTugas = Number(cols[3]) || 85;
+          nilaiUts = Number(cols[4]) || 85;
+        }
       } else if (cols.length === 4) {
         kkm = Number(cols[2]) || 75;
         nilaiUts = Number(cols[3]) || 85;
+        nilaiTugas = nilaiUts;
+      } else if (cols.length === 3) {
+        nilaiUts = Number(cols[2]) || 85;
+        nilaiTugas = nilaiUts;
       }
     } else {
       nama = cols[0];
       if (/^\d+$/.test(cols[1])) {
         nilaiUts = Number(cols[1]);
+        nilaiTugas = cols[2] && /^\d+$/.test(cols[2]) ? Number(cols[2]) : nilaiUts;
       } else if (/^\d{6,}$/.test(cols[1])) {
         nis = cols[1];
-        nilaiUts = Number(cols[2] || 85);
+        nilaiTugas = Number(cols[2] || 85);
+        nilaiUts = Number(cols[3] || cols[2] || 85);
       }
     }
 
@@ -6508,14 +6614,15 @@ function parseSpreadsheetText(text) {
     if (targetMapel !== 'Sesuai File') mapel = targetMapel;
 
     kkm = MAPEL_KKM_DEFAULT[mapel] || kkm || 75;
+    const nilaiAkhir = Math.round((nilaiTugas + nilaiUts) / 2);
 
     let predikat = 'D';
-    if (nilaiUts >= 90) predikat = 'A';
-    else if (nilaiUts >= 80) predikat = 'B';
-    else if (nilaiUts >= kkm) predikat = 'C';
+    if (nilaiAkhir >= 90) predikat = 'A';
+    else if (nilaiAkhir >= 80) predikat = 'B';
+    else if (nilaiAkhir >= kkm) predikat = 'C';
 
     const capTemplate = BANK_CAPAIAN_MAPEL[mapel] || BANK_CAPAIAN_MAPEL['Akidah'];
-    const capaian = nilaiUts >= 90 ? capTemplate.tinggi : (nilaiUts >= kkm ? capTemplate.sedang : capTemplate.cukup);
+    const capaian = nilaiAkhir >= 90 ? capTemplate.tinggi : (nilaiAkhir >= kkm ? capTemplate.sedang : capTemplate.cukup);
 
     uploadedGradeItems.push({
       id: `NA-${nis}-${mapel.replace(/\s+/g, '')}`,
@@ -6526,9 +6633,9 @@ function parseSpreadsheetText(text) {
       kkm: kkm,
       semester: targetSem,
       tahun_ajaran: targetYear,
-      nilai_tugas: nilaiUts,
+      nilai_tugas: nilaiTugas,
       nilai_uts: nilaiUts,
-      nilai_akhir: nilaiUts,
+      nilai_akhir: nilaiAkhir,
       predikat: predikat,
       capaian_kompetensi: capaian,
       catatan_guru: capaian
@@ -6572,9 +6679,11 @@ function renderUploadPreview() {
       <td class="px-4 py-2 font-bold text-slate-900">${item.nama_murid}</td>
       <td class="px-3 py-2"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-700">${item.kelas}</span></td>
       <td class="px-3 py-2 font-semibold text-blue-900">${item.mata_pelajaran}</td>
-      <td class="px-3 py-2 text-center font-bold text-amber-900">${item.kkm}</td>
-      <td class="px-3 py-2 text-center font-black text-blue-900 bg-blue-50/60">${item.nilai_uts}</td>
-      <td class="px-3 py-2 text-center">
+      <td class="px-2 py-2 text-center font-bold text-amber-900">${item.kkm}</td>
+      <td class="px-2 py-2 text-center font-bold text-amber-950 bg-amber-50/60 font-mono">${item.nilai_tugas}</td>
+      <td class="px-2 py-2 text-center font-bold text-blue-950 bg-blue-50/60 font-mono">${item.nilai_uts}</td>
+      <td class="px-2 py-2 text-center font-black text-emerald-950 bg-emerald-50/60 font-mono text-sm">${item.nilai_akhir}</td>
+      <td class="px-2 py-2 text-center">
         <span class="px-2 py-0.5 rounded-full text-[10px] font-black badge-predikat-${item.predikat}">${item.predikat}</span>
       </td>
       <td class="px-4 py-2 text-slate-600 text-[11px] leading-snug">${item.capaian_kompetensi}</td>
