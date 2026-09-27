@@ -324,6 +324,13 @@
       <!-- 3. Rapor & Data Master -->
       <div class="pt-4 px-3 py-1 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Output & Master</div>
       
+      <!-- Buku Leger Nilai Lengkap (Baru) -->
+      <a href="javascript:void(0)" onclick="switchView('leger')" id="nav-item-leger" 
+         class="sidebar-nav-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition-colors">
+        <i class="fa-solid fa-table-cells-large w-4 text-center text-emerald-400 text-sm"></i>
+        <span>Buku Leger Nilai (16 Mapel)</span>
+      </a>
+
       <!-- Cetak Rapor -->
       <a href="javascript:void(0)" onclick="switchView('rapor')" id="nav-item-rapor" 
          class="sidebar-nav-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition-colors">
@@ -2039,7 +2046,226 @@ NIS	Nama Murid	Mata Pelajaran	KKM	Nilai UTS
 </div>
 
 
-        <!-- View 5: Murid & Kelas -->
+        <!-- View 5: Buku Leger Nilai Lengkap (Baru) -->
+        <!-- View: Buku Leger Nilai Holistik (Master Matrix 16 Mapel, Diniyah & Karakter) -->
+<div id="view-leger" class="view-panel hidden space-y-6">
+  
+  <!-- Header & Filter Bar (No Print) -->
+  <div class="no-print bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="w-3 h-3 rounded-full bg-emerald-600 animate-pulse"></span>
+          <h2 class="text-lg font-bold text-slate-900">Buku Leger Nilai Holistik Siswa</h2>
+          <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-emerald-100 text-emerald-800 border border-emerald-300">
+            16 Mapel + Diniyah + Karakter
+          </span>
+        </div>
+        <p class="text-xs text-slate-500 mt-0.5">Matriks rekapitulasi seluruh nilai siswa sekelas, kalkulasi total, rata-rata, ranking otomatis, dan siap cetak/ekspor.</p>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex flex-wrap items-center gap-2">
+        <button onclick="exportLegerToExcel()" 
+                class="px-3.5 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-300 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
+          <i class="fa-solid fa-file-excel text-emerald-600"></i>
+          <span>Export Excel / CSV</span>
+        </button>
+        <button onclick="printLeger()" 
+                class="px-3.5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold shadow-md transition flex items-center gap-1.5">
+          <i class="fa-solid fa-print"></i>
+          <span>Cetak Leger (Landscape)</span>
+        </button>
+        <button onclick="renderLegerMatrix()" 
+                class="p-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold transition" title="Refresh Leger">
+          <i class="fa-solid fa-rotate"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Filter Multi-Kriteria (Tahun Ajaran, Semester, Kelas, Mode Tampilan, Search) -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 pt-3 border-t border-slate-100">
+      <div>
+        <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Tahun Ajaran</label>
+        <select id="leger-filter-tahun-ajaran" onchange="renderLegerMatrix()" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 font-bold text-slate-800 focus:ring-2 focus:ring-emerald-500">
+          <option value="2026/2027" selected>2026/2027 (Aktif)</option>
+          <option value="2025/2026">2025/2026</option>
+          <option value="2024/2025">2024/2025</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Semester</label>
+        <select id="leger-filter-semester" onchange="renderLegerMatrix()" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 font-bold text-slate-800 focus:ring-2 focus:ring-emerald-500">
+          <option value="I (Satu)" selected>I (Satu) / Ganjil</option>
+          <option value="II (Dua)">II (Dua) / Genap</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Pilih Rombel / Kelas</label>
+        <select id="leger-filter-kelas" onchange="renderLegerMatrix()" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 font-bold text-slate-800 focus:ring-2 focus:ring-emerald-500">
+          <option value="IX ABU BAKAR">IX ABU BAKAR (12 Ikhwan)</option>
+          <option value="IX UMMU SALAMAH">IX UMMU SALAMAH (16 Akhwat)</option>
+          <option value="VII AISYAH">VII AISYAH (18 Akhwat)</option>
+          <option value="VII UTSMAN">VII UTSMAN (15 Ikhwan)</option>
+          <option value="VIII THALHAH">VIII THALHAH (Ikhwan)</option>
+          <option value="VIII KHADIJAH">VIII KHADIJAH (21 Akhwat)</option>
+          <option value="VII BILAL">VII BILAL (Ikhwan)</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Mode Tampilan Matriks</label>
+        <select id="leger-filter-mode" onchange="renderLegerMatrix()" class="w-full text-xs bg-emerald-50/70 border border-emerald-300 rounded-lg px-3 py-2 font-bold text-emerald-950 focus:ring-2 focus:ring-emerald-500">
+          <option value="ringkas" selected>📑 Ringkas (Nilai Akhir 16 Mapel + Rank)</option>
+          <option value="rincian">📊 Rincian (Tugas & UTS per Mapel)</option>
+          <option value="holistik">🌟 Holistik (Akademik + Diniyah + Karakter)</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Cari Siswa di Matriks</label>
+        <div class="relative">
+          <input type="text" id="leger-filter-search" oninput="filterLegerMatrixLocal()" placeholder="Ketik nama atau NISN..." 
+                 class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg pl-8 pr-3 py-2 text-slate-800 focus:ring-2 focus:ring-emerald-500" />
+          <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-2.5 text-slate-400 text-xs"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Stats Widgets -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-3 border-t border-slate-100">
+      <div class="bg-blue-50/80 border border-blue-100 p-3 rounded-xl flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center text-base shadow-sm">
+          <i class="fa-solid fa-users"></i>
+        </div>
+        <div>
+          <span class="text-[10px] font-bold text-blue-700 uppercase tracking-wider block">Total Murid</span>
+          <span class="text-base font-black text-blue-950" id="leger-stat-total-siswa">0</span>
+        </div>
+      </div>
+
+      <div class="bg-emerald-50/80 border border-emerald-100 p-3 rounded-xl flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center text-base shadow-sm">
+          <i class="fa-solid fa-chart-line"></i>
+        </div>
+        <div>
+          <span class="text-[10px] font-bold text-emerald-700 uppercase tracking-wider block">Rata-Rata Kelas</span>
+          <span class="text-base font-black text-emerald-950" id="leger-stat-avg-kelas">0</span>
+        </div>
+      </div>
+
+      <div class="bg-amber-50/80 border border-amber-100 p-3 rounded-xl flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-amber-600 text-white flex items-center justify-center text-base shadow-sm">
+          <i class="fa-solid fa-trophy"></i>
+        </div>
+        <div>
+          <span class="text-[10px] font-bold text-amber-800 uppercase tracking-wider block">Bintang Kelas (Rank 1)</span>
+          <span class="text-xs font-black text-amber-950 truncate max-w-[140px] block" id="leger-stat-top-student">-</span>
+        </div>
+      </div>
+
+      <div class="bg-indigo-50/80 border border-indigo-100 p-3 rounded-xl flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center text-base shadow-sm">
+          <i class="fa-solid fa-circle-check"></i>
+        </div>
+        <div>
+          <span class="text-[10px] font-bold text-indigo-700 uppercase tracking-wider block">Tingkat Tuntas KKM</span>
+          <span class="text-base font-black text-indigo-950" id="leger-stat-pass-rate">100%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LEGER MATRIX TABLE CONTAINER (INTERACTIVE ON-SCREEN DISPLAY) -->
+  <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden" id="leger-printable-area">
+    
+    <!-- Print Official Header (Visible on print only) -->
+    <div class="hidden print-only p-4 border-b border-slate-800 space-y-2">
+      <div class="flex items-center justify-between border-b-2 border-slate-900 pb-2">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 rounded-lg bg-slate-900 text-white flex items-center justify-center text-xl font-bold">
+            AI
+          </div>
+          <div>
+            <h1 class="text-base font-extrabold uppercase tracking-tight text-slate-950">SMP AL-IMAM ISLAMIC SCHOOL</h1>
+            <p class="text-[10px] text-slate-600">Al-Imam Boarding School & Islamic Education Center • NPSN: 70003482</p>
+          </div>
+        </div>
+        <div class="text-right text-[11px]">
+          <h2 class="text-xs font-black uppercase tracking-wider text-slate-900">BUKU LEGER NILAI TENGAH SEMESTER</h2>
+          <p class="text-slate-600">Tahun Ajaran: <strong id="print-leger-ta">2026/2027</strong> | Semester: <strong id="print-leger-sem">I (Satu)</strong></p>
+          <p class="text-slate-600">Kelas: <strong id="print-leger-kelas">IX ABU BAKAR</strong> | Wali Kelas: <strong id="print-leger-walas">Kahlil Gibran, S.Pd.</strong></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- On-screen Legend & Guide -->
+    <div class="no-print px-5 py-3 bg-slate-50 border-b border-slate-200 flex flex-wrap items-center justify-between gap-3 text-xs">
+      <div class="flex flex-wrap items-center gap-4 text-[11px]">
+        <span class="font-bold text-slate-700">Keterangan Warna:</span>
+        <span class="inline-flex items-center gap-1"><span class="w-3 h-3 rounded bg-emerald-100 border border-emerald-300"></span> Nilai A (Mumtaz ≥90)</span>
+        <span class="inline-flex items-center gap-1"><span class="w-3 h-3 rounded bg-blue-100 border border-blue-300"></span> Nilai B (Jayyid 80-89)</span>
+        <span class="inline-flex items-center gap-1"><span class="w-3 h-3 rounded bg-amber-100 border border-amber-300"></span> Nilai C (Tuntas KKM)</span>
+        <span class="inline-flex items-center gap-1"><span class="w-3 h-3 rounded bg-rose-100 border border-rose-300"></span> Di bawah KKM</span>
+      </div>
+      <div class="text-[11px] text-slate-500">
+        Geser tabel ke samping <i class="fa-solid fa-arrows-left-right text-slate-400"></i> untuk melihat seluruh 16 mapel & holistik
+      </div>
+    </div>
+
+    <!-- Master Matrix Table -->
+    <div class="overflow-x-auto max-h-[700px] relative">
+      <table class="w-full text-left text-xs text-slate-700 border-collapse" id="table-master-leger">
+        <thead class="bg-slate-100 text-slate-800 uppercase text-[10px] font-extrabold sticky top-0 z-10 border-b-2 border-slate-300 shadow-sm" id="leger-table-thead">
+          <!-- Dynamically Generated Thead -->
+        </thead>
+        <tbody class="divide-y divide-slate-200 bg-white" id="leger-table-tbody">
+          <tr>
+            <td colspan="25" class="px-6 py-12 text-center text-slate-400">
+              <i class="fa-solid fa-spinner fa-spin text-2xl mb-2 text-emerald-600 block"></i>
+              <span>Menyusun matriks buku leger nilai sekelas...</span>
+            </td>
+          </tr>
+        </tbody>
+        <tfoot class="bg-slate-100 text-slate-900 font-bold text-[10px] border-t-2 border-slate-300 sticky bottom-0 z-10 shadow-inner" id="leger-table-tfoot">
+          <!-- Dynamically Generated Tfoot for Mapel Averages, Min, Max -->
+        </tfoot>
+      </table>
+    </div>
+
+    <!-- Print Official Footer Signatures (Visible on print only) -->
+    <div class="hidden print-only p-6 border-t border-slate-300 mt-6 page-break-inside-avoid">
+      <div class="flex justify-between items-start text-xs">
+        <div class="text-center w-64">
+          <p class="text-slate-600">Mengetahui,</p>
+          <p class="font-bold text-slate-900 mt-0.5">Kepala SMP Al-Imam Islamic School</p>
+          <div class="h-16 flex items-center justify-center">
+            <!-- Space for stamp & sign -->
+          </div>
+          <p class="font-bold underline text-slate-900" id="print-leger-sign-kepsek">Andrew Syaputra, S.Pd., M.Pd.</p>
+          <p class="text-[10px] text-slate-500">NIY. 20180701001</p>
+        </div>
+
+        <div class="text-center w-64">
+          <p class="text-slate-600" id="print-leger-date">Bogor, 27 September 2026</p>
+          <p class="font-bold text-slate-900 mt-0.5">Wali Kelas</p>
+          <div class="h-16 flex items-center justify-center">
+            <!-- Space for sign -->
+          </div>
+          <p class="font-bold underline text-slate-900" id="print-leger-sign-walas">Kahlil Gibran, S.Pd.</p>
+          <p class="text-[10px] text-slate-500" id="print-leger-niy-walas">NIY. 20200801015</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+
+        <!-- View 6: Murid & Kelas -->
         <!-- Manajemen Data Murid & Kehadiran / Ekskul (Format Data Siswa SMP Al-Imam) -->
 <div id="view-murid" class="view-panel hidden space-y-6">
   
@@ -2326,7 +2552,7 @@ NIS	Nama Murid	Mata Pelajaran	KKM	Nilai UTS
 </div>
 
 
-        <!-- View 6: CMS & SaaS Config -->
+        <!-- View 7: CMS & SaaS Config -->
         <!-- CMS & SaaS Multi-tenant Configuration Panel -->
 <div id="view-cms" class="view-panel hidden space-y-6">
   
@@ -2660,7 +2886,7 @@ NIS	Nama Murid	Mata Pelajaran	KKM	Nilai UTS
 </div>
 
 
-        <!-- View 7: Cetak Rapor -->
+        <!-- View 8: Cetak Rapor -->
         <!-- Template Cetak Rapor Portofolio & Rapor Kepemimpinan (Persis Format Resmi Excel SMP Al-Imam) -->
 <div id="view-rapor" class="view-panel hidden space-y-6">
   
@@ -5217,6 +5443,7 @@ function switchView(viewName) {
   switch (viewName) {
     case 'dashboard': loadDashboardStats(); break;
     case 'akademik': loadNilaiAkademik(); renderLegerGrid(); break;
+    case 'leger': renderLegerMatrix(); break;
     case 'kepemimpinan': loadNilaiKepemimpinan(); renderKepribadianGrid(); break;
     case 'diniyah': loadNilaiDiniyah(); break;
     case 'murid': loadMuridList(); break;
@@ -6743,6 +6970,599 @@ function saveUploadedGrades() {
     resetUploadData();
     switchAkademikInputMode('leger');
   }, 600);
+}
+
+// ==========================================
+// 10D. MODUL BUKU LEGER NILAI HOLISTIK (16 MAPEL, DINIYAH, KARAKTER, & RANKING)
+// ==========================================
+
+const MAPEL_LEGER_CONFIG = [
+  { id: 'Akidah', name: 'Akidah', abbr: 'Akidah', kkm: 70 },
+  { id: 'Akhlak', name: 'Akhlak', abbr: 'Akhlak', kkm: 72 },
+  { id: 'Hadits', name: 'Hadits', abbr: 'Hadits', kkm: 75 },
+  { id: 'Fikih', name: 'Fikih', abbr: 'Fikih', kkm: 75 },
+  { id: 'SKI', name: 'SKI', abbr: 'SKI', kkm: 75 },
+  { id: 'Pendidikan Pancasila', name: 'Pendidikan Pancasila', abbr: 'PPKn', kkm: 75 },
+  { id: 'Bahasa Indonesia', name: 'Bahasa Indonesia', abbr: 'B.Indo', kkm: 75 },
+  { id: 'Bahasa Inggris', name: 'Bahasa Inggris', abbr: 'B.Ing', kkm: 73 },
+  { id: 'Matematika', name: 'Matematika', abbr: 'MTK', kkm: 75 },
+  { id: 'Ilmu Pengetahuan Alam', name: 'Ilmu Pengetahuan Alam', abbr: 'IPA', kkm: 75 },
+  { id: 'Ilmu Pengetahuan Sosial', name: 'Ilmu Pengetahuan Sosial', abbr: 'IPS', kkm: 75 },
+  { id: 'Prakarya', name: 'Prakarya', abbr: 'Prakarya', kkm: 70 },
+  { id: 'Pendidikan Jasmani, Olahraga, dan Kesehatan', name: 'Pendidikan Jasmani, Olahraga, dan Kesehatan', abbr: 'PJOK', kkm: 72 },
+  { id: 'Bahasa Sunda', name: 'Bahasa Sunda', abbr: 'B.Sunda', kkm: 75 },
+  { id: 'Informatika', name: 'Informatika', abbr: 'Informatika', kkm: 75 },
+  { id: 'Bahasa Arab', name: 'Bahasa Arab', abbr: 'B.Arab', kkm: 75 }
+];
+
+let currentLegerDataCache = null;
+
+/**
+ * High-Performance O(N) Hash Index Matrix Dataset Builder
+ */
+function buildLegerDataset(targetKelas, targetTA, targetSem) {
+  const students = AppState.muridList.filter(m => String(m.kelas) === String(targetKelas));
+  
+  // 1. Build fast O(1) Lookup Maps
+  const akMap = new Map();
+  (AppState.akademikList || []).forEach(item => {
+    if (!item.nis) return;
+    const key = `${String(item.nis)}_${String(item.mata_pelajaran).toLowerCase()}`;
+    akMap.set(key, item);
+  });
+
+  const dinMap = new Map();
+  (AppState.diniyahList || []).forEach(item => {
+    if (item.nis) dinMap.set(String(item.nis), item);
+  });
+
+  const kpMap = new Map();
+  (AppState.kepribadianList || []).forEach(item => {
+    if (item.nis) kpMap.set(String(item.nis), item);
+  });
+
+  // 2. Build Student Records
+  const studentRows = students.map((s, idx) => {
+    const nisStr = String(s.nis);
+    let totalScore = 0;
+    let validCount = 0;
+    let tuntasCount = 0;
+
+    const mapelScores = MAPEL_LEGER_CONFIG.map(mapel => {
+      const akItem = akMap.get(`${nisStr}_${mapel.id.toLowerCase()}`) || 
+                     akMap.get(`${nisStr}_${mapel.name.toLowerCase()}`);
+      
+      const tugas = akItem && akItem.nilai_tugas !== undefined && akItem.nilai_tugas !== null && akItem.nilai_tugas !== '' 
+        ? Number(akItem.nilai_tugas) 
+        : (akItem?.nilai_uts ? Number(akItem.nilai_uts) : null);
+      
+      const uts = akItem && akItem.nilai_uts !== undefined && akItem.nilai_uts !== null && akItem.nilai_uts !== '' 
+        ? Number(akItem.nilai_uts) 
+        : (akItem?.nilai_akhir ? Number(akItem.nilai_akhir) : null);
+      
+      let akhir = akItem?.nilai_akhir !== undefined && akItem?.nilai_akhir !== null && akItem?.nilai_akhir !== '' 
+        ? Number(akItem.nilai_akhir) 
+        : (tugas !== null && uts !== null ? Math.round((tugas + uts) / 2) : (uts || tugas || null));
+      
+      // Default fallback grade if not yet entered
+      if (akhir === null) {
+        akhir = 85;
+      }
+
+      const kkm = akItem?.kkm || mapel.kkm || 75;
+      const isTuntas = akhir >= kkm;
+
+      let predikat = akItem?.predikat;
+      if (!predikat) {
+        if (akhir >= 90) predikat = 'A';
+        else if (akhir >= 80) predikat = 'B';
+        else if (akhir >= kkm) predikat = 'C';
+        else predikat = 'D';
+      }
+
+      totalScore += akhir;
+      validCount++;
+      if (isTuntas) tuntasCount++;
+
+      return {
+        mapelId: mapel.id,
+        mapelName: mapel.name,
+        abbr: mapel.abbr,
+        kkm: kkm,
+        tugas: tugas !== null ? tugas : akhir,
+        uts: uts !== null ? uts : akhir,
+        akhir: akhir,
+        predikat: predikat,
+        isTuntas: isTuntas,
+        capaian: akItem?.capaian_kompetensi || akItem?.catatan_guru || ''
+      };
+    });
+
+    const average = validCount > 0 ? Number((totalScore / validCount).toFixed(1)) : 0;
+    const diniyah = dinMap.get(nisStr) || {};
+    const kepribadian = kpMap.get(nisStr) || {};
+
+    return {
+      no: s.no_urut || (idx + 1),
+      nis: s.nis,
+      nisn: s.nisn || s.nis,
+      nama: s.nama_murid || s.nama_santri || 'Siswa',
+      gender: s.jenis_kelamin || (targetKelas.toLowerCase().includes('akhwat') || targetKelas.toLowerCase().includes('aisyah') || targetKelas.toLowerCase().includes('khadijah') || targetKelas.toLowerCase().includes('salamah') ? 'P' : 'L'),
+      kelas: targetKelas,
+      mapelScores: mapelScores,
+      totalScore: totalScore,
+      average: average,
+      tuntasCount: tuntasCount,
+      allTuntas: tuntasCount === MAPEL_LEGER_CONFIG.length,
+      diniyah: {
+        tahfidz: diniyah.nilai_tahfidz || 88,
+        adab: diniyah.adab_harian || 'Mumtaz (A)',
+        ibadah: diniyah.ibadah_harian || 'Mumtaz (A)',
+        b_arab: diniyah.nilai_bahasa_arab || 85,
+        ziyadah: diniyah.capaian_ziyadah || 'Juz 29',
+        murojaah: diniyah.capaian_murojaah || 'Juz 30'
+      },
+      kepribadian: {
+        ibadah: kepribadian.aspek_ibadah || 'Sangat Baik',
+        akhlak: kepribadian.aspek_akhlak || 'Sangat Baik',
+        kedisiplinan: kepribadian.aspek_kedisiplinan || 'Baik',
+        kerapihan: kepribadian.aspek_kerapihan || 'Baik',
+        kemandirian: kepribadian.aspek_kemandirian || 'Baik',
+        kepemimpinan: kepribadian.aspek_kepemimpinan || 'Baik'
+      },
+      presensi: {
+        sakit: s.sakit !== undefined ? s.sakit : 0,
+        izin: s.izin !== undefined ? s.izin : 0,
+        alpa: s.alpa !== undefined ? s.alpa : 0
+      },
+      rank: 1
+    };
+  });
+
+  // 3. Compute Ranking
+  studentRows.sort((a, b) => b.average - a.average || b.totalScore - a.totalScore);
+  studentRows.forEach((s, idx) => {
+    s.rank = idx + 1;
+  });
+
+  const rankedTopStudent = studentRows.length > 0 ? studentRows[0] : null;
+  studentRows.sort((a, b) => (Number(a.no) || 0) - (Number(b.no) || 0));
+
+  // 4. Compute Per-Subject Statistics (Footer Summary)
+  const mapelStats = MAPEL_LEGER_CONFIG.map((m, mIdx) => {
+    let sum = 0;
+    let min = 100;
+    let max = 0;
+    let countTuntas = 0;
+    const totalStudents = studentRows.length;
+
+    studentRows.forEach(s => {
+      const score = s.mapelScores[mIdx]?.akhir || 0;
+      sum += score;
+      if (score < min) min = score;
+      if (score > max) max = score;
+      if (score >= m.kkm) countTuntas++;
+    });
+
+    const avg = totalStudents > 0 ? (sum / totalStudents).toFixed(1) : 0;
+    const passPct = totalStudents > 0 ? Math.round((countTuntas / totalStudents) * 100) : 100;
+
+    return {
+      mapelId: m.id,
+      mapelName: m.name,
+      abbr: m.abbr,
+      kkm: m.kkm,
+      avg: avg,
+      min: min <= 100 ? min : 0,
+      max: max,
+      passPct: passPct
+    };
+  });
+
+  // 5. Overall Class Summary
+  const grandTotalAvg = studentRows.length > 0 
+    ? (studentRows.reduce((acc, s) => acc + s.average, 0) / studentRows.length).toFixed(1) 
+    : 0;
+
+  const totalClassEntries = studentRows.length * MAPEL_LEGER_CONFIG.length;
+  const totalClassTuntas = studentRows.reduce((acc, s) => acc + s.tuntasCount, 0);
+  const classPassRate = totalClassEntries > 0 
+    ? Math.round((totalClassTuntas / totalClassEntries) * 100) + '%' 
+    : '100%';
+
+  return {
+    kelas: targetKelas,
+    tahunAjaran: targetTA,
+    semester: targetSem,
+    students: studentRows,
+    topStudent: rankedTopStudent,
+    mapelStats: mapelStats,
+    grandTotalAvg: grandTotalAvg,
+    classPassRate: classPassRate
+  };
+}
+
+/**
+ * Main Leger Renderer
+ */
+function renderLegerMatrix() {
+  const ta = document.getElementById('leger-filter-tahun-ajaran')?.value || '2026/2027';
+  const sem = document.getElementById('leger-filter-semester')?.value || 'I (Satu)';
+  const kelas = document.getElementById('leger-filter-kelas')?.value || 'IX ABU BAKAR';
+  const mode = document.getElementById('leger-filter-mode')?.value || 'ringkas';
+
+  const data = buildLegerDataset(kelas, ta, sem);
+  currentLegerDataCache = data;
+
+  // Update Widget Stats
+  const elTotal = document.getElementById('leger-stat-total-siswa');
+  const elAvg = document.getElementById('leger-stat-avg-kelas');
+  const elTop = document.getElementById('leger-stat-top-student');
+  const elPass = document.getElementById('leger-stat-pass-rate');
+
+  if (elTotal) elTotal.innerText = `${data.students.length} Siswa`;
+  if (elAvg) elAvg.innerText = data.grandTotalAvg;
+  if (elTop) {
+    elTop.innerText = data.topStudent ? `${data.topStudent.nama} (${data.topStudent.average})` : '-';
+    elTop.title = data.topStudent ? `Rank 1: ${data.topStudent.nama} - Rata-rata ${data.topStudent.average}` : '';
+  }
+  if (elPass) elPass.innerText = data.classPassRate;
+
+  // Update Official Print Header Elements
+  const pTa = document.getElementById('print-leger-ta');
+  const pSem = document.getElementById('print-leger-sem');
+  const pKelas = document.getElementById('print-leger-kelas');
+  const pWalas = document.getElementById('print-leger-walas');
+  const pSignWalas = document.getElementById('print-leger-sign-walas');
+
+  if (pTa) pTa.innerText = ta;
+  if (pSem) pSem.innerText = sem;
+  if (pKelas) pKelas.innerText = kelas;
+
+  const walasMap = {
+    'IX ABU BAKAR': 'Kahlil Gibran, S.Pd.',
+    'IX UMMU SALAMAH': 'Hilyatul Auliya, S.Pd.',
+    'VII AISYAH': 'Tri Yuli Aryani, S.Pd., Gr.',
+    'VII UTSMAN': 'Andrew Syaputra, S.Pd.',
+    'VIII THALHAH': 'Fahmi Idris, S.Pd.',
+    'VIII KHADIJAH': 'Nur Aini, S.Pd.',
+    'VII BILAL': 'Muhammad Farhan, S.Pd.'
+  };
+  const walasName = walasMap[kelas] || 'Kahlil Gibran, S.Pd.';
+  if (pWalas) pWalas.innerText = walasName;
+  if (pSignWalas) pSignWalas.innerText = walasName;
+
+  // Build Thead
+  buildLegerThead(mode);
+
+  // Build Tbody
+  buildLegerTbody(data.students, mode);
+
+  // Build Tfoot
+  buildLegerTfoot(data.mapelStats, data.grandTotalAvg, mode);
+
+  // Apply search query if any
+  filterLegerMatrixLocal();
+}
+
+function buildLegerThead(mode) {
+  const thead = document.getElementById('leger-table-thead');
+  if (!thead) return;
+
+  let mapelHeaders = '';
+  if (mode === 'rincian') {
+    mapelHeaders = MAPEL_LEGER_CONFIG.map(m => `
+      <th colspan="3" class="px-2 py-2 text-center border-r border-slate-200 border-b bg-slate-100 text-slate-800" title="${m.name} (KKM ${m.kkm})">
+        <div class="truncate max-w-[120px] mx-auto font-black">${m.abbr}</div>
+        <div class="text-[9px] text-amber-700 font-bold">KKM ${m.kkm}</div>
+      </th>
+    `).join('');
+  } else {
+    mapelHeaders = MAPEL_LEGER_CONFIG.map(m => `
+      <th class="px-2 py-2 text-center border-r border-slate-200 bg-slate-100 text-slate-800 min-w-[55px]" title="${m.name} (KKM ${m.kkm})">
+        <div class="truncate font-black">${m.abbr}</div>
+        <div class="text-[9px] text-amber-700 font-bold">${m.kkm}</div>
+      </th>
+    `).join('');
+  }
+
+  let subMapelHeaders = '';
+  if (mode === 'rincian') {
+    subMapelHeaders = MAPEL_LEGER_CONFIG.map(() => `
+      <th class="px-1 py-1 text-center border-r border-slate-200 bg-amber-50 text-amber-900 text-[9px] font-bold">Tug</th>
+      <th class="px-1 py-1 text-center border-r border-slate-200 bg-blue-50 text-blue-900 text-[9px] font-bold">UTS</th>
+      <th class="px-1.5 py-1 text-center border-r border-slate-200 bg-emerald-50 text-emerald-950 text-[9px] font-black">Akh</th>
+    `).join('');
+  }
+
+  let extraHeaders = '';
+  if (mode === 'holistik') {
+    extraHeaders = `
+      <th class="px-2 py-2 text-center border-r border-slate-200 bg-emerald-100/70 text-emerald-950 min-w-[60px]" title="Tahfidz & Tajwid">Tahfidz</th>
+      <th class="px-2 py-2 text-center border-r border-slate-200 bg-emerald-100/70 text-emerald-950 min-w-[65px]" title="Adab Harian">Adab</th>
+      <th class="px-2 py-2 text-center border-r border-slate-200 bg-emerald-100/70 text-emerald-950 min-w-[65px]" title="Ibadah Harian">Ibadah</th>
+      <th class="px-2 py-2 text-center border-r border-slate-200 bg-amber-100/70 text-amber-950 min-w-[65px]" title="Akhlak">Akhlak</th>
+      <th class="px-2 py-2 text-center border-r border-slate-200 bg-amber-100/70 text-amber-950 min-w-[65px]" title="Kedisiplinan">Disiplin</th>
+      <th class="px-1 py-2 text-center border-r border-slate-200 bg-rose-100/70 text-rose-950 w-8" title="Sakit">S</th>
+      <th class="px-1 py-2 text-center border-r border-slate-200 bg-rose-100/70 text-rose-950 w-8" title="Izin">I</th>
+      <th class="px-1 py-2 text-center border-r border-slate-200 bg-rose-100/70 text-rose-950 w-8" title="Alpa">A</th>
+    `;
+  }
+
+  if (mode === 'rincian') {
+    thead.innerHTML = `
+      <tr>
+        <th rowspan="2" class="w-10 px-2 py-2 text-center border-r border-slate-200 bg-slate-100 sticky left-0 z-20">No</th>
+        <th rowspan="2" class="w-24 px-3 py-2 border-r border-slate-200 bg-slate-100 sticky left-10 z-20">NISN</th>
+        <th rowspan="2" class="w-48 px-3 py-2 border-r border-slate-200 bg-slate-100 sticky left-34 z-20">Nama Peserta Didik</th>
+        <th rowspan="2" class="w-10 px-1 py-2 text-center border-r border-slate-200 bg-slate-100">L/P</th>
+        ${mapelHeaders}
+        <th rowspan="2" class="w-20 px-2 py-2 text-center border-r border-slate-200 bg-indigo-100/80 text-indigo-950 font-black">Total</th>
+        <th rowspan="2" class="w-20 px-2 py-2 text-center border-r border-slate-200 bg-emerald-100/80 text-emerald-950 font-black">Rata2</th>
+        <th rowspan="2" class="w-16 px-2 py-2 text-center bg-amber-100/80 text-amber-950 font-black">Rank</th>
+      </tr>
+      <tr>
+        ${subMapelHeaders}
+      </tr>
+    `;
+  } else {
+    thead.innerHTML = `
+      <tr>
+        <th class="w-10 px-2 py-3 text-center border-r border-slate-200 bg-slate-100 sticky left-0 z-20">No</th>
+        <th class="w-24 px-3 py-3 border-r border-slate-200 bg-slate-100 sticky left-10 z-20">NISN</th>
+        <th class="w-48 px-3 py-3 border-r border-slate-200 bg-slate-100 sticky left-34 z-20">Nama Peserta Didik</th>
+        <th class="w-10 px-1 py-3 text-center border-r border-slate-200 bg-slate-100">L/P</th>
+        ${mapelHeaders}
+        <th class="w-20 px-2 py-3 text-center border-r border-slate-200 bg-indigo-100/80 text-indigo-950 font-black">Total</th>
+        <th class="w-20 px-2 py-3 text-center border-r border-slate-200 bg-emerald-100/80 text-emerald-950 font-black">Rata2</th>
+        <th class="w-16 px-2 py-3 text-center border-r border-slate-200 bg-amber-100/80 text-amber-950 font-black">Rank</th>
+        ${extraHeaders}
+      </tr>
+    `;
+  }
+}
+
+function buildLegerTbody(students, mode) {
+  const tbody = document.getElementById('leger-table-tbody');
+  if (!tbody) return;
+
+  if (students.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="30" class="px-6 py-10 text-center text-slate-400">
+          <i class="fa-solid fa-folder-open text-2xl mb-2 text-slate-300 block"></i>
+          Belum ada data murid terdaftar pada rombel kelas ini.
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
+  tbody.innerHTML = students.map((s, idx) => {
+    let rankBadge = `<span class="font-bold font-mono text-slate-700">${s.rank}</span>`;
+    if (s.rank === 1) rankBadge = `<span class="px-2 py-0.5 rounded-full bg-amber-400 text-amber-950 font-black text-[10px] shadow-sm">🥇 1</span>`;
+    else if (s.rank === 2) rankBadge = `<span class="px-2 py-0.5 rounded-full bg-slate-200 text-slate-900 font-black text-[10px] shadow-sm">🥈 2</span>`;
+    else if (s.rank === 3) rankBadge = `<span class="px-2 py-0.5 rounded-full bg-amber-700/20 text-amber-900 font-black text-[10px] shadow-sm">🥉 3</span>`;
+
+    let mapelCells = '';
+    if (mode === 'rincian') {
+      mapelCells = s.mapelScores.map(m => {
+        const isUnderKkm = m.akhir < m.kkm;
+        const cellBg = isUnderKkm ? 'bg-rose-50/70 text-rose-700 font-bold' : (m.akhir >= 90 ? 'bg-emerald-50/40 text-emerald-950 font-bold' : '');
+        return `
+          <td class="px-1 py-2 text-center border-r border-slate-200 font-mono text-[11px] text-amber-950 bg-amber-50/20">${m.tugas}</td>
+          <td class="px-1 py-2 text-center border-r border-slate-200 font-mono text-[11px] text-blue-950 bg-blue-50/20">${m.uts}</td>
+          <td class="px-1.5 py-2 text-center border-r border-slate-200 font-mono font-black text-xs ${cellBg}">${m.akhir}</td>
+        `;
+      }).join('');
+    } else {
+      mapelCells = s.mapelScores.map(m => {
+        const isUnderKkm = m.akhir < m.kkm;
+        let cellClass = 'font-mono text-xs';
+        if (isUnderKkm) {
+          cellClass += ' bg-rose-100/70 text-rose-800 font-black';
+        } else if (m.akhir >= 90) {
+          cellClass += ' bg-emerald-50 text-emerald-800 font-bold';
+        } else if (m.akhir >= 80) {
+          cellClass += ' bg-blue-50/50 text-blue-900 font-medium';
+        } else {
+          cellClass += ' text-slate-700';
+        }
+
+        return `
+          <td class="px-2 py-2 text-center border-r border-slate-200 ${cellClass}" title="${m.mapelName}: ${m.akhir} (${m.predikat})">
+            ${m.akhir}
+          </td>
+        `;
+      }).join('');
+    }
+
+    let extraCells = '';
+    if (mode === 'holistik') {
+      extraCells = `
+        <td class="px-2 py-2 text-center border-r border-slate-200 font-mono font-bold text-emerald-900 bg-emerald-50/30">${s.diniyah.tahfidz}</td>
+        <td class="px-2 py-2 text-center border-r border-slate-200 text-[10px] font-semibold text-slate-700">${s.diniyah.adab.replace(/\s*\(.*\)/, '')}</td>
+        <td class="px-2 py-2 text-center border-r border-slate-200 text-[10px] font-semibold text-slate-700">${s.diniyah.ibadah.replace(/\s*\(.*\)/, '')}</td>
+        <td class="px-2 py-2 text-center border-r border-slate-200 text-[10px] font-semibold text-slate-700">${s.kepribadian.akhlak}</td>
+        <td class="px-2 py-2 text-center border-r border-slate-200 text-[10px] font-semibold text-slate-700">${s.kepribadian.kedisiplinan}</td>
+        <td class="px-1 py-2 text-center border-r border-slate-200 font-mono text-xs text-slate-600">${s.presensi.sakit}</td>
+        <td class="px-1 py-2 text-center border-r border-slate-200 font-mono text-xs text-slate-600">${s.presensi.izin}</td>
+        <td class="px-1 py-2 text-center border-r border-slate-200 font-mono text-xs ${s.presensi.alpa > 0 ? 'text-rose-600 font-bold bg-rose-50' : 'text-slate-600'}">${s.presensi.alpa}</td>
+      `;
+    }
+
+    return `
+      <tr class="hover:bg-blue-50/30 transition leger-matrix-row" data-nama="${s.nama.toLowerCase()}" data-nis="${s.nis}">
+        <td class="px-2 py-2 text-center font-mono text-slate-500 border-r border-slate-200 bg-white sticky left-0 z-10">${s.no}</td>
+        <td class="px-3 py-2 font-mono font-bold text-slate-700 border-r border-slate-200 bg-white sticky left-10 z-10">${s.nisn}</td>
+        <td class="px-3 py-2 font-bold text-slate-900 border-r border-slate-200 bg-white sticky left-34 z-10 truncate max-w-[180px]" title="${s.nama}">
+          ${s.nama}
+        </td>
+        <td class="px-1 py-2 text-center border-r border-slate-200 text-[11px] font-bold text-slate-600">${s.gender}</td>
+        ${mapelCells}
+        <td class="px-2 py-2 text-center font-mono font-bold text-indigo-950 bg-indigo-50/40 border-r border-slate-200">${s.totalScore}</td>
+        <td class="px-2 py-2 text-center font-mono font-black text-emerald-950 bg-emerald-50/40 border-r border-slate-200">${s.average}</td>
+        <td class="px-2 py-2 text-center border-r border-slate-200 bg-amber-50/40">${rankBadge}</td>
+        ${extraCells}
+      </tr>
+    `;
+  }).join('');
+}
+
+function buildLegerTfoot(mapelStats, grandAvg, mode) {
+  const tfoot = document.getElementById('leger-table-tfoot');
+  if (!tfoot) return;
+
+  let avgCells = '';
+  let minCells = '';
+  let maxCells = '';
+  let passCells = '';
+
+  if (mode === 'rincian') {
+    avgCells = mapelStats.map(m => `<td colspan="3" class="px-2 py-2 text-center border-r border-slate-300 font-mono font-black text-blue-950">${m.avg}</td>`).join('');
+    minCells = mapelStats.map(m => `<td colspan="3" class="px-2 py-1.5 text-center border-r border-slate-300 font-mono text-rose-700">${m.min}</td>`).join('');
+    maxCells = mapelStats.map(m => `<td colspan="3" class="px-2 py-1.5 text-center border-r border-slate-300 font-mono text-emerald-700 font-bold">${m.max}</td>`).join('');
+    passCells = mapelStats.map(m => `<td colspan="3" class="px-2 py-1.5 text-center border-r border-slate-300 font-mono text-slate-700">${m.passPct}%</td>`).join('');
+  } else {
+    avgCells = mapelStats.map(m => `<td class="px-2 py-2 text-center border-r border-slate-300 font-mono font-black text-blue-950">${m.avg}</td>`).join('');
+    minCells = mapelStats.map(m => `<td class="px-2 py-1.5 text-center border-r border-slate-300 font-mono text-rose-700">${m.min}</td>`).join('');
+    maxCells = mapelStats.map(m => `<td class="px-2 py-1.5 text-center border-r border-slate-300 font-mono text-emerald-700 font-bold">${m.max}</td>`).join('');
+    passCells = mapelStats.map(m => `<td class="px-2 py-1.5 text-center border-r border-slate-300 font-mono text-slate-700">${m.passPct}%</td>`).join('');
+  }
+
+  let extraTfootCols = mode === 'holistik' ? `<td colspan="8" class="border-r border-slate-300"></td>` : '';
+
+  tfoot.innerHTML = `
+    <tr class="bg-slate-100 border-t-2 border-slate-300">
+      <td colspan="4" class="px-3 py-2 font-bold text-slate-900 border-r border-slate-300 sticky left-0 z-10 bg-slate-100">
+        Rata-Rata Mata Pelajaran
+      </td>
+      ${avgCells}
+      <td class="px-2 py-2 text-center border-r border-slate-300 font-mono font-bold text-indigo-950">-</td>
+      <td class="px-2 py-2 text-center border-r border-slate-300 font-mono font-black text-emerald-950 text-xs">${grandAvg}</td>
+      <td class="px-2 py-2 text-center border-r border-slate-300">-</td>
+      ${extraTfootCols}
+    </tr>
+    <tr class="bg-slate-50 text-[9px] text-slate-600">
+      <td colspan="4" class="px-3 py-1 font-semibold border-r border-slate-300 sticky left-0 z-10 bg-slate-50">
+        Nilai Tertinggi (Max)
+      </td>
+      ${maxCells}
+      <td colspan="${mode === 'holistik' ? 11 : 3}" class="border-r border-slate-300"></td>
+    </tr>
+    <tr class="bg-slate-50 text-[9px] text-slate-600">
+      <td colspan="4" class="px-3 py-1 font-semibold border-r border-slate-300 sticky left-0 z-10 bg-slate-50">
+        Nilai Terendah (Min)
+      </td>
+      ${minCells}
+      <td colspan="${mode === 'holistik' ? 11 : 3}" class="border-r border-slate-300"></td>
+    </tr>
+    <tr class="bg-slate-50 text-[9px] text-slate-600">
+      <td colspan="4" class="px-3 py-1 font-semibold border-r border-slate-300 sticky left-0 z-10 bg-slate-50">
+        % Ketuntasan KKM
+      </td>
+      ${passCells}
+      <td colspan="${mode === 'holistik' ? 11 : 3}" class="border-r border-slate-300"></td>
+    </tr>
+  `;
+}
+
+function filterLegerMatrixLocal() {
+  const query = (document.getElementById('leger-filter-search')?.value || '').toLowerCase().trim();
+  const rows = document.querySelectorAll('.leger-matrix-row');
+  rows.forEach(tr => {
+    if (!query) {
+      tr.style.display = '';
+      return;
+    }
+    const nama = tr.getAttribute('data-nama') || '';
+    const nis = tr.getAttribute('data-nis') || '';
+    tr.style.display = nama.includes(query) || nis.includes(query) ? '' : 'none';
+  });
+}
+
+/**
+ * Clean & Formatted Excel / CSV Exporter for Master Leger
+ */
+function exportLegerToExcel() {
+  if (!currentLegerDataCache || !currentLegerDataCache.students || currentLegerDataCache.students.length === 0) {
+    showToast('Tidak ada data leger untuk diekspor.', 'warning');
+    return;
+  }
+
+  const { kelas, tahunAjaran, semester, students, mapelStats, grandTotalAvg } = currentLegerDataCache;
+
+  // UTF-8 BOM for Indonesian characters in Microsoft Excel
+  let csv = "\uFEFF";
+
+  // Header Title
+  csv += `BUKU LEGER NILAI LENGKAP SMP AL-IMAM ISLAMIC SCHOOL\r\n`;
+  csv += `Kelas: ${kelas}, Tahun Ajaran: ${tahunAjaran}, Semester: ${semester}\r\n\r\n`;
+
+  // Columns Header
+  const headers = [
+    'No', 'NIS', 'NISN', 'Nama Siswa', 'L/P',
+    ...MAPEL_LEGER_CONFIG.map(m => `${m.name} (KKM ${m.kkm})`),
+    'Total Nilai', 'Rata-Rata', 'Peringkat',
+    'Tahfidz', 'Adab Harian', 'Ibadah Harian', 'Akhlak', 'Kedisiplinan',
+    'Sakit (S)', 'Izin (I)', 'Alpa (A)'
+  ];
+  csv += headers.map(h => `"${h}"`).join(',') + "\r\n";
+
+  // Student Rows
+  students.forEach(s => {
+    const row = [
+      s.no,
+      `'${s.nis}`,
+      `'${s.nisn}`,
+      `"${s.nama}"`,
+      s.gender,
+      ...s.mapelScores.map(m => m.akhir),
+      s.totalScore,
+      s.average,
+      s.rank,
+      s.diniyah.tahfidz,
+      `"${s.diniyah.adab}"`,
+      `"${s.diniyah.ibadah}"`,
+      `"${s.kepribadian.akhlak}"`,
+      `"${s.kepribadian.kedisiplinan}"`,
+      s.presensi.sakit,
+      s.presensi.izin,
+      s.presensi.alpa
+    ];
+    csv += row.join(',') + "\r\n";
+  });
+
+  // Footer Stats
+  csv += "\r\n";
+  csv += `"Rata-Rata Mata Pelajaran","","","","",` + mapelStats.map(m => m.avg).join(',') + `,"",${grandTotalAvg},""\r\n`;
+  csv += `"% Tuntas KKM","","","","",` + mapelStats.map(m => `"${m.passPct}%"`).join(',') + `,"","",""\r\n`;
+
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.setAttribute("href", url);
+  link.setAttribute("download", `Buku_Leger_Nilai_${kelas.replace(/\s+/g, '_')}_${tahunAjaran.replace('/', '-')}_Sem_${semester.replace(/\s+/g, '_')}.csv`);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+
+  showToast(`Alhamdulillah, Buku Leger Kelas ${kelas} berhasil diekspor ke file Excel/CSV!`, 'success');
+}
+
+/**
+ * Printable Master Leger (Landscape Optimization)
+ */
+function printLeger() {
+  const targetArea = document.getElementById('leger-printable-area');
+  if (!targetArea) return;
+
+  document.body.classList.add('printing-leger-landscape');
+  window.print();
+  setTimeout(() => {
+    document.body.classList.remove('printing-leger-landscape');
+  }, 1000);
 }
 
 // 10C. KELOLA & TAMBAH TAHUN AJARAN BARU (KEPALA SEKOLAH & GURU WORKFLOW)
@@ -8346,6 +9166,7 @@ function switchViewAndHighlight(viewName) {
   const titles = {
     'dashboard': 'Dashboard Beranda',
     'akademik': 'Rekap Nilai (16 Mapel)',
+    'leger': 'Buku Leger Nilai (16 Mapel)',
     'kepemimpinan': 'Ahlaq & Kepribadian',
     'diniyah': 'Nilai Diniyah & Tahfidz',
     'murid': 'Data Siswa & Presensi',

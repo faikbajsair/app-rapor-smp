@@ -1,0 +1,216 @@
+<!-- View: Buku Leger Nilai Holistik (Master Matrix 16 Mapel, Diniyah & Karakter) -->
+<div id="view-leger" class="view-panel hidden space-y-6">
+  
+  <!-- Header & Filter Bar (No Print) -->
+  <div class="no-print bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="w-3 h-3 rounded-full bg-emerald-600 animate-pulse"></span>
+          <h2 class="text-lg font-bold text-slate-900">Buku Leger Nilai Holistik Siswa</h2>
+          <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-emerald-100 text-emerald-800 border border-emerald-300">
+            16 Mapel + Diniyah + Karakter
+          </span>
+        </div>
+        <p class="text-xs text-slate-500 mt-0.5">Matriks rekapitulasi seluruh nilai siswa sekelas, kalkulasi total, rata-rata, ranking otomatis, dan siap cetak/ekspor.</p>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex flex-wrap items-center gap-2">
+        <button onclick="exportLegerToExcel()" 
+                class="px-3.5 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-300 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
+          <i class="fa-solid fa-file-excel text-emerald-600"></i>
+          <span>Export Excel / CSV</span>
+        </button>
+        <button onclick="printLeger()" 
+                class="px-3.5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold shadow-md transition flex items-center gap-1.5">
+          <i class="fa-solid fa-print"></i>
+          <span>Cetak Leger (Landscape)</span>
+        </button>
+        <button onclick="renderLegerMatrix()" 
+                class="p-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold transition" title="Refresh Leger">
+          <i class="fa-solid fa-rotate"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Filter Multi-Kriteria (Tahun Ajaran, Semester, Kelas, Mode Tampilan, Search) -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 pt-3 border-t border-slate-100">
+      <div>
+        <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Tahun Ajaran</label>
+        <select id="leger-filter-tahun-ajaran" onchange="renderLegerMatrix()" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 font-bold text-slate-800 focus:ring-2 focus:ring-emerald-500">
+          <option value="2026/2027" selected>2026/2027 (Aktif)</option>
+          <option value="2025/2026">2025/2026</option>
+          <option value="2024/2025">2024/2025</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Semester</label>
+        <select id="leger-filter-semester" onchange="renderLegerMatrix()" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 font-bold text-slate-800 focus:ring-2 focus:ring-emerald-500">
+          <option value="I (Satu)" selected>I (Satu) / Ganjil</option>
+          <option value="II (Dua)">II (Dua) / Genap</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Pilih Rombel / Kelas</label>
+        <select id="leger-filter-kelas" onchange="renderLegerMatrix()" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 font-bold text-slate-800 focus:ring-2 focus:ring-emerald-500">
+          <option value="IX ABU BAKAR">IX ABU BAKAR (12 Ikhwan)</option>
+          <option value="IX UMMU SALAMAH">IX UMMU SALAMAH (16 Akhwat)</option>
+          <option value="VII AISYAH">VII AISYAH (18 Akhwat)</option>
+          <option value="VII UTSMAN">VII UTSMAN (15 Ikhwan)</option>
+          <option value="VIII THALHAH">VIII THALHAH (Ikhwan)</option>
+          <option value="VIII KHADIJAH">VIII KHADIJAH (21 Akhwat)</option>
+          <option value="VII BILAL">VII BILAL (Ikhwan)</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Mode Tampilan Matriks</label>
+        <select id="leger-filter-mode" onchange="renderLegerMatrix()" class="w-full text-xs bg-emerald-50/70 border border-emerald-300 rounded-lg px-3 py-2 font-bold text-emerald-950 focus:ring-2 focus:ring-emerald-500">
+          <option value="ringkas" selected>📑 Ringkas (Nilai Akhir 16 Mapel + Rank)</option>
+          <option value="rincian">📊 Rincian (Tugas & UTS per Mapel)</option>
+          <option value="holistik">🌟 Holistik (Akademik + Diniyah + Karakter)</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Cari Siswa di Matriks</label>
+        <div class="relative">
+          <input type="text" id="leger-filter-search" oninput="filterLegerMatrixLocal()" placeholder="Ketik nama atau NISN..." 
+                 class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg pl-8 pr-3 py-2 text-slate-800 focus:ring-2 focus:ring-emerald-500" />
+          <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-2.5 text-slate-400 text-xs"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Stats Widgets -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-3 border-t border-slate-100">
+      <div class="bg-blue-50/80 border border-blue-100 p-3 rounded-xl flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center text-base shadow-sm">
+          <i class="fa-solid fa-users"></i>
+        </div>
+        <div>
+          <span class="text-[10px] font-bold text-blue-700 uppercase tracking-wider block">Total Murid</span>
+          <span class="text-base font-black text-blue-950" id="leger-stat-total-siswa">0</span>
+        </div>
+      </div>
+
+      <div class="bg-emerald-50/80 border border-emerald-100 p-3 rounded-xl flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center text-base shadow-sm">
+          <i class="fa-solid fa-chart-line"></i>
+        </div>
+        <div>
+          <span class="text-[10px] font-bold text-emerald-700 uppercase tracking-wider block">Rata-Rata Kelas</span>
+          <span class="text-base font-black text-emerald-950" id="leger-stat-avg-kelas">0</span>
+        </div>
+      </div>
+
+      <div class="bg-amber-50/80 border border-amber-100 p-3 rounded-xl flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-amber-600 text-white flex items-center justify-center text-base shadow-sm">
+          <i class="fa-solid fa-trophy"></i>
+        </div>
+        <div>
+          <span class="text-[10px] font-bold text-amber-800 uppercase tracking-wider block">Bintang Kelas (Rank 1)</span>
+          <span class="text-xs font-black text-amber-950 truncate max-w-[140px] block" id="leger-stat-top-student">-</span>
+        </div>
+      </div>
+
+      <div class="bg-indigo-50/80 border border-indigo-100 p-3 rounded-xl flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center text-base shadow-sm">
+          <i class="fa-solid fa-circle-check"></i>
+        </div>
+        <div>
+          <span class="text-[10px] font-bold text-indigo-700 uppercase tracking-wider block">Tingkat Tuntas KKM</span>
+          <span class="text-base font-black text-indigo-950" id="leger-stat-pass-rate">100%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LEGER MATRIX TABLE CONTAINER (INTERACTIVE ON-SCREEN DISPLAY) -->
+  <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden" id="leger-printable-area">
+    
+    <!-- Print Official Header (Visible on print only) -->
+    <div class="hidden print-only p-4 border-b border-slate-800 space-y-2">
+      <div class="flex items-center justify-between border-b-2 border-slate-900 pb-2">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 rounded-lg bg-slate-900 text-white flex items-center justify-center text-xl font-bold">
+            AI
+          </div>
+          <div>
+            <h1 class="text-base font-extrabold uppercase tracking-tight text-slate-950">SMP AL-IMAM ISLAMIC SCHOOL</h1>
+            <p class="text-[10px] text-slate-600">Al-Imam Boarding School & Islamic Education Center • NPSN: 70003482</p>
+          </div>
+        </div>
+        <div class="text-right text-[11px]">
+          <h2 class="text-xs font-black uppercase tracking-wider text-slate-900">BUKU LEGER NILAI TENGAH SEMESTER</h2>
+          <p class="text-slate-600">Tahun Ajaran: <strong id="print-leger-ta">2026/2027</strong> | Semester: <strong id="print-leger-sem">I (Satu)</strong></p>
+          <p class="text-slate-600">Kelas: <strong id="print-leger-kelas">IX ABU BAKAR</strong> | Wali Kelas: <strong id="print-leger-walas">Kahlil Gibran, S.Pd.</strong></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- On-screen Legend & Guide -->
+    <div class="no-print px-5 py-3 bg-slate-50 border-b border-slate-200 flex flex-wrap items-center justify-between gap-3 text-xs">
+      <div class="flex flex-wrap items-center gap-4 text-[11px]">
+        <span class="font-bold text-slate-700">Keterangan Warna:</span>
+        <span class="inline-flex items-center gap-1"><span class="w-3 h-3 rounded bg-emerald-100 border border-emerald-300"></span> Nilai A (Mumtaz ≥90)</span>
+        <span class="inline-flex items-center gap-1"><span class="w-3 h-3 rounded bg-blue-100 border border-blue-300"></span> Nilai B (Jayyid 80-89)</span>
+        <span class="inline-flex items-center gap-1"><span class="w-3 h-3 rounded bg-amber-100 border border-amber-300"></span> Nilai C (Tuntas KKM)</span>
+        <span class="inline-flex items-center gap-1"><span class="w-3 h-3 rounded bg-rose-100 border border-rose-300"></span> Di bawah KKM</span>
+      </div>
+      <div class="text-[11px] text-slate-500">
+        Geser tabel ke samping <i class="fa-solid fa-arrows-left-right text-slate-400"></i> untuk melihat seluruh 16 mapel & holistik
+      </div>
+    </div>
+
+    <!-- Master Matrix Table -->
+    <div class="overflow-x-auto max-h-[700px] relative">
+      <table class="w-full text-left text-xs text-slate-700 border-collapse" id="table-master-leger">
+        <thead class="bg-slate-100 text-slate-800 uppercase text-[10px] font-extrabold sticky top-0 z-10 border-b-2 border-slate-300 shadow-sm" id="leger-table-thead">
+          <!-- Dynamically Generated Thead -->
+        </thead>
+        <tbody class="divide-y divide-slate-200 bg-white" id="leger-table-tbody">
+          <tr>
+            <td colspan="25" class="px-6 py-12 text-center text-slate-400">
+              <i class="fa-solid fa-spinner fa-spin text-2xl mb-2 text-emerald-600 block"></i>
+              <span>Menyusun matriks buku leger nilai sekelas...</span>
+            </td>
+          </tr>
+        </tbody>
+        <tfoot class="bg-slate-100 text-slate-900 font-bold text-[10px] border-t-2 border-slate-300 sticky bottom-0 z-10 shadow-inner" id="leger-table-tfoot">
+          <!-- Dynamically Generated Tfoot for Mapel Averages, Min, Max -->
+        </tfoot>
+      </table>
+    </div>
+
+    <!-- Print Official Footer Signatures (Visible on print only) -->
+    <div class="hidden print-only p-6 border-t border-slate-300 mt-6 page-break-inside-avoid">
+      <div class="flex justify-between items-start text-xs">
+        <div class="text-center w-64">
+          <p class="text-slate-600">Mengetahui,</p>
+          <p class="font-bold text-slate-900 mt-0.5">Kepala SMP Al-Imam Islamic School</p>
+          <div class="h-16 flex items-center justify-center">
+            <!-- Space for stamp & sign -->
+          </div>
+          <p class="font-bold underline text-slate-900" id="print-leger-sign-kepsek">Andrew Syaputra, S.Pd., M.Pd.</p>
+          <p class="text-[10px] text-slate-500">NIY. 20180701001</p>
+        </div>
+
+        <div class="text-center w-64">
+          <p class="text-slate-600" id="print-leger-date">Bogor, 27 September 2026</p>
+          <p class="font-bold text-slate-900 mt-0.5">Wali Kelas</p>
+          <div class="h-16 flex items-center justify-center">
+            <!-- Space for sign -->
+          </div>
+          <p class="font-bold underline text-slate-900" id="print-leger-sign-walas">Kahlil Gibran, S.Pd.</p>
+          <p class="text-[10px] text-slate-500" id="print-leger-niy-walas">NIY. 20200801015</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>

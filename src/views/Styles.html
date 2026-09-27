@@ -68,16 +68,24 @@
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   }
   
-  /* Print Optimization for Report Card (Format A4) */
+  /* Print Optimization for Report Card (Format A4) & Leger (Landscape) */
   @media print {
     @page {
-      size: A4 portrait;
-      margin: 12mm 15mm 12mm 15mm;
+      size: auto;
+      margin: 8mm 10mm 8mm 10mm;
+    }
+    body.printing-leger-landscape {
+      font-size: 7.5pt !important;
+    }
+    body.printing-leger-landscape table th,
+    body.printing-leger-landscape table td {
+      padding: 2px 4px !important;
+      font-size: 7pt !important;
     }
     body {
       background: #ffffff !important;
       color: #000000 !important;
-      font-size: 11pt;
+      font-size: 10pt;
     }
     .no-print {
       display: none !important;
