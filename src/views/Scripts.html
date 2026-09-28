@@ -846,13 +846,13 @@ function switchView(viewName) {
 
   // Update Sidebar Active Class
   document.querySelectorAll('.sidebar-nav-link').forEach(link => {
-    link.classList.remove('bg-emerald-600', 'text-white', 'shadow-md', 'shadow-emerald-600/20');
-    link.classList.add('text-slate-700');
+    link.classList.remove('bg-[#00a66c]', 'text-white', 'shadow-md', 'shadow-[#00a66c]/20', 'font-bold');
+    link.classList.add('text-slate-600', 'font-medium');
   });
   const activeLink = document.getElementById('nav-item-' + viewName);
   if (activeLink) {
-    activeLink.classList.add('bg-emerald-600', 'text-white', 'shadow-md', 'shadow-emerald-600/20');
-    activeLink.classList.remove('text-slate-700');
+    activeLink.classList.remove('text-slate-600', 'font-medium');
+    activeLink.classList.add('bg-[#00a66c]', 'text-white', 'shadow-md', 'shadow-[#00a66c]/20', 'font-bold');
   }
 
   // Close mobile sidebar if opened
@@ -1120,7 +1120,7 @@ function switchDashboardTab(tabName) {
   ['Akademik', 'Diniyah', 'Kepemimpinan'].forEach(name => {
     const btn = document.getElementById('dashTabBtn' + name);
     if (btn) {
-      btn.className = 'flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all duration-200 text-slate-600 hover:text-slate-900';
+      btn.className = 'flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all duration-200 text-slate-600 hover:text-slate-900 hover:bg-slate-50';
     }
   });
 
@@ -1129,13 +1129,13 @@ function switchDashboardTab(tabName) {
 
   const activeBtn = document.getElementById('dashTabBtn' + tabName);
   if (activeBtn) {
-    activeBtn.className = 'flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all duration-200 bg-emerald-600 text-white shadow-sm shadow-emerald-600/20';
+    activeBtn.className = `flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all duration-200 bg-[#00a66c] text-white shadow-sm shadow-[#00a66c]/20`;
   }
 
   const titles = {
-    'Akademik': { title: 'Dashboard Nilai Akademik (16 Mapel)', subtitle: 'Status rekapitulasi nilai 16 mata pelajaran, UTS (STS), dan capaian kompetensi murid.' },
+    'Akademik': { title: 'Dashboard Rekap Nilai Akademik (16 Mapel)', subtitle: 'Status rekapitulasi nilai 16 mata pelajaran, KKM, dan capaian kompetensi murid.' },
     'Diniyah': { title: 'Dashboard Diniyah & Tahfidz', subtitle: 'Status capaian hafalan Al-Qur\'an Ziyadah, Muroja\'ah Mutqin, Adab, dan Bahasa Arab.' },
-    'Kepemimpinan': { title: 'Dashboard Ahlaq & Karakter', subtitle: 'Evaluasi 6 aspek karakter Al-Imam (Ibadah, Akhlak, Kedisiplinan, Kerapihan, Kepemimpinan, Kerja Sama).' }
+    'Kepemimpinan': { title: 'Dashboard Ahlaq & Kepribadian', subtitle: 'Evaluasi 6 aspek karakter Al-Imam (Ibadah, Akhlak, Kedisiplinan, Kerapihan, Kepemimpinan, Kerja Sama).' }
   };
 
   if (document.getElementById('dashboardTitle')) document.getElementById('dashboardTitle').innerText = titles[tabName].title;
@@ -1561,23 +1561,23 @@ function switchAkademikInputMode(mode) {
 
   [secLeger, secList, secUpload].forEach(el => el?.classList.add('hidden'));
   [btnLeger, btnList, btnUpload].forEach(btn => {
-    btn?.classList.remove('bg-emerald-600', 'text-white', 'shadow-sm', 'shadow-emerald-600/20', 'bg-white', 'text-blue-700', 'text-emerald-700');
+    btn?.classList.remove('bg-white', 'text-blue-700', 'shadow-sm', 'text-emerald-700');
     btn?.classList.add('text-slate-600');
   });
 
   if (mode === 'leger') {
     secLeger?.classList.remove('hidden');
-    btnLeger?.classList.add('bg-emerald-600', 'text-white', 'shadow-sm', 'shadow-emerald-600/20');
+    btnLeger?.classList.add('bg-white', 'text-blue-700', 'shadow-sm');
     btnLeger?.classList.remove('text-slate-600');
     renderLegerGrid();
   } else if (mode === 'upload') {
     secUpload?.classList.remove('hidden');
-    btnUpload?.classList.add('bg-emerald-600', 'text-white', 'shadow-sm', 'shadow-emerald-600/20');
+    btnUpload?.classList.add('bg-white', 'text-emerald-700', 'shadow-sm');
     btnUpload?.classList.remove('text-slate-600');
     initUploadView();
   } else {
     secList?.classList.remove('hidden');
-    btnList?.classList.add('bg-emerald-600', 'text-white', 'shadow-sm', 'shadow-emerald-600/20');
+    btnList?.classList.add('bg-white', 'text-blue-700', 'shadow-sm');
     btnList?.classList.remove('text-slate-600');
     loadNilaiAkademik();
   }

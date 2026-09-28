@@ -2,30 +2,30 @@
 <div id="view-akademik" class="view-panel hidden space-y-6">
   
   <!-- Header & Mode Switcher -->
-  <div class="bg-white p-6 rounded-3xl border border-emerald-100/70 shadow-sm">
+  <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
     <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
       <div>
         <div class="flex items-center gap-2">
-          <span class="w-2.5 h-2.5 rounded-full bg-emerald-600"></span>
+          <span class="w-2.5 h-2.5 rounded-full bg-blue-600"></span>
           <h2 class="text-lg font-bold text-slate-900">Rekap Nilai & Capaian Kompetensi (16 Mata Pelajaran)</h2>
         </div>
         <p class="text-xs text-slate-500 mt-0.5">Sesuai Format Sheet Rekap Excel SMP Al-Imam: Input Nilai UTS & Narasi Capaian Kompetensi per Rombel.</p>
       </div>
 
       <!-- Mode Switcher Tabs -->
-      <div class="flex items-center gap-1.5 bg-slate-100/80 p-1.5 rounded-2xl border border-slate-200/80">
+      <div class="flex items-center gap-2 bg-slate-100 p-1 rounded-xl">
         <button id="btn-mode-akademik-leger" onclick="switchAkademikInputMode('leger')" 
-                class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-2 bg-emerald-600 text-white shadow-sm shadow-emerald-600/20">
+                class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-2 bg-white text-blue-700 shadow-sm">
           <i class="fa-solid fa-table-cells"></i>
           <span>Mode Input Leger Sekelas</span>
         </button>
         <button id="btn-mode-akademik-upload" onclick="switchAkademikInputMode('upload')" 
-                class="px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 transition flex items-center gap-2">
+                class="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 transition flex items-center gap-2">
           <i class="fa-solid fa-file-arrow-up text-emerald-600"></i>
           <span>Upload Nilai Baru (Excel/CSV/Paste)</span>
         </button>
         <button id="btn-mode-akademik-list" onclick="switchAkademikInputMode('list')" 
-                class="px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 transition flex items-center gap-2">
+                class="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 transition flex items-center gap-2">
           <i class="fa-solid fa-list-check"></i>
           <span>Tabel Riwayat Nilai</span>
         </button>
@@ -34,19 +34,19 @@
 
     <!-- Statistik Ringkasan Akademik Widgets -->
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4 pt-4 border-t border-slate-100">
-      <div class="bg-emerald-50/70 border border-emerald-100 p-3.5 rounded-2xl">
-        <span class="text-[10px] font-bold text-emerald-800 uppercase tracking-wider block">Total Entri Nilai</span>
-        <span class="text-lg font-extrabold text-emerald-950" id="widget-ak-total">0</span>
+      <div class="bg-blue-50/70 border border-blue-100 p-3 rounded-xl">
+        <span class="text-[10px] font-bold text-blue-700 uppercase tracking-wider block">Total Entri Nilai</span>
+        <span class="text-lg font-extrabold text-blue-950" id="widget-ak-total">0</span>
       </div>
-      <div class="bg-teal-50/70 border border-teal-100 p-3.5 rounded-2xl">
-        <span class="text-[10px] font-bold text-teal-800 uppercase tracking-wider block">Rata-Rata Nilai</span>
-        <span class="text-lg font-extrabold text-teal-950" id="widget-ak-avg">0</span>
+      <div class="bg-emerald-50/70 border border-emerald-100 p-3 rounded-xl">
+        <span class="text-[10px] font-bold text-emerald-700 uppercase tracking-wider block">Rata-Rata Nilai</span>
+        <span class="text-lg font-extrabold text-emerald-950" id="widget-ak-avg">0</span>
       </div>
-      <div class="bg-indigo-50/70 border border-indigo-100 p-3.5 rounded-2xl">
+      <div class="bg-indigo-50/70 border border-indigo-100 p-3 rounded-xl">
         <span class="text-[10px] font-bold text-indigo-700 uppercase tracking-wider block">Tuntas KKM</span>
         <span class="text-lg font-extrabold text-indigo-950" id="widget-ak-pass-rate">100%</span>
       </div>
-      <div class="bg-amber-50/70 border border-amber-100 p-3.5 rounded-2xl">
+      <div class="bg-amber-50/70 border border-amber-100 p-3 rounded-xl">
         <span class="text-[10px] font-bold text-amber-700 uppercase tracking-wider block">Predikat A (Mumtaz)</span>
         <span class="text-lg font-extrabold text-amber-950" id="widget-ak-count-a">0</span>
       </div>
@@ -55,7 +55,7 @@
 
   <!-- SECTION 1: MODE INPUT LEGER SEKELAS (GURU-FIRST SPREADSHEET WORKFLOW) -->
   <div id="section-akademik-leger" class="space-y-4">
-    <div class="bg-white p-6 rounded-3xl border border-emerald-100/70 shadow-sm space-y-4">
+    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
       
       <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 pb-3 border-b border-slate-100">
         <div class="flex flex-wrap items-center gap-3">
@@ -122,14 +122,14 @@
         <!-- Quick Generator & Fast-Fill Tools -->
         <div class="flex flex-wrap items-center gap-2">
           <button onclick="autoGenerateAllLegerCapaian()" 
-                  class="px-3.5 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm"
+                  class="px-3.5 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-300 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm"
                   title="Generate otomatis narasi capaian kompetensi sesuai nilai murid">
             <i class="fa-solid fa-wand-magic-sparkles text-emerald-600"></i>
             <span>Auto-Generate Capaian Sekelas</span>
           </button>
           
           <button onclick="saveBulkLegerAkademik()" id="btn-save-bulk-akademik"
-                  class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-sm shadow-emerald-600/20 transition flex items-center gap-2">
+                  class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold shadow-md transition flex items-center gap-2">
             <i class="fa-solid fa-floppy-disk"></i>
             <span>Simpan Nilai Sekelas</span>
           </button>
@@ -137,26 +137,26 @@
       </div>
 
       <!-- Quick Tips Card -->
-      <div class="p-3.5 bg-emerald-50/60 border border-emerald-100 rounded-2xl text-xs text-emerald-950 flex flex-col md:flex-row md:items-center justify-between gap-2">
+      <div class="p-3 bg-blue-50/60 border border-blue-100 rounded-xl text-xs text-blue-900 flex flex-col md:flex-row md:items-center justify-between gap-2">
         <div class="flex items-center gap-2">
           <i class="fa-solid fa-lightbulb text-amber-500 text-sm"></i>
-          <span><strong>Navigasi Cepat:</strong> Ketik nilai murid lalu tekan <kbd class="px-1.5 py-0.5 bg-white border border-emerald-200 rounded text-[10px] font-mono font-bold">Enter</kbd> atau <kbd class="px-1.5 py-0.5 bg-white border border-emerald-200 rounded text-[10px] font-mono font-bold">Panah Bawah</kbd> untuk berpindah ke baris murid berikutnya.</span>
+          <span><strong>Navigasi Cepat:</strong> Ketik nilai murid lalu tekan <kbd class="px-1.5 py-0.5 bg-white border border-blue-200 rounded text-[10px] font-mono">Enter</kbd> atau <kbd class="px-1.5 py-0.5 bg-white border border-blue-200 rounded text-[10px] font-mono">Panah Bawah</kbd> untuk berpindah ke baris murid berikutnya.</span>
         </div>
-        <div class="text-[11px] font-bold text-emerald-800">
-          Total Murid: <span id="leger-student-count" class="font-black text-emerald-950">12</span>
+        <div class="text-[11px] font-semibold text-blue-700">
+          Total Murid: <span id="leger-student-count" class="font-bold">12</span>
         </div>
       </div>
 
       <!-- Leger Spreadsheet Grid Table -->
-      <div class="overflow-x-auto rounded-2xl border border-slate-200">
+      <div class="overflow-x-auto rounded-xl border border-slate-200">
         <table class="w-full text-left text-xs text-slate-700">
-          <thead class="bg-emerald-50/60 text-slate-800 uppercase text-[10px] font-extrabold tracking-wider border-b border-emerald-100">
+          <thead class="bg-slate-100 text-slate-800 uppercase text-[10px] font-extrabold tracking-wider border-b border-slate-200">
             <tr>
               <th class="w-10 px-2 py-3 text-center border-r border-slate-200">No</th>
               <th class="w-28 px-3 py-3 border-r border-slate-200">NISN</th>
               <th class="w-56 px-3 py-3 border-r border-slate-200">Nama Peserta Didik</th>
               <th class="w-16 px-2 py-3 text-center border-r border-slate-200">KKM</th>
-              <th class="w-28 px-2 py-3 text-center border-r border-slate-200 bg-emerald-100/70 text-emerald-950 font-black">Nilai Akhir UTS</th>
+              <th class="w-28 px-2 py-3 text-center border-r border-slate-200 bg-blue-100/70 text-blue-950 font-black">Nilai Akhir UTS</th>
               <th class="w-16 px-2 py-3 text-center border-r border-slate-200">Predikat</th>
               <th class="px-4 py-3">Capaian Kompetensi (Narasi Pembelajaran)</th>
             </tr>
@@ -169,7 +169,7 @@
 
       <div class="flex items-center justify-between pt-2 text-xs text-slate-500">
         <span>Seluruh 16 mata pelajaran langsung tersimpan dan dicetak pada Rapor Portofolio Tengah Semester.</span>
-        <button onclick="saveBulkLegerAkademik()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-sm shadow-emerald-600/20 transition flex items-center gap-2">
+        <button onclick="saveBulkLegerAkademik()" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold shadow transition flex items-center gap-2">
           <i class="fa-solid fa-floppy-disk"></i>
           <span>Simpan Nilai Sekelas</span>
         </button>
@@ -242,7 +242,7 @@
         </div>
 
         <div class="flex items-center gap-2 self-end">
-          <button onclick="openModalAkademik()" class="btn-action-input px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs shadow-sm shadow-emerald-600/20 transition flex items-center gap-2">
+          <button onclick="openModalAkademik()" class="btn-action-input px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl text-xs shadow transition flex items-center gap-2">
             <i class="fa-solid fa-plus"></i>
             <span>Input Per Murid</span>
           </button>
@@ -253,16 +253,16 @@
       </div>
 
       <!-- Table Container -->
-      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+      <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
         <div class="overflow-x-auto">
           <table class="w-full text-left text-xs text-slate-700">
-            <thead class="bg-emerald-50/60 text-slate-800 uppercase text-[10px] font-bold tracking-wider border-b border-emerald-100">
+            <thead class="bg-slate-50 text-slate-600 uppercase text-[10px] font-bold tracking-wider border-b border-slate-200">
               <tr>
                 <th class="px-4 py-3.5">Murid / NISN</th>
                 <th class="px-3 py-3.5">Kelas</th>
                 <th class="px-3 py-3.5">Mata Pelajaran</th>
                 <th class="px-2 py-3.5 text-center">KKM</th>
-                <th class="px-3 py-3.5 text-center font-bold text-emerald-950 bg-emerald-100/60">Nilai Akhir UTS</th>
+                <th class="px-3 py-3.5 text-center font-bold text-blue-900 bg-blue-50/50">Nilai Akhir UTS</th>
                 <th class="px-2 py-3.5 text-center">Predikat</th>
                 <th class="px-4 py-3.5">Capaian Kompetensi</th>
                 <th class="px-4 py-3.5 text-right">Aksi</th>
@@ -285,7 +285,7 @@
 
   <!-- SECTION 3: MODE UPLOAD NILAI SISWA (EXCEL / CSV / PASTE WORKFLOW T.A. 2026/2027) -->
   <div id="section-akademik-upload" class="hidden space-y-4">
-    <div class="bg-white p-6 rounded-3xl border border-emerald-100/70 shadow-sm space-y-4">
+    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
       
       <!-- Upload Header & Settings Filter -->
       <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-slate-100">
@@ -301,7 +301,7 @@
 
         <div class="flex flex-wrap items-center gap-2">
           <button onclick="downloadUploadTemplate()" 
-                  class="px-3.5 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 rounded-xl text-xs font-bold transition flex items-center gap-2 shadow-sm">
+                  class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 rounded-xl text-xs font-bold transition flex items-center gap-2 shadow-sm">
             <i class="fa-solid fa-file-csv text-emerald-600"></i>
             <span>Download Template Excel/CSV</span>
           </button>
@@ -368,20 +368,20 @@
       <!-- Upload Tabs: File Upload vs Paste Textarea -->
       <div class="space-y-3">
         <div class="flex items-center gap-2 border-b border-slate-200 pb-2 text-xs font-bold">
-          <button type="button" id="tab-upload-file" onclick="switchUploadMethod('file')" class="px-3.5 py-1.5 rounded-xl bg-emerald-600 text-white flex items-center gap-1.5 shadow-sm shadow-emerald-600/20">
+          <button type="button" id="tab-upload-file" onclick="switchUploadMethod('file')" class="px-3.5 py-1.5 rounded-lg bg-blue-600 text-white flex items-center gap-1.5 shadow-sm">
             <i class="fa-solid fa-file-arrow-up"></i>
             <span>Upload File (Excel / CSV)</span>
           </button>
-          <button type="button" id="tab-upload-paste" onclick="switchUploadMethod('paste')" class="px-3.5 py-1.5 rounded-xl bg-slate-100 text-slate-600 hover:text-slate-900 flex items-center gap-1.5">
+          <button type="button" id="tab-upload-paste" onclick="switchUploadMethod('paste')" class="px-3.5 py-1.5 rounded-lg bg-slate-100 text-slate-600 hover:text-slate-900 flex items-center gap-1.5">
             <i class="fa-solid fa-paste"></i>
             <span>Copy-Paste dari Spreadsheet</span>
           </button>
         </div>
 
         <!-- Method 1: File Dropzone -->
-        <div id="upload-method-file" class="border-2 border-dashed border-emerald-200 hover:border-emerald-500 rounded-3xl p-6 text-center bg-emerald-50/20 transition cursor-pointer" onclick="document.getElementById('file-upload-input').click()">
+        <div id="upload-method-file" class="border-2 border-dashed border-slate-300 hover:border-blue-500 rounded-2xl p-6 text-center bg-slate-50/50 transition cursor-pointer" onclick="document.getElementById('file-upload-input').click()">
           <input type="file" id="file-upload-input" accept=".csv, .xlsx, .xls, .txt" class="hidden" onchange="handleFileUpload(event)" />
-          <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-xl mx-auto mb-2 shadow-sm">
+          <div class="w-12 h-12 rounded-2xl bg-blue-100 text-blue-600 flex items-center justify-center text-xl mx-auto mb-2 shadow-inner">
             <i class="fa-solid fa-cloud-arrow-up"></i>
           </div>
           <h4 class="text-xs font-bold text-slate-800">Klik untuk memilih file atau seret file ke sini</h4>
@@ -392,7 +392,7 @@
         <div id="upload-method-paste" class="hidden space-y-2">
           <label class="block text-xs font-semibold text-slate-700">Paste Baris Nilai dari Excel / Google Sheets:</label>
           <textarea id="paste-upload-textarea" rows="5" oninput="handlePasteUpload()" 
-                    class="w-full text-xs font-mono bg-slate-50 border border-slate-300 rounded-2xl p-3 text-slate-800 focus:ring-2 focus:ring-emerald-500" 
+                    class="w-full text-xs font-mono bg-slate-50 border border-slate-300 rounded-xl p-3 text-slate-800 focus:ring-2 focus:ring-blue-500" 
                     placeholder="Contoh format kolom (bisa langsung copy sebaris/tabel dari Excel):
 NIS	Nama Murid	Mata Pelajaran	KKM	Nilai UTS
 252607038	Achmed Syathir Elhayba	Informatika	75	77
@@ -406,22 +406,22 @@ NIS	Nama Murid	Mata Pelajaran	KKM	Nilai UTS
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div class="flex items-center gap-2">
             <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
-            <h4 class="text-xs font-bold text-slate-800">Pratinjau Hasil Pembacaan Data (<span id="upload-preview-count" class="text-emerald-700 font-bold">0</span> Data Terbaca)</h4>
+            <h4 class="text-xs font-bold text-slate-800">Pratinjau Hasil Pembacaan Data (<span id="upload-preview-count" class="text-blue-600 font-bold">0</span> Data Terbaca)</h4>
           </div>
           <div class="flex items-center gap-2">
             <button type="button" onclick="resetUploadData()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-semibold rounded-lg">
               Reset
             </button>
-            <button type="button" onclick="saveUploadedGrades()" id="btn-save-uploaded-grades" class="px-4 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow-sm shadow-emerald-600/20 flex items-center gap-1.5 transition">
+            <button type="button" onclick="saveUploadedGrades()" id="btn-save-uploaded-grades" class="px-4 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow flex items-center gap-1.5 transition">
               <i class="fa-solid fa-floppy-disk"></i>
               <span>Simpan & Import Nilai ke Database</span>
             </button>
           </div>
         </div>
 
-        <div class="overflow-x-auto rounded-2xl border border-slate-200 max-h-72">
+        <div class="overflow-x-auto rounded-xl border border-slate-200 max-h-72">
           <table class="w-full text-left text-xs text-slate-700">
-            <thead class="bg-emerald-50/60 text-slate-800 uppercase text-[10px] font-extrabold sticky top-0 border-b border-emerald-100">
+            <thead class="bg-slate-100 text-slate-800 uppercase text-[10px] font-extrabold sticky top-0 border-b border-slate-200">
               <tr>
                 <th class="px-3 py-2 text-center w-10">No</th>
                 <th class="px-3 py-2">NIS</th>
@@ -429,7 +429,7 @@ NIS	Nama Murid	Mata Pelajaran	KKM	Nilai UTS
                 <th class="px-3 py-2">Kelas</th>
                 <th class="px-3 py-2">Mata Pelajaran</th>
                 <th class="px-2 py-2 text-center">KKM</th>
-                <th class="px-3 py-2 text-center bg-emerald-100/60 text-emerald-950 font-bold">Nilai Akhir UTS</th>
+                <th class="px-3 py-2 text-center bg-blue-50 text-blue-900 font-bold">Nilai Akhir UTS</th>
                 <th class="px-2 py-2 text-center">Predikat</th>
                 <th class="px-4 py-2">Capaian Kompetensi (Auto-Generated)</th>
               </tr>
@@ -448,13 +448,13 @@ NIS	Nama Murid	Mata Pelajaran	KKM	Nilai UTS
 
 <!-- Modal Form: Tambah / Edit Nilai Akademik Individual -->
 <div id="modal-akademik" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-  <div class="bg-white rounded-3xl max-w-lg w-full shadow-2xl border border-slate-100 overflow-hidden transform transition-all">
-    <div class="px-6 py-4 bg-emerald-700 text-white flex items-center justify-between">
+  <div class="bg-white rounded-2xl max-w-lg w-full shadow-2xl border border-slate-100 overflow-hidden transform transition-all">
+    <div class="px-6 py-4 bg-gradient-to-r from-blue-900 to-indigo-900 text-white flex items-center justify-between">
       <div class="flex items-center gap-2">
-        <i class="fa-solid fa-book-open text-emerald-200"></i>
+        <i class="fa-solid fa-book-open text-blue-300"></i>
         <h3 class="font-bold text-sm" id="modal-akademik-title">Input Nilai Akademik Murid</h3>
       </div>
-      <button onclick="closeModalAkademik()" class="text-emerald-200 hover:text-white text-lg">
+      <button onclick="closeModalAkademik()" class="text-slate-300 hover:text-white text-lg">
         <i class="fa-solid fa-xmark"></i>
       </button>
     </div>
@@ -464,14 +464,14 @@ NIS	Nama Murid	Mata Pelajaran	KKM	Nilai UTS
 
       <div>
         <label class="block text-xs font-bold text-slate-700 mb-1">Pilih Murid *</label>
-        <select id="akademik-nis" required class="w-full text-xs bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-slate-800 focus:ring-2 focus:ring-emerald-500 font-bold">
+        <select id="akademik-nis" required class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-blue-500 font-bold">
           <!-- Populated dynamically via JS -->
         </select>
       </div>
 
       <div>
         <label class="block text-xs font-bold text-slate-700 mb-1">Mata Pelajaran *</label>
-        <select id="akademik-mapel" required onchange="onModalMapelChange()" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-slate-800 focus:ring-2 focus:ring-emerald-500 font-bold">
+        <select id="akademik-mapel" required onchange="onModalMapelChange()" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-blue-500 font-bold">
           <option value="Akidah">1. Akidah (KKM 70)</option>
           <option value="Akhlak">2. Akhlak (KKM 72)</option>
           <option value="Hadits">3. Hadits (KKM 75)</option>
@@ -495,20 +495,20 @@ NIS	Nama Murid	Mata Pelajaran	KKM	Nilai UTS
         <div>
           <label class="block text-xs font-bold text-slate-700 mb-1">KKM *</label>
           <input type="number" id="akademik-kkm" value="70" min="50" max="100" required oninput="recalcAkademikPreview()" 
-                 class="w-full text-xs bg-slate-50 border border-slate-300 rounded-xl px-2.5 py-2 text-slate-800 focus:ring-2 focus:ring-emerald-500 text-center font-bold" />
+                 class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-2 text-slate-800 focus:ring-2 focus:ring-blue-500 text-center font-bold" />
         </div>
         <div>
-          <label class="block text-xs font-bold text-emerald-950 mb-1">Nilai Akhir UTS *</label>
+          <label class="block text-xs font-bold text-blue-900 mb-1">Nilai Akhir UTS *</label>
           <input type="number" id="akademik-uts" min="0" max="100" required oninput="recalcAkademikPreview()" 
-                 class="w-full text-xs bg-emerald-50/70 border border-emerald-300 rounded-xl px-2.5 py-2 text-slate-800 focus:ring-2 focus:ring-emerald-500 text-center font-black text-emerald-950 text-base" placeholder="85" />
+                 class="w-full text-xs bg-blue-50/70 border border-blue-300 rounded-lg px-2.5 py-2 text-slate-800 focus:ring-2 focus:ring-blue-500 text-center font-black text-blue-950 text-base" placeholder="85" />
         </div>
       </div>
 
       <!-- Live Calculation Card -->
-      <div class="bg-emerald-50/80 border border-emerald-200 rounded-2xl p-3 grid grid-cols-3 gap-2 text-center">
+      <div class="bg-blue-50 border border-blue-200 rounded-xl p-3 grid grid-cols-3 gap-2 text-center">
         <div>
           <span class="text-[10px] text-slate-600 font-semibold block uppercase">Nilai Akhir Rapor</span>
-          <span class="text-base font-black text-emerald-950 font-mono" id="akademik-preview-nilai-akhir">85</span>
+          <span class="text-base font-black text-blue-950 font-mono" id="akademik-preview-nilai-akhir">85</span>
         </div>
         <div>
           <span class="text-[10px] text-slate-600 font-semibold block uppercase">Status KKM</span>
@@ -523,18 +523,18 @@ NIS	Nama Murid	Mata Pelajaran	KKM	Nilai UTS
       <div>
         <div class="flex items-center justify-between mb-1">
           <label class="text-xs font-bold text-slate-700">Capaian Kompetensi *</label>
-          <button type="button" onclick="autoGenerateModalCapaian()" class="text-[11px] text-emerald-700 hover:text-emerald-900 font-bold flex items-center gap-1">
+          <button type="button" onclick="autoGenerateModalCapaian()" class="text-[11px] text-blue-600 hover:text-blue-800 font-semibold flex items-center gap-1">
             <i class="fa-solid fa-wand-magic-sparkles"></i> Auto-Generate
           </button>
         </div>
-        <textarea id="akademik-catatan" rows="3" required class="w-full text-xs bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-slate-800 focus:ring-2 focus:ring-emerald-500" placeholder="Ananda menunjukkan pemahaman baik tentang..."></textarea>
+        <textarea id="akademik-catatan" rows="3" required class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-blue-500" placeholder="Ananda menunjukkan pemahaman baik tentang..."></textarea>
       </div>
 
       <div class="pt-3 border-t border-slate-100 flex items-center justify-end gap-2">
         <button type="button" onclick="closeModalAkademik()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold">
           Batal
         </button>
-        <button type="submit" id="btn-save-akademik" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-sm shadow-emerald-600/20 flex items-center gap-2">
+        <button type="submit" id="btn-save-akademik" class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold shadow flex items-center gap-2">
           <i class="fa-solid fa-floppy-disk"></i>
           <span>Simpan Nilai</span>
         </button>
