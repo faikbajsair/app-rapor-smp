@@ -2,36 +2,36 @@
 <div id="view-murid" class="view-panel hidden space-y-6">
   
   <!-- Header & Toolbar -->
-  <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+  <div class="bg-white p-6 rounded-3xl border border-emerald-100/80 shadow-sm">
     <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
       <div>
         <div class="flex items-center gap-2">
-          <span class="w-2.5 h-2.5 rounded-full bg-purple-600"></span>
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-600"></span>
           <h2 class="text-lg font-bold text-slate-900">Data Peserta Didik, Presensi & Ekskul</h2>
         </div>
         <p class="text-xs text-slate-500 mt-0.5">Sesuai Format Excel SMP Al-Imam: Master NISN, Nama Peserta Didik, Kehadiran (S/I/A), dan Pilihan 3 Ekstrakurikuler.</p>
       </div>
 
       <div class="flex flex-wrap items-center gap-2">
-        <button onclick="openModalBulkPresensi()" class="px-3.5 py-2 bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-200 font-bold rounded-xl text-xs shadow-sm transition flex items-center gap-1.5">
+        <button onclick="openModalBulkPresensi()" class="px-3.5 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 font-bold rounded-xl text-xs shadow-sm transition flex items-center gap-1.5">
           <i class="fa-solid fa-clipboard-user"></i>
           <span>Input Presensi & Ekskul Sekelas</span>
         </button>
-        <button onclick="openModalMurid()" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-xl text-xs shadow transition flex items-center gap-2">
+        <button onclick="openModalMurid()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl text-xs shadow transition flex items-center gap-2">
           <i class="fa-solid fa-user-plus"></i>
           <span>Tambah Murid</span>
         </button>
-        <button onclick="loadMuridList()" class="p-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold transition" title="Refresh Data">
+        <button onclick="loadMuridList()" class="p-2 bg-slate-100 hover:bg-emerald-50 text-slate-700 rounded-xl text-xs font-semibold transition" title="Refresh Data">
           <i class="fa-solid fa-rotate"></i>
         </button>
       </div>
     </div>
 
     <!-- Filters Row: Tahun Ajaran, Kelas, dan Cari Murid -->
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4 pt-4 border-t border-slate-100">
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4 pt-4 border-t border-emerald-50">
       <div>
         <label class="block text-[11px] font-semibold text-slate-600 mb-1">Tahun Ajaran</label>
-        <select id="filter-murid-tahun-ajaran" onchange="loadMuridList()" class="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-purple-500 font-bold">
+        <select id="filter-murid-tahun-ajaran" onchange="loadMuridList()" class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-bold">
           <option value="Semua">Semua Tahun Ajaran</option>
           <option value="2026/2027" selected>2026/2027 (Aktif)</option>
           <option value="2025/2026">2025/2026</option>
@@ -41,7 +41,7 @@
 
       <div>
         <label class="block text-[11px] font-semibold text-slate-600 mb-1">Filter Kelas</label>
-        <select id="filter-murid-kelas" onchange="loadMuridList()" class="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-purple-500 font-bold">
+        <select id="filter-murid-kelas" onchange="loadMuridList()" class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-bold">
           <option value="Semua">Semua Kelas</option>
           <option value="VII UTSMAN">Kelas VII UTSMAN</option>
           <option value="VII AISYAH">Kelas VII AISYAH</option>
@@ -57,7 +57,7 @@
         <label class="block text-[11px] font-semibold text-slate-600 mb-1">Cari Murid / NISN</label>
         <div class="relative">
           <input type="text" id="filter-murid-search" oninput="filterTableMuridLocal()" placeholder="Ketik nama murid, NIS, atau NISN..." 
-                 class="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg pl-8 pr-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-purple-500" />
+                 class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl pl-8 pr-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500" />
           <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-2.5 text-slate-400 text-xs"></i>
         </div>
       </div>
@@ -65,10 +65,10 @@
   </div>
 
   <!-- Table Container -->
-  <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+  <div class="bg-white rounded-3xl border border-emerald-100/80 shadow-sm overflow-hidden">
     <div class="overflow-x-auto">
       <table class="w-full text-left text-xs text-slate-700">
-        <thead class="bg-slate-50 text-slate-600 uppercase text-[10px] font-bold tracking-wider border-b border-slate-200">
+        <thead class="bg-emerald-50/60 text-slate-700 uppercase text-[10px] font-bold tracking-wider border-b border-emerald-100">
           <tr>
             <th class="w-12 px-3 py-3.5 text-center">No</th>
             <th class="px-3 py-3.5">NISN</th>

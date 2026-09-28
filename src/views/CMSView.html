@@ -2,19 +2,19 @@
 <div id="view-cms" class="view-panel hidden space-y-6">
   
   <!-- CMS Header Banner -->
-  <div class="bg-gradient-to-r from-slate-900 via-rose-950 to-slate-900 text-white p-6 rounded-2xl border border-slate-800 shadow-xl">
+  <div class="bg-white p-6 sm:p-8 rounded-3xl border border-emerald-100/80 shadow-sm">
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
       <div>
-        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-500/20 text-rose-300 text-xs font-semibold mb-2 border border-rose-500/30">
+        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-semibold mb-2 border border-emerald-200">
           <i class="fa-solid fa-gear"></i>
           <span>Multi-Tenant & SaaS Ready</span>
         </div>
-        <h2 class="text-xl sm:text-2xl font-black">CMS & Pengaturan Aplikasi</h2>
-        <p class="text-xs text-slate-300 mt-1">Kustomisasi identitas sekolah, branding warna, tanda tangan, manajemen pengguna (Admin, Kepsek, Guru, Wali Murid), dan periode rapor.</p>
+        <h2 class="text-xl sm:text-2xl font-black text-slate-900">CMS & Pengaturan Aplikasi</h2>
+        <p class="text-xs text-slate-500 mt-1">Kustomisasi identitas sekolah, branding warna, tanda tangan, manajemen pengguna (Admin, Kepsek, Guru, Wali Murid), dan periode rapor.</p>
       </div>
 
       <div class="flex items-center gap-2">
-        <button onclick="saveCmsSettingsAll()" class="px-5 py-2.5 bg-rose-600 hover:bg-rose-500 text-white font-bold rounded-xl text-xs shadow-lg transition flex items-center gap-2">
+        <button onclick="saveCmsSettingsAll()" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs shadow-md shadow-emerald-600/20 transition flex items-center gap-2">
           <i class="fa-solid fa-floppy-disk"></i>
           <span>Simpan Semua Pengaturan</span>
         </button>
@@ -23,17 +23,17 @@
   </div>
 
   <!-- CMS Sub-Tabs Navigation -->
-  <div class="flex border-b border-slate-200 bg-white rounded-xl p-1 shadow-sm gap-1">
-    <button onclick="switchCmsTab('appearance')" id="cms-tab-appearance" class="cms-tab-btn flex-1 py-2 px-3 text-xs font-bold rounded-lg text-slate-800 bg-slate-100 transition">
-      <i class="fa-solid fa-palette mr-1.5 text-rose-600"></i>
+  <div class="flex border border-emerald-100/80 bg-white rounded-2xl p-1.5 shadow-sm gap-1.5">
+    <button onclick="switchCmsTab('appearance')" id="cms-tab-appearance" class="cms-tab-btn flex-1 py-2.5 px-4 text-xs font-bold rounded-xl text-white bg-emerald-600 shadow-sm transition">
+      <i class="fa-solid fa-palette mr-1.5"></i>
       <span>Tampilan & Branding</span>
     </button>
-    <button onclick="switchCmsTab('users')" id="cms-tab-users" class="cms-tab-btn flex-1 py-2 px-3 text-xs font-semibold rounded-lg text-slate-500 hover:text-slate-800 transition">
-      <i class="fa-solid fa-users-gear mr-1.5 text-blue-600"></i>
+    <button onclick="switchCmsTab('users')" id="cms-tab-users" class="cms-tab-btn flex-1 py-2.5 px-4 text-xs font-semibold rounded-xl text-slate-600 hover:text-emerald-800 hover:bg-emerald-50/50 transition">
+      <i class="fa-solid fa-users-gear mr-1.5 text-emerald-600"></i>
       <span>Manajemen User & Role</span>
     </button>
-    <button onclick="switchCmsTab('academic')" id="cms-tab-academic" class="cms-tab-btn flex-1 py-2 px-3 text-xs font-semibold rounded-lg text-slate-500 hover:text-slate-800 transition">
-      <i class="fa-solid fa-calendar-check mr-1.5 text-amber-600"></i>
+    <button onclick="switchCmsTab('academic')" id="cms-tab-academic" class="cms-tab-btn flex-1 py-2.5 px-4 text-xs font-semibold rounded-xl text-slate-600 hover:text-emerald-800 hover:bg-emerald-50/50 transition">
+      <i class="fa-solid fa-calendar-check mr-1.5 text-emerald-600"></i>
       <span>Semester & TTD Rapor</span>
     </button>
   </div>
@@ -43,9 +43,9 @@
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
       
       <!-- Card: Logo & Identitas Lembaga -->
-      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
-        <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-3">
-          <i class="fa-solid fa-school text-rose-600"></i>
+      <div class="bg-white p-6 rounded-3xl border border-emerald-100/80 shadow-sm space-y-4">
+        <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2 border-b border-emerald-50 pb-3">
+          <i class="fa-solid fa-school text-emerald-600"></i>
           <span>Identitas Lembaga / Sekolah</span>
         </h3>
 

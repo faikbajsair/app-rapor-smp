@@ -2,7 +2,7 @@
 <div id="view-diniyah" class="view-panel hidden space-y-6">
   
   <!-- Section Header & Filter Toolbar -->
-  <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+  <div class="bg-white p-6 rounded-3xl border border-emerald-100/70 shadow-sm space-y-4">
     <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
       <div>
         <div class="flex items-center gap-2">
@@ -13,7 +13,7 @@
       </div>
 
       <div class="flex items-center gap-2">
-        <button onclick="openModalDiniyah()" class="btn-action-input px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl text-xs shadow transition flex items-center gap-2">
+        <button onclick="openModalDiniyah()" class="btn-action-input px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs shadow-sm shadow-emerald-600/20 transition flex items-center gap-2">
           <i class="fa-solid fa-plus"></i>
           <span>Input Nilai Diniyah</span>
         </button>
@@ -24,20 +24,20 @@
     </div>
 
     <!-- Statistik Ringkasan Diniyah Widgets -->
-    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4 pt-4 border-t border-slate-100">
-      <div class="bg-emerald-50/70 border border-emerald-100 p-3 rounded-xl">
-        <span class="text-[10px] font-bold text-emerald-700 uppercase tracking-wider block">Total Terinput</span>
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-4 border-t border-slate-100">
+      <div class="bg-emerald-50/70 border border-emerald-100 p-3.5 rounded-2xl">
+        <span class="text-[10px] font-bold text-emerald-800 uppercase tracking-wider block">Total Terinput</span>
         <span class="text-lg font-extrabold text-emerald-950" id="widget-dn-total">0</span>
       </div>
-      <div class="bg-teal-50/70 border border-teal-100 p-3 rounded-xl">
-        <span class="text-[10px] font-bold text-teal-700 uppercase tracking-wider block">Rata-Rata Tahfidz</span>
+      <div class="bg-teal-50/70 border border-teal-100 p-3.5 rounded-2xl">
+        <span class="text-[10px] font-bold text-teal-800 uppercase tracking-wider block">Rata-Rata Tahfidz</span>
         <span class="text-lg font-extrabold text-teal-950" id="widget-dn-tahfidz-avg">0</span>
       </div>
-      <div class="bg-blue-50/70 border border-blue-100 p-3 rounded-xl">
+      <div class="bg-blue-50/70 border border-blue-100 p-3.5 rounded-2xl">
         <span class="text-[10px] font-bold text-blue-700 uppercase tracking-wider block">Adab Mumtaz (A)</span>
         <span class="text-lg font-extrabold text-blue-950" id="widget-dn-adab-a">0</span>
       </div>
-      <div class="bg-indigo-50/70 border border-indigo-100 p-3 rounded-xl">
+      <div class="bg-indigo-50/70 border border-indigo-100 p-3.5 rounded-2xl">
         <span class="text-[10px] font-bold text-indigo-700 uppercase tracking-wider block">Rata-Rata B. Arab</span>
         <span class="text-lg font-extrabold text-indigo-950" id="widget-dn-arab-avg">0</span>
       </div>
