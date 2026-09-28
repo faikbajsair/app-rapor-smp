@@ -687,16 +687,16 @@ function saveNilaiAkademik(data) {
   const isNew = !data.id;
   const id = isNew ? 'NA-' + Utilities.getUuid().substring(0, 6).toUpperCase() : data.id;
   
-  const tugas = Number(data.nilai_tugas) || 0;
-  const uts = Number(data.nilai_uts) || 0;
-  const akhir = data.nilai_akhir !== undefined && data.nilai_akhir !== '' ? Number(data.nilai_akhir) : Math.round((tugas * 0.4) + (uts * 0.6));
+  const uts = Number(data.nilai_uts !== undefined && data.nilai_uts !== '' ? data.nilai_uts : (data.nilai_akhir || data.nilai || 85));
+  const tugas = Number(data.nilai_tugas !== undefined && data.nilai_tugas !== '' ? data.nilai_tugas : uts);
+  const akhir = data.nilai_akhir !== undefined && data.nilai_akhir !== '' ? Number(data.nilai_akhir) : uts;
   const kkm = Number(data.kkm) || 75;
   
   let predikat = data.predikat;
   if (!predikat) {
     if (akhir >= 90) predikat = 'A';
     else if (akhir >= 80) predikat = 'B';
-    else if (akhir >= 70) predikat = 'C';
+    else if (akhir >= kkm) predikat = 'C';
     else predikat = 'D';
   }
   

@@ -1619,14 +1619,11 @@ function renderLegerGrid() {
   tbody.innerHTML = students.map((s, idx) => {
     // Find existing grade
     const existing = AppState.akademikList.find(a => String(a.nis) === String(s.nis) && a.mata_pelajaran === mapel);
-    const tugasVal = existing && existing.nilai_tugas !== undefined && existing.nilai_tugas !== null && existing.nilai_tugas !== '' 
-      ? existing.nilai_tugas 
-      : (existing?.nilai_uts || existing?.nilai_akhir || 85);
     const utsVal = existing && existing.nilai_uts !== undefined && existing.nilai_uts !== null && existing.nilai_uts !== '' 
       ? existing.nilai_uts 
-      : (existing?.nilai_akhir || 85);
+      : (existing?.nilai_akhir || existing?.nilai_tugas || 85);
     
-    const akhirVal = existing?.nilai_akhir || Math.round((Number(tugasVal) + Number(utsVal)) / 2);
+    const akhirVal = Number(utsVal) || 85;
     
     let predikat = 'D';
     if (akhirVal >= 90) predikat = 'A';
@@ -1643,18 +1640,10 @@ function renderLegerGrid() {
       <td class="px-3 py-2 font-mono font-bold text-slate-700 border-r border-slate-200">${s.nisn || s.nis}</td>
       <td class="px-4 py-2 font-bold text-slate-900 border-r border-slate-200">${s.nama_murid || s.nama_santri}</td>
       <td class="px-2 py-2 text-center font-bold text-amber-900 bg-amber-50/40 border-r border-slate-200">${kkm}</td>
-      <td class="px-2 py-2 text-center border-r border-slate-200 bg-amber-50/60">
-        <input type="number" min="0" max="100" value="${tugasVal}" 
-               oninput="onLegerScoreInput(this)" onkeydown="onLegerScoreKeydown(event, this, 'tugas')"
-               class="leger-input-tugas w-16 text-center font-black text-sm bg-white border border-amber-300 rounded-lg p-1.5 text-amber-950 focus:ring-2 focus:ring-amber-500 shadow-sm" placeholder="Tugas" />
-      </td>
       <td class="px-2 py-2 text-center border-r border-slate-200 bg-blue-50/60">
         <input type="number" min="0" max="100" value="${utsVal}" 
-               oninput="onLegerScoreInput(this)" onkeydown="onLegerScoreKeydown(event, this, 'uts')"
-               class="leger-input-uts w-16 text-center font-black text-sm bg-white border border-blue-300 rounded-lg p-1.5 text-blue-950 focus:ring-2 focus:ring-blue-500 shadow-sm" placeholder="UTS" />
-      </td>
-      <td class="px-2 py-2 text-center border-r border-slate-200 bg-emerald-50/40">
-        <span class="leger-text-akhir font-mono font-black text-sm text-emerald-950">${akhirVal}</span>
+               oninput="onLegerScoreInput(this)" onkeydown="onLegerScoreKeydown(event, this)"
+               class="leger-input-uts w-20 text-center font-black text-sm bg-white border border-blue-300 rounded-lg p-1.5 text-blue-950 focus:ring-2 focus:ring-blue-500 shadow-sm" placeholder="Nilai" />
       </td>
       <td class="px-2 py-2 text-center border-r border-slate-200">
         <span class="leger-badge-predikat px-2 py-0.5 rounded-full text-xs font-black badge-predikat-${predikat}">${predikat}</span>
@@ -1685,25 +1674,8 @@ function filterLegerGridStudents() {
 function onLegerScoreInput(inputEl) {
   const row = inputEl.closest('tr');
   if (!row) return;
-  const tugasInput = row.querySelector('.leger-input-tugas');
-  const utsInput = row.querySelector('.leger-input-uts');
-  const tugasVal = Number(tugasInput?.value);
-  const utsVal = Number(utsInput?.value);
+  const akhir = Number(inputEl.value) || 0;
   const kkm = Number(document.getElementById('leger-akademik-kkm')?.value) || 70;
-  
-  let akhir = 0;
-  if (tugasInput && tugasInput.value !== '' && utsInput && utsInput.value !== '') {
-    akhir = Math.round((tugasVal + utsVal) / 2);
-  } else if (utsInput && utsInput.value !== '') {
-    akhir = utsVal;
-  } else if (tugasInput && tugasInput.value !== '') {
-    akhir = tugasVal;
-  }
-
-  const akhirSpan = row.querySelector('.leger-text-akhir');
-  if (akhirSpan) {
-    akhirSpan.innerText = akhir;
-  }
 
   let predikat = 'D';
   if (akhir >= 90) predikat = 'A';
@@ -1717,8 +1689,8 @@ function onLegerScoreInput(inputEl) {
   }
 }
 
-function onLegerScoreKeydown(event, inputEl, fieldType) {
-  const selector = fieldType ? `.leger-input-${fieldType}` : '.leger-input-uts, .leger-input-tugas';
+function onLegerScoreKeydown(event, inputEl) {
+  const selector = '.leger-input-uts';
   if (event.key === 'Enter' || event.key === 'ArrowDown') {
     event.preventDefault();
     const allScoreInputs = Array.from(document.querySelectorAll(selector));
@@ -1740,7 +1712,7 @@ function onLegerScoreKeydown(event, inputEl, fieldType) {
 
 function updateLegerPredikats() {
   document.querySelectorAll('.leger-row').forEach(row => {
-    const input = row.querySelector('.leger-input-uts') || row.querySelector('.leger-input-tugas');
+    const input = row.querySelector('.leger-input-uts');
     if (input) onLegerScoreInput(input);
   });
 }
@@ -1752,7 +1724,7 @@ function autoGenerateAllLegerCapaian() {
 
   const rows = document.querySelectorAll('.leger-row');
   rows.forEach(row => {
-    const akhir = Number(row.querySelector('.leger-text-akhir')?.innerText) || Number(row.querySelector('.leger-input-uts')?.value) || 0;
+    const akhir = Number(row.querySelector('.leger-input-uts')?.value) || 0;
     const capaian = akhir >= 90 ? capTemplate.tinggi : (akhir >= kkm ? capTemplate.sedang : capTemplate.cukup);
     const textarea = row.querySelector('.leger-input-capaian');
     if (textarea) textarea.value = capaian;
@@ -1763,9 +1735,7 @@ function autoGenerateAllLegerCapaian() {
 
 function autoGenerateModalCapaian() {
   const mapel = document.getElementById('akademik-mapel')?.value || 'Akidah';
-  const tugas = Number(document.getElementById('akademik-tugas')?.value) || 0;
-  const uts = Number(document.getElementById('akademik-uts')?.value) || 85;
-  const score = document.getElementById('akademik-tugas')?.value !== '' ? Math.round((tugas + uts) / 2) : uts;
+  const score = Number(document.getElementById('akademik-uts')?.value) || 85;
   const kkm = Number(document.getElementById('akademik-kkm')?.value) || 70;
   const capTemplate = BANK_CAPAIAN_MAPEL[mapel] || BANK_CAPAIAN_MAPEL['Akidah'];
   const capaian = score >= 90 ? capTemplate.tinggi : (score >= kkm ? capTemplate.sedang : capTemplate.cukup);
@@ -1784,17 +1754,13 @@ function saveBulkLegerAkademik() {
 
   rows.forEach(row => {
     const nis = row.getAttribute('data-nis');
-    const tugas = Number(row.querySelector('.leger-input-tugas')?.value) || 0;
     const uts = Number(row.querySelector('.leger-input-uts')?.value) || 0;
-    const akhir = (row.querySelector('.leger-input-tugas')?.value !== '' && row.querySelector('.leger-input-uts')?.value !== '') 
-      ? Math.round((tugas + uts) / 2) 
-      : (uts || tugas || 0);
     const capaian = row.querySelector('.leger-input-capaian')?.value || '';
     
     let predikat = 'D';
-    if (akhir >= 90) predikat = 'A';
-    else if (akhir >= 80) predikat = 'B';
-    else if (akhir >= kkm) predikat = 'C';
+    if (uts >= 90) predikat = 'A';
+    else if (uts >= 80) predikat = 'B';
+    else if (uts >= kkm) predikat = 'C';
 
     const m = AppState.muridList.find(x => String(x.nis) === String(nis)) || {};
 
@@ -1805,9 +1771,9 @@ function saveBulkLegerAkademik() {
       kelas: kelas,
       mata_pelajaran: mapel,
       kkm: kkm,
-      nilai_tugas: tugas,
+      nilai_tugas: uts,
       nilai_uts: uts,
-      nilai_akhir: akhir,
+      nilai_akhir: uts,
       predikat: predikat,
       capaian_kompetensi: capaian,
       catatan_guru: capaian
@@ -1821,7 +1787,7 @@ function saveBulkLegerAkademik() {
     else AppState.akademikList.push(entry);
   });
 
-  showToast(`Alhamdulillah, nilai Tugas & UTS mapel ${mapel} kelas ${kelas} berhasil disimpan! (${items.length} murid)`);
+  showToast(`Alhamdulillah, nilai UTS mapel ${mapel} kelas ${kelas} berhasil disimpan! (${items.length} murid)`);
   loadDashboardStats();
 
   const selectedYear = document.getElementById('leger-akademik-tahun-ajaran')?.value || AppState.cmsSettings.academic_year || '2026/2027';
@@ -1875,15 +1841,14 @@ function renderTableAkademik(list) {
   const tbody = document.getElementById('table-akademik-body');
   if (!tbody) return;
 
-  if (list.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="10" class="px-4 py-8 text-center text-slate-400">Tidak ada data nilai yang sesuai dengan filter.</td></tr>`;
+  if (!list || list.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="9" class="px-4 py-8 text-center text-slate-400">Tidak ada data nilai yang sesuai dengan filter.</td></tr>`;
     return;
   }
 
   tbody.innerHTML = list.map(item => {
     const nama = item.nama_murid || item.nama_santri || '-';
-    const tugasVal = item.nilai_tugas !== undefined && item.nilai_tugas !== null ? item.nilai_tugas : '-';
-    const utsVal = item.nilai_uts !== undefined && item.nilai_uts !== null ? item.nilai_uts : '-';
+    const utsVal = item.nilai_uts !== undefined && item.nilai_uts !== null ? item.nilai_uts : (item.nilai_akhir || '-');
     const akhirVal = item.nilai_akhir || item.nilai_uts || '-';
     return `
     <tr class="hover:bg-slate-50 transition">
@@ -1894,7 +1859,6 @@ function renderTableAkademik(list) {
       <td class="px-3 py-3 font-semibold text-slate-700">${item.kelas}</td>
       <td class="px-3 py-3 font-bold text-blue-700">${item.mata_pelajaran}</td>
       <td class="px-2 py-3 text-center font-bold text-amber-900">${item.kkm || 75}</td>
-      <td class="px-2 py-3 text-center font-bold text-amber-950 bg-amber-50/40 font-mono text-xs">${tugasVal}</td>
       <td class="px-2 py-3 text-center font-bold text-blue-950 bg-blue-50/40 font-mono text-xs">${utsVal}</td>
       <td class="px-2 py-3 text-center font-black text-emerald-950 bg-emerald-50/40 font-mono text-sm">${akhirVal}</td>
       <td class="px-2 py-3 text-center">
@@ -1941,7 +1905,6 @@ function openModalAkademik() {
   document.getElementById('modal-akademik-title').innerText = 'Input Nilai Akademik Murid';
   document.getElementById('form-akademik').reset();
   document.getElementById('akademik-id').value = '';
-  document.getElementById('akademik-tugas').value = '';
   document.getElementById('akademik-uts').value = '';
   recalcAkademikPreview();
   document.getElementById('modal-akademik').classList.remove('hidden');
@@ -1952,20 +1915,11 @@ function closeModalAkademik() {
 }
 
 function recalcAkademikPreview() {
-  const tugasInput = document.getElementById('akademik-tugas')?.value;
   const utsInput = document.getElementById('akademik-uts')?.value;
-  const tugas = Number(tugasInput) || 0;
   const uts = Number(utsInput) || 0;
   const kkm = Number(document.getElementById('akademik-kkm')?.value) || 75;
 
-  let score = 0;
-  if (tugasInput !== '' && utsInput !== '') {
-    score = Math.round((tugas + uts) / 2);
-  } else if (utsInput !== '') {
-    score = uts;
-  } else if (tugasInput !== '') {
-    score = tugas;
-  }
+  const score = uts;
 
   const previewScore = document.getElementById('akademik-preview-nilai-akhir');
   if (previewScore) previewScore.innerText = score;
@@ -2001,8 +1955,7 @@ function editNilaiAkademikModal(id) {
   document.getElementById('akademik-nis').value = item.nis;
   document.getElementById('akademik-mapel').value = item.mata_pelajaran;
   document.getElementById('akademik-kkm').value = item.kkm || 75;
-  document.getElementById('akademik-tugas').value = item.nilai_tugas !== undefined && item.nilai_tugas !== null ? item.nilai_tugas : (item.nilai_uts || 85);
-  document.getElementById('akademik-uts').value = item.nilai_uts !== undefined && item.nilai_uts !== null ? item.nilai_uts : 85;
+  document.getElementById('akademik-uts').value = item.nilai_uts !== undefined && item.nilai_uts !== null ? item.nilai_uts : (item.nilai_akhir || 85);
   document.getElementById('akademik-catatan').value = item.capaian_kompetensi || item.catatan_guru || '';
   recalcAkademikPreview();
   document.getElementById('modal-akademik').classList.remove('hidden');
@@ -2012,11 +1965,10 @@ function submitFormAkademik(e) {
   e.preventDefault();
   const nis = document.getElementById('akademik-nis').value;
   const m = AppState.muridList.find(x => String(x.nis) === String(nis)) || {};
-  const tugas = Number(document.getElementById('akademik-tugas').value) || 0;
   const uts = Number(document.getElementById('akademik-uts').value) || 0;
-  const kkm = Number(document.getElementById('akademik-kkm').value) || 75;
+  const kkm = Number(document.getElementById('akademik-kkm')?.value) || 75;
   const mapel = document.getElementById('akademik-mapel').value;
-  const akhir = document.getElementById('akademik-tugas').value !== '' ? Math.round((tugas + uts) / 2) : uts;
+  const akhir = uts;
   
   let predikat = 'D';
   if (akhir >= 90) predikat = 'A';
@@ -2030,7 +1982,7 @@ function submitFormAkademik(e) {
     kelas: m.kelas || 'IX ABU BAKAR',
     mata_pelajaran: mapel,
     kkm: kkm,
-    nilai_tugas: tugas,
+    nilai_tugas: uts,
     nilai_uts: uts,
     nilai_akhir: akhir,
     predikat: predikat,
@@ -2113,10 +2065,10 @@ function downloadUploadTemplate() {
   const kkmVal = MAPEL_KKM_DEFAULT[mapelName] || 75;
 
   let csvContent = "data:text/csv;charset=utf-8,";
-  csvContent += "NIS,Nama Siswa,Kelas,Mata Pelajaran,KKM,Nilai Tugas,Nilai UTS,Catatan Guru\r\n";
+  csvContent += "NIS,Nama Siswa,Kelas,Mata Pelajaran,KKM,Nilai Akhir UTS,Catatan Guru\r\n";
 
   students.forEach(s => {
-    const row = `"${s.nis}","${s.nama_murid || s.nama_santri}","${s.kelas}","${mapelName}","${kkmVal}","85","85",""`;
+    const row = `"${s.nis}","${s.nama_murid || s.nama_santri}","${s.kelas}","${mapelName}","${kkmVal}","85",""`;
     csvContent += row + "\r\n";
   });
 
@@ -2189,63 +2141,43 @@ function parseSpreadsheetText(text) {
     let kelas = targetKelas !== 'Semua' ? targetKelas : '';
     let mapel = targetMapel !== 'Sesuai File' ? targetMapel : 'Informatika';
     let kkm = 75;
-    let nilaiTugas = 85;
     let nilaiUts = 85;
 
     if (/^\d{6,}$/.test(cols[0])) {
       nis = cols[0];
       nama = cols[1] || '';
-      if (cols.length >= 7) {
+      if (cols.length >= 6) {
         if (isNaN(cols[2])) {
           kelas = cols[2];
           mapel = cols[3] || mapel;
           kkm = Number(cols[4]) || 75;
-          nilaiTugas = Number(cols[5]) || 85;
-          nilaiUts = Number(cols[6]) || 85;
-        } else {
-          kkm = Number(cols[2]) || 75;
-          nilaiTugas = Number(cols[3]) || 85;
-          nilaiUts = Number(cols[4]) || 85;
-        }
-      } else if (cols.length === 6) {
-        if (isNaN(cols[2])) {
-          mapel = cols[2];
-          kkm = Number(cols[3]) || 75;
-          nilaiTugas = Number(cols[4]) || 85;
           nilaiUts = Number(cols[5]) || 85;
         } else {
           kkm = Number(cols[2]) || 75;
-          nilaiTugas = Number(cols[3]) || 85;
-          nilaiUts = Number(cols[4]) || 85;
+          nilaiUts = Number(cols[3]) || 85;
         }
       } else if (cols.length === 5) {
         if (isNaN(cols[2])) {
           mapel = cols[2];
           kkm = Number(cols[3]) || 75;
           nilaiUts = Number(cols[4]) || 85;
-          nilaiTugas = nilaiUts;
         } else {
           kkm = Number(cols[2]) || 75;
-          nilaiTugas = Number(cols[3]) || 85;
-          nilaiUts = Number(cols[4]) || 85;
+          nilaiUts = Number(cols[3]) || 85;
         }
       } else if (cols.length === 4) {
         kkm = Number(cols[2]) || 75;
         nilaiUts = Number(cols[3]) || 85;
-        nilaiTugas = nilaiUts;
       } else if (cols.length === 3) {
         nilaiUts = Number(cols[2]) || 85;
-        nilaiTugas = nilaiUts;
       }
     } else {
       nama = cols[0];
       if (/^\d+$/.test(cols[1])) {
         nilaiUts = Number(cols[1]);
-        nilaiTugas = cols[2] && /^\d+$/.test(cols[2]) ? Number(cols[2]) : nilaiUts;
       } else if (/^\d{6,}$/.test(cols[1])) {
         nis = cols[1];
-        nilaiTugas = Number(cols[2] || 85);
-        nilaiUts = Number(cols[3] || cols[2] || 85);
+        nilaiUts = Number(cols[2] || 85);
       }
     }
 
@@ -2265,7 +2197,7 @@ function parseSpreadsheetText(text) {
     if (targetMapel !== 'Sesuai File') mapel = targetMapel;
 
     kkm = MAPEL_KKM_DEFAULT[mapel] || kkm || 75;
-    const nilaiAkhir = Math.round((nilaiTugas + nilaiUts) / 2);
+    const nilaiAkhir = nilaiUts;
 
     let predikat = 'D';
     if (nilaiAkhir >= 90) predikat = 'A';
@@ -2284,7 +2216,7 @@ function parseSpreadsheetText(text) {
       kkm: kkm,
       semester: targetSem,
       tahun_ajaran: targetYear,
-      nilai_tugas: nilaiTugas,
+      nilai_tugas: nilaiUts,
       nilai_uts: nilaiUts,
       nilai_akhir: nilaiAkhir,
       predikat: predikat,
@@ -2331,7 +2263,6 @@ function renderUploadPreview() {
       <td class="px-3 py-2"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-700">${item.kelas}</span></td>
       <td class="px-3 py-2 font-semibold text-blue-900">${item.mata_pelajaran}</td>
       <td class="px-2 py-2 text-center font-bold text-amber-900">${item.kkm}</td>
-      <td class="px-2 py-2 text-center font-bold text-amber-950 bg-amber-50/60 font-mono">${item.nilai_tugas}</td>
       <td class="px-2 py-2 text-center font-bold text-blue-950 bg-blue-50/60 font-mono">${item.nilai_uts}</td>
       <td class="px-2 py-2 text-center font-black text-emerald-950 bg-emerald-50/60 font-mono text-sm">${item.nilai_akhir}</td>
       <td class="px-2 py-2 text-center">
@@ -2340,6 +2271,7 @@ function renderUploadPreview() {
       <td class="px-4 py-2 text-slate-600 text-[11px] leading-snug">${item.capaian_kompetensi}</td>
     </tr>
   `).join('');
+}
 }
 
 function resetUploadData() {
