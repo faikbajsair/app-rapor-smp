@@ -11,7 +11,7 @@
         <h2 class="text-xs font-extrabold text-slate-900 uppercase tracking-tight truncate leading-tight">SMP AL-IMAM</h2>
         <p class="text-[10px] font-bold text-[#00a66c] mt-0.5">TP 2026/2027 (Aktif)</p>
       </div>
-      <button id="btn-close-sidebar" class="ml-auto p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 lg:hidden">
+      <button id="btn-close-sidebar" onclick="toggleSidebar()" class="ml-auto p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 lg:hidden cursor-pointer" title="Tutup Menu">
         <i class="fa-solid fa-xmark text-base"></i>
       </button>
     </div>
@@ -22,7 +22,7 @@
       <!-- 1. Menu Utama -->
       <div class="px-3 py-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider">Menu Utama</div>
       <a href="javascript:void(0)" onclick="switchView('dashboard')" id="nav-item-dashboard" 
-         class="sidebar-nav-link flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-bold text-white bg-[#00a66c] shadow-md shadow-[#00a66c]/20 transition-all">
+         class="sidebar-nav-link flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-bold text-white bg-[#00a66c] shadow-md shadow-[#00a66c]/20 transition-all cursor-pointer select-none">
         <i class="fa-solid fa-table-cells-large w-4 text-center text-sm"></i>
         <span>Dashboard</span>
       </a>
@@ -32,7 +32,7 @@
       
       <!-- Akademik -->
       <a href="javascript:void(0)" onclick="switchView('akademik')" id="nav-item-akademik" 
-         class="sidebar-nav-link menu-assessment-item flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all">
+         class="sidebar-nav-link menu-assessment-item flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none">
         <div class="flex items-center gap-3">
           <i class="fa-solid fa-book-open w-4 text-center text-sm"></i>
           <span>Nilai Akademik (UTS)</span>
@@ -42,7 +42,7 @@
 
       <!-- Ahlaq & Kepribadian -->
       <a href="javascript:void(0)" onclick="switchView('kepemimpinan')" id="nav-item-kepemimpinan" 
-         class="sidebar-nav-link menu-assessment-item flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all">
+         class="sidebar-nav-link menu-assessment-item flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none">
         <div class="flex items-center gap-3">
           <i class="fa-solid fa-heart-pulse w-4 text-center text-sm"></i>
           <span>Ahlaq & Kepribadian</span>
@@ -52,7 +52,7 @@
 
       <!-- Diniyah -->
       <a href="javascript:void(0)" onclick="switchView('diniyah')" id="nav-item-diniyah" 
-         class="sidebar-nav-link menu-assessment-item flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all">
+         class="sidebar-nav-link menu-assessment-item flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none">
         <div class="flex items-center gap-3">
           <i class="fa-solid fa-quran w-4 text-center text-sm"></i>
           <span>Diniyah & Tahfidz</span>
@@ -65,21 +65,21 @@
       
       <!-- Buku Leger Nilai Lengkap -->
       <a href="javascript:void(0)" onclick="switchView('leger')" id="nav-item-leger" 
-         class="sidebar-nav-link flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all">
+         class="sidebar-nav-link flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none">
         <i class="fa-solid fa-table-list w-4 text-center text-sm"></i>
         <span>Buku Leger 16 Mapel</span>
       </a>
 
       <!-- Cetak Rapor -->
       <a href="javascript:void(0)" onclick="switchView('rapor')" id="nav-item-rapor" 
-         class="sidebar-nav-link flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all">
+         class="sidebar-nav-link flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none">
         <i class="fa-solid fa-file-invoice w-4 text-center text-sm"></i>
         <span>Cetak Lembar Rapor</span>
       </a>
 
       <!-- Data Murid -->
       <a href="javascript:void(0)" onclick="switchView('murid')" id="nav-item-murid" 
-         class="sidebar-nav-link menu-murid-management flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all">
+         class="sidebar-nav-link menu-murid-management flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none">
         <i class="fa-solid fa-users-gear w-4 text-center text-sm"></i>
         <span>Data Siswa & Ekskul</span>
       </a>
@@ -87,7 +87,7 @@
       <!-- 4. Konfigurasi CMS -->
       <div class="pt-3 px-3 py-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider menu-admin-only">Sistem & CMS</div>
       <a href="javascript:void(0)" onclick="switchView('cms')" id="nav-item-cms" 
-         class="sidebar-nav-link menu-admin-only flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all">
+         class="sidebar-nav-link menu-admin-only flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none">
         <i class="fa-solid fa-sliders w-4 text-center text-sm"></i>
         <span>Pengaturan CMS & SaaS</span>
       </a>

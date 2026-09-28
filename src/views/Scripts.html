@@ -1077,9 +1077,11 @@ function applyCmsTheme(settings) {
   AppState.cmsSettings = settings;
 
   const root = document.documentElement;
-  if (settings.theme_primary_color) root.style.setProperty('--primary-color', settings.theme_primary_color);
-  if (settings.theme_secondary_color) root.style.setProperty('--secondary-color', settings.theme_secondary_color);
-  if (settings.theme_accent_color) root.style.setProperty('--accent-color', settings.theme_accent_color);
+  if (root && root.style) {
+    if (settings.theme_primary_color) root.style.setProperty('--primary-color', settings.theme_primary_color);
+    if (settings.theme_secondary_color) root.style.setProperty('--secondary-color', settings.theme_secondary_color);
+    if (settings.theme_accent_color) root.style.setProperty('--accent-color', settings.theme_accent_color);
+  }
 
   const schoolName = settings.school_name || 'SEKOLAH MENENGAH PERTAMA AL IMAM ISLAMIC SCHOOL';
   const logoUrl = settings.school_logo_url || 'https://alimamischool.com/wp-content/uploads/2020/08/Al-Imam-Islamic-School-alimamischool.com-sekolah-sunnah-logo.png';
@@ -4560,6 +4562,59 @@ function switchViewAndHighlight(viewName) {
   showToast(`💡 Anda berada di modul: ${titles[viewName] || viewName}. Klik 'Panduan' di navbar untuk membuka kembali tour.`);
 }
 
+// Global window exposure for robust inline onclick execution
+window.AppState = AppState;
+window.switchView = switchView;
+window.switchDashboardTab = switchDashboardTab;
+window.toggleSidebar = toggleSidebar;
+window.toggleRoleDropdown = toggleRoleDropdown;
+window.setSimulatedRole = setSimulatedRole;
+window.openAcademicYearModal = openAcademicYearModal;
+window.closeAcademicYearModal = closeAcademicYearModal;
+window.openInteractiveGuide = openInteractiveGuide;
+window.closeInteractiveGuide = closeInteractiveGuide;
+window.goToGuideStep = goToGuideStep;
+window.changeGuideStep = changeGuideStep;
+window.switchViewAndHighlight = switchViewAndHighlight;
+window.openQuickPrintModal = openQuickPrintModal;
+window.openPrintKepemimpinanDirect = openPrintKepemimpinanDirect;
+window.openLoginModal = openLoginModal;
+window.closeLoginModal = closeLoginModal;
+window.quickLoginRole = quickLoginRole;
+window.triggerInitDb = triggerInitDb;
+window.switchPrintFormat = switchPrintFormat;
+window.openModalAkademik = openModalAkademik;
+window.closeModalAkademik = closeModalAkademik;
+window.openModalKepemimpinan = openModalKepemimpinan;
+window.closeModalKepemimpinan = closeModalKepemimpinan;
+window.openModalDiniyah = openModalDiniyah;
+window.closeModalDiniyah = closeModalDiniyah;
+window.openModalMurid = openModalMurid;
+window.closeModalMurid = closeModalMurid;
+window.openModalBulkPresensi = openModalBulkPresensi;
+window.closeModalBulkPresensi = closeModalBulkPresensi;
+window.openModalUser = openModalUser;
+window.closeModalUser = closeModalUser;
+window.loadNilaiAkademik = loadNilaiAkademik;
+window.loadNilaiKepemimpinan = loadNilaiKepemimpinan;
+window.loadNilaiDiniyah = loadNilaiDiniyah;
+window.loadMuridList = loadMuridList;
+window.loadCmsSettings = loadCmsSettings;
+window.renderLegerMatrix = renderLegerMatrix;
+window.renderLegerGrid = renderLegerGrid;
+window.renderKepribadianGrid = renderKepribadianGrid;
+window.saveBulkLegerAkademik = saveBulkLegerAkademik;
+window.autoGenerateAllLegerCapaian = autoGenerateAllLegerCapaian;
+window.saveBulkKepribadianGrid = saveBulkKepribadianGrid;
+window.applyFastSklPresets = applyFastSklPresets;
+window.saveSklLegerGrid = saveSklLegerGrid;
+window.exportLegerToExcel = exportLegerToExcel;
+window.printLeger = printLeger;
+window.saveBulkPresensiData = saveBulkPresensiData;
+window.saveCmsSettingsAll = saveCmsSettingsAll;
+window.switchCmsTab = switchCmsTab;
+window.previewRaporDirect = previewRaporDirect;
+
 // 19. APP STARTUP INITIALIZATION
 window.addEventListener('DOMContentLoaded', () => {
   document.getElementById('btn-toggle-sidebar')?.addEventListener('click', toggleSidebar);
@@ -4578,11 +4633,5 @@ window.addEventListener('DOMContentLoaded', () => {
   // Background fetch from Google Sheets
   loadCmsSettings();
   loadMuridList();
-
-  if (localStorage.getItem('rapor_guide_dismissed') !== 'true') {
-    setTimeout(() => {
-      openInteractiveGuide(1);
-    }, 1200);
-  }
 });
 </script>

@@ -143,7 +143,7 @@
       
       <!-- Left: Mobile Menu Toggle & Brand Info -->
       <div class="flex items-center space-x-3">
-        <button id="btn-toggle-sidebar" class="lg:hidden p-2 rounded-xl text-slate-600 hover:bg-emerald-50 hover:text-emerald-700 focus:outline-none transition">
+        <button id="btn-toggle-sidebar" onclick="toggleSidebar()" class="lg:hidden p-2 rounded-xl text-slate-600 hover:bg-emerald-50 hover:text-emerald-700 focus:outline-none transition cursor-pointer" title="Menu Sidebar">
           <i class="fa-solid fa-bars text-lg"></i>
         </button>
         
@@ -291,7 +291,7 @@
         <h2 class="text-xs font-extrabold text-slate-900 uppercase tracking-tight truncate leading-tight">SMP AL-IMAM</h2>
         <p class="text-[10px] font-bold text-[#00a66c] mt-0.5">TP 2026/2027 (Aktif)</p>
       </div>
-      <button id="btn-close-sidebar" class="ml-auto p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 lg:hidden">
+      <button id="btn-close-sidebar" onclick="toggleSidebar()" class="ml-auto p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 lg:hidden cursor-pointer" title="Tutup Menu">
         <i class="fa-solid fa-xmark text-base"></i>
       </button>
     </div>
@@ -302,7 +302,7 @@
       <!-- 1. Menu Utama -->
       <div class="px-3 py-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider">Menu Utama</div>
       <a href="javascript:void(0)" onclick="switchView('dashboard')" id="nav-item-dashboard" 
-         class="sidebar-nav-link flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-bold text-white bg-[#00a66c] shadow-md shadow-[#00a66c]/20 transition-all">
+         class="sidebar-nav-link flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-bold text-white bg-[#00a66c] shadow-md shadow-[#00a66c]/20 transition-all cursor-pointer select-none">
         <i class="fa-solid fa-table-cells-large w-4 text-center text-sm"></i>
         <span>Dashboard</span>
       </a>
@@ -312,7 +312,7 @@
       
       <!-- Akademik -->
       <a href="javascript:void(0)" onclick="switchView('akademik')" id="nav-item-akademik" 
-         class="sidebar-nav-link menu-assessment-item flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all">
+         class="sidebar-nav-link menu-assessment-item flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none">
         <div class="flex items-center gap-3">
           <i class="fa-solid fa-book-open w-4 text-center text-sm"></i>
           <span>Nilai Akademik (UTS)</span>
@@ -322,7 +322,7 @@
 
       <!-- Ahlaq & Kepribadian -->
       <a href="javascript:void(0)" onclick="switchView('kepemimpinan')" id="nav-item-kepemimpinan" 
-         class="sidebar-nav-link menu-assessment-item flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all">
+         class="sidebar-nav-link menu-assessment-item flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none">
         <div class="flex items-center gap-3">
           <i class="fa-solid fa-heart-pulse w-4 text-center text-sm"></i>
           <span>Ahlaq & Kepribadian</span>
@@ -332,7 +332,7 @@
 
       <!-- Diniyah -->
       <a href="javascript:void(0)" onclick="switchView('diniyah')" id="nav-item-diniyah" 
-         class="sidebar-nav-link menu-assessment-item flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all">
+         class="sidebar-nav-link menu-assessment-item flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none">
         <div class="flex items-center gap-3">
           <i class="fa-solid fa-quran w-4 text-center text-sm"></i>
           <span>Diniyah & Tahfidz</span>
@@ -345,21 +345,21 @@
       
       <!-- Buku Leger Nilai Lengkap -->
       <a href="javascript:void(0)" onclick="switchView('leger')" id="nav-item-leger" 
-         class="sidebar-nav-link flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all">
+         class="sidebar-nav-link flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none">
         <i class="fa-solid fa-table-list w-4 text-center text-sm"></i>
         <span>Buku Leger 16 Mapel</span>
       </a>
 
       <!-- Cetak Rapor -->
       <a href="javascript:void(0)" onclick="switchView('rapor')" id="nav-item-rapor" 
-         class="sidebar-nav-link flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all">
+         class="sidebar-nav-link flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none">
         <i class="fa-solid fa-file-invoice w-4 text-center text-sm"></i>
         <span>Cetak Lembar Rapor</span>
       </a>
 
       <!-- Data Murid -->
       <a href="javascript:void(0)" onclick="switchView('murid')" id="nav-item-murid" 
-         class="sidebar-nav-link menu-murid-management flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all">
+         class="sidebar-nav-link menu-murid-management flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none">
         <i class="fa-solid fa-users-gear w-4 text-center text-sm"></i>
         <span>Data Siswa & Ekskul</span>
       </a>
@@ -367,7 +367,7 @@
       <!-- 4. Konfigurasi CMS -->
       <div class="pt-3 px-3 py-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider menu-admin-only">Sistem & CMS</div>
       <a href="javascript:void(0)" onclick="switchView('cms')" id="nav-item-cms" 
-         class="sidebar-nav-link menu-admin-only flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all">
+         class="sidebar-nav-link menu-admin-only flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none">
         <i class="fa-solid fa-sliders w-4 text-center text-sm"></i>
         <span>Pengaturan CMS & SaaS</span>
       </a>
@@ -5354,9 +5354,11 @@ function applyCmsTheme(settings) {
   AppState.cmsSettings = settings;
 
   const root = document.documentElement;
-  if (settings.theme_primary_color) root.style.setProperty('--primary-color', settings.theme_primary_color);
-  if (settings.theme_secondary_color) root.style.setProperty('--secondary-color', settings.theme_secondary_color);
-  if (settings.theme_accent_color) root.style.setProperty('--accent-color', settings.theme_accent_color);
+  if (root && root.style) {
+    if (settings.theme_primary_color) root.style.setProperty('--primary-color', settings.theme_primary_color);
+    if (settings.theme_secondary_color) root.style.setProperty('--secondary-color', settings.theme_secondary_color);
+    if (settings.theme_accent_color) root.style.setProperty('--accent-color', settings.theme_accent_color);
+  }
 
   const schoolName = settings.school_name || 'SEKOLAH MENENGAH PERTAMA AL IMAM ISLAMIC SCHOOL';
   const logoUrl = settings.school_logo_url || 'https://alimamischool.com/wp-content/uploads/2020/08/Al-Imam-Islamic-School-alimamischool.com-sekolah-sunnah-logo.png';
@@ -8837,6 +8839,59 @@ function switchViewAndHighlight(viewName) {
   showToast(`💡 Anda berada di modul: ${titles[viewName] || viewName}. Klik 'Panduan' di navbar untuk membuka kembali tour.`);
 }
 
+// Global window exposure for robust inline onclick execution
+window.AppState = AppState;
+window.switchView = switchView;
+window.switchDashboardTab = switchDashboardTab;
+window.toggleSidebar = toggleSidebar;
+window.toggleRoleDropdown = toggleRoleDropdown;
+window.setSimulatedRole = setSimulatedRole;
+window.openAcademicYearModal = openAcademicYearModal;
+window.closeAcademicYearModal = closeAcademicYearModal;
+window.openInteractiveGuide = openInteractiveGuide;
+window.closeInteractiveGuide = closeInteractiveGuide;
+window.goToGuideStep = goToGuideStep;
+window.changeGuideStep = changeGuideStep;
+window.switchViewAndHighlight = switchViewAndHighlight;
+window.openQuickPrintModal = openQuickPrintModal;
+window.openPrintKepemimpinanDirect = openPrintKepemimpinanDirect;
+window.openLoginModal = openLoginModal;
+window.closeLoginModal = closeLoginModal;
+window.quickLoginRole = quickLoginRole;
+window.triggerInitDb = triggerInitDb;
+window.switchPrintFormat = switchPrintFormat;
+window.openModalAkademik = openModalAkademik;
+window.closeModalAkademik = closeModalAkademik;
+window.openModalKepemimpinan = openModalKepemimpinan;
+window.closeModalKepemimpinan = closeModalKepemimpinan;
+window.openModalDiniyah = openModalDiniyah;
+window.closeModalDiniyah = closeModalDiniyah;
+window.openModalMurid = openModalMurid;
+window.closeModalMurid = closeModalMurid;
+window.openModalBulkPresensi = openModalBulkPresensi;
+window.closeModalBulkPresensi = closeModalBulkPresensi;
+window.openModalUser = openModalUser;
+window.closeModalUser = closeModalUser;
+window.loadNilaiAkademik = loadNilaiAkademik;
+window.loadNilaiKepemimpinan = loadNilaiKepemimpinan;
+window.loadNilaiDiniyah = loadNilaiDiniyah;
+window.loadMuridList = loadMuridList;
+window.loadCmsSettings = loadCmsSettings;
+window.renderLegerMatrix = renderLegerMatrix;
+window.renderLegerGrid = renderLegerGrid;
+window.renderKepribadianGrid = renderKepribadianGrid;
+window.saveBulkLegerAkademik = saveBulkLegerAkademik;
+window.autoGenerateAllLegerCapaian = autoGenerateAllLegerCapaian;
+window.saveBulkKepribadianGrid = saveBulkKepribadianGrid;
+window.applyFastSklPresets = applyFastSklPresets;
+window.saveSklLegerGrid = saveSklLegerGrid;
+window.exportLegerToExcel = exportLegerToExcel;
+window.printLeger = printLeger;
+window.saveBulkPresensiData = saveBulkPresensiData;
+window.saveCmsSettingsAll = saveCmsSettingsAll;
+window.switchCmsTab = switchCmsTab;
+window.previewRaporDirect = previewRaporDirect;
+
 // 19. APP STARTUP INITIALIZATION
 window.addEventListener('DOMContentLoaded', () => {
   document.getElementById('btn-toggle-sidebar')?.addEventListener('click', toggleSidebar);
@@ -8855,12 +8910,6 @@ window.addEventListener('DOMContentLoaded', () => {
   // Background fetch from Google Sheets
   loadCmsSettings();
   loadMuridList();
-
-  if (localStorage.getItem('rapor_guide_dismissed') !== 'true') {
-    setTimeout(() => {
-      openInteractiveGuide(1);
-    }, 1200);
-  }
 });
 </script>
 
