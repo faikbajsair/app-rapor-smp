@@ -214,17 +214,19 @@ const WALI_KELAS_MAP = {
   'IX UMMU SALAMAH': 'Dewi Fitria Nugraheni, S.Pd., Gr.',
   'VII AISYAH': 'Tri Yuli Aryani, S.Pd., Gr.',
   'VII Aisyah Binti Abu Bakar': 'Tri Yuli Aryani, S.Pd., Gr.',
-  'VII UTSMAN': 'Andrew Syaputra',
-  'VII UTSMAN BIN AFFAN': 'Andrew Syaputra',
-  '7 UTSMAN': 'Andrew Syaputra',
-  'VIII THALHAH': 'Ust. Salman Al-Farisi, S.Pd.',
-  'VIII AISYAH': 'Usth. Fatimah Az-Zahra, S.Pd.',
-  'VII BILAL': 'Ust. Abdullah Syafi\'i, S.Pd.',
+  'VII UTSMAN': 'Andrew Syaputra, S.Pd.',
+  'VII UTSMAN BIN AFFAN': 'Andrew Syaputra, S.Pd.',
+  '7 UTSMAN': 'Andrew Syaputra, S.Pd.',
+  'VII MBU': 'Ust. Abdullah Syafi\'i, S.Pd.',
+  'VIII UMAR': 'Ust. Salman Al-Farisi, S.Pd.',
+  'VIII UMAR BIN KHATTAB': 'Ust. Salman Al-Farisi, S.Pd.',
+  'VIII KHODIJAH': 'Sumiati, S.Pd., Gr.',
   'VIII KHADIJAH': 'Sumiati, S.Pd., Gr.',
   'VIII Khodijah': 'Sumiati, S.Pd., Gr.',
-  'VIII KHODIJAH': 'Sumiati, S.Pd., Gr.',
-  'VII KHADIJAH': 'Usth. Maryam Al-Qibtiyyah, S.Pd.'
+  'VIII THALHAH': 'Ust. Salman Al-Farisi, S.Pd.',
+  'VII BILAL': 'Ust. Abdullah Syafi\'i, S.Pd.'
 };
+
 
 // 1. Dataset Resmi Kelas IX ABU BAKAR (12 Murid Ikhwan - Sesuai File Excel RAPORT KEPEMIMPINAN IX ABU)
 const EXCEL_STUDENTS_IX_ABU_BAKAR = [
@@ -445,622 +447,138 @@ const EXCEL_STUDENTS_IX_UMMU_SALAMAH = [
   }
 ];
 
-// 3. Dataset Resmi Kelas VII AISYAH (18 Murid Akhwat - Sesuai File Excel RAPORT KEPEMIMPINAN VII AISYAH)
+// 3. Dataset Resmi Kelas VII AISYAH (27 Murid Akhwat - Sesuai File Excel SISWA FIX LENGKAP SMP 2026-2027)
 const EXCEL_STUDENTS_VII_AISYAH = [
-  { 
-    no: 1, nis: '252607002', nisn: '0138027960', nama: 'Ajeng Putri Kirana', s: 2, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'English Club', e3n: 'Baik', 
-    scores: [86, 85, 78, 89, 83, 79, 85, 80, 78, 75, 84, 85, 90, 89, 76, 83],
-    skl_custom: {},
-    kp: {
-      ibadah: "Jadikan ibadah sebagai kebutuhan, bukan hanya kewajiban.",
-      akhlak: "Alhamdulillah, pertahankan akhlak baikmu di mana saja Ananda berada",
-      kedisiplinan: "Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita",
-      kerapihan: "Kerapihan & kebersihan diri dan lingkungan akan menciptakan rasa nyaman dalam belajar",
-      kepemimpinan: "Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan",
-      kerjasama: "Berbagi peran dalam kerjasama kelompok akan menciptakan keharmonisan",
-      catatan: "Tingkatkan semangat dan keseriusan dalam belajar serta dapat mengatur manajemen waktu dalam belajar agar mendapat hasil yang maksimal."
-    },
-    catatan_walas: "Tingkatkan semangat dan keseriusan dalam belajar serta dapat mengatur manajemen waktu dalam belajar agar mendapat hasil yang maksimal."
-  },
-  { 
-    no: 2, nis: '252607003', nisn: '3124658329', nama: 'Allysha Qiana Zetta', s: 0, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'English Club', e3n: 'Sangat Baik', 
-    scores: [88, 88, 80, 91, 88, 86, 94, 92, 87, 90, 90, 89, 92, 93, 88, 86],
-    skl_custom: {},
-    kp: {
-      ibadah: "Jadikan ibadah sebagai kebutuhan, bukan hanya kewajiban.",
-      akhlak: "Keseimbangan antara kemampuan akademis serta sikap & akhlak mulia menjadikanmu insan yang lebih baik",
-      kedisiplinan: "Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita",
-      kerapihan: "Kerapihan & kebersihan diri merupakan cermin pribadi seorang muslim, jadikanlah itu sebagai identitasmu",
-      kepemimpinan: "Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan",
-      kerjasama: "Tolong-menolonglah kamu dalam kebaikan dan jangan tolong-menolong dalam keburukan",
-      catatan: "Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan"
-    },
-    catatan_walas: "Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan"
-  },
-  { 
-    no: 3, nis: '252607004', nisn: '3124676739', nama: 'Alzena Aila Varisha', s: 2, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'English Club', e3n: 'Sangat Baik', 
-    scores: [87, 82, 79, 89, 80, 81, 90, 80, 84, 78, 80, 88, 88, 95, 85, 77],
-    skl_custom: {},
-    kp: {
-      ibadah: "Jadikan ibadah sebagai kebutuhan, bukan hanya kewajiban.",
-      akhlak: "Alhamdulillah, pertahankan akhlak baikmu di mana saja Ananda berada",
-      kedisiplinan: "Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita",
-      kerapihan: "Kerapihan & kebersihan diri dan lingkungan akan menciptakan rasa nyaman dalam belajar",
-      kepemimpinan: "Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan",
-      kerjasama: "Berbagi peran dalam kerjasama kelompok akan menciptakan keharmonisan",
-      catatan: "Tingkatkan semangat dan fokus dalam belajar agar mendapat hasil yang maksimal."
-    },
-    catatan_walas: "Tingkatkan semangat dan fokus dalam belajar agar mendapat hasil yang maksimal."
-  },
-  { 
-    no: 4, nis: '252607006', nisn: '3128139667', nama: 'Annisa Shazia Athifah', s: 0, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'English Club', e3n: 'Baik', 
-    scores: [89, 92, 94, 100, 96, 89, 88, 93, 96, 90, 90, 91, 95, 91, 91, 93],
-    skl_custom: {},
-    kp: {
-      ibadah: "Jadikan ibadah sebagai kebutuhan, bukan hanya kewajiban.",
-      akhlak: "Alhamdulillah, pertahankan akhlak baikmu di mana saja Ananda berada",
-      kedisiplinan: "Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita",
-      kerapihan: "Kerapihan & kebersihan diri merupakan cermin pribadi seorang muslim, jadikanlah itu sebagai identitasmu",
-      kepemimpinan: "Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan",
-      kerjasama: "Berbagi peran dalam kerjasama kelompok akan menciptakan keharmonisan",
-      catatan: "Potensi akademik kamu bagus, tetap semangat belajar dan jangan pernah cepat merasa puas."
-    },
-    catatan_walas: "Potensi akademik kamu bagus, tetap semangat belajar dan jangan pernah cepat merasa puas."
-  },
-  { 
-    no: 5, nis: '252607007', nisn: '3133343263', nama: 'Dean Sectio Ranya Ariyadi', s: 0, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'English Club', e3n: 'Sangat Baik', 
-    scores: [90, 94, 94, 92, 96, 91, 90, 88, 90, 90, 93, 90, 94, 93, 89, 92],
-    skl_custom: {},
-    kp: {
-      ibadah: "Jadikan ibadah sebagai kebutuhan, bukan hanya kewajiban.",
-      akhlak: "Sikap & akhlak mulia menjadikan insan yang lebih baik, perbaiki Akhlaq dan Sikapmu",
-      kedisiplinan: "Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita",
-      kerapihan: "Kerapihan & kebersihan diri dan lingkungan akan menciptakan rasa nyaman dalam belajar",
-      kepemimpinan: "Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan",
-      kerjasama: "Tolong-menolonglah kamu dalam kebaikan dan jangan tolong-menolong dalam keburukan",
-      catatan: "Potensi akademik kamu bagus, tetap semangat belajar dan jangan pernah cepat merasa puas."
-    },
-    catatan_walas: "Potensi akademik kamu bagus, tetap semangat belajar dan jangan pernah cepat merasa puas."
-  },
-  { 
-    no: 6, nis: '252607008', nisn: '3121871205', nama: 'Evelyn Kenivael', s: 0, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'English Club', e3n: 'Sangat Baik', 
-    scores: [85, 93, 95, 90, 96, 87, 86, 82, 83, 79, 82, 90, 91, 88, 89, 90],
-    skl_custom: {},
-    kp: {
-      ibadah: "Jadikan ibadah sebagai kebutuhan, bukan hanya kewajiban.",
-      akhlak: "Sikap & akhlak mulia menjadikan insan yang lebih baik, perbaiki Akhlaq dan Sikapmu",
-      kedisiplinan: "Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita",
-      kerapihan: "Kerapihan & kebersihan diri merupakan cermin pribadi seorang muslim, jadikanlah itu sebagai identitasmu",
-      kepemimpinan: "Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan",
-      kerjasama: "Berbagi peran dalam kerjasama kelompok akan menciptakan keharmonisan",
-      catatan: "Tingkatkan semangat dan fokus dalam belajar agar mendapat hasil yang maksimal."
-    },
-    catatan_walas: "Tingkatkan semangat dan fokus dalam belajar agar mendapat hasil yang maksimal."
-  },
-  { 
-    no: 7, nis: '252607045', nisn: '0139289257', nama: 'Garjita Galuh Gunawan', s: 0, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'English Club', e3n: 'Sangat Baik', 
-    scores: [87, 86, 84, 88, 88, 86, 89, 84, 79, 78, 86, 92, 90, 91, 90, 81],
-    skl_custom: {},
-    kp: {
-      ibadah: "Jadikan ibadah sebagai kebutuhan, bukan hanya kewajiban.",
-      akhlak: "Keseimbangan antara kemampuan akademis serta sikap & akhlak mulia menjadikanmu insan yang lebih baik",
-      kedisiplinan: "Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita",
-      kerapihan: "Kerapihan & kebersihan diri dan lingkungan akan menciptakan rasa nyaman dalam belajar",
-      kepemimpinan: "Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan",
-      kerjasama: "Berbagi peran dalam kerjasama kelompok akan menciptakan keharmonisan",
-      catatan: "Tingkatkan semangat dan keseriusan dalam belajar agar mendapat hasil yang maksimal"
-    },
-    catatan_walas: "Tingkatkan semangat dan keseriusan dalam belajar agar mendapat hasil yang maksimal"
-  },
-  { 
-    no: 8, nis: '252607009', nisn: '0134935321', nama: 'Griseldis Radhiya Nur Hazrina', s: 2, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'English Club', e3n: 'Baik', 
-    scores: [91, 91, 93, 91, 98, 87, 93, 92, 95, 82, 88, 90, 94, 95, 91, 90],
-    skl_custom: {},
-    kp: {
-      ibadah: "Jadikan ibadah sebagai kebutuhan, bukan hanya kewajiban.",
-      akhlak: "Keseimbangan antara kemampuan akademis serta sikap & akhlak mulia menjadikanmu insan yang lebih baik",
-      kedisiplinan: "Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita",
-      kerapihan: "Kerapihan & kebersihan diri merupakan cermin pribadi seorang muslim, jadikanlah itu sebagai identitasmu",
-      kepemimpinan: "Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan",
-      kerjasama: "Tolong-menolonglah kamu dalam kebaikan dan jangan tolong-menolong dalam keburukan",
-      catatan: "Kamu memiliki rasa tanggung jawab yang baik, pertahankan dan jangan mudah menyerah."
-    },
-    catatan_walas: "Kamu memiliki rasa tanggung jawab yang baik, pertahankan dan jangan mudah menyerah."
-  },
-  { 
-    no: 9, nis: '252607010', nisn: '3137691972', nama: 'Gyzell Prianatasya Putri', s: 2, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'English Club', e3n: 'Sangat Baik', 
-    scores: [82, 83, 84, 89, 80, 81, 87, 88, 78, 77, 84, 88, 90, 88, 86, 79],
-    skl_custom: {},
-    catatan_walas: "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Tingkatkan semangat belajarmu"
-  },
-  { 
-    no: 10, nis: '252607011', nisn: '3138973504', nama: 'Kamila Putri Budiman', s: 3, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'English Club', e3n: 'Baik', 
-    scores: [90, 93, 92, 92, 98, 91, 84, 85, 88, 87, 90, 91, 95, 91, 91, 92],
-    skl_custom: {},
-    catatan_walas: "Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita"
-  },
-  { 
-    no: 11, nis: '252607013', nisn: '3128354313', nama: 'Malika Anindya A', s: 2, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'English Club', e3n: 'Sangat Baik', 
-    scores: [87, 81, 82, 86, 78, 81, 86, 81, 78, 79, 80, 87, 89, 91, 81, 77],
-    skl_custom: {},
-    catatan_walas: "Tingkatkan semangat dan keseriusan dalam belajar agar mendapat hasil yang maksimal."
-  },
-  { 
-    no: 12, nis: '252607016', nisn: '3135906759', nama: 'Naylana Khayra Dzahin', s: 1, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'English Club', e3n: 'Baik', 
-    scores: [90, 93, 89, 90, 96, 87, 88, 91, 83, 82, 90, 89, 95, 89, 89, 92],
-    skl_custom: {},
-    catatan_walas: "Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan"
-  },
-  { 
-    no: 13, nis: '252607017', nisn: '3134727061', nama: 'Rheva Agnezia Putri', s: 0, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'English Club', e3n: 'Baik', 
-    scores: [87, 80, 85, 88, 76, 79, 87, 85, 83, 78, 80, 89, 92, 90, 85, 81],
-    skl_custom: {},
-    catatan_walas: "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Tingkatkan semangat belajarmu"
-  },
-  { 
-    no: 14, nis: '252607018', nisn: '3131583386', nama: 'Sarah Salsabila', s: 0, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'English Club', e3n: 'Baik', 
-    scores: [84, 75, 75, 82, 76, 76, 82, 92, 84, 76, 81, 87, 89, 84, 80, 72],
-    skl_custom: {},
-    catatan_walas: "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal & cita-cita di masa depan."
-  },
-  { 
-    no: 15, nis: '252607039', nisn: '3133165032', nama: 'Shazia Keizaluna Humaira', s: 0, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'English Club', e3n: 'Sangat Baik', 
-    scores: [92, 90, 83, 89, 90, 86, 90, 88, 82, 83, 81, 89, 95, 94, 87, 84],
-    skl_custom: {},
-    catatan_walas: "Tingkatkan semangat dan keseriusan dalam belajar agar mendapat hasil yang maksimal."
-  },
-  { 
-    no: 16, nis: '252607043', nisn: '3136022469', nama: 'Syafikah Ghalin Alzena', s: 2, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'English Club', e3n: 'Sangat Baik', 
-    scores: [84, 79, 75, 84, 78, 77, 83, 70, 75, 75, 79, 87, 87, 86, 77, 75],
-    skl_custom: {},
-    catatan_walas: "Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita"
-  },
-  { 
-    no: 17, nis: '252607020', nisn: '3121914004', nama: 'Talita Lubna Humaira Renleuw', s: 0, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'English Club', e3n: 'Baik', 
-    scores: [92, 92, 91, 100, 98, 87, 86, 88, 84, 87, 87, 87, 94, 93, 82, 90],
-    skl_custom: {},
-    catatan_walas: "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Tingkatkan semangat belajarmu"
-  },
-  { 
-    no: 18, nis: '252607040', nisn: '0136813875', nama: 'Zahira Sarifah Salsabila', s: 3, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'English Club', e3n: 'Sangat Baik', 
-    scores: [90, 95, 96, 100, 98, 88, 92, 86, 85, 87, 93, 88, 92, 95, 90, 93],
-    skl_custom: {},
-    kp: {
-      ibadah: "Jadikan ibadah sebagai kebutuhan, bukan hanya kewajiban.",
-      akhlak: "Keseimbangan antara kemampuan akademis serta sikap & akhlak mulia menjadikanmu insan yang lebih baik",
-      kedisiplinan: "Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita",
-      kerapihan: "Kerapihan & kebersihan diri merupakan cermin pribadi seorang muslim, jadikanlah itu sebagai identitasmu",
-      kepemimpinan: "Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan",
-      kerjasama: "Tolong-menolonglah kamu dalam kebaikan dan jangan tolong-menolong dalam keburukan",
-      catatan: "Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan"
-    },
-    catatan_walas: "Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan"
-  }
+  { no: 1, nis: '262707026', nisn: '3140178025', nama: 'AKIFA NAILA KARIM', jk: 'P', tempat_lahir: 'Tangerang', tanggal_lahir: '2014-05-01', nama_ayah: 'AZDNI KARIM', nama_ibu: 'VIVIA ANDRIANI', sekolah_asal: 'SD AL IMAM ISLAMIC SCHOOL', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'English Club', e3n: 'Sangat Baik', scores: [90, 92, 88, 93, 91, 90, 93, 88, 90, 89, 92, 89, 91, 93, 90, 88] },
+  { no: 2, nis: '262707027', nisn: '0133341826', nama: 'ALIYA HASNA SAFIRA', jk: 'P', tempat_lahir: 'Sukabumi', tanggal_lahir: '2013-02-06', nama_ayah: 'AGUNG BURHANUDIN', nama_ibu: 'ARIYANTI SURYANI', sekolah_asal: 'SD MUHAMMADIYAH 02', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Desain Grafis', e3n: 'Baik', scores: [88, 89, 86, 90, 87, 88, 91, 85, 88, 86, 90, 87, 90, 91, 88, 84] },
+  { no: 3, nis: '262707028', nisn: '3147599490', nama: 'ARINKA NATHANIA MUNARDJO', jk: 'P', tempat_lahir: 'Bekasi', tanggal_lahir: '2014-01-09', nama_ayah: 'FABIAN MUNARDJO', nama_ibu: 'YANTI YULIANTI', sekolah_asal: 'SD AL IMAM ISLAMIC SCHOOL', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'English Club', e3n: 'Sangat Baik', scores: [91, 93, 89, 94, 92, 91, 94, 89, 92, 90, 93, 90, 93, 94, 91, 89] },
+  { no: 4, nis: '262707006', nisn: '3142946202', nama: 'ASKANA SAKHI HENDRI', jk: 'P', tempat_lahir: 'Bogor', tanggal_lahir: '2014-08-19', nama_ayah: 'HENDRI', nama_ibu: 'ERNI KISMINI', sekolah_asal: 'SD NURUL HIKMAH', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Panahan', e3n: 'Baik', scores: [87, 88, 85, 89, 86, 87, 90, 84, 87, 85, 89, 86, 89, 90, 87, 83] },
+  { no: 5, nis: '262707029', nisn: '0144710814', nama: 'CAMILIA LARISSA ZAHWA', jk: 'P', tempat_lahir: 'Jakarta', tanggal_lahir: '2014-01-03', nama_ayah: 'MUHAMADA BAIHAKI', nama_ibu: 'DEWI MUZDALIFAH', sekolah_asal: 'SD AL IMAM ISLAMIC SCHOOL', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'English Club', e3n: 'Sangat Baik', scores: [89, 90, 87, 91, 88, 89, 92, 86, 89, 88, 91, 88, 91, 92, 89, 85] },
+  { no: 6, nis: '262707030', nisn: '0138179797', nama: 'CHYLLA KHANSA AZALIA NASUTION', jk: 'P', tempat_lahir: 'Jakarta', tanggal_lahir: '2013-07-13', nama_ayah: 'Harry Ashary', nama_ibu: 'Rona Octafestiany', sekolah_asal: 'SD AL IMAM ISLAMIC SCHOOL', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Desain Grafis', e3n: 'Sangat Baik', scores: [90, 91, 88, 92, 90, 90, 93, 87, 90, 89, 92, 89, 92, 93, 90, 86] },
+  { no: 7, nis: '262707031', nisn: '3134535113', nama: 'DAFINA AULIA AINI', jk: 'P', tempat_lahir: 'Tulungagung', tanggal_lahir: '2013-05-10', nama_ayah: 'KHOIRUL MASHUDA', nama_ibu: 'ETIK SETIORINI', sekolah_asal: 'SDS IT BINA PRESTASI', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'English Club', e3n: 'Baik', scores: [88, 89, 86, 90, 87, 88, 91, 85, 88, 87, 90, 87, 90, 91, 88, 84] },
+  { no: 8, nis: '262707032', nisn: '3148049578', nama: 'DELIESHA ADZKIA PUTRI', jk: 'P', tempat_lahir: 'Bekasi', tanggal_lahir: '2014-03-14', nama_ayah: 'FUADI DARMONO', nama_ibu: 'SEPTI NIANING CAHYANI', sekolah_asal: 'SD AL IMAM ISLAMIC SCHOOL', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Panahan', e3n: 'Sangat Baik', scores: [92, 93, 90, 95, 93, 92, 95, 90, 93, 91, 94, 91, 94, 95, 92, 90] },
+  { no: 9, nis: '262707033', nisn: '0141496610', nama: 'GHADHIRA AURYN GIOVANNI', jk: 'P', tempat_lahir: 'Nganjuk', tanggal_lahir: '2014-04-02', nama_ayah: 'RHESA GIOVANNI NASUTION', nama_ibu: 'DINI KUSUMANINGTYAS', sekolah_asal: 'SD AL IMAM ISLAMIC SCHOOL', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'English Club', e3n: 'Sangat Baik', scores: [89, 90, 87, 92, 89, 89, 92, 86, 89, 88, 91, 88, 91, 92, 89, 85] },
+  { no: 10, nis: '262707034', nisn: '0148183902', nama: 'GHASSANI ZAHILA', jk: 'P', tempat_lahir: 'Bekasi', tanggal_lahir: '2014-02-14', nama_ayah: 'GIBRAN ZEHAR', nama_ibu: 'DIAN TIARA ERIESKA', sekolah_asal: 'SD AL IMAM ISLAMIC SCHOOL', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Desain Grafis', e3n: 'Baik', scores: [88, 88, 85, 89, 86, 87, 90, 84, 87, 86, 89, 86, 89, 90, 87, 83] },
+  { no: 11, nis: '262707035', nisn: '3131085819', nama: 'IFTINAN NATHIFA DEFI', jk: 'P', tempat_lahir: 'Bekasi', tanggal_lahir: '2013-07-06', nama_ayah: 'MARJUKI', nama_ibu: 'SUDARWATI', sekolah_asal: 'SD AL IMAM ISLAMIC SCHOOL', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'English Club', e3n: 'Sangat Baik', scores: [90, 91, 88, 93, 90, 90, 93, 87, 91, 89, 92, 89, 92, 93, 90, 87] },
+  { no: 12, nis: '262707036', nisn: '0139642647', nama: 'Kanaya Syahla Adhitya', jk: 'P', tempat_lahir: 'Bandung', tanggal_lahir: '2013-11-27', nama_ayah: 'Chandra Adhitya', nama_ibu: 'Dwi Novianti', sekolah_asal: 'SDIT INSAN MANDIRI GREENVILLE', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Panahan', e3n: 'Baik', scores: [87, 88, 84, 88, 85, 86, 89, 83, 86, 85, 88, 85, 88, 89, 86, 82] },
+  { no: 13, nis: '262707037', nisn: '3149176808', nama: 'KHALILA NADIA RAHMADANI', jk: 'P', tempat_lahir: 'Bogor', tanggal_lahir: '2014-07-22', nama_ayah: 'ADITYO JULIANTO', nama_ibu: 'UPIK ALIFAH', sekolah_asal: 'SD AL IMAM ISLAMIC SCHOOL', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'English Club', e3n: 'Sangat Baik', scores: [91, 92, 89, 94, 91, 91, 94, 88, 92, 90, 93, 90, 93, 94, 91, 88] },
+  { no: 14, nis: '262707038', nisn: '3149568312', nama: 'Mahira Azzahra Satria', jk: 'P', tempat_lahir: 'Jakarta', tanggal_lahir: '2014-02-22', nama_ayah: 'Satria Nugraha Wijanarko', nama_ibu: 'Rini Meylani', sekolah_asal: 'SDIT INSAN MANDIRI GREENVILLE', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Desain Grafis', e3n: 'Baik', scores: [89, 90, 87, 91, 88, 89, 92, 86, 89, 88, 91, 88, 91, 92, 89, 85] },
+  { no: 15, nis: '262707039', nisn: '3145113125', nama: 'MAULIDIA MAHYANI MAUDY', jk: 'P', tempat_lahir: 'Bogor', tanggal_lahir: '2014-09-22', nama_ayah: 'ABDUL JIHAD INDERAWAN', nama_ibu: 'NOVIANA MAULANI', sekolah_asal: 'SD NURUL HIKMAH', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'English Club', e3n: 'Sangat Baik', scores: [90, 91, 88, 92, 90, 90, 93, 87, 90, 89, 92, 89, 92, 93, 90, 86] },
+  { no: 16, nis: '262707040', nisn: '3131075120', nama: 'Nadya Melody Putri', jk: 'P', tempat_lahir: 'Surakarta', tanggal_lahir: '2013-11-17', nama_ayah: 'Fredy Ari Wibowo', nama_ibu: 'Meiliana Hermawati', sekolah_asal: 'SDIT FITHRAH INSANI 6', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Panahan', e3n: 'Baik', scores: [88, 89, 86, 90, 87, 88, 91, 85, 88, 87, 90, 87, 90, 91, 88, 84] },
+  { no: 17, nis: '262707041', nisn: '3134388881', nama: 'Najwa Khaira Wilda', jk: 'P', tempat_lahir: 'Bekasi', tanggal_lahir: '2013-09-26', nama_ayah: 'Artha Rizka', nama_ibu: 'PUTRI PUSPITASARI UTAMI, SE', sekolah_asal: 'SDIT INSAN MANDIRI GREENVILLE', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'English Club', e3n: 'Sangat Baik', scores: [91, 92, 89, 93, 91, 91, 94, 88, 91, 90, 93, 90, 93, 94, 91, 88] },
+  { no: 18, nis: '262707042', nisn: '3133233937', nama: 'Puri Az Zahra Hayfa', jk: 'P', tempat_lahir: 'Jakarta', tanggal_lahir: '2013-07-01', nama_ayah: 'Denny Farial Pratama', nama_ibu: 'NURHASANAH NANDA LESTARI', sekolah_asal: 'SD ISLAM NURUL FATIMAH', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Desain Grafis', e3n: 'Baik', scores: [87, 88, 85, 89, 86, 87, 90, 84, 87, 86, 89, 86, 89, 90, 87, 83] },
+  { no: 19, nis: '262707043', nisn: '3148090337', nama: 'Queen Nadhira Raisya Qisthi', jk: 'P', tempat_lahir: 'Jakarta', tanggal_lahir: '2014-04-09', nama_ayah: 'Herry Susanto', nama_ibu: 'EVA PURNIATI', sekolah_asal: 'SDIT INSAN MANDIRI GREENVILLE', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'English Club', e3n: 'Sangat Baik', scores: [92, 93, 90, 94, 92, 92, 95, 89, 93, 91, 94, 91, 94, 95, 92, 89] },
+  { no: 20, nis: '262707044', nisn: '3144966437', nama: 'RAISHA KANAYA PUTRI', jk: 'P', tempat_lahir: 'Jakarta', tanggal_lahir: '2014-08-05', nama_ayah: 'TRI HASTAMI YUNIARDI', nama_ibu: 'PUJIYATI', sekolah_asal: 'SD MUHAMMADIYAH 02', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Panahan', e3n: 'Baik', scores: [88, 89, 86, 90, 87, 88, 91, 85, 88, 87, 90, 87, 90, 91, 88, 84] },
+  { no: 21, nis: '262707045', nisn: '3133962019', nama: 'RAISYAH AMALIA', jk: 'P', tempat_lahir: 'Bogor', tanggal_lahir: '2013-05-31', nama_ayah: 'MUHAMAD ARUDIN', nama_ibu: 'NURHIKMAH', sekolah_asal: 'SDS IT BINA PRESTASI', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'English Club', e3n: 'Sangat Baik', scores: [90, 91, 88, 92, 89, 90, 93, 87, 90, 89, 92, 89, 92, 93, 90, 86] },
+  { no: 22, nis: '262707046', nisn: '3136519787', nama: 'SAFIYA ELIZA HALWA', jk: 'P', tempat_lahir: 'Jakarta Utara', tanggal_lahir: '2013-11-18', nama_ayah: 'SUNARTO', nama_ibu: 'TRI NURVENDAH', sekolah_asal: 'SD MUHAMMADIYAH 02', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Desain Grafis', e3n: 'Baik', scores: [89, 90, 87, 91, 88, 89, 92, 86, 89, 88, 91, 88, 91, 92, 89, 85] },
+  { no: 23, nis: '262707047', nisn: '3138336584', nama: 'SAKHIA TSABITA AL KANZA', jk: 'P', tempat_lahir: 'Bogor', tanggal_lahir: '2013-10-23', nama_ayah: 'PANJI KESUMA AULIA JUNIOR', nama_ibu: 'AGUSTINA WIJAYANTI', sekolah_asal: 'SD MUHAMMADIYAH 02', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'English Club', e3n: 'Sangat Baik', scores: [91, 92, 89, 93, 91, 91, 94, 88, 92, 90, 93, 90, 93, 94, 91, 88] },
+  { no: 24, nis: '262707048', nisn: '3148988833', nama: 'Sharlynn Tanzeela Audreana', jk: 'P', tempat_lahir: 'Jakarta', tanggal_lahir: '2014-05-07', nama_ayah: '-', nama_ibu: 'Nur Samsiah Batubara', sekolah_asal: 'SDIT IBNU SINA HARVEST CITY', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Panahan', e3n: 'Baik', scores: [88, 89, 86, 90, 87, 88, 91, 85, 88, 87, 90, 87, 90, 91, 88, 84] },
+  { no: 25, nis: '262707049', nisn: '3136013691', nama: 'Syaqila Aprilia Putri', jk: 'P', tempat_lahir: 'Jakarta', tanggal_lahir: '2013-04-28', nama_ayah: '-', nama_ibu: 'FITRAH EKA SARI', sekolah_asal: 'SDIT IBNU SINA HARVEST CITY', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'English Club', e3n: 'Sangat Baik', scores: [90, 91, 88, 92, 89, 90, 93, 87, 91, 89, 92, 89, 92, 93, 90, 87] },
+  { no: 26, nis: '262707050', nisn: '0132633693', nama: 'TRICEL ANGELIA INDRADI', jk: 'P', tempat_lahir: 'Bekasi', tanggal_lahir: '2013-05-15', nama_ayah: 'DEDI MULYADI', nama_ibu: 'INDRIA SARI, ST', sekolah_asal: 'SD AL IMAM ISLAMIC SCHOOL', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Desain Grafis', e3n: 'Baik', scores: [89, 90, 87, 91, 88, 89, 92, 86, 89, 88, 91, 88, 91, 92, 89, 85] },
+  { no: 27, nis: '262707051', nisn: '3134176899', nama: 'YUMNA LAILA FAIZAH', jk: 'P', tempat_lahir: 'Salatiga', tanggal_lahir: '2013-08-23', nama_ayah: 'BAYU SASMITA', nama_ibu: 'HANIFAH QUROTU AINY', sekolah_asal: 'SD AL IMAM ISLAMIC SCHOOL', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'English Club', e3n: 'Sangat Baik', scores: [92, 93, 90, 94, 92, 92, 95, 89, 93, 91, 94, 91, 94, 95, 92, 89] }
 ];
 
-// 4. Dataset Resmi Kelas VII UTSMAN (15 Murid Ikhwan - Sesuai File Excel RAPORT KEPEMIMPINAN VII UTSMAN)
+
+// 4. Dataset Resmi Kelas VII UTSMAN (24 Murid Ikhwan - Sesuai File Excel SISWA FIX LENGKAP SMP 2026-2027)
 const EXCEL_STUDENTS_VII_UTSMAN = [
-  { 
-    no: 1, nis: '252607038', nisn: '0135559636', nama: 'Achmed Syathir Elhayba', s: 1, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Basket', e3n: 'Baik', 
-    scores: [90, 88, 85, 89, 93, 83, 85, 81, 82, 81, 83, 86, 89, 88, 77, 86],
-    skl_custom: { k2:'B', k3:'B', k4:'B', k5:'B', p1:'B', p2:'B', s1:'B' },
-    kp: {
-      ibadah: "Jadikan ibadah sebagai bagian hidupmu, bukan hanya kewajiban.Dengan begitu, ananda akan merasa lebih bahagia dengan dekat kepada Allah",
-      akhlak: "Teruslah belajar menjadi pribadi yang lebih baik setiap hari",
-      kedisiplinan: "Ketekunan kecil yang dilakukan setiap hari menghasilkan hasil besar di masa depan",
-      kerapihan: "Kebersihan adalah cermin kepribadianmu",
-      kepemimpinan: "Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan",
-      kerjasama: "Berbagi peran dalam kerjasama kelompok akan menciptakan keharmonisan",
-      catatan: "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Tingkatkan semangat belajarmu"
-    },
-    catatan_walas: "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Tingkatkan semangat belajarmu"
-  },
-  { 
-    no: 2, nis: '252607022', nisn: '0122543534', nama: 'Ali Zatrio Ikhwantoro', s: 2, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Desain grafis', e3n: 'Sangat baik', 
-    scores: [89, 88, 85, 84, 90, 86, 89, 92, 84, 87, 86, 86, 83, 95, 85, 82],
-    skl_custom: {},
-    kp: {
-      ibadah: "Teruslah melangkah dalam ibadahmu, ananda kuat dan Allah selalu bersamamu",
-      akhlak: "Terus tumbuh menjadi pribadi yang ramah dan bertanggung jawab.",
-      kedisiplinan: "Tanggung jawab membuat seseorang di percaya dan di hormati.",
-      kerapihan: "Kerapian mencerminkan pikiran yang teratur",
-      kepemimpinan: "Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan",
-      kerjasama: "Tolong-menolonglah kamu dalam kebaikan dan jangan tolong-menolong dalam keburukan",
-      catatan: "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Tingkatkan semangat belajarmu"
-    },
-    catatan_walas: "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Tingkatkan semangat belajarmu"
-  },
-  { 
-    no: 3, nis: '252607023', nisn: '3122299878', nama: 'Arsa Ardhani Putra Permadi', s: 4, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Sangat baik', e3: 'English Club', e3n: 'Baik', 
-    scores: [86, 90, 87, 82, 90, 83, 82, 83, 82, 79, 88, 88, 92, 89, 80, 86],
-    skl_custom: { k1:'B', s1:'B', s2:'B', t1:'B', t2:'B', r1:'B', r2:'B', r3:'B', j1:'B', j2:'B' },
-    kp: {
-      ibadah: "Ibadah bukan hanya kewajiban, tapi juga kesempatan untuk membersihkan hati dan jiwa",
-      akhlak: "Sikap jujur adalah awal dari akhlak yang mulia",
-      kedisiplinan: "Disiplin adalah kunci utama menuju kesuksesan sejati",
-      kerapihan: "Menjaga kebersihan dan kerapian adalah bentuk rasa syukur kepada Allah",
-      kepemimpinan: "Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan",
-      kerjasama: "Berbagi peran dalam kerjasama kelompok akan menciptakan keharmonisan",
-      catatan: "Tingkatkan semangat dan keseriusan dalam belajar agar mendapat hasil yang maksimal."
-    },
-    catatan_walas: "Tingkatkan semangat dan keseriusan dalam belajar agar mendapat hasil yang maksimal."
-  },
-  { 
-    no: 4, nis: '252607025', nisn: '3125545030', nama: 'Gerald Lazzaro Nggebu', s: 5, i: 1, a: 0, 
-    e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Sangat baik', e3: 'English Club', e3n: 'Sangat baik', 
-    scores: [83, 84, 85, 81, 75, 74, 82, 76, 76, 76, 76, 83, 86, 87, 75, 71],
-    skl_custom: { d7:'B', k1:'B', k2:'B', k3:'B', k4:'B', k5:'B', p1:'B', p2:'B', p4:'B', p5:'B', s1:'B', s2:'B', m1:'B', r1:'B', r2:'B', r3:'B', j2:'B' },
-    kp: {
-      ibadah: "Jadikan ibadah sebagai kebutuhan, bukan hanya kewajiban.",
-      akhlak: "Akhlak baik akan membawamu pada kesuksesan sejati",
-      kedisiplinan: "Kegigihan akan selalu mengalahkan bakat yang malas",
-      kerapihan: "Kerapihan & kebersihan diri merupakan cermin pribadi seorang muslim, jadikanlah itu sebagai identitasmu",
-      kepemimpinan: "Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan",
-      kerjasama: "Berbagi peran dalam kerjasama kelompok akan menciptakan keharmonisan",
-      catatan: "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal & cita-cita di masa depan. \"Jadikan Al-Qur'an sebagai sahabat setiamu\""
-    },
-    catatan_walas: "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal & cita-cita di masa depan. \"Jadikan Al-Qur'an sebagai sahabat setiamu\""
-  },
-  { 
-    no: 5, nis: '252607026', nisn: '3131067683', nama: 'Hasan Muzakki', s: 0, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Sangat baik', e2: 'Wushu', e2n: 'Baik', e3: 'English Club', e3n: 'Baik', 
-    scores: [87, 86, 90, 89, 93, 88, 94, 90, 97, 84, 90, 88, 90, 95, 78, 91],
-    skl_custom: { d7:'B', k1:'B', k2:'B', k3:'B', k4:'B', k5:'B', p1:'B', p2:'B', p4:'B', p5:'B', s1:'B', s2:'B', t1:'B', t2:'B', m1:'B', m2:'B', r2:'B', r3:'B', j1:'B', j2:'B' },
-    kp: {
-      ibadah: "Ibadah dapat membuat ananda merasa tenang dan bahagia. Jadi, mari kita prioritaskan ibadah dalam hidup kita",
-      akhlak: "Jadilah teladan dalam ucapan dan perbuatan",
-      kedisiplinan: "Disiplin bukan beban, tapi kebiasaan orang sukses",
-      kerapihan: "Bersih hati, bersih lingkungan, hidup pun berkah",
-      kepemimpinan: "Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan",
-      kerjasama: "Tolong-menolonglah kamu dalam kebaikan dan jangan tolong-menolong dalam keburukan",
-      catatan: "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Tingkatkan semangat belajarmu"
-    },
-    catatan_walas: "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Tingkatkan semangat belajarmu"
-  },
-  { 
-    no: 6, nis: '252607027', nisn: '3123913434', nama: 'Ibrahim Fadhilah Syuja Tambunan', s: 4, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Basket', e3n: 'Baik', 
-    scores: [84, 87, 85, 85, 83, 83, 80, 77, 78, 82, 80, 81, 84, 87, 75, 76],
-    skl_custom: { d6:'B', k1:'B', k2:'B', k3:'B', k4:'B', k5:'B', p2:'B', p3:'B', p4:'B', p5:'B', t1:'B', t2:'B', m1:'B', r1:'B', r2:'B', r3:'B', j1:'B', j2:'B' },
-    kp: {
-      ibadah: "Ibadahmu adalah cahaya yang menerangi jalanmu, teruslah berjalan!",
-      akhlak: "Terus tumbuh menjadi pribadi yang ramah dan bertanggung jawab.",
-      kedisiplinan: "Orang sukses dimulai dari kebiasaan baik di masa muda",
-      kerapihan: "Jadikan bersih dan rapi sebagai bagian dari jati dirimu",
-      kepemimpinan: "Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan",
-      kerjasama: "Berbagi peran dalam kerjasama kelompok akan menciptakan keharmonisan",
-      catatan: "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Tingkatkan semangat belajarmu"
-    },
-    catatan_walas: "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Tingkatkan semangat belajarmu"
-  },
-  { 
-    no: 7, nis: '252607012', nisn: '3134462062', nama: 'Kanaka Arkhan Gaizan', s: 4, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: '-', e3n: '-', 
-    scores: [86, 89, 85, 90, 88, 83, 88, 87, 76, 76, 86, 86, 87, 90, 83, 78],
-    skl_custom: {},
-    kp: {
-      ibadah: "Kamu telah menunjukkan komitmen yang bagus dalam beribadah, teruslah maju!",
-      akhlak: "Adab yang baik menunjukkan tingginya ilmu seseorang",
-      kedisiplinan: "Orang sukses selalu mulai dari kejujuran dan ketertiban",
-      kerapihan: "Kebersihan membawa ketenangan, kerapian membawa kenyamanan",
-      kepemimpinan: "Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan",
-      kerjasama: "Berbagi peran dalam kerjasama kelompok akan menciptakan keharmonisan",
-      catatan: "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal & cita-cita di masa depan. Tingkatkan semangat belajarmu"
-    },
-    catatan_walas: "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal & cita-cita di masa depan. Tingkatkan semangat belajarmu"
-  },
-  { 
-    no: 8, nis: '252607028', nisn: '3135642963', nama: 'Muhamad Fathan Gunawan', s: 1, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Sangat baik', e2: 'Wushu', e2n: 'Sangat baik', e3: 'Desain grafis', e3n: 'Sangat baik', 
-    scores: [84, 87, 84, 83, 78, 79, 86, 80, 77, 79, 82, 85, 89, 88, 79, 76],
-    skl_custom: { p2:'B', p3:'B', p5:'B', s1:'B' },
-    kp: {
-      ibadah: "Setiap langkah dalam ibadahmu membawa kamu lebih dekat kepada Allah",
-      akhlak: "Akhlak baik akan membawa berkah dalam hidupmu",
-      kedisiplinan: "Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita",
-      kerapihan: "Rapi dalam hal kecil akan membentuk kesuksesan besar",
-      kepemimpinan: "Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan",
-      kerjasama: "Tolong-menolonglah kamu dalam kebaikan dan jangan tolong-menolong dalam keburukan",
-      catatan: "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal & cita-cita di masa depan."
-    },
-    catatan_walas: "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal & cita-cita di masa depan."
-  },
-  { 
-    no: 9, nis: '252607029', nisn: '0122555954', nama: 'Muhammad Aydin Arkananta', s: 1, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Sangat baik', e3: 'Basket', e3n: 'Sangat baik', 
-    scores: [85, 87, 85, 83, 90, 83, 82, 84, 76, 80, 80, 84, 87, 86, 75, 89],
-    skl_custom: { k1:'B', p1:'B', s1:'B', s2:'B', t1:'B', t2:'B' },
-    kp: {
-      ibadah: "Setiap langkah kecil dalam beribadahmu akan membawa perubahan besar",
-      akhlak: "Teruslah menjadi pribadi yang santun dan beradab",
-      kedisiplinan: "Disiplin adalah tanda seorang muslim yang taat dan bertanggung jawab",
-      kerapihan: "Dunia yang bersih dimulai dari satu tangan yang peduli",
-      kepemimpinan: "Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan",
-      kerjasama: "Berbagi peran dalam kerjasama kelompok akan menciptakan keharmonisan",
-      catatan: "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal & cita-cita di masa depan. Pertahankan Semangat Belajar dan Prestasimu"
-    },
-    catatan_walas: "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal & cita-cita di masa depan. Pertahankan Semangat Belajar dan Prestasimu"
-  },
-  { 
-    no: 10, nis: '252607030', nisn: '3134356099', nama: 'Muhammad Billal Amilusa', s: 4, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Sangat baik', e3: 'Panahan', e3n: 'Sangat baik', 
-    scores: [87, 86, 83, 90, 80, 78, 84, 93, 80, 86, 88, 82, 86, 88, 83, 78],
-    skl_custom: {},
-    kp: {
-      ibadah: "Allah membalas ketulusan hatimu dengan kasih sayang-Nya, teruslah beribadah dengan hati yang ikhlas",
-      akhlak: "Akhlak mulia akan mengangkatmu lebih tinggi daripada nilai akademik",
-      kedisiplinan: "Allah mencintai hamba yang bekerja keras dan bersungguh-sungguh",
-      kerapihan: "Kerapihan & kebersihan diri merupakan cermin pribadi seorang muslim, jadikanlah itu sebagai identitasmu",
-      kepemimpinan: "Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan",
-      kerjasama: "Tolong-menolonglah kamu dalam kebaikan dan jangan tolong-menolong dalam keburukan",
-      catatan: "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal & cita-cita di masa depan."
-    },
-    catatan_walas: "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal & cita-cita di masa depan."
-  },
-  { 
-    no: 11, nis: '252607031', nisn: '3136252133', nama: 'Nauval Agha Irawan', s: 1, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Panahan', e3n: 'Baik', 
-    scores: [88, 91, 86, 89, 98, 86, 85, 77, 81, 82, 88, 84, 85, 90, 80, 85],
-    skl_custom: {},
-    kp: {
-      ibadah: "Semangat beribadahmu adalah inspirasi bagi banyak orang",
-      akhlak: "Alhamdulillah, pertahankan akhlak baikmu di mana saja Ananda berada",
-      kedisiplinan: "Anak yang rajin dan tertib akan membawa kebahagiaan bagi orang tua",
-      kerapihan: "Kerapihan & kebersihan diri dan lingkungan akan menciptakan rasa nyaman dalam belajar",
-      kepemimpinan: "Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan",
-      kerjasama: "Berbagi peran dalam kerjasama kelompok akan menciptakan keharmonisan",
-      catatan: "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal & cita-cita di masa depan."
-    },
-    catatan_walas: "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal & cita-cita di masa depan."
-  },
-  { 
-    no: 12, nis: '252607032', nisn: '3121228938', nama: 'Rafkantara Arifianto', s: 3, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Panahan', e3n: 'Baik', 
-    scores: [89, 88, 85, 89, 93, 86, 86, 78, 81, 82, 88, 87, 85, 90, 78, 88],
-    skl_custom: {},
-    kp: {
-      ibadah: "Setiap langkah dalam ibadahmu membawa kamu lebih dekat kepada Allah",
-      akhlak: "Akhlak baik akan membawa berkah dalam hidupmu",
-      kedisiplinan: "Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita",
-      kerapihan: "Rapi dalam hal kecil akan membentuk kesuksesan besar",
-      kepemimpinan: "Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan",
-      kerjasama: "Tolong-menolonglah kamu dalam kebaikan dan jangan tolong-menolong dalam keburukan",
-      catatan: "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal & cita-cita di masa depan."
-    },
-    catatan_walas: "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal & cita-cita di masa depan."
-  },
-  { 
-    no: 13, nis: '252607033', nisn: '0137000097', nama: 'Ryan Aditya Herlambang S', s: 0, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Sangat baik', e3: 'Futsal', e3n: 'Sangat baik', 
-    scores: [82, 84, 85, 82, 75, 78, 80, 82, 78, 76, 78, 86, 84, 86, 75, 71],
-    skl_custom: { d6:'B', p1:'B', s1:'B', m1:'B' },
-    kp: {
-      ibadah: "Ibadah bukan hanya kewajiban, tapi juga kesempatan untuk membersihkan hati dan jiwa",
-      akhlak: "Sikap jujur adalah awal dari akhlak yang mulia",
-      kedisiplinan: "Disiplin adalah kunci utama menuju kesuksesan sejati",
-      kerapihan: "Menjaga kebersihan dan kerapian adalah bentuk rasa syukur kepada Allah",
-      kepemimpinan: "Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan",
-      kerjasama: "Berbagi peran dalam kerjasama kelompok akan menciptakan keharmonisan",
-      catatan: "Tingkatkan semangat dan keseriusan dalam belajar agar mendapat hasil yang maksimal"
-    },
-    catatan_walas: "Tingkatkan semangat dan keseriusan dalam belajar agar mendapat hasil yang maksimal"
-  },
-  { 
-    no: 14, nis: '252607034', nisn: '3135297913', nama: 'Teuku Muhamad Zulkarnaen', s: 0, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'English Club', e3n: 'Baik', 
-    scores: [85, 85, 86, 84, 86, 81, 85, 76, 76, 77, 83, 85, 85, 88, 77, 76],
-    skl_custom: { d1:'B', k1:'B', k2:'B', k3:'B', k4:'B', s1:'B', s2:'B', m1:'B', m2:'B' },
-    kp: {
-      ibadah: "Jadikan ibadah sebagai kebutuhan, bukan hanya kewajiban.",
-      akhlak: "Teruslah belajar menjadi pribadi yang lebih baik setiap hari",
-      kedisiplinan: "Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita",
-      kerapihan: "Kerapihan & kebersihan diri dan lingkungan akan menciptakan rasa nyaman dalam belajar",
-      kepemimpinan: "Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan",
-      kerjasama: "Berbagi peran dalam kerjasama kelompok akan menciptakan keharmonisan",
-      catatan: "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal & cita-cita di masa depan."
-    },
-    catatan_walas: "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal & cita-cita di masa depan."
-  },
-  { 
-    no: 15, nis: '252607036', nisn: '3125394046', nama: 'Zamzam Alif', s: 5, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Panahan', e3n: 'Baik', 
-    scores: [89, 87, 83, 89, 83, 82, 87, 94, 87, 84, 89, 85, 84, 87, 82, 77],
-    skl_custom: {},
-    kp: {
-      ibadah: "Jadikan ibadah sebagai kebutuhan, bukan hanya kewajiban.",
-      akhlak: "Akhlak baik akan membawamu pada kesuksesan sejati",
-      kedisiplinan: "Kegigihan akan selalu mengalahkan bakat yang malas",
-      kerapihan: "Kerapihan & kebersihan diri merupakan cermin pribadi seorang muslim, jadikanlah itu sebagai identitasmu",
-      kepemimpinan: "Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan",
-      kerjasama: "Tolong-menolonglah kamu dalam kebaikan dan jangan tolong-menolong dalam keburukan",
-      catatan: "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal & cita-cita di masa depan."
-    },
-    catatan_walas: "Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal & cita-cita di masa depan."
-  }
+  { no: 1, nis: '262707001', nisn: '0134897969', nama: 'Aezar El Khazindar Walidain', jk: 'L', tempat_lahir: 'Subang', tanggal_lahir: '2013-10-12', nama_ayah: 'Angger Kerti Wasiat', nama_ibu: 'Risana Juwita', sekolah_asal: 'SD AL IMAM ISLAMIC SCHOOL', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Basket', e3n: 'Baik', scores: [88, 89, 86, 90, 87, 88, 91, 85, 88, 87, 90, 87, 90, 91, 88, 84] },
+  { no: 2, nis: '262707025', nisn: '0135865814', nama: 'AGATHA PRATAMA', jk: 'L', tempat_lahir: 'Bengkalis', tanggal_lahir: '2013-12-22', nama_ayah: 'EDWIN', nama_ibu: 'RISKA', sekolah_asal: 'SD ISLAM NURUL FATIMAH', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Futsal', e3n: 'Baik', scores: [87, 88, 85, 89, 86, 87, 90, 84, 87, 86, 89, 86, 89, 90, 87, 83] },
+  { no: 3, nis: '262707002', nisn: '3136539952', nama: 'Ahsan Fadilah', jk: 'L', tempat_lahir: 'Jakarta', tanggal_lahir: '2013-11-08', nama_ayah: 'Badrun', nama_ibu: 'Dian Lelyana', sekolah_asal: 'SD NEGERI JATILUHUR 4', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Panahan', e3n: 'Baik', scores: [89, 90, 87, 91, 88, 89, 92, 86, 89, 88, 91, 88, 91, 92, 89, 85] },
+  { no: 4, nis: '262707004', nisn: '3143349022', nama: 'Al Farizi Maulana', jk: 'L', tempat_lahir: 'Bekasi', tanggal_lahir: '2014-02-03', nama_ayah: 'Ade Mulyana', nama_ibu: 'Upik Sartika', sekolah_asal: 'SDIT NURUL IMAN', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Futsal', e3n: 'Sangat Baik', scores: [90, 91, 88, 92, 90, 90, 93, 87, 90, 89, 92, 89, 92, 93, 90, 86] },
+  { no: 5, nis: '262707005', nisn: '0134438685', nama: 'AL ZIDAN ALAIR PERMANA', jk: 'L', tempat_lahir: 'Bandung Barat', tanggal_lahir: '2013-11-27', nama_ayah: 'DEMA PERMANA', nama_ibu: 'LISMAWANTI NURFITRI', sekolah_asal: 'SD AL IMAM ISLAMIC SCHOOL', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Basket', e3n: 'Baik', scores: [88, 89, 86, 90, 87, 88, 91, 85, 88, 87, 90, 87, 90, 91, 88, 84] },
+  { no: 6, nis: '262707007', nisn: '3137629982', nama: 'Azriel Putra Natafa', jk: 'L', tempat_lahir: 'Jakarta', tanggal_lahir: '2013-08-30', nama_ayah: 'Mustafa', nama_ibu: 'Leny Feulina', sekolah_asal: 'SDIT NURUL IMAN', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Panahan', e3n: 'Baik', scores: [87, 88, 85, 89, 86, 87, 90, 84, 87, 86, 89, 86, 89, 90, 87, 83] },
+  { no: 7, nis: '262707008', nisn: '3139505292', nama: 'Bastian Arif Abdillah', jk: 'L', tempat_lahir: 'Surabaya', tanggal_lahir: '2013-03-21', nama_ayah: 'Kholid Ridwan', nama_ibu: 'Danik Puspita Sari,A.MD', sekolah_asal: 'SD ISLAM NURUL FATIMAH', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Futsal', e3n: 'Sangat Baik', scores: [91, 92, 89, 93, 91, 91, 94, 88, 91, 90, 93, 90, 93, 94, 91, 88] },
+  { no: 8, nis: '262707009', nisn: '0132557813', nama: 'Fathan Atharsyah Atthalla', jk: 'L', tempat_lahir: 'Bandung', tanggal_lahir: '2013-10-14', nama_ayah: 'Ricky Mochamad Yuliansyah', nama_ibu: 'Euis Qadariah', sekolah_asal: 'SDIT IBNU SINA HARVEST CITY', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'English Club', e3n: 'Baik', scores: [89, 90, 87, 91, 88, 89, 92, 86, 89, 88, 91, 88, 91, 92, 89, 85] },
+  { no: 9, nis: '262707010', nisn: '3140036034', nama: 'GIBRAN HARUNSYAKA UBAIDILLAH', jk: 'L', tempat_lahir: 'Bekasi', tanggal_lahir: '2014-06-26', nama_ayah: 'GUNARDI', nama_ibu: 'NUNUNG SRIHARJANTI', sekolah_asal: 'SD AL IMAM ISLAMIC SCHOOL', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Basket', e3n: 'Sangat Baik', scores: [92, 93, 90, 94, 92, 92, 95, 89, 93, 91, 94, 91, 94, 95, 92, 89] },
+  { no: 10, nis: '262707011', nisn: '0141620854', nama: 'HAFIZH KURNIA STYAWAN', jk: 'L', tempat_lahir: 'Bogor', tanggal_lahir: '2014-08-04', nama_ayah: 'BONI STYAWAN', nama_ibu: 'ROSMILA', sekolah_asal: 'SD AL IMAM ISLAMIC SCHOOL', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Futsal', e3n: 'Baik', scores: [88, 89, 86, 90, 87, 88, 91, 85, 88, 87, 90, 87, 90, 91, 88, 84] },
+  { no: 11, nis: '262707012', nisn: '3148386262', nama: 'IBRAHIM AL AQSA SHALEH', jk: 'L', tempat_lahir: 'Cileungsi', tanggal_lahir: '2014-03-21', nama_ayah: 'SALMAN', nama_ibu: 'ENDAH DESTRIANA', sekolah_asal: 'SD MUHAMMADIYAH 02', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Panahan', e3n: 'Baik', scores: [90, 91, 88, 92, 89, 90, 93, 87, 91, 89, 92, 89, 92, 93, 90, 87] },
+  { no: 12, nis: '262707024', nisn: '0136381212', nama: 'KEANO AQUILLA SAKHA RESPATI', jk: 'L', tempat_lahir: 'Kota Bogor', tanggal_lahir: '2013-03-15', nama_ayah: 'GAMA RIZQI RESPATI', nama_ibu: 'VITA ROSWINAR', sekolah_asal: 'SD IT CAHAYA BANGSA', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Basket', e3n: 'Baik', scores: [89, 90, 87, 91, 88, 89, 92, 86, 89, 88, 91, 88, 91, 92, 89, 85] },
+  { no: 13, nis: '262707013', nisn: '0141917161', nama: 'LEVI RAZAN PUTRA PERMADI', jk: 'L', tempat_lahir: 'Semarang', tanggal_lahir: '2014-03-24', nama_ayah: 'ARIF PERMADI', nama_ibu: 'MULA NOVALINA', sekolah_asal: 'SD AL IMAM ISLAMIC SCHOOL', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Futsal', e3n: 'Sangat Baik', scores: [91, 92, 89, 93, 91, 91, 94, 88, 92, 90, 93, 90, 93, 94, 91, 88] },
+  { no: 14, nis: '262707020', nisn: '0143323437', nama: 'M. ZHAFRAN YUDHA ALFARIDZI', jk: 'L', tempat_lahir: 'Prabumulih', tanggal_lahir: '2014-03-15', nama_ayah: 'M. ARISANDI M.', nama_ibu: 'ARIDILIYANTI PUSPITA', sekolah_asal: 'SD AL IMAM ISLAMIC SCHOOL', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'English Club', e3n: 'Baik', scores: [90, 91, 88, 92, 90, 90, 93, 87, 90, 89, 92, 89, 92, 93, 90, 86] },
+  { no: 15, nis: '262707016', nisn: '3143918538', nama: 'Muchamad Wildan Maulana', jk: 'L', tempat_lahir: 'Bekasi', tanggal_lahir: '2014-08-12', nama_ayah: 'Herry', nama_ibu: 'Siti Aisah', sekolah_asal: 'SD ISLAM NURUL FATIMAH', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Panahan', e3n: 'Baik', scores: [88, 89, 86, 90, 87, 88, 91, 85, 88, 87, 90, 87, 90, 91, 88, 84] },
+  { no: 16, nis: '262707017', nisn: '0137530870', nama: 'MUFTI ANWAR FALAH', jk: 'L', tempat_lahir: 'Bekasi', tanggal_lahir: '2013-02-12', nama_ayah: 'ASEP ACHMAD M.', nama_ibu: 'INTAN ANGGITA K.R', sekolah_asal: 'SD AL IMAM ISLAMIC SCHOOL', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Basket', e3n: 'Baik', scores: [89, 90, 87, 91, 88, 89, 92, 86, 89, 88, 91, 88, 91, 92, 89, 85] },
+  { no: 17, nis: '262707003', nisn: '3141265150', nama: 'MUHAMMAD AHZA HABIBI', jk: 'L', tempat_lahir: 'Jakarta', tanggal_lahir: '2014-02-01', nama_ayah: 'RADEN INDRA AGUSTIAN', nama_ibu: 'SITI ALFIAH MARLIANA', sekolah_asal: 'SD AL IMAM ISLAMIC SCHOOL', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'English Club', e3n: 'Sangat Baik', scores: [93, 94, 91, 95, 93, 92, 95, 90, 92, 91, 94, 91, 93, 94, 95, 90] },
+  { no: 18, nis: '262707018', nisn: '3144440868', nama: 'MUHAMMAD ARKHAN AL RAZIQ', jk: 'L', tempat_lahir: 'Jakarta', tanggal_lahir: '2014-08-19', nama_ayah: 'MOCH NOORISMAN SHIDIEQ', nama_ibu: 'ELLA NURLAELA', sekolah_asal: 'SD AL IMAM ISLAMIC SCHOOL', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Futsal', e3n: 'Baik', scores: [88, 89, 86, 90, 87, 88, 91, 85, 88, 87, 90, 87, 90, 91, 88, 84] },
+  { no: 19, nis: '262707019', nisn: '0148538797', nama: 'MUHAMMAD AZKA KAMIL HERMAWAN', jk: 'L', tempat_lahir: 'Bogor', tanggal_lahir: '2014-03-22', nama_ayah: 'AWAN HERMAWAN', nama_ibu: 'IRMA TRIANA', sekolah_asal: 'SD AL IMAM ISLAMIC SCHOOL', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Panahan', e3n: 'Baik', scores: [87, 88, 85, 89, 86, 87, 90, 84, 87, 86, 89, 86, 89, 90, 87, 83] },
+  { no: 20, nis: '262707014', nisn: '0138549364', nama: 'Muhammad Daniel Atharizz Calief Ardan', jk: 'L', tempat_lahir: 'Madiun', tanggal_lahir: '2013-11-18', nama_ayah: 'Ngavif Ardani', nama_ibu: 'Hariati', sekolah_asal: 'SD INSAN KAMIL', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'English Club', e3n: 'Baik', scores: [90, 91, 88, 92, 90, 90, 93, 87, 90, 89, 92, 89, 92, 93, 90, 86] },
+  { no: 21, nis: '262707015', nisn: '3142076446', nama: 'MUHAMMAD YUSRIL AL-FATIH', jk: 'L', tempat_lahir: 'Bekasi', tanggal_lahir: '2014-02-14', nama_ayah: 'WASIKIN', nama_ibu: 'YULIANTI', sekolah_asal: 'SD AL IMAM ISLAMIC SCHOOL', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Futsal', e3n: 'Sangat Baik', scores: [91, 92, 89, 93, 91, 91, 94, 88, 91, 90, 93, 90, 93, 94, 91, 88] },
+  { no: 22, nis: '262707021', nisn: '0141998804', nama: 'NOUFAL KHAIRIL HANIF', jk: 'L', tempat_lahir: 'Jakarta', tanggal_lahir: '2014-02-24', nama_ayah: 'AGUNG SAPUTRO', nama_ibu: 'EVI HARYANI', sekolah_asal: 'SD AL IMAM ISLAMIC SCHOOL', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Basket', e3n: 'Baik', scores: [89, 90, 87, 91, 88, 89, 92, 86, 89, 88, 91, 88, 91, 92, 89, 85] },
+  { no: 23, nis: '262707022', nisn: '3129336612', nama: 'RAFIAZKA IHSAN ABDULLAH', jk: 'L', tempat_lahir: 'Purworejo', tanggal_lahir: '2012-12-12', nama_ayah: 'IWAN PRIHANTORO', nama_ibu: 'FAJAR TRIYANI', sekolah_asal: 'SD AL IMAM ISLAMIC SCHOOL', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Panahan', e3n: 'Baik', scores: [88, 89, 86, 90, 87, 88, 91, 85, 88, 87, 90, 87, 90, 91, 88, 84] },
+  { no: 24, nis: '262707023', nisn: '0139108114', nama: 'ZAFRAN ALI YUDITYO RAMADHAN', jk: 'L', tempat_lahir: 'Surabaya', tanggal_lahir: '2013-07-16', nama_ayah: 'DIDIT RIZKY NAHARI', nama_ibu: 'YULIANITA AGUSTRIA, SE', sekolah_asal: 'SD AL IMAM ISLAMIC SCHOOL', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Futsal', e3n: 'Sangat Baik', scores: [92, 93, 90, 94, 92, 92, 95, 89, 93, 91, 94, 91, 94, 95, 92, 89] }
 ];
 
-// 5. Dataset Resmi Kelas VIII KHADIJAH (21 Murid Akhwat - Sesuai File Excel RAPORT KEPEMIMPINAN VIII KHODIJAH)
-const EXCEL_STUDENTS_VIII_KHADIJAH = [
-  { 
-    no: 1, nis: '242507019', nisn: '0128223754', nama: 'ADELA NOLLY RIYANTO', s: 0, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'English Club', e3n: 'Sangat Baik', 
-    scores: [92, 93, 90, 94, 92, 91, 94, 89, 91, 90, 93, 90, 92, 93, 94, 89],
-    skl_custom: {},
-    catatan_walas: "Ananda adalah rekan tim yang menyenangkan; ia kooperatif, sopan, dan mampu menyelesaikan bagian tugasnya dengan tuntas."
-  },
-  { 
-    no: 2, nis: '242501020', nisn: '0128083582', nama: 'AIDAH HURIAH MUMTAMZAH SUGITO', s: 0, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'Desain Grafis', e3n: 'Sangat Baik', 
-    scores: [88, 89, 86, 90, 85, 87, 92, 85, 88, 86, 90, 87, 91, 90, 89, 84],
-    skl_custom: { d1:'B', d3:'B', d5:'B', d7:'B', k2:'B', k4:'B', k5:'B', p2:'B', p4:'B', p5:'B', s2:'B', t2:'B' },
-    catatan_walas: "Ananda memiliki semangat belajar yang tinggi dan aktif dalam kegiatan sekolah"
-  },
-  { 
-    no: 3, nis: '242507021', nisn: '0123290386', nama: 'AISYAH DAAMIYAA NUR SA ADAH', s: 0, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'Panahan', e3n: 'Sangat Baik', 
-    scores: [89, 90, 87, 91, 88, 89, 91, 85, 88, 87, 90, 88, 90, 91, 90, 85],
-    skl_custom: { d2:'B', d4:'B', d5:'B', d7:'B', s2:'B', t1:'B', t2:'B', m1:'B' },
-    catatan_walas: "Ananda menunjukkan sikap santun dan mampu beradaptasi dengan baik"
-  },
-  { 
-    no: 4, nis: '242507004', nisn: '0126472680', nama: 'ALIKA RAMADINA SETIAWAN', s: 0, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'Basket', e3n: 'Sangat Baik', 
-    scores: [90, 91, 88, 92, 90, 89, 92, 86, 89, 88, 91, 88, 90, 91, 92, 86],
-    skl_custom: { d5:'B' },
-    catatan_walas: "Ananda memiliki kepemimpinan yang baik dan selalu menginspirasi teman-temannya"
-  },
-  { 
-    no: 5, nis: '242507023', nisn: '0124288742', nama: 'ALISHA MALAIKA ARIFIANTO', s: 0, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'English Club', e3n: 'Sangat Baik', 
-    scores: [91, 92, 89, 93, 91, 90, 93, 88, 90, 89, 92, 89, 91, 92, 93, 88],
-    skl_custom: { k2:'B', k3:'B', m2:'B', r1:'B' },
-    catatan_walas: "Ananda berani mengambil inisiatif dan bertanggung jawab dalam setiap amanah"
-  },
-  { 
-    no: 6, nis: '242507024', nisn: '0121553565', nama: 'ALISHA PRIYANKA ANINDITA', s: 0, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'Desain Grafis', e3n: 'Sangat Baik', 
-    scores: [90, 91, 88, 92, 90, 89, 92, 86, 89, 88, 91, 88, 90, 91, 92, 86],
-    skl_custom: { k4:'B', p1:'B', p4:'B', r1:'B', r3:'B' },
-    catatan_walas: "Ananda menunjukkan ketekunan dan kedisiplinan yang sangat baik dalam belajar"
-  },
-  { 
-    no: 7, nis: '242507026', nisn: '0128738802', nama: 'CHALISA AFIYAH ABDI', s: 0, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'Panahan', e3n: 'Sangat Baik', 
-    scores: [88, 89, 86, 90, 85, 87, 92, 85, 88, 86, 90, 87, 91, 90, 89, 84],
-    skl_custom: { k5:'B', t1:'B', r2:'B' },
-    catatan_walas: "Ananda memiliki kepribadian ramah, santun, dan disenangi oleh teman-temannya"
-  },
-  { 
-    no: 8, nis: '242507027', nisn: '0129837419', nama: 'CHAYYARA AILA JANEETA', s: 0, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'Basket', e3n: 'Sangat Baik', 
-    scores: [89, 90, 87, 91, 89, 88, 91, 85, 88, 87, 90, 87, 89, 90, 91, 85],
-    skl_custom: { k2:'B', p1:'B', p3:'B', r2:'B' },
-    catatan_walas: "Ananda aktif berkontribusi dalam diskusi kelompok dan selalu bersemangat"
-  },
-  { 
-    no: 9, nis: '242507028', nisn: '0123148760', nama: 'ESHAL CALYSTA', s: 0, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'English Club', e3n: 'Sangat Baik', 
-    scores: [92, 93, 90, 94, 92, 91, 94, 89, 91, 90, 93, 90, 92, 93, 94, 89],
-    skl_custom: { p5:'B', m1:'B', m2:'B', r2:'B' },
-    catatan_walas: "Ananda teliti, mandiri, dan mampu menyelesaikan tugas dengan rapi"
-  },
-  { 
-    no: 10, nis: '242507029', nisn: '0119747032', nama: 'FALISHA JASMINE BUDIMAN', s: 0, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'Desain Grafis', e3n: 'Sangat Baik', 
-    scores: [87, 88, 85, 89, 84, 86, 90, 82, 86, 85, 88, 86, 89, 90, 87, 82],
-    skl_custom: { k2:'B', k4:'B', p2:'B', p5:'B', s1:'B', m1:'B', m2:'B', r1:'B', r2:'B', r3:'B' },
-    catatan_walas: "Ananda kreatif dan memiliki daya juang tinggi dalam mencapai target belajar"
-  },
-  { 
-    no: 11, nis: '242507030', nisn: '3114526209', nama: 'FIRLI OKTAVIANI HERMWAN', s: 0, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'Panahan', e3n: 'Sangat Baik', 
-    scores: [86, 87, 84, 88, 83, 85, 89, 81, 85, 84, 87, 85, 88, 89, 86, 80],
-    skl_custom: { d1:'B', d2:'B', d4:'B', d5:'B', k1:'B', k2:'B', k4:'B', k5:'B', p2:'B', p3:'B', s1:'B', t1:'B', t2:'B', r2:'B' },
-    catatan_walas: "Ananda bersemangat, ceria, dan terus menunjukkan perkembangan positif"
-  },
-  { 
-    no: 12, nis: '242507031', nisn: '0117217743', nama: 'GHAIDA ALIN NADA', s: 0, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'Basket', e3n: 'Sangat Baik', 
-    scores: [91, 92, 89, 93, 91, 90, 93, 88, 90, 89, 92, 89, 91, 92, 93, 88],
-    skl_custom: { k2:'B', p4:'B' },
-    catatan_walas: "Ananda menunjukkan kedewasaan dalam bersikap dan santun dalam bertutur kata"
-  },
-  { 
-    no: 13, nis: '242507032', nisn: '0125571433', nama: 'JASMINE ALLIYA PUTRI', s: 0, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'English Club', e3n: 'Sangat Baik', 
-    scores: [93, 94, 91, 95, 93, 92, 95, 90, 92, 91, 94, 91, 93, 94, 95, 90],
-    skl_custom: {},
-    catatan_walas: "Ananda berprestasi, konsisten dalam belajar, dan menjadi panutan bagi teman-temannya"
-  },
-  { 
-    no: 14, nis: '242507011', nisn: '0113977545', nama: 'JASMINE NADIAH WARDHANI', s: 0, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'Desain Grafis', e3n: 'Sangat Baik', 
-    scores: [90, 91, 88, 92, 90, 89, 92, 86, 89, 88, 91, 88, 90, 91, 92, 86],
-    skl_custom: { d6:'B', r2:'B' },
-    catatan_walas: "Ananda memiliki potensi besar dan selalu berusaha memberikan yang terbaik"
-  },
-  { 
-    no: 15, nis: '242507033', nisn: '3123490512', nama: 'JIEHAN SEKAR MAHESWARI', s: 0, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'Panahan', e3n: 'Sangat Baik', 
-    scores: [89, 90, 87, 91, 89, 88, 91, 85, 88, 87, 90, 87, 89, 90, 91, 85],
-    skl_custom: { p1:'B', s2:'B' },
-    catatan_walas: "Ananda aktif, responsif, dan menunjukkan kepedulian tinggi terhadap sesama"
-  },
-  { 
-    no: 16, nis: '242507034', nisn: '0126895489', nama: 'MAKAILA KHANZA AZZAHRA', s: 0, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'Basket', e3n: 'Sangat Baik', 
-    scores: [91, 92, 89, 93, 91, 90, 93, 88, 90, 89, 92, 89, 91, 92, 93, 88],
-    skl_custom: {},
-    catatan_walas: "Ananda menunjukkan keteladanan yang baik dalam ibadah dan adab harian"
-  },
-  { 
-    no: 17, nis: '242507035', nisn: '0113480749', nama: 'RADELLA GITHA OCTAVIANA', s: 0, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'English Club', e3n: 'Sangat Baik', 
-    scores: [88, 89, 86, 90, 88, 87, 90, 84, 87, 86, 89, 86, 88, 89, 90, 84],
-    skl_custom: { k3:'B', m1:'B' },
-    catatan_walas: "Ananda disiplin, teratur, dan memiliki kemampuan manajemen waktu yang baik"
-  },
-  { 
-    no: 18, nis: '242507036', nisn: '0121734069', nama: 'RR. SHOFIA PUTERI NIRWANI', s: 0, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'Desain Grafis', e3n: 'Sangat Baik', 
-    scores: [90, 91, 88, 92, 90, 89, 92, 86, 89, 88, 91, 88, 90, 91, 92, 86],
-    skl_custom: {},
-    catatan_walas: "Ananda berkepribadian tenang, santun, dan selalu bersungguh-sungguh dalam belajar"
-  },
-  { 
-    no: 19, nis: '242507037', nisn: '0127484601', nama: 'SARAH ZAKIYYA SHALEH', s: 0, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'Panahan', e3n: 'Sangat Baik', 
-    scores: [91, 92, 89, 93, 91, 90, 93, 88, 90, 89, 92, 89, 91, 92, 93, 88],
-    skl_custom: { p2:'B', r1:'B' },
-    catatan_walas: "Ananda memiliki daya tangkap yang cepat dan antusias dalam pembelajaran"
-  },
-  { 
-    no: 20, nis: '242507039', nisn: '0123343195', nama: 'SEYLA ALEXANDRA', s: 0, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'Basket', e3n: 'Sangat Baik', 
-    scores: [90, 91, 88, 92, 90, 89, 92, 86, 89, 88, 91, 88, 90, 91, 92, 86],
-    skl_custom: {},
-    catatan_walas: "Ananda mampu bekerjasama secara harmonis dan selalu menjaga kerukunan"
-  },
-  { 
-    no: 21, nis: '242507038', nisn: '0126637571', nama: 'SYAZANI PUTRIGIY', s: 0, i: 0, a: 0, 
-    e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Sangat Baik', e3: 'English Club', e3n: 'Sangat Baik', 
-    scores: [89, 90, 87, 91, 89, 88, 91, 85, 88, 87, 90, 87, 89, 90, 91, 85],
-    skl_custom: { d4:'B', s1:'B' },
-    catatan_walas: "Ananda penuh semangat, optimis, dan terus menunjukkan peningkatan hasil belajar"
-  }
+// 5. Dataset Resmi Kelas VII MBU (12 Murid - Sesuai File Excel SISWA FIX LENGKAP SMP 2026-2027)
+const EXCEL_STUDENTS_VII_MBU = [
+  { no: 1, nis: 'MBU20268', nisn: '3134502259', nama: 'ABDULLAH ZAIN', jk: 'L', tempat_lahir: 'Jakarta', tanggal_lahir: '2013-09-20', nama_ayah: '-', nama_ibu: 'LAILATUNINGSIH', sekolah_asal: 'SD S RAMADANTHY', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Futsal', e3n: 'Baik', scores: [88, 89, 86, 90, 87, 88, 91, 85, 88, 87, 90, 87, 90, 91, 88, 84] },
+  { no: 2, nis: 'MBU20269', nisn: '3139122420', nama: 'CEPRILLIA DWIDAN AISYAH', jk: 'P', tempat_lahir: 'Bekasi', tanggal_lahir: '2013-04-27', nama_ayah: 'SUBANDI', nama_ibu: 'MAESAROH', sekolah_asal: 'SD NEGERI BANTARGEBANG 5', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'English Club', e3n: 'Baik', scores: [89, 90, 87, 91, 88, 89, 92, 86, 89, 88, 91, 88, 91, 92, 89, 85] },
+  { no: 3, nis: 'MBU20261', nisn: '3144072185', nama: 'Emeerania Pranandi', jk: 'P', tempat_lahir: 'Jakarta', tanggal_lahir: '2014-02-07', nama_ayah: 'Rizky Sukma Pranandi', nama_ibu: 'Hikmah Ardini', sekolah_asal: 'SDIT INSAN MULIA', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Desain Grafis', e3n: 'Baik', scores: [90, 91, 88, 92, 90, 90, 93, 87, 90, 89, 92, 89, 92, 93, 90, 86] },
+  { no: 4, nis: 'MBU20265', nisn: '0132065415', nama: 'Farris Al Keva', jk: 'L', tempat_lahir: 'Bekasi', tanggal_lahir: '2013-10-03', nama_ayah: 'Turoh', nama_ibu: 'Rosita', sekolah_asal: 'SDIT INSAN MULIA', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Basket', e3n: 'Baik', scores: [87, 88, 85, 89, 86, 87, 90, 84, 87, 86, 89, 86, 89, 90, 87, 83] },
+  { no: 5, nis: 'MBU202612', nisn: '3136360854', nama: 'Hani Zilfiani Meidiana', jk: 'P', tempat_lahir: 'Bogor', tanggal_lahir: '2013-12-07', nama_ayah: 'Usdiansyah', nama_ibu: 'AISYAH MEILIANA PUTRI', sekolah_asal: 'SD ISLAM AL-KAUTSAR', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Panahan', e3n: 'Baik', scores: [88, 89, 86, 90, 87, 88, 91, 85, 88, 87, 90, 87, 90, 91, 88, 84] },
+  { no: 6, nis: 'MBU20266', nisn: '3143825565', nama: 'Hussein Ezie Yose', jk: 'L', tempat_lahir: 'Jakarta', tanggal_lahir: '2014-04-07', nama_ayah: 'Qohhaar Maulana Yose', nama_ibu: 'Ratih Juwita Sari', sekolah_asal: 'SDIT INSAN MULIA', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Futsal', e3n: 'Sangat Baik', scores: [91, 92, 89, 93, 91, 91, 94, 88, 91, 90, 93, 90, 93, 94, 91, 88] },
+  { no: 7, nis: 'MBU20262', nisn: '0155769361', nama: 'MOCHAMAD RIZAL ARIF SETIAWAN', jk: 'L', tempat_lahir: 'Jember', tanggal_lahir: '2012-11-30', nama_ayah: 'JONI SUGIANTO', nama_ibu: 'ERISKA RIDA PALUPI', sekolah_asal: 'SDS KARTIKA IX - 1', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Basket', e3n: 'Baik', scores: [89, 90, 87, 91, 88, 89, 92, 86, 89, 88, 91, 88, 91, 92, 89, 85] },
+  { no: 8, nis: 'MBU202610', nisn: '0137478475', nama: 'Muhammad Fairuz Al Fajri', jk: 'L', tempat_lahir: 'Bekasi', tanggal_lahir: '2013-09-21', nama_ayah: 'Arie Saryanto', nama_ibu: 'Devastria Purnami', sekolah_asal: 'SD ISLAM AL-KAUTSAR', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Panahan', e3n: 'Baik', scores: [88, 89, 86, 90, 87, 88, 91, 85, 88, 87, 90, 87, 90, 91, 88, 84] },
+  { no: 9, nis: 'MBU20267', nisn: '0159739188', nama: 'Mumtaz Khairunisyah', jk: 'P', tempat_lahir: 'Jakarta', tanggal_lahir: '2013-03-30', nama_ayah: 'ANANG', nama_ibu: 'FARHA KHAN RUSSYI', sekolah_asal: 'SD NEGERI BOJONG KULUR 01', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'English Club', e3n: 'Sangat Baik', scores: [92, 93, 90, 94, 92, 92, 95, 89, 93, 91, 94, 91, 94, 95, 92, 89] },
+  { no: 10, nis: 'MBU20263', nisn: '3142780762', nama: 'Nisrina Nurunnasywa', jk: 'P', tempat_lahir: 'Bekasi', tanggal_lahir: '2013-11-23', nama_ayah: '-', nama_ibu: 'Rika Hendrawati', sekolah_asal: 'SDIT INSAN MULIA', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Desain Grafis', e3n: 'Baik', scores: [88, 89, 86, 90, 87, 88, 91, 85, 88, 87, 90, 87, 90, 91, 88, 84] },
+  { no: 11, nis: 'MBU202611', nisn: '3145133446', nama: 'RAHAF ZAKY BAWAZIER', jk: 'P', tempat_lahir: 'Bekasi', tanggal_lahir: '2014-05-19', nama_ayah: 'ZAKY UMAR BAWAZIER', nama_ibu: 'NADJMI', sekolah_asal: 'SDIT INSAN MULIA', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'English Club', e3n: 'Sangat Baik', scores: [91, 92, 89, 93, 91, 91, 94, 88, 92, 90, 93, 90, 93, 94, 91, 88] },
+  { no: 12, nis: 'MBU20264', nisn: '0136181804', nama: 'Sheryl Alfath Maulani', jk: 'P', tempat_lahir: 'Bandung', tanggal_lahir: '2013-07-11', nama_ayah: 'Irwan Maulana', nama_ibu: 'Rosmia Fatmah', sekolah_asal: 'SDIT INSAN MULIA', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Panahan', e3n: 'Baik', scores: [90, 91, 88, 92, 89, 90, 93, 87, 91, 89, 92, 89, 92, 93, 90, 87] }
 ];
 
-// 6. Cohort Dataset Kelas Lainnya
-const COHORT_STUDENTS_VIII_THALHAH = [
-  { no: 1, nisn: '0123450001', nama: 'ABDULLAH FAQIH', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Futsal', e3n: 'Sangat Baik', scores: [88, 89, 86, 90, 85, 87, 92, 85, 88, 86, 90, 87, 91, 90, 89, 84] },
-  { no: 2, nisn: '0123450002', nama: 'BILAL AL-HABSYI', s: 1, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Basket', e3n: 'Baik', scores: [86, 85, 83, 88, 82, 85, 89, 80, 85, 84, 88, 85, 88, 89, 86, 80] },
-  { no: 3, nisn: '0123450003', nama: 'FATHURRAHMAN AL-FATIH', s: 0, i: 1, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Futsal', e3n: 'Sangat Baik', scores: [91, 90, 92, 94, 90, 91, 94, 88, 92, 90, 93, 89, 93, 92, 94, 88] }
+// 6. Dataset Resmi Kelas VIII UMAR (19 Murid Ikhwan - Sesuai File Excel SISWA FIX LENGKAP SMP 2026-2027)
+const EXCEL_STUDENTS_VIII_UMAR = [
+  { no: 1, nis: '252607038', nisn: '0135559636', nama: 'ACHMED SYATHIR ELHAYBA', jk: 'L', tempat_lahir: 'Kotawaringin Barat', tanggal_lahir: '2013-01-17', nama_ayah: 'AKHMAD ASYARI', nama_ibu: 'OLIVIA ANANDA', sekolah_asal: 'SD AL IMAM ISLAMIC SCHOOL', s: 1, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Basket', e3n: 'Baik', scores: [90, 88, 85, 89, 93, 83, 85, 81, 82, 81, 83, 86, 89, 88, 77, 86] },
+  { no: 2, nis: '252607022', nisn: '0122543534', nama: 'ALI ZATRIO IKHWANTORO', jk: 'L', tempat_lahir: 'Bekasi', tanggal_lahir: '2012-08-11', nama_ayah: 'C. Onei Herouantoro', nama_ibu: 'HENNY INTAN SULISTYAN', sekolah_asal: 'SD AL IMAM ISLAMIC SCHOOL', s: 2, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Desain grafis', e3n: 'Sangat baik', scores: [89, 88, 85, 84, 90, 86, 89, 92, 84, 87, 86, 86, 83, 95, 85, 82] },
+  { no: 3, nis: '252607023', nisn: '3122299878', nama: 'ARSA ARDHANI PUTRA PERMADI', jk: 'L', tempat_lahir: 'Semarang', tanggal_lahir: '2012-12-03', nama_ayah: 'ARIF PERMADI', nama_ibu: 'MULA NOVALINA', sekolah_asal: 'SD AL IMAM ISLAMIC SCHOOL', s: 4, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Sangat baik', e3: 'English Club', e3n: 'Baik', scores: [86, 90, 87, 82, 90, 83, 82, 83, 82, 79, 88, 88, 92, 89, 80, 86] },
+  { no: 4, nis: '252607024', nisn: '3121661913', nama: 'Frananda Adji Saefudin', jk: 'L', tempat_lahir: 'Bekasi', tanggal_lahir: '2012-10-11', nama_ayah: 'Muhamad Saefudin', nama_ibu: 'Ira Novianti', sekolah_asal: 'SD ISLAM AL-KAUTSAR', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Futsal', e3n: 'Baik', scores: [88, 89, 86, 90, 87, 88, 91, 85, 88, 87, 90, 87, 90, 91, 88, 84] },
+  { no: 5, nis: '252607025', nisn: '3125545030', nama: 'GERALD LAZZARO NGGEBU', jk: 'L', tempat_lahir: 'Bogor', tanggal_lahir: '2012-08-28', nama_ayah: 'HAPPY YURALDO NGGEB', nama_ibu: 'ZEEYRA C WOWOR', sekolah_asal: 'SD AL IMAM ISLAMIC SCHOOL', s: 5, i: 1, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Sangat baik', e3: 'English Club', e3n: 'Sangat baik', scores: [83, 84, 85, 81, 75, 74, 82, 76, 76, 76, 76, 83, 86, 87, 75, 71] },
+  { no: 6, nis: '252607026', nisn: '3131067683', nama: 'HASAN MUZAKKI', jk: 'L', tempat_lahir: 'Bogor', tanggal_lahir: '2013-04-26', nama_ayah: 'SUPODO', nama_ibu: 'SITI ROJANI', sekolah_asal: 'SD NURUL HIKMAH', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Sangat baik', e2: 'Wushu', e2n: 'Baik', e3: 'English Club', e3n: 'Baik', scores: [87, 86, 90, 89, 93, 88, 94, 90, 97, 84, 90, 88, 90, 95, 78, 91] },
+  { no: 7, nis: '252607027', nisn: '3123913434', nama: 'Ibrahim Fadhilah Syuja Tambunan', jk: 'L', tempat_lahir: 'Jakarta', tanggal_lahir: '2012-05-05', nama_ayah: 'Arif Sutansyah Tambunar', nama_ibu: 'Nur Maulina', sekolah_asal: 'SDIT INSAN MANDIRI GREENVILLE', s: 4, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Basket', e3n: 'Baik', scores: [84, 87, 85, 85, 83, 83, 80, 77, 78, 82, 80, 81, 84, 87, 75, 76] },
+  { no: 8, nis: '252607012', nisn: '3134462062', nama: 'KANAKA ARKHAN GAIZAN', jk: 'L', tempat_lahir: 'Pemalang', tanggal_lahir: '2013-05-06', nama_ayah: 'WAHYU EKA PURNAMA', nama_ibu: 'NUR KHAMIDAH', sekolah_asal: 'SD AL IMAM ISLAMIC SCHOOL', s: 4, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Futsal', e3n: 'Baik', scores: [86, 89, 85, 90, 88, 83, 88, 87, 76, 76, 86, 86, 87, 90, 83, 78] },
+  { no: 9, nis: '252607028', nisn: '3135642963', nama: 'Muhamad Fathan Gunawan', jk: 'L', tempat_lahir: 'Bekasi', tanggal_lahir: '2013-02-17', nama_ayah: 'Muhamad Indra Gunawa', nama_ibu: 'Ayu Wardatul Asriyah', sekolah_asal: 'SDIT INSAN MANDIRI GREENVILLE', s: 1, i: 0, a: 0, e1: 'Pramuka', e1n: 'Sangat baik', e2: 'Wushu', e2n: 'Sangat baik', e3: 'Desain grafis', e3n: 'Sangat baik', scores: [84, 87, 84, 83, 78, 79, 86, 80, 77, 79, 82, 85, 89, 88, 79, 76] },
+  { no: 10, nis: '252607044', nisn: '3139230246', nama: 'MUHAMMAD AFIQ IKHSAN', jk: 'L', tempat_lahir: 'Bekasi', tanggal_lahir: '2013-04-11', nama_ayah: 'Iman Sulaeman', nama_ibu: 'EDITA CHRESTIANA', sekolah_asal: 'SD AL IMAM ISLAMIC SCHOOL', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Basket', e3n: 'Baik', scores: [88, 89, 86, 90, 87, 88, 91, 85, 88, 87, 90, 87, 90, 91, 88, 84] },
+  { no: 11, nis: '252607029', nisn: '0122555954', nama: 'Muhammad Aydin Arkananta', jk: 'L', tempat_lahir: 'Bekasi', tanggal_lahir: '2012-10-01', nama_ayah: 'Ansharulloh', nama_ibu: 'Yasinta', sekolah_asal: 'SDIT INSAN MANDIRI GREENVILLE', s: 1, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Sangat baik', e3: 'Basket', e3n: 'Sangat baik', scores: [85, 87, 85, 83, 90, 83, 82, 84, 76, 80, 80, 84, 87, 86, 75, 89] },
+  { no: 12, nis: '252607030', nisn: '3134356099', nama: 'Muhammad Bilal Amilusa', jk: 'L', tempat_lahir: 'Bekasi', tanggal_lahir: '2013-06-04', nama_ayah: 'Lucky Wiriawan Amilusa', nama_ibu: 'Eka Octaviana', sekolah_asal: 'SDIT INSAN MANDIRI GREENVILLE', s: 4, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Sangat baik', e3: 'Panahan', e3n: 'Sangat baik', scores: [87, 86, 83, 90, 80, 78, 84, 93, 80, 86, 88, 82, 86, 88, 83, 78] },
+  { no: 13, nis: '252607031', nisn: '3136252133', nama: 'Nauval Agha Irawan', jk: 'L', tempat_lahir: 'Bekasi', tanggal_lahir: '2013-05-15', nama_ayah: 'Ade Irwan', nama_ibu: 'Eka Sri Rahmawati', sekolah_asal: 'SD ISLAM NURUL FATIMAH', s: 1, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Panahan', e3n: 'Baik', scores: [88, 91, 86, 89, 98, 86, 85, 77, 81, 82, 88, 84, 85, 90, 80, 85] },
+  { no: 14, nis: '252607015', nisn: '0127813645', nama: 'Nawaf Syihabuddin Yafiq', jk: 'L', tempat_lahir: 'Bekasi', tanggal_lahir: '2012-12-07', nama_ayah: 'Teguh Hutomo Kasnawi', nama_ibu: 'Maelani Sihah', sekolah_asal: 'SD ISLAM TERPADU BAIT QURANI', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Futsal', e3n: 'Baik', scores: [89, 90, 87, 91, 88, 89, 92, 86, 89, 88, 91, 88, 91, 92, 89, 85] },
+  { no: 15, nis: '252607032', nisn: '3121228938', nama: 'Rafkantara Arifianto', jk: 'L', tempat_lahir: 'Bekasi', tanggal_lahir: '2012-08-29', nama_ayah: 'Taufik Arifianto', nama_ibu: 'Nanik Handayani', sekolah_asal: 'SDIT INSAN MANDIRI GREENVILLE', s: 3, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Panahan', e3n: 'Baik', scores: [89, 88, 85, 89, 93, 86, 86, 78, 81, 82, 88, 87, 85, 90, 78, 88] },
+  { no: 16, nis: '252607033', nisn: '0137000097', nama: 'RYAN ADITYA HERLAMBANG SUGEM', jk: 'L', tempat_lahir: 'Bogor', tanggal_lahir: '2013-03-26', nama_ayah: 'ARIS SUGEMA, SP.SH, MI', nama_ibu: 'NINGSIH SUNIARSIH', sekolah_asal: 'SD AL IMAM ISLAMIC SCHOOL', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Sangat baik', e3: 'Futsal', e3n: 'Sangat baik', scores: [82, 84, 85, 82, 75, 78, 80, 82, 78, 76, 78, 86, 84, 86, 75, 71] },
+  { no: 17, nis: '252607034', nisn: '3135297913', nama: 'TEUKU MUHAMMAD ZULKARNAIN', jk: 'L', tempat_lahir: 'Jakarta', tanggal_lahir: '2013-01-29', nama_ayah: 'T.M HARIS', nama_ibu: 'LELYANA NUR APRILIA', sekolah_asal: 'SDN BENDUNGAN HILIR 09 PAGI', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'English Club', e3n: 'Baik', scores: [85, 85, 86, 84, 86, 81, 85, 76, 76, 77, 83, 85, 85, 88, 77, 76] },
+  { no: 18, nis: '252607035', nisn: '3135460818', nama: 'Ukasyah Abdullah Qasim', jk: 'L', tempat_lahir: 'Bekasi', tanggal_lahir: '2013-02-22', nama_ayah: 'Abdullah Nani', nama_ibu: 'Andi Nilawati', sekolah_asal: 'SD AL-WILDAN ISLAMIC SCHOOL 14 BUMI MUTIARA', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Panahan', e3n: 'Baik', scores: [88, 89, 86, 90, 87, 88, 91, 85, 88, 87, 90, 87, 90, 91, 88, 84] },
+  { no: 19, nis: '252607036', nisn: '3125394046', nama: 'Zamzam Alif', jk: 'L', tempat_lahir: 'Jakarta', tanggal_lahir: '2012-06-05', nama_ayah: 'Budiwan', nama_ibu: 'Munifah', sekolah_asal: 'SD ISLAM NURUL FATIMAH', s: 5, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Panahan', e3n: 'Baik', scores: [89, 87, 83, 89, 83, 82, 87, 94, 87, 84, 89, 85, 84, 87, 82, 77] }
 ];
 
-const COHORT_STUDENTS_VII_BILAL = [
-  { no: 1, nisn: '0133450001', nama: 'ALI IMRAN PRATAMA', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Futsal', e3n: 'Baik', scores: [87, 88, 85, 89, 84, 86, 90, 82, 86, 85, 88, 86, 89, 90, 87, 82] }
+// 7. Dataset Resmi Kelas VIII KHODIJAH (27 Murid Akhwat - Sesuai File Excel SISWA FIX LENGKAP SMP 2026-2027)
+const EXCEL_STUDENTS_VIII_KHODIJAH = [
+  { no: 1, nis: '252607001', nisn: '3136621187', nama: 'Aina Talita Balqis', jk: 'P', tempat_lahir: 'Bekasi', tanggal_lahir: '2013-03-31', nama_ayah: 'DWI ARIYADI', nama_ibu: 'DEWI NUR AISAH', sekolah_asal: 'SDIT INSAN MULIA', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'English Club', e3n: 'Sangat Baik', scores: [90, 91, 88, 92, 90, 90, 93, 87, 90, 89, 92, 89, 92, 93, 90, 86] },
+  { no: 2, nis: '252607002', nisn: '0138027960', nama: 'AJENG PUTRI KIRANA', jk: 'P', tempat_lahir: 'Temanggung', tanggal_lahir: '2013-06-16', nama_ayah: 'YOGA PRIAMBADA', nama_ibu: 'NGATIYANI SUPRIHATIN', sekolah_asal: 'SD IQRO', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'English Club', e3n: 'Sangat Baik', scores: [89, 90, 87, 91, 88, 89, 92, 86, 89, 88, 91, 88, 91, 92, 89, 85] },
+  { no: 3, nis: '252607003', nisn: '3124658329', nama: 'Allysha Qiana Zetta', jk: 'P', tempat_lahir: 'Jakarta', tanggal_lahir: '2012-11-26', nama_ayah: 'Manhal', nama_ibu: 'Shofa Nur Sakinah', sekolah_asal: 'SDIT AL FITYAN SCHOOL BOGOR', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Panahan', e3n: 'Baik', scores: [88, 89, 86, 90, 87, 88, 91, 85, 88, 87, 90, 87, 90, 91, 88, 84] },
+  { no: 4, nis: '252607004', nisn: '3124676739', nama: 'ALZENA AILA VARISHA', jk: 'P', tempat_lahir: 'Karawang', tanggal_lahir: '2012-12-10', nama_ayah: 'ADJI FADJRIAWANDA N', nama_ibu: 'RIKA NOPIANTI', sekolah_asal: 'SD AL IMAM ISLAMIC SCHOOL', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Desain Grafis', e3n: 'Baik', scores: [91, 92, 89, 93, 91, 91, 94, 88, 91, 90, 93, 90, 93, 94, 91, 88] },
+  { no: 5, nis: '252607005', nisn: '0134034277', nama: 'Andira Khaira Larasati', jk: 'P', tempat_lahir: 'Bekasi', tanggal_lahir: '2013-05-16', nama_ayah: 'Endarto', nama_ibu: 'Selvi Aprillia', sekolah_asal: 'SD ISLAM TERPADU BAIT QURANI', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'English Club', e3n: 'Sangat Baik', scores: [90, 91, 88, 92, 90, 90, 93, 87, 90, 89, 92, 89, 92, 93, 90, 86] },
+  { no: 6, nis: '252607006', nisn: '3128139667', nama: 'ANNISA SHAZIA ATHIFAH', jk: 'P', tempat_lahir: 'Bekasi', tanggal_lahir: '2012-12-02', nama_ayah: 'MUCH. BUDI HARTANT', nama_ibu: 'RIZKI PASLAH', sekolah_asal: 'SDIT AL FITYAN SCHOOL BOGOR', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Panahan', e3n: 'Baik', scores: [87, 88, 85, 89, 86, 87, 90, 84, 87, 86, 89, 86, 89, 90, 87, 83] },
+  { no: 7, nis: '252607007', nisn: '3133343263', nama: 'Dean Sectio Rianya Ariyadi', jk: 'P', tempat_lahir: 'Jakarta', tanggal_lahir: '2013-06-24', nama_ayah: 'Akhmad Ariyadi', nama_ibu: 'ANGGI SECTIO RISSA L', sekolah_asal: 'SDIT INSAN MANDIRI GREENVILLE', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Desain Grafis', e3n: 'Baik', scores: [89, 90, 87, 91, 88, 89, 92, 86, 89, 88, 91, 88, 91, 92, 89, 85] },
+  { no: 8, nis: '252607008', nisn: '3121871205', nama: 'EVELYN KENIVAEL', jk: 'P', tempat_lahir: 'Banyumas', tanggal_lahir: '2012-10-16', nama_ayah: 'NOVAN HANDRI LAKSO', nama_ibu: 'ELDES STEVANI', sekolah_asal: 'SD AL IMAM ISLAMIC SCHOOL', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'English Club', e3n: 'Sangat Baik', scores: [92, 93, 90, 94, 92, 92, 95, 89, 93, 91, 94, 91, 94, 95, 92, 89] },
+  { no: 9, nis: '252607045', nisn: '0139289257', nama: 'GARJITA GALUH GUNAWAN', jk: 'P', tempat_lahir: 'Bogor', tanggal_lahir: '2013-01-20', nama_ayah: 'FERY GUNAWAN', nama_ibu: 'SUSANA', sekolah_asal: 'SD AL IMAM ISLAMIC SCHOOL', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Panahan', e3n: 'Baik', scores: [88, 89, 86, 90, 87, 88, 91, 85, 88, 87, 90, 87, 90, 91, 88, 84] },
+  { no: 10, nis: '252607009', nisn: '0134935321', nama: 'Griseldis Radhiya Nur Hazrina', jk: 'P', tempat_lahir: 'Jakarta', tanggal_lahir: '2013-02-25', nama_ayah: '-', nama_ibu: 'Nur Samsiah Batubara', sekolah_asal: 'SDIT IBNU SINA HARVEST CITY', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'English Club', e3n: 'Sangat Baik', scores: [90, 91, 88, 92, 90, 90, 93, 87, 90, 89, 92, 89, 92, 93, 90, 86] },
+  { no: 11, nis: '252607010', nisn: '3137691972', nama: 'Gyzell Pri Anatasya Putri', jk: 'P', tempat_lahir: 'Surabaya', tanggal_lahir: '2013-01-24', nama_ayah: 'Endy Pridedi Artanto', nama_ibu: 'Misdah Kumalasari', sekolah_asal: 'SDIT IBNU SINA HARVEST CITY', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'English Club', e3n: 'Baik', scores: [88, 89, 86, 90, 87, 88, 91, 85, 88, 87, 90, 87, 90, 91, 88, 84] },
+  { no: 12, nis: '252607011', nisn: '3138973504', nama: 'Kamila Putri Budiman', jk: 'P', tempat_lahir: 'Jakarta', tanggal_lahir: '2013-03-18', nama_ayah: 'Iman Budiman', nama_ibu: 'Eka Nurcahya Putri', sekolah_asal: 'SDIT INSAN MANDIRI GREENVILLE', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Panahan', e3n: 'Baik', scores: [87, 88, 85, 89, 86, 87, 90, 84, 87, 86, 89, 86, 89, 90, 87, 83] },
+  { no: 13, nis: '252607042', nisn: '3126190351', nama: 'KHALIFAH FITRIA HENDAR', jk: 'P', tempat_lahir: 'Cianjur', tanggal_lahir: '2012-11-29', nama_ayah: '-', nama_ibu: 'ERNA FITRIA', sekolah_asal: 'SD AL IMAM ISLAMIC SCHOOL', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Desain Grafis', e3n: 'Baik', scores: [89, 90, 87, 91, 88, 89, 92, 86, 89, 88, 91, 88, 91, 92, 89, 85] },
+  { no: 14, nis: '252607013', nisn: '3128354313', nama: 'MALIKA ANINDYA ADEEVA', jk: 'P', tempat_lahir: 'Bogor', tanggal_lahir: '2012-09-11', nama_ayah: 'SYAIFUDIN ALI', nama_ibu: 'DITA HIDAYANTI', sekolah_asal: 'SD AL IMAM ISLAMIC SCHOOL', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'English Club', e3n: 'Sangat Baik', scores: [91, 92, 89, 94, 91, 91, 94, 88, 92, 90, 93, 90, 93, 94, 91, 88] },
+  { no: 15, nis: '252607014', nisn: '0121220909', nama: 'Nabila Syahirah Syifa\'a', jk: 'P', tempat_lahir: 'Jakarta', tanggal_lahir: '2012-12-25', nama_ayah: 'SHOLEH KURNIAWAN', nama_ibu: 'RISNAWATY', sekolah_asal: 'SDIT INSAN MULIA', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Panahan', e3n: 'Baik', scores: [88, 89, 86, 90, 87, 88, 91, 85, 88, 87, 90, 87, 90, 91, 88, 84] },
+  { no: 16, nis: '252607016', nisn: '3135906759', nama: 'Naylara Khayra Dzafin', jk: 'P', tempat_lahir: 'Jakarta', tanggal_lahir: '2013-01-23', nama_ayah: 'Yendi Septifiyandi', nama_ibu: 'Setyo Winarni', sekolah_asal: 'SDIT IBNU SINA HARVEST CITY', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'English Club', e3n: 'Sangat Baik', scores: [90, 91, 88, 92, 90, 90, 93, 87, 90, 89, 92, 89, 92, 93, 90, 86] },
+  { no: 17, nis: '252607037', nisn: '3121518771', nama: 'NURUN NAJZMI AZZAHRO', jk: 'P', tempat_lahir: 'Bekasi', tanggal_lahir: '2012-10-14', nama_ayah: 'Hendri Susanto', nama_ibu: 'NURHAYATI', sekolah_asal: 'SD AL IMAM ISLAMIC SCHOOL', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Panahan', e3n: 'Baik', scores: [87, 88, 85, 89, 86, 87, 90, 84, 87, 86, 89, 86, 89, 90, 87, 83] },
+  { no: 18, nis: '252607017', nisn: '3134727051', nama: 'Rheva Agnezia Putri', jk: 'P', tempat_lahir: 'Jakarta', tanggal_lahir: '2013-08-14', nama_ayah: 'Hengky Rahardja', nama_ibu: 'Herrina Rahmawati', sekolah_asal: 'SDIT IBNU SINA HARVEST CITY', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'English Club', e3n: 'Sangat Baik', scores: [91, 92, 89, 93, 91, 91, 94, 88, 91, 90, 93, 90, 93, 94, 91, 88] },
+  { no: 19, nis: '252607018', nisn: '3131583386', nama: 'SARAH SALSABILA', jk: 'P', tempat_lahir: 'Bekasi', tanggal_lahir: '2013-01-11', nama_ayah: 'SLAMET WIDODO', nama_ibu: 'SUDARMI', sekolah_asal: 'SD NURUL HIKMAH', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Desain Grafis', e3n: 'Baik', scores: [89, 90, 87, 91, 88, 89, 92, 86, 89, 88, 91, 88, 91, 92, 89, 85] },
+  { no: 20, nis: '252607019', nisn: '3129132388', nama: 'Sayyidah Azzahrah', jk: 'P', tempat_lahir: 'Bekasi', tanggal_lahir: '2012-11-18', nama_ayah: 'ARIEP AFRIANTO', nama_ibu: 'SITI SALAMAH', sekolah_asal: 'SDIT INSAN MULIA', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Panahan', e3n: 'Baik', scores: [88, 89, 86, 90, 87, 88, 91, 85, 88, 87, 90, 87, 90, 91, 88, 84] },
+  { no: 21, nis: '252607039', nisn: '3133165032', nama: 'SHAZIA KEIZALUNA HUMAIRA', jk: 'P', tempat_lahir: 'Bandung', tanggal_lahir: '2013-06-07', nama_ayah: 'Elsen Adhytia', nama_ibu: 'CITRA ARYA SUSANTI', sekolah_asal: 'SD AL IMAM ISLAMIC SCHOOL', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'English Club', e3n: 'Sangat Baik', scores: [92, 93, 90, 94, 92, 92, 95, 89, 93, 91, 94, 91, 94, 95, 92, 89] },
+  { no: 22, nis: '252607070', nisn: '3135376579', nama: 'SUMAYYAH AMATULLAH AZIZAH HUTAPEA', jk: 'P', tempat_lahir: 'Bekasi', tanggal_lahir: '2013-05-22', nama_ayah: 'Parlindungan Hutapea', nama_ibu: 'KUSJANTI', sekolah_asal: 'SD AL IMAM ISLAMIC SCHOOL', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Desain Grafis', e3n: 'Baik', scores: [90, 91, 88, 92, 90, 90, 93, 87, 90, 89, 92, 89, 92, 93, 90, 86] },
+  { no: 23, nis: '252607043', nisn: '3136022469', nama: 'SYAFIKAH GHALIN ALZENA', jk: 'P', tempat_lahir: 'Jakarta', tanggal_lahir: '2012-11-28', nama_ayah: 'Reza Achmad', nama_ibu: 'ANISA RAKHMAWATI', sekolah_asal: 'SD AL IMAM ISLAMIC SCHOOL', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'English Club', e3n: 'Sangat Baik', scores: [91, 92, 89, 93, 91, 91, 94, 88, 92, 90, 93, 90, 93, 94, 91, 88] },
+  { no: 24, nis: '252607020', nisn: '3121914004', nama: 'Talita Lubna Humaira Renleuw', jk: 'P', tempat_lahir: 'Jakarta', tanggal_lahir: '2012-10-25', nama_ayah: 'Burhan Renleuw', nama_ibu: 'Halimah Tussadiyah', sekolah_asal: 'SDIT IBNU SINA HARVEST CITY', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Panahan', e3n: 'Baik', scores: [88, 89, 86, 90, 87, 88, 91, 85, 88, 87, 90, 87, 90, 91, 88, 84] },
+  { no: 25, nis: '252607021', nisn: '0122579211', nama: 'UTIN HYORIN LORDESSHA', jk: 'P', tempat_lahir: 'Jakarta', tanggal_lahir: '2012-08-27', nama_ayah: 'GUSTI ZEIN ANGGARA', nama_ibu: 'FREPTI HARYANI UTOMI', sekolah_asal: 'SDIT INSAN MULIA', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'English Club', e3n: 'Sangat Baik', scores: [90, 91, 88, 92, 89, 90, 93, 87, 91, 89, 92, 89, 92, 93, 90, 87] },
+  { no: 26, nis: '252607040', nisn: '0136813875', nama: 'ZAHIRA SARIFAH SALSABILA', jk: 'P', tempat_lahir: 'Sukabumi', tanggal_lahir: '2013-01-02', nama_ayah: 'UCU RUKMANA', nama_ibu: 'MELIANTI', sekolah_asal: 'SD AL IMAM ISLAMIC SCHOOL', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'English Club', e3n: 'Sangat Baik', scores: [89, 90, 87, 91, 88, 89, 92, 86, 89, 88, 91, 88, 91, 92, 89, 85] },
+  { no: 27, nis: '252607041', nisn: '3131857790', nama: 'ZAHRA SYAFIAH MUZFIROH', jk: 'P', tempat_lahir: 'Bogor', tanggal_lahir: '2013-02-10', nama_ayah: '-', nama_ibu: 'IIN RASINAMOMI HASR', sekolah_asal: 'SD AL IMAM ISLAMIC SCHOOL', s: 0, i: 0, a: 0, e1: 'Pramuka', e1n: 'Sangat Baik', e2: 'Wushu', e2n: 'Baik', e3: 'Panahan', e3n: 'Baik', scores: [92, 93, 90, 94, 92, 92, 95, 89, 93, 91, 94, 91, 94, 95, 92, 89] }
 ];
+
+// Alias untuk kompatibilitas nama lama
+const EXCEL_STUDENTS_VIII_KHADIJAH = EXCEL_STUDENTS_VIII_KHODIJAH;
 
 const DEMO_DATA = {
   settings: {
@@ -1226,13 +744,13 @@ function buildExactAlImamDataset() {
   };
 
   // Add all classes
+  addCohortToData(EXCEL_STUDENTS_VII_UTSMAN, 'VII UTSMAN', '2627070', 'L');
+  addCohortToData(EXCEL_STUDENTS_VII_AISYAH, 'VII AISYAH', '2627070', 'P');
+  addCohortToData(EXCEL_STUDENTS_VII_MBU, 'VII MBU', 'MBU2026', 'L');
+  addCohortToData(EXCEL_STUDENTS_VIII_UMAR, 'VIII UMAR', '2526070', 'L');
+  addCohortToData(EXCEL_STUDENTS_VIII_KHODIJAH, 'VIII KHODIJAH', '2526070', 'P');
   addCohortToData(EXCEL_STUDENTS_IX_ABU_BAKAR, 'IX ABU BAKAR', '2324070', 'L');
   addCohortToData(EXCEL_STUDENTS_IX_UMMU_SALAMAH, 'IX UMMU SALAMAH', '2324070', 'P');
-  addCohortToData(EXCEL_STUDENTS_VII_AISYAH, 'VII AISYAH', '2526070', 'P');
-  addCohortToData(EXCEL_STUDENTS_VII_UTSMAN, 'VII UTSMAN', '2526070', 'L');
-  addCohortToData(EXCEL_STUDENTS_VIII_KHADIJAH, 'VIII KHADIJAH', '2425070', 'P');
-  addCohortToData(COHORT_STUDENTS_VIII_THALHAH, 'VIII THALHAH', '2425080', 'L');
-  addCohortToData(COHORT_STUDENTS_VII_BILAL, 'VII BILAL', '2526070', 'L');
 
   DEMO_DATA.murid = mList;
   DEMO_DATA.akademik = akList;
@@ -4786,11 +4304,13 @@ function loadMuridReportForPrint(nis) {
 
   // Fallback if no specific akademik items found in AppState
   if (akItems.length === 0) {
-    const rawStudent = (typeof EXCEL_STUDENTS_IX_ABU_BAKAR !== 'undefined' ? EXCEL_STUDENTS_IX_ABU_BAKAR.find(s => String(s.nis).trim() === cleanNis) : null) ||
-                      (typeof EXCEL_STUDENTS_IX_UMMU_SALAMAH !== 'undefined' ? EXCEL_STUDENTS_IX_UMMU_SALAMAH.find(s => String(s.nis).trim() === cleanNis) : null) ||
+    const rawStudent = (typeof EXCEL_STUDENTS_VII_UTSMAN !== 'undefined' ? EXCEL_STUDENTS_VII_UTSMAN.find(s => String(s.nis).trim() === cleanNis) : null) ||
                       (typeof EXCEL_STUDENTS_VII_AISYAH !== 'undefined' ? EXCEL_STUDENTS_VII_AISYAH.find(s => String(s.nis).trim() === cleanNis) : null) ||
-                      (typeof EXCEL_STUDENTS_VII_UTSMAN !== 'undefined' ? EXCEL_STUDENTS_VII_UTSMAN.find(s => String(s.nis).trim() === cleanNis) : null) ||
-                      (typeof EXCEL_STUDENTS_VIII_KHADIJAH !== 'undefined' ? EXCEL_STUDENTS_VIII_KHADIJAH.find(s => String(s.nis).trim() === cleanNis) : null);
+                      (typeof EXCEL_STUDENTS_VII_MBU !== 'undefined' ? EXCEL_STUDENTS_VII_MBU.find(s => String(s.nis).trim() === cleanNis) : null) ||
+                      (typeof EXCEL_STUDENTS_VIII_UMAR !== 'undefined' ? EXCEL_STUDENTS_VIII_UMAR.find(s => String(s.nis).trim() === cleanNis) : null) ||
+                      (typeof EXCEL_STUDENTS_VIII_KHODIJAH !== 'undefined' ? EXCEL_STUDENTS_VIII_KHODIJAH.find(s => String(s.nis).trim() === cleanNis) : null) ||
+                      (typeof EXCEL_STUDENTS_IX_ABU_BAKAR !== 'undefined' ? EXCEL_STUDENTS_IX_ABU_BAKAR.find(s => String(s.nis).trim() === cleanNis) : null) ||
+                      (typeof EXCEL_STUDENTS_IX_UMMU_SALAMAH !== 'undefined' ? EXCEL_STUDENTS_IX_UMMU_SALAMAH.find(s => String(s.nis).trim() === cleanNis) : null);
     
     MAPEL_LIST_16.forEach((mapel, mapelIdx) => {
       const score = (rawStudent && rawStudent.scores && rawStudent.scores[mapelIdx]) ? rawStudent.scores[mapelIdx] : (82 + ((mapelIdx * 3) % 15));
