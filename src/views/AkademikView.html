@@ -71,8 +71,8 @@
           <div>
             <label class="block text-[10px] font-bold text-slate-500 uppercase">Pilih Kelas</label>
             <select id="leger-akademik-kelas" onchange="renderLegerGrid()" class="text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 font-bold text-slate-800 focus:ring-2 focus:ring-blue-500">
-              <option value="VII UTSMAN">VII UTSMAN (24 Ikhwan)</option>
-              <option value="VII AISYAH">VII AISYAH (27 Akhwat)</option>
+              <option value="VII UTSMAN">VII UTSMAN (25 Ikhwan)</option>
+              <option value="VII AISYAH">VII AISYAH (26 Akhwat)</option>
               <option value="VII MBU">VII MBU (12 Santri)</option>
               <option value="VIII UMAR">VIII UMAR (19 Ikhwan)</option>
               <option value="VIII KHODIJAH">VIII KHODIJAH (27 Akhwat)</option>
@@ -84,19 +84,19 @@
           <div>
             <label class="block text-[10px] font-bold text-slate-500 uppercase">Mata Pelajaran (16 Mapel)</label>
             <select id="leger-akademik-mapel" onchange="onLegerMapelChange()" class="text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 font-bold text-slate-800 focus:ring-2 focus:ring-blue-500 min-w-[200px]">
-              <option value="Akidah">1. Akidah (KKM 70)</option>
-              <option value="Akhlak">2. Akhlak (KKM 72)</option>
+              <option value="Akidah">1. Akidah (KKM 75)</option>
+              <option value="Akhlak">2. Akhlak (KKM 75)</option>
               <option value="Hadits">3. Hadits (KKM 75)</option>
               <option value="Fikih">4. Fikih (KKM 75)</option>
               <option value="SKI">5. SKI (KKM 75)</option>
               <option value="Pendidikan Pancasila">6. Pendidikan Pancasila (KKM 75)</option>
               <option value="Bahasa Indonesia">7. Bahasa Indonesia (KKM 75)</option>
-              <option value="Bahasa Inggris">8. Bahasa Inggris (KKM 73)</option>
+              <option value="Bahasa Inggris">8. Bahasa Inggris (KKM 75)</option>
               <option value="Matematika">9. Matematika (KKM 75)</option>
               <option value="Ilmu Pengetahuan Alam">10. Ilmu Pengetahuan Alam (KKM 75)</option>
               <option value="Ilmu Pengetahuan Sosial">11. Ilmu Pengetahuan Sosial (KKM 75)</option>
-              <option value="Prakarya">12. Prakarya (KKM 70)</option>
-              <option value="Pendidikan Jasmani, Olahraga, dan Kesehatan">13. PJOK (KKM 72)</option>
+              <option value="Prakarya">12. Prakarya (KKM 75)</option>
+              <option value="Pendidikan Jasmani, Olahraga, dan Kesehatan">13. PJOK (KKM 75)</option>
               <option value="Bahasa Sunda">14. Bahasa Sunda (KKM 75)</option>
               <option value="Informatika">15. Informatika (KKM 75)</option>
               <option value="Bahasa Arab">16. Bahasa Arab (KKM 75)</option>
@@ -105,7 +105,7 @@
 
           <div>
             <label class="block text-[10px] font-bold text-slate-500 uppercase">KKM</label>
-            <input type="number" id="leger-akademik-kkm" value="70" min="50" max="100" oninput="updateLegerPredikats()" 
+            <input type="number" id="leger-akademik-kkm" value="75" min="50" max="100" oninput="updateLegerPredikats()" 
                    class="w-16 text-xs bg-amber-50/70 border border-amber-300 rounded-lg px-2.5 py-2 font-black text-amber-900 focus:ring-2 focus:ring-amber-500 text-center" />
           </div>
 
@@ -331,8 +331,8 @@
           <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Target Kelas</label>
           <select id="upload-target-kelas" class="w-full text-xs bg-white border border-slate-300 rounded-lg px-3 py-2 font-bold text-slate-800 focus:ring-2 focus:ring-blue-500">
             <option value="Semua">Semua Kelas (Sesuai File)</option>
-            <option value="VII UTSMAN">VII UTSMAN (24 Ikhwan)</option>
-            <option value="VII AISYAH">VII AISYAH (27 Akhwat)</option>
+            <option value="VII UTSMAN">VII UTSMAN (25 Ikhwan)</option>
+            <option value="VII AISYAH">VII AISYAH (26 Akhwat)</option>
             <option value="VII MBU">VII MBU (12 Santri)</option>
             <option value="VIII UMAR">VIII UMAR (19 Ikhwan)</option>
             <option value="VIII KHODIJAH">VIII KHODIJAH (27 Akhwat)</option>
@@ -472,19 +472,19 @@ NIS	Nama Murid	Mata Pelajaran	KKM	Nilai UTS
       <div>
         <label class="block text-xs font-bold text-slate-700 mb-1">Mata Pelajaran *</label>
         <select id="akademik-mapel" required onchange="onModalMapelChange()" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-blue-500 font-bold">
-          <option value="Akidah">1. Akidah (KKM 70)</option>
-          <option value="Akhlak">2. Akhlak (KKM 72)</option>
+          <option value="Akidah">1. Akidah (KKM 75)</option>
+          <option value="Akhlak">2. Akhlak (KKM 75)</option>
           <option value="Hadits">3. Hadits (KKM 75)</option>
           <option value="Fikih">4. Fikih (KKM 75)</option>
           <option value="SKI">5. SKI (KKM 75)</option>
           <option value="Pendidikan Pancasila">6. Pendidikan Pancasila (KKM 75)</option>
           <option value="Bahasa Indonesia">7. Bahasa Indonesia (KKM 75)</option>
-          <option value="Bahasa Inggris">8. Bahasa Inggris (KKM 73)</option>
+          <option value="Bahasa Inggris">8. Bahasa Inggris (KKM 75)</option>
           <option value="Matematika">9. Matematika (KKM 75)</option>
           <option value="Ilmu Pengetahuan Alam">10. Ilmu Pengetahuan Alam (KKM 75)</option>
           <option value="Ilmu Pengetahuan Sosial">11. Ilmu Pengetahuan Sosial (KKM 75)</option>
-          <option value="Prakarya">12. Prakarya (KKM 70)</option>
-          <option value="Pendidikan Jasmani, Olahraga, dan Kesehatan">13. PJOK (KKM 72)</option>
+          <option value="Prakarya">12. Prakarya (KKM 75)</option>
+          <option value="Pendidikan Jasmani, Olahraga, dan Kesehatan">13. PJOK (KKM 75)</option>
           <option value="Bahasa Sunda">14. Bahasa Sunda (KKM 75)</option>
           <option value="Informatika">15. Informatika (KKM 75)</option>
           <option value="Bahasa Arab">16. Bahasa Arab (KKM 75)</option>
@@ -494,7 +494,7 @@ NIS	Nama Murid	Mata Pelajaran	KKM	Nilai UTS
       <div class="grid grid-cols-2 gap-3">
         <div>
           <label class="block text-xs font-bold text-slate-700 mb-1">KKM *</label>
-          <input type="number" id="akademik-kkm" value="70" min="50" max="100" required oninput="recalcAkademikPreview()" 
+          <input type="number" id="akademik-kkm" value="75" min="50" max="100" required oninput="recalcAkademikPreview()" 
                  class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-2 text-slate-800 focus:ring-2 focus:ring-blue-500 text-center font-bold" />
         </div>
         <div>
@@ -512,7 +512,7 @@ NIS	Nama Murid	Mata Pelajaran	KKM	Nilai UTS
         </div>
         <div>
           <span class="text-[10px] text-slate-600 font-semibold block uppercase">Status KKM</span>
-          <span class="text-xs font-extrabold text-emerald-700 block mt-0.5" id="akademik-preview-kkm-status">Tuntas KKM (≥70)</span>
+          <span class="text-xs font-extrabold text-emerald-700 block mt-0.5" id="akademik-preview-kkm-status">Tuntas KKM (≥75)</span>
         </div>
         <div>
           <span class="text-[10px] text-slate-600 font-semibold block uppercase">Predikat</span>
