@@ -35,8 +35,9 @@ function formatWaliKelasTitleCase(name) {
     'TRI NURYANI, S.S., GR.': 'Tri Nuryani, S.S., Gr.',
     'TRI NURYANI': 'Tri Nuryani, S.S., Gr.',
     'ARIF ROHMAN, S.SOS., M.PD.': 'Arif Rohman, S.Sos., M.Pd.',
-    'ARIF ROHMAN, M.PD.': 'Arif Rohman, M.Pd.',
-    'BAMBANG SETYONO, S.T.': 'Bambang Setyono, S.T.'
+    'ARIF ROHMAN, M.PD.': 'Arif Rohman, S.Sos., M.Pd.',
+    'ARIF ROHMAN': 'Arif Rohman, S.Sos., M.Pd.',
+    'BAMBANG SETYONO, S.T.': 'Arif Rohman, S.Sos., M.Pd.'
   };
 
   const keyUpper = trimmed.toUpperCase();
@@ -605,7 +606,7 @@ const DEMO_DATA = {
     report_place: 'Bogor',
     report_date: '17 Oktober 2026',
     wali_kelas_default: 'Dewi Fitria Nugraheni, S.Pd., Gr.',
-    headmaster_name: 'Bambang Setyono, S.T.',
+    headmaster_name: 'Arif Rohman, S.Sos., M.Pd.',
     headmaster_nip: '',
     headmaster_signature_url: '',
     report_footer_text: 'RAPOR TENGAH SEMESTER PROGRAM PORTOFOLIO SMP AL IMAM ISLAMIC SCHOOL',
@@ -619,7 +620,7 @@ const DEMO_DATA = {
   diniyah: [],
   users: [
     { id: 'USR-001', username: 'admin', nama_lengkap: 'Administrator Utama', role: 'admin', status: 'aktif' },
-    { id: 'USR-002', username: 'kepsek', nama_lengkap: 'Arif Rohman, M.Pd.', role: 'kepala_sekolah', status: 'aktif' },
+    { id: 'USR-002', username: 'kepsek', nama_lengkap: 'Arif Rohman, S.Sos., M.Pd.', role: 'kepala_sekolah', status: 'aktif' },
     { id: 'USR-003', username: 'guru', nama_lengkap: 'Dewi Fitria Nugraheni, S.Pd., Gr.', role: 'guru', status: 'aktif' },
     { id: 'USR-004', username: 'dewi', nama_lengkap: 'Dewi Fitria Nugraheni, S.Pd., Gr.', role: 'guru', status: 'aktif' },
     { id: 'USR-005', username: 'triyuli', nama_lengkap: 'Tri Yuli Aryani, S.Pd., Gr.', role: 'guru', status: 'aktif' },
@@ -1033,7 +1034,7 @@ function quickLoginRole(roleKey) {
     'kepala_sekolah': {
       username: 'kepsek',
       role: 'kepala_sekolah',
-      nama_lengkap: 'Ust. Ahmad Fauzi, M.Pd.',
+      nama_lengkap: 'Arif Rohman, S.Sos., M.Pd.',
       subtitle: 'Kepala Sekolah SMP'
     },
     'guru': {
@@ -4559,7 +4560,7 @@ function renderRaporSheet(report) {
   // Signatures
   if (document.getElementById('print-report-place')) document.getElementById('print-report-place').innerText = set.report_place || 'Bogor';
   if (document.getElementById('print-report-date')) document.getElementById('print-report-date').innerText = set.report_date || '17 Oktober 2026';
-  if (document.getElementById('print-headmaster-name')) document.getElementById('print-headmaster-name').innerText = set.headmaster_name || 'Bambang Setyono, S.T.';
+  if (document.getElementById('print-headmaster-name')) document.getElementById('print-headmaster-name').innerText = set.headmaster_name || 'Arif Rohman, S.Sos., M.Pd.';
   if (document.getElementById('print-headmaster-nip')) document.getElementById('print-headmaster-nip').innerText = set.headmaster_nip ? `NIP. ${set.headmaster_nip}` : 'NIP.';
 }
 
@@ -4596,7 +4597,7 @@ function renderRaporKepemimpinanSheet(report) {
   const waliKelasMurid = formatWaliKelasTitleCase(m.wali_kelas || WALI_KELAS_MAP[kelasMurid] || set.wali_kelas_default || 'Dewi Fitria Nugraheni, S.Pd., Gr.');
   if (document.getElementById('print-skl-walas-info')) document.getElementById('print-skl-walas-info').innerText = waliKelasMurid;
   if (document.getElementById('print-skl-ttd-walas')) document.getElementById('print-skl-ttd-walas').innerText = waliKelasMurid;
-  if (document.getElementById('print-skl-ttd-kepsek')) document.getElementById('print-skl-ttd-kepsek').innerText = set.headmaster_name || 'Bambang Setyono, S.T.';
+  if (document.getElementById('print-skl-ttd-kepsek')) document.getElementById('print-skl-ttd-kepsek').innerText = set.headmaster_name || 'Arif Rohman, S.Sos., M.Pd.';
 
   if (document.getElementById('print-skl-catatan-walas')) {
     document.getElementById('print-skl-catatan-walas').innerText = sklEntry.catatan_walas || 'Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan';

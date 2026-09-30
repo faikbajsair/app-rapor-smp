@@ -178,7 +178,7 @@ function initDatabase() {
       ['report_date', '17 Oktober 2026', 'academic', 'Tanggal Titimangsa Rapor'],
       ['report_place', 'Bogor', 'academic', 'Kota Pembagian Rapor'],
       ['wali_kelas_default', 'Dewi Fitria Nugraheni, S.Pd., Gr.', 'academic', 'Wali Kelas Default'],
-      ['headmaster_name', 'Bambang Setyono, S.T.', 'signatory', 'Nama Kepala Sekolah'],
+      ['headmaster_name', 'Arif Rohman, S.Sos., M.Pd.', 'signatory', 'Nama Kepala Sekolah'],
       ['headmaster_nip', '', 'signatory', 'NIP/NIY Kepala Sekolah'],
       ['headmaster_signature_url', '', 'signatory', 'URL Gambar TTD Kepala Sekolah (Opsional)'],
       ['report_footer_text', 'RAPOR TENGAH SEMESTER PROGRAM PORTOFOLIO SMP AL IMAM ISLAMIC SCHOOL', 'general', 'Teks Footer Rapor']
@@ -191,7 +191,7 @@ function initDatabase() {
   if (sheetUsers.getLastRow() <= 1) {
     const defaultUsers = [
       ['USR-001', 'admin', 'admin123', 'Administrator Utama', 'admin', 'aktif', '2025-01-01', ''],
-      ['USR-002', 'kepsek', 'kepsek123', 'Bambang Setyono, S.T.', 'kepala_sekolah', 'aktif', '2025-01-01', ''],
+      ['USR-002', 'kepsek', 'kepsek123', 'Arif Rohman, S.Sos., M.Pd.', 'kepala_sekolah', 'aktif', '2025-01-01', ''],
       ['USR-003', 'guru', 'guru123', 'Dewi Fitria Nugraheni, S.Pd., Gr.', 'guru', 'aktif', '2025-01-01', ''],
       ['USR-004', 'dewi', 'dewi123', 'Dewi Fitria Nugraheni, S.Pd., Gr.', 'guru', 'aktif', '2025-01-01', ''],
       ['USR-005', 'triyuli', 'tri123', 'Tri Yuli Aryani, S.Pd., Gr.', 'guru', 'aktif', '2025-01-01', ''],
@@ -505,7 +505,7 @@ function forceSyncDatabaseToSpreadsheet() {
     ['report_date', '17 Oktober 2026', 'academic', 'Tanggal Titimangsa Rapor'],
     ['report_place', 'Bogor', 'academic', 'Kota Pembagian Rapor'],
     ['wali_kelas_default', 'Dewi Fitria Nugraheni, S.Pd., Gr.', 'academic', 'Wali Kelas Default'],
-    ['headmaster_name', 'Bambang Setyono, S.T.', 'signatory', 'Nama Kepala Sekolah'],
+    ['headmaster_name', 'Arif Rohman, S.Sos., M.Pd.', 'signatory', 'Nama Kepala Sekolah'],
     ['headmaster_nip', '', 'signatory', 'NIP/NIY Kepala Sekolah'],
     ['headmaster_signature_url', '', 'signatory', 'URL Gambar TTD Kepala Sekolah (Opsional)'],
     ['report_footer_text', 'RAPOR TENGAH SEMESTER PROGRAM PORTOFOLIO SMP AL IMAM ISLAMIC SCHOOL', 'general', 'Teks Footer Rapor']
@@ -519,7 +519,7 @@ function forceSyncDatabaseToSpreadsheet() {
   }
   const defaultUsers = [
     ['USR-001', 'admin', 'admin123', 'Administrator Utama', 'admin', 'aktif', '2025-01-01', ''],
-    ['USR-002', 'kepsek', 'kepsek123', 'Bambang Setyono, S.T.', 'kepala_sekolah', 'aktif', '2025-01-01', ''],
+    ['USR-002', 'kepsek', 'kepsek123', 'Arif Rohman, S.Sos., M.Pd.', 'kepala_sekolah', 'aktif', '2025-01-01', ''],
     ['USR-003', 'guru', 'guru123', 'Dewi Fitria Nugraheni, S.Pd., Gr.', 'guru', 'aktif', '2025-01-01', ''],
     ['USR-004', 'dewi', 'dewi123', 'Dewi Fitria Nugraheni, S.Pd., Gr.', 'guru', 'aktif', '2025-01-01', ''],
     ['USR-005', 'triyuli', 'tri123', 'Tri Yuli Aryani, S.Pd., Gr.', 'guru', 'aktif', '2025-01-01', ''],
