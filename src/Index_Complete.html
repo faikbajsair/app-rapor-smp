@@ -3201,6 +3201,25 @@ NIS	Nama Murid	Mata Pelajaran	KKM	Nilai UTS
 
         <div id="gas-test-result" class="hidden p-4 rounded-xl text-xs space-y-1"></div>
 
+        <!-- Card: Sync Seluruh Data Baru ke Spreadsheet -->
+        <div class="p-4 rounded-xl bg-gradient-to-r from-emerald-950 via-slate-900 to-slate-950 border border-emerald-800/50 text-white space-y-3 shadow-lg">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-sm">
+                <i class="fa-solid fa-arrows-rotate"></i>
+              </span>
+              <div>
+                <h4 class="font-bold text-xs text-white">Sinkronkan Seluruh Data Baru ke Google Spreadsheet</h4>
+                <p class="text-[11px] text-slate-300">Menulis ulang & memperbarui Settings 2026/2027, 6 Walas, dan 159 Murid langsung ke Google Sheets.</p>
+              </div>
+            </div>
+          </div>
+          <button type="button" onclick="triggerForceSyncDb()" id="btn-force-sync-db" class="w-full sm:w-auto px-5 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black rounded-xl text-xs shadow-lg transition flex items-center justify-center gap-2">
+            <i class="fa-solid fa-cloud-arrow-up"></i>
+            <span>⚡ Sinkronkan Data ke Google Sheets Sekarang</span>
+          </button>
+        </div>
+
         <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-600 space-y-2">
           <div class="font-bold text-slate-800 flex items-center gap-1.5">
             <i class="fa-solid fa-shield-halved text-emerald-600"></i>
@@ -5245,6 +5264,7 @@ function callApi(actionName, payload = {}) {
         case 'getNilaiDiniyah': runner.apiGetNilaiDiniyah(payload); break;
         case 'saveNilaiDiniyah': runner.apiSaveNilaiDiniyah(payload); break;
         case 'deleteNilaiDiniyah': runner.apiDeleteNilaiDiniyah(payload.id); break;
+        case 'forceSyncDatabase': runner.apiForceSyncDatabase(); break;
         case 'getMuridReport': runner.apiGetMuridReport(payload.nis); break;
         case 'getSantriReport': runner.apiGetMuridReport(payload.nis); break;
         default:
@@ -9030,9 +9050,9 @@ function renderRaporKepemimpinanSheet(report) {
   tbody.innerHTML = rowsHtml;
 }
 
-// 16. DATABASE INITIALIZATION TRIGGER
+// 16. DATABASE INITIALIZATION & FORCE SYNC TRIGGER
 function triggerInitDb() {
-  if (!confirm('Inisialisasi ulang database Google Sheets akan memastikan seluruh skema sheet dan data seed default Al-Imam terpasang. Lanjutkan?')) return;
+  if (!confirm('Inisialisasi ulang database Google Sheets akan memastikan seluruh skema sheet terpasang. Lanjutkan?')) return;
   
   showToast('Menginisialisasi skema sheet Google Sheets...', 'info');
   AppState.cmsSettings = { ...DEMO_DATA.settings };
@@ -9050,9 +9070,54 @@ function triggerInitDb() {
 
   callApi('initDatabase')
     .then(res => {
-      showToast('Database Google Sheets berhasil disinkronkan!', 'success');
+      showToast('Database Google Sheets berhasil diinisialisasi!', 'success');
+      loadCmsSettings();
+      loadMuridList();
     })
-    .catch(err => showToast('Sinkron database: ' + err.toString(), 'info'));
+    .catch(err => showToast('Inisialisasi database: ' + err.toString(), 'info'));
+}
+
+function triggerForceSyncDb() {
+  if (!confirm('Sinkronisasi penuh akan memperbarui Settings 2026/2027, 6 Walas, dan 159 Data Siswa resmi langsung ke Google Sheets. Lanjutkan?')) return;
+
+  const btn = document.getElementById('btn-force-sync-db');
+  if (btn) {
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span>Menyinkronkan ke Google Sheets...</span>';
+  }
+
+  showToast('Sedang memperbarui seluruh data ke Google Spreadsheet...', 'info');
+
+  AppState.cmsSettings = { ...DEMO_DATA.settings };
+  AppState.muridList = [...DEMO_DATA.murid];
+  AppState.usersList = [...DEMO_DATA.users];
+  applyCmsTheme(AppState.cmsSettings);
+  populateMuridDropdowns();
+  renderMuridTable(AppState.muridList);
+  renderTableUsers(AppState.usersList);
+  loadDashboardStats();
+
+  callApi('forceSyncDatabase')
+    .then(res => {
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> <span>⚡ Sinkronkan Data ke Google Sheets Sekarang</span>';
+      }
+      if (res && res.success) {
+        showToast('Alhamdulillah! Seluruh data (Settings, Walas, 159 Siswa) telah tersinkron ke Google Sheets!', 'success');
+        loadCmsSettings();
+        loadMuridList();
+      } else {
+        showToast('Sinkronisasi data selesai.', 'success');
+      }
+    })
+    .catch(err => {
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> <span>⚡ Sinkronkan Data ke Google Sheets Sekarang</span>';
+      }
+      showToast('Proses sinkronisasi: ' + err.toString(), 'info');
+    });
 }
 
 // 17. MOBILE SIDEBAR TOGGLE
@@ -9214,6 +9279,7 @@ window.switchCmsTab = switchCmsTab;
 window.previewRaporDirect = previewRaporDirect;
 window.testGasConnection = testGasConnection;
 window.resetDefaultGasUrl = resetDefaultGasUrl;
+window.triggerForceSyncDb = triggerForceSyncDb;
 
 // 19. APP STARTUP INITIALIZATION
 window.addEventListener('DOMContentLoaded', () => {

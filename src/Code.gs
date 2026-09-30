@@ -120,9 +120,11 @@ function handleRestApiGet(params) {
 function dispatchApiAction(action, payload) {
   try {
     switch (action) {
-      // Inisialisasi
+      // Inisialisasi & Sinkronisasi Spreadsheet
       case 'initDatabase':
         return initDatabase();
+      case 'forceSyncDatabase':
+        return forceSyncDatabaseToSpreadsheet();
         
       // Autentikasi
       case 'login':
@@ -221,6 +223,7 @@ function dispatchApiAction(action, payload) {
  * ============================================================================
  */
 function apiInitDatabase() { return dispatchApiAction('initDatabase', {}); }
+function apiForceSyncDatabase() { return dispatchApiAction('forceSyncDatabase', {}); }
 function apiLogin(username, password) { return dispatchApiAction('login', { username: username, password: password }); }
 function apiGetSettings() { return dispatchApiAction('getSettings', {}); }
 function apiUpdateSettings(settings) { return dispatchApiAction('updateSettings', settings); }

@@ -306,6 +306,25 @@
 
         <div id="gas-test-result" class="hidden p-4 rounded-xl text-xs space-y-1"></div>
 
+        <!-- Card: Sync Seluruh Data Baru ke Spreadsheet -->
+        <div class="p-4 rounded-xl bg-gradient-to-r from-emerald-950 via-slate-900 to-slate-950 border border-emerald-800/50 text-white space-y-3 shadow-lg">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-sm">
+                <i class="fa-solid fa-arrows-rotate"></i>
+              </span>
+              <div>
+                <h4 class="font-bold text-xs text-white">Sinkronkan Seluruh Data Baru ke Google Spreadsheet</h4>
+                <p class="text-[11px] text-slate-300">Menulis ulang & memperbarui Settings 2026/2027, 6 Walas, dan 159 Murid langsung ke Google Sheets.</p>
+              </div>
+            </div>
+          </div>
+          <button type="button" onclick="triggerForceSyncDb()" id="btn-force-sync-db" class="w-full sm:w-auto px-5 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black rounded-xl text-xs shadow-lg transition flex items-center justify-center gap-2">
+            <i class="fa-solid fa-cloud-arrow-up"></i>
+            <span>⚡ Sinkronkan Data ke Google Sheets Sekarang</span>
+          </button>
+        </div>
+
         <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-600 space-y-2">
           <div class="font-bold text-slate-800 flex items-center gap-1.5">
             <i class="fa-solid fa-shield-halved text-emerald-600"></i>

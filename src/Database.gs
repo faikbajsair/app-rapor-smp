@@ -17,6 +17,21 @@ const DB_CONFIG = {
   SHEET_DINIYAH: 'Nilai_Diniyah'
 };
 
+const DEFAULT_SPREADSHEET_ID = '1EwOvL7qrFnHU9IC30sIV4ie73XiqExCpy1EuWZw7vsM';
+
+/**
+ * Trigger menu otomatis saat Google Spreadsheet dibuka oleh pengguna
+ */
+function onOpen(e) {
+  try {
+    const ui = SpreadsheetApp.getUi();
+    ui.createMenu('🚀 App Rapor AI IS')
+      .addItem('⚡ Sinkronkan Seluruh Data Baru ke Spreadsheet', 'forceSyncDatabaseToSpreadsheet')
+      .addItem('🔄 Inisialisasi Database', 'initDatabase')
+      .addToUi();
+  } catch (err) {}
+}
+
 /**
  * Mendapatkan referensi Spreadsheet aktif.
  */
@@ -28,12 +43,22 @@ function getDb() {
     // Fallback if accessed without active sheet context
   }
   
-  const prop = PropertiesService.getScriptProperties().getProperty('SPREADSHEET_ID');
-  if (prop) {
-    return SpreadsheetApp.openById(prop);
+  try {
+    const prop = PropertiesService.getScriptProperties().getProperty('SPREADSHEET_ID');
+    if (prop) {
+      return SpreadsheetApp.openById(prop);
+    }
+  } catch (e2) {}
+  
+  if (DEFAULT_SPREADSHEET_ID) {
+    try {
+      return SpreadsheetApp.openById(DEFAULT_SPREADSHEET_ID);
+    } catch (e3) {
+      console.warn('Gagal openById:', e3);
+    }
   }
   
-  throw new Error('Spreadsheet belum terhubung. Pastikan script terikat dengan Google Sheets atau set Script Property SPREADSHEET_ID.');
+  throw new Error('Spreadsheet belum terhubung. ID: ' + DEFAULT_SPREADSHEET_ID);
 }
 
 /**
@@ -447,6 +472,100 @@ function initDatabase() {
   }
   
   return { status: 'success', message: 'Inisialisasi skema database Google Sheets berhasil!' };
+}
+
+/**
+ * ============================================================================
+ * FORCE SYNC / SINKRONISASI DATABASE KE GOOGLE SPREADSHEET
+ * Memperbarui Settings 2026/2027, 6 Walas, 159 Murid, dan Nilai ke Google Sheets
+ * ============================================================================
+ */
+function forceSyncDatabaseToSpreadsheet() {
+  const ss = getDb();
+  
+  // 1. Settings_CMS
+  const sheetSettings = getOrCreateSheet(DB_CONFIG.SHEET_SETTINGS, ['key', 'value', 'category', 'description']);
+  if (sheetSettings.getLastRow() > 1) {
+    sheetSettings.getRange(2, 1, sheetSettings.getLastRow() - 1, 4).clearContent();
+  }
+  const defaultSettings = [
+    ['school_name', 'SMP Al-Imam Islamic School (AI IS)', 'general', 'Nama Lengkap Sekolah'],
+    ['school_address', 'Jl. Harjamukti No. 12, Cimanggis, Kota Depok, Jawa Barat', 'general', 'Alamat Lengkap Sekolah'],
+    ['school_phone', '(021) 8775-4321 / 0812-9876-5432', 'general', 'Telepon/Kontak Sekolah'],
+    ['school_website', 'https://alimamischool.com', 'general', 'Situs Web Resmi'],
+    ['school_logo_url', 'https://alimamischool.com/wp-content/uploads/2020/08/Al-Imam-Islamic-School-alimamischool.com-sekolah-sunnah-logo.png', 'appearance', 'URL Logo Sekolah'],
+    ['theme_primary_color', '#1e3a8a', 'appearance', 'Warna Primer (Hex)'],
+    ['theme_secondary_color', '#0284c7', 'appearance', 'Warna Sekunder (Hex)'],
+    ['theme_accent_color', '#10b981', 'appearance', 'Warna Aksen (Hex)'],
+    ['theme_sidebar_dark', 'true', 'appearance', 'Mode Gelap Sidebar (true/false)'],
+    ['academic_year', '2026/2027', 'academic', 'Tahun Ajaran Aktif'],
+    ['academic_years_list', '2026/2027,2025/2026,2024/2025', 'academic', 'Daftar Pilihan Tahun Ajaran'],
+    ['semester_active', 'I (Satu)', 'academic', 'Semester Aktif (I (Satu) / II (Dua))'],
+    ['report_date', '17 Oktober 2026', 'academic', 'Tanggal Titimangsa Rapor'],
+    ['report_place', 'Bogor', 'academic', 'Kota Pembagian Rapor'],
+    ['wali_kelas_default', 'Dewi Fitria Nugraheni, S.Pd., Gr.', 'academic', 'Wali Kelas Default'],
+    ['headmaster_name', 'Bambang Setyono, S.T.', 'signatory', 'Nama Kepala Sekolah'],
+    ['headmaster_nip', '', 'signatory', 'NIP/NIY Kepala Sekolah'],
+    ['headmaster_signature_url', '', 'signatory', 'URL Gambar TTD Kepala Sekolah (Opsional)'],
+    ['report_footer_text', 'RAPOR TENGAH SEMESTER PROGRAM PORTOFOLIO SMP AL IMAM ISLAMIC SCHOOL', 'general', 'Teks Footer Rapor']
+  ];
+  sheetSettings.getRange(2, 1, defaultSettings.length, 4).setValues(defaultSettings);
+
+  // 2. Users (Role Admin, Kepsek, & 6 Wali Kelas Jenjang)
+  const sheetUsers = getOrCreateSheet(DB_CONFIG.SHEET_USERS, ['id', 'username', 'password_hash', 'nama_lengkap', 'role', 'status', 'created_at', 'nis']);
+  if (sheetUsers.getLastRow() > 1) {
+    sheetUsers.getRange(2, 1, sheetUsers.getLastRow() - 1, 8).clearContent();
+  }
+  const defaultUsers = [
+    ['USR-001', 'admin', 'admin123', 'Administrator Utama', 'admin', 'aktif', '2025-01-01', ''],
+    ['USR-002', 'kepsek', 'kepsek123', 'Bambang Setyono, S.T.', 'kepala_sekolah', 'aktif', '2025-01-01', ''],
+    ['USR-003', 'guru', 'guru123', 'Dewi Fitria Nugraheni, S.Pd., Gr.', 'guru', 'aktif', '2025-01-01', ''],
+    ['USR-004', 'dewi', 'dewi123', 'Dewi Fitria Nugraheni, S.Pd., Gr.', 'guru', 'aktif', '2025-01-01', ''],
+    ['USR-005', 'triyuli', 'tri123', 'Tri Yuli Aryani, S.Pd., Gr.', 'guru', 'aktif', '2025-01-01', ''],
+    ['USR-006', 'eliumiyati', 'eli123', 'Eli Umiyati, S.Pd., Gr.', 'guru', 'aktif', '2025-01-01', ''],
+    ['USR-007', 'aning', 'aning123', 'Aning Nurhayati, S.T., Gr.', 'guru', 'aktif', '2025-01-01', ''],
+    ['USR-008', 'trinuryani', 'tri123', 'Tri Nuryani, S.S., Gr.', 'guru', 'aktif', '2025-01-01', ''],
+    ['USR-009', 'sumiati', 'sumi123', 'Sumiati, S.Pd., Gr.', 'guru', 'aktif', '2025-01-01', ''],
+    ['USR-010', 'walimurid', 'wali123', 'Bpk. Nanang Fajar', 'wali_murid', 'aktif', '2025-01-01', '242507001']
+  ];
+  sheetUsers.getRange(2, 1, defaultUsers.length, 8).setValues(defaultUsers);
+
+  // 3. Murid (Data 159 Murid Resmi Sesuai Excel Al-Imam)
+  let sheetMurid = ss.getSheetByName(DB_CONFIG.SHEET_MURID);
+  const legacySantri = ss.getSheetByName(DB_CONFIG.SHEET_SANTRI_LEGACY);
+  if (!sheetMurid && legacySantri) {
+    try {
+      legacySantri.setName(DB_CONFIG.SHEET_MURID);
+      sheetMurid = legacySantri;
+    } catch (e) {
+      sheetMurid = legacySantri;
+    }
+  }
+  if (!sheetMurid) {
+    sheetMurid = getOrCreateSheet(DB_CONFIG.SHEET_MURID, [
+      'nis', 'nisn', 'nama_murid', 'kelas', 'jenis_kelamin', 'nama_wali', 'kontak_wali', 'status', 'kehadiran_s', 'kehadiran_i', 'kehadiran_a', 'ekskul_1', 'ekskul_2', 'ekskul_3', 'wali_kelas'
+    ]);
+  }
+  
+  const muridHeaders = ['nis', 'nisn', 'nama_murid', 'kelas', 'jenis_kelamin', 'nama_wali', 'kontak_wali', 'status', 'kehadiran_s', 'kehadiran_i', 'kehadiran_a', 'ekskul_1', 'ekskul_2', 'ekskul_3', 'wali_kelas'];
+  sheetMurid.getRange(1, 1, 1, muridHeaders.length).setValues([muridHeaders]);
+  sheetMurid.getRange(1, 1, 1, muridHeaders.length)
+            .setBackground('#1e293b')
+            .setFontColor('#ffffff')
+            .setFontWeight('bold')
+            .setHorizontalAlignment('center');
+            
+  if (sheetMurid.getLastRow() > 1) {
+    sheetMurid.getRange(2, 1, Math.max(sheetMurid.getLastRow() - 1, 1), sheetMurid.getLastColumn()).clearContent();
+  }
+  
+  // Re-run initDatabase to populate 159 murid & sheets
+  initDatabase();
+  
+  return {
+    success: true,
+    message: 'Seluruh data Settings 2026/2027, 6 Walas, dan 159 Murid berhasil disinkronkan ke Google Spreadsheet!'
+  };
 }
 
 /**
