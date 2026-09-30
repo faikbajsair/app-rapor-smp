@@ -191,7 +191,7 @@ function initDatabase() {
   if (sheetUsers.getLastRow() <= 1) {
     const defaultUsers = [
       ['USR-001', 'admin', 'admin123', 'Administrator Utama', 'admin', 'aktif', '2025-01-01', ''],
-      ['USR-002', 'kepsek', 'kepsek123', 'Arif Rohman, M.Pd.', 'kepala_sekolah', 'aktif', '2025-01-01', ''],
+      ['USR-002', 'kepsek', 'kepsek123', 'Bambang Setyono, S.T.', 'kepala_sekolah', 'aktif', '2025-01-01', ''],
       ['USR-003', 'guru', 'guru123', 'Dewi Fitria Nugraheni, S.Pd., Gr.', 'guru', 'aktif', '2025-01-01', ''],
       ['USR-004', 'dewi', 'dewi123', 'Dewi Fitria Nugraheni, S.Pd., Gr.', 'guru', 'aktif', '2025-01-01', ''],
       ['USR-005', 'triyuli', 'tri123', 'Tri Yuli Aryani, S.Pd., Gr.', 'guru', 'aktif', '2025-01-01', ''],
@@ -208,6 +208,7 @@ function initDatabase() {
   const sheetMurid = getOrCreateSheet(DB_CONFIG.SHEET_MURID, [
     'nis', 'nisn', 'nama_murid', 'kelas', 'jenis_kelamin', 'nama_wali', 'kontak_wali', 'status', 'kehadiran_s', 'kehadiran_i', 'kehadiran_a', 'ekskul_1', 'ekskul_2', 'ekskul_3', 'wali_kelas'
   ]);
+  if (sheetMurid.getLastRow() <= 1) {
     const defaultMurid = [
       // 1. VII UTSMAN (25 Murid Ikhwan - Sesuai File Excel SISWA FIX LENGKAP SMP 2026-2027)
       ['262707001', '0134897969', 'AEZAR EL KHAZINDAR WALIDAIN', 'VII UTSMAN', 'L', 'ANGGER KERTI WASIAT', '081234567101', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Basket', 'Eli Umiyati, S.Pd., Gr.'],
