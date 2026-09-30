@@ -210,19 +210,37 @@ const TEMPLETE_CATATAN_WALAS_32 = [
 ];
 
 const WALI_KELAS_MAP = {
-  'IX ABU BAKAR': 'Kahlil Gibran, S.Pd.',
-  'IX UMMU SALAMAH': 'Dewi Fitria Nugraheni, S.Pd., Gr.',
-  'VII AISYAH': 'Tri Yuli Aryani, S.Pd., Gr.',
-  'VII Aisyah Binti Abu Bakar': 'Tri Yuli Aryani, S.Pd., Gr.',
-  'VII UTSMAN': 'Andrew Syaputra, S.Pd.',
-  'VII UTSMAN BIN AFFAN': 'Andrew Syaputra, S.Pd.',
-  '7 UTSMAN': 'Andrew Syaputra, S.Pd.',
+  'IX ABU BAKAR': 'DEWI FITRIA NUGRAHENI, S.Pd., Gr.',
+  'IX Abu Bakar': 'DEWI FITRIA NUGRAHENI, S.Pd., Gr.',
+  'Kelas IX ABU BAKAR': 'DEWI FITRIA NUGRAHENI, S.Pd., Gr.',
+  'IX UMMU SALAMAH': 'SUMIATI, S.Pd.,Gr.',
+  'IX Ummu Salamah': 'SUMIATI, S.Pd.,Gr.',
+  'Kelas IX UMMU SALAMAH': 'SUMIATI, S.Pd.,Gr.',
+  'VII AISYAH': 'TRI YULI ARYANI, S.Pd., Gr.',
+  'VII Aisyah': 'TRI YULI ARYANI, S.Pd., Gr.',
+  'VII Aisyah Binti Abu Bakar': 'TRI YULI ARYANI, S.Pd., Gr.',
+  'Kelas VII AISYAH': 'TRI YULI ARYANI, S.Pd., Gr.',
+  'VII UTSMAN': 'Eli Umiyati, S. Pd., Gr.',
+  'VII USMAN': 'Eli Umiyati, S. Pd., Gr.',
+  'VII Usman': 'Eli Umiyati, S. Pd., Gr.',
+  'VII Utsman': 'Eli Umiyati, S. Pd., Gr.',
+  'VII UTSMAN BIN AFFAN': 'Eli Umiyati, S. Pd., Gr.',
+  'VII USMAN BIN AFFAN': 'Eli Umiyati, S. Pd., Gr.',
+  '7 UTSMAN': 'Eli Umiyati, S. Pd., Gr.',
+  '7 USMAN': 'Eli Umiyati, S. Pd., Gr.',
+  'Kelas VII UTSMAN': 'Eli Umiyati, S. Pd., Gr.',
+  'Kelas VII USMAN': 'Eli Umiyati, S. Pd., Gr.',
   'VII MBU': 'Ust. Abdullah Syafi\'i, S.Pd.',
-  'VIII UMAR': 'Ust. Salman Al-Farisi, S.Pd.',
-  'VIII UMAR BIN KHATTAB': 'Ust. Salman Al-Farisi, S.Pd.',
-  'VIII KHODIJAH': 'Sumiati, S.Pd., Gr.',
-  'VIII KHADIJAH': 'Sumiati, S.Pd., Gr.',
-  'VIII Khodijah': 'Sumiati, S.Pd., Gr.',
+  'VIII UMAR': 'ANING NURHAYATI, S.T.,Gr.',
+  'VIII Umar': 'ANING NURHAYATI, S.T.,Gr.',
+  'VIII UMAR BIN KHATTAB': 'ANING NURHAYATI, S.T.,Gr.',
+  'Kelas VIII UMAR': 'ANING NURHAYATI, S.T.,Gr.',
+  'VIII KHODIJAH': 'Tri Nuryani, S.S., Gr.',
+  'VIII Khodijah': 'Tri Nuryani, S.S., Gr.',
+  'VIII KHADIJAH': 'Tri Nuryani, S.S., Gr.',
+  'VIII Khadijah': 'Tri Nuryani, S.S., Gr.',
+  'Kelas VIII KHODIJAH': 'Tri Nuryani, S.S., Gr.',
+  'Kelas VIII KHADIJAH': 'Tri Nuryani, S.S., Gr.',
   'VIII THALHAH': 'Ust. Salman Al-Farisi, S.Pd.',
   'VII BILAL': 'Ust. Abdullah Syafi\'i, S.Pd.'
 };
@@ -518,7 +536,7 @@ const DEMO_DATA = {
     semester_active: 'I (Satu)',
     report_place: 'Bogor',
     report_date: '17 Oktober 2026',
-    wali_kelas_default: 'Kahlil Gibran, S.Pd.',
+    wali_kelas_default: 'DEWI FITRIA NUGRAHENI, S.Pd., Gr.',
     headmaster_name: 'Bambang Setyono, S.T.',
     headmaster_nip: '',
     headmaster_signature_url: '',
@@ -534,9 +552,14 @@ const DEMO_DATA = {
   users: [
     { id: 'USR-001', username: 'admin', nama_lengkap: 'Administrator Utama', role: 'admin', status: 'aktif' },
     { id: 'USR-002', username: 'kepsek', nama_lengkap: 'Arif Rohman, M.Pd.', role: 'kepala_sekolah', status: 'aktif' },
-    { id: 'USR-003', username: 'guru', nama_lengkap: 'Kahlil Gibran, S.Pd.', role: 'guru', status: 'aktif' },
-    { id: 'USR-004', username: 'dewi', nama_lengkap: 'Dewi Fitria Nugraheni, S.Pd., Gr.', role: 'guru', status: 'aktif' },
-    { id: 'USR-005', username: 'walimurid', nama_lengkap: 'Bpk. Nanang Fajar', role: 'wali_murid', status: 'aktif', nis: '242507001' }
+    { id: 'USR-003', username: 'guru', nama_lengkap: 'DEWI FITRIA NUGRAHENI, S.Pd., Gr.', role: 'guru', status: 'aktif' },
+    { id: 'USR-004', username: 'dewi', nama_lengkap: 'DEWI FITRIA NUGRAHENI, S.Pd., Gr.', role: 'guru', status: 'aktif' },
+    { id: 'USR-005', username: 'triyuli', nama_lengkap: 'TRI YULI ARYANI, S.Pd., Gr.', role: 'guru', status: 'aktif' },
+    { id: 'USR-006', username: 'eliumiyati', nama_lengkap: 'Eli Umiyati, S. Pd., Gr.', role: 'guru', status: 'aktif' },
+    { id: 'USR-007', username: 'aning', nama_lengkap: 'ANING NURHAYATI, S.T.,Gr.', role: 'guru', status: 'aktif' },
+    { id: 'USR-008', username: 'trinuryani', nama_lengkap: 'Tri Nuryani, S.S., Gr.', role: 'guru', status: 'aktif' },
+    { id: 'USR-009', username: 'sumiati', nama_lengkap: 'SUMIATI, S.Pd.,Gr.', role: 'guru', status: 'aktif' },
+    { id: 'USR-010', username: 'walimurid', nama_lengkap: 'Bpk. Nanang Fajar', role: 'wali_murid', status: 'aktif', nis: '242507001' }
   ]
 };
 
@@ -549,7 +572,7 @@ function buildExactAlImamDataset() {
   const sklList = [];
 
   const addCohortToData = (students, kelasName, prefixNis, jk) => {
-    const waliKelas = WALI_KELAS_MAP[kelasName] || 'Kahlil Gibran, S.Pd.';
+    const waliKelas = WALI_KELAS_MAP[kelasName] || 'DEWI FITRIA NUGRAHENI, S.Pd., Gr.';
     
     students.forEach((st) => {
       const nis = st.nis || `${prefixNis}${String(st.no).padStart(3, '0')}`;
@@ -924,7 +947,7 @@ function quickLoginRole(roleKey) {
     'guru': {
       username: 'guru',
       role: 'guru',
-      nama_lengkap: 'Kahlil Gibran, S.Pd.',
+      nama_lengkap: 'DEWI FITRIA NUGRAHENI, S.Pd., Gr.',
       subtitle: 'Wali Kelas IX ABU BAKAR'
     },
     'wali_murid': {
@@ -2606,15 +2629,19 @@ function renderLegerMatrix() {
   if (pKelas) pKelas.innerText = kelas;
 
   const walasMap = {
-    'IX ABU BAKAR': 'Kahlil Gibran, S.Pd.',
-    'IX UMMU SALAMAH': 'Hilyatul Auliya, S.Pd.',
-    'VII AISYAH': 'Tri Yuli Aryani, S.Pd., Gr.',
-    'VII UTSMAN': 'Andrew Syaputra, S.Pd.',
-    'VIII THALHAH': 'Fahmi Idris, S.Pd.',
-    'VIII KHADIJAH': 'Nur Aini, S.Pd.',
-    'VII BILAL': 'Muhammad Farhan, S.Pd.'
+    'IX ABU BAKAR': 'DEWI FITRIA NUGRAHENI, S.Pd., Gr.',
+    'IX UMMU SALAMAH': 'SUMIATI, S.Pd.,Gr.',
+    'VII AISYAH': 'TRI YULI ARYANI, S.Pd., Gr.',
+    'VII UTSMAN': 'Eli Umiyati, S. Pd., Gr.',
+    'VII USMAN': 'Eli Umiyati, S. Pd., Gr.',
+    'VIII UMAR': 'ANING NURHAYATI, S.T.,Gr.',
+    'VIII KHODIJAH': 'Tri Nuryani, S.S., Gr.',
+    'VIII KHADIJAH': 'Tri Nuryani, S.S., Gr.',
+    'VIII THALHAH': 'Ust. Salman Al-Farisi, S.Pd.',
+    'VII BILAL': 'Muhammad Farhan, S.Pd.',
+    'VII MBU': 'Ust. Abdullah Syafi\'i, S.Pd.'
   };
-  const walasName = walasMap[kelas] || 'Kahlil Gibran, S.Pd.';
+  const walasName = walasMap[kelas] || WALI_KELAS_MAP[kelas] || 'DEWI FITRIA NUGRAHENI, S.Pd., Gr.';
   if (pWalas) pWalas.innerText = walasName;
   if (pSignWalas) pSignWalas.innerText = walasName;
 
@@ -4310,7 +4337,7 @@ function renderRaporSheet(report) {
   }
   if (document.getElementById('print-no-urut')) document.getElementById('print-no-urut').innerText = noUrut;
 
-  const waliKelasMurid = m.wali_kelas || WALI_KELAS_MAP[kelasMurid] || set.wali_kelas_default || 'Kahlil Gibran, S.Pd.';
+  const waliKelasMurid = m.wali_kelas || WALI_KELAS_MAP[kelasMurid] || set.wali_kelas_default || 'DEWI FITRIA NUGRAHENI, S.Pd., Gr.';
   if (document.getElementById('print-ttd-wali-kelas')) document.getElementById('print-ttd-wali-kelas').innerText = waliKelasMurid;
 
   // Section 1: Akademik (Tabel 16 Mapel & Capaian Kompetensi)
@@ -4394,7 +4421,7 @@ function renderRaporKepemimpinanSheet(report) {
   if (document.getElementById('print-skl-tahun-ajaran')) document.getElementById('print-skl-tahun-ajaran').innerText = tahunAjaran;
   if (document.getElementById('print-skl-no-badge')) document.getElementById('print-skl-no-badge').innerText = noUrut;
 
-  const waliKelasMurid = m.wali_kelas || WALI_KELAS_MAP[kelasMurid] || set.wali_kelas_default || 'Kahlil Gibran, S.Pd.';
+  const waliKelasMurid = m.wali_kelas || WALI_KELAS_MAP[kelasMurid] || set.wali_kelas_default || 'DEWI FITRIA NUGRAHENI, S.Pd., Gr.';
   if (document.getElementById('print-skl-walas-info')) document.getElementById('print-skl-walas-info').innerText = waliKelasMurid;
   if (document.getElementById('print-skl-ttd-walas')) document.getElementById('print-skl-ttd-walas').innerText = waliKelasMurid;
   if (document.getElementById('print-skl-ttd-kepsek')) document.getElementById('print-skl-ttd-kepsek').innerText = set.headmaster_name || 'Bambang Setyono, S.T.';

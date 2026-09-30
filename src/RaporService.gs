@@ -96,7 +96,7 @@ function getMuridReportData(nis) {
         ekskul_2_nilai: murid.ekskul_2_nilai || 'Baik',
         ekskul_3: murid.ekskul_3 || 'Basket',
         ekskul_3_nilai: murid.ekskul_3_nilai || 'Baik',
-        wali_kelas: murid.wali_kelas || 'Kahlil Gibran, S.Pd.'
+        wali_kelas: murid.wali_kelas || 'Dewi Fitria Nugraheni, S.Pd., Gr.'
       },
       santri: murid, // alias
       akademik: {

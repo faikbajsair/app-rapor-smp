@@ -88,23 +88,61 @@
       transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     }
     
-    /* Print Optimization for Report Card (Format A4) */
+    /* Print Optimization for Report Card (Format A4) & Leger */
     @media print {
       @page {
         size: A4 portrait;
-        margin: 12mm 15mm 12mm 15mm;
+        margin: 8mm 10mm 8mm 10mm;
       }
-      body {
+      
+      html, body {
+        height: auto !important;
+        min-height: 0 !important;
+        overflow: visible !important;
         background: #ffffff !important;
         color: #000000 !important;
-        font-size: 11pt;
+        font-size: 10pt;
       }
-      .no-print {
+
+      /* Allow all parent wrappers to flow without clipping pages */
+      .flex-1, main, div, body, html {
+        overflow: visible !important;
+        height: auto !important;
+        max-height: none !important;
+      }
+
+      body > * {
+        overflow: visible !important;
+      }
+
+      .view-panel {
+        overflow: visible !important;
+        transition: none !important;
+      }
+
+      /* Hide non-printable UI components */
+      nav, aside, header, footer, #sidebar-nav, #sidebar-backdrop, #toast-container,
+      .no-print, [class*="no-print"] {
         display: none !important;
       }
+
       .print-only {
         display: block !important;
       }
+
+      main {
+        padding: 0 !important;
+        margin: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+      }
+
+      .max-w-7xl, .max-w-4xl {
+        max-width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+
       .print-container {
         width: 100% !important;
         max-width: 100% !important;
@@ -112,23 +150,73 @@
         padding: 0 !important;
         box-shadow: none !important;
         border: none !important;
+        border-radius: 0 !important;
+        background: #ffffff !important;
       }
+
+      .identity-box {
+        background: #f8fafc !important;
+        border: 1px solid #cbd5e1 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      /* Page breaks */
       .page-break-inside-avoid {
-        break-inside: avoid;
-        page-break-inside: avoid;
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
       }
+      
+      .page-break-before {
+        break-before: page !important;
+        page-break-before: always !important;
+      }
+
       table {
         border-collapse: collapse !important;
         width: 100% !important;
+        page-break-inside: auto;
       }
+
+      tr {
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+      }
+
       th, td {
-        border: 1px solid #333333 !important;
-        padding: 4px 6px !important;
+        border: 1px solid #000000 !important;
+        padding: 3px 5px !important;
       }
+
       th {
         background-color: #f1f5f9 !important;
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
+      }
+
+      /* Ensure borderless identity table stays clean without table borders */
+      .identity-table,
+      .identity-table tr,
+      .identity-table td,
+      .identity-table th,
+      table.no-border,
+      table.no-border tr,
+      table.no-border td,
+      table.no-border th,
+      .border-none {
+        border: none !important;
+        background: transparent !important;
+        padding: 1.5px 3px !important;
+      }
+
+      /* Leger landscape adjustments when printing leger */
+      body.printing-leger-landscape {
+        font-size: 7.5pt !important;
+      }
+      body.printing-leger-landscape table th,
+      body.printing-leger-landscape table td {
+        padding: 2px 4px !important;
+        font-size: 7pt !important;
       }
     }
   </style>
@@ -2448,7 +2536,7 @@ NIS	Nama Murid	Mata Pelajaran	KKM	Nilai UTS
         <div class="text-right text-[11px]">
           <h2 class="text-xs font-black uppercase tracking-wider text-slate-900">BUKU LEGER NILAI TENGAH SEMESTER</h2>
           <p class="text-slate-600">Tahun Ajaran: <strong id="print-leger-ta">2026/2027</strong> | Semester: <strong id="print-leger-sem">I (Satu)</strong></p>
-          <p class="text-slate-600">Kelas: <strong id="print-leger-kelas">IX ABU BAKAR</strong> | Wali Kelas: <strong id="print-leger-walas">Kahlil Gibran, S.Pd.</strong></p>
+          <p class="text-slate-600">Kelas: <strong id="print-leger-kelas">IX ABU BAKAR</strong> | Wali Kelas: <strong id="print-leger-walas">DEWI FITRIA NUGRAHENI, S.Pd., Gr.</strong></p>
         </div>
       </div>
     </div>
@@ -2506,7 +2594,7 @@ NIS	Nama Murid	Mata Pelajaran	KKM	Nilai UTS
           <div class="h-16 flex items-center justify-center">
             <!-- Space for sign -->
           </div>
-          <p class="font-bold underline text-slate-900" id="print-leger-sign-walas">Kahlil Gibran, S.Pd.</p>
+          <p class="font-bold underline text-slate-900" id="print-leger-sign-walas">DEWI FITRIA NUGRAHENI, S.Pd., Gr.</p>
           <p class="text-[10px] text-slate-500" id="print-leger-niy-walas">NIY. 20200801015</p>
         </div>
       </div>
@@ -3233,40 +3321,39 @@ NIS	Nama Murid	Mata Pelajaran	KKM	Nilai UTS
         </h2>
       </div>
 
-      <!-- No Urut Box -->
-      <div class="border-2 border-slate-800 rounded-lg overflow-hidden text-center w-16 shrink-0 shadow-sm">
+      <!-- No Urut Box (Disembunyikan saat cetak) -->
+      <div class="no-print border-2 border-slate-800 rounded-lg overflow-hidden text-center w-16 shrink-0 shadow-sm" title="Nomor Urut Siswa">
         <div class="bg-amber-300 text-slate-900 text-[10px] font-black uppercase py-0.5 border-b border-slate-800">No Urut</div>
         <div class="bg-sky-400 text-white text-xl font-black py-1" id="print-no-urut">12</div>
       </div>
     </div>
 
-    <!-- Identitas Murid -->
-    <div class="grid grid-cols-2 gap-x-8 gap-y-1 text-[11px] p-2.5 bg-slate-50/60 rounded-lg border border-slate-200 mb-4 font-medium">
-      <div class="space-y-1">
-        <div class="flex">
-          <span class="w-36 font-semibold text-slate-600">Nama Peserta Didik</span>
-          <span class="font-extrabold text-slate-900">: <span id="print-murid-nama">NADHIF SYAFWAN RIFAAT</span></span>
-        </div>
-        <div class="flex">
-          <span class="w-36 font-semibold text-slate-600">NISN</span>
-          <span class="font-bold text-slate-900">: <span id="print-murid-nisn">0103456069</span></span>
-        </div>
-      </div>
-
-      <div class="space-y-1">
-        <div class="flex">
-          <span class="w-28 font-semibold text-slate-600">Kelas</span>
-          <span class="font-bold text-slate-900">: <span id="print-murid-kelas">IX ABU BAKAR</span></span>
-        </div>
-        <div class="flex">
-          <span class="w-28 font-semibold text-slate-600">Semester</span>
-          <span class="font-bold text-slate-900">: <span id="print-semester">I (Satu)</span></span>
-        </div>
-      </div>
+    <!-- Identitas Murid (Format Rapi Presisi - Kolom NISN & Nama Sejajar Sempurna) -->
+    <div class="p-2.5 bg-slate-50/60 rounded-lg border border-slate-200 mb-4 font-medium text-[11px] identity-box">
+      <table class="w-full identity-table border-none border-collapse text-[11px]">
+        <tbody>
+          <tr class="border-none">
+            <td class="w-[140px] py-0.5 px-1 font-semibold text-slate-700 whitespace-nowrap border-none">Nama Peserta Didik</td>
+            <td class="w-[12px] py-0.5 px-0 font-bold text-slate-900 text-center border-none">:</td>
+            <td class="py-0.5 px-1 font-black text-slate-950 uppercase border-none"><span id="print-murid-nama">NADHIF SYAFWAN RIFAAT</span></td>
+            <td class="w-[70px] py-0.5 px-1 font-semibold text-slate-700 whitespace-nowrap pl-4 border-none">Kelas</td>
+            <td class="w-[12px] py-0.5 px-0 font-bold text-slate-900 text-center border-none">:</td>
+            <td class="w-[130px] py-0.5 px-1 font-bold text-slate-950 border-none"><span id="print-murid-kelas">IX ABU BAKAR</span></td>
+          </tr>
+          <tr class="border-none">
+            <td class="w-[140px] py-0.5 px-1 font-semibold text-slate-700 whitespace-nowrap border-none">NISN</td>
+            <td class="w-[12px] py-0.5 px-0 font-bold text-slate-900 text-center border-none">:</td>
+            <td class="py-0.5 px-1 font-bold text-slate-950 font-mono border-none"><span id="print-murid-nisn">0103456069</span></td>
+            <td class="w-[70px] py-0.5 px-1 font-semibold text-slate-700 whitespace-nowrap pl-4 border-none">Semester</td>
+            <td class="w-[12px] py-0.5 px-0 font-bold text-slate-900 text-center border-none">:</td>
+            <td class="w-[130px] py-0.5 px-1 font-bold text-slate-950 border-none"><span id="print-semester">I (Satu)</span></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
     <!-- Bagian I: Tabel 16 Mata Pelajaran & Capaian Kompetensi -->
-    <div class="mb-4 page-break-inside-avoid">
+    <div class="mb-4">
       <table class="w-full text-left text-[11px] border border-black border-collapse">
         <thead class="bg-[#c6e0b4] text-slate-900 font-bold border-b border-black text-center">
           <tr>
@@ -3421,7 +3508,7 @@ NIS	Nama Murid	Mata Pelajaran	KKM	Nilai UTS
         <div class="flex flex-col justify-between h-28 pr-4 text-left sm:pl-20">
           <span class="font-medium">Wali Kelas,</span>
           <div>
-            <span class="font-bold underline text-slate-950 block" id="print-ttd-wali-kelas">Kahlil Gibran, S.Pd.</span>
+            <span class="font-bold underline text-slate-950 block" id="print-ttd-wali-kelas">DEWI FITRIA NUGRAHENI, S.Pd., Gr.</span>
             <span class="text-[10px] text-slate-700 block">NIP.</span>
           </div>
         </div>
@@ -3449,8 +3536,8 @@ NIS	Nama Murid	Mata Pelajaran	KKM	Nilai UTS
         <p class="text-[9px] text-slate-700 font-sans mt-0.5">TERAKREDITASI "B" No.SK: 02.00/347/SK/BAP-SM/XI/2017</p>
       </div>
 
-      <!-- Yellow Student No Badge (Sesuai Excel Asli) -->
-      <div class="w-14 h-7 bg-amber-300 border border-black flex items-center justify-center font-bold text-sm text-slate-950 shadow-2xs font-sans shrink-0" id="print-skl-no-badge">
+      <!-- Yellow Student No Badge (Disembunyikan saat cetak) -->
+      <div class="no-print w-14 h-7 bg-amber-300 border border-black flex items-center justify-center font-bold text-sm text-slate-950 shadow-2xs font-sans shrink-0" id="print-skl-no-badge">
         5
       </div>
     </div>
@@ -3467,27 +3554,36 @@ NIS	Nama Murid	Mata Pelajaran	KKM	Nilai UTS
 
     <!-- Identitas Murid & Info Sekolah (ISI DATA MANUAL) -->
     <div class="grid grid-cols-1 md:grid-cols-12 gap-4 text-[11px] mb-4 pb-2 border-b border-slate-300">
-      <div class="md:col-span-7 space-y-1 font-sans">
-        <div class="flex">
-          <span class="w-48 font-medium text-slate-700">Nama</span>
-          <span class="font-bold text-slate-950">: <span id="print-skl-nama">AYESHA ALFIRA RAFANDA</span></span>
-        </div>
-        <div class="flex">
-          <span class="w-48 font-medium text-slate-700">Kelas</span>
-          <span class="font-bold text-slate-950">: <span id="print-skl-kelas">IX Ummu Salamah</span></span>
-        </div>
-        <div class="flex">
-          <span class="w-48 font-medium text-slate-700">Nomor Induk Siswa</span>
-          <span class="font-bold text-slate-950">: <span id="print-skl-nis">232407005</span></span>
-        </div>
-        <div class="flex">
-          <span class="w-48 font-medium text-slate-700">Nomor Induk Siswa Nasional</span>
-          <span class="font-bold text-slate-950">: <span id="print-skl-nisn">0117636003</span></span>
-        </div>
-        <div class="flex">
-          <span class="w-48 font-medium text-slate-700">Semester</span>
-          <span class="font-bold text-slate-950">: <span id="print-skl-semester">Tengah Semester 1</span></span>
-        </div>
+      <div class="md:col-span-7 font-sans">
+        <table class="w-full identity-table border-none border-collapse text-[11px]">
+          <tbody>
+            <tr class="border-none">
+              <td class="w-48 py-0.5 px-0 font-medium text-slate-700 whitespace-nowrap border-none">Nama</td>
+              <td class="w-3 py-0.5 px-0 font-bold text-slate-950 text-center border-none">:</td>
+              <td class="py-0.5 px-1 font-bold text-slate-950 uppercase border-none"><span id="print-skl-nama">AYESHA ALFIRA RAFANDA</span></td>
+            </tr>
+            <tr class="border-none">
+              <td class="w-48 py-0.5 px-0 font-medium text-slate-700 whitespace-nowrap border-none">Kelas</td>
+              <td class="w-3 py-0.5 px-0 font-bold text-slate-950 text-center border-none">:</td>
+              <td class="py-0.5 px-1 font-bold text-slate-950 border-none"><span id="print-skl-kelas">IX Ummu Salamah</span></td>
+            </tr>
+            <tr class="border-none">
+              <td class="w-48 py-0.5 px-0 font-medium text-slate-700 whitespace-nowrap border-none">Nomor Induk Siswa</td>
+              <td class="w-3 py-0.5 px-0 font-bold text-slate-950 text-center border-none">:</td>
+              <td class="py-0.5 px-1 font-bold text-slate-950 font-mono border-none"><span id="print-skl-nis">232407005</span></td>
+            </tr>
+            <tr class="border-none">
+              <td class="w-48 py-0.5 px-0 font-medium text-slate-700 whitespace-nowrap border-none">Nomor Induk Siswa Nasional</td>
+              <td class="w-3 py-0.5 px-0 font-bold text-slate-950 text-center border-none">:</td>
+              <td class="py-0.5 px-1 font-bold text-slate-950 font-mono border-none"><span id="print-skl-nisn">0117636003</span></td>
+            </tr>
+            <tr class="border-none">
+              <td class="w-48 py-0.5 px-0 font-medium text-slate-700 whitespace-nowrap border-none">Semester</td>
+              <td class="w-3 py-0.5 px-0 font-bold text-slate-950 text-center border-none">:</td>
+              <td class="py-0.5 px-1 font-bold text-slate-950 border-none"><span id="print-skl-semester">Tengah Semester 1</span></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
       <div class="md:col-span-5 space-y-1 font-sans text-right md:text-left bg-slate-50 p-2.5 rounded border border-slate-300 text-[10px]">
@@ -3722,7 +3818,7 @@ NIS	Nama Murid	Mata Pelajaran	KKM	Nilai UTS
               </li>
               <li class="flex items-start gap-2">
                 <i class="fa-solid fa-check text-purple-600 mt-0.5"></i>
-                <span><strong>Wali Kelas Terdaftar:</strong> Otomatis menyesuaikan wali kelas resmi per jenjang (contoh: <em>Andrew Syaputra</em> untuk VII UTSMAN, <em>Tri Yuli Aryani, S.Pd., Gr.</em> untuk VII AISYAH).</span>
+                <span><strong>Wali Kelas Terdaftar:</strong> Otomatis menyesuaikan wali kelas resmi per jenjang (contoh: <em>Eli Umiyati, S. Pd., Gr.</em> untuk VII UTSMAN, <em>TRI YULI ARYANI, S.Pd., Gr.</em> untuk VII AISYAH, <em>ANING NURHAYATI, S.T.,Gr.</em> untuk VIII UMAR, <em>Tri Nuryani, S.S., Gr.</em> untuk VIII KHODIJAH, <em>DEWI FITRIA NUGRAHENI, S.Pd., Gr.</em> untuk IX ABU BAKAR, <em>SUMIATI, S.Pd.,Gr.</em> untuk IX UMMU SALAMAH).</span>
               </li>
             </ul>
           </div>
@@ -4487,19 +4583,37 @@ const TEMPLETE_CATATAN_WALAS_32 = [
 ];
 
 const WALI_KELAS_MAP = {
-  'IX ABU BAKAR': 'Kahlil Gibran, S.Pd.',
-  'IX UMMU SALAMAH': 'Dewi Fitria Nugraheni, S.Pd., Gr.',
-  'VII AISYAH': 'Tri Yuli Aryani, S.Pd., Gr.',
-  'VII Aisyah Binti Abu Bakar': 'Tri Yuli Aryani, S.Pd., Gr.',
-  'VII UTSMAN': 'Andrew Syaputra, S.Pd.',
-  'VII UTSMAN BIN AFFAN': 'Andrew Syaputra, S.Pd.',
-  '7 UTSMAN': 'Andrew Syaputra, S.Pd.',
+  'IX ABU BAKAR': 'DEWI FITRIA NUGRAHENI, S.Pd., Gr.',
+  'IX Abu Bakar': 'DEWI FITRIA NUGRAHENI, S.Pd., Gr.',
+  'Kelas IX ABU BAKAR': 'DEWI FITRIA NUGRAHENI, S.Pd., Gr.',
+  'IX UMMU SALAMAH': 'SUMIATI, S.Pd.,Gr.',
+  'IX Ummu Salamah': 'SUMIATI, S.Pd.,Gr.',
+  'Kelas IX UMMU SALAMAH': 'SUMIATI, S.Pd.,Gr.',
+  'VII AISYAH': 'TRI YULI ARYANI, S.Pd., Gr.',
+  'VII Aisyah': 'TRI YULI ARYANI, S.Pd., Gr.',
+  'VII Aisyah Binti Abu Bakar': 'TRI YULI ARYANI, S.Pd., Gr.',
+  'Kelas VII AISYAH': 'TRI YULI ARYANI, S.Pd., Gr.',
+  'VII UTSMAN': 'Eli Umiyati, S. Pd., Gr.',
+  'VII USMAN': 'Eli Umiyati, S. Pd., Gr.',
+  'VII Usman': 'Eli Umiyati, S. Pd., Gr.',
+  'VII Utsman': 'Eli Umiyati, S. Pd., Gr.',
+  'VII UTSMAN BIN AFFAN': 'Eli Umiyati, S. Pd., Gr.',
+  'VII USMAN BIN AFFAN': 'Eli Umiyati, S. Pd., Gr.',
+  '7 UTSMAN': 'Eli Umiyati, S. Pd., Gr.',
+  '7 USMAN': 'Eli Umiyati, S. Pd., Gr.',
+  'Kelas VII UTSMAN': 'Eli Umiyati, S. Pd., Gr.',
+  'Kelas VII USMAN': 'Eli Umiyati, S. Pd., Gr.',
   'VII MBU': 'Ust. Abdullah Syafi\'i, S.Pd.',
-  'VIII UMAR': 'Ust. Salman Al-Farisi, S.Pd.',
-  'VIII UMAR BIN KHATTAB': 'Ust. Salman Al-Farisi, S.Pd.',
-  'VIII KHODIJAH': 'Sumiati, S.Pd., Gr.',
-  'VIII KHADIJAH': 'Sumiati, S.Pd., Gr.',
-  'VIII Khodijah': 'Sumiati, S.Pd., Gr.',
+  'VIII UMAR': 'ANING NURHAYATI, S.T.,Gr.',
+  'VIII Umar': 'ANING NURHAYATI, S.T.,Gr.',
+  'VIII UMAR BIN KHATTAB': 'ANING NURHAYATI, S.T.,Gr.',
+  'Kelas VIII UMAR': 'ANING NURHAYATI, S.T.,Gr.',
+  'VIII KHODIJAH': 'Tri Nuryani, S.S., Gr.',
+  'VIII Khodijah': 'Tri Nuryani, S.S., Gr.',
+  'VIII KHADIJAH': 'Tri Nuryani, S.S., Gr.',
+  'VIII Khadijah': 'Tri Nuryani, S.S., Gr.',
+  'Kelas VIII KHODIJAH': 'Tri Nuryani, S.S., Gr.',
+  'Kelas VIII KHADIJAH': 'Tri Nuryani, S.S., Gr.',
   'VIII THALHAH': 'Ust. Salman Al-Farisi, S.Pd.',
   'VII BILAL': 'Ust. Abdullah Syafi\'i, S.Pd.'
 };
@@ -4795,7 +4909,7 @@ const DEMO_DATA = {
     semester_active: 'I (Satu)',
     report_place: 'Bogor',
     report_date: '17 Oktober 2026',
-    wali_kelas_default: 'Kahlil Gibran, S.Pd.',
+    wali_kelas_default: 'DEWI FITRIA NUGRAHENI, S.Pd., Gr.',
     headmaster_name: 'Bambang Setyono, S.T.',
     headmaster_nip: '',
     headmaster_signature_url: '',
@@ -4811,9 +4925,14 @@ const DEMO_DATA = {
   users: [
     { id: 'USR-001', username: 'admin', nama_lengkap: 'Administrator Utama', role: 'admin', status: 'aktif' },
     { id: 'USR-002', username: 'kepsek', nama_lengkap: 'Arif Rohman, M.Pd.', role: 'kepala_sekolah', status: 'aktif' },
-    { id: 'USR-003', username: 'guru', nama_lengkap: 'Kahlil Gibran, S.Pd.', role: 'guru', status: 'aktif' },
-    { id: 'USR-004', username: 'dewi', nama_lengkap: 'Dewi Fitria Nugraheni, S.Pd., Gr.', role: 'guru', status: 'aktif' },
-    { id: 'USR-005', username: 'walimurid', nama_lengkap: 'Bpk. Nanang Fajar', role: 'wali_murid', status: 'aktif', nis: '242507001' }
+    { id: 'USR-003', username: 'guru', nama_lengkap: 'DEWI FITRIA NUGRAHENI, S.Pd., Gr.', role: 'guru', status: 'aktif' },
+    { id: 'USR-004', username: 'dewi', nama_lengkap: 'DEWI FITRIA NUGRAHENI, S.Pd., Gr.', role: 'guru', status: 'aktif' },
+    { id: 'USR-005', username: 'triyuli', nama_lengkap: 'TRI YULI ARYANI, S.Pd., Gr.', role: 'guru', status: 'aktif' },
+    { id: 'USR-006', username: 'eliumiyati', nama_lengkap: 'Eli Umiyati, S. Pd., Gr.', role: 'guru', status: 'aktif' },
+    { id: 'USR-007', username: 'aning', nama_lengkap: 'ANING NURHAYATI, S.T.,Gr.', role: 'guru', status: 'aktif' },
+    { id: 'USR-008', username: 'trinuryani', nama_lengkap: 'Tri Nuryani, S.S., Gr.', role: 'guru', status: 'aktif' },
+    { id: 'USR-009', username: 'sumiati', nama_lengkap: 'SUMIATI, S.Pd.,Gr.', role: 'guru', status: 'aktif' },
+    { id: 'USR-010', username: 'walimurid', nama_lengkap: 'Bpk. Nanang Fajar', role: 'wali_murid', status: 'aktif', nis: '242507001' }
   ]
 };
 
@@ -4826,7 +4945,7 @@ function buildExactAlImamDataset() {
   const sklList = [];
 
   const addCohortToData = (students, kelasName, prefixNis, jk) => {
-    const waliKelas = WALI_KELAS_MAP[kelasName] || 'Kahlil Gibran, S.Pd.';
+    const waliKelas = WALI_KELAS_MAP[kelasName] || 'DEWI FITRIA NUGRAHENI, S.Pd., Gr.';
     
     students.forEach((st) => {
       const nis = st.nis || `${prefixNis}${String(st.no).padStart(3, '0')}`;
@@ -5201,7 +5320,7 @@ function quickLoginRole(roleKey) {
     'guru': {
       username: 'guru',
       role: 'guru',
-      nama_lengkap: 'Kahlil Gibran, S.Pd.',
+      nama_lengkap: 'DEWI FITRIA NUGRAHENI, S.Pd., Gr.',
       subtitle: 'Wali Kelas IX ABU BAKAR'
     },
     'wali_murid': {
@@ -6883,15 +7002,19 @@ function renderLegerMatrix() {
   if (pKelas) pKelas.innerText = kelas;
 
   const walasMap = {
-    'IX ABU BAKAR': 'Kahlil Gibran, S.Pd.',
-    'IX UMMU SALAMAH': 'Hilyatul Auliya, S.Pd.',
-    'VII AISYAH': 'Tri Yuli Aryani, S.Pd., Gr.',
-    'VII UTSMAN': 'Andrew Syaputra, S.Pd.',
-    'VIII THALHAH': 'Fahmi Idris, S.Pd.',
-    'VIII KHADIJAH': 'Nur Aini, S.Pd.',
-    'VII BILAL': 'Muhammad Farhan, S.Pd.'
+    'IX ABU BAKAR': 'DEWI FITRIA NUGRAHENI, S.Pd., Gr.',
+    'IX UMMU SALAMAH': 'SUMIATI, S.Pd.,Gr.',
+    'VII AISYAH': 'TRI YULI ARYANI, S.Pd., Gr.',
+    'VII UTSMAN': 'Eli Umiyati, S. Pd., Gr.',
+    'VII USMAN': 'Eli Umiyati, S. Pd., Gr.',
+    'VIII UMAR': 'ANING NURHAYATI, S.T.,Gr.',
+    'VIII KHODIJAH': 'Tri Nuryani, S.S., Gr.',
+    'VIII KHADIJAH': 'Tri Nuryani, S.S., Gr.',
+    'VIII THALHAH': 'Ust. Salman Al-Farisi, S.Pd.',
+    'VII BILAL': 'Muhammad Farhan, S.Pd.',
+    'VII MBU': 'Ust. Abdullah Syafi\'i, S.Pd.'
   };
-  const walasName = walasMap[kelas] || 'Kahlil Gibran, S.Pd.';
+  const walasName = walasMap[kelas] || WALI_KELAS_MAP[kelas] || 'DEWI FITRIA NUGRAHENI, S.Pd., Gr.';
   if (pWalas) pWalas.innerText = walasName;
   if (pSignWalas) pSignWalas.innerText = walasName;
 
@@ -8587,7 +8710,7 @@ function renderRaporSheet(report) {
   }
   if (document.getElementById('print-no-urut')) document.getElementById('print-no-urut').innerText = noUrut;
 
-  const waliKelasMurid = m.wali_kelas || WALI_KELAS_MAP[kelasMurid] || set.wali_kelas_default || 'Kahlil Gibran, S.Pd.';
+  const waliKelasMurid = m.wali_kelas || WALI_KELAS_MAP[kelasMurid] || set.wali_kelas_default || 'DEWI FITRIA NUGRAHENI, S.Pd., Gr.';
   if (document.getElementById('print-ttd-wali-kelas')) document.getElementById('print-ttd-wali-kelas').innerText = waliKelasMurid;
 
   // Section 1: Akademik (Tabel 16 Mapel & Capaian Kompetensi)
@@ -8671,7 +8794,7 @@ function renderRaporKepemimpinanSheet(report) {
   if (document.getElementById('print-skl-tahun-ajaran')) document.getElementById('print-skl-tahun-ajaran').innerText = tahunAjaran;
   if (document.getElementById('print-skl-no-badge')) document.getElementById('print-skl-no-badge').innerText = noUrut;
 
-  const waliKelasMurid = m.wali_kelas || WALI_KELAS_MAP[kelasMurid] || set.wali_kelas_default || 'Kahlil Gibran, S.Pd.';
+  const waliKelasMurid = m.wali_kelas || WALI_KELAS_MAP[kelasMurid] || set.wali_kelas_default || 'DEWI FITRIA NUGRAHENI, S.Pd., Gr.';
   if (document.getElementById('print-skl-walas-info')) document.getElementById('print-skl-walas-info').innerText = waliKelasMurid;
   if (document.getElementById('print-skl-ttd-walas')) document.getElementById('print-skl-ttd-walas').innerText = waliKelasMurid;
   if (document.getElementById('print-skl-ttd-kepsek')) document.getElementById('print-skl-ttd-kepsek').innerText = set.headmaster_name || 'Bambang Setyono, S.T.';

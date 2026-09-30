@@ -81,31 +81,61 @@
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   }
   
-  /* Print Optimization for Report Card (Format A4) & Leger (Landscape) */
+  /* Print Optimization for Report Card (Format A4) & Leger */
   @media print {
     @page {
-      size: auto;
+      size: A4 portrait;
       margin: 8mm 10mm 8mm 10mm;
     }
-    body.printing-leger-landscape {
-      font-size: 7.5pt !important;
-    }
-    body.printing-leger-landscape table th,
-    body.printing-leger-landscape table td {
-      padding: 2px 4px !important;
-      font-size: 7pt !important;
-    }
-    body {
+    
+    html, body {
+      height: auto !important;
+      min-height: 0 !important;
+      overflow: visible !important;
       background: #ffffff !important;
       color: #000000 !important;
       font-size: 10pt;
     }
-    .no-print {
+
+    /* Allow all parent wrappers to flow without clipping pages */
+    .flex-1, main, div, body, html {
+      overflow: visible !important;
+      height: auto !important;
+      max-height: none !important;
+    }
+
+    body > * {
+      overflow: visible !important;
+    }
+
+    .view-panel {
+      overflow: visible !important;
+      transition: none !important;
+    }
+
+    /* Hide non-printable UI components */
+    nav, aside, header, footer, #sidebar-nav, #sidebar-backdrop, #toast-container,
+    .no-print, [class*="no-print"] {
       display: none !important;
     }
+
     .print-only {
       display: block !important;
     }
+
+    main {
+      padding: 0 !important;
+      margin: 0 !important;
+      width: 100% !important;
+      max-width: 100% !important;
+    }
+
+    .max-w-7xl, .max-w-4xl {
+      max-width: 100% !important;
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+
     .print-container {
       width: 100% !important;
       max-width: 100% !important;
@@ -113,23 +143,73 @@
       padding: 0 !important;
       box-shadow: none !important;
       border: none !important;
+      border-radius: 0 !important;
+      background: #ffffff !important;
     }
+
+    .identity-box {
+      background: #f8fafc !important;
+      border: 1px solid #cbd5e1 !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    /* Page breaks */
     .page-break-inside-avoid {
-      break-inside: avoid;
-      page-break-inside: avoid;
+      break-inside: avoid !important;
+      page-break-inside: avoid !important;
     }
+    
+    .page-break-before {
+      break-before: page !important;
+      page-break-before: always !important;
+    }
+
     table {
       border-collapse: collapse !important;
       width: 100% !important;
+      page-break-inside: auto;
     }
+
+    tr {
+      break-inside: avoid !important;
+      page-break-inside: avoid !important;
+    }
+
     th, td {
-      border: 1px solid #333333 !important;
-      padding: 4px 6px !important;
+      border: 1px solid #000000 !important;
+      padding: 3px 5px !important;
     }
+
     th {
       background-color: #f1f5f9 !important;
       -webkit-print-color-adjust: exact;
       print-color-adjust: exact;
+    }
+
+    /* Ensure borderless identity table stays clean without table borders */
+    .identity-table,
+    .identity-table tr,
+    .identity-table td,
+    .identity-table th,
+    table.no-border,
+    table.no-border tr,
+    table.no-border td,
+    table.no-border th,
+    .border-none {
+      border: none !important;
+      background: transparent !important;
+      padding: 1.5px 3px !important;
+    }
+
+    /* Leger landscape adjustments when printing leger */
+    body.printing-leger-landscape {
+      font-size: 7.5pt !important;
+    }
+    body.printing-leger-landscape table th,
+    body.printing-leger-landscape table td {
+      padding: 2px 4px !important;
+      font-size: 7pt !important;
     }
   }
 </style>
