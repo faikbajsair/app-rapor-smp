@@ -7,7 +7,12 @@
  */
 
 // 1. DEFAULT CONFIG & EXACT DATASET (MIRRORING OFFICIAL EXCEL SMP AL-IMAM 16 MAPEL)
-const DEFAULT_GAS_URL = 'https://script.google.com/a/macros/alimamischool.com/s/AKfycbwKuFLvyP-SSwwbkOVfvGiaTL2Vvb7Ni583ahgjQVjUZGo5hz25Zj58wI4p5Df0Gu-X/exec';
+function cleanGasUrl(url) {
+  if (!url) return '';
+  return url.replace(/\/a\/[^\/]+\/s\//, '/macros/s/');
+}
+
+const DEFAULT_GAS_URL = 'https://script.google.com/macros/s/AKfycbuwKuFLvyP-SSwwbk0VfvGiaTL2Vvb7Ni583ahgjQVjUZGo5Hz25Zj58wI4o5Df0Gu-X/exec';
 
 const MAPEL_LIST_16 = [
   'Akidah',
@@ -782,21 +787,44 @@ function callApi(actionName, payload = {}) {
         case 'getMuridReport': runner.apiGetMuridReport(payload.nis); break;
         case 'getSantriReport': runner.apiGetMuridReport(payload.nis); break;
         default:
-          reject(new Error('Unknown action: ' + actionName));
+          resolve({ success: false, message: 'Unknown action: ' + actionName, isFallback: true });
       }
     } else {
-      // Mode Standalone / Vercel Client (Fetch API to Apps Script Web App)
-      const apiUrl = localStorage.getItem('APPS_SCRIPT_URL') || window.APPS_SCRIPT_API_URL || DEFAULT_GAS_URL;
+      // Mode Standalone / Vercel Client (Bypass CORS via Vercel Proxy / Direct fallback)
+      const customUrl = localStorage.getItem('APPS_SCRIPT_URL') || window.APPS_SCRIPT_API_URL || '';
+      const targetGasUrl = cleanGasUrl(customUrl || DEFAULT_GAS_URL);
       
-      fetch(apiUrl, {
+      const isWebHosted = typeof window !== 'undefined' && window.location && window.location.protocol.startsWith('http');
+      const proxyEndpoint = isWebHosted ? '/api/gas' : targetGasUrl;
+      const fetchUrl = (isWebHosted && !window.USE_DIRECT_GAS_FETCH) ? proxyEndpoint : targetGasUrl;
+
+      const headers = { 'Content-Type': 'text/plain;charset=utf-8' };
+      if (isWebHosted && fetchUrl === proxyEndpoint && targetGasUrl) {
+        headers['X-Target-GAS-URL'] = targetGasUrl;
+      }
+
+      fetch(fetchUrl, {
         method: 'POST',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        headers: headers,
         body: JSON.stringify({ action: actionName, payload: payload })
       })
-      .then(res => res.json())
+      .then(async res => {
+        if (!res.ok && fetchUrl === proxyEndpoint) {
+          try {
+            const directRes = await fetch(targetGasUrl, {
+              method: 'POST',
+              headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+              body: JSON.stringify({ action: actionName, payload: payload })
+            });
+            return directRes.json();
+          } catch (e) {
+            return { success: false, message: 'Fallback to local state', data: null, isFallback: true };
+          }
+        }
+        return res.json();
+      })
       .then(data => resolve(data))
       .catch(err => {
-        console.warn('Network request fallback to local state for:', actionName, err);
         resolve({ success: false, message: 'Fallback to local state', data: null, isFallback: true });
       });
     }
@@ -3909,6 +3937,10 @@ function populateCmsForm(s) {
   if (document.getElementById('cms-headmaster-nip')) document.getElementById('cms-headmaster-nip').value = s.headmaster_nip || '';
   if (document.getElementById('cms-headmaster-signature-url')) document.getElementById('cms-headmaster-signature-url').value = s.headmaster_signature_url || '';
 
+  if (document.getElementById('cms-gas-url')) {
+    document.getElementById('cms-gas-url').value = localStorage.getItem('APPS_SCRIPT_URL') || DEFAULT_GAS_URL;
+  }
+
   previewCmsLogo();
 }
 
@@ -3944,6 +3976,11 @@ function previewThemeColorsLive() {
 }
 
 function saveCmsSettingsAll() {
+  const customGasUrl = document.getElementById('cms-gas-url')?.value.trim();
+  if (customGasUrl) {
+    localStorage.setItem('APPS_SCRIPT_URL', cleanGasUrl(customGasUrl));
+  }
+
   const payload = {
     school_name: document.getElementById('cms-school-name').value,
     school_logo_url: document.getElementById('cms-school-logo-url').value,
@@ -3969,6 +4006,77 @@ function saveCmsSettingsAll() {
   loadDashboardStats();
 
   callApi('updateSettings', payload);
+}
+
+function testGasConnection() {
+  const btn = document.getElementById('btn-test-gas');
+  const resultBox = document.getElementById('gas-test-result');
+  const badge = document.getElementById('gas-status-badge');
+  const inputUrl = document.getElementById('cms-gas-url')?.value.trim();
+
+  if (btn) {
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span>Menghubungkan...</span>';
+  }
+
+  if (inputUrl) {
+    localStorage.setItem('APPS_SCRIPT_URL', cleanGasUrl(inputUrl));
+  }
+
+  callApi('ping')
+    .then(res => {
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-plug-circle-bolt"></i> <span>Test Koneksi Database</span>';
+      }
+
+      if (res && res.success) {
+        if (badge) {
+          badge.className = 'px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700 border border-emerald-300 flex items-center gap-1';
+          badge.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping"></span><span>Online / Terhubung</span>';
+        }
+        if (resultBox) {
+          resultBox.className = 'p-4 rounded-xl text-xs space-y-1 bg-emerald-50 border border-emerald-200 text-emerald-800';
+          resultBox.innerHTML = `
+            <div class="font-bold flex items-center gap-1.5"><i class="fa-solid fa-circle-check text-emerald-600"></i> Terkoneksi Sukses ke Spreadsheet!</div>
+            <p class="text-[11px] text-emerald-700">Respons server: ${res.message || 'Database Google Apps Script aktif dan siap digunakan.'}</p>
+          `;
+          resultBox.classList.remove('hidden');
+        }
+        showToast('Koneksi ke Google Apps Script berhasil!', 'success');
+        loadCmsSettings();
+        loadMuridList();
+      } else {
+        if (badge) {
+          badge.className = 'px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-100 text-amber-700 border border-amber-300 flex items-center gap-1';
+          badge.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span><span>Mode Lokal / Offline</span>';
+        }
+        if (resultBox) {
+          resultBox.className = 'p-4 rounded-xl text-xs space-y-1 bg-amber-50 border border-amber-200 text-amber-800';
+          resultBox.innerHTML = `
+            <div class="font-bold flex items-center gap-1.5"><i class="fa-solid fa-triangle-exclamation text-amber-600"></i> Mode Data Lokal Aktif</div>
+            <p class="text-[11px] text-amber-700">Aplikasi tetap berjalan normal menggunakan data lokal. Untuk sinkronisasi penuh dengan Google Sheets, pastikan opsi Web App Deployment di Apps Script disetel ke <strong>"Who has access: Anyone"</strong>.</p>
+          `;
+          resultBox.classList.remove('hidden');
+        }
+        showToast('Mode lokal aktif. Periksa opsi akses Web App Apps Script.', 'info');
+      }
+    })
+    .catch(() => {
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-plug-circle-bolt"></i> <span>Test Koneksi Database</span>';
+      }
+      showToast('Koneksi gagal, fallback ke data lokal browser.', 'info');
+    });
+}
+
+function resetDefaultGasUrl() {
+  localStorage.removeItem('APPS_SCRIPT_URL');
+  if (document.getElementById('cms-gas-url')) {
+    document.getElementById('cms-gas-url').value = DEFAULT_GAS_URL;
+  }
+  showToast('URL Google Apps Script direset ke default.');
 }
 
 // 14. USERS MANAGEMENT
@@ -4643,6 +4751,8 @@ window.saveBulkPresensiData = saveBulkPresensiData;
 window.saveCmsSettingsAll = saveCmsSettingsAll;
 window.switchCmsTab = switchCmsTab;
 window.previewRaporDirect = previewRaporDirect;
+window.testGasConnection = testGasConnection;
+window.resetDefaultGasUrl = resetDefaultGasUrl;
 
 // 19. APP STARTUP INITIALIZATION
 window.addEventListener('DOMContentLoaded', () => {

@@ -36,6 +36,10 @@
       <i class="fa-solid fa-calendar-check mr-1.5 text-amber-600"></i>
       <span>Semester & TTD Rapor</span>
     </button>
+    <button onclick="switchCmsTab('api')" id="cms-tab-api" class="cms-tab-btn flex-1 py-2 px-3 text-xs font-semibold rounded-lg text-slate-500 hover:text-slate-800 transition">
+      <i class="fa-solid fa-cloud-arrow-up mr-1.5 text-emerald-600"></i>
+      <span>Koneksi API & Spreadsheet</span>
+    </button>
   </div>
 
   <!-- TAB 1: Tampilan & Branding -->
@@ -259,6 +263,90 @@
         <div>
           <label class="block text-xs font-bold text-slate-700 mb-1">URL Tanda Tangan Digital (Opsional)</label>
           <input type="text" id="cms-headmaster-signature-url" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-amber-500" placeholder="https://... / link gambar png ttd transparan" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 4: Koneksi API & Google Spreadsheet -->
+  <div id="cms-panel-api" class="cms-panel hidden space-y-6">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      
+      <!-- Panel Input URL & Status (2 Kolom) -->
+      <div class="lg:col-span-2 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+        <h3 class="text-sm font-bold text-slate-900 flex items-center justify-between border-b border-slate-100 pb-3">
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-cloud-arrow-up text-emerald-600"></i>
+            <span>Konfigurasi Endpoint Google Apps Script (Web App)</span>
+          </div>
+          <span id="gas-status-badge" class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-slate-100 text-slate-600 border border-slate-200 flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
+            <span>Belum Dites</span>
+          </span>
+        </h3>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">URL Web App Apps Script (Exec URL)</label>
+          <div class="space-y-2">
+            <input type="text" id="cms-gas-url" class="w-full text-xs font-mono bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-emerald-500" placeholder="https://script.google.com/macros/s/AKfy.../exec" />
+            <div class="flex flex-wrap items-center justify-between gap-2 pt-1">
+              <div class="flex items-center gap-2">
+                <button type="button" onclick="testGasConnection()" id="btn-test-gas" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow transition flex items-center gap-1.5">
+                  <i class="fa-solid fa-plug-circle-bolt"></i>
+                  <span>Test Koneksi Database</span>
+                </button>
+                <button type="button" onclick="resetDefaultGasUrl()" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold">
+                  Reset Default
+                </button>
+              </div>
+              <span class="text-[11px] text-slate-400">Tersimpan di Local Storage & Vercel Proxy</span>
+            </div>
+          </div>
+        </div>
+
+        <div id="gas-test-result" class="hidden p-4 rounded-xl text-xs space-y-1"></div>
+
+        <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-600 space-y-2">
+          <div class="font-bold text-slate-800 flex items-center gap-1.5">
+            <i class="fa-solid fa-shield-halved text-emerald-600"></i>
+            <span>Dukungan Vercel Proxy Serverless (Anti-CORS)</span>
+          </div>
+          <p class="text-[11px] leading-relaxed text-slate-500">
+            Aplikasi ini dilengkapi <strong>Vercel Serverless Proxy (<code>/api/gas</code>)</strong> yang otomatis meneruskan request ke Apps Script tanpa hambatan browser CORS policy. Data tersinkronisasi dua arah ke Google Sheets database.
+          </p>
+        </div>
+      </div>
+
+      <!-- Panduan Setup Deployment GAS (1 Kolom) -->
+      <div class="bg-gradient-to-br from-slate-900 to-slate-950 text-white p-6 rounded-2xl border border-slate-800 shadow-xl space-y-4">
+        <h3 class="text-sm font-bold text-amber-400 flex items-center gap-2 border-b border-slate-800 pb-3">
+          <i class="fa-solid fa-circle-question"></i>
+          <span>Panduan Deploy Apps Script</span>
+        </h3>
+
+        <div class="space-y-3 text-xs text-slate-300">
+          <div class="flex items-start gap-2.5">
+            <span class="w-5 h-5 rounded-full bg-amber-400/20 text-amber-300 flex items-center justify-center font-bold text-[10px] shrink-0 mt-0.5">1</span>
+            <p>Buka script di <strong>Google Apps Script Editor</strong>.</p>
+          </div>
+          <div class="flex items-start gap-2.5">
+            <span class="w-5 h-5 rounded-full bg-amber-400/20 text-amber-300 flex items-center justify-center font-bold text-[10px] shrink-0 mt-0.5">2</span>
+            <p>Klik tombol <strong>Deploy &gt; Manage deployments</strong> (atau New deployment).</p>
+          </div>
+          <div class="flex items-start gap-2.5">
+            <span class="w-5 h-5 rounded-full bg-amber-400/20 text-amber-300 flex items-center justify-center font-bold text-[10px] shrink-0 mt-0.5">3</span>
+            <div>
+              <p>Pastikan opsi berikut:</p>
+              <ul class="list-disc list-inside mt-1 space-y-1 text-[11px] text-slate-400">
+                <li><strong class="text-white">Execute as:</strong> <code>Me (Akun Anda)</code></li>
+                <li><strong class="text-white">Who has access:</strong> <code class="text-emerald-400 font-bold">Anyone (Siapa saja)</code></li>
+              </ul>
+            </div>
+          </div>
+          <div class="flex items-start gap-2.5">
+            <span class="w-5 h-5 rounded-full bg-amber-400/20 text-amber-300 flex items-center justify-center font-bold text-[10px] shrink-0 mt-0.5">4</span>
+            <p class="text-[11px]">Salin URL Web App publik yang dihasilkan (format: <code>https://script.google.com/macros/s/.../exec</code>) dan tempel pada input di samping.</p>
+          </div>
         </div>
       </div>
 

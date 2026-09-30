@@ -2931,6 +2931,10 @@ NIS	Nama Murid	Mata Pelajaran	KKM	Nilai UTS
       <i class="fa-solid fa-calendar-check mr-1.5 text-amber-600"></i>
       <span>Semester & TTD Rapor</span>
     </button>
+    <button onclick="switchCmsTab('api')" id="cms-tab-api" class="cms-tab-btn flex-1 py-2 px-3 text-xs font-semibold rounded-lg text-slate-500 hover:text-slate-800 transition">
+      <i class="fa-solid fa-cloud-arrow-up mr-1.5 text-emerald-600"></i>
+      <span>Koneksi API & Spreadsheet</span>
+    </button>
   </div>
 
   <!-- TAB 1: Tampilan & Branding -->
@@ -3154,6 +3158,90 @@ NIS	Nama Murid	Mata Pelajaran	KKM	Nilai UTS
         <div>
           <label class="block text-xs font-bold text-slate-700 mb-1">URL Tanda Tangan Digital (Opsional)</label>
           <input type="text" id="cms-headmaster-signature-url" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-amber-500" placeholder="https://... / link gambar png ttd transparan" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 4: Koneksi API & Google Spreadsheet -->
+  <div id="cms-panel-api" class="cms-panel hidden space-y-6">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      
+      <!-- Panel Input URL & Status (2 Kolom) -->
+      <div class="lg:col-span-2 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+        <h3 class="text-sm font-bold text-slate-900 flex items-center justify-between border-b border-slate-100 pb-3">
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-cloud-arrow-up text-emerald-600"></i>
+            <span>Konfigurasi Endpoint Google Apps Script (Web App)</span>
+          </div>
+          <span id="gas-status-badge" class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-slate-100 text-slate-600 border border-slate-200 flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
+            <span>Belum Dites</span>
+          </span>
+        </h3>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">URL Web App Apps Script (Exec URL)</label>
+          <div class="space-y-2">
+            <input type="text" id="cms-gas-url" class="w-full text-xs font-mono bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-emerald-500" placeholder="https://script.google.com/macros/s/AKfy.../exec" />
+            <div class="flex flex-wrap items-center justify-between gap-2 pt-1">
+              <div class="flex items-center gap-2">
+                <button type="button" onclick="testGasConnection()" id="btn-test-gas" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow transition flex items-center gap-1.5">
+                  <i class="fa-solid fa-plug-circle-bolt"></i>
+                  <span>Test Koneksi Database</span>
+                </button>
+                <button type="button" onclick="resetDefaultGasUrl()" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold">
+                  Reset Default
+                </button>
+              </div>
+              <span class="text-[11px] text-slate-400">Tersimpan di Local Storage & Vercel Proxy</span>
+            </div>
+          </div>
+        </div>
+
+        <div id="gas-test-result" class="hidden p-4 rounded-xl text-xs space-y-1"></div>
+
+        <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-600 space-y-2">
+          <div class="font-bold text-slate-800 flex items-center gap-1.5">
+            <i class="fa-solid fa-shield-halved text-emerald-600"></i>
+            <span>Dukungan Vercel Proxy Serverless (Anti-CORS)</span>
+          </div>
+          <p class="text-[11px] leading-relaxed text-slate-500">
+            Aplikasi ini dilengkapi <strong>Vercel Serverless Proxy (<code>/api/gas</code>)</strong> yang otomatis meneruskan request ke Apps Script tanpa hambatan browser CORS policy. Data tersinkronisasi dua arah ke Google Sheets database.
+          </p>
+        </div>
+      </div>
+
+      <!-- Panduan Setup Deployment GAS (1 Kolom) -->
+      <div class="bg-gradient-to-br from-slate-900 to-slate-950 text-white p-6 rounded-2xl border border-slate-800 shadow-xl space-y-4">
+        <h3 class="text-sm font-bold text-amber-400 flex items-center gap-2 border-b border-slate-800 pb-3">
+          <i class="fa-solid fa-circle-question"></i>
+          <span>Panduan Deploy Apps Script</span>
+        </h3>
+
+        <div class="space-y-3 text-xs text-slate-300">
+          <div class="flex items-start gap-2.5">
+            <span class="w-5 h-5 rounded-full bg-amber-400/20 text-amber-300 flex items-center justify-center font-bold text-[10px] shrink-0 mt-0.5">1</span>
+            <p>Buka script di <strong>Google Apps Script Editor</strong>.</p>
+          </div>
+          <div class="flex items-start gap-2.5">
+            <span class="w-5 h-5 rounded-full bg-amber-400/20 text-amber-300 flex items-center justify-center font-bold text-[10px] shrink-0 mt-0.5">2</span>
+            <p>Klik tombol <strong>Deploy &gt; Manage deployments</strong> (atau New deployment).</p>
+          </div>
+          <div class="flex items-start gap-2.5">
+            <span class="w-5 h-5 rounded-full bg-amber-400/20 text-amber-300 flex items-center justify-center font-bold text-[10px] shrink-0 mt-0.5">3</span>
+            <div>
+              <p>Pastikan opsi berikut:</p>
+              <ul class="list-disc list-inside mt-1 space-y-1 text-[11px] text-slate-400">
+                <li><strong class="text-white">Execute as:</strong> <code>Me (Akun Anda)</code></li>
+                <li><strong class="text-white">Who has access:</strong> <code class="text-emerald-400 font-bold">Anyone (Siapa saja)</code></li>
+              </ul>
+            </div>
+          </div>
+          <div class="flex items-start gap-2.5">
+            <span class="w-5 h-5 rounded-full bg-amber-400/20 text-amber-300 flex items-center justify-center font-bold text-[10px] shrink-0 mt-0.5">4</span>
+            <p class="text-[11px]">Salin URL Web App publik yang dihasilkan (format: <code>https://script.google.com/macros/s/.../exec</code>) dan tempel pada input di samping.</p>
+          </div>
         </div>
       </div>
 
@@ -4380,7 +4468,12 @@ NIS	Nama Murid	Mata Pelajaran	KKM	Nilai UTS
  */
 
 // 1. DEFAULT CONFIG & EXACT DATASET (MIRRORING OFFICIAL EXCEL SMP AL-IMAM 16 MAPEL)
-const DEFAULT_GAS_URL = 'https://script.google.com/a/macros/alimamischool.com/s/AKfycbwKuFLvyP-SSwwbkOVfvGiaTL2Vvb7Ni583ahgjQVjUZGo5hz25Zj58wI4p5Df0Gu-X/exec';
+function cleanGasUrl(url) {
+  if (!url) return '';
+  return url.replace(/\/a\/[^\/]+\/s\//, '/macros/s/');
+}
+
+const DEFAULT_GAS_URL = 'https://script.google.com/macros/s/AKfycbuwKuFLvyP-SSwwbk0VfvGiaTL2Vvb7Ni583ahgjQVjUZGo5Hz25Zj58wI4o5Df0Gu-X/exec';
 
 const MAPEL_LIST_16 = [
   'Akidah',
@@ -5155,21 +5248,44 @@ function callApi(actionName, payload = {}) {
         case 'getMuridReport': runner.apiGetMuridReport(payload.nis); break;
         case 'getSantriReport': runner.apiGetMuridReport(payload.nis); break;
         default:
-          reject(new Error('Unknown action: ' + actionName));
+          resolve({ success: false, message: 'Unknown action: ' + actionName, isFallback: true });
       }
     } else {
-      // Mode Standalone / Vercel Client (Fetch API to Apps Script Web App)
-      const apiUrl = localStorage.getItem('APPS_SCRIPT_URL') || window.APPS_SCRIPT_API_URL || DEFAULT_GAS_URL;
+      // Mode Standalone / Vercel Client (Bypass CORS via Vercel Proxy / Direct fallback)
+      const customUrl = localStorage.getItem('APPS_SCRIPT_URL') || window.APPS_SCRIPT_API_URL || '';
+      const targetGasUrl = cleanGasUrl(customUrl || DEFAULT_GAS_URL);
       
-      fetch(apiUrl, {
+      const isWebHosted = typeof window !== 'undefined' && window.location && window.location.protocol.startsWith('http');
+      const proxyEndpoint = isWebHosted ? '/api/gas' : targetGasUrl;
+      const fetchUrl = (isWebHosted && !window.USE_DIRECT_GAS_FETCH) ? proxyEndpoint : targetGasUrl;
+
+      const headers = { 'Content-Type': 'text/plain;charset=utf-8' };
+      if (isWebHosted && fetchUrl === proxyEndpoint && targetGasUrl) {
+        headers['X-Target-GAS-URL'] = targetGasUrl;
+      }
+
+      fetch(fetchUrl, {
         method: 'POST',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        headers: headers,
         body: JSON.stringify({ action: actionName, payload: payload })
       })
-      .then(res => res.json())
+      .then(async res => {
+        if (!res.ok && fetchUrl === proxyEndpoint) {
+          try {
+            const directRes = await fetch(targetGasUrl, {
+              method: 'POST',
+              headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+              body: JSON.stringify({ action: actionName, payload: payload })
+            });
+            return directRes.json();
+          } catch (e) {
+            return { success: false, message: 'Fallback to local state', data: null, isFallback: true };
+          }
+        }
+        return res.json();
+      })
       .then(data => resolve(data))
       .catch(err => {
-        console.warn('Network request fallback to local state for:', actionName, err);
         resolve({ success: false, message: 'Fallback to local state', data: null, isFallback: true });
       });
     }
@@ -8282,6 +8398,10 @@ function populateCmsForm(s) {
   if (document.getElementById('cms-headmaster-nip')) document.getElementById('cms-headmaster-nip').value = s.headmaster_nip || '';
   if (document.getElementById('cms-headmaster-signature-url')) document.getElementById('cms-headmaster-signature-url').value = s.headmaster_signature_url || '';
 
+  if (document.getElementById('cms-gas-url')) {
+    document.getElementById('cms-gas-url').value = localStorage.getItem('APPS_SCRIPT_URL') || DEFAULT_GAS_URL;
+  }
+
   previewCmsLogo();
 }
 
@@ -8317,6 +8437,11 @@ function previewThemeColorsLive() {
 }
 
 function saveCmsSettingsAll() {
+  const customGasUrl = document.getElementById('cms-gas-url')?.value.trim();
+  if (customGasUrl) {
+    localStorage.setItem('APPS_SCRIPT_URL', cleanGasUrl(customGasUrl));
+  }
+
   const payload = {
     school_name: document.getElementById('cms-school-name').value,
     school_logo_url: document.getElementById('cms-school-logo-url').value,
@@ -8342,6 +8467,77 @@ function saveCmsSettingsAll() {
   loadDashboardStats();
 
   callApi('updateSettings', payload);
+}
+
+function testGasConnection() {
+  const btn = document.getElementById('btn-test-gas');
+  const resultBox = document.getElementById('gas-test-result');
+  const badge = document.getElementById('gas-status-badge');
+  const inputUrl = document.getElementById('cms-gas-url')?.value.trim();
+
+  if (btn) {
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span>Menghubungkan...</span>';
+  }
+
+  if (inputUrl) {
+    localStorage.setItem('APPS_SCRIPT_URL', cleanGasUrl(inputUrl));
+  }
+
+  callApi('ping')
+    .then(res => {
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-plug-circle-bolt"></i> <span>Test Koneksi Database</span>';
+      }
+
+      if (res && res.success) {
+        if (badge) {
+          badge.className = 'px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700 border border-emerald-300 flex items-center gap-1';
+          badge.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping"></span><span>Online / Terhubung</span>';
+        }
+        if (resultBox) {
+          resultBox.className = 'p-4 rounded-xl text-xs space-y-1 bg-emerald-50 border border-emerald-200 text-emerald-800';
+          resultBox.innerHTML = `
+            <div class="font-bold flex items-center gap-1.5"><i class="fa-solid fa-circle-check text-emerald-600"></i> Terkoneksi Sukses ke Spreadsheet!</div>
+            <p class="text-[11px] text-emerald-700">Respons server: ${res.message || 'Database Google Apps Script aktif dan siap digunakan.'}</p>
+          `;
+          resultBox.classList.remove('hidden');
+        }
+        showToast('Koneksi ke Google Apps Script berhasil!', 'success');
+        loadCmsSettings();
+        loadMuridList();
+      } else {
+        if (badge) {
+          badge.className = 'px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-100 text-amber-700 border border-amber-300 flex items-center gap-1';
+          badge.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span><span>Mode Lokal / Offline</span>';
+        }
+        if (resultBox) {
+          resultBox.className = 'p-4 rounded-xl text-xs space-y-1 bg-amber-50 border border-amber-200 text-amber-800';
+          resultBox.innerHTML = `
+            <div class="font-bold flex items-center gap-1.5"><i class="fa-solid fa-triangle-exclamation text-amber-600"></i> Mode Data Lokal Aktif</div>
+            <p class="text-[11px] text-amber-700">Aplikasi tetap berjalan normal menggunakan data lokal. Untuk sinkronisasi penuh dengan Google Sheets, pastikan opsi Web App Deployment di Apps Script disetel ke <strong>"Who has access: Anyone"</strong>.</p>
+          `;
+          resultBox.classList.remove('hidden');
+        }
+        showToast('Mode lokal aktif. Periksa opsi akses Web App Apps Script.', 'info');
+      }
+    })
+    .catch(() => {
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-plug-circle-bolt"></i> <span>Test Koneksi Database</span>';
+      }
+      showToast('Koneksi gagal, fallback ke data lokal browser.', 'info');
+    });
+}
+
+function resetDefaultGasUrl() {
+  localStorage.removeItem('APPS_SCRIPT_URL');
+  if (document.getElementById('cms-gas-url')) {
+    document.getElementById('cms-gas-url').value = DEFAULT_GAS_URL;
+  }
+  showToast('URL Google Apps Script direset ke default.');
 }
 
 // 14. USERS MANAGEMENT
@@ -9016,6 +9212,8 @@ window.saveBulkPresensiData = saveBulkPresensiData;
 window.saveCmsSettingsAll = saveCmsSettingsAll;
 window.switchCmsTab = switchCmsTab;
 window.previewRaporDirect = previewRaporDirect;
+window.testGasConnection = testGasConnection;
+window.resetDefaultGasUrl = resetDefaultGasUrl;
 
 // 19. APP STARTUP INITIALIZATION
 window.addEventListener('DOMContentLoaded', () => {
