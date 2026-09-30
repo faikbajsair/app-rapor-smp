@@ -2536,7 +2536,7 @@ NIS	Nama Murid	Mata Pelajaran	KKM	Nilai UTS
         <div class="text-right text-[11px]">
           <h2 class="text-xs font-black uppercase tracking-wider text-slate-900">BUKU LEGER NILAI TENGAH SEMESTER</h2>
           <p class="text-slate-600">Tahun Ajaran: <strong id="print-leger-ta">2026/2027</strong> | Semester: <strong id="print-leger-sem">I (Satu)</strong></p>
-          <p class="text-slate-600">Kelas: <strong id="print-leger-kelas">IX ABU BAKAR</strong> | Wali Kelas: <strong id="print-leger-walas">DEWI FITRIA NUGRAHENI, S.Pd., Gr.</strong></p>
+          <p class="text-slate-600">Kelas: <strong id="print-leger-kelas">IX ABU BAKAR</strong> | Wali Kelas: <strong id="print-leger-walas">Dewi Fitria Nugraheni, S.Pd., Gr.</strong></p>
         </div>
       </div>
     </div>
@@ -2594,7 +2594,7 @@ NIS	Nama Murid	Mata Pelajaran	KKM	Nilai UTS
           <div class="h-16 flex items-center justify-center">
             <!-- Space for sign -->
           </div>
-          <p class="font-bold underline text-slate-900" id="print-leger-sign-walas">DEWI FITRIA NUGRAHENI, S.Pd., Gr.</p>
+          <p class="font-bold underline text-slate-900" id="print-leger-sign-walas">Dewi Fitria Nugraheni, S.Pd., Gr.</p>
           <p class="text-[10px] text-slate-500" id="print-leger-niy-walas">NIY. 20200801015</p>
         </div>
       </div>
@@ -3615,7 +3615,7 @@ NIS	Nama Murid	Mata Pelajaran	KKM	Nilai UTS
         <div class="flex flex-col justify-between h-28 pr-4 text-left sm:pl-20">
           <span class="font-medium">Wali Kelas,</span>
           <div>
-            <span class="font-bold underline text-slate-950 block" id="print-ttd-wali-kelas">DEWI FITRIA NUGRAHENI, S.Pd., Gr.</span>
+            <span class="font-bold underline text-slate-950 block" id="print-ttd-wali-kelas">Dewi Fitria Nugraheni, S.Pd., Gr.</span>
             <span class="text-[10px] text-slate-700 block">NIP.</span>
           </div>
         </div>
@@ -3925,7 +3925,7 @@ NIS	Nama Murid	Mata Pelajaran	KKM	Nilai UTS
               </li>
               <li class="flex items-start gap-2">
                 <i class="fa-solid fa-check text-purple-600 mt-0.5"></i>
-                <span><strong>Wali Kelas Terdaftar:</strong> Otomatis menyesuaikan wali kelas resmi per jenjang (contoh: <em>Eli Umiyati, S. Pd., Gr.</em> untuk VII UTSMAN, <em>TRI YULI ARYANI, S.Pd., Gr.</em> untuk VII AISYAH, <em>ANING NURHAYATI, S.T.,Gr.</em> untuk VIII UMAR, <em>Tri Nuryani, S.S., Gr.</em> untuk VIII KHODIJAH, <em>DEWI FITRIA NUGRAHENI, S.Pd., Gr.</em> untuk IX ABU BAKAR, <em>SUMIATI, S.Pd.,Gr.</em> untuk IX UMMU SALAMAH).</span>
+                <span><strong>Wali Kelas Terdaftar:</strong> Otomatis menyesuaikan wali kelas resmi per jenjang (contoh: <em>Eli Umiyati, S.Pd., Gr.</em> untuk VII UTSMAN, <em>Tri Yuli Aryani, S.Pd., Gr.</em> untuk VII AISYAH, <em>Aning Nurhayati, S.T., Gr.</em> untuk VIII UMAR, <em>Tri Nuryani, S.S., Gr.</em> untuk VIII KHODIJAH, <em>Dewi Fitria Nugraheni, S.Pd., Gr.</em> untuk IX ABU BAKAR, <em>Sumiati, S.Pd., Gr.</em> untuk IX UMMU SALAMAH).</span>
               </li>
             </ul>
           </div>
@@ -4492,7 +4492,70 @@ function cleanGasUrl(url) {
   return url.replace(/\/a\/[^\/]+\/s\//, '/macros/s/');
 }
 
-const DEFAULT_GAS_URL = 'https://script.google.com/macros/s/AKfycbuwKuFLvyP-SSwwbk0VfvGiaTL2Vvb7Ni583ahgjQVjUZGo5Hz25Zj58wI4o5Df0Gu-X/exec';
+function formatWaliKelasTitleCase(name) {
+  if (!name || typeof name !== 'string') return '';
+  const trimmed = name.trim();
+  if (!trimmed) return '';
+
+  const knownMap = {
+    'DEWI FITRIA NUGRAHENI, S.Pd., Gr.': 'Dewi Fitria Nugraheni, S.Pd., Gr.',
+    'DEWI FITRIA NUGRAHENI': 'Dewi Fitria Nugraheni, S.Pd., Gr.',
+    'SUMIATI, S.Pd.,Gr.': 'Sumiati, S.Pd., Gr.',
+    'SUMIATI, S.Pd., Gr.': 'Sumiati, S.Pd., Gr.',
+    'SUMIATI': 'Sumiati, S.Pd., Gr.',
+    'TRI YULI ARYANI, S.Pd., Gr.': 'Tri Yuli Aryani, S.Pd., Gr.',
+    'TRI YULI ARYANI': 'Tri Yuli Aryani, S.Pd., Gr.',
+    'Eli Umiyati, S. Pd., Gr.': 'Eli Umiyati, S.Pd., Gr.',
+    'ELI UMIYATI, S.PD., GR.': 'Eli Umiyati, S.Pd., Gr.',
+    'ELI UMIYATI': 'Eli Umiyati, S.Pd., Gr.',
+    'ANING NURHAYATI, S.T.,Gr.': 'Aning Nurhayati, S.T., Gr.',
+    'ANING NURHAYATI, S.T., Gr.': 'Aning Nurhayati, S.T., Gr.',
+    'ANING NURHAYATI': 'Aning Nurhayati, S.T., Gr.',
+    'Tri Nuryani, S.S., Gr.': 'Tri Nuryani, S.S., Gr.',
+    'TRI NURYANI, S.S., GR.': 'Tri Nuryani, S.S., Gr.',
+    'TRI NURYANI': 'Tri Nuryani, S.S., Gr.',
+    'ARIF ROHMAN, S.SOS., M.PD.': 'Arif Rohman, S.Sos., M.Pd.',
+    'ARIF ROHMAN, M.PD.': 'Arif Rohman, M.Pd.',
+    'BAMBANG SETYONO, S.T.': 'Bambang Setyono, S.T.'
+  };
+
+  const keyUpper = trimmed.toUpperCase();
+  for (const [k, v] of Object.entries(knownMap)) {
+    if (k.toUpperCase() === keyUpper) return v;
+  }
+
+  // Generic title-case formatter for names with degrees/titles
+  const parts = trimmed.split(',');
+  const mainName = parts[0].trim().toLowerCase().split(/\s+/)
+    .map(word => {
+      if (word.startsWith("al-") || word.startsWith("as-") || word.startsWith("ar-") || word.startsWith("an-") || word.startsWith("az-") || word.startsWith("ad-") || word.startsWith("at-")) {
+        const prefix = word.substring(0, 3);
+        const rest = word.substring(3);
+        return prefix.charAt(0).toUpperCase() + prefix.slice(1) + (rest.charAt(0).toUpperCase() + rest.slice(1));
+      }
+      return word.charAt(0).toUpperCase() + word.slice(1);
+    })
+    .join(' ');
+
+  if (parts.length === 1) return mainName;
+
+  const titles = parts.slice(1).map(p => {
+    let t = p.trim();
+    return t.replace(/\bS\.?\s*Pd\.?\b/gi, 'S.Pd.')
+            .replace(/\bS\.?\s*T\.?\b/gi, 'S.T.')
+            .replace(/\bS\.?\s*S\.?\b/gi, 'S.S.')
+            .replace(/\bM\.?\s*Pd\.?\b/gi, 'M.Pd.')
+            .replace(/\bS\.?\s*Sos\.?\b/gi, 'S.Sos.')
+            .replace(/\bGr\.?\b/gi, 'Gr.')
+            .replace(/\bLc\.?\b/gi, 'Lc.')
+            .replace(/\bM\.?\s*A\.?\b/gi, 'M.A.')
+            .replace(/\bM\.?\s*Si\.?\b/gi, 'M.Si.');
+  }).join(', ');
+
+  return `${mainName}, ${titles}`;
+}
+
+const DEFAULT_GAS_URL = 'https://script.google.com/macros/s/AKfycbz9cCsXrFgtmjhuyyAL2vj4cQ1Iemrl-4aHQyX-cWRrVYW0-DoqdpsJ3JS2wZoSjGj3/exec';
 
 const MAPEL_LIST_16 = [
   'Akidah',
@@ -4695,31 +4758,31 @@ const TEMPLETE_CATATAN_WALAS_32 = [
 ];
 
 const WALI_KELAS_MAP = {
-  'IX ABU BAKAR': 'DEWI FITRIA NUGRAHENI, S.Pd., Gr.',
-  'IX Abu Bakar': 'DEWI FITRIA NUGRAHENI, S.Pd., Gr.',
-  'Kelas IX ABU BAKAR': 'DEWI FITRIA NUGRAHENI, S.Pd., Gr.',
-  'IX UMMU SALAMAH': 'SUMIATI, S.Pd.,Gr.',
-  'IX Ummu Salamah': 'SUMIATI, S.Pd.,Gr.',
-  'Kelas IX UMMU SALAMAH': 'SUMIATI, S.Pd.,Gr.',
-  'VII AISYAH': 'TRI YULI ARYANI, S.Pd., Gr.',
-  'VII Aisyah': 'TRI YULI ARYANI, S.Pd., Gr.',
-  'VII Aisyah Binti Abu Bakar': 'TRI YULI ARYANI, S.Pd., Gr.',
-  'Kelas VII AISYAH': 'TRI YULI ARYANI, S.Pd., Gr.',
-  'VII UTSMAN': 'Eli Umiyati, S. Pd., Gr.',
-  'VII USMAN': 'Eli Umiyati, S. Pd., Gr.',
-  'VII Usman': 'Eli Umiyati, S. Pd., Gr.',
-  'VII Utsman': 'Eli Umiyati, S. Pd., Gr.',
-  'VII UTSMAN BIN AFFAN': 'Eli Umiyati, S. Pd., Gr.',
-  'VII USMAN BIN AFFAN': 'Eli Umiyati, S. Pd., Gr.',
-  '7 UTSMAN': 'Eli Umiyati, S. Pd., Gr.',
-  '7 USMAN': 'Eli Umiyati, S. Pd., Gr.',
-  'Kelas VII UTSMAN': 'Eli Umiyati, S. Pd., Gr.',
-  'Kelas VII USMAN': 'Eli Umiyati, S. Pd., Gr.',
+  'IX ABU BAKAR': 'Dewi Fitria Nugraheni, S.Pd., Gr.',
+  'IX Abu Bakar': 'Dewi Fitria Nugraheni, S.Pd., Gr.',
+  'Kelas IX ABU BAKAR': 'Dewi Fitria Nugraheni, S.Pd., Gr.',
+  'IX UMMU SALAMAH': 'Sumiati, S.Pd., Gr.',
+  'IX Ummu Salamah': 'Sumiati, S.Pd., Gr.',
+  'Kelas IX UMMU SALAMAH': 'Sumiati, S.Pd., Gr.',
+  'VII AISYAH': 'Tri Yuli Aryani, S.Pd., Gr.',
+  'VII Aisyah': 'Tri Yuli Aryani, S.Pd., Gr.',
+  'VII Aisyah Binti Abu Bakar': 'Tri Yuli Aryani, S.Pd., Gr.',
+  'Kelas VII AISYAH': 'Tri Yuli Aryani, S.Pd., Gr.',
+  'VII UTSMAN': 'Eli Umiyati, S.Pd., Gr.',
+  'VII USMAN': 'Eli Umiyati, S.Pd., Gr.',
+  'VII Usman': 'Eli Umiyati, S.Pd., Gr.',
+  'VII Utsman': 'Eli Umiyati, S.Pd., Gr.',
+  'VII UTSMAN BIN AFFAN': 'Eli Umiyati, S.Pd., Gr.',
+  'VII USMAN BIN AFFAN': 'Eli Umiyati, S.Pd., Gr.',
+  '7 UTSMAN': 'Eli Umiyati, S.Pd., Gr.',
+  '7 USMAN': 'Eli Umiyati, S.Pd., Gr.',
+  'Kelas VII UTSMAN': 'Eli Umiyati, S.Pd., Gr.',
+  'Kelas VII USMAN': 'Eli Umiyati, S.Pd., Gr.',
   'VII MBU': 'Ust. Abdullah Syafi\'i, S.Pd.',
-  'VIII UMAR': 'ANING NURHAYATI, S.T.,Gr.',
-  'VIII Umar': 'ANING NURHAYATI, S.T.,Gr.',
-  'VIII UMAR BIN KHATTAB': 'ANING NURHAYATI, S.T.,Gr.',
-  'Kelas VIII UMAR': 'ANING NURHAYATI, S.T.,Gr.',
+  'VIII UMAR': 'Aning Nurhayati, S.T., Gr.',
+  'VIII Umar': 'Aning Nurhayati, S.T., Gr.',
+  'VIII UMAR BIN KHATTAB': 'Aning Nurhayati, S.T., Gr.',
+  'Kelas VIII UMAR': 'Aning Nurhayati, S.T., Gr.',
   'VIII KHODIJAH': 'Tri Nuryani, S.S., Gr.',
   'VIII Khodijah': 'Tri Nuryani, S.S., Gr.',
   'VIII KHADIJAH': 'Tri Nuryani, S.S., Gr.',
@@ -5021,7 +5084,7 @@ const DEMO_DATA = {
     semester_active: 'I (Satu)',
     report_place: 'Bogor',
     report_date: '17 Oktober 2026',
-    wali_kelas_default: 'DEWI FITRIA NUGRAHENI, S.Pd., Gr.',
+    wali_kelas_default: 'Dewi Fitria Nugraheni, S.Pd., Gr.',
     headmaster_name: 'Bambang Setyono, S.T.',
     headmaster_nip: '',
     headmaster_signature_url: '',
@@ -5037,13 +5100,13 @@ const DEMO_DATA = {
   users: [
     { id: 'USR-001', username: 'admin', nama_lengkap: 'Administrator Utama', role: 'admin', status: 'aktif' },
     { id: 'USR-002', username: 'kepsek', nama_lengkap: 'Arif Rohman, M.Pd.', role: 'kepala_sekolah', status: 'aktif' },
-    { id: 'USR-003', username: 'guru', nama_lengkap: 'DEWI FITRIA NUGRAHENI, S.Pd., Gr.', role: 'guru', status: 'aktif' },
-    { id: 'USR-004', username: 'dewi', nama_lengkap: 'DEWI FITRIA NUGRAHENI, S.Pd., Gr.', role: 'guru', status: 'aktif' },
-    { id: 'USR-005', username: 'triyuli', nama_lengkap: 'TRI YULI ARYANI, S.Pd., Gr.', role: 'guru', status: 'aktif' },
-    { id: 'USR-006', username: 'eliumiyati', nama_lengkap: 'Eli Umiyati, S. Pd., Gr.', role: 'guru', status: 'aktif' },
-    { id: 'USR-007', username: 'aning', nama_lengkap: 'ANING NURHAYATI, S.T.,Gr.', role: 'guru', status: 'aktif' },
+    { id: 'USR-003', username: 'guru', nama_lengkap: 'Dewi Fitria Nugraheni, S.Pd., Gr.', role: 'guru', status: 'aktif' },
+    { id: 'USR-004', username: 'dewi', nama_lengkap: 'Dewi Fitria Nugraheni, S.Pd., Gr.', role: 'guru', status: 'aktif' },
+    { id: 'USR-005', username: 'triyuli', nama_lengkap: 'Tri Yuli Aryani, S.Pd., Gr.', role: 'guru', status: 'aktif' },
+    { id: 'USR-006', username: 'eliumiyati', nama_lengkap: 'Eli Umiyati, S.Pd., Gr.', role: 'guru', status: 'aktif' },
+    { id: 'USR-007', username: 'aning', nama_lengkap: 'Aning Nurhayati, S.T., Gr.', role: 'guru', status: 'aktif' },
     { id: 'USR-008', username: 'trinuryani', nama_lengkap: 'Tri Nuryani, S.S., Gr.', role: 'guru', status: 'aktif' },
-    { id: 'USR-009', username: 'sumiati', nama_lengkap: 'SUMIATI, S.Pd.,Gr.', role: 'guru', status: 'aktif' },
+    { id: 'USR-009', username: 'sumiati', nama_lengkap: 'Sumiati, S.Pd., Gr.', role: 'guru', status: 'aktif' },
     { id: 'USR-010', username: 'walimurid', nama_lengkap: 'Bpk. Nanang Fajar', role: 'wali_murid', status: 'aktif', nis: '242507001' }
   ]
 };
@@ -5057,7 +5120,7 @@ function buildExactAlImamDataset() {
   const sklList = [];
 
   const addCohortToData = (students, kelasName, prefixNis, jk) => {
-    const waliKelas = WALI_KELAS_MAP[kelasName] || 'DEWI FITRIA NUGRAHENI, S.Pd., Gr.';
+    const waliKelas = formatWaliKelasTitleCase(WALI_KELAS_MAP[kelasName] || 'Dewi Fitria Nugraheni, S.Pd., Gr.');
     
     students.forEach((st) => {
       const nis = st.nis || `${prefixNis}${String(st.no).padStart(3, '0')}`;
@@ -5456,7 +5519,7 @@ function quickLoginRole(roleKey) {
     'guru': {
       username: 'guru',
       role: 'guru',
-      nama_lengkap: 'DEWI FITRIA NUGRAHENI, S.Pd., Gr.',
+      nama_lengkap: 'Dewi Fitria Nugraheni, S.Pd., Gr.',
       subtitle: 'Wali Kelas IX ABU BAKAR'
     },
     'wali_murid': {
@@ -7138,19 +7201,19 @@ function renderLegerMatrix() {
   if (pKelas) pKelas.innerText = kelas;
 
   const walasMap = {
-    'IX ABU BAKAR': 'DEWI FITRIA NUGRAHENI, S.Pd., Gr.',
-    'IX UMMU SALAMAH': 'SUMIATI, S.Pd.,Gr.',
-    'VII AISYAH': 'TRI YULI ARYANI, S.Pd., Gr.',
-    'VII UTSMAN': 'Eli Umiyati, S. Pd., Gr.',
-    'VII USMAN': 'Eli Umiyati, S. Pd., Gr.',
-    'VIII UMAR': 'ANING NURHAYATI, S.T.,Gr.',
+    'IX ABU BAKAR': 'Dewi Fitria Nugraheni, S.Pd., Gr.',
+    'IX UMMU SALAMAH': 'Sumiati, S.Pd., Gr.',
+    'VII AISYAH': 'Tri Yuli Aryani, S.Pd., Gr.',
+    'VII UTSMAN': 'Eli Umiyati, S.Pd., Gr.',
+    'VII USMAN': 'Eli Umiyati, S.Pd., Gr.',
+    'VIII UMAR': 'Aning Nurhayati, S.T., Gr.',
     'VIII KHODIJAH': 'Tri Nuryani, S.S., Gr.',
     'VIII KHADIJAH': 'Tri Nuryani, S.S., Gr.',
     'VIII THALHAH': 'Ust. Salman Al-Farisi, S.Pd.',
-    'VII BILAL': 'Muhammad Farhan, S.Pd.',
+    'VII BILAL': 'Ust. Abdullah Syafi\'i, S.Pd.',
     'VII MBU': 'Ust. Abdullah Syafi\'i, S.Pd.'
   };
-  const walasName = walasMap[kelas] || WALI_KELAS_MAP[kelas] || 'DEWI FITRIA NUGRAHENI, S.Pd., Gr.';
+  const walasName = formatWaliKelasTitleCase(walasMap[kelas] || WALI_KELAS_MAP[kelas] || 'Dewi Fitria Nugraheni, S.Pd., Gr.');
   if (pWalas) pWalas.innerText = walasName;
   if (pSignWalas) pSignWalas.innerText = walasName;
 
@@ -8926,7 +8989,7 @@ function renderRaporSheet(report) {
   }
   if (document.getElementById('print-no-urut')) document.getElementById('print-no-urut').innerText = noUrut;
 
-  const waliKelasMurid = m.wali_kelas || WALI_KELAS_MAP[kelasMurid] || set.wali_kelas_default || 'DEWI FITRIA NUGRAHENI, S.Pd., Gr.';
+  const waliKelasMurid = formatWaliKelasTitleCase(m.wali_kelas || WALI_KELAS_MAP[kelasMurid] || set.wali_kelas_default || 'Dewi Fitria Nugraheni, S.Pd., Gr.');
   if (document.getElementById('print-ttd-wali-kelas')) document.getElementById('print-ttd-wali-kelas').innerText = waliKelasMurid;
 
   // Section 1: Akademik (Tabel 16 Mapel & Capaian Kompetensi)
@@ -9010,7 +9073,7 @@ function renderRaporKepemimpinanSheet(report) {
   if (document.getElementById('print-skl-tahun-ajaran')) document.getElementById('print-skl-tahun-ajaran').innerText = tahunAjaran;
   if (document.getElementById('print-skl-no-badge')) document.getElementById('print-skl-no-badge').innerText = noUrut;
 
-  const waliKelasMurid = m.wali_kelas || WALI_KELAS_MAP[kelasMurid] || set.wali_kelas_default || 'DEWI FITRIA NUGRAHENI, S.Pd., Gr.';
+  const waliKelasMurid = formatWaliKelasTitleCase(m.wali_kelas || WALI_KELAS_MAP[kelasMurid] || set.wali_kelas_default || 'Dewi Fitria Nugraheni, S.Pd., Gr.');
   if (document.getElementById('print-skl-walas-info')) document.getElementById('print-skl-walas-info').innerText = waliKelasMurid;
   if (document.getElementById('print-skl-ttd-walas')) document.getElementById('print-skl-ttd-walas').innerText = waliKelasMurid;
   if (document.getElementById('print-skl-ttd-kepsek')) document.getElementById('print-skl-ttd-kepsek').innerText = set.headmaster_name || 'Bambang Setyono, S.T.';
