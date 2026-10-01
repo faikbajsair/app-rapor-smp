@@ -104,11 +104,17 @@
         font-size: 10pt;
       }
 
-      /* Allow all parent wrappers to flow without clipping pages */
-      .flex-1, main, div, body, html {
+      /* Allow parent containers to flow without clipping pages */
+      .flex-1, main, body, html {
         overflow: visible !important;
         height: auto !important;
         max-height: none !important;
+      }
+
+      .signature-space {
+        height: 70px !important;
+        min-height: 70px !important;
+        display: block !important;
       }
 
       body > * {
@@ -3598,16 +3604,14 @@ NIS	Nama Murid	Mata Pelajaran	KKM	Nilai UTS
     </div>
 
     <!-- Tanda Tangan Resmi Portofolio (Kepala Sekolah & Wali Kelas) -->
-    <div class="page-break-inside-avoid mt-6 pt-2">
+    <div class="page-break-inside-avoid mt-5 pt-1">
       <div class="grid grid-cols-2 gap-8 text-[11px] font-sans">
         
         <!-- Kolom Kiri: Kepala Sekolah -->
         <div class="flex flex-col text-left">
           <p class="font-medium text-slate-800 leading-tight">Mengetahui,</p>
-          <p class="font-medium text-slate-900 leading-tight mt-1">Kepala Sekolah</p>
-          <div class="h-20 my-1 flex items-center">
-            <!-- Ruang tanda tangan & stempel resmi -->
-          </div>
+          <p class="font-medium text-slate-900 leading-tight mt-0.5">Kepala Sekolah</p>
+          <div class="signature-space" style="height: 70px !important; min-height: 70px !important; display: block !important;">&nbsp;</div>
           <div>
             <span class="font-bold underline text-slate-950 block text-[11px]" id="print-headmaster-name">Arif Rohman, S.Sos., M.Pd.</span>
             <span class="text-[10px] text-slate-700 block mt-0.5" id="print-headmaster-nip">NIP.</span>
@@ -3619,10 +3623,8 @@ NIS	Nama Murid	Mata Pelajaran	KKM	Nilai UTS
           <p class="font-medium text-slate-800 leading-tight">
             <span id="print-report-place">Bogor</span>, <span id="print-report-date">17 Oktober 2026</span>
           </p>
-          <p class="font-medium text-slate-900 leading-tight mt-1">Wali Kelas,</p>
-          <div class="h-20 my-1 flex items-center">
-            <!-- Ruang tanda tangan wali kelas -->
-          </div>
+          <p class="font-medium text-slate-900 leading-tight mt-0.5">Wali Kelas,</p>
+          <div class="signature-space" style="height: 70px !important; min-height: 70px !important; display: block !important;">&nbsp;</div>
           <div>
             <span class="font-bold underline text-slate-950 block text-[11px]" id="print-ttd-wali-kelas">Dewi Fitria Nugraheni, S.Pd., Gr.</span>
             <span class="text-[10px] text-slate-700 block mt-0.5" id="print-ttd-wali-nip">NIP.</span>

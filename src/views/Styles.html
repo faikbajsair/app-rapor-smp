@@ -97,11 +97,17 @@
       font-size: 10pt;
     }
 
-    /* Allow all parent wrappers to flow without clipping pages */
-    .flex-1, main, div, body, html {
+    /* Allow parent containers to flow without clipping pages */
+    .flex-1, main, body, html {
       overflow: visible !important;
       height: auto !important;
       max-height: none !important;
+    }
+
+    .signature-space {
+      height: 70px !important;
+      min-height: 70px !important;
+      display: block !important;
     }
 
     body > * {
