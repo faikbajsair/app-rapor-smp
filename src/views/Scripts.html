@@ -4562,6 +4562,10 @@ function renderRaporSheet(report) {
   if (document.getElementById('print-report-date')) document.getElementById('print-report-date').innerText = set.report_date || '17 Oktober 2026';
   if (document.getElementById('print-headmaster-name')) document.getElementById('print-headmaster-name').innerText = set.headmaster_name || 'Arif Rohman, S.Sos., M.Pd.';
   if (document.getElementById('print-headmaster-nip')) document.getElementById('print-headmaster-nip').innerText = set.headmaster_nip ? `NIP. ${set.headmaster_nip}` : 'NIP.';
+  if (document.getElementById('print-ttd-wali-nip')) {
+    const walasNip = m.wali_nip || m.niy || m.niy_walas || set.wali_nip;
+    document.getElementById('print-ttd-wali-nip').innerText = walasNip ? `NIP. ${walasNip}` : 'NIP.';
+  }
 }
 
 function renderRaporKepemimpinanSheet(report) {

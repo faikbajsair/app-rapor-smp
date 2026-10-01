@@ -263,26 +263,36 @@
 
     <!-- Tanda Tangan Resmi Portofolio (Kepala Sekolah & Wali Kelas) -->
     <div class="page-break-inside-avoid mt-6 pt-2">
-      <div class="text-right text-[11px] mb-4 font-medium pr-12">
-        <span id="print-report-place">Bogor</span>, <span id="print-report-date">17 Oktober 2025</span>
-      </div>
-
-      <div class="grid grid-cols-2 text-[11px] gap-8">
-        <div class="flex flex-col justify-between h-28 pl-4">
-          <span class="font-medium">Kepala Sekolah</span>
+      <div class="grid grid-cols-2 gap-8 text-[11px] font-sans">
+        
+        <!-- Kolom Kiri: Kepala Sekolah -->
+        <div class="flex flex-col text-left">
+          <p class="font-medium text-slate-800 leading-tight">Mengetahui,</p>
+          <p class="font-medium text-slate-900 leading-tight mt-1">Kepala Sekolah</p>
+          <div class="h-20 my-1 flex items-center">
+            <!-- Ruang tanda tangan & stempel resmi -->
+          </div>
           <div>
-            <span class="font-bold underline text-slate-950 block" id="print-headmaster-name">Arif Rohman, S.Sos., M.Pd.</span>
-            <span class="text-[10px] text-slate-700 block" id="print-headmaster-nip">NIP.</span>
+            <span class="font-bold underline text-slate-950 block text-[11px]" id="print-headmaster-name">Arif Rohman, S.Sos., M.Pd.</span>
+            <span class="text-[10px] text-slate-700 block mt-0.5" id="print-headmaster-nip">NIP.</span>
           </div>
         </div>
 
-        <div class="flex flex-col justify-between h-28 pr-4 text-left sm:pl-20">
-          <span class="font-medium">Wali Kelas,</span>
+        <!-- Kolom Kanan: Wali Kelas -->
+        <div class="flex flex-col text-left">
+          <p class="font-medium text-slate-800 leading-tight">
+            <span id="print-report-place">Bogor</span>, <span id="print-report-date">17 Oktober 2026</span>
+          </p>
+          <p class="font-medium text-slate-900 leading-tight mt-1">Wali Kelas,</p>
+          <div class="h-20 my-1 flex items-center">
+            <!-- Ruang tanda tangan wali kelas -->
+          </div>
           <div>
-            <span class="font-bold underline text-slate-950 block" id="print-ttd-wali-kelas">Dewi Fitria Nugraheni, S.Pd., Gr.</span>
-            <span class="text-[10px] text-slate-700 block">NIP.</span>
+            <span class="font-bold underline text-slate-950 block text-[11px]" id="print-ttd-wali-kelas">Dewi Fitria Nugraheni, S.Pd., Gr.</span>
+            <span class="text-[10px] text-slate-700 block mt-0.5" id="print-ttd-wali-nip">NIP.</span>
           </div>
         </div>
+
       </div>
     </div>
 
