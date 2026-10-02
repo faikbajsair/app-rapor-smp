@@ -281,7 +281,7 @@
           <i class="fa-regular fa-calendar-check text-[#00a66c] group-hover:scale-110 transition-transform"></i>
           <span>T.A. <strong id="nav-academic-year" class="text-emerald-900 font-bold">2026/2027</strong></span>
           <span class="text-emerald-200">|</span>
-          <span class="text-emerald-700 font-bold" id="nav-semester">Ganjil</span>
+          <span class="text-emerald-700 font-bold" id="nav-semester">Tengah Semester 1</span>
           <i class="fa-solid fa-chevron-down text-[9px] text-emerald-400 group-hover:text-emerald-600 ml-0.5"></i>
         </button>
 
@@ -1212,6 +1212,8 @@
             <label class="block text-[10px] font-bold text-slate-500 uppercase">Tahun Ajaran</label>
             <select id="leger-akademik-tahun-ajaran" onchange="renderLegerGrid()" class="text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 font-bold text-slate-800 focus:ring-2 focus:ring-blue-500">
               <option value="2026/2027" selected>2026/2027 (Aktif)</option>
+              <option value="2027/2028">2027/2028</option>
+              <option value="2028/2029">2028/2029</option>
               <option value="2025/2026">2025/2026</option>
               <option value="2024/2025">2024/2025</option>
             </select>
@@ -1338,6 +1340,8 @@
             <select id="filter-akademik-tahun-ajaran" onchange="loadNilaiAkademik()" class="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 font-bold">
               <option value="Semua">Semua Tahun Ajaran</option>
               <option value="2026/2027" selected>2026/2027 (Aktif)</option>
+              <option value="2027/2028">2027/2028</option>
+              <option value="2028/2029">2028/2029</option>
               <option value="2025/2026">2025/2026</option>
               <option value="2024/2025">2024/2025</option>
             </select>
@@ -1463,16 +1467,20 @@
           <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Tahun Ajaran Target</label>
           <select id="upload-tahun-ajaran" class="w-full text-xs bg-white border border-slate-300 rounded-lg px-3 py-2 font-bold text-slate-800 focus:ring-2 focus:ring-blue-500">
             <option value="2026/2027" selected>2026/2027 (Aktif)</option>
-            <option value="2025/2026">2025/2026</option>
             <option value="2027/2028">2027/2028</option>
+            <option value="2028/2029">2028/2029</option>
+            <option value="2025/2026">2025/2026</option>
+            <option value="2024/2025">2024/2025</option>
           </select>
         </div>
 
         <div>
           <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Semester Target</label>
           <select id="upload-semester" class="w-full text-xs bg-white border border-slate-300 rounded-lg px-3 py-2 font-bold text-slate-800 focus:ring-2 focus:ring-blue-500">
-            <option value="I (Satu)" selected>I (Satu) / Ganjil</option>
-            <option value="II (Dua)">II (Dua) / Genap</option>
+            <option value="Tengah Semester 1" selected>Tengah Semester 1</option>
+            <option value="Akhir Semester 1">Akhir Semester 1</option>
+            <option value="Tengah Semester 2">Tengah Semester 2</option>
+            <option value="Akhir Semester 2">Akhir Semester 2</option>
           </select>
         </div>
 
@@ -1764,6 +1772,8 @@ NIS	Nama Murid	Mata Pelajaran	KKM	Nilai UTS
             <label class="block text-[10px] font-bold text-slate-500 uppercase">Tahun Ajaran</label>
             <select id="leger-kp-tahun-ajaran" onchange="renderKepribadianGrid()" class="text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 font-bold text-slate-800 focus:ring-2 focus:ring-amber-500">
               <option value="2026/2027" selected>2026/2027 (Aktif)</option>
+              <option value="2027/2028">2027/2028</option>
+              <option value="2028/2029">2028/2029</option>
               <option value="2025/2026">2025/2026</option>
               <option value="2024/2025">2024/2025</option>
             </select>
@@ -1853,6 +1863,8 @@ NIS	Nama Murid	Mata Pelajaran	KKM	Nilai UTS
             <label class="block text-[10px] font-bold text-slate-500 uppercase">Tahun Ajaran</label>
             <select id="skl-kp-tahun-ajaran" onchange="renderSklLegerGrid()" class="text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 font-bold text-slate-800 focus:ring-2 focus:ring-amber-500">
               <option value="2026/2027" selected>2026/2027 (Aktif)</option>
+              <option value="2027/2028">2027/2028</option>
+              <option value="2028/2029">2028/2029</option>
               <option value="2025/2026">2025/2026</option>
               <option value="2024/2025">2024/2025</option>
             </select>
@@ -2005,6 +2017,8 @@ NIS	Nama Murid	Mata Pelajaran	KKM	Nilai UTS
             <select id="filter-kepemimpinan-tahun-ajaran" onchange="loadNilaiKepemimpinan()" class="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500 font-bold">
               <option value="Semua">Semua Tahun Ajaran</option>
               <option value="2026/2027" selected>2026/2027 (Aktif)</option>
+              <option value="2027/2028">2027/2028</option>
+              <option value="2028/2029">2028/2029</option>
               <option value="2025/2026">2025/2026</option>
               <option value="2024/2025">2024/2025</option>
             </select>
@@ -2261,6 +2275,8 @@ NIS	Nama Murid	Mata Pelajaran	KKM	Nilai UTS
         <select id="filter-diniyah-tahun-ajaran" onchange="loadNilaiDiniyah()" class="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-bold">
           <option value="Semua">Semua Tahun Ajaran</option>
           <option value="2026/2027" selected>2026/2027 (Aktif)</option>
+          <option value="2027/2028">2027/2028</option>
+          <option value="2028/2029">2028/2029</option>
           <option value="2025/2026">2025/2026</option>
           <option value="2024/2025">2024/2025</option>
         </select>
@@ -2453,6 +2469,8 @@ NIS	Nama Murid	Mata Pelajaran	KKM	Nilai UTS
         <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Tahun Ajaran</label>
         <select id="leger-filter-tahun-ajaran" onchange="renderLegerMatrix()" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 font-bold text-slate-800 focus:ring-2 focus:ring-emerald-500">
           <option value="2026/2027" selected>2026/2027 (Aktif)</option>
+          <option value="2027/2028">2027/2028</option>
+          <option value="2028/2029">2028/2029</option>
           <option value="2025/2026">2025/2026</option>
           <option value="2024/2025">2024/2025</option>
         </select>
@@ -2461,8 +2479,10 @@ NIS	Nama Murid	Mata Pelajaran	KKM	Nilai UTS
       <div>
         <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Semester</label>
         <select id="leger-filter-semester" onchange="renderLegerMatrix()" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 font-bold text-slate-800 focus:ring-2 focus:ring-emerald-500">
-          <option value="I (Satu)" selected>I (Satu) / Ganjil</option>
-          <option value="II (Dua)">II (Dua) / Genap</option>
+          <option value="Tengah Semester 1" selected>Tengah Semester 1</option>
+          <option value="Akhir Semester 1">Akhir Semester 1</option>
+          <option value="Tengah Semester 2">Tengah Semester 2</option>
+          <option value="Akhir Semester 2">Akhir Semester 2</option>
         </select>
       </div>
 
@@ -2559,7 +2579,7 @@ NIS	Nama Murid	Mata Pelajaran	KKM	Nilai UTS
         </div>
         <div class="text-right text-[11px]">
           <h2 class="text-xs font-black uppercase tracking-wider text-slate-900">BUKU LEGER NILAI TENGAH SEMESTER</h2>
-          <p class="text-slate-600">Tahun Ajaran: <strong id="print-leger-ta">2026/2027</strong> | Semester: <strong id="print-leger-sem">I (Satu)</strong></p>
+          <p class="text-slate-600">Tahun Ajaran: <strong id="print-leger-ta">2026/2027</strong> | Semester: <strong id="print-leger-sem">Tengah Semester 1</strong></p>
           <p class="text-slate-600">Kelas: <strong id="print-leger-kelas">IX ABU BAKAR</strong> | Wali Kelas: <strong id="print-leger-walas">Dewi Fitria Nugraheni, S.Pd., Gr.</strong></p>
         </div>
       </div>
@@ -2666,6 +2686,8 @@ NIS	Nama Murid	Mata Pelajaran	KKM	Nilai UTS
         <select id="filter-murid-tahun-ajaran" onchange="loadMuridList()" class="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-purple-500 font-bold">
           <option value="Semua">Semua Tahun Ajaran</option>
           <option value="2026/2027" selected>2026/2027 (Aktif)</option>
+          <option value="2027/2028">2027/2028</option>
+          <option value="2028/2029">2028/2029</option>
           <option value="2025/2026">2025/2026</option>
           <option value="2024/2025">2024/2025</option>
         </select>
@@ -3144,8 +3166,10 @@ NIS	Nama Murid	Mata Pelajaran	KKM	Nilai UTS
           <div>
             <label class="block text-xs font-bold text-slate-700 mb-1">Semester Aktif</label>
             <select id="cms-semester-active" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-amber-500 font-bold">
-              <option value="I (Satu)">Semester I (Satu) / Ganjil</option>
-              <option value="II (Dua)">Semester II (Dua) / Genap</option>
+              <option value="Tengah Semester 1" selected>Tengah Semester 1</option>
+              <option value="Akhir Semester 1">Akhir Semester 1</option>
+              <option value="Tengah Semester 2">Tengah Semester 2</option>
+              <option value="Akhir Semester 2">Akhir Semester 2</option>
             </select>
           </div>
         </div>
@@ -3390,9 +3414,19 @@ NIS	Nama Murid	Mata Pelajaran	KKM	Nilai UTS
 
       <!-- Filter Tahun Ajaran -->
       <select id="filter-rapor-tahun-ajaran" onchange="onRaporFilterChange()" class="text-xs bg-slate-50 border border-slate-300 rounded-xl px-2.5 py-2 text-slate-800 font-bold focus:ring-2 focus:ring-indigo-500" title="Pilih Tahun Ajaran Rapor">
-        <option value="2026/2027" selected>2026/2027</option>
+        <option value="2026/2027" selected>2026/2027 (Aktif)</option>
+        <option value="2027/2028">2027/2028</option>
+        <option value="2028/2029">2028/2029</option>
         <option value="2025/2026">2025/2026</option>
         <option value="2024/2025">2024/2025</option>
+      </select>
+
+      <!-- Filter Semester -->
+      <select id="filter-rapor-semester" onchange="onRaporFilterChange()" class="text-xs bg-slate-50 border border-slate-300 rounded-xl px-2.5 py-2 text-slate-800 font-bold focus:ring-2 focus:ring-indigo-500" title="Pilih Semester">
+        <option value="Tengah Semester 1" selected>Tengah Semester 1</option>
+        <option value="Akhir Semester 1">Akhir Semester 1</option>
+        <option value="Tengah Semester 2">Tengah Semester 2</option>
+        <option value="Akhir Semester 2">Akhir Semester 2</option>
       </select>
 
       <!-- Filter Kelas -->
@@ -4384,8 +4418,10 @@ NIS	Nama Murid	Mata Pelajaran	KKM	Nilai UTS
           <div>
             <label class="block text-[11px] font-semibold text-slate-700 mb-1">Semester Awal</label>
             <select id="input-new-academic-sem" class="w-full text-xs bg-white border border-slate-300 rounded-xl px-3 py-2 font-bold text-slate-800 focus:ring-2 focus:ring-blue-500 shadow-sm">
-              <option value="I (Satu)">I (Satu) / Ganjil</option>
-              <option value="II (Dua)">II (Dua) / Genap</option>
+              <option value="Tengah Semester 1" selected>Tengah Semester 1</option>
+              <option value="Akhir Semester 1">Akhir Semester 1</option>
+              <option value="Tengah Semester 2">Tengah Semester 2</option>
+              <option value="Akhir Semester 2">Akhir Semester 2</option>
             </select>
           </div>
           <div>
@@ -5130,8 +5166,8 @@ const DEMO_DATA = {
     school_phone: '(021) 8775-4321 / 0812-9876-5432',
     school_website: 'https://alimamischool.com',
     academic_year: '2026/2027',
-    academic_years_list: '2026/2027,2025/2026,2024/2025',
-    semester_active: 'I (Satu)',
+    academic_years_list: '2026/2027,2027/2028,2028/2029,2025/2026,2024/2025',
+    semester_active: 'Tengah Semester 1',
     report_place: 'Bogor',
     report_date: '17 Oktober 2026',
     wali_kelas_default: 'Dewi Fitria Nugraheni, S.Pd., Gr.',
@@ -5161,7 +5197,7 @@ const DEMO_DATA = {
   ]
 };
 
-// Populate DEMO_DATA from exact Excel structures for all classes
+// Populate DEMO_DATA: 159 Students preserved with empty grades ready for teacher input
 function buildExactAlImamDataset() {
   const mList = [];
   const akList = [];
@@ -5175,7 +5211,7 @@ function buildExactAlImamDataset() {
     students.forEach((st) => {
       const nis = st.nis || `${prefixNis}${String(st.no).padStart(3, '0')}`;
       
-      // 1. Murid Record
+      // 1. Murid Record (Roster Lengkap 159 Murid)
       const studentNameUpper = (st.nama || '').trim().toUpperCase();
       mList.push({
         nis: nis,
@@ -5190,33 +5226,24 @@ function buildExactAlImamDataset() {
         nama_ayah: st.nama_ayah || '-',
         nama_ibu: st.nama_ibu || '-',
         sekolah_asal: st.sekolah_asal || '-',
-        kehadiran_s: st.s !== undefined ? st.s : 0,
-        kehadiran_i: st.i !== undefined ? st.i : 0,
-        kehadiran_a: st.a !== undefined ? st.a : 0,
+        kehadiran_s: 0,
+        kehadiran_i: 0,
+        kehadiran_a: 0,
         ekskul_1: st.e1 || 'Pramuka',
-        ekskul_1_nilai: st.e1n || 'Baik',
+        ekskul_1_nilai: '',
         ekskul_2: st.e2 || 'Wushu',
-        ekskul_2_nilai: st.e2n || 'Baik',
+        ekskul_2_nilai: '',
         ekskul_3: st.e3 || 'English Club',
-        ekskul_3_nilai: st.e3n || 'Baik',
+        ekskul_3_nilai: '',
         wali_kelas: waliKelas,
         nama_wali: (st.nama_ayah && st.nama_ayah !== '-') ? st.nama_ayah : ((st.nama_ibu && st.nama_ibu !== '-') ? st.nama_ibu : `Orang Tua / Wali ${st.nama.split(' ')[0]}`),
         kontak_wali: `081234567${String(st.no).padStart(3, '0')}`,
         status: 'Aktif'
       });
 
-      // 2. 16 Akademik Mapel Records
-      MAPEL_LIST_16.forEach((mapel, mapelIdx) => {
-        const score = (st.scores && st.scores[mapelIdx]) ? st.scores[mapelIdx] : 85;
+      // 2. 16 Akademik Mapel Records (Nilai Awal Dikosongkan)
+      MAPEL_LIST_16.forEach((mapel) => {
         const kkm = MAPEL_KKM_DEFAULT[mapel] || 75;
-
-        let predikat = 'D';
-        if (score >= 90) predikat = 'A';
-        else if (score >= 80) predikat = 'B';
-        else if (score >= kkm) predikat = 'C';
-
-        const capTemplate = BANK_CAPAIAN_MAPEL[mapel] || BANK_CAPAIAN_MAPEL['Akidah'];
-        const capaian = score >= 90 ? capTemplate.tinggi : (score >= kkm ? capTemplate.sedang : capTemplate.cukup);
 
         akList.push({
           id: `NA-${nis}-${mapel.replace(/\s+/g, '')}`,
@@ -5226,63 +5253,54 @@ function buildExactAlImamDataset() {
           kelas: kelasName,
           mata_pelajaran: mapel,
           kkm: kkm,
-          nilai_tugas: score,
-          nilai_uts: score,
-          nilai_akhir: score,
-          predikat: predikat,
-          capaian_kompetensi: capaian,
-          catatan_guru: capaian
+          nilai_tugas: null,
+          nilai_uts: null,
+          nilai_akhir: null,
+          predikat: '-',
+          capaian_kompetensi: '',
+          catatan_guru: ''
         });
       });
 
-      // 3. Kepribadian Record (6 Aspek + Catatan)
-      const kpCustom = st.kp || {};
+      // 3. Kepribadian Record (Awal Dikosongkan)
       kpList.push({
         id: `NK-${nis}`,
         nis: nis,
         nama_murid: st.nama,
         nama_santri: st.nama,
         kelas: kelasName,
-        semester: 'I (Satu)',
+        semester: 'Tengah Semester 1',
         tahun_ajaran: '2026/2027',
-        ibadah: kpCustom.ibadah || BANK_KEPRIBADIAN_ALIMAM.ibadah[0],
-        akhlak: kpCustom.akhlak || BANK_KEPRIBADIAN_ALIMAM.akhlak[0],
-        kedisiplinan_kerajinan: kpCustom.kedisiplinan || BANK_KEPRIBADIAN_ALIMAM.kedisiplinan[0],
-        kedisiplinan: kpCustom.kedisiplinan || BANK_KEPRIBADIAN_ALIMAM.kedisiplinan[0],
-        kerapihan_kebersihan: kpCustom.kerapihan || BANK_KEPRIBADIAN_ALIMAM.kerapihan[0],
-        kepemimpinan: kpCustom.kepemimpinan || BANK_KEPRIBADIAN_ALIMAM.kepemimpinan[0],
-        kerjasama: kpCustom.kerjasama || BANK_KEPRIBADIAN_ALIMAM.kerjasama[0],
-        catatan_diperhatikan: kpCustom.catatan || BANK_KEPRIBADIAN_ALIMAM.catatan_diperhatikan[0],
-        catatan_pembina: kpCustom.catatan || BANK_KEPRIBADIAN_ALIMAM.catatan_diperhatikan[0]
+        ibadah: '',
+        akhlak: '',
+        kedisiplinan_kerajinan: '',
+        kedisiplinan: '',
+        kerapihan_kebersihan: '',
+        kepemimpinan: '',
+        kerjasama: '',
+        catatan_diperhatikan: '',
+        catatan_pembina: ''
       });
 
-      // 4. Diniyah Record
+      // 4. Diniyah Record (Awal Dikosongkan)
       dnList.push({
         id: `ND-${nis}`,
         nis: nis,
         nama_murid: st.nama,
         nama_santri: st.nama,
         kelas: kelasName,
-        semester: 'I (Satu)',
+        semester: 'Tengah Semester 1',
         tahun_ajaran: '2026/2027',
-        ziyadah_juz: 'Juz 28 & Juz 29 (Lancar)',
-        murojaah_juz: 'Juz 30 (Mutqin)',
-        nilai_tahfidz: (st.scores && st.scores[0]) || 90,
-        adab_harian: 'Mumtaz (A)',
-        ibadah_harian: 'Mumtaz (A)',
-        bahasa_arab: (st.scores && st.scores[15]) || 85,
-        catatan_musyrif: 'Alhamdulillah capaian ziyadah dan hafalan Al-Qur\'an sangat baik. Tajwid tertib.'
+        ziyadah_juz: '',
+        murojaah_juz: '',
+        nilai_tahfidz: null,
+        adab_harian: '',
+        ibadah_harian: '',
+        bahasa_arab: null,
+        catatan_musyrif: ''
       });
 
-      // 5. SKL Kepemimpinan Record (28 Indikator)
-      const sklCustom = st.skl_custom || {};
-      const sklScores = {};
-      const sklKeys = ['d1', 'd2', 'd3', 'd4', 'd5', 'd6', 'd7', 'k1', 'k2', 'k3', 'k4', 'k5', 'p1', 'p2', 'p3', 'p4', 'p5', 's1', 's2', 't1', 't2', 'm1', 'm2', 'r1', 'r2', 'r3', 'j1', 'j2', 'h1'];
-      const defaultKebersihanVal = (kelasName === 'IX UMMU SALAMAH' || kelasName === 'VII AISYAH' || kelasName === 'VII Aisyah Binti Abu Bakar' || kelasName === 'VII UTSMAN' || kelasName === '7 UTSMAN' || kelasName === 'VIII KHADIJAH' || kelasName === 'VIII Khodijah' || kelasName === 'VIII KHODIJAH') ? 'A' : 'B';
-      sklKeys.forEach(k => {
-        sklScores[k] = sklCustom[k] || (k.startsWith('k') ? defaultKebersihanVal : 'A');
-      });
-
+      // 5. SKL Kepemimpinan Record (Awal Dikosongkan)
       sklList.push({
         id: `SKL-${nis}`,
         nis: nis,
@@ -5290,8 +5308,8 @@ function buildExactAlImamDataset() {
         kelas: kelasName,
         semester: 'Tengah Semester 1',
         tahun_ajaran: '2026/2027',
-        scores: sklScores,
-        catatan_walas: st.catatan_walas || (st.kp && st.kp.catatan) || 'Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan'
+        scores: {},
+        catatan_walas: ''
       });
     });
   };
@@ -5841,42 +5859,53 @@ function updateDashboardWithStats(stats) {
   if (document.getElementById('card-total-santri')) document.getElementById('card-total-santri').innerText = totalMurid;
 
   // 1. KPI Akademik
-  let akSum = 0, akCountA = 0, akPass = 0;
+  let akSum = 0, akCountA = 0, akPass = 0, akFilledCount = 0;
   akList.forEach(a => {
-    const val = Number(a.nilai_akhir || a.nilai_uts) || 0;
-    const kkm = Number(a.kkm) || 75;
-    akSum += val;
-    if (a.predikat === 'A') akCountA++;
-    if (val >= kkm) akPass++;
+    const val = (a.nilai_akhir !== null && a.nilai_akhir !== undefined && a.nilai_akhir !== '') ? Number(a.nilai_akhir) : ((a.nilai_uts !== null && a.nilai_uts !== undefined && a.nilai_uts !== '') ? Number(a.nilai_uts) : null);
+    if (val !== null && !isNaN(val)) {
+      akFilledCount++;
+      const kkm = Number(a.kkm) || 75;
+      akSum += val;
+      if (a.predikat === 'A') akCountA++;
+      if (val >= kkm) akPass++;
+    }
   });
-  const akAvg = akList.length > 0 ? (akSum / akList.length).toFixed(1) : '87.4';
-  const akKkmRate = akList.length > 0 ? Math.round((akPass / akList.length) * 100) + '%' : '100%';
+  const akAvg = akFilledCount > 0 ? (akSum / akFilledCount).toFixed(1) : '-';
+  const akKkmRate = akFilledCount > 0 ? Math.round((akPass / akFilledCount) * 100) + '%' : '-';
 
   if (document.getElementById('kpi-ak-murid')) document.getElementById('kpi-ak-murid').innerText = totalMurid;
   if (document.getElementById('kpi-ak-avg')) document.getElementById('kpi-ak-avg').innerText = akAvg;
   if (document.getElementById('kpi-ak-kkm')) document.getElementById('kpi-ak-kkm').innerText = akKkmRate;
-  if (document.getElementById('kpi-ak-total')) document.getElementById('kpi-ak-total').innerText = (akList.length || 1376).toLocaleString('id-ID');
+  if (document.getElementById('kpi-ak-total')) document.getElementById('kpi-ak-total').innerText = `${akFilledCount} / ${akList.length} Terisi`;
 
   // 2. KPI Diniyah
-  let dnSumTahfidz = 0, dnSumArab = 0, dnAdabMumtaz = 0;
+  let dnSumTahfidz = 0, dnSumArab = 0, dnAdabMumtaz = 0, dnFilledCount = 0;
   dnList.forEach(d => {
-    dnSumTahfidz += Number(d.nilai_tahfidz) || 0;
-    dnSumArab += Number(d.bahasa_arab) || 0;
-    if (String(d.adab_harian).includes('(A)')) dnAdabMumtaz++;
+    const tahfidzVal = (d.nilai_tahfidz !== null && d.nilai_tahfidz !== undefined && d.nilai_tahfidz !== '') ? Number(d.nilai_tahfidz) : null;
+    const arabVal = (d.bahasa_arab !== null && d.bahasa_arab !== undefined && d.bahasa_arab !== '') ? Number(d.bahasa_arab) : null;
+    if (tahfidzVal !== null && !isNaN(tahfidzVal)) {
+      dnFilledCount++;
+      dnSumTahfidz += tahfidzVal;
+    }
+    if (arabVal !== null && !isNaN(arabVal)) {
+      dnSumArab += arabVal;
+    }
+    if (String(d.adab_harian).includes('(A)') || String(d.adab_harian).toLowerCase().includes('mumtaz')) dnAdabMumtaz++;
   });
-  const dnAvgTahfidz = dnList.length > 0 ? (dnSumTahfidz / dnList.length).toFixed(1) : '91.5';
-  const dnAvgArab = dnList.length > 0 ? (dnSumArab / dnList.length).toFixed(1) : '89.3';
+  const dnAvgTahfidz = dnFilledCount > 0 ? (dnSumTahfidz / dnFilledCount).toFixed(1) : '-';
+  const dnAvgArab = dnFilledCount > 0 ? (dnSumArab / dnFilledCount).toFixed(1) : '-';
 
   if (document.getElementById('kpi-dn-murid')) document.getElementById('kpi-dn-murid').innerText = totalMurid;
   if (document.getElementById('kpi-dn-avg-tahfidz')) document.getElementById('kpi-dn-avg-tahfidz').innerText = dnAvgTahfidz;
-  if (document.getElementById('kpi-dn-adab-mumtaz')) document.getElementById('kpi-dn-adab-mumtaz').innerText = (dnAdabMumtaz || 132) + ' Murid';
+  if (document.getElementById('kpi-dn-adab-mumtaz')) document.getElementById('kpi-dn-adab-mumtaz').innerText = `${dnAdabMumtaz} Murid`;
   if (document.getElementById('kpi-dn-avg-arab')) document.getElementById('kpi-dn-avg-arab').innerText = dnAvgArab;
 
   // 3. KPI Kepemimpinan / Kepribadian
+  const kpFilledCount = kpList.filter(k => (k.ibadah && k.ibadah.trim()) || (k.akhlak && k.akhlak.trim()) || (k.catatan_diperhatikan && k.catatan_diperhatikan.trim())).length;
   if (document.getElementById('kpi-kp-murid')) document.getElementById('kpi-kp-murid').innerText = totalMurid;
-  if (document.getElementById('kpi-kp-disiplin-a')) document.getElementById('kpi-kp-disiplin-a').innerText = Math.round(totalMurid * 0.74) + ' Murid';
-  if (document.getElementById('kpi-kp-organisasi-a')) document.getElementById('kpi-kp-organisasi-a').innerText = Math.round(totalMurid * 0.6) + ' Murid';
-  if (document.getElementById('kpi-kp-karakter-rate')) document.getElementById('kpi-kp-karakter-rate').innerText = '100%';
+  if (document.getElementById('kpi-kp-disiplin-a')) document.getElementById('kpi-kp-disiplin-a').innerText = `${kpFilledCount} / ${totalMurid} Murid`;
+  if (document.getElementById('kpi-kp-organisasi-a')) document.getElementById('kpi-kp-organisasi-a').innerText = `${kpFilledCount} Murid`;
+  if (document.getElementById('kpi-kp-karakter-rate')) document.getElementById('kpi-kp-karakter-rate').innerText = totalMurid > 0 ? Math.round((kpFilledCount / totalMurid) * 100) + '%' : '0%';
 
   // Update Badges on Sidebar
   if (document.getElementById('badge-count-akademik')) document.getElementById('badge-count-akademik').innerText = (akList.length || 1376).toLocaleString('id-ID');
@@ -5892,14 +5921,16 @@ function renderDashboardMiniTables() {
     const items = AppState.akademikList.slice(0, 8);
     tbodyAk.innerHTML = items.map(i => {
       const nama = i.nama_murid || i.nama_santri || '-';
-      const pred = i.predikat || 'A';
-      const badgeCls = pred === 'A' ? 'bg-emerald-100 text-emerald-800' : (pred === 'B' ? 'bg-blue-100 text-blue-800' : 'bg-amber-100 text-amber-800');
+      const hasScore = i.nilai_akhir !== null && i.nilai_akhir !== undefined && i.nilai_akhir !== '';
+      const scoreVal = hasScore ? i.nilai_akhir : (i.nilai_uts || '-');
+      const pred = (hasScore && i.predikat && i.predikat !== '-') ? i.predikat : '-';
+      const badgeCls = pred === 'A' ? 'bg-emerald-100 text-emerald-800' : (pred === 'B' ? 'bg-blue-100 text-blue-800' : (pred === 'C' ? 'bg-amber-100 text-amber-800' : 'bg-slate-100 text-slate-500'));
       return `
       <tr class="hover:bg-slate-50 transition">
         <td class="py-2.5 px-3 font-semibold text-slate-900">${nama} <span class="text-[10px] text-slate-400">(${i.kelas})</span></td>
         <td class="py-2.5 px-3 text-[#065f46] font-bold">${i.mata_pelajaran}</td>
         <td class="py-2.5 px-2 text-center font-mono font-bold text-slate-600">${i.kkm || 75}</td>
-        <td class="py-2.5 px-2 text-center font-mono font-black text-slate-900">${i.nilai_akhir || i.nilai_uts}</td>
+        <td class="py-2.5 px-2 text-center font-mono font-black text-slate-900">${scoreVal}</td>
         <td class="py-2.5 px-2 text-center"><span class="${badgeCls} px-2.5 py-0.5 rounded-full text-[10px] font-extrabold">${pred}</span></td>
       </tr>
       `;
@@ -5916,9 +5947,9 @@ function renderDashboardMiniTables() {
         <td class="py-2.5 px-3 font-semibold text-slate-900">${nama} <span class="text-[10px] text-slate-400">(${i.kelas})</span></td>
         <td class="py-2.5 px-3 text-emerald-800 font-medium">${i.ziyadah_juz || '-'}</td>
         <td class="py-2.5 px-3 text-teal-800 font-medium">${i.murojaah_juz || '-'}</td>
-        <td class="py-2.5 px-2 text-center font-mono font-bold text-slate-900">${i.nilai_tahfidz}</td>
-        <td class="py-2.5 px-2 text-center text-[11px] text-slate-700 font-semibold">${i.adab_harian}</td>
-        <td class="py-2.5 px-2 text-center font-mono font-bold text-slate-900">${i.bahasa_arab}</td>
+        <td class="py-2.5 px-2 text-center font-mono font-bold text-slate-900">${i.nilai_tahfidz !== null && i.nilai_tahfidz !== undefined ? i.nilai_tahfidz : '-'}</td>
+        <td class="py-2.5 px-2 text-center text-[11px] text-slate-700 font-semibold">${i.adab_harian || '-'}</td>
+        <td class="py-2.5 px-2 text-center font-mono font-bold text-slate-900">${i.bahasa_arab !== null && i.bahasa_arab !== undefined ? i.bahasa_arab : '-'}</td>
       </tr>
       `;
     }).join('');
@@ -6295,20 +6326,23 @@ function renderLegerGrid() {
   tbody.innerHTML = students.map((s, idx) => {
     // Find existing grade
     const existing = AppState.akademikList.find(a => String(a.nis) === String(s.nis) && a.mata_pelajaran === mapel);
-    const utsVal = existing && existing.nilai_uts !== undefined && existing.nilai_uts !== null && existing.nilai_uts !== '' 
-      ? existing.nilai_uts 
-      : (existing?.nilai_akhir || existing?.nilai_tugas || 85);
+    const hasUts = existing && existing.nilai_uts !== undefined && existing.nilai_uts !== null && existing.nilai_uts !== '';
+    const hasAkhir = existing && existing.nilai_akhir !== undefined && existing.nilai_akhir !== null && existing.nilai_akhir !== '';
     
-    const akhirVal = Number(utsVal) || 85;
+    const utsVal = hasUts ? existing.nilai_uts : (hasAkhir ? existing.nilai_akhir : '');
     
-    let predikat = 'D';
-    if (akhirVal >= 90) predikat = 'A';
-    else if (akhirVal >= 80) predikat = 'B';
-    else if (akhirVal >= kkm) predikat = 'C';
+    let predikat = '-';
+    let predBadgeCls = 'bg-slate-100 text-slate-500';
+    if (utsVal !== '' && !isNaN(utsVal)) {
+      const numVal = Number(utsVal);
+      if (numVal >= 90) predikat = 'A';
+      else if (numVal >= 80) predikat = 'B';
+      else if (numVal >= kkm) predikat = 'C';
+      else predikat = 'D';
+      predBadgeCls = `badge-predikat-${predikat}`;
+    }
 
-    const capTemplate = BANK_CAPAIAN_MAPEL[mapel] || BANK_CAPAIAN_MAPEL['Akidah'];
-    const defaultCapaian = akhirVal >= 90 ? capTemplate.tinggi : (akhirVal >= kkm ? capTemplate.sedang : capTemplate.cukup);
-    const capaian = existing?.capaian_kompetensi || existing?.catatan_guru || defaultCapaian;
+    const capaian = existing?.capaian_kompetensi || existing?.catatan_guru || '';
 
     return `
     <tr class="hover:bg-blue-50/40 transition leger-row" data-nis="${s.nis}">
@@ -6319,13 +6353,13 @@ function renderLegerGrid() {
       <td class="px-2 py-2 text-center border-r border-slate-200 bg-blue-50/60">
         <input type="number" min="0" max="100" value="${utsVal}" 
                oninput="onLegerScoreInput(this)" onkeydown="onLegerScoreKeydown(event, this)"
-               class="leger-input-uts w-20 text-center font-black text-sm bg-white border border-blue-300 rounded-lg p-1.5 text-blue-950 focus:ring-2 focus:ring-blue-500 shadow-sm" placeholder="Nilai" />
+               class="leger-input-uts w-20 text-center font-black text-sm bg-white border border-blue-300 rounded-lg p-1.5 text-blue-950 focus:ring-2 focus:ring-blue-500 shadow-sm" placeholder="-" />
       </td>
       <td class="px-2 py-2 text-center border-r border-slate-200">
-        <span class="leger-badge-predikat px-2 py-0.5 rounded-full text-xs font-black badge-predikat-${predikat}">${predikat}</span>
+        <span class="leger-badge-predikat px-2.5 py-0.5 rounded-full text-xs font-black ${predBadgeCls}">${predikat}</span>
       </td>
       <td class="px-4 py-2">
-        <textarea rows="2" class="leger-input-capaian w-full text-xs bg-slate-50/80 border border-slate-200 rounded-lg p-2 text-slate-800 focus:ring-2 focus:ring-blue-500 focus:bg-white leading-snug">${capaian}</textarea>
+        <textarea rows="2" class="leger-input-capaian w-full text-xs bg-slate-50/80 border border-slate-200 rounded-lg p-2 text-slate-800 focus:ring-2 focus:ring-blue-500 focus:bg-white leading-snug" placeholder="Capaian kompetensi otomatis / ketik manual...">${capaian}</textarea>
       </td>
     </tr>
     `;
@@ -6350,18 +6384,34 @@ function filterLegerGridStudents() {
 function onLegerScoreInput(inputEl) {
   const row = inputEl.closest('tr');
   if (!row) return;
-  const akhir = Number(inputEl.value) || 0;
+  const valStr = inputEl.value.trim();
+  const badge = row.querySelector('.leger-badge-predikat');
+  const capTextarea = row.querySelector('.leger-input-capaian');
+  const mapel = document.getElementById('leger-akademik-mapel')?.value || 'Akidah';
   const kkm = Number(document.getElementById('leger-akademik-kkm')?.value) || 75;
 
+  if (valStr === '' || isNaN(valStr)) {
+    if (badge) {
+      badge.innerText = '-';
+      badge.className = 'leger-badge-predikat px-2.5 py-0.5 rounded-full text-xs font-bold bg-slate-100 text-slate-500';
+    }
+    return;
+  }
+
+  const akhir = Number(valStr);
   let predikat = 'D';
   if (akhir >= 90) predikat = 'A';
   else if (akhir >= 80) predikat = 'B';
   else if (akhir >= kkm) predikat = 'C';
 
-  const badge = row.querySelector('.leger-badge-predikat');
   if (badge) {
     badge.innerText = predikat;
     badge.className = `leger-badge-predikat px-2.5 py-0.5 rounded-full text-xs font-black badge-predikat-${predikat}`;
+  }
+
+  if (capTextarea && !capTextarea.value.trim()) {
+    const capTemplate = BANK_CAPAIAN_MAPEL[mapel] || BANK_CAPAIAN_MAPEL['Akidah'];
+    capTextarea.value = akhir >= 90 ? capTemplate.tinggi : (akhir >= kkm ? capTemplate.sedang : capTemplate.cukup);
   }
 }
 
@@ -6496,18 +6546,21 @@ function loadNilaiAkademik() {
 
 function updateAkademikWidgets(list) {
   const total = list.length;
-  let sum = 0, countA = 0, countPass = 0;
+  let sum = 0, countA = 0, countPass = 0, countFilled = 0;
   list.forEach(i => {
-    const val = Number(i.nilai_akhir || i.nilai_uts) || 0;
-    const kkm = Number(i.kkm) || 75;
-    sum += val;
-    if (i.predikat === 'A') countA++;
-    if (val >= kkm) countPass++;
+    const val = (i.nilai_akhir !== null && i.nilai_akhir !== undefined && i.nilai_akhir !== '') ? Number(i.nilai_akhir) : ((i.nilai_uts !== null && i.nilai_uts !== undefined && i.nilai_uts !== '') ? Number(i.nilai_uts) : null);
+    if (val !== null && !isNaN(val)) {
+      countFilled++;
+      const kkm = Number(i.kkm) || 75;
+      sum += val;
+      if (i.predikat === 'A') countA++;
+      if (val >= kkm) countPass++;
+    }
   });
-  const avg = total > 0 ? (sum / total).toFixed(1) : 0;
-  const passRate = total > 0 ? Math.round((countPass / total) * 100) + '%' : '100%';
+  const avg = countFilled > 0 ? (sum / countFilled).toFixed(1) : '-';
+  const passRate = countFilled > 0 ? Math.round((countPass / countFilled) * 100) + '%' : '-';
 
-  if (document.getElementById('widget-ak-total')) document.getElementById('widget-ak-total').innerText = total;
+  if (document.getElementById('widget-ak-total')) document.getElementById('widget-ak-total').innerText = `${countFilled} / ${total}`;
   if (document.getElementById('widget-ak-avg')) document.getElementById('widget-ak-avg').innerText = avg;
   if (document.getElementById('widget-ak-count-a')) document.getElementById('widget-ak-count-a').innerText = countA;
   if (document.getElementById('widget-ak-pass-rate')) document.getElementById('widget-ak-pass-rate').innerText = passRate;
@@ -6524,8 +6577,17 @@ function renderTableAkademik(list) {
 
   tbody.innerHTML = list.map(item => {
     const nama = item.nama_murid || item.nama_santri || '-';
-    const utsVal = item.nilai_uts !== undefined && item.nilai_uts !== null ? item.nilai_uts : (item.nilai_akhir || '-');
-    const akhirVal = item.nilai_akhir || item.nilai_uts || '-';
+    const hasUts = item.nilai_uts !== undefined && item.nilai_uts !== null && item.nilai_uts !== '';
+    const hasAkhir = item.nilai_akhir !== undefined && item.nilai_akhir !== null && item.nilai_akhir !== '';
+    
+    const utsVal = hasUts ? item.nilai_uts : '-';
+    const akhirVal = hasAkhir ? item.nilai_akhir : (hasUts ? item.nilai_uts : '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-500">Belum Diisi</span>');
+    
+    const pred = (item.predikat && item.predikat !== '-') ? item.predikat : '-';
+    const predBadge = pred !== '-' 
+      ? `<span class="px-2.5 py-0.5 rounded-full text-xs font-black badge-predikat-${pred}">${pred}</span>`
+      : `<span class="px-2 py-0.5 rounded-full text-xs font-bold bg-slate-100 text-slate-400">-</span>`;
+
     return `
     <tr class="hover:bg-slate-50 transition">
       <td class="px-4 py-3">
@@ -6538,9 +6600,9 @@ function renderTableAkademik(list) {
       <td class="px-2 py-3 text-center font-bold text-blue-950 bg-blue-50/40 font-mono text-xs">${utsVal}</td>
       <td class="px-2 py-3 text-center font-black text-emerald-950 bg-emerald-50/40 font-mono text-sm">${akhirVal}</td>
       <td class="px-2 py-3 text-center">
-        <span class="px-2 py-0.5 rounded-full text-xs font-black badge-predikat-${item.predikat}">${item.predikat}</span>
+        ${predBadge}
       </td>
-      <td class="px-4 py-3 text-slate-700 text-[11px] max-w-xs truncate">${item.capaian_kompetensi || item.catatan_guru || '-'}</td>
+      <td class="px-4 py-3 text-slate-700 text-[11px] max-w-xs truncate">${item.capaian_kompetensi || item.catatan_guru || '<span class="text-slate-400 italic">Belum diinput</span>'}</td>
       <td class="px-4 py-3 text-right space-x-1">
         <button onclick="editNilaiAkademikModal('${item.id}')" class="p-1.5 bg-blue-50 text-blue-700 hover:bg-blue-100 rounded-lg text-xs" title="Edit Nilai">
           <i class="fa-solid fa-pen-to-square"></i>
@@ -7065,43 +7127,44 @@ function buildLegerDataset(targetKelas, targetTA, targetSem) {
       
       const tugas = akItem && akItem.nilai_tugas !== undefined && akItem.nilai_tugas !== null && akItem.nilai_tugas !== '' 
         ? Number(akItem.nilai_tugas) 
-        : (akItem?.nilai_uts ? Number(akItem.nilai_uts) : null);
+        : null;
       
       const uts = akItem && akItem.nilai_uts !== undefined && akItem.nilai_uts !== null && akItem.nilai_uts !== '' 
         ? Number(akItem.nilai_uts) 
-        : (akItem?.nilai_akhir ? Number(akItem.nilai_akhir) : null);
+        : null;
       
       let akhir = akItem?.nilai_akhir !== undefined && akItem?.nilai_akhir !== null && akItem?.nilai_akhir !== '' 
         ? Number(akItem.nilai_akhir) 
-        : (tugas !== null && uts !== null ? Math.round((tugas + uts) / 2) : (uts || tugas || null));
-      
-      // Default fallback grade if not yet entered
-      if (akhir === null) {
-        akhir = 85;
-      }
+        : (tugas !== null && uts !== null ? Math.round((tugas + uts) / 2) : (uts !== null ? uts : (tugas !== null ? tugas : null)));
 
       const kkm = akItem?.kkm || mapel.kkm || 75;
-      const isTuntas = akhir >= kkm;
+      const isTuntas = akhir !== null ? akhir >= kkm : false;
 
       let predikat = akItem?.predikat;
-      if (!predikat) {
-        if (akhir >= 90) predikat = 'A';
-        else if (akhir >= 80) predikat = 'B';
-        else if (akhir >= kkm) predikat = 'C';
-        else predikat = 'D';
+      if (!predikat || predikat === '-') {
+        if (akhir !== null) {
+          if (akhir >= 90) predikat = 'A';
+          else if (akhir >= 80) predikat = 'B';
+          else if (akhir >= kkm) predikat = 'C';
+          else predikat = 'D';
+        } else {
+          predikat = '-';
+        }
       }
 
-      totalScore += akhir;
-      validCount++;
-      if (isTuntas) tuntasCount++;
+      if (akhir !== null) {
+        totalScore += akhir;
+        validCount++;
+        if (isTuntas) tuntasCount++;
+      }
 
       return {
         mapelId: mapel.id,
         mapelName: mapel.name,
         abbr: mapel.abbr,
         kkm: kkm,
-        tugas: tugas !== null ? tugas : akhir,
-        uts: uts !== null ? uts : akhir,
+        tugas: tugas,
+        uts: uts,
         akhir: akhir,
         predikat: predikat,
         isTuntas: isTuntas,
@@ -7109,7 +7172,7 @@ function buildLegerDataset(targetKelas, targetTA, targetSem) {
       };
     });
 
-    const average = validCount > 0 ? Number((totalScore / validCount).toFixed(1)) : 0;
+    const average = validCount > 0 ? Number((totalScore / validCount).toFixed(1)) : null;
     const diniyah = dinMap.get(nisStr) || {};
     const kepribadian = kpMap.get(nisStr) || {};
 
@@ -7121,42 +7184,44 @@ function buildLegerDataset(targetKelas, targetTA, targetSem) {
       gender: s.jenis_kelamin || (targetKelas.toLowerCase().includes('akhwat') || targetKelas.toLowerCase().includes('aisyah') || targetKelas.toLowerCase().includes('khadijah') || targetKelas.toLowerCase().includes('salamah') ? 'P' : 'L'),
       kelas: targetKelas,
       mapelScores: mapelScores,
-      totalScore: totalScore,
+      totalScore: validCount > 0 ? totalScore : null,
       average: average,
       tuntasCount: tuntasCount,
-      allTuntas: tuntasCount === MAPEL_LEGER_CONFIG.length,
+      validCount: validCount,
+      allTuntas: validCount > 0 && tuntasCount === MAPEL_LEGER_CONFIG.length,
       diniyah: {
-        tahfidz: diniyah.nilai_tahfidz || 88,
-        adab: diniyah.adab_harian || 'Mumtaz (A)',
-        ibadah: diniyah.ibadah_harian || 'Mumtaz (A)',
-        b_arab: diniyah.nilai_bahasa_arab || 85,
-        ziyadah: diniyah.capaian_ziyadah || 'Juz 29',
-        murojaah: diniyah.capaian_murojaah || 'Juz 30'
+        tahfidz: diniyah.nilai_tahfidz !== null && diniyah.nilai_tahfidz !== undefined ? diniyah.nilai_tahfidz : '-',
+        adab: diniyah.adab_harian || '-',
+        ibadah: diniyah.ibadah_harian || '-',
+        b_arab: diniyah.bahasa_arab || diniyah.nilai_bahasa_arab || '-',
+        ziyadah: diniyah.ziyadah_juz || diniyah.capaian_ziyadah || '-',
+        murojaah: diniyah.murojaah_juz || diniyah.capaian_murojaah || '-'
       },
       kepribadian: {
-        ibadah: kepribadian.aspek_ibadah || 'Sangat Baik',
-        akhlak: kepribadian.aspek_akhlak || 'Sangat Baik',
-        kedisiplinan: kepribadian.aspek_kedisiplinan || 'Baik',
-        kerapihan: kepribadian.aspek_kerapihan || 'Baik',
-        kemandirian: kepribadian.aspek_kemandirian || 'Baik',
-        kepemimpinan: kepribadian.aspek_kepemimpinan || 'Baik'
+        ibadah: kepribadian.ibadah || kepribadian.aspek_ibadah || '-',
+        akhlak: kepribadian.akhlak || kepribadian.aspek_akhlak || '-',
+        kedisiplinan: kepribadian.kedisiplinan_kerajinan || kepribadian.kedisiplinan || '-',
+        kerapihan: kepribadian.kerapihan_kebersihan || kepribadian.aspek_kerapihan || '-',
+        kemandirian: kepribadian.kerjasama || kepribadian.aspek_kemandirian || '-',
+        kepemimpinan: kepribadian.kepemimpinan || kepribadian.aspek_kepemimpinan || '-'
       },
       presensi: {
-        sakit: s.sakit !== undefined ? s.sakit : 0,
-        izin: s.izin !== undefined ? s.izin : 0,
-        alpa: s.alpa !== undefined ? s.alpa : 0
+        sakit: s.kehadiran_s !== undefined ? s.kehadiran_s : (s.sakit !== undefined ? s.sakit : 0),
+        izin: s.kehadiran_i !== undefined ? s.kehadiran_i : (s.izin !== undefined ? s.izin : 0),
+        alpa: s.kehadiran_a !== undefined ? s.kehadiran_a : (s.alpa !== undefined ? s.alpa : 0)
       },
-      rank: 1
+      rank: '-'
     };
   });
 
-  // 3. Compute Ranking
-  studentRows.sort((a, b) => b.average - a.average || b.totalScore - a.totalScore);
-  studentRows.forEach((s, idx) => {
+  // 3. Compute Ranking for students with valid grades
+  const studentsWithScores = studentRows.filter(s => s.average !== null);
+  studentsWithScores.sort((a, b) => (b.average || 0) - (a.average || 0) || (b.totalScore || 0) - (a.totalScore || 0));
+  studentsWithScores.forEach((s, idx) => {
     s.rank = idx + 1;
   });
 
-  const rankedTopStudent = studentRows.length > 0 ? studentRows[0] : null;
+  const rankedTopStudent = studentsWithScores.length > 0 ? studentsWithScores[0] : null;
   studentRows.sort((a, b) => (Number(a.no) || 0) - (Number(b.no) || 0));
 
   // 4. Compute Per-Subject Statistics (Footer Summary)
@@ -7165,18 +7230,21 @@ function buildLegerDataset(targetKelas, targetTA, targetSem) {
     let min = 100;
     let max = 0;
     let countTuntas = 0;
-    const totalStudents = studentRows.length;
+    let countFilled = 0;
 
     studentRows.forEach(s => {
-      const score = s.mapelScores[mIdx]?.akhir || 0;
-      sum += score;
-      if (score < min) min = score;
-      if (score > max) max = score;
-      if (score >= m.kkm) countTuntas++;
+      const score = s.mapelScores[mIdx]?.akhir;
+      if (score !== null && score !== undefined && !isNaN(score)) {
+        countFilled++;
+        sum += score;
+        if (score < min) min = score;
+        if (score > max) max = score;
+        if (score >= m.kkm) countTuntas++;
+      }
     });
 
-    const avg = totalStudents > 0 ? (sum / totalStudents).toFixed(1) : 0;
-    const passPct = totalStudents > 0 ? Math.round((countTuntas / totalStudents) * 100) : 100;
+    const avg = countFilled > 0 ? (sum / countFilled).toFixed(1) : '-';
+    const passPct = countFilled > 0 ? Math.round((countTuntas / countFilled) * 100) : '-';
 
     return {
       mapelId: m.id,
@@ -7184,22 +7252,23 @@ function buildLegerDataset(targetKelas, targetTA, targetSem) {
       abbr: m.abbr,
       kkm: m.kkm,
       avg: avg,
-      min: min <= 100 ? min : 0,
-      max: max,
+      min: countFilled > 0 ? min : '-',
+      max: countFilled > 0 ? max : '-',
       passPct: passPct
     };
   });
 
   // 5. Overall Class Summary
-  const grandTotalAvg = studentRows.length > 0 
-    ? (studentRows.reduce((acc, s) => acc + s.average, 0) / studentRows.length).toFixed(1) 
-    : 0;
+  const validAvgs = studentRows.filter(s => s.average !== null).map(s => s.average);
+  const grandTotalAvg = validAvgs.length > 0 
+    ? (validAvgs.reduce((acc, v) => acc + v, 0) / validAvgs.length).toFixed(1) 
+    : '-';
 
-  const totalClassEntries = studentRows.length * MAPEL_LEGER_CONFIG.length;
   const totalClassTuntas = studentRows.reduce((acc, s) => acc + s.tuntasCount, 0);
-  const classPassRate = totalClassEntries > 0 
-    ? Math.round((totalClassTuntas / totalClassEntries) * 100) + '%' 
-    : '100%';
+  const totalClassFilled = studentRows.reduce((acc, s) => acc + s.validCount, 0);
+  const classPassRate = totalClassFilled > 0 
+    ? Math.round((totalClassTuntas / totalClassFilled) * 100) + '%' 
+    : '-';
 
   return {
     kelas: targetKelas,
@@ -7218,7 +7287,7 @@ function buildLegerDataset(targetKelas, targetTA, targetSem) {
  */
 function renderLegerMatrix() {
   const ta = document.getElementById('leger-filter-tahun-ajaran')?.value || '2026/2027';
-  const sem = document.getElementById('leger-filter-semester')?.value || 'I (Satu)';
+  const sem = document.getElementById('leger-filter-semester')?.value || 'Tengah Semester 1';
   const kelas = document.getElementById('leger-filter-kelas')?.value || 'IX ABU BAKAR';
   const mode = document.getElementById('leger-filter-mode')?.value || 'ringkas';
 
@@ -7378,20 +7447,35 @@ function buildLegerTbody(students, mode) {
     if (s.rank === 1) rankBadge = `<span class="px-2 py-0.5 rounded-full bg-amber-400 text-amber-950 font-black text-[10px] shadow-sm">🥇 1</span>`;
     else if (s.rank === 2) rankBadge = `<span class="px-2 py-0.5 rounded-full bg-slate-200 text-slate-900 font-black text-[10px] shadow-sm">🥈 2</span>`;
     else if (s.rank === 3) rankBadge = `<span class="px-2 py-0.5 rounded-full bg-amber-700/20 text-amber-900 font-black text-[10px] shadow-sm">🥉 3</span>`;
+    else if (s.rank === '-') rankBadge = `<span class="text-slate-400 font-mono text-xs">-</span>`;
 
     let mapelCells = '';
     if (mode === 'rincian') {
       mapelCells = s.mapelScores.map(m => {
+        if (m.akhir === null || m.akhir === undefined) {
+          return `
+            <td class="px-1 py-2 text-center border-r border-slate-200 font-mono text-[11px] text-slate-400">-</td>
+            <td class="px-1 py-2 text-center border-r border-slate-200 font-mono text-[11px] text-slate-400">-</td>
+            <td class="px-1.5 py-2 text-center border-r border-slate-200 font-mono font-bold text-xs text-slate-400">-</td>
+          `;
+        }
         const isUnderKkm = m.akhir < m.kkm;
         const cellBg = isUnderKkm ? 'bg-rose-50/70 text-rose-700 font-bold' : (m.akhir >= 90 ? 'bg-emerald-50/40 text-emerald-950 font-bold' : '');
         return `
-          <td class="px-1 py-2 text-center border-r border-slate-200 font-mono text-[11px] text-amber-950 bg-amber-50/20">${m.tugas}</td>
-          <td class="px-1 py-2 text-center border-r border-slate-200 font-mono text-[11px] text-blue-950 bg-blue-50/20">${m.uts}</td>
+          <td class="px-1 py-2 text-center border-r border-slate-200 font-mono text-[11px] text-amber-950 bg-amber-50/20">${m.tugas !== null ? m.tugas : '-'}</td>
+          <td class="px-1 py-2 text-center border-r border-slate-200 font-mono text-[11px] text-blue-950 bg-blue-50/20">${m.uts !== null ? m.uts : '-'}</td>
           <td class="px-1.5 py-2 text-center border-r border-slate-200 font-mono font-black text-xs ${cellBg}">${m.akhir}</td>
         `;
       }).join('');
     } else {
       mapelCells = s.mapelScores.map(m => {
+        if (m.akhir === null || m.akhir === undefined) {
+          return `
+            <td class="px-2 py-2 text-center border-r border-slate-200 font-mono text-xs text-slate-400">
+              -
+            </td>
+          `;
+        }
         const isUnderKkm = m.akhir < m.kkm;
         let cellClass = 'font-mono text-xs';
         if (isUnderKkm) {
@@ -7416,8 +7500,8 @@ function buildLegerTbody(students, mode) {
     if (mode === 'holistik') {
       extraCells = `
         <td class="px-2 py-2 text-center border-r border-slate-200 font-mono font-bold text-emerald-900 bg-emerald-50/30">${s.diniyah.tahfidz}</td>
-        <td class="px-2 py-2 text-center border-r border-slate-200 text-[10px] font-semibold text-slate-700">${s.diniyah.adab.replace(/\s*\(.*\)/, '')}</td>
-        <td class="px-2 py-2 text-center border-r border-slate-200 text-[10px] font-semibold text-slate-700">${s.diniyah.ibadah.replace(/\s*\(.*\)/, '')}</td>
+        <td class="px-2 py-2 text-center border-r border-slate-200 text-[10px] font-semibold text-slate-700">${String(s.diniyah.adab).replace(/\s*\(.*\)/, '')}</td>
+        <td class="px-2 py-2 text-center border-r border-slate-200 text-[10px] font-semibold text-slate-700">${String(s.diniyah.ibadah).replace(/\s*\(.*\)/, '')}</td>
         <td class="px-2 py-2 text-center border-r border-slate-200 text-[10px] font-semibold text-slate-700">${s.kepribadian.akhlak}</td>
         <td class="px-2 py-2 text-center border-r border-slate-200 text-[10px] font-semibold text-slate-700">${s.kepribadian.kedisiplinan}</td>
         <td class="px-1 py-2 text-center border-r border-slate-200 font-mono text-xs text-slate-600">${s.presensi.sakit}</td>
@@ -7425,6 +7509,9 @@ function buildLegerTbody(students, mode) {
         <td class="px-1 py-2 text-center border-r border-slate-200 font-mono text-xs ${s.presensi.alpa > 0 ? 'text-rose-600 font-bold bg-rose-50' : 'text-slate-600'}">${s.presensi.alpa}</td>
       `;
     }
+
+    const totalDisplay = s.totalScore !== null ? s.totalScore : '-';
+    const avgDisplay = s.average !== null ? s.average : '-';
 
     return `
       <tr class="hover:bg-blue-50/30 transition leger-matrix-row" data-nama="${s.nama.toLowerCase()}" data-nis="${s.nis}">
@@ -7435,8 +7522,8 @@ function buildLegerTbody(students, mode) {
         </td>
         <td class="px-1 py-2 text-center border-r border-slate-200 text-[11px] font-bold text-slate-600">${s.gender}</td>
         ${mapelCells}
-        <td class="px-2 py-2 text-center font-mono font-bold text-indigo-950 bg-indigo-50/40 border-r border-slate-200">${s.totalScore}</td>
-        <td class="px-2 py-2 text-center font-mono font-black text-emerald-950 bg-emerald-50/40 border-r border-slate-200">${s.average}</td>
+        <td class="px-2 py-2 text-center font-mono font-bold text-indigo-950 bg-indigo-50/40 border-r border-slate-200">${totalDisplay}</td>
+        <td class="px-2 py-2 text-center font-mono font-black text-emerald-950 bg-emerald-50/40 border-r border-slate-200">${avgDisplay}</td>
         <td class="px-2 py-2 text-center border-r border-slate-200 bg-amber-50/40">${rankBadge}</td>
         ${extraCells}
       </tr>
@@ -7457,14 +7544,12 @@ function buildLegerTfoot(mapelStats, grandAvg, mode) {
     avgCells = mapelStats.map(m => `<td colspan="3" class="px-2 py-2 text-center border-r border-slate-300 font-mono font-black text-blue-950">${m.avg}</td>`).join('');
     minCells = mapelStats.map(m => `<td colspan="3" class="px-2 py-1.5 text-center border-r border-slate-300 font-mono text-rose-700">${m.min}</td>`).join('');
     maxCells = mapelStats.map(m => `<td colspan="3" class="px-2 py-1.5 text-center border-r border-slate-300 font-mono text-emerald-700 font-bold">${m.max}</td>`).join('');
-    passCells = mapelStats.map(m => `<td colspan="3" class="px-2 py-1.5 text-center border-r border-slate-300 font-mono text-slate-700">${m.passPct}%</td>`).join('');
+    passCells = mapelStats.map(m => `<td colspan="3" class="px-2 py-1.5 text-center border-r border-slate-300 font-mono text-slate-700">${m.passPct !== '-' ? m.passPct + '%' : '-'}</td>`).join('');
   } else {
     avgCells = mapelStats.map(m => `<td class="px-2 py-2 text-center border-r border-slate-300 font-mono font-black text-blue-950">${m.avg}</td>`).join('');
     minCells = mapelStats.map(m => `<td class="px-2 py-1.5 text-center border-r border-slate-300 font-mono text-rose-700">${m.min}</td>`).join('');
     maxCells = mapelStats.map(m => `<td class="px-2 py-1.5 text-center border-r border-slate-300 font-mono text-emerald-700 font-bold">${m.max}</td>`).join('');
-    passCells = mapelStats.map(m => `<td class="px-2 py-1.5 text-center border-r border-slate-300 font-mono text-slate-700">${m.passPct}%</td>`).join('');
-  }
-
+    passCells = mapelStats.map(m => `<td class="px-2 py-1.5 text-center border-r border-slate-300 font-mono text-slate-700">${m.passPct !== '-' ? m.passPct + '%' : '-'}</td>`).join('');
   let extraTfootCols = mode === 'holistik' ? `<td colspan="8" class="border-r border-slate-300"></td>` : '';
 
   tfoot.innerHTML = `
@@ -7688,7 +7773,7 @@ function updateAllAcademicYearUI(year) {
   if (navYear) navYear.innerText = year;
   
   const navSem = document.getElementById('nav-semester');
-  if (navSem) navSem.innerText = (AppState.cmsSettings.semester_active || 'I (Satu)').includes('II') ? 'Genap' : 'Ganjil';
+  if (navSem) navSem.innerText = AppState.cmsSettings.semester_active || 'Tengah Semester 1';
 
   const cmsYear = document.getElementById('cms-academic-year');
   if (cmsYear) cmsYear.value = year;
@@ -7700,11 +7785,12 @@ function updateAllAcademicYearUI(year) {
   if (printSkl) printSkl.innerText = year;
 
   populateAcademicYearsFilterDropdowns(year);
+  populateSemesterFilterDropdowns(AppState.cmsSettings.semester_active);
 }
 
 function populateAcademicYearsFilterDropdowns(selectedYear) {
   const activeYear = selectedYear || AppState.cmsSettings.academic_year || '2026/2027';
-  let listStr = AppState.cmsSettings.academic_years_list || '2026/2027,2025/2026,2024/2025';
+  let listStr = AppState.cmsSettings.academic_years_list || '2026/2027,2027/2028,2028/2029,2025/2026,2024/2025';
   let years = listStr.split(',').map(s => s.trim()).filter(Boolean);
   if (!years.includes(activeYear)) years.unshift(activeYear);
 
@@ -7736,7 +7822,8 @@ function populateAcademicYearsFilterDropdowns(selectedYear) {
     'upload-tahun-ajaran',
     'leger-kp-tahun-ajaran',
     'skl-kp-tahun-ajaran',
-    'filter-rapor-tahun-ajaran'
+    'filter-rapor-tahun-ajaran',
+    'leger-filter-tahun-ajaran'
   ];
 
   directDropdownIds.forEach(id => {
@@ -7752,6 +7839,47 @@ function populateAcademicYearsFilterDropdowns(selectedYear) {
       el.value = currentVal;
     }
   });
+}
+
+function populateSemesterFilterDropdowns(selectedSemester) {
+  const activeSem = selectedSemester || AppState.cmsSettings.semester_active || 'Tengah Semester 1';
+  const semesters = [
+    'Tengah Semester 1',
+    'Akhir Semester 1',
+    'Tengah Semester 2',
+    'Akhir Semester 2'
+  ];
+
+  const semDropdownIds = [
+    'filter-rapor-semester',
+    'leger-filter-semester',
+    'upload-semester',
+    'cms-semester-active',
+    'input-new-academic-sem'
+  ];
+
+  semDropdownIds.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+      const currentVal = el.value || activeSem;
+      let html = '';
+      semesters.forEach(sem => {
+        const isSelected = sem === currentVal ? 'selected' : '';
+        html += `<option value="${sem}" ${isSelected}>${sem}</option>`;
+      });
+      el.innerHTML = html;
+      el.value = currentVal;
+    }
+  });
+
+  const navSem = document.getElementById('nav-semester');
+  if (navSem) navSem.innerText = activeSem;
+  const printSem = document.getElementById('print-semester');
+  if (printSem) printSem.innerText = activeSem;
+  const printLegerSem = document.getElementById('print-leger-sem');
+  if (printLegerSem) printLegerSem.innerText = activeSem;
+  const printSklSem = document.getElementById('print-skl-semester');
+  if (printSklSem) printSklSem.innerText = activeSem;
 }
 
 // 11. AHLAQ & KEPRIBADIAN MODULE (6 ASPEK AL-IMAM + CATATAN & 28 INDIKATOR SKL)
@@ -7820,10 +7948,11 @@ function renderSklLegerGrid() {
     `;
 
     sklKeys.forEach(k => {
-      const defaultVal = (sklEntry.scores && sklEntry.scores[k]) ? sklEntry.scores[k] : (k.startsWith('k') ? 'B' : 'A');
+      const defaultVal = (sklEntry.scores && sklEntry.scores[k]) ? sklEntry.scores[k] : '';
       rowCols += `
         <td class="py-1 px-0.5 border border-slate-200">
-          <select data-nis="${st.nis}" data-skl-key="${k}" class="skl-input-cell w-full bg-transparent text-center font-bold font-mono text-xs focus:bg-amber-50 focus:ring-1 focus:ring-amber-500 rounded cursor-pointer ${defaultVal === 'A' ? 'text-emerald-700' : 'text-blue-700'}">
+          <select data-nis="${st.nis}" data-skl-key="${k}" onchange="this.className='skl-input-cell w-full bg-transparent text-center font-bold font-mono text-xs rounded cursor-pointer ' + (this.value==='A'?'text-emerald-700 font-black':(this.value==='B'?'text-blue-700 font-bold':(this.value?'text-amber-700':'text-slate-400')))" class="skl-input-cell w-full bg-transparent text-center font-bold font-mono text-xs focus:bg-amber-50 focus:ring-1 focus:ring-amber-500 rounded cursor-pointer ${defaultVal === 'A' ? 'text-emerald-700 font-black' : (defaultVal === 'B' ? 'text-blue-700 font-bold' : (defaultVal ? 'text-amber-700' : 'text-slate-400'))}">
+            <option value="" ${!defaultVal ? 'selected' : ''}>-</option>
             <option value="A" ${defaultVal === 'A' ? 'selected' : ''}>A</option>
             <option value="B" ${defaultVal === 'B' ? 'selected' : ''}>B</option>
             <option value="C" ${defaultVal === 'C' ? 'selected' : ''}>C</option>
@@ -7835,7 +7964,7 @@ function renderSklLegerGrid() {
 
     rowCols += `
       <td class="py-1 px-2 border border-slate-200 text-left">
-        <input type="text" data-nis="${st.nis}" class="skl-catatan-cell w-full text-xs bg-slate-50 border border-slate-200 rounded px-2 py-1 text-slate-800 focus:bg-white focus:ring-1 focus:ring-amber-500" value="${catatan}" />
+        <input type="text" data-nis="${st.nis}" class="skl-catatan-cell w-full text-xs bg-slate-50 border border-slate-200 rounded px-2 py-1 text-slate-800 focus:bg-white focus:ring-1 focus:ring-amber-500" value="${catatan}" placeholder="Catatan walas..." />
       </td>
     `;
 
@@ -8176,10 +8305,14 @@ function loadNilaiKepemimpinan() {
 
 function updateKepemimpinanWidgets(list) {
   const total = list.length;
-  if (document.getElementById('widget-kp-total')) document.getElementById('widget-kp-total').innerText = total;
-  if (document.getElementById('widget-kp-ibadah-count')) document.getElementById('widget-kp-ibadah-count').innerText = '100%';
-  if (document.getElementById('widget-kp-akhlak-count')) document.getElementById('widget-kp-akhlak-count').innerText = '100%';
-  if (document.getElementById('widget-kp-char-good')) document.getElementById('widget-kp-char-good').innerText = '100%';
+  const filledIbadah = list.filter(k => k.ibadah && k.ibadah.trim()).length;
+  const filledAkhlak = list.filter(k => k.akhlak && k.akhlak.trim()).length;
+  const filledCatatan = list.filter(k => (k.catatan_diperhatikan && k.catatan_diperhatikan.trim()) || (k.catatan_pembina && k.catatan_pembina.trim())).length;
+
+  if (document.getElementById('widget-kp-total')) document.getElementById('widget-kp-total').innerText = `${filledCatatan} / ${total}`;
+  if (document.getElementById('widget-kp-ibadah-count')) document.getElementById('widget-kp-ibadah-count').innerText = total > 0 ? Math.round((filledIbadah / total) * 100) + '%' : '0%';
+  if (document.getElementById('widget-kp-akhlak-count')) document.getElementById('widget-kp-akhlak-count').innerText = total > 0 ? Math.round((filledAkhlak / total) * 100) + '%' : '0%';
+  if (document.getElementById('widget-kp-char-good')) document.getElementById('widget-kp-char-good').innerText = total > 0 ? Math.round((filledCatatan / total) * 100) + '%' : '0%';
 }
 
 function renderTableKepemimpinan(list) {
@@ -8353,17 +8486,25 @@ function filterTableDiniyahLocal() {
 
 function updateDiniyahWidgets(list) {
   const total = list.length;
-  let sumTahfidz = 0, sumArab = 0, countMumtaz = 0;
+  let sumTahfidz = 0, sumArab = 0, countMumtaz = 0, countTahfidz = 0, countArab = 0;
   list.forEach(i => {
-    sumTahfidz += Number(i.nilai_tahfidz) || 0;
-    sumArab += Number(i.bahasa_arab) || 0;
-    if (String(i.adab_harian).includes('(A)')) countMumtaz++;
+    const tVal = (i.nilai_tahfidz !== null && i.nilai_tahfidz !== undefined && i.nilai_tahfidz !== '') ? Number(i.nilai_tahfidz) : null;
+    const aVal = (i.bahasa_arab !== null && i.bahasa_arab !== undefined && i.bahasa_arab !== '') ? Number(i.bahasa_arab) : null;
+    if (tVal !== null && !isNaN(tVal)) {
+      countTahfidz++;
+      sumTahfidz += tVal;
+    }
+    if (aVal !== null && !isNaN(aVal)) {
+      countArab++;
+      sumArab += aVal;
+    }
+    if (String(i.adab_harian).includes('(A)') || String(i.adab_harian).toLowerCase().includes('mumtaz')) countMumtaz++;
   });
-  const avgTahfidz = total > 0 ? (sumTahfidz / total).toFixed(1) : 0;
-  const avgArab = total > 0 ? (sumArab / total).toFixed(1) : 0;
-  if (document.getElementById('widget-dn-total')) document.getElementById('widget-dn-total').innerText = total;
+  const avgTahfidz = countTahfidz > 0 ? (sumTahfidz / countTahfidz).toFixed(1) : '-';
+  const avgArab = countArab > 0 ? (sumArab / countArab).toFixed(1) : '-';
+  if (document.getElementById('widget-dn-total')) document.getElementById('widget-dn-total').innerText = `${countTahfidz} / ${total}`;
   if (document.getElementById('widget-dn-tahfidz-avg')) document.getElementById('widget-dn-tahfidz-avg').innerText = avgTahfidz;
-  if (document.getElementById('widget-dn-adab-a')) document.getElementById('widget-dn-adab-a').innerText = countMumtaz;
+  if (document.getElementById('widget-dn-adab-a')) document.getElementById('widget-dn-adab-a').innerText = `${countMumtaz} Murid`;
   if (document.getElementById('widget-dn-arab-avg')) document.getElementById('widget-dn-arab-avg').innerText = avgArab;
 }
 
@@ -8378,6 +8519,8 @@ function renderTableDiniyah(list) {
 
   tbody.innerHTML = list.map(item => {
     const nama = item.nama_murid || item.nama_santri || '-';
+    const tahfidzVal = item.nilai_tahfidz !== null && item.nilai_tahfidz !== undefined && item.nilai_tahfidz !== '' ? item.nilai_tahfidz : '-';
+    const arabVal = item.bahasa_arab !== null && item.bahasa_arab !== undefined && item.bahasa_arab !== '' ? item.bahasa_arab : '-';
     return `
     <tr class="hover:bg-slate-50 transition">
       <td class="px-4 py-3">
@@ -8387,11 +8530,11 @@ function renderTableDiniyah(list) {
       <td class="px-3 py-3 font-semibold text-slate-700">${item.kelas}</td>
       <td class="px-3 py-3 font-medium text-emerald-800">${item.ziyadah_juz || '-'}</td>
       <td class="px-3 py-3 font-medium text-emerald-800">${item.murojaah_juz || '-'}</td>
-      <td class="px-3 py-3 text-center font-bold text-emerald-700 font-mono">${item.nilai_tahfidz}</td>
-      <td class="px-3 py-3 text-center font-semibold text-emerald-800 text-xs">${item.adab_harian}</td>
-      <td class="px-3 py-3 text-center font-semibold text-emerald-800 text-xs">${item.ibadah_harian}</td>
-      <td class="px-3 py-3 text-center font-bold text-emerald-700 font-mono">${item.bahasa_arab}</td>
-      <td class="px-4 py-3 text-slate-600 italic text-[11px] max-w-xs truncate">${item.catatan_musyrif || '-'}</td>
+      <td class="px-3 py-3 text-center font-bold text-emerald-700 font-mono">${tahfidzVal}</td>
+      <td class="px-3 py-3 text-center font-semibold text-emerald-800 text-xs">${item.adab_harian || '-'}</td>
+      <td class="px-3 py-3 text-center font-semibold text-emerald-800 text-xs">${item.ibadah_harian || '-'}</td>
+      <td class="px-3 py-3 text-center font-bold text-emerald-700 font-mono">${arabVal}</td>
+      <td class="px-4 py-3 text-slate-600 italic text-[11px] max-w-xs truncate">${item.catatan_musyrif || '<span class="text-slate-400 italic">Belum diisi</span>'}</td>
       <td class="px-4 py-3 text-right space-x-1">
         <button onclick="editNilaiDiniyahModal('${item.id}')" class="p-1.5 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 rounded-lg text-xs" title="Edit Nilai">
           <i class="fa-solid fa-pen-to-square"></i>
@@ -9021,7 +9164,7 @@ function renderRaporSheet(report) {
   const nisnMurid = m.nisn || m.nis || '-';
   const kelasMurid = m.kelas || 'IX ABU BAKAR';
   const tahunAjaran = document.getElementById('filter-rapor-tahun-ajaran')?.value || set.academic_year || '2026/2027';
-  const semester = set.semester_active || 'I (Satu)';
+  const semester = document.getElementById('filter-rapor-semester')?.value || set.semester_active || 'Tengah Semester 1';
 
   if (document.getElementById('print-murid-nama')) document.getElementById('print-murid-nama').innerText = namaMurid;
   if (document.getElementById('print-murid-nisn')) document.getElementById('print-murid-nisn').innerText = nisnMurid;
@@ -9048,25 +9191,31 @@ function renderRaporSheet(report) {
     if (!ak.items || ak.items.length === 0) {
       tbodyAk.innerHTML = `<tr><td colspan="4" class="py-3 px-3 text-center text-slate-400 italic border border-black">Belum ada input nilai akademik untuk murid ini.</td></tr>`;
     } else {
-      tbodyAk.innerHTML = ak.items.map((item, idx) => `
-        <tr>
-          <td class="py-1 px-1 text-center border border-black font-medium text-slate-700">${idx + 1}</td>
-          <td class="py-1 px-3 border border-black font-medium text-slate-900">${item.mata_pelajaran}</td>
-          <td class="py-1 px-1 text-center border border-black font-medium text-slate-950 font-mono">${item.nilai_akhir || item.nilai_uts || item.nilai || 85}</td>
-          <td class="py-1 px-3 border border-black text-slate-800 text-[11px] leading-snug font-medium text-justify">${item.capaian_kompetensi || item.catatan_guru || '-'}</td>
-        </tr>
-      `).join('');
+      tbodyAk.innerHTML = ak.items.map((item, idx) => {
+        const hasScore = item.nilai_akhir !== null && item.nilai_akhir !== undefined && item.nilai_akhir !== '';
+        const hasUts = item.nilai_uts !== null && item.nilai_uts !== undefined && item.nilai_uts !== '';
+        const scoreDisplay = hasScore ? item.nilai_akhir : (hasUts ? item.nilai_uts : (item.nilai || '-'));
+        const capaianDisplay = item.capaian_kompetensi || item.catatan_guru || '-';
+
+        return `
+          <tr>
+            <td class="py-1 px-1 text-center border border-black font-medium text-slate-700">${idx + 1}</td>
+            <td class="py-1 px-3 border border-black font-medium text-slate-900">${item.mata_pelajaran}</td>
+            <td class="py-1 px-1 text-center border border-black font-medium text-slate-950 font-mono">${scoreDisplay}</td>
+            <td class="py-1 px-3 border border-black text-slate-800 text-[11px] leading-snug font-medium text-justify">${capaianDisplay}</td>
+          </tr>
+        `;
+      }).join('');
     }
   }
 
   // Section 2: Ahlaq & Kepribadian (6 Aspek Al-Imam)
-  const getKpText = (val, fallback) => val || fallback;
-  if (document.getElementById('print-kp-ibadah')) document.getElementById('print-kp-ibadah').innerText = getKpText(kp.ibadah, BANK_KEPRIBADIAN_ALIMAM.ibadah[0]);
-  if (document.getElementById('print-kp-akhlak')) document.getElementById('print-kp-akhlak').innerText = getKpText(kp.akhlak, BANK_KEPRIBADIAN_ALIMAM.akhlak[0]);
-  if (document.getElementById('print-kp-kedisiplinan')) document.getElementById('print-kp-kedisiplinan').innerText = getKpText(kp.kedisiplinan_kerajinan || kp.kedisiplinan, BANK_KEPRIBADIAN_ALIMAM.kedisiplinan[0]);
-  if (document.getElementById('print-kp-kerapihan')) document.getElementById('print-kp-kerapihan').innerText = getKpText(kp.kerapihan_kebersihan || kp.kerapihan, BANK_KEPRIBADIAN_ALIMAM.kerapihan[0]);
-  if (document.getElementById('print-kp-kepemimpinan')) document.getElementById('print-kp-kepemimpinan').innerText = getKpText(kp.kepemimpinan, BANK_KEPRIBADIAN_ALIMAM.kepemimpinan[0]);
-  if (document.getElementById('print-kp-kerjasama')) document.getElementById('print-kp-kerjasama').innerText = getKpText(kp.kerjasama, BANK_KEPRIBADIAN_ALIMAM.kerjasama[0]);
+  if (document.getElementById('print-kp-ibadah')) document.getElementById('print-kp-ibadah').innerText = kp.ibadah || '-';
+  if (document.getElementById('print-kp-akhlak')) document.getElementById('print-kp-akhlak').innerText = kp.akhlak || '-';
+  if (document.getElementById('print-kp-kedisiplinan')) document.getElementById('print-kp-kedisiplinan').innerText = kp.kedisiplinan_kerajinan || kp.kedisiplinan || '-';
+  if (document.getElementById('print-kp-kerapihan')) document.getElementById('print-kp-kerapihan').innerText = kp.kerapihan_kebersihan || kp.kerapihan || '-';
+  if (document.getElementById('print-kp-kepemimpinan')) document.getElementById('print-kp-kepemimpinan').innerText = kp.kepemimpinan || '-';
+  if (document.getElementById('print-kp-kerjasama')) document.getElementById('print-kp-kerjasama').innerText = kp.kerjasama || '-';
 
   // Section 3: Kehadiran (S, I, A) & Ekskul
   const formatAbsen = (val) => (!val || Number(val) === 0 || val === '-') ? '-' : val;
@@ -9075,15 +9224,15 @@ function renderRaporSheet(report) {
   if (document.getElementById('print-absen-a')) document.getElementById('print-absen-a').innerText = formatAbsen(m.kehadiran_a);
 
   if (document.getElementById('print-ekskul-1-nama')) document.getElementById('print-ekskul-1-nama').innerText = m.ekskul_1 || 'Pramuka';
-  if (document.getElementById('print-ekskul-1-nilai')) document.getElementById('print-ekskul-1-nilai').innerText = m.ekskul_1_nilai || 'Baik';
-  if (document.getElementById('print-ekskul-2-nama')) document.getElementById('print-ekskul-2-nama').innerText = m.ekskul_2 || 'Wushu';
-  if (document.getElementById('print-ekskul-2-nilai')) document.getElementById('print-ekskul-2-nilai').innerText = m.ekskul_2_nilai || 'Baik';
-  if (document.getElementById('print-ekskul-3-nama')) document.getElementById('print-ekskul-3-nama').innerText = m.ekskul_3 || 'Basket';
-  if (document.getElementById('print-ekskul-3-nilai')) document.getElementById('print-ekskul-3-nilai').innerText = m.ekskul_3_nilai || 'BAIK';
+  if (document.getElementById('print-ekskul-1-nilai')) document.getElementById('print-ekskul-1-nilai').innerText = m.ekskul_1_nilai || '-';
+  if (document.getElementById('print-ekskul-2-nama')) document.getElementById('print-ekskul-2-nama').innerText = m.ekskul_2 || '-';
+  if (document.getElementById('print-ekskul-2-nilai')) document.getElementById('print-ekskul-2-nilai').innerText = m.ekskul_2_nilai || '-';
+  if (document.getElementById('print-ekskul-3-nama')) document.getElementById('print-ekskul-3-nama').innerText = m.ekskul_3 || '-';
+  if (document.getElementById('print-ekskul-3-nilai')) document.getElementById('print-ekskul-3-nilai').innerText = m.ekskul_3_nilai || '-';
 
   // Section 4: Catatan Untuk Diperhatikan
   if (document.getElementById('print-kp-catatan')) {
-    document.getElementById('print-kp-catatan').innerText = kp.catatan_diperhatikan || kp.catatan_pembina || BANK_KEPRIBADIAN_ALIMAM.catatan_diperhatikan[0];
+    document.getElementById('print-kp-catatan').innerText = kp.catatan_diperhatikan || kp.catatan_pembina || '-';
   }
 
   // Signatures
@@ -9109,6 +9258,7 @@ function renderRaporKepemimpinanSheet(report) {
   const nisMurid = m.nis || '-';
   const nisnMurid = m.nisn || '-';
   const tahunAjaran = document.getElementById('filter-rapor-tahun-ajaran')?.value || set.academic_year || sklEntry.tahun_ajaran || '2026/2027';
+  const semester = document.getElementById('filter-rapor-semester')?.value || sklEntry.semester || set.semester_active || 'Tengah Semester 1';
 
   let noUrut = m.no_urut || m.no;
   if (!noUrut) {
@@ -9123,7 +9273,7 @@ function renderRaporKepemimpinanSheet(report) {
   if (document.getElementById('print-skl-kelas')) document.getElementById('print-skl-kelas').innerText = kelasMurid;
   if (document.getElementById('print-skl-nis')) document.getElementById('print-skl-nis').innerText = nisMurid;
   if (document.getElementById('print-skl-nisn')) document.getElementById('print-skl-nisn').innerText = nisnMurid;
-  if (document.getElementById('print-skl-semester')) document.getElementById('print-skl-semester').innerText = sklEntry.semester || 'Tengah Semester 1';
+  if (document.getElementById('print-skl-semester')) document.getElementById('print-skl-semester').innerText = semester;
   if (document.getElementById('print-skl-tahun-ajaran')) document.getElementById('print-skl-tahun-ajaran').innerText = tahunAjaran;
   if (document.getElementById('print-skl-no-badge')) document.getElementById('print-skl-no-badge').innerText = noUrut;
 
@@ -9144,7 +9294,7 @@ function renderRaporKepemimpinanSheet(report) {
   }
 
   if (document.getElementById('print-skl-catatan-walas')) {
-    document.getElementById('print-skl-catatan-walas').innerText = sklEntry.catatan_walas || 'Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan';
+    document.getElementById('print-skl-catatan-walas').innerText = sklEntry.catatan_walas || '-';
   }
 
   const tbody = document.getElementById('print-skl-tbody');
@@ -9154,7 +9304,7 @@ function renderRaporKepemimpinanSheet(report) {
   SKL_KEPEMIMPINAN_28.forEach(cat => {
     const rowSpan = cat.items.length;
     cat.items.forEach((item, itemIdx) => {
-      const defaultVal = (scores && scores[item.id]) ? scores[item.id] : (item.id.startsWith('k') ? 'B' : 'A');
+      const defaultVal = (scores && scores[item.id]) ? scores[item.id] : '-';
       if (itemIdx === 0) {
         rowsHtml += `
           <tr>
@@ -9407,7 +9557,8 @@ window.switchCmsTab = switchCmsTab;
 window.previewRaporDirect = previewRaporDirect;
 window.testGasConnection = testGasConnection;
 window.resetDefaultGasUrl = resetDefaultGasUrl;
-window.triggerForceSyncDb = triggerForceSyncDb;
+window.populateAcademicYearsFilterDropdowns = populateAcademicYearsFilterDropdowns;
+window.populateSemesterFilterDropdowns = populateSemesterFilterDropdowns;
 
 // 19. APP STARTUP INITIALIZATION
 window.addEventListener('DOMContentLoaded', () => {
@@ -9417,6 +9568,7 @@ window.addEventListener('DOMContentLoaded', () => {
   // Instantly apply demo/default state
   applyCmsTheme(AppState.cmsSettings);
   populateAcademicYearsFilterDropdowns();
+  populateSemesterFilterDropdowns();
   populateMuridDropdowns();
   renderMuridTable(AppState.muridList);
   renderTableUsers(AppState.usersList);

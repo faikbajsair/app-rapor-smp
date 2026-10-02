@@ -30,9 +30,19 @@
 
       <!-- Filter Tahun Ajaran -->
       <select id="filter-rapor-tahun-ajaran" onchange="onRaporFilterChange()" class="text-xs bg-slate-50 border border-slate-300 rounded-xl px-2.5 py-2 text-slate-800 font-bold focus:ring-2 focus:ring-indigo-500" title="Pilih Tahun Ajaran Rapor">
-        <option value="2026/2027" selected>2026/2027</option>
+        <option value="2026/2027" selected>2026/2027 (Aktif)</option>
+        <option value="2027/2028">2027/2028</option>
+        <option value="2028/2029">2028/2029</option>
         <option value="2025/2026">2025/2026</option>
         <option value="2024/2025">2024/2025</option>
+      </select>
+
+      <!-- Filter Semester -->
+      <select id="filter-rapor-semester" onchange="onRaporFilterChange()" class="text-xs bg-slate-50 border border-slate-300 rounded-xl px-2.5 py-2 text-slate-800 font-bold focus:ring-2 focus:ring-indigo-500" title="Pilih Semester">
+        <option value="Tengah Semester 1" selected>Tengah Semester 1</option>
+        <option value="Akhir Semester 1">Akhir Semester 1</option>
+        <option value="Tengah Semester 2">Tengah Semester 2</option>
+        <option value="Akhir Semester 2">Akhir Semester 2</option>
       </select>
 
       <!-- Filter Kelas -->

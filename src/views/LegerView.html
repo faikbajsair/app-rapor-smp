@@ -40,6 +40,8 @@
         <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Tahun Ajaran</label>
         <select id="leger-filter-tahun-ajaran" onchange="renderLegerMatrix()" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 font-bold text-slate-800 focus:ring-2 focus:ring-emerald-500">
           <option value="2026/2027" selected>2026/2027 (Aktif)</option>
+          <option value="2027/2028">2027/2028</option>
+          <option value="2028/2029">2028/2029</option>
           <option value="2025/2026">2025/2026</option>
           <option value="2024/2025">2024/2025</option>
         </select>
@@ -48,8 +50,10 @@
       <div>
         <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Semester</label>
         <select id="leger-filter-semester" onchange="renderLegerMatrix()" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 font-bold text-slate-800 focus:ring-2 focus:ring-emerald-500">
-          <option value="I (Satu)" selected>I (Satu) / Ganjil</option>
-          <option value="II (Dua)">II (Dua) / Genap</option>
+          <option value="Tengah Semester 1" selected>Tengah Semester 1</option>
+          <option value="Akhir Semester 1">Akhir Semester 1</option>
+          <option value="Tengah Semester 2">Tengah Semester 2</option>
+          <option value="Akhir Semester 2">Akhir Semester 2</option>
         </select>
       </div>
 
@@ -146,7 +150,7 @@
         </div>
         <div class="text-right text-[11px]">
           <h2 class="text-xs font-black uppercase tracking-wider text-slate-900">BUKU LEGER NILAI TENGAH SEMESTER</h2>
-          <p class="text-slate-600">Tahun Ajaran: <strong id="print-leger-ta">2026/2027</strong> | Semester: <strong id="print-leger-sem">I (Satu)</strong></p>
+          <p class="text-slate-600">Tahun Ajaran: <strong id="print-leger-ta">2026/2027</strong> | Semester: <strong id="print-leger-sem">Tengah Semester 1</strong></p>
           <p class="text-slate-600">Kelas: <strong id="print-leger-kelas">IX ABU BAKAR</strong> | Wali Kelas: <strong id="print-leger-walas">Dewi Fitria Nugraheni, S.Pd., Gr.</strong></p>
         </div>
       </div>
