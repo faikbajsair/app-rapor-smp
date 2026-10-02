@@ -92,7 +92,7 @@
     @media print {
       @page {
         size: A4 portrait;
-        margin: 8mm 10mm 8mm 10mm;
+        margin: 6mm 8mm 6mm 8mm;
       }
       
       html, body {
@@ -101,7 +101,7 @@
         overflow: visible !important;
         background: #ffffff !important;
         color: #000000 !important;
-        font-size: 10pt;
+        font-size: 9.5pt;
       }
 
       /* Allow parent containers to flow without clipping pages */
@@ -126,9 +126,10 @@
         transition: none !important;
       }
 
-      /* Hide non-printable UI components */
+      /* Hide non-printable UI components & inactive sheets */
       nav, aside, header, footer, #sidebar-nav, #sidebar-backdrop, #toast-container,
-      .no-print, [class*="no-print"] {
+      .no-print, [class*="no-print"],
+      .hidden, [hidden] {
         display: none !important;
       }
 
@@ -158,6 +159,10 @@
         border: none !important;
         border-radius: 0 !important;
         background: #ffffff !important;
+      }
+
+      .print-container.hidden {
+        display: none !important;
       }
 
       .identity-box {
@@ -191,7 +196,7 @@
 
       th, td {
         border: 1px solid #000000 !important;
-        padding: 3px 5px !important;
+        padding: 2.5px 4px !important;
       }
 
       th {
@@ -212,7 +217,20 @@
       .border-none {
         border: none !important;
         background: transparent !important;
-        padding: 1.5px 3px !important;
+        padding: 1px 2px !important;
+      }
+
+      /* Compact SKL Kepemimpinan 28-row print style (Fits perfectly on 1 page) */
+      #print-sheet-kepemimpinan table th,
+      #print-sheet-kepemimpinan table td {
+        padding: 1.5px 2.5px !important;
+        font-size: 7pt !important;
+        line-height: 1.15 !important;
+      }
+
+      #print-sheet-kepemimpinan .identity-table td {
+        padding: 0.5px 2px !important;
+        font-size: 7.5pt !important;
       }
 
       /* Leger landscape adjustments when printing leger */
@@ -3639,90 +3657,111 @@ NIS	Nama Murid	Mata Pelajaran	KKM	Nilai UTS
   <!-- ========================================================================= -->
   <!-- 2. FORMAT RAPOR KEPEMIMPINAN (SKL KEPEMIMPINAN 9 SIKAP & 28 INDIKATOR)   -->
   <!-- ========================================================================= -->
-  <div id="print-sheet-kepemimpinan" class="print-container hidden bg-white mx-auto max-w-4xl p-6 sm:p-10 rounded-2xl border border-slate-300 shadow-lg text-slate-900 font-serif text-[11px]">
+  <div id="print-sheet-kepemimpinan" class="print-container hidden bg-white mx-auto max-w-4xl p-4 sm:p-8 rounded-2xl border border-slate-300 shadow-lg text-slate-900 font-sans text-[10px]">
     
     <!-- Kop Resmi Yayasan & Akreditasi -->
-    <div class="pb-3 mb-3 border-b-2 border-black flex items-center justify-between gap-4">
+    <div class="pb-2 mb-2 border-b-2 border-black flex items-center justify-between gap-3">
       <img src="https://alimamischool.com/wp-content/uploads/2020/08/Al-Imam-Islamic-School-alimamischool.com-sekolah-sunnah-logo.png" 
-           alt="Logo Al-Imam" class="h-16 w-auto max-w-[120px] object-contain" />
+           alt="Logo Al-Imam" class="h-12 sm:h-14 w-auto max-w-[110px] object-contain" />
       
       <div class="text-center flex-1">
-        <div class="text-[11px] tracking-widest text-slate-800 font-arabic font-bold mb-0.5">مؤسسة الأطفال الأذكياء "دار السلام"</div>
-        <h3 class="text-[11px] font-bold tracking-wider text-slate-900 uppercase">YAYASAN SEKOLAH ANAK PINTAR DARUSSALAM</h3>
-        <h1 class="text-sm sm:text-base font-black text-slate-950 uppercase tracking-wide">
+        <div class="text-[10px] tracking-widest text-slate-800 font-bold mb-0.5">مؤسسة الأطفال الأذكياء "دار السلام"</div>
+        <h3 class="text-[10px] font-bold tracking-wider text-slate-900 uppercase">YAYASAN SEKOLAH ANAK PINTAR DARUSSALAM</h3>
+        <h1 class="text-xs sm:text-sm font-black text-slate-950 uppercase tracking-wide leading-tight">
           SMP AL-IMAM ISLAMIC SCHOOL
         </h1>
-        <p class="text-[9px] text-slate-700 font-sans mt-0.5">TERAKREDITASI "B" No.SK: 02.00/347/SK/BAP-SM/XI/2017</p>
+        <p class="text-[8.5px] text-slate-700 font-sans mt-0.5">TERAKREDITASI "B" No.SK: 02.00/347/SK/BAP-SM/XI/2017</p>
       </div>
 
       <!-- Yellow Student No Badge (Disembunyikan saat cetak) -->
-      <div class="no-print w-14 h-7 bg-amber-300 border border-black flex items-center justify-center font-bold text-sm text-slate-950 shadow-2xs font-sans shrink-0" id="print-skl-no-badge">
+      <div class="no-print w-12 h-6 bg-amber-300 border border-black flex items-center justify-center font-bold text-xs text-slate-950 shadow-2xs font-sans shrink-0" id="print-skl-no-badge">
         5
       </div>
     </div>
 
     <!-- Judul Rapor Kepemimpinan -->
-    <div class="text-center mb-4">
-      <h2 class="text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-950">
+    <div class="text-center mb-2">
+      <h2 class="text-xs font-black uppercase tracking-wider text-slate-950">
         RAPORT KEPEMIMPINAN SMP AI IS
       </h2>
-      <h3 class="text-xs font-bold uppercase tracking-wider text-slate-800">
+      <h3 class="text-[10.5px] font-bold uppercase tracking-wider text-slate-800">
         TAHUN AJARAN <span id="print-skl-tahun-ajaran">2025/2026</span>
       </h3>
     </div>
 
-    <!-- Identitas Murid & Info Sekolah (ISI DATA MANUAL) -->
-    <div class="grid grid-cols-1 md:grid-cols-12 gap-4 text-[11px] mb-4 pb-2 border-b border-slate-300">
-      <div class="md:col-span-7 font-sans">
-        <table class="w-full identity-table border-none border-collapse text-[11px]">
+    <!-- Identitas Murid & Info Sekolah (2 Kolom Presisi) -->
+    <div class="flex justify-between items-start gap-4 text-[10px] mb-2 pb-1.5 border-b border-black font-sans">
+      <!-- Kolom Kiri: Identitas Siswa -->
+      <div class="w-[58%]">
+        <table class="w-full identity-table border-none border-collapse text-[10px]">
           <tbody>
             <tr class="border-none">
-              <td class="w-48 py-0.5 px-0 font-medium text-slate-700 whitespace-nowrap border-none">Nama</td>
-              <td class="w-3 py-0.5 px-0 font-bold text-slate-950 text-center border-none">:</td>
-              <td class="py-0.5 px-1 font-bold text-slate-950 uppercase border-none"><span id="print-skl-nama">AYESHA ALFIRA RAFANDA</span></td>
+              <td class="w-40 py-0.25 px-0 font-medium text-slate-700 whitespace-nowrap border-none">Nama</td>
+              <td class="w-2.5 py-0.25 px-0 font-bold text-slate-950 text-center border-none">:</td>
+              <td class="py-0.25 px-1 font-bold text-slate-950 uppercase border-none"><span id="print-skl-nama">AYESHA ALFIRA RAFANDA</span></td>
             </tr>
             <tr class="border-none">
-              <td class="w-48 py-0.5 px-0 font-medium text-slate-700 whitespace-nowrap border-none">Kelas</td>
-              <td class="w-3 py-0.5 px-0 font-bold text-slate-950 text-center border-none">:</td>
-              <td class="py-0.5 px-1 font-bold text-slate-950 border-none"><span id="print-skl-kelas">IX Ummu Salamah</span></td>
+              <td class="w-40 py-0.25 px-0 font-medium text-slate-700 whitespace-nowrap border-none">Kelas</td>
+              <td class="w-2.5 py-0.25 px-0 font-bold text-slate-950 text-center border-none">:</td>
+              <td class="py-0.25 px-1 font-bold text-slate-950 border-none"><span id="print-skl-kelas">IX Ummu Salamah</span></td>
             </tr>
             <tr class="border-none">
-              <td class="w-48 py-0.5 px-0 font-medium text-slate-700 whitespace-nowrap border-none">Nomor Induk Siswa</td>
-              <td class="w-3 py-0.5 px-0 font-bold text-slate-950 text-center border-none">:</td>
-              <td class="py-0.5 px-1 font-bold text-slate-950 font-mono border-none"><span id="print-skl-nis">232407005</span></td>
+              <td class="w-40 py-0.25 px-0 font-medium text-slate-700 whitespace-nowrap border-none">Nomor Induk Siswa</td>
+              <td class="w-2.5 py-0.25 px-0 font-bold text-slate-950 text-center border-none">:</td>
+              <td class="py-0.25 px-1 font-bold text-slate-950 font-mono border-none"><span id="print-skl-nis">232407005</span></td>
             </tr>
             <tr class="border-none">
-              <td class="w-48 py-0.5 px-0 font-medium text-slate-700 whitespace-nowrap border-none">Nomor Induk Siswa Nasional</td>
-              <td class="w-3 py-0.5 px-0 font-bold text-slate-950 text-center border-none">:</td>
-              <td class="py-0.5 px-1 font-bold text-slate-950 font-mono border-none"><span id="print-skl-nisn">0117636003</span></td>
+              <td class="w-40 py-0.25 px-0 font-medium text-slate-700 whitespace-nowrap border-none">Nomor Induk Siswa Nasional</td>
+              <td class="w-2.5 py-0.25 px-0 font-bold text-slate-950 text-center border-none">:</td>
+              <td class="py-0.25 px-1 font-bold text-slate-950 font-mono border-none"><span id="print-skl-nisn">0117636003</span></td>
             </tr>
             <tr class="border-none">
-              <td class="w-48 py-0.5 px-0 font-medium text-slate-700 whitespace-nowrap border-none">Semester</td>
-              <td class="w-3 py-0.5 px-0 font-bold text-slate-950 text-center border-none">:</td>
-              <td class="py-0.5 px-1 font-bold text-slate-950 border-none"><span id="print-skl-semester">Tengah Semester 1</span></td>
+              <td class="w-40 py-0.25 px-0 font-medium text-slate-700 whitespace-nowrap border-none">Semester</td>
+              <td class="w-2.5 py-0.25 px-0 font-bold text-slate-950 text-center border-none">:</td>
+              <td class="py-0.25 px-1 font-bold text-slate-950 border-none"><span id="print-skl-semester">Tengah Semester 1</span></td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      <div class="md:col-span-5 space-y-1 font-sans text-right md:text-left bg-slate-50 p-2.5 rounded border border-slate-300 text-[10px]">
-        <div class="font-bold text-slate-900 border-b border-slate-200 pb-1 mb-1 text-[9px] uppercase tracking-wider">ISI DATA MANUAL</div>
-        <div class="grid grid-cols-3 gap-1"><span class="text-slate-600 font-semibold">Nomor</span><span class="col-span-2 font-bold text-slate-900">: <span id="print-skl-no-surat">421.3/079/SMP.AIIS/VI/2022</span></span></div>
-        <div class="grid grid-cols-3 gap-1"><span class="text-slate-600 font-semibold">Nama Sekolah</span><span class="col-span-2 font-bold text-slate-900">: SMP AL-IMAM ISLAMIC SCHOOL</span></div>
-        <div class="grid grid-cols-3 gap-1"><span class="text-slate-600 font-semibold">NPSN</span><span class="col-span-2 font-bold text-slate-900">: 69915055</span></div>
-        <div class="grid grid-cols-3 gap-1"><span class="text-slate-600 font-semibold">walas</span><span class="col-span-2 font-bold text-slate-900">: <span id="print-skl-walas-info">Dewi Fitria Nugraheni, S.Pd., Gr.</span></span></div>
+      <!-- Kolom Kanan: Info Sekolah -->
+      <div class="w-[40%] bg-slate-50/80 p-2 rounded border border-slate-300 text-[9.5px]">
+        <table class="w-full identity-table border-none border-collapse text-[9.5px]">
+          <tbody>
+            <tr class="border-none">
+              <td class="w-24 py-0.25 px-0 font-semibold text-slate-600 border-none">Nomor</td>
+              <td class="w-2 py-0.25 px-0 font-bold text-slate-900 border-none">:</td>
+              <td class="py-0.25 px-1 font-bold text-slate-900 border-none"><span id="print-skl-no-surat">421.3/079/SMP.AIIS/VI/2022</span></td>
+            </tr>
+            <tr class="border-none">
+              <td class="w-24 py-0.25 px-0 font-semibold text-slate-600 border-none">Nama Sekolah</td>
+              <td class="w-2 py-0.25 px-0 font-bold text-slate-900 border-none">:</td>
+              <td class="py-0.25 px-1 font-bold text-slate-900 border-none">SMP AL-IMAM ISLAMIC SCHOOL</td>
+            </tr>
+            <tr class="border-none">
+              <td class="w-24 py-0.25 px-0 font-semibold text-slate-600 border-none">NPSN</td>
+              <td class="w-2 py-0.25 px-0 font-bold text-slate-900 border-none">:</td>
+              <td class="py-0.25 px-1 font-bold text-slate-900 font-mono border-none">69915055</td>
+            </tr>
+            <tr class="border-none">
+              <td class="w-24 py-0.25 px-0 font-semibold text-slate-600 border-none">Walas</td>
+              <td class="w-2 py-0.25 px-0 font-bold text-slate-900 border-none">:</td>
+              <td class="py-0.25 px-1 font-bold text-slate-900 border-none"><span id="print-skl-walas-info">Dewi Fitria Nugraheni, S.Pd., Gr.</span></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
 
     <!-- Tabel 9 Sikap & 28 Indikator SKL -->
-    <div class="mb-4 page-break-inside-avoid">
-      <table class="w-full text-left text-[10.5px] border border-black border-collapse font-sans">
+    <div class="mb-1.5">
+      <table class="w-full text-left text-[9.5px] border border-black border-collapse font-sans leading-tight">
         <thead class="bg-slate-100 text-slate-950 font-bold border-b border-black text-center">
           <tr>
-            <th class="w-8 py-1 px-1 border border-black">NO</th>
-            <th class="w-48 py-1 px-2 text-left border border-black">SIKAP</th>
-            <th class="py-1 px-2 text-left border border-black">INDIKATOR</th>
-            <th class="w-14 py-1 px-1 border border-black">NILAI</th>
+            <th class="w-7 py-0.5 px-0.5 border border-black">NO</th>
+            <th class="w-40 py-0.5 px-1.5 text-left border border-black">SIKAP</th>
+            <th class="py-0.5 px-1.5 text-left border border-black">INDIKATOR</th>
+            <th class="w-12 py-0.5 px-0.5 border border-black">NILAI</th>
           </tr>
         </thead>
         <tbody id="print-skl-tbody">
@@ -3732,59 +3771,57 @@ NIS	Nama Murid	Mata Pelajaran	KKM	Nilai UTS
     </div>
 
     <!-- Keterangan Nilai A/B/C/D -->
-    <div class="mb-4 text-[10px] font-sans font-bold text-slate-800">
-      Keterangan : &nbsp;&nbsp;&nbsp; A : Sangatbaik &nbsp;&nbsp;&nbsp; B : Baik &nbsp;&nbsp;&nbsp; C : Cukup Baik &nbsp;&nbsp;&nbsp; D : Kurang
+    <div class="mb-1.5 text-[8.5px] font-sans font-bold text-slate-800">
+      Keterangan : &nbsp;&nbsp;&nbsp; A : Sangat Baik &nbsp;&nbsp;&nbsp; B : Baik &nbsp;&nbsp;&nbsp; C : Cukup Baik &nbsp;&nbsp;&nbsp; D : Kurang
     </div>
 
-    <!-- Catatan Wali Kelas & Orang Tua (Persis Baris 57-63 Excel) -->
-    <div class="space-y-2 mb-6 font-sans page-break-inside-avoid">
-      <div class="border border-black p-2.5 bg-white">
-        <span class="font-bold block text-[10px] text-slate-800 mb-1">Catatan Wali Kelas</span>
-        <p id="print-skl-catatan-walas" class="text-[10.5px] italic text-slate-900 min-h-[30px] flex items-center">
+    <!-- Catatan Wali Kelas & Orang Tua (Berdampingan 2 Kolom) -->
+    <div class="grid grid-cols-2 gap-2 mb-2 font-sans">
+      <div class="border border-black p-1.5 bg-white">
+        <span class="font-bold block text-[9px] text-slate-800 mb-0.5">Catatan Wali Kelas</span>
+        <p id="print-skl-catatan-walas" class="text-[9.5px] italic text-slate-900 min-h-[24px] flex items-center leading-snug">
           Telah menunjukkan sikap tanggung jawab dan disiplin; terus latih kemampuan komunikasi agar lebih efektif dalam memimpin.
         </p>
       </div>
 
-      <div class="border border-black p-2.5 bg-white">
-        <span class="font-bold block text-[10px] text-slate-800 mb-1">Catatan Orang Tua</span>
-        <div class="min-h-[30px]"></div>
+      <div class="border border-black p-1.5 bg-white">
+        <span class="font-bold block text-[9px] text-slate-800 mb-0.5">Catatan Orang Tua</span>
+        <div class="min-h-[24px]"></div>
       </div>
     </div>
 
     <!-- Tanda Tangan 3 Pihak Resmi (Orang Tua - Walas - Kepsek) -->
-    <div class="grid grid-cols-3 text-[10.5px] font-sans gap-4 pt-2 text-center page-break-inside-avoid">
+    <div class="grid grid-cols-3 text-[9.5px] font-sans gap-2 pt-1 text-center page-break-inside-avoid">
       <!-- Orang Tua / Wali -->
-      <div class="flex flex-col justify-between h-28 text-center">
+      <div class="flex flex-col justify-between h-20 text-center">
         <div>
-          <span class="text-slate-600 block text-[9.5px]">Mengetahui :</span>
-          <span class="font-bold text-slate-800">Orang Tua/Wali</span>
+          <span class="text-slate-600 block text-[8.5px]">Mengetahui,</span>
+          <span class="font-bold text-slate-900">Orang Tua / Wali</span>
         </div>
-        <div class="text-slate-800 font-medium">( ........................................ )</div>
+        <div class="text-slate-800 font-medium text-[9px]">( ........................................ )</div>
       </div>
 
       <!-- Wali Kelas -->
-      <div class="flex flex-col justify-between h-28 text-center items-center">
-        <span class="font-bold text-slate-800">Wali Kelas</span>
-        <div class="my-0.5 flex items-center justify-center">
-          <svg class="h-10 w-24 text-slate-800 opacity-90" viewBox="0 0 120 50" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M 10 35 C 25 10, 35 45, 45 20 C 55 5, 50 40, 65 25 C 75 15, 80 35, 95 28 C 105 22, 110 30, 115 26 M 20 38 Q 60 48 105 36" />
-          </svg>
+      <div class="flex flex-col justify-between h-20 text-center items-center">
+        <div>
+          <span class="text-slate-700 block text-[8.5px]">Bogor, <span id="print-skl-report-date">17 Oktober 2026</span></span>
+          <span class="font-bold text-slate-900">Wali Kelas,</span>
         </div>
         <div>
-          <span class="font-bold underline text-slate-950 block" id="print-skl-ttd-walas">Dewi Fitria Nugraheni, S.Pd., Gr.</span>
+          <span class="font-bold underline text-slate-950 block text-[9.5px]" id="print-skl-ttd-walas">Dewi Fitria Nugraheni, S.Pd., Gr.</span>
+          <span class="text-[8.5px] text-slate-700 block" id="print-skl-ttd-walas-nip">NIP.</span>
         </div>
       </div>
 
       <!-- Kepala Sekolah -->
-      <div class="flex flex-col justify-between h-28 text-center items-center">
-        <span class="font-bold text-slate-800">Kepala Sekolah</span>
-        <div class="my-0.5 flex items-center justify-center">
-          <!-- QR Code Digital Verification -->
-          <img src="https://api.qrserver.com/v1/create-qr-code/?size=50x50&data=SMP-ALIMAM-RAPOR-KEPEMIMPINAN-ARIF-ROHMAN-VERIFIED" 
-               alt="QR Code Verifikasi" class="w-10 h-10 border border-slate-300 p-0.5 rounded shadow-2xs" />
+      <div class="flex flex-col justify-between h-20 text-center items-center">
+        <div>
+          <span class="text-slate-600 block text-[8.5px]">&nbsp;</span>
+          <span class="font-bold text-slate-900">Kepala Sekolah,</span>
         </div>
         <div>
-          <span class="font-bold underline text-slate-950 block" id="print-skl-ttd-kepsek">Arif Rohman, S.Sos., M.Pd.</span>
+          <span class="font-bold underline text-slate-950 block text-[9.5px]" id="print-skl-ttd-kepsek">Arif Rohman, S.Sos., M.Pd.</span>
+          <span class="text-[8.5px] text-slate-700 block" id="print-skl-ttd-kepsek-nip">NIP.</span>
         </div>
       </div>
     </div>
@@ -9094,6 +9131,17 @@ function renderRaporKepemimpinanSheet(report) {
   if (document.getElementById('print-skl-walas-info')) document.getElementById('print-skl-walas-info').innerText = waliKelasMurid;
   if (document.getElementById('print-skl-ttd-walas')) document.getElementById('print-skl-ttd-walas').innerText = waliKelasMurid;
   if (document.getElementById('print-skl-ttd-kepsek')) document.getElementById('print-skl-ttd-kepsek').innerText = set.headmaster_name || 'Arif Rohman, S.Sos., M.Pd.';
+  
+  if (document.getElementById('print-skl-report-date')) {
+    document.getElementById('print-skl-report-date').innerText = set.report_date || '17 Oktober 2026';
+  }
+  if (document.getElementById('print-skl-ttd-walas-nip')) {
+    const walasNip = m.wali_nip || m.niy || m.niy_walas || set.wali_nip;
+    document.getElementById('print-skl-ttd-walas-nip').innerText = walasNip ? `NIP. ${walasNip}` : 'NIP.';
+  }
+  if (document.getElementById('print-skl-ttd-kepsek-nip')) {
+    document.getElementById('print-skl-ttd-kepsek-nip').innerText = set.headmaster_nip ? `NIP. ${set.headmaster_nip}` : 'NIP.';
+  }
 
   if (document.getElementById('print-skl-catatan-walas')) {
     document.getElementById('print-skl-catatan-walas').innerText = sklEntry.catatan_walas || 'Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan';
@@ -9110,17 +9158,17 @@ function renderRaporKepemimpinanSheet(report) {
       if (itemIdx === 0) {
         rowsHtml += `
           <tr>
-            <td rowspan="${rowSpan}" class="py-1 px-1 text-center border border-black font-semibold text-slate-800 align-top">${cat.no}</td>
-            <td rowspan="${rowSpan}" class="py-1 px-2 border border-black font-semibold text-slate-900 align-top">${cat.kategori}</td>
-            <td class="py-1 px-2 border border-black text-slate-900">${item.text}</td>
-            <td class="py-1 px-1 text-center border border-black font-bold font-mono text-slate-950">${defaultVal}</td>
+            <td rowspan="${rowSpan}" class="py-[1.5px] px-1 text-center border border-black font-semibold text-slate-800 align-middle">${cat.no}</td>
+            <td rowspan="${rowSpan}" class="py-[1.5px] px-1.5 border border-black font-semibold text-slate-900 align-middle leading-tight">${cat.kategori}</td>
+            <td class="py-[1.5px] px-1.5 border border-black text-slate-900 leading-tight">${item.text}</td>
+            <td class="py-[1.5px] px-0.5 text-center border border-black font-bold font-mono text-slate-950">${defaultVal}</td>
           </tr>
         `;
       } else {
         rowsHtml += `
           <tr>
-            <td class="py-1 px-2 border border-black text-slate-900">${item.text}</td>
-            <td class="py-1 px-1 text-center border border-black font-bold font-mono text-slate-950">${defaultVal}</td>
+            <td class="py-[1.5px] px-1.5 border border-black text-slate-900 leading-tight">${item.text}</td>
+            <td class="py-[1.5px] px-0.5 text-center border border-black font-bold font-mono text-slate-950">${defaultVal}</td>
           </tr>
         `;
       }

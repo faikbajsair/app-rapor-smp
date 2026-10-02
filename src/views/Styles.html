@@ -85,7 +85,7 @@
   @media print {
     @page {
       size: A4 portrait;
-      margin: 8mm 10mm 8mm 10mm;
+      margin: 6mm 8mm 6mm 8mm;
     }
     
     html, body {
@@ -94,7 +94,7 @@
       overflow: visible !important;
       background: #ffffff !important;
       color: #000000 !important;
-      font-size: 10pt;
+      font-size: 9.5pt;
     }
 
     /* Allow parent containers to flow without clipping pages */
@@ -119,9 +119,10 @@
       transition: none !important;
     }
 
-    /* Hide non-printable UI components */
+    /* Hide non-printable UI components & inactive sheets */
     nav, aside, header, footer, #sidebar-nav, #sidebar-backdrop, #toast-container,
-    .no-print, [class*="no-print"] {
+    .no-print, [class*="no-print"],
+    .hidden, [hidden] {
       display: none !important;
     }
 
@@ -151,6 +152,10 @@
       border: none !important;
       border-radius: 0 !important;
       background: #ffffff !important;
+    }
+
+    .print-container.hidden {
+      display: none !important;
     }
 
     .identity-box {
@@ -184,7 +189,7 @@
 
     th, td {
       border: 1px solid #000000 !important;
-      padding: 3px 5px !important;
+      padding: 2.5px 4px !important;
     }
 
     th {
@@ -205,7 +210,20 @@
     .border-none {
       border: none !important;
       background: transparent !important;
-      padding: 1.5px 3px !important;
+      padding: 1px 2px !important;
+    }
+
+    /* Compact SKL Kepemimpinan 28-row print style (Fits perfectly on 1 page) */
+    #print-sheet-kepemimpinan table th,
+    #print-sheet-kepemimpinan table td {
+      padding: 1.5px 2.5px !important;
+      font-size: 7pt !important;
+      line-height: 1.15 !important;
+    }
+
+    #print-sheet-kepemimpinan .identity-table td {
+      padding: 0.5px 2px !important;
+      font-size: 7.5pt !important;
     }
 
     /* Leger landscape adjustments when printing leger */

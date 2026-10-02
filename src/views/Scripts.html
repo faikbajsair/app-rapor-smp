@@ -4602,6 +4602,17 @@ function renderRaporKepemimpinanSheet(report) {
   if (document.getElementById('print-skl-walas-info')) document.getElementById('print-skl-walas-info').innerText = waliKelasMurid;
   if (document.getElementById('print-skl-ttd-walas')) document.getElementById('print-skl-ttd-walas').innerText = waliKelasMurid;
   if (document.getElementById('print-skl-ttd-kepsek')) document.getElementById('print-skl-ttd-kepsek').innerText = set.headmaster_name || 'Arif Rohman, S.Sos., M.Pd.';
+  
+  if (document.getElementById('print-skl-report-date')) {
+    document.getElementById('print-skl-report-date').innerText = set.report_date || '17 Oktober 2026';
+  }
+  if (document.getElementById('print-skl-ttd-walas-nip')) {
+    const walasNip = m.wali_nip || m.niy || m.niy_walas || set.wali_nip;
+    document.getElementById('print-skl-ttd-walas-nip').innerText = walasNip ? `NIP. ${walasNip}` : 'NIP.';
+  }
+  if (document.getElementById('print-skl-ttd-kepsek-nip')) {
+    document.getElementById('print-skl-ttd-kepsek-nip').innerText = set.headmaster_nip ? `NIP. ${set.headmaster_nip}` : 'NIP.';
+  }
 
   if (document.getElementById('print-skl-catatan-walas')) {
     document.getElementById('print-skl-catatan-walas').innerText = sklEntry.catatan_walas || 'Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan';
@@ -4618,17 +4629,17 @@ function renderRaporKepemimpinanSheet(report) {
       if (itemIdx === 0) {
         rowsHtml += `
           <tr>
-            <td rowspan="${rowSpan}" class="py-1 px-1 text-center border border-black font-semibold text-slate-800 align-top">${cat.no}</td>
-            <td rowspan="${rowSpan}" class="py-1 px-2 border border-black font-semibold text-slate-900 align-top">${cat.kategori}</td>
-            <td class="py-1 px-2 border border-black text-slate-900">${item.text}</td>
-            <td class="py-1 px-1 text-center border border-black font-bold font-mono text-slate-950">${defaultVal}</td>
+            <td rowspan="${rowSpan}" class="py-[1.5px] px-1 text-center border border-black font-semibold text-slate-800 align-middle">${cat.no}</td>
+            <td rowspan="${rowSpan}" class="py-[1.5px] px-1.5 border border-black font-semibold text-slate-900 align-middle leading-tight">${cat.kategori}</td>
+            <td class="py-[1.5px] px-1.5 border border-black text-slate-900 leading-tight">${item.text}</td>
+            <td class="py-[1.5px] px-0.5 text-center border border-black font-bold font-mono text-slate-950">${defaultVal}</td>
           </tr>
         `;
       } else {
         rowsHtml += `
           <tr>
-            <td class="py-1 px-2 border border-black text-slate-900">${item.text}</td>
-            <td class="py-1 px-1 text-center border border-black font-bold font-mono text-slate-950">${defaultVal}</td>
+            <td class="py-[1.5px] px-1.5 border border-black text-slate-900 leading-tight">${item.text}</td>
+            <td class="py-[1.5px] px-0.5 text-center border border-black font-bold font-mono text-slate-950">${defaultVal}</td>
           </tr>
         `;
       }
