@@ -249,6 +249,180 @@ function getCapaianByScore(mapel, score) {
   return capTemplate.bimbingan || `Ananda perlu bimbingan dalam memahami materi pelajaran ${mapel}.`;
 }
 
+// 1b. MASTER BANK TUJUAN PEMBELAJARAN (TP) 16 MAPEL KURIKULUM MERDEKA FASE D
+const DEFAULT_TP_BANK_16 = [
+  // 1. Akidah
+  { id: 'TP-AKD-01', kode_tp: 'TP 1', mata_pelajaran: 'Akidah', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Memahami dasar-dasar aqidah Islam tentang mengenal Allah & sifat-sifat-Nya berdasarkan Al-Qur\'an dan As-Sunnah', ringkasan_tp: 'memahami dasar aqidah Islam tentang mengenal Allah & sifat-sifat-Nya', status: 'Aktif' },
+  { id: 'TP-AKD-02', kode_tp: 'TP 2', mata_pelajaran: 'Akidah', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menjelaskan rukun iman dan implementasinya dalam kehidupan sehari-hari', ringkasan_tp: 'menjelaskan rukun iman dan implementasinya dalam kehidupan', status: 'Aktif' },
+  { id: 'TP-AKD-03', kode_tp: 'TP 3', mata_pelajaran: 'Akidah', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Meneladani sifat-sifat mulia Rasulullah SAW dan menjauhi perilaku syirik', ringkasan_tp: 'meneladani sifat mulia Rasulullah SAW dan menjauhi kesyirikan', status: 'Aktif' },
+  { id: 'TP-AKD-04', kode_tp: 'TP 4', mata_pelajaran: 'Akidah', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Memahami makna bersyukur dan tawakal dalam menghadapi berbagai ujian hidup', ringkasan_tp: 'memahami hakikat syukur dan tawakal dalam kehidupan', status: 'Aktif' },
+
+  // 2. Akhlak
+  { id: 'TP-AKH-01', kode_tp: 'TP 1', mata_pelajaran: 'Akhlak', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menerapkan etika dan adab menuntut ilmu di majelis serta menghormati guru', ringkasan_tp: 'menerapkan adab menuntut ilmu dan menghormati guru', status: 'Aktif' },
+  { id: 'TP-AKH-02', kode_tp: 'TP 2', mata_pelajaran: 'Akhlak', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menunjukkan adab berbakti kepada orang tua (birrul walidain) dalam keseharian', ringkasan_tp: 'menunjukkan adab birrul walidain kepada orang tua', status: 'Aktif' },
+  { id: 'TP-AKH-03', kode_tp: 'TP 3', mata_pelajaran: 'Akhlak', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Membiasakan sifat jujur, amanah, dan menjaga lisan dalam pergaulan', ringkasan_tp: 'membiasakan sifat jujur, amanah, dan menjaga lisan', status: 'Aktif' },
+  { id: 'TP-AKH-04', kode_tp: 'TP 4', mata_pelajaran: 'Akhlak', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menghindari perilaku tercela seperti ghibah, namimah, dan kesombongan', ringkasan_tp: 'menghindari perilaku tercela seperti ghibah dan sombong', status: 'Aktif' },
+
+  // 3. Hadits
+  { id: 'TP-HDT-01', kode_tp: 'TP 1', mata_pelajaran: 'Hadits', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menghafal matan dan terjemah Hadits Arbain tentang niat serta kebersihan', ringkasan_tp: 'menghafal matan & terjemah hadits tentang niat dan kebersihan', status: 'Aktif' },
+  { id: 'TP-HDT-02', kode_tp: 'TP 2', mata_pelajaran: 'Hadits', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menjelaskan kandungan hadits tentang ukhuwah islamiyah dan larangan berbuat dzalim', ringkasan_tp: 'memahami hadits tentang ukhuwah islamiyah dan larangan dzalim', status: 'Aktif' },
+  { id: 'TP-HDT-03', kode_tp: 'TP 3', mata_pelajaran: 'Hadits', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menerapkan pesan hadits tentang menjaga lisan dan memuliakan tamu', ringkasan_tp: 'menerapkan adab memuliakan tamu dan menjaga perkataan', status: 'Aktif' },
+  { id: 'TP-HDT-04', kode_tp: 'TP 4', mata_pelajaran: 'Hadits', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menganalisis intisari sanad dan matan hadits-hadits shahih pilihan', ringkasan_tp: 'menganalisis intisari kandungan hadits shahih pilihan', status: 'Aktif' },
+
+  // 4. Fikih
+  { id: 'TP-FKH-01', kode_tp: 'TP 1', mata_pelajaran: 'Fikih', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Memahami konsep bersuci (thaharah), jenis-jenis air, dan tata cara membersihkan najis', ringkasan_tp: 'memahami tata cara thaharah dari hadats dan najis', status: 'Aktif' },
+  { id: 'TP-FKH-02', kode_tp: 'TP 2', mata_pelajaran: 'Fikih', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Mempraktikkan rukun, syarat sah, dan gerakan shalat fardhu secara tertib dan benar', ringkasan_tp: 'mempraktikkan shalat fardhu dan sunnah dengan sempurna', status: 'Aktif' },
+  { id: 'TP-FKH-03', kode_tp: 'TP 3', mata_pelajaran: 'Fikih', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menjelaskan ketentuan shalat berjamaah, shalat jamak, dan shalat qashar', ringkasan_tp: 'memahami ketentuan shalat berjamaah, jamak, dan qashar', status: 'Aktif' },
+  { id: 'TP-FKH-04', kode_tp: 'TP 4', mata_pelajaran: 'Fikih', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Memahami tata cara sujud sahwi, sujud tilawah, dan sujud syukur', ringkasan_tp: 'mempraktikkan sujud sahwi, sujud tilawah, dan sujud syukur', status: 'Aktif' },
+
+  // 5. SKI
+  { id: 'TP-SKI-01', kode_tp: 'TP 1', mata_pelajaran: 'SKI', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menganalisis kondisi bangsa Arab pra-Islam dan latar belakang diutusnya Rasulullah SAW', ringkasan_tp: 'menganalisis kondisi bangsa Arab pra-Islam dan diutusnya Rasulullah', status: 'Aktif' },
+  { id: 'TP-SKI-02', kode_tp: 'TP 2', mata_pelajaran: 'SKI', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menjelaskan misi dakwah Nabi Muhammad SAW periode Makkah dan ketabahan para sahabat', ringkasan_tp: 'memahami strategi dakwah Rasulullah SAW periode Makkah', status: 'Aktif' },
+  { id: 'TP-SKI-03', kode_tp: 'TP 3', mata_pelajaran: 'SKI', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menganalisis peristiwa hijrah ke Madinah dan pembentukan Piagam Madinah', ringkasan_tp: 'menganalisis sejarah peristiwa hijrah dan piagam Madinah', status: 'Aktif' },
+  { id: 'TP-SKI-04', kode_tp: 'TP 4', mata_pelajaran: 'SKI', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Meneladani kepemimpinan dan perjuangan Khulafaur Rasyidin dalam peradaban Islam', ringkasan_tp: 'meneladani kepemimpinan dan perjuangan Khulafaur Rasyidin', status: 'Aktif' },
+
+  // 6. Pendidikan Pancasila
+  { id: 'TP-PPN-01', kode_tp: 'TP 1', mata_pelajaran: 'Pendidikan Pancasila', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menganalisis sejarah perumusan dan penetapan Pancasila sebagai dasar negara', ringkasan_tp: 'menganalisis sejarah kelahiran dan penetapan Pancasila', status: 'Aktif' },
+  { id: 'TP-PPN-02', kode_tp: 'TP 2', mata_pelajaran: 'Pendidikan Pancasila', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Mengidentifikasi norma, hak, dan kewajiban warga negara dalam bermasyarakat', ringkasan_tp: 'mengidentifikasi norma, hak, dan kewajiban warga negara', status: 'Aktif' },
+  { id: 'TP-PPN-03', kode_tp: 'TP 3', mata_pelajaran: 'Pendidikan Pancasila', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menunjukkan komitmen persatuan dan kesatuan bangsa dalam bingkai kebinekaan', ringkasan_tp: 'menunjukkan sikap persatuan dalam keberagaman suku dan budaya', status: 'Aktif' },
+  { id: 'TP-PPN-04', kode_tp: 'TP 4', mata_pelajaran: 'Pendidikan Pancasila', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Memahami hierarki dan ketaatan terhadap peraturan perundang-undangan nasional', ringkasan_tp: 'memahami hierarki peraturan perundang-undangan nasional', status: 'Aktif' },
+
+  // 7. Bahasa Indonesia
+  { id: 'TP-BIN-01', kode_tp: 'TP 1', mata_pelajaran: 'Bahasa Indonesia', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menganalisis struktur dan ciri kebahasaan teks deskripsi tentang objek dan lingkungan sekitar', ringkasan_tp: 'menganalisis struktur dan ciri kebahasaan teks deskripsi', status: 'Aktif' },
+  { id: 'TP-BIN-02', kode_tp: 'TP 2', mata_pelajaran: 'Bahasa Indonesia', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menelaah unsur-unsur pembangun dan nilai kearifan dalam puisi rakyat dan pantun', ringkasan_tp: 'menelaah unsur pembangun dan pesan dalam puisi rakyat', status: 'Aktif' },
+  { id: 'TP-BIN-03', kode_tp: 'TP 3', mata_pelajaran: 'Bahasa Indonesia', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menulis teks cerita fantasi / narasi imajinatif dengan memperhatikan kaidah PUEBI', ringkasan_tp: 'menulis teks cerita narasi kreatif dengan kaidah ejaan yang tepat', status: 'Aktif' },
+  { id: 'TP-BIN-04', kode_tp: 'TP 4', mata_pelajaran: 'Bahasa Indonesia', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menyajikan petunjuk langkah-langkah kerja secara sistematis dalam teks prosedur', ringkasan_tp: 'menyajikan langkah-langkah sistematis dalam teks prosedur', status: 'Aktif' },
+
+  // 8. Bahasa Inggris
+  { id: 'TP-BIG-01', kode_tp: 'TP 1', mata_pelajaran: 'Bahasa Inggris', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menggunakan ungkapan greeting, self-introduction, dan penggunaan to be (is, am, are) secara tepat', ringkasan_tp: 'menggunakan ungkapan salam, perkenalan diri, dan to be dengan tepat', status: 'Aktif' },
+  { id: 'TP-BIG-02', kode_tp: 'TP 2', mata_pelajaran: 'Bahasa Inggris', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Memahami teks deskriptif sederhana tentang orang, hewan, dan tempat menggunakan Simple Present Tense', ringkasan_tp: 'memahami teks deskriptif dan struktur Simple Present Tense', status: 'Aktif' },
+  { id: 'TP-BIG-03', kode_tp: 'TP 3', mata_pelajaran: 'Bahasa Inggris', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Mengidentifikasi fungsi sosial teks interaksi transaksional memberi dan meminta informasi', ringkasan_tp: 'mengidentifikasi fungsi sosial teks interaksi transaksional', status: 'Aktif' },
+  { id: 'TP-BIG-04', kode_tp: 'TP 4', mata_pelajaran: 'Bahasa Inggris', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menyusun kalimat sederhana mendeskripsikan aktivitas sehari-hari (daily routines)', ringkasan_tp: 'menyusun teks deskripsi aktivitas harian secara runtut', status: 'Aktif' },
+
+  // 9. Matematika
+  { id: 'TP-MTK-01', kode_tp: 'TP 1', mata_pelajaran: 'Matematika', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Membaca, menulis, membandingkan bilangan bulat serta melakukan operasi hitung bilangan bulat & pecahan rasional', ringkasan_tp: 'memahami operasi hitung bilangan bulat dan bilangan rasional', status: 'Aktif' },
+  { id: 'TP-MTK-02', kode_tp: 'TP 2', mata_pelajaran: 'Matematika', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Mengoperasikan bentuk aljabar dan menyederhanakan persamaan linear satu variabel', ringkasan_tp: 'mengoperasikan bentuk aljabar dan menyederhanakan persamaan', status: 'Aktif' },
+  { id: 'TP-MTK-03', kode_tp: 'TP 3', mata_pelajaran: 'Matematika', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menyelesaikan masalah kontekstual berkaitan dengan perbandingan senilai dan berbalik nilai', ringkasan_tp: 'menyelesaikan soal cerita perbandingan senilai dan berbalik nilai', status: 'Aktif' },
+  { id: 'TP-MTK-04', kode_tp: 'TP 4', mata_pelajaran: 'Matematika', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Mengenal pola bilangan, barisan aritmatika dasar, dan penalaran logika numerik', ringkasan_tp: 'mengidentifikasi pola barisan bilangan dan pemecahan masalah numerik', status: 'Aktif' },
+
+  // 10. IPA
+  { id: 'TP-IPA-01', kode_tp: 'TP 1', mata_pelajaran: 'Ilmu Pengetahuan Alam', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menerapkan besaran fisis, satuan baku, dan metode pengukuran ilmiah secara tepat', ringkasan_tp: 'menerapkan konsep besaran dan pengukuran fisis secara akurat', status: 'Aktif' },
+  { id: 'TP-IPA-02', kode_tp: 'TP 2', mata_pelajaran: 'Ilmu Pengetahuan Alam', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menganalisis wujud zat, sifat fisika-kimia, dan perubahan wujud zat dalam kehidupan', ringkasan_tp: 'menganalisis klasifikasi zat, wujud materi, dan perubahan zat', status: 'Aktif' },
+  { id: 'TP-IPA-03', kode_tp: 'TP 3', mata_pelajaran: 'Ilmu Pengetahuan Alam', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menjelaskan konsep suhu, kalor, perpindahan kalor, dan pemuaian zat', ringkasan_tp: 'memahami konsep suhu, perpindahan kalor, dan pengaruhnya', status: 'Aktif' },
+  { id: 'TP-IPA-04', kode_tp: 'TP 4', mata_pelajaran: 'Ilmu Pengetahuan Alam', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Mengidentifikasi ciri makhluk hidup dan sistem organisasi kehidupan dari sel hingga organisme', ringkasan_tp: 'mengidentifikasi ciri makhluk hidup dan sistem organisasi kehidupan', status: 'Aktif' },
+
+  // 11. IPS
+  { id: 'TP-IPS-01', kode_tp: 'TP 1', mata_pelajaran: 'Ilmu Pengetahuan Sosial', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menghubungkan letak geografis wilayah Indonesia dengan karakteristik sosial masyarakat', ringkasan_tp: 'menghubungkan kondisi geografis dengan karakteristik sosial masyarakat', status: 'Aktif' },
+  { id: 'TP-IPS-02', kode_tp: 'TP 2', mata_pelajaran: 'Ilmu Pengetahuan Sosial', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menganalisis potensi sumber daya alam kemaritiman dan daratan serta pelestariannya', ringkasan_tp: 'menganalisis potensi sumber daya alam dan upaya pelestariannya', status: 'Aktif' },
+  { id: 'TP-IPS-03', kode_tp: 'TP 3', mata_pelajaran: 'Ilmu Pengetahuan Sosial', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menjelaskan konsep kebutuhan manusia, kelangkaan barang, dan prinsip-prinsip ekonomi', ringkasan_tp: 'memahami konsep kebutuhan manusia, kelangkaan, dan motif ekonomi', status: 'Aktif' },
+  { id: 'TP-IPS-04', kode_tp: 'TP 4', mata_pelajaran: 'Ilmu Pengetahuan Sosial', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menelaah interaksi antarruang dan dinamika hubungan sosial kemasyarakatan', ringkasan_tp: 'menelaah interaksi antarruang dan dinamika sosial kemasyarakatan', status: 'Aktif' },
+
+  // 12. Prakarya
+  { id: 'TP-PKY-01', kode_tp: 'TP 1', mata_pelajaran: 'Prakarya', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Mengidentifikasi karakteristik bahan lunak dan serat alami untuk produk kerajinan', ringkasan_tp: 'mengidentifikasi bahan baku alami dan sintetis untuk produk kerajinan', status: 'Aktif' },
+  { id: 'TP-PKY-02', kode_tp: 'TP 2', mata_pelajaran: 'Prakarya', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Merancang dan membuat produk kerajinan yang ergonomis, bernilai estetis dan ekonomis', ringkasan_tp: 'merancang karya kerajinan bernilai estetika dan fungsi pakai', status: 'Aktif' },
+  { id: 'TP-PKY-03', kode_tp: 'TP 3', mata_pelajaran: 'Prakarya', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menerapkan teknik pengolahan bahan pangan buah dan sayuran menjadi makanan sehat', ringkasan_tp: 'menerapkan teknik pengolahan bahan pangan higienis dan sehat', status: 'Aktif' },
+  { id: 'TP-PKY-04', kode_tp: 'TP 4', mata_pelajaran: 'Prakarya', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Mengevaluasi dan mendesain kemasan produk kerajinan secara kreatif dan menarik', ringkasan_tp: 'mengevaluasi dan mengemas produk kerajinan secara kreatif', status: 'Aktif' },
+
+  // 13. PJOK
+  { id: 'TP-PJK-01', kode_tp: 'TP 1', mata_pelajaran: 'Pendidikan Jasmani, Olahraga, dan Kesehatan', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Mempraktikkan gerak dasar passing, dribbling, dan shooting pada permainan bola basket & sepak bola', ringkasan_tp: 'mempraktikkan gerak dasar permainan invasi dan kerja sama tim', status: 'Aktif' },
+  { id: 'TP-PJK-02', kode_tp: 'TP 2', mata_pelajaran: 'Pendidikan Jasmani, Olahraga, dan Kesehatan', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Mempraktikkan variasi passing dan servis pada permainan bola voli dan bulu tangkis', ringkasan_tp: 'menguasai variasi gerak servis dan passing pada permainan net', status: 'Aktif' },
+  { id: 'TP-PJK-03', kode_tp: 'TP 3', mata_pelajaran: 'Pendidikan Jasmani, Olahraga, dan Kesehatan', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Melakukan latihan kebugaran jasmani untuk daya tahan jantung, kekuatan otot, dan kelenturan tubuh', ringkasan_tp: 'melakukan latihan kebugaran jasmani dan menjaga stamina tubuh', status: 'Aktif' },
+  { id: 'TP-PJK-04', kode_tp: 'TP 4', mata_pelajaran: 'Pendidikan Jasmani, Olahraga, dan Kesehatan', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menunjukkan sportivitas, disiplin, kerja sama tim, dan kepatuhan pada aturan olahraga', ringkasan_tp: 'menunjukkan sportivitas, ketahanan fisik, dan disiplin berolahraga', status: 'Aktif' },
+
+  // 14. Bahasa Sunda
+  { id: 'TP-SUN-01', kode_tp: 'TP 1', mata_pelajaran: 'Bahasa Sunda', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Memahami struktur, unsur kebahasaan, dan pesan moral dalam teks dongeng Sunda', ringkasan_tp: 'memahami struktur carita dongeng Sunda dan pesan moralnya', status: 'Aktif' },
+  { id: 'TP-SUN-02', kode_tp: 'TP 2', mata_pelajaran: 'Bahasa Sunda', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menelaah ragam tatakrama basa Sunda (basa loma jeung lemes) dalam percakapan sehari-hari', ringkasan_tp: 'menerapkan tatakrama basa Sunda loma jeung lemes sacara merenah', status: 'Aktif' },
+  { id: 'TP-SUN-03', kode_tp: 'TP 3', mata_pelajaran: 'Bahasa Sunda', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menganalisis teks biantara (pidato) dan paguneman bahasa Sunda yang santun', ringkasan_tp: 'menganalisis struktur biantara dan paguneman bahasa Sunda', status: 'Aktif' },
+  { id: 'TP-SUN-04', kode_tp: 'TP 4', mata_pelajaran: 'Bahasa Sunda', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menulis karangan pendek deskriptif ngagunakeun ejaan basa Sunda anu merenah', ringkasan_tp: 'menulis teks deskripsi pendek menggunakan kosa kata Sunda yang tepat', status: 'Aktif' },
+
+  // 15. Informatika
+  { id: 'TP-INF-01', kode_tp: 'TP 1', mata_pelajaran: 'Informatika', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menerapkan berpikir komputasional (computational thinking) untuk memecahkan persoalan logis', ringkasan_tp: 'menerapkan berpikir komputasional dalam menyelesaikan persoalan', status: 'Aktif' },
+  { id: 'TP-INF-02', kode_tp: 'TP 2', mata_pelajaran: 'Informatika', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Memanfaatkan aplikasi pengolah kata dan lembar kerja untuk mengolah dan memvisualisasikan data', ringkasan_tp: 'mengolah data terstruktur menggunakan lembar kerja digital', status: 'Aktif' },
+  { id: 'TP-INF-03', kode_tp: 'TP 3', mata_pelajaran: 'Informatika', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Memahami konsep jaringan komputer lokal/internet dan etika keamanan berselancar digital', ringkasan_tp: 'memahami dasar jaringan komputer dan etika keamanan digital', status: 'Aktif' },
+  { id: 'TP-INF-04', kode_tp: 'TP 4', mata_pelajaran: 'Informatika', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Merancang algoritma sederhana menggunakan blok pemrograman visual (Scratch/Blockly)', ringkasan_tp: 'merancang logika algoritma dan alur pemrograman visual dasar', status: 'Aktif' },
+
+  // 16. Bahasa Arab
+  { id: 'TP-ARB-01', kode_tp: 'TP 1', mata_pelajaran: 'Bahasa Arab', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menguasai mufrodat tentang perkenalan diri (ta\'aruf) dan sarana prasarana sekolah', ringkasan_tp: 'menguasai mufrodat perkenalan dan lingkungan madrasah', status: 'Aktif' },
+  { id: 'TP-ARB-02', kode_tp: 'TP 2', mata_pelajaran: 'Bahasa Arab', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Membedakan penggunaan Isim Isyaroh (mudzakkar dan muannats) serta Isim Dhomir', ringkasan_tp: 'membedakan isim isyarah mudzakkar-muannats dan isim dhomir', status: 'Aktif' },
+  { id: 'TP-ARB-03', kode_tp: 'TP 3', mata_pelajaran: 'Bahasa Arab', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Mempraktikkan percakapan sehari-hari (al-hiwar) dengan intonasi dan makhraj fasih', ringkasan_tp: 'mempraktikkan percakapan al-hiwar dengan pelafalan fasih', status: 'Aktif' },
+  { id: 'TP-ARB-04', kode_tp: 'TP 4', mata_pelajaran: 'Bahasa Arab', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menyusun pola kalimat tarkib sederhana (jumlah ismiyyah dan jumlah fi\'liyyah dasar)', ringkasan_tp: 'menyusun pola kalimat tarkib sederhana berbahasa Arab', status: 'Aktif' }
+];
+
+/**
+ * GENERATOR NARASI DESKRIPSI RAPOR OTOMATIS BERBASIS CHECKLIST TP & SKOR
+ */
+function generateDeskripsiCapaian(mapel, score, optimalTpIds = [], peningkatanTpIds = []) {
+  if (score === null || score === undefined || score === '' || isNaN(score)) {
+    return '';
+  }
+  const numScore = Number(score);
+  const predikat = getPredikatFromScore(numScore);
+  
+  const allTps = (AppState.tpList && AppState.tpList.length > 0) ? AppState.tpList : DEFAULT_TP_BANK_16;
+  
+  const getTpSummary = (tpIdOrKode) => {
+    if (!tpIdOrKode) return '';
+    const cleanKey = String(tpIdOrKode).trim();
+    const match = allTps.find(t => t.id === cleanKey || t.kode_tp === cleanKey);
+    if (match) {
+      let ringkas = match.ringkasan_tp || match.deskripsi_tp;
+      if (ringkas && ringkas.length > 0) {
+        ringkas = ringkas.charAt(0).toLowerCase() + ringkas.slice(1);
+      }
+      return ringkas.replace(/\.+$/, '');
+    }
+    return cleanKey.replace(/\.+$/, '');
+  };
+
+  const optimalSummaries = (Array.isArray(optimalTpIds) ? optimalTpIds : (optimalTpIds ? String(optimalTpIds).split(',') : []))
+    .map(id => getTpSummary(id))
+    .filter(Boolean);
+
+  const peningkatanSummaries = (Array.isArray(peningkatanTpIds) ? peningkatanTpIds : (peningkatanTpIds ? String(peningkatanTpIds).split(',') : []))
+    .map(id => getTpSummary(id))
+    .filter(Boolean);
+
+  const formatListGrammar = (items) => {
+    if (!items || items.length === 0) return '';
+    if (items.length === 1) return items[0];
+    if (items.length === 2) return `${items[0]} dan ${items[1]}`;
+    return `${items.slice(0, -1).join(', ')}, dan ${items[items.length - 1]}`;
+  };
+
+  // Case 1: Both Optimal & Improvement TPs exist
+  if (optimalSummaries.length > 0 && peningkatanSummaries.length > 0) {
+    let prefixOpt = 'Menunjukkan penguasaan yang sangat baik dalam ';
+    if (numScore < 84) prefixOpt = 'Menunjukkan penguasaan yang baik dalam ';
+    if (numScore < 75) prefixOpt = 'Menunjukkan penguasaan yang cukup dalam ';
+
+    let prefixPen = 'Perlu peningkatan dalam ';
+    if (numScore < 75) prefixPen = 'Perlu bimbingan dan pendampingan lebih lanjut dalam ';
+
+    return `${prefixOpt}${formatListGrammar(optimalSummaries)}. ${prefixPen}${formatListGrammar(peningkatanSummaries)}.`;
+  }
+
+  // Case 2: Only Optimal TPs exist
+  if (optimalSummaries.length > 0 && peningkatanSummaries.length === 0) {
+    let prefixOpt = 'Menunjukkan penguasaan yang sangat baik dalam ';
+    if (predikat === 'B') prefixOpt = 'Menunjukkan penguasaan yang baik dalam ';
+    if (predikat === 'C') prefixOpt = 'Menunjukkan penguasaan yang cukup baik dalam ';
+    if (predikat === 'D') prefixOpt = 'Menunjukkan pemahaman dasar dalam ';
+
+    return `${prefixOpt}${formatListGrammar(optimalSummaries)}.`;
+  }
+
+  // Case 3: Only Improvement TPs exist
+  if (optimalSummaries.length === 0 && peningkatanSummaries.length > 0) {
+    let prefixPen = numScore >= 75 
+      ? 'Perlu peningkatan dan penguatan dalam ' 
+      : 'Perlu bimbingan dan pendampingan lebih lanjut dalam ';
+    return `${prefixPen}${formatListGrammar(peningkatanSummaries)}.`;
+  }
+
+  // Fallback (Case 4: No specific TP checked yet)
+  return getCapaianByScore(mapel, numScore);
+}
+
 const BANK_KEPRIBADIAN_ALIMAM = {
   ibadah: [
     "Jadikan ibadah sebagai kebutuhan, bukan hanya kewajiban.",
@@ -668,6 +842,7 @@ const DEMO_DATA = {
   akademik: [],
   kepemimpinan: [],
   diniyah: [],
+  tp: [...DEFAULT_TP_BANK_16],
   users: [
     { id: 'USR-001', username: 'admin', nama_lengkap: 'Administrator Utama', role: 'admin', status: 'aktif' },
     { id: 'USR-002', username: 'kepsek', nama_lengkap: 'Arif Rohman, S.Sos., M.Pd.', role: 'kepala_sekolah', status: 'aktif' },
@@ -679,6 +854,80 @@ const DEMO_DATA = {
     { id: 'USR-008', username: 'trinuryani', nama_lengkap: 'Tri Nuryani, S.S., Gr.', role: 'guru', status: 'aktif' },
     { id: 'USR-009', username: 'sumiati', nama_lengkap: 'Sumiati, S.Pd., Gr.', role: 'guru', status: 'aktif' },
     { id: 'USR-010', username: 'walimurid', nama_lengkap: 'Bpk. Nanang Fajar', role: 'wali_murid', status: 'aktif', nis: '242507001' }
+  ],
+  activityLogs: [
+    {
+      id: 'LOG-001',
+      timestamp: '2026-10-02 18:30:15',
+      username: 'admin',
+      user_nama: 'Administrator Utama',
+      role: 'admin',
+      action_type: 'LOGIN',
+      module: 'Autentikasi',
+      details: 'Login berhasil ke dashboard sistem e-Rapor Al-Imam',
+      ip_address: '127.0.0.1',
+      status: 'success'
+    },
+    {
+      id: 'LOG-002',
+      timestamp: '2026-10-02 18:35:40',
+      username: 'dewi',
+      user_nama: 'Dewi Fitria Nugraheni, S.Pd., Gr.',
+      role: 'guru',
+      action_type: 'BULK_SAVE_GRADE',
+      module: 'Nilai Akademik',
+      details: 'Menyimpan nilai sekelas Bahasa Indonesia untuk 24 siswa di IX ABU BAKAR (Checklist 4 TP Aktif)',
+      ip_address: '192.168.1.12',
+      status: 'success'
+    },
+    {
+      id: 'LOG-003',
+      timestamp: '2026-10-02 18:42:10',
+      username: 'dewi',
+      user_nama: 'Dewi Fitria Nugraheni, S.Pd., Gr.',
+      role: 'guru',
+      action_type: 'AUTO_CHECKLIST_TP',
+      module: 'Tujuan Pembelajaran',
+      details: 'Menjalankan auto-checklist rekomendasi TP dan generate narasi capaian rapor sekelas IX ABU BAKAR',
+      ip_address: '192.168.1.12',
+      status: 'success'
+    },
+    {
+      id: 'LOG-004',
+      timestamp: '2026-10-02 18:50:22',
+      username: 'triyuli',
+      user_nama: 'Tri Yuli Aryani, S.Pd., Gr.',
+      role: 'guru',
+      action_type: 'UPDATE_TP',
+      module: 'Tujuan Pembelajaran',
+      details: 'Memperbarui ringkasan narasi TP 2 Matematika Fase D: "menyelesaikan persamaan dan pertidaksamaan linear satu variabel"',
+      ip_address: '192.168.1.15',
+      status: 'success'
+    },
+    {
+      id: 'LOG-005',
+      timestamp: '2026-10-02 19:10:05',
+      username: 'kepsek',
+      user_nama: 'Arif Rohman, S.Sos., M.Pd.',
+      role: 'kepala_sekolah',
+      action_type: 'VIEW_RAPOR',
+      module: 'Rapor Portofolio',
+      details: 'Melihat validasi kelengkapan deskripsi capaian rapor dan matriks buku leger kelas VII & IX',
+      ip_address: '192.168.1.5',
+      status: 'success'
+    },
+    {
+      id: 'LOG-006',
+      timestamp: '2026-10-02 19:15:30',
+      username: 'admin',
+      user_nama: 'Administrator Utama',
+      role: 'admin',
+      action_type: 'UPDATE_CMS',
+      module: 'CMS & Pengaturan',
+      details: 'Memperbarui titimangsa tanggal pembagian rapor menjadi 17 Oktober 2026 (Kota: Bogor)',
+      ip_address: '127.0.0.1',
+      status: 'success'
+    }
   ]
 };
 
@@ -742,6 +991,8 @@ function buildExactAlImamDataset() {
           nilai_uts: null,
           nilai_akhir: null,
           predikat: '-',
+          tp_optimal: '',
+          tp_peningkatan: '',
           capaian_kompetensi: '',
           catatan_guru: ''
         });
@@ -813,6 +1064,7 @@ function buildExactAlImamDataset() {
   DEMO_DATA.kepemimpinan = kpList;
   DEMO_DATA.diniyah = dnList;
   DEMO_DATA.skl = sklList;
+  DEMO_DATA.tp = [...DEFAULT_TP_BANK_16];
 }
 
 buildExactAlImamDataset();
@@ -831,10 +1083,12 @@ const AppState = {
   cmsSettings: { ...DEMO_DATA.settings },
   muridList: [...DEMO_DATA.murid],
   akademikList: [...DEMO_DATA.akademik],
+  tpList: [...(DEMO_DATA.tp || DEFAULT_TP_BANK_16)],
   kepemimpinanList: [...DEMO_DATA.kepemimpinan],
   diniyahList: [...DEMO_DATA.diniyah],
   sklList: [...(DEMO_DATA.skl || [])],
   usersList: [...DEMO_DATA.users],
+  activityLogs: [...(DEMO_DATA.activityLogs || [])],
   activePrintNis: '242507001' // ABDILLAH ZULQARNAIN ARRAZI (IX ABU BAKAR)
 };
 
@@ -870,6 +1124,14 @@ function callApi(actionName, payload = {}) {
         case 'saveNilaiAkademik': runner.apiSaveNilaiAkademik(payload); break;
         case 'saveBulkNilaiAkademik': runner.apiSaveBulkNilaiAkademik(payload); break;
         case 'deleteNilaiAkademik': runner.apiDeleteNilaiAkademik(payload.id); break;
+        case 'getTujuanPembelajaran':
+        case 'getTP': runner.apiGetTujuanPembelajaran(payload); break;
+        case 'saveTujuanPembelajaran':
+        case 'saveTP': runner.apiSaveTujuanPembelajaran(payload); break;
+        case 'saveBulkTujuanPembelajaran': runner.apiSaveBulkTujuanPembelajaran(payload.items || payload); break;
+        case 'deleteTujuanPembelajaran':
+        case 'deleteTP': runner.apiDeleteTujuanPembelajaran(payload.id); break;
+        case 'importDefaultTujuanPembelajaran': runner.apiImportDefaultTujuanPembelajaran(payload.forceReset); break;
         case 'getNilaiKepemimpinan':
         case 'getNilaiKepribadian': runner.apiGetNilaiKepemimpinan(payload); break;
         case 'saveNilaiKepemimpinan':
@@ -883,6 +1145,9 @@ function callApi(actionName, payload = {}) {
         case 'forceSyncDatabase': runner.apiForceSyncDatabase(); break;
         case 'getMuridReport': runner.apiGetMuridReport(payload.nis); break;
         case 'getSantriReport': runner.apiGetMuridReport(payload.nis); break;
+        case 'getActivityLogs': runner.apiGetActivityLogs(payload); break;
+        case 'logActivity': runner.apiLogActivity(payload); break;
+        case 'clearActivityLogs': runner.apiClearActivityLogs(); break;
         default:
           resolve({ success: false, message: 'Unknown action: ' + actionName, isFallback: true });
       }
@@ -970,7 +1235,7 @@ function switchView(viewName) {
 
   // Role Access Checks
   if (role === 'wali_murid') {
-    if (viewName === 'cms' || viewName === 'murid' || viewName === 'akademik' || viewName === 'kepemimpinan' || viewName === 'diniyah') {
+    if (viewName === 'cms' || viewName === 'murid' || viewName === 'akademik' || viewName === 'tp' || viewName === 'deskripsi' || viewName === 'kepemimpinan' || viewName === 'diniyah') {
       showToast('Akses Wali Murid terbatas pada Rapor & Ringkasan Nilai.', 'info');
       viewName = 'rapor';
     }
@@ -979,6 +1244,20 @@ function switchView(viewName) {
       showToast('Akses ditolak: Menu CMS hanya untuk Administrator.', 'error');
       return;
     }
+  }
+
+  // Handle alias for deskripsi view redirecting to Akademik tab deskripsi
+  if (viewName === 'deskripsi') {
+    AppState.currentView = 'akademik';
+    document.querySelectorAll('.view-panel').forEach(panel => panel.classList.add('hidden'));
+    document.getElementById('view-akademik')?.classList.remove('hidden');
+    document.querySelectorAll('.sidebar-nav-link').forEach(link => {
+      link.classList.remove('bg-[#00a66c]', 'text-white', 'shadow-md', 'shadow-[#00a66c]/20', 'font-bold');
+      link.classList.add('text-slate-600', 'font-medium');
+    });
+    document.getElementById('nav-item-deskripsi')?.classList.add('bg-[#00a66c]', 'text-white', 'shadow-md', 'shadow-[#00a66c]/20', 'font-bold');
+    switchAkademikInputMode('deskripsi');
+    return;
   }
 
   // Update State
@@ -1015,12 +1294,15 @@ function switchView(viewName) {
   // Auto-fetch data on view activation
   switch (viewName) {
     case 'dashboard': loadDashboardStats(); break;
+    case 'tp':
+    case 'tujuan_pembelajaran': loadTujuanPembelajaran(); renderTPTable(); break;
     case 'akademik': loadNilaiAkademik(); renderLegerGrid(); break;
     case 'leger': renderLegerMatrix(); break;
     case 'kepemimpinan': loadNilaiKepemimpinan(); renderKepribadianGrid(); break;
     case 'diniyah': loadNilaiDiniyah(); break;
     case 'murid': loadMuridList(); break;
     case 'cms': loadCmsSettings(); break;
+    case 'logs': loadActivityLogs(); renderActivityLogsTable(); break;
     case 'rapor':
       if (AppState.currentUser.role === 'wali_murid') {
         const childNis = AppState.currentUser.nis || '242507001';
@@ -1100,6 +1382,8 @@ function quickLoginRole(roleKey) {
   closeLoginModal();
   showToast(`Berhasil login sebagai: ${preset.nama_lengkap}`, 'success');
 
+  recordActivity('LOGIN', 'Autentikasi', `Login cepat sebagai role: ${preset.role} (${preset.nama_lengkap})`, 'success');
+
   if (preset.role === 'wali_murid') {
     AppState.activePrintNis = preset.nis || '242507001';
     switchView('rapor');
@@ -1135,6 +1419,7 @@ function handleManualLogin(e) {
         applyRoleUIPermissions(u.role);
         closeLoginModal();
         showToast(`Selamat datang, ${u.nama_lengkap}!`, 'success');
+        recordActivity('LOGIN', 'Autentikasi', `Login manual berhasil: @${u.username} (${u.nama_lengkap}) - Role: ${u.role}`, 'success');
         if (u.role === 'wali_murid') {
           AppState.activePrintNis = AppState.currentUser.nis || '242507001';
           switchView('rapor');
@@ -1659,6 +1944,8 @@ function submitFormMurid(e) {
   renderMuridTable(AppState.muridList);
   loadDashboardStats();
 
+  recordActivity('SAVE_MURID', 'Data Siswa', `Simpan data murid: ${payload.nama_murid} (NIS: ${payload.nis}, Kelas: ${payload.kelas})`, 'success');
+
   callApi('saveMurid', payload);
 }
 
@@ -1669,6 +1956,7 @@ function deleteMuridAction(nis) {
   populateMuridDropdowns();
   renderMuridTable(AppState.muridList);
   loadDashboardStats();
+  recordActivity('DELETE_MURID', 'Data Siswa', `Hapus data santri/murid NIS: ${nis}`, 'success');
   callApi('deleteMurid', { nis: nis });
 }
 
@@ -1744,29 +2032,316 @@ function saveBulkPresensiData() {
   closeModalBulkPresensi();
   renderMuridTable(AppState.muridList);
 
+  recordActivity('UPDATE_PRESENSI', 'Data Siswa', `Simpan massal presensi & ekstrakurikuler (${items.length} murid)`, 'success');
+
   callApi('saveBulkMuridData', { items: items });
 }
 
-// 10. AKADEMIK MODULE & LEGER SEKELAS GRID (TEACHER FAST-INPUT)
+// ==========================================
+// 9B. MODUL TUJUAN PEMBELAJARAN (TP) - KURIKULUM MERDEKA
+// ==========================================
+
+function loadTujuanPembelajaran() {
+  const mapel = document.getElementById('filter-tp-mapel')?.value || 'Semua';
+  const tingkat = document.getElementById('filter-tp-tingkat')?.value || 'Semua';
+  const semester = document.getElementById('filter-tp-semester')?.value || 'Semua';
+  const status = document.getElementById('filter-tp-status')?.value || 'Semua';
+
+  callApi('getTujuanPembelajaran', {
+    mata_pelajaran: mapel,
+    tingkat_kelas: tingkat,
+    semester: semester,
+    status: status
+  }).then(res => {
+    if (res && res.data && res.data.length > 0) {
+      AppState.tpList = res.data;
+    } else if (!AppState.tpList || AppState.tpList.length === 0) {
+      AppState.tpList = JSON.parse(JSON.stringify(DEFAULT_TP_BANK_16));
+    }
+    renderTPTable();
+  }).catch(() => {
+    if (!AppState.tpList || AppState.tpList.length === 0) {
+      AppState.tpList = JSON.parse(JSON.stringify(DEFAULT_TP_BANK_16));
+    }
+    renderTPTable();
+  });
+}
+
+function renderTPTable() {
+  if (!AppState.tpList || AppState.tpList.length === 0) {
+    AppState.tpList = JSON.parse(JSON.stringify(DEFAULT_TP_BANK_16));
+  }
+
+  const mapel = document.getElementById('filter-tp-mapel')?.value || 'Semua';
+  const tingkat = document.getElementById('filter-tp-tingkat')?.value || 'Semua';
+  const semester = document.getElementById('filter-tp-semester')?.value || 'Semua';
+  const status = document.getElementById('filter-tp-status')?.value || 'Semua';
+  const query = (document.getElementById('filter-tp-search')?.value || '').toLowerCase().trim();
+
+  const filtered = AppState.tpList.filter(item => {
+    if (mapel !== 'Semua' && String(item.mata_pelajaran).toLowerCase() !== String(mapel).toLowerCase()) return false;
+    if (tingkat !== 'Semua' && item.tingkat_kelas && String(item.tingkat_kelas) !== String(tingkat) && item.tingkat_kelas !== 'Semua Kelas') return false;
+    if (semester !== 'Semua' && item.semester && String(item.semester) !== String(semester)) return false;
+    if (status !== 'Semua' && item.status && String(item.status) !== String(status)) return false;
+
+    if (!query) return true;
+    const qStr = `${item.kode_tp || ''} ${item.mata_pelajaran || ''} ${item.deskripsi_tp || ''} ${item.ringkasan_tp || ''}`.toLowerCase();
+    return qStr.includes(query);
+  });
+
+  updateTPWidgets(AppState.tpList);
+
+  const countEl = document.getElementById('table-tp-count');
+  if (countEl) countEl.innerText = filtered.length;
+
+  const tbody = document.getElementById('table-tp-tbody');
+  if (!tbody) return;
+
+  if (filtered.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="8" class="px-4 py-8 text-center text-slate-400">Tidak ada Tujuan Pembelajaran yang sesuai filter.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = filtered.map(item => {
+    const isAktif = item.status === 'Aktif' || !item.status;
+    const statusBadge = isAktif
+      ? `<button type="button" onclick="toggleTPStatus('${item.id}')" class="px-2.5 py-1 rounded-full text-[10px] font-black bg-emerald-100 text-emerald-800 border border-emerald-300 hover:bg-emerald-200 transition cursor-pointer" title="Klik untuk non-aktifkan">✅ Aktif</button>`
+      : `<button type="button" onclick="toggleTPStatus('${item.id}')" class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-slate-100 text-slate-500 border border-slate-300 hover:bg-slate-200 transition cursor-pointer" title="Klik untuk aktifkan">⏸️ Non-Aktif</button>`;
+
+    return `
+    <tr class="hover:bg-slate-50 transition border-b border-slate-100">
+      <td class="px-3 py-3 text-center font-mono font-bold text-slate-700 bg-slate-50/50 border-r border-slate-200">
+        ${item.kode_tp || 'TP'}
+      </td>
+      <td class="px-3 py-3 font-bold text-emerald-900 border-r border-slate-200">
+        ${item.mata_pelajaran || '-'}
+      </td>
+      <td class="px-2 py-3 text-center border-r border-slate-200">
+        <span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-blue-50 text-blue-800 border border-blue-200">
+          ${item.tingkat_kelas || 'Kelas VII'}
+        </span>
+        <span class="block text-[10px] text-slate-400 font-mono mt-0.5">${item.fase || 'Fase D'}</span>
+      </td>
+      <td class="px-2 py-3 text-center text-slate-600 border-r border-slate-200 text-[11px]">
+        ${item.semester || 'Tengah Semester 1'}
+      </td>
+      <td class="px-4 py-3 border-r border-slate-200 leading-relaxed text-slate-800">
+        ${item.deskripsi_tp || '-'}
+      </td>
+      <td class="px-4 py-3 border-r border-slate-200 text-emerald-950 font-medium italic bg-emerald-50/30">
+        "${item.ringkasan_tp || item.deskripsi_tp || '-'}"
+      </td>
+      <td class="px-2 py-3 text-center border-r border-slate-200">
+        ${statusBadge}
+      </td>
+      <td class="px-3 py-3 text-right space-x-1">
+        <button onclick="openModalTP('${item.id}')" class="p-1.5 bg-blue-50 text-blue-700 hover:bg-blue-100 rounded-lg text-xs" title="Edit TP">
+          <i class="fa-solid fa-pen-to-square"></i>
+        </button>
+        <button onclick="deleteTP('${item.id}')" class="p-1.5 bg-rose-50 text-rose-600 hover:bg-rose-100 rounded-lg text-xs" title="Hapus TP">
+          <i class="fa-solid fa-trash"></i>
+        </button>
+      </td>
+    </tr>
+    `;
+  }).join('');
+}
+
+function updateTPWidgets(list) {
+  const total = list.length;
+  const activeCount = list.filter(i => i.status === 'Aktif' || !i.status).length;
+  const uniqueMapels = new Set(list.map(i => i.mata_pelajaran)).size;
+
+  if (document.getElementById('widget-tp-total')) document.getElementById('widget-tp-total').innerText = total;
+  if (document.getElementById('widget-tp-active')) document.getElementById('widget-tp-active').innerText = activeCount;
+  if (document.getElementById('widget-tp-mapel-count')) document.getElementById('widget-tp-mapel-count').innerText = `${uniqueMapels} / 16`;
+}
+
+function openModalTP(id) {
+  const modal = document.getElementById('modal-tp');
+  if (!modal) return;
+  document.getElementById('form-tp')?.reset();
+
+  if (id) {
+    const item = AppState.tpList.find(t => String(t.id) === String(id));
+    if (item) {
+      document.getElementById('modal-tp-title').innerText = 'Edit Tujuan Pembelajaran (TP)';
+      document.getElementById('tp-id').value = item.id;
+      document.getElementById('tp-mapel').value = item.mata_pelajaran || 'Akidah';
+      document.getElementById('tp-kode').value = item.kode_tp || 'TP 1';
+      document.getElementById('tp-tingkat').value = item.tingkat_kelas || 'Kelas VII';
+      document.getElementById('tp-fase').value = item.fase || 'Fase D';
+      document.getElementById('tp-semester').value = item.semester || 'Tengah Semester 1';
+      document.getElementById('tp-deskripsi').value = item.deskripsi_tp || '';
+      document.getElementById('tp-ringkasan').value = item.ringkasan_tp || '';
+      document.getElementById('tp-status').value = item.status || 'Aktif';
+    }
+  } else {
+    document.getElementById('modal-tp-title').innerText = 'Tambah Tujuan Pembelajaran (TP) Baru';
+    document.getElementById('tp-id').value = '';
+    const currentFilterMapel = document.getElementById('filter-tp-mapel')?.value;
+    if (currentFilterMapel && currentFilterMapel !== 'Semua') {
+      document.getElementById('tp-mapel').value = currentFilterMapel;
+    }
+    const currentFilterTingkat = document.getElementById('filter-tp-tingkat')?.value;
+    if (currentFilterTingkat && currentFilterTingkat !== 'Semua') {
+      document.getElementById('tp-tingkat').value = currentFilterTingkat;
+    }
+    const curMapel = document.getElementById('tp-mapel').value;
+    document.getElementById('tp-kode').value = 'TP ' + (AppState.tpList.filter(t => t.mata_pelajaran === curMapel).length + 1);
+    document.getElementById('tp-fase').value = 'Fase D';
+    document.getElementById('tp-semester').value = 'Tengah Semester 1';
+    document.getElementById('tp-status').value = 'Aktif';
+  }
+
+  modal.classList.remove('hidden');
+}
+
+function closeModalTP() {
+  document.getElementById('modal-tp')?.classList.add('hidden');
+}
+
+function syncTpRingkasanPreview() {
+  const desk = document.getElementById('tp-deskripsi')?.value || '';
+  const ringkasEl = document.getElementById('tp-ringkasan');
+  if (ringkasEl && (!ringkasEl.value || ringkasEl.dataset.autofill !== 'false')) {
+    let text = desk.trim();
+    if (text.length > 0) {
+      text = text.charAt(0).toLowerCase() + text.slice(1);
+    }
+    ringkasEl.value = text;
+  }
+}
+
+function submitFormTP(e) {
+  e.preventDefault();
+  const id = document.getElementById('tp-id').value || `TP-${Date.now().toString(36).toUpperCase()}`;
+  const mapel = document.getElementById('tp-mapel').value;
+  const kode = document.getElementById('tp-kode').value;
+  const tingkat = document.getElementById('tp-tingkat').value;
+  const fase = document.getElementById('tp-fase').value;
+  const semester = document.getElementById('tp-semester').value;
+  const deskripsi = document.getElementById('tp-deskripsi').value;
+  const ringkasan = document.getElementById('tp-ringkasan').value || deskripsi;
+  const status = document.getElementById('tp-status').value;
+
+  const payload = {
+    id: id,
+    mata_pelajaran: mapel,
+    kode_tp: kode,
+    tingkat_kelas: tingkat,
+    fase: fase,
+    semester: semester,
+    tahun_ajaran: AppState.cmsSettings.academic_year || '2026/2027',
+    deskripsi_tp: deskripsi,
+    ringkasan_tp: ringkasan,
+    status: status
+  };
+
+  const idx = AppState.tpList.findIndex(t => String(t.id) === String(id));
+  if (idx !== -1) {
+    AppState.tpList[idx] = payload;
+  } else {
+    AppState.tpList.unshift(payload);
+  }
+
+  showToast(`Tujuan Pembelajaran [${kode}] untuk ${mapel} berhasil disimpan!`, 'success');
+  closeModalTP();
+  renderTPTable();
+
+  recordActivity('UPDATE_TP', 'Tujuan Pembelajaran', `Simpan/Update Tujuan Pembelajaran [${kode}] mapel ${mapel} (${tingkat} - ${fase})`, 'success');
+
+  callApi('saveTujuanPembelajaran', payload);
+}
+
+function toggleTPStatus(id) {
+  const item = AppState.tpList.find(t => String(t.id) === String(id));
+  if (!item) return;
+  item.status = item.status === 'Aktif' ? 'Non-Aktif' : 'Aktif';
+  showToast(`Status TP [${item.kode_tp}] diubah menjadi ${item.status}.`, 'info');
+  renderTPTable();
+  recordActivity('UPDATE_TP', 'Tujuan Pembelajaran', `Ubah status TP [${item.kode_tp}] menjadi ${item.status} (${item.mata_pelajaran})`, 'success');
+  callApi('saveTujuanPembelajaran', item);
+}
+
+function deleteTP(id) {
+  const item = AppState.tpList.find(t => String(t.id) === String(id));
+  if (!confirm(`Yakin ingin menghapus Tujuan Pembelajaran [${item?.kode_tp || id}] ini?`)) return;
+  AppState.tpList = AppState.tpList.filter(t => String(t.id) !== String(id));
+  showToast('Tujuan Pembelajaran berhasil dihapus.');
+  renderTPTable();
+  recordActivity('DELETE_TP', 'Tujuan Pembelajaran', `Hapus Tujuan Pembelajaran [${item?.kode_tp || id}] mapel ${item?.mata_pelajaran || '-'}`, 'success');
+  callApi('deleteTujuanPembelajaran', { id: id });
+}
+
+function importKurikulumMerdekaDefaultTP() {
+  if (!confirm('Impor paket 64 Tujuan Pembelajaran Kurikulum Merdeka (Fase D) untuk seluruh 16 Mapel? TP yang ada akan diperbarui/dilengkapi.')) return;
+  
+  const bank = JSON.parse(JSON.stringify(DEFAULT_TP_BANK_16));
+  bank.forEach(newItem => {
+    const existingIdx = AppState.tpList.findIndex(t => t.id === newItem.id || (t.mata_pelajaran === newItem.mata_pelajaran && t.kode_tp === newItem.kode_tp));
+    if (existingIdx !== -1) {
+      AppState.tpList[existingIdx] = { ...AppState.tpList[existingIdx], ...newItem };
+    } else {
+      AppState.tpList.push(newItem);
+    }
+  });
+
+  showToast('Alhamdulillah, 64 Tujuan Pembelajaran Kurikulum Merdeka Fase D berhasil dimuat!', 'success');
+  renderTPTable();
+  recordActivity('IMPORT_TP', 'Tujuan Pembelajaran', `Impor paket standar 64 Tujuan Pembelajaran Kurikulum Merdeka (Fase D) untuk seluruh 16 Mapel`, 'success');
+  callApi('importDefaultTujuanPembelajaran', {});
+}
+
+function downloadTPTemplate() {
+  const headers = ['kode_tp', 'mata_pelajaran', 'tingkat_kelas', 'fase', 'semester', 'tahun_ajaran', 'deskripsi_tp', 'ringkasan_tp', 'status'];
+  const sampleRows = [
+    ['TP 1', 'Bahasa Indonesia', 'Kelas VII', 'Fase D', 'Tengah Semester 1', '2026/2027', 'Menganalisis struktur dan ciri kebahasaan teks deskripsi', 'menganalisis struktur dan ciri kebahasaan teks deskripsi', 'Aktif'],
+    ['TP 2', 'Bahasa Indonesia', 'Kelas VII', 'Fase D', 'Tengah Semester 1', '2026/2027', 'Menyajikan gagasan dan pesan dalam bentuk teks deskripsi', 'menyajikan gagasan dalam bentuk teks deskripsi', 'Aktif']
+  ];
+
+  const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...sampleRows.map(r => r.map(c => `"${c}"`).join(','))].join('\n');
+  const encodedUri = encodeURI(csvContent);
+  const link = document.createElement('a');
+  link.setAttribute('href', encodedUri);
+  link.setAttribute('download', 'Template_Tujuan_Pembelajaran_SMP_AlImam.csv');
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  showToast('Template Tujuan Pembelajaran berhasil diunduh.', 'info');
+}
+
+// ==========================================
+// 10. MODUL INPUT NILAI RAPOR, CHECKLIST TP, & CEK DESKRIPSI
+// ==========================================
+
 function switchAkademikInputMode(mode) {
   const secLeger = document.getElementById('section-akademik-leger');
+  const secDeskripsi = document.getElementById('section-akademik-deskripsi');
   const secList = document.getElementById('section-akademik-list');
   const secUpload = document.getElementById('section-akademik-upload');
+
   const btnLeger = document.getElementById('btn-mode-akademik-leger');
+  const btnDeskripsi = document.getElementById('btn-mode-akademik-deskripsi');
   const btnList = document.getElementById('btn-mode-akademik-list');
   const btnUpload = document.getElementById('btn-mode-akademik-upload');
 
-  [secLeger, secList, secUpload].forEach(el => el?.classList.add('hidden'));
-  [btnLeger, btnList, btnUpload].forEach(btn => {
-    btn?.classList.remove('bg-white', 'text-blue-700', 'shadow-sm', 'text-emerald-700');
+  [secLeger, secDeskripsi, secList, secUpload].forEach(el => el?.classList.add('hidden'));
+  [btnLeger, btnDeskripsi, btnList, btnUpload].forEach(btn => {
+    btn?.classList.remove('bg-white', 'text-[#00a66c]', 'text-blue-700', 'shadow-sm', 'text-emerald-700');
     btn?.classList.add('text-slate-600');
   });
 
   if (mode === 'leger') {
     secLeger?.classList.remove('hidden');
-    btnLeger?.classList.add('bg-white', 'text-blue-700', 'shadow-sm');
+    btnLeger?.classList.add('bg-white', 'text-[#00a66c]', 'shadow-sm');
     btnLeger?.classList.remove('text-slate-600');
     renderLegerGrid();
+  } else if (mode === 'deskripsi') {
+    secDeskripsi?.classList.remove('hidden');
+    btnDeskripsi?.classList.add('bg-white', 'text-blue-700', 'shadow-sm');
+    btnDeskripsi?.classList.remove('text-slate-600');
+    renderCekDeskripsiView();
   } else if (mode === 'upload') {
     secUpload?.classList.remove('hidden');
     btnUpload?.classList.add('bg-white', 'text-emerald-700', 'shadow-sm');
@@ -1796,20 +2371,49 @@ function onModalMapelChange() {
   autoGenerateModalCapaian();
 }
 
+function getActiveTpsForMapel(mapel) {
+  const allTps = (AppState.tpList && AppState.tpList.length > 0) ? AppState.tpList : DEFAULT_TP_BANK_16;
+  return allTps.filter(t => 
+    String(t.mata_pelajaran).toLowerCase() === String(mapel).toLowerCase() && 
+    (t.status === 'Aktif' || !t.status)
+  );
+}
+
 function renderLegerGrid() {
   const kelas = document.getElementById('leger-akademik-kelas')?.value || 'IX ABU BAKAR';
   const mapel = document.getElementById('leger-akademik-mapel')?.value || 'Akidah';
   const kkm = Number(document.getElementById('leger-akademik-kkm')?.value) || (MAPEL_KKM_DEFAULT[mapel] || 75);
 
   const students = AppState.muridList.filter(m => String(m.kelas) === String(kelas));
-  const countEl = document.getElementById('leger-student-count');
-  if (countEl) countEl.innerText = students.length;
+  const activeTps = getActiveTpsForMapel(mapel);
+
+  // Update TP Chips Banner
+  const chipsContainer = document.getElementById('active-tp-chips-container');
+  const badgeCount = document.getElementById('active-tp-badge-count');
+  if (badgeCount) badgeCount.innerText = `${activeTps.length} TP Aktif`;
+
+  if (chipsContainer) {
+    if (activeTps.length === 0) {
+      chipsContainer.innerHTML = `<span class="text-slate-400 italic">Belum ada TP aktif untuk mapel ${mapel}. <button type="button" onclick="switchView('tp')" class="underline font-bold text-[#00a66c]">Kelola TP</button></span>`;
+    } else {
+      chipsContainer.innerHTML = activeTps.map((tp, idx) => `
+        <div class="px-2.5 py-1 bg-white border border-emerald-200 rounded-lg shadow-xs flex items-center gap-1.5 text-slate-800 text-[11px]" title="${tp.deskripsi_tp}">
+          <span class="font-mono font-black text-[#00a66c] bg-emerald-50 px-1.5 py-0.5 rounded text-[10px]">${tp.kode_tp || ('TP ' + (idx + 1))}</span>
+          <span class="truncate max-w-[240px] font-medium">${tp.ringkasan_tp || tp.deskripsi_tp}</span>
+        </div>
+      `).join('');
+    }
+  }
 
   const tbody = document.getElementById('leger-akademik-tbody');
   if (!tbody) return;
 
+  if (students.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="9" class="px-4 py-8 text-center text-slate-400">Tidak ada data murid di kelas ${kelas}.</td></tr>`;
+    return;
+  }
+
   tbody.innerHTML = students.map((s, idx) => {
-    // Find existing grade
     const existing = AppState.akademikList.find(a => String(a.nis) === String(s.nis) && a.mata_pelajaran === mapel);
     const hasUts = existing && existing.nilai_uts !== undefined && existing.nilai_uts !== null && existing.nilai_uts !== '';
     const hasAkhir = existing && existing.nilai_akhir !== undefined && existing.nilai_akhir !== null && existing.nilai_akhir !== '';
@@ -1819,34 +2423,254 @@ function renderLegerGrid() {
     let predikat = '-';
     let predBadgeCls = 'bg-slate-100 text-slate-500';
     if (utsVal !== '' && !isNaN(utsVal)) {
-      predikat = getPredikatFromScore(utsVal);
+      predikat = getPredikatFromScore(Number(utsVal));
       predBadgeCls = `badge-predikat-${predikat}`;
     }
 
-    const capaian = existing?.capaian_kompetensi || existing?.catatan_guru || '';
+    // Parse checked TPs
+    let optTpList = [];
+    let penTpList = [];
+
+    if (existing) {
+      if (Array.isArray(existing.tp_optimal)) optTpList = existing.tp_optimal;
+      else if (existing.tp_optimal) optTpList = String(existing.tp_optimal).split(',').map(s => s.trim()).filter(Boolean);
+
+      if (Array.isArray(existing.tp_peningkatan)) penTpList = existing.tp_peningkatan;
+      else if (existing.tp_peningkatan) penTpList = String(existing.tp_peningkatan).split(',').map(s => s.trim()).filter(Boolean);
+    }
+
+    // If no checklists set yet, but score exists, provide smart default checklists
+    if (optTpList.length === 0 && penTpList.length === 0 && utsVal !== '' && !isNaN(utsVal) && activeTps.length > 0) {
+      const scoreNum = Number(utsVal);
+      if (scoreNum >= 84) {
+        optTpList = activeTps.map(t => t.id);
+      } else if (scoreNum >= 75) {
+        optTpList = activeTps.slice(0, Math.max(1, activeTps.length - 1)).map(t => t.id);
+        penTpList = activeTps.slice(-1).map(t => t.id);
+      } else {
+        penTpList = activeTps.map(t => t.id);
+      }
+    }
+
+    let capaian = existing?.capaian_kompetensi || existing?.catatan_guru || '';
+    if (!capaian && utsVal !== '' && !isNaN(utsVal)) {
+      capaian = generateDeskripsiCapaian(mapel, Number(utsVal), optTpList, penTpList);
+    }
+
+    // Render Checklist 1 (Optimal) Chips
+    const optChipsHtml = activeTps.length > 0 ? activeTps.map(tp => {
+      const isChecked = optTpList.includes(tp.id) || optTpList.includes(tp.kode_tp);
+      const activeCls = isChecked 
+        ? 'bg-emerald-600 text-white border-emerald-700 shadow-sm' 
+        : 'bg-slate-100 text-slate-600 border-slate-200 hover:bg-emerald-50 hover:text-emerald-700';
+      const icon = isChecked ? 'fa-check' : 'fa-plus';
+
+      return `
+        <button type="button" 
+                onclick="toggleRowTpCheck('${s.nis}', '${tp.id}', 'optimal')" 
+                data-tp-id="${tp.id}" 
+                data-type="optimal"
+                data-checked="${isChecked ? 'true' : 'false'}"
+                class="tp-chip-opt px-2 py-1 rounded-md text-[10px] font-bold border transition cursor-pointer flex items-center gap-1 ${activeCls}"
+                title="${tp.ringkasan_tp || tp.deskripsi_tp}">
+          <i class="fa-solid ${icon} text-[9px]"></i>
+          <span>${tp.kode_tp || 'TP'}</span>
+        </button>
+      `;
+    }).join(' ') : `<span class="text-[10px] text-slate-400 italic">Tidak ada TP aktif</span>`;
+
+    // Render Checklist 2 (Peningkatan) Chips
+    const penChipsHtml = activeTps.length > 0 ? activeTps.map(tp => {
+      const isChecked = penTpList.includes(tp.id) || penTpList.includes(tp.kode_tp);
+      const activeCls = isChecked 
+        ? 'bg-rose-600 text-white border-rose-700 shadow-sm' 
+        : 'bg-slate-100 text-slate-600 border-slate-200 hover:bg-rose-50 hover:text-rose-700';
+      const icon = isChecked ? 'fa-triangle-exclamation' : 'fa-plus';
+
+      return `
+        <button type="button" 
+                onclick="toggleRowTpCheck('${s.nis}', '${tp.id}', 'peningkatan')" 
+                data-tp-id="${tp.id}" 
+                data-type="peningkatan"
+                data-checked="${isChecked ? 'true' : 'false'}"
+                class="tp-chip-pen px-2 py-1 rounded-md text-[10px] font-bold border transition cursor-pointer flex items-center gap-1 ${activeCls}"
+                title="${tp.ringkasan_tp || tp.deskripsi_tp}">
+          <i class="fa-solid ${icon} text-[9px]"></i>
+          <span>${tp.kode_tp || 'TP'}</span>
+        </button>
+      `;
+    }).join(' ') : `<span class="text-[10px] text-slate-400 italic">Tidak ada TP aktif</span>`;
 
     return `
     <tr class="hover:bg-blue-50/40 transition leger-row" data-nis="${s.nis}">
       <td class="px-2 py-2 text-center font-mono text-slate-500 border-r border-slate-200">${s.no_urut || (idx + 1)}</td>
       <td class="px-3 py-2 font-mono font-bold text-slate-700 border-r border-slate-200">${s.nisn || s.nis}</td>
-      <td class="px-4 py-2 font-bold text-slate-900 border-r border-slate-200">${s.nama_murid || s.nama_santri}</td>
+      <td class="px-3 py-2 font-bold text-slate-900 border-r border-slate-200">${s.nama_murid || s.nama_santri}</td>
       <td class="px-2 py-2 text-center font-bold text-amber-900 bg-amber-50/40 border-r border-slate-200">${kkm}</td>
-      <td class="px-2 py-2 text-center border-r border-slate-200 bg-blue-50/60">
+      <td class="px-2 py-2 text-center border-r border-slate-200 bg-emerald-50/50">
         <input type="number" min="0" max="100" value="${utsVal}" 
                oninput="onLegerScoreInput(this)" onkeydown="onLegerScoreKeydown(event, this)"
-               class="leger-input-uts w-20 text-center font-black text-sm bg-white border border-blue-300 rounded-lg p-1.5 text-blue-950 focus:ring-2 focus:ring-blue-500 shadow-sm" placeholder="-" />
+               class="leger-input-uts w-16 text-center font-black text-sm bg-white border border-emerald-300 rounded-lg p-1 text-emerald-950 focus:ring-2 focus:ring-[#00a66c] shadow-xs" placeholder="-" />
       </td>
       <td class="px-2 py-2 text-center border-r border-slate-200">
-        <span class="leger-badge-predikat px-2.5 py-0.5 rounded-full text-xs font-black ${predBadgeCls}">${predikat}</span>
+        <span class="leger-badge-predikat px-2 py-0.5 rounded-full text-xs font-black ${predBadgeCls}">${predikat}</span>
       </td>
-      <td class="px-4 py-2">
-        <textarea rows="2" class="leger-input-capaian w-full text-xs bg-slate-50/80 border border-slate-200 rounded-lg p-2 text-slate-800 focus:ring-2 focus:ring-blue-500 focus:bg-white leading-snug" placeholder="Capaian kompetensi otomatis / ketik manual...">${capaian}</textarea>
+      <td class="px-2.5 py-2 border-r border-slate-200 bg-emerald-50/20">
+        <div class="flex flex-wrap gap-1 items-center">
+          ${optChipsHtml}
+        </div>
+      </td>
+      <td class="px-2.5 py-2 border-r border-slate-200 bg-rose-50/20">
+        <div class="flex flex-wrap gap-1 items-center">
+          ${penChipsHtml}
+        </div>
+      </td>
+      <td class="px-3 py-2">
+        <textarea rows="2" class="leger-input-capaian w-full text-xs bg-slate-50/80 border border-slate-200 rounded-lg p-2 text-slate-800 focus:ring-2 focus:ring-[#00a66c] focus:bg-white leading-snug" placeholder="Deskripsi capaian rapor otomatis berdasarkan checklist TP...">${capaian}</textarea>
       </td>
     </tr>
     `;
   }).join('');
 
   filterLegerGridStudents();
+}
+
+function toggleRowTpCheck(nis, tpId, type) {
+  const row = document.querySelector(`.leger-row[data-nis="${nis}"]`);
+  if (!row) return;
+
+  const optBtn = row.querySelector(`.tp-chip-opt[data-tp-id="${tpId}"]`);
+  const penBtn = row.querySelector(`.tp-chip-pen[data-tp-id="${tpId}"]`);
+
+  if (type === 'optimal') {
+    const wasChecked = optBtn?.getAttribute('data-checked') === 'true';
+    if (wasChecked) {
+      optBtn.setAttribute('data-checked', 'false');
+      optBtn.className = 'tp-chip-opt px-2 py-1 rounded-md text-[10px] font-bold border transition cursor-pointer flex items-center gap-1 bg-slate-100 text-slate-600 border-slate-200 hover:bg-emerald-50 hover:text-emerald-700';
+      const icon = optBtn.querySelector('i');
+      if (icon) icon.className = 'fa-solid fa-plus text-[9px]';
+    } else {
+      optBtn.setAttribute('data-checked', 'true');
+      optBtn.className = 'tp-chip-opt px-2 py-1 rounded-md text-[10px] font-bold border transition cursor-pointer flex items-center gap-1 bg-emerald-600 text-white border-emerald-700 shadow-sm';
+      const icon = optBtn.querySelector('i');
+      if (icon) icon.className = 'fa-solid fa-check text-[9px]';
+
+      // Mutual exclusion: Uncheck improvement
+      if (penBtn) {
+        penBtn.setAttribute('data-checked', 'false');
+        penBtn.className = 'tp-chip-pen px-2 py-1 rounded-md text-[10px] font-bold border transition cursor-pointer flex items-center gap-1 bg-slate-100 text-slate-600 border-slate-200 hover:bg-rose-50 hover:text-rose-700';
+        const pIcon = penBtn.querySelector('i');
+        if (pIcon) pIcon.className = 'fa-solid fa-plus text-[9px]';
+      }
+    }
+  } else if (type === 'peningkatan') {
+    const wasChecked = penBtn?.getAttribute('data-checked') === 'true';
+    if (wasChecked) {
+      penBtn.setAttribute('data-checked', 'false');
+      penBtn.className = 'tp-chip-pen px-2 py-1 rounded-md text-[10px] font-bold border transition cursor-pointer flex items-center gap-1 bg-slate-100 text-slate-600 border-slate-200 hover:bg-rose-50 hover:text-rose-700';
+      const icon = penBtn.querySelector('i');
+      if (icon) icon.className = 'fa-solid fa-plus text-[9px]';
+    } else {
+      penBtn.setAttribute('data-checked', 'true');
+      penBtn.className = 'tp-chip-pen px-2 py-1 rounded-md text-[10px] font-bold border transition cursor-pointer flex items-center gap-1 bg-rose-600 text-white border-rose-700 shadow-sm';
+      const icon = penBtn.querySelector('i');
+      if (icon) icon.className = 'fa-solid fa-triangle-exclamation text-[9px]';
+
+      // Mutual exclusion: Uncheck optimal
+      if (optBtn) {
+        optBtn.setAttribute('data-checked', 'false');
+        optBtn.className = 'tp-chip-opt px-2 py-1 rounded-md text-[10px] font-bold border transition cursor-pointer flex items-center gap-1 bg-slate-100 text-slate-600 border-slate-200 hover:bg-emerald-50 hover:text-emerald-700';
+        const oIcon = optBtn.querySelector('i');
+        if (oIcon) oIcon.className = 'fa-solid fa-plus text-[9px]';
+      }
+    }
+  }
+
+  // Regenerate narrative sentence
+  recalcRowCapaian(row);
+}
+
+function recalcRowCapaian(row) {
+  if (!row) return;
+  const mapel = document.getElementById('leger-akademik-mapel')?.value || 'Akidah';
+  const scoreInput = row.querySelector('.leger-input-uts')?.value;
+  const score = (scoreInput !== '' && !isNaN(scoreInput)) ? Number(scoreInput) : 80;
+
+  const optIds = Array.from(row.querySelectorAll('.tp-chip-opt[data-checked="true"]')).map(el => el.getAttribute('data-tp-id'));
+  const penIds = Array.from(row.querySelectorAll('.tp-chip-pen[data-checked="true"]')).map(el => el.getAttribute('data-tp-id'));
+
+  const narasi = generateDeskripsiCapaian(mapel, score, optIds, penIds);
+  const textarea = row.querySelector('.leger-input-capaian');
+  if (textarea) textarea.value = narasi;
+}
+
+function autoRecommendAllLegerTP() {
+  const mapel = document.getElementById('leger-akademik-mapel')?.value || 'Akidah';
+  const activeTps = getActiveTpsForMapel(mapel);
+  const rows = document.querySelectorAll('.leger-row');
+  let count = 0;
+
+  rows.forEach(row => {
+    const inputVal = row.querySelector('.leger-input-uts')?.value;
+    if (inputVal === '' || isNaN(inputVal)) return;
+
+    const score = Number(inputVal);
+    count++;
+
+    activeTps.forEach((tp, idx) => {
+      const optBtn = row.querySelector(`.tp-chip-opt[data-tp-id="${tp.id}"]`);
+      const penBtn = row.querySelector(`.tp-chip-pen[data-tp-id="${tp.id}"]`);
+
+      let isOpt = false;
+      let isPen = false;
+
+      if (score >= 84) {
+        isOpt = true; // All optimal
+      } else if (score >= 75) {
+        if (idx < Math.max(1, activeTps.length - 1)) isOpt = true;
+        else isPen = true;
+      } else {
+        isPen = true; // Below KKM needs improvement
+      }
+
+      if (optBtn) {
+        optBtn.setAttribute('data-checked', isOpt ? 'true' : 'false');
+        optBtn.className = isOpt
+          ? 'tp-chip-opt px-2 py-1 rounded-md text-[10px] font-bold border transition cursor-pointer flex items-center gap-1 bg-emerald-600 text-white border-emerald-700 shadow-sm'
+          : 'tp-chip-opt px-2 py-1 rounded-md text-[10px] font-bold border transition cursor-pointer flex items-center gap-1 bg-slate-100 text-slate-600 border-slate-200 hover:bg-emerald-50 hover:text-emerald-700';
+        const icon = optBtn.querySelector('i');
+        if (icon) icon.className = `fa-solid ${isOpt ? 'fa-check' : 'fa-plus'} text-[9px]`;
+      }
+
+      if (penBtn) {
+        penBtn.setAttribute('data-checked', isPen ? 'true' : 'false');
+        penBtn.className = isPen
+          ? 'tp-chip-pen px-2 py-1 rounded-md text-[10px] font-bold border transition cursor-pointer flex items-center gap-1 bg-rose-600 text-white border-rose-700 shadow-sm'
+          : 'tp-chip-pen px-2 py-1 rounded-md text-[10px] font-bold border transition cursor-pointer flex items-center gap-1 bg-slate-100 text-slate-600 border-slate-200 hover:bg-rose-50 hover:text-rose-700';
+        const icon = penBtn.querySelector('i');
+        if (icon) icon.className = `fa-solid ${isPen ? 'fa-triangle-exclamation' : 'fa-plus'} text-[9px]`;
+      }
+    });
+
+    recalcRowCapaian(row);
+  });
+
+  showToast(`Checklist TP dan deskripsi capaian berhasil direkomendasikan otomatis untuk ${count} murid!`, 'success');
+  recordActivity('AUTO_CHECKLIST_TP', 'Nilai Akademik', `Rekomendasi checklist TP & deskripsi otomatis mapel ${mapel} (${count} murid)`, 'success');
+}
+
+function autoGenerateAllLegerCapaian() {
+  const rows = document.querySelectorAll('.leger-row');
+  let count = 0;
+  rows.forEach(row => {
+    const inputVal = row.querySelector('.leger-input-uts')?.value;
+    if (inputVal !== '' && !isNaN(inputVal)) {
+      recalcRowCapaian(row);
+      count++;
+    }
+  });
+
+  showToast(`Deskripsi rapor berhasil di-generate ulang untuk ${count} murid!`, 'success');
 }
 
 function filterLegerGridStudents() {
@@ -1867,28 +2691,24 @@ function onLegerScoreInput(inputEl) {
   if (!row) return;
   const valStr = inputEl.value.trim();
   const badge = row.querySelector('.leger-badge-predikat');
-  const capTextarea = row.querySelector('.leger-input-capaian');
-  const mapel = document.getElementById('leger-akademik-mapel')?.value || 'Akidah';
 
   if (valStr === '' || isNaN(valStr)) {
     if (badge) {
       badge.innerText = '-';
-      badge.className = 'leger-badge-predikat px-2.5 py-0.5 rounded-full text-xs font-bold bg-slate-100 text-slate-500';
+      badge.className = 'leger-badge-predikat px-2 py-0.5 rounded-full text-xs font-bold bg-slate-100 text-slate-500';
     }
     return;
   }
 
-  const akhir = Number(valStr);
-  const predikat = getPredikatFromScore(akhir);
+  const score = Number(valStr);
+  const predikat = getPredikatFromScore(score);
 
   if (badge) {
     badge.innerText = predikat;
-    badge.className = `leger-badge-predikat px-2.5 py-0.5 rounded-full text-xs font-black badge-predikat-${predikat}`;
+    badge.className = `leger-badge-predikat px-2 py-0.5 rounded-full text-xs font-black badge-predikat-${predikat}`;
   }
 
-  if (capTextarea && !capTextarea.value.trim()) {
-    capTextarea.value = getCapaianByScore(mapel, akhir);
-  }
+  recalcRowCapaian(row);
 }
 
 function onLegerScoreKeydown(event, inputEl) {
@@ -1919,40 +2739,6 @@ function updateLegerPredikats() {
   });
 }
 
-function autoGenerateAllLegerCapaian() {
-  const mapel = document.getElementById('leger-akademik-mapel')?.value || 'Akidah';
-  const rows = document.querySelectorAll('.leger-row');
-  let count = 0;
-  rows.forEach(row => {
-    const inputVal = row.querySelector('.leger-input-uts')?.value;
-    if (inputVal !== '' && !isNaN(inputVal)) {
-      const akhir = Number(inputVal);
-      const capaian = getCapaianByScore(mapel, akhir);
-      const textarea = row.querySelector('.leger-input-capaian');
-      if (textarea) {
-        textarea.value = capaian;
-        count++;
-      }
-    }
-  });
-
-  showToast(`Capaian kompetensi berhasil di-generate untuk ${count} murid yang bernilai!`, 'success');
-}
-
-function autoGenerateModalCapaian() {
-  const mapel = document.getElementById('akademik-mapel')?.value || 'Akidah';
-  const scoreInput = document.getElementById('akademik-uts')?.value;
-  if (scoreInput === '' || isNaN(scoreInput)) {
-    showToast('Masukkan nilai terlebih dahulu', 'warning');
-    return;
-  }
-  const score = Number(scoreInput);
-  const capaian = getCapaianByScore(mapel, score);
-
-  const catatanEl = document.getElementById('akademik-catatan');
-  if (catatanEl) catatanEl.value = capaian;
-}
-
 function saveBulkLegerAkademik() {
   const kelas = document.getElementById('leger-akademik-kelas')?.value || 'IX ABU BAKAR';
   const mapel = document.getElementById('leger-akademik-mapel')?.value || 'Akidah';
@@ -1965,10 +2751,13 @@ function saveBulkLegerAkademik() {
     const nis = row.getAttribute('data-nis');
     const inputVal = row.querySelector('.leger-input-uts')?.value;
     const hasValue = inputVal !== '' && !isNaN(inputVal);
-    const uts = hasValue ? Number(inputVal) : null;
+    const scoreVal = hasValue ? Number(inputVal) : null;
     const capaian = row.querySelector('.leger-input-capaian')?.value || '';
     
-    const predikat = hasValue ? getPredikatFromScore(uts) : '-';
+    const predikat = hasValue ? getPredikatFromScore(scoreVal) : '-';
+
+    const optIds = Array.from(row.querySelectorAll('.tp-chip-opt[data-checked="true"]')).map(el => el.getAttribute('data-tp-id'));
+    const penIds = Array.from(row.querySelectorAll('.tp-chip-pen[data-checked="true"]')).map(el => el.getAttribute('data-tp-id'));
 
     const m = AppState.muridList.find(x => String(x.nis) === String(nis)) || {};
 
@@ -1979,10 +2768,12 @@ function saveBulkLegerAkademik() {
       kelas: kelas,
       mata_pelajaran: mapel,
       kkm: kkm,
-      nilai_tugas: uts,
-      nilai_uts: uts,
-      nilai_akhir: uts,
+      nilai_tugas: scoreVal,
+      nilai_uts: scoreVal,
+      nilai_akhir: scoreVal,
       predikat: predikat,
+      tp_optimal: optIds.join(', '),
+      tp_peningkatan: penIds.join(', '),
       capaian_kompetensi: capaian,
       catatan_guru: capaian
     };
@@ -1995,8 +2786,10 @@ function saveBulkLegerAkademik() {
     else AppState.akademikList.push(entry);
   });
 
-  showToast(`Alhamdulillah, nilai UTS mapel ${mapel} kelas ${kelas} berhasil disimpan! (${items.length} murid)`);
+  showToast(`Alhamdulillah, nilai & checklist TP mapel ${mapel} kelas ${kelas} berhasil disimpan! (${items.length} murid)`, 'success');
   loadDashboardStats();
+
+  recordActivity('BULK_SAVE_GRADE', 'Nilai Akademik', `Simpan massal nilai & checklist TP mapel ${mapel} kelas ${kelas} (${items.length} murid)`, 'success');
 
   const selectedYear = document.getElementById('leger-akademik-tahun-ajaran')?.value || AppState.cmsSettings.academic_year || '2026/2027';
 
@@ -2007,6 +2800,135 @@ function saveBulkLegerAkademik() {
     tahun_ajaran: selectedYear,
     items: items
   });
+}
+
+// ==========================================
+// MODUL CEK DESKRIPSI RAPOR / VALIDASI SIAP CETAK
+// ==========================================
+
+function renderCekDeskripsiView() {
+  const kelas = document.getElementById('leger-akademik-kelas')?.value || 'IX ABU BAKAR';
+  const mapel = document.getElementById('leger-akademik-mapel')?.value || 'Akidah';
+  const kkm = Number(document.getElementById('leger-akademik-kkm')?.value) || 75;
+
+  const students = AppState.muridList.filter(m => String(m.kelas) === String(kelas));
+  const activeTps = getActiveTpsForMapel(mapel);
+
+  let filledCount = 0;
+  let countOptimal = 0;
+  let countPeningkatan = 0;
+
+  const tbody = document.getElementById('table-deskripsi-tbody');
+  if (!tbody) return;
+
+  if (students.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="8" class="px-4 py-8 text-center text-slate-400">Tidak ada siswa di kelas ${kelas}.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = students.map((s, idx) => {
+    const existing = AppState.akademikList.find(a => String(a.nis) === String(s.nis) && a.mata_pelajaran === mapel);
+    const hasUts = existing && existing.nilai_uts !== undefined && existing.nilai_uts !== null && existing.nilai_uts !== '';
+    const hasAkhir = existing && existing.nilai_akhir !== undefined && existing.nilai_akhir !== null && existing.nilai_akhir !== '';
+    const scoreVal = hasUts ? existing.nilai_uts : (hasAkhir ? existing.nilai_akhir : '');
+
+    const hasScore = scoreVal !== '' && !isNaN(scoreVal);
+    if (hasScore) filledCount++;
+
+    const numScore = hasScore ? Number(scoreVal) : null;
+    const predikat = hasScore ? getPredikatFromScore(numScore) : '-';
+    if (predikat === 'A' || predikat === 'B') countOptimal++;
+
+    let optIds = [];
+    let penIds = [];
+    if (existing) {
+      if (Array.isArray(existing.tp_optimal)) optIds = existing.tp_optimal;
+      else if (existing.tp_optimal) optIds = String(existing.tp_optimal).split(',').map(x => x.trim()).filter(Boolean);
+
+      if (Array.isArray(existing.tp_peningkatan)) penIds = existing.tp_peningkatan;
+      else if (existing.tp_peningkatan) penIds = String(existing.tp_peningkatan).split(',').map(x => x.trim()).filter(Boolean);
+    }
+
+    if (penIds.length > 0) countPeningkatan++;
+
+    const narasi = existing?.capaian_kompetensi || (hasScore ? generateDeskripsiCapaian(mapel, numScore, optIds, penIds) : '<span class="text-slate-400 italic">Belum ada nilai & deskripsi</span>');
+
+    const optBadges = optIds.length > 0 ? optIds.map(id => {
+      const tp = activeTps.find(t => t.id === id || t.kode_tp === id);
+      return `<span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 text-[10px] font-bold" title="${tp?.ringkasan_tp || id}">${tp?.kode_tp || id}</span>`;
+    }).join(' ') : `<span class="text-[10px] text-slate-400 italic">-</span>`;
+
+    const penBadges = penIds.length > 0 ? penIds.map(id => {
+      const tp = activeTps.find(t => t.id === id || t.kode_tp === id);
+      return `<span class="px-2 py-0.5 rounded bg-rose-100 text-rose-800 text-[10px] font-bold" title="${tp?.ringkasan_tp || id}">${tp?.kode_tp || id}</span>`;
+    }).join(' ') : `<span class="text-[10px] text-slate-400 italic">-</span>`;
+
+    const statusCetak = hasScore 
+      ? `<span class="px-2.5 py-1 rounded-full text-[10px] font-black bg-emerald-100 text-emerald-800 border border-emerald-300">✅ Siap Cetak</span>`
+      : `<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-300">⚠️ Belum Ada Nilai</span>`;
+
+    return `
+    <tr class="hover:bg-slate-50 transition border-b border-slate-100">
+      <td class="px-2 py-3 text-center font-mono text-slate-500 border-r border-slate-200">${idx + 1}</td>
+      <td class="px-3 py-3 font-bold text-slate-900 border-r border-slate-200">
+        <div>${s.nama_murid || s.nama_santri}</div>
+        <div class="text-[10px] text-slate-400 font-mono">${s.nisn || s.nis}</div>
+      </td>
+      <td class="px-2 py-3 text-center font-black text-slate-900 bg-slate-50/50 border-r border-slate-200 font-mono text-xs">
+        ${hasScore ? numScore : '-'}
+      </td>
+      <td class="px-2 py-3 text-center border-r border-slate-200">
+        <span class="px-2 py-0.5 rounded-full text-xs font-black badge-predikat-${predikat}">${predikat}</span>
+      </td>
+      <td class="px-3 py-3 border-r border-slate-200 bg-emerald-50/30">
+        <div class="flex flex-wrap gap-1">${optBadges}</div>
+      </td>
+      <td class="px-3 py-3 border-r border-slate-200 bg-rose-50/30">
+        <div class="flex flex-wrap gap-1">${penBadges}</div>
+      </td>
+      <td class="px-4 py-3 border-r border-slate-200 leading-relaxed text-xs text-slate-800 font-medium">
+        ${narasi}
+      </td>
+      <td class="px-3 py-3 text-center space-y-1">
+        <div>${statusCetak}</div>
+        <button type="button" onclick="openStudentReportDirectly('${s.nis}')" 
+                class="px-2.5 py-1 bg-slate-100 hover:bg-[#00a66c] hover:text-white text-slate-700 rounded-lg text-[10px] font-bold transition flex items-center justify-center gap-1 w-full mt-1 cursor-pointer">
+          <i class="fa-solid fa-eye"></i>
+          <span>Lihat Rapor</span>
+        </button>
+      </td>
+    </tr>
+    `;
+  }).join('');
+
+  // Update stats
+  const total = students.length;
+  const pct = total > 0 ? Math.round((filledCount / total) * 100) : 0;
+
+  if (document.getElementById('deskripsi-status-lengkap')) {
+    document.getElementById('deskripsi-status-lengkap').innerText = `${filledCount} / ${total}`;
+  }
+  if (document.getElementById('deskripsi-status-percent')) {
+    document.getElementById('deskripsi-status-percent').innerText = `${pct}% Lengkap`;
+  }
+  if (document.getElementById('deskripsi-count-optimal')) {
+    document.getElementById('deskripsi-count-optimal').innerText = `${countOptimal} Murid`;
+  }
+  if (document.getElementById('deskripsi-count-peningkatan')) {
+    document.getElementById('deskripsi-count-peningkatan').innerText = `${countPeningkatan} Murid`;
+  }
+}
+
+function openStudentReportDirectly(nis) {
+  switchView('rapor');
+  const sel = document.getElementById('rapor-murid') || document.getElementById('filter-rapor-murid');
+  if (sel) {
+    sel.value = nis;
+  }
+  if (typeof renderRaporView === 'function') {
+    renderRaporView();
+  }
+  showToast('Membuka lembar rapor santri terpilih.', 'info');
 }
 
 function loadNilaiAkademik() {
@@ -2120,6 +3042,20 @@ function filterTableAkademikLocal() {
   updateAkademikWidgets(filtered);
 }
 
+function autoGenerateModalCapaian() {
+  const mapel = document.getElementById('akademik-mapel')?.value || 'Akidah';
+  const scoreInput = document.getElementById('akademik-uts')?.value;
+  if (scoreInput === '' || isNaN(scoreInput)) {
+    showToast('Masukkan nilai terlebih dahulu', 'warning');
+    return;
+  }
+  const score = Number(scoreInput);
+  const capaian = generateDeskripsiCapaian(mapel, score);
+
+  const catatanEl = document.getElementById('akademik-catatan');
+  if (catatanEl) catatanEl.value = capaian;
+}
+
 function openModalAkademik() {
   populateMuridDropdowns();
   document.getElementById('modal-akademik-title').innerText = 'Input Nilai Akademik Murid';
@@ -2214,6 +3150,8 @@ function submitFormAkademik(e) {
   updateAkademikWidgets(AppState.akademikList);
   loadDashboardStats();
 
+  recordActivity('SAVE_GRADE', 'Nilai Akademik', `Simpan nilai ${payload.mata_pelajaran} siswa ${payload.nama_murid} (${payload.nis}): Nilai ${payload.nilai_akhir} (Predikat ${payload.predikat})`, 'success');
+
   callApi('saveNilaiAkademik', payload);
 }
 
@@ -2224,6 +3162,7 @@ function deleteAkademikAction(id) {
   renderTableAkademik(AppState.akademikList);
   updateAkademikWidgets(AppState.akademikList);
   loadDashboardStats();
+  recordActivity('DELETE_GRADE', 'Nilai Akademik', `Hapus entri nilai akademik ID: ${id}`, 'success');
   callApi('deleteNilaiAkademik', { id: id });
 }
 
@@ -2517,6 +3456,8 @@ function saveUploadedGrades() {
 
   saveAkademikListLocally();
   loadDashboardStats();
+
+  recordActivity('IMPORT_GRADE', 'Nilai Akademik', `Impor massal ${uploadedGradeItems.length} data nilai santri dari file/paste impor`, 'success');
 
   callApi('saveBulkUploadNilaiAkademik', {
     items: uploadedGradeItems,
@@ -3017,6 +3958,7 @@ function buildLegerTfoot(mapelStats, grandAvg, mode) {
     minCells = mapelStats.map(m => `<td class="px-2 py-1.5 text-center border-r border-slate-300 font-mono text-rose-700">${m.min}</td>`).join('');
     maxCells = mapelStats.map(m => `<td class="px-2 py-1.5 text-center border-r border-slate-300 font-mono text-emerald-700 font-bold">${m.max}</td>`).join('');
     passCells = mapelStats.map(m => `<td class="px-2 py-1.5 text-center border-r border-slate-300 font-mono text-slate-700">${m.passPct !== '-' ? m.passPct + '%' : '-'}</td>`).join('');
+  }
   let extraTfootCols = mode === 'holistik' ? `<td colspan="8" class="border-r border-slate-300"></td>` : '';
 
   tfoot.innerHTML = `
@@ -3136,6 +4078,7 @@ function exportLegerToExcel() {
   URL.revokeObjectURL(url);
 
   showToast(`Alhamdulillah, Buku Leger Kelas ${kelas} berhasil diekspor ke file Excel/CSV!`, 'success');
+  recordActivity('EXPORT_DATA', 'Buku Leger Nilai', `Ekspor Buku Leger Nilai Lengkap Kelas ${kelas} (T.A. ${tahunAjaran} Sem. ${semester}) ke CSV/Excel`, 'success');
 }
 
 /**
@@ -3144,6 +4087,9 @@ function exportLegerToExcel() {
 function printLeger() {
   const targetArea = document.getElementById('leger-printable-area');
   if (!targetArea) return;
+
+  const kelas = currentLegerDataCache?.kelas || 'IX ABU BAKAR';
+  recordActivity('PRINT_DATA', 'Buku Leger Nilai', `Cetak Buku Leger Nilai Kelas ${kelas}`, 'success');
 
   document.body.classList.add('printing-leger-landscape');
   window.print();
@@ -3498,6 +4444,7 @@ function saveSklLegerGrid() {
   });
 
   showToast(`Alhamdulillah, nilai SKL Kepemimpinan untuk ${updatedEntries.length} murid kelas ${currentKelas} berhasil disimpan!`, 'success');
+  recordActivity('SAVE_KEPRIBADIAN', 'Rapor SKL 28 Indikator', `Simpan massal penilaian 28 Indikator SKL kelas ${currentKelas} (${updatedEntries.length} murid)`, 'success');
 
   callApi('saveBulkSklKepemimpinan', { items: updatedEntries });
 }
@@ -3751,6 +4698,8 @@ function saveBulkKepribadianGrid() {
   showToast(`Alhamdulillah, data Ahlaq & Kepribadian untuk ${items.length} murid berhasil disimpan!`, 'success');
   loadDashboardStats();
 
+  recordActivity('SAVE_KEPRIBADIAN', 'Ahlaq & Kepribadian', `Simpan massal penilaian Ahlaq & Kepribadian untuk ${items.length} murid`, 'success');
+
   callApi('saveBulkKepribadian', { items: items });
 }
 
@@ -3900,6 +4849,8 @@ function submitFormKepemimpinan(e) {
   updateKepemimpinanWidgets(AppState.kepemimpinanList);
   loadDashboardStats();
 
+  recordActivity('SAVE_KEPRIBADIAN', 'Ahlaq & Kepribadian', `Simpan penilaian kepribadian santri: ${payload.nama_murid} (${payload.nis})`, 'success');
+
   callApi('saveNilaiKepemimpinan', payload);
 }
 
@@ -3910,6 +4861,7 @@ function deleteKepemimpinanAction(id) {
   renderTableKepemimpinan(AppState.kepemimpinanList);
   updateKepemimpinanWidgets(AppState.kepemimpinanList);
   loadDashboardStats();
+  recordActivity('DELETE_KEPRIBADIAN', 'Ahlaq & Kepribadian', `Hapus data penilaian kepribadian ID: ${id}`, 'success');
   callApi('deleteNilaiKepemimpinan', { id: id });
 }
 
@@ -4071,6 +5023,8 @@ function submitFormDiniyah(e) {
   updateDiniyahWidgets(AppState.diniyahList);
   loadDashboardStats();
 
+  recordActivity('SAVE_DINIYAH', 'Diniyah & Tahfidz', `Simpan nilai Diniyah santri: ${payload.nama_murid} (${payload.nis}) - Tahfidz: ${payload.nilai_tahfidz}, B.Arab: ${payload.bahasa_arab}`, 'success');
+
   callApi('saveNilaiDiniyah', payload);
 }
 
@@ -4081,6 +5035,7 @@ function deleteDiniyahAction(id) {
   renderTableDiniyah(AppState.diniyahList);
   updateDiniyahWidgets(AppState.diniyahList);
   loadDashboardStats();
+  recordActivity('DELETE_DINIYAH', 'Diniyah & Tahfidz', `Hapus entri nilai diniyah ID: ${id}`, 'success');
   callApi('deleteNilaiDiniyah', { id: id });
 }
 
@@ -4208,6 +5163,8 @@ function saveCmsSettingsAll() {
   applyCmsTheme(payload);
   showToast('Pengaturan CMS & Tampilan berhasil disimpan!');
   loadDashboardStats();
+
+  recordActivity('UPDATE_CMS', 'CMS & Pengaturan', `Perbarui pengaturan identitas sekolah & konfigurasi rapor (T.A. ${payload.academic_year} Sem. ${payload.semester_active})`, 'success');
 
   callApi('updateSettings', payload);
 }
@@ -4371,6 +5328,7 @@ function submitFormUser(e) {
   showToast('Pengguna berhasil disimpan!');
   closeModalUser();
   renderTableUsers(AppState.usersList);
+  recordActivity('MANAGE_USER', 'Manajemen Pengguna', `Simpan/update akun pengguna @${payload.username} (${payload.nama_lengkap}) - Role: ${payload.role}`, 'success');
   callApi('saveUser', payload);
 }
 
@@ -4379,6 +5337,7 @@ function deleteUserAction(id) {
   AppState.usersList = AppState.usersList.filter(u => String(u.id) !== String(id));
   showToast('Pengguna berhasil dihapus.');
   renderTableUsers(AppState.usersList);
+  recordActivity('MANAGE_USER', 'Manajemen Pengguna', `Hapus akun pengguna ID: ${id}`, 'success');
   callApi('deleteUser', { id: id });
 }
 
@@ -4652,7 +5611,7 @@ function renderRaporSheet(report) {
         const hasScore = item.nilai_akhir !== null && item.nilai_akhir !== undefined && item.nilai_akhir !== '';
         const hasUts = item.nilai_uts !== null && item.nilai_uts !== undefined && item.nilai_uts !== '';
         const scoreDisplay = hasScore ? item.nilai_akhir : (hasUts ? item.nilai_uts : (item.nilai || '-'));
-        const capaianDisplay = item.capaian_kompetensi || item.catatan_guru || '-';
+        const capaianDisplay = item.capaian_kompetensi || item.catatan_guru || ((hasScore || hasUts) ? generateDeskripsiCapaian(item.mata_pelajaran, scoreDisplay, item.tp_optimal, item.tp_peningkatan) : '-');
 
         return `
           <tr>
@@ -4949,15 +5908,396 @@ function switchViewAndHighlight(viewName) {
   closeInteractiveGuide(false);
   const titles = {
     'dashboard': 'Dashboard Beranda',
+    'tp': 'Tujuan Pembelajaran (TP)',
     'akademik': 'Rekap Nilai (16 Mapel)',
+    'deskripsi': 'Cek Deskripsi Rapor',
     'leger': 'Buku Leger Nilai (16 Mapel)',
     'kepemimpinan': 'Ahlaq & Kepribadian',
     'diniyah': 'Nilai Diniyah & Tahfidz',
     'murid': 'Data Siswa & Presensi',
     'rapor': 'Cetak Rapor Portofolio',
-    'cms': 'Pengaturan CMS'
+    'cms': 'Pengaturan CMS',
+    'logs': 'Log Aktivitas Akun'
   };
   showToast(`💡 Anda berada di modul: ${titles[viewName] || viewName}. Klik 'Panduan' di navbar untuk membuka kembali tour.`);
+}
+
+// ==========================================
+// 18B. MODUL LOG AKTIVITAS & AUDIT TRAIL AKUN
+// ==========================================
+
+function recordActivity(actionOrObj, moduleName, details, status = 'success') {
+  try {
+    let actionType = actionOrObj;
+    let mod = moduleName;
+    let det = details;
+    let st = status;
+
+    if (typeof actionOrObj === 'object' && actionOrObj !== null) {
+      actionType = actionOrObj.action || actionOrObj.action_type || 'UPDATE';
+      mod = actionOrObj.module || actionOrObj.moduleName || 'Sistem';
+      det = actionOrObj.details || actionOrObj.detail || '';
+      st = actionOrObj.status || 'success';
+    }
+
+    const user = AppState.currentUser || { username: 'admin', nama_lengkap: 'Administrator Utama', role: 'admin' };
+    const now = new Date();
+    const pad = (n) => String(n).padStart(2, '0');
+    const timeStr = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+    const logId = 'LOG-' + now.getTime().toString(36).toUpperCase();
+
+    const logEntry = {
+      id: logId,
+      timestamp: timeStr,
+      username: user.username || 'user',
+      user_nama: user.nama_lengkap || user.name || user.username || 'Pengguna',
+      role: user.role || 'guru',
+      action_type: actionType,
+      module: mod,
+      details: det,
+      ip_address: '127.0.0.1',
+      status: st
+    };
+
+    if (!AppState.activityLogs) AppState.activityLogs = [];
+    AppState.activityLogs.unshift(logEntry);
+
+    if (AppState.activityLogs.length > 500) {
+      AppState.activityLogs.pop();
+    }
+
+    if (AppState.currentView === 'logs') {
+      renderActivityLogsTable();
+    }
+
+    const badge = document.getElementById('badge-count-logs');
+    if (badge) badge.innerText = `${AppState.activityLogs.length}`;
+
+    callApi('logActivity', logEntry).catch(() => {});
+  } catch (err) {
+    console.warn('Logging error:', err);
+  }
+}
+
+function loadActivityLogs() {
+  const userFilter = document.getElementById('filter-logs-user')?.value || 'Semua';
+  const roleFilter = document.getElementById('filter-logs-role')?.value || 'Semua';
+  const moduleFilter = document.getElementById('filter-logs-module')?.value || 'Semua';
+  const actionFilter = document.getElementById('filter-logs-action')?.value || 'Semua';
+
+  callApi('getActivityLogs', {
+    username: userFilter,
+    role: roleFilter,
+    module: moduleFilter,
+    action_type: actionFilter
+  }).then(res => {
+    if (res && res.data && res.data.length > 0) {
+      AppState.activityLogs = res.data;
+    } else if (!AppState.activityLogs || AppState.activityLogs.length === 0) {
+      AppState.activityLogs = JSON.parse(JSON.stringify(DEMO_DATA.activityLogs || []));
+    }
+    renderActivityLogsTable();
+  }).catch(() => {
+    if (!AppState.activityLogs || AppState.activityLogs.length === 0) {
+      AppState.activityLogs = JSON.parse(JSON.stringify(DEMO_DATA.activityLogs || []));
+    }
+    renderActivityLogsTable();
+  });
+}
+
+function renderActivityLogsTable() {
+  if (!AppState.activityLogs || AppState.activityLogs.length === 0) {
+    AppState.activityLogs = JSON.parse(JSON.stringify(DEMO_DATA.activityLogs || []));
+  }
+
+  const userFilter = document.getElementById('filter-logs-user')?.value || 'Semua';
+  const roleFilter = document.getElementById('filter-logs-role')?.value || 'Semua';
+  const moduleFilter = document.getElementById('filter-logs-module')?.value || 'Semua';
+  const actionFilter = document.getElementById('filter-logs-action')?.value || 'Semua';
+  const searchQuery = (document.getElementById('filter-logs-search')?.value || '').toLowerCase().trim();
+
+  const filtered = AppState.activityLogs.filter(item => {
+    if (userFilter !== 'Semua' && String(item.username).toLowerCase() !== String(userFilter).toLowerCase()) return false;
+    if (roleFilter !== 'Semua' && String(item.role).toLowerCase() !== String(roleFilter).toLowerCase()) return false;
+    if (moduleFilter !== 'Semua' && !String(item.module || '').toLowerCase().includes(String(moduleFilter).toLowerCase())) return false;
+    if (actionFilter !== 'Semua' && String(item.action_type).toLowerCase() !== String(actionFilter).toLowerCase()) return false;
+
+    if (!searchQuery) return true;
+    const qStr = `${item.details || ''} ${item.user_nama || ''} ${item.username || ''} ${item.module || ''} ${item.action_type || ''}`.toLowerCase();
+    return qStr.includes(searchQuery);
+  });
+
+  updateActivityLogsWidgets(AppState.activityLogs);
+
+  const countEl = document.getElementById('table-logs-count');
+  if (countEl) countEl.innerText = filtered.length;
+
+  const tbody = document.getElementById('table-logs-tbody');
+  if (tbody) {
+    if (filtered.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="7" class="px-4 py-8 text-center text-slate-400">Tidak ada log aktivitas yang sesuai filter.</td></tr>`;
+    } else {
+      tbody.innerHTML = filtered.map(item => {
+        const timeAgo = formatRelativeTime(item.timestamp);
+        const roleBadge = formatRoleBadge(item.role);
+        const actionBadge = formatActionTypeBadge(item.action_type);
+        const isSuccess = item.status === 'success' || !item.status;
+        const statusBadge = isSuccess 
+          ? `<span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-emerald-100 text-emerald-800 border border-emerald-300">✅ Sukses</span>`
+          : `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 text-rose-800 border border-rose-300">❌ Gagal</span>`;
+
+        return `
+        <tr class="hover:bg-slate-50 transition border-b border-slate-100">
+          <td class="px-3 py-3 border-r border-slate-200">
+            <div class="font-mono text-xs font-bold text-slate-800">${item.timestamp || '-'}</div>
+            <div class="text-[10px] text-slate-400 mt-0.5"><i class="fa-regular fa-clock mr-1"></i>${timeAgo}</div>
+          </td>
+          <td class="px-3 py-3 border-r border-slate-200">
+            <div class="flex items-center gap-2">
+              <div class="w-7 h-7 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-xs uppercase shadow-xs">
+                ${(item.user_nama || item.username || 'U').charAt(0)}
+              </div>
+              <div>
+                <div class="font-bold text-slate-900">${item.user_nama || item.username}</div>
+                <div class="text-[10px] font-mono text-slate-400">@${item.username || '-'}</div>
+              </div>
+            </div>
+          </td>
+          <td class="px-2 py-3 text-center border-r border-slate-200">
+            ${roleBadge}
+          </td>
+          <td class="px-3 py-3 font-semibold text-slate-700 border-r border-slate-200">
+            <span class="inline-flex items-center gap-1.5">
+              <i class="${getModuleIcon(item.module)} text-slate-400 text-xs"></i>
+              <span>${item.module || 'Sistem'}</span>
+            </span>
+          </td>
+          <td class="px-3 py-3 border-r border-slate-200">
+            ${actionBadge}
+          </td>
+          <td class="px-4 py-3 border-r border-slate-200 text-slate-800 leading-relaxed font-medium">
+            ${item.details || '-'}
+          </td>
+          <td class="px-2 py-3 text-center">
+            ${statusBadge}
+          </td>
+        </tr>
+        `;
+      }).join('');
+    }
+  }
+
+  // Render Timeline View
+  renderActivityLogsTimeline(filtered);
+}
+
+function renderActivityLogsTimeline(list) {
+  const container = document.getElementById('timeline-logs-list');
+  if (!container) return;
+
+  if (!list || list.length === 0) {
+    container.innerHTML = `<div class="p-6 text-center text-slate-400">Tidak ada aktivitas untuk ditampilkan dalam linimasa.</div>`;
+    return;
+  }
+
+  container.innerHTML = list.slice(0, 50).map(item => {
+    const timeAgo = formatRelativeTime(item.timestamp);
+    const actionBadge = formatActionTypeBadge(item.action_type);
+
+    return `
+      <div class="relative group">
+        <!-- Timeline Marker Pin -->
+        <div class="absolute -left-[31px] top-1.5 w-4 h-4 rounded-full bg-[#00a66c] border-2 border-white shadow-sm flex items-center justify-center">
+          <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
+        </div>
+
+        <div class="bg-slate-50 hover:bg-white border border-slate-200 rounded-xl p-3.5 shadow-xs transition space-y-1.5">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+            <div class="flex items-center gap-2">
+              <span class="font-bold text-slate-900 text-xs">${item.user_nama || item.username}</span>
+              <span class="px-2 py-0.5 rounded text-[10px] font-mono font-semibold bg-slate-200 text-slate-700">@${item.username}</span>
+              ${actionBadge}
+            </div>
+            <span class="text-[10px] font-mono text-slate-400">${item.timestamp} (${timeAgo})</span>
+          </div>
+          <p class="text-xs text-slate-800 font-medium leading-relaxed">${item.details}</p>
+          <div class="flex items-center gap-3 text-[10px] text-slate-400 pt-1 border-t border-slate-100">
+            <span><i class="fa-solid fa-folder-open mr-1"></i>Modul: <strong>${item.module || 'Sistem'}</strong></span>
+            <span><i class="fa-solid fa-network-wired mr-1"></i>IP: ${item.ip_address || '127.0.0.1'}</span>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function updateActivityLogsWidgets(list) {
+  const total = list.length;
+  const todayStr = Utilities_getTodayStr();
+  const todayCount = list.filter(i => String(i.timestamp || '').startsWith(todayStr)).length;
+
+  const gradeCount = list.filter(i => 
+    String(i.module || '').toLowerCase().includes('nilai') || 
+    String(i.module || '').toLowerCase().includes('tujuan') ||
+    String(i.action_type || '').toLowerCase().includes('grade') ||
+    String(i.action_type || '').toLowerCase().includes('tp')
+  ).length;
+
+  const userCounts = {};
+  list.forEach(i => {
+    const u = i.user_nama || i.username || 'User';
+    userCounts[u] = (userCounts[u] || 0) + 1;
+  });
+  let topUser = '-';
+  let topMax = 0;
+  for (let u in userCounts) {
+    if (userCounts[u] > topMax) {
+      topMax = userCounts[u];
+      topUser = `${u} (${topMax}x)`;
+    }
+  }
+
+  if (document.getElementById('widget-logs-total')) document.getElementById('widget-logs-total').innerText = total;
+  if (document.getElementById('widget-logs-today')) document.getElementById('widget-logs-today').innerText = todayCount;
+  if (document.getElementById('widget-logs-grades')) document.getElementById('widget-logs-grades').innerText = gradeCount;
+  if (document.getElementById('widget-logs-top-user')) document.getElementById('widget-logs-top-user').innerText = topUser;
+  if (document.getElementById('badge-count-logs')) document.getElementById('badge-count-logs').innerText = `${total}`;
+}
+
+function switchLogsDisplayMode(mode) {
+  const tblContainer = document.getElementById('container-logs-table');
+  const tmlContainer = document.getElementById('container-logs-timeline');
+  const btnTbl = document.getElementById('btn-logs-view-table');
+  const btnTml = document.getElementById('btn-logs-view-timeline');
+
+  if (mode === 'timeline') {
+    tblContainer?.classList.add('hidden');
+    tmlContainer?.classList.remove('hidden');
+    btnTml?.classList.add('bg-white', 'text-[#00a66c]', 'shadow-xs', 'font-bold');
+    btnTml?.classList.remove('text-slate-600', 'font-semibold');
+    btnTbl?.classList.remove('bg-white', 'text-[#00a66c]', 'shadow-xs', 'font-bold');
+    btnTbl?.classList.add('text-slate-600', 'font-semibold');
+    renderActivityLogsTimeline(AppState.activityLogs);
+  } else {
+    tmlContainer?.classList.add('hidden');
+    tblContainer?.classList.remove('hidden');
+    btnTbl?.classList.add('bg-white', 'text-[#00a66c]', 'shadow-xs', 'font-bold');
+    btnTbl?.classList.remove('text-slate-600', 'font-semibold');
+    btnTml?.classList.remove('bg-white', 'text-[#00a66c]', 'shadow-xs', 'font-bold');
+    btnTml?.classList.add('text-slate-600', 'font-semibold');
+  }
+}
+
+function formatRelativeTime(dateStr) {
+  if (!dateStr) return 'baru saja';
+  try {
+    const d = new Date(dateStr.replace(' ', 'T'));
+    const now = new Date();
+    const diffSec = Math.floor((now - d) / 1000);
+
+    if (diffSec < 60) return 'baru saja';
+    if (diffSec < 3600) return `${Math.floor(diffSec / 60)} menit lalu`;
+    if (diffSec < 86400) return `${Math.floor(diffSec / 3600)} jam lalu`;
+    if (diffSec < 604800) return `${Math.floor(diffSec / 86400)} hari lalu`;
+    return dateStr.split(' ')[0];
+  } catch (e) {
+    return dateStr;
+  }
+}
+
+function Utilities_getTodayStr() {
+  const now = new Date();
+  const pad = (n) => String(n).padStart(2, '0');
+  return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+}
+
+function formatRoleBadge(role) {
+  switch (role) {
+    case 'admin':
+      return `<span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-rose-100 text-rose-800 border border-rose-300">Admin</span>`;
+    case 'kepala_sekolah':
+      return `<span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-purple-100 text-purple-800 border border-purple-300">Kepsek</span>`;
+    case 'guru':
+      return `<span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-emerald-100 text-emerald-800 border border-emerald-300">Guru</span>`;
+    case 'wali_murid':
+      return `<span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-blue-100 text-blue-800 border border-blue-300">Wali Murid</span>`;
+    default:
+      return `<span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-slate-100 text-slate-700">${role || 'User'}</span>`;
+  }
+}
+
+function formatActionTypeBadge(type) {
+  const map = {
+    'BULK_SAVE_GRADE': { text: 'Simpan Nilai Sekelas', cls: 'bg-emerald-100 text-emerald-900 border-emerald-300' },
+    'SAVE_GRADE': { text: 'Input/Edit Nilai', cls: 'bg-emerald-100 text-emerald-800 border-emerald-200' },
+    'DELETE_GRADE': { text: 'Hapus Nilai', cls: 'bg-rose-100 text-rose-800 border-rose-300' },
+    'AUTO_CHECKLIST_TP': { text: 'Auto-Checklist TP', cls: 'bg-amber-100 text-amber-900 border-amber-300' },
+    'UPDATE_TP': { text: 'Tambah/Edit TP', cls: 'bg-teal-100 text-teal-800 border-teal-300' },
+    'DELETE_TP': { text: 'Hapus TP', cls: 'bg-rose-100 text-rose-800 border-rose-300' },
+    'IMPORT_TP': { text: 'Import Bank TP', cls: 'bg-teal-100 text-teal-900 border-teal-300' },
+    'SAVE_KEPRIBADIAN': { text: 'Nilai Karakter', cls: 'bg-indigo-100 text-indigo-800 border-indigo-200' },
+    'SAVE_DINIYAH': { text: 'Nilai Diniyah', cls: 'bg-cyan-100 text-cyan-800 border-cyan-200' },
+    'SAVE_MURID': { text: 'Pembaruan Siswa', cls: 'bg-blue-100 text-blue-800 border-blue-200' },
+    'UPDATE_CMS': { text: 'Ubah Pengaturan', cls: 'bg-violet-100 text-violet-800 border-violet-200' },
+    'LOGIN': { text: 'Login Akun', cls: 'bg-slate-100 text-slate-700 border-slate-300' },
+    'VIEW_RAPOR': { text: 'Pratinjau Rapor', cls: 'bg-sky-100 text-sky-800 border-sky-200' }
+  };
+
+  const item = map[type] || { text: type || 'Aktivitas', cls: 'bg-slate-100 text-slate-700 border-slate-200' };
+  return `<span class="px-2 py-0.5 rounded text-[10px] font-bold border ${item.cls}">${item.text}</span>`;
+}
+
+function getModuleIcon(moduleName) {
+  const str = String(moduleName || '').toLowerCase();
+  if (str.includes('akademik') || str.includes('nilai')) return 'fa-solid fa-book-open';
+  if (str.includes('tujuan') || str.includes('tp')) return 'fa-solid fa-bullseye';
+  if (str.includes('ahlaq') || str.includes('kepribadian')) return 'fa-solid fa-heart-pulse';
+  if (str.includes('diniyah') || str.includes('tahfidz')) return 'fa-solid fa-quran';
+  if (str.includes('siswa') || str.includes('murid')) return 'fa-solid fa-users';
+  if (str.includes('cms') || str.includes('pengaturan') || str.includes('user')) return 'fa-solid fa-sliders';
+  if (str.includes('login') || str.includes('autentikasi')) return 'fa-solid fa-key';
+  return 'fa-solid fa-cube';
+}
+
+function exportActivityLogsToExcel() {
+  const headers = ['ID', 'Waktu', 'Username', 'Nama Lengkap', 'Role', 'Tipe Aksi', 'Modul', 'Rincian Perubahan', 'Device/IP', 'Status'];
+  const list = AppState.activityLogs || [];
+
+  const rows = list.map(item => [
+    item.id,
+    item.timestamp,
+    item.username,
+    item.user_nama,
+    item.role,
+    item.action_type,
+    item.module,
+    item.details,
+    item.ip_address,
+    item.status
+  ]);
+
+  const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows.map(r => r.map(c => `"${String(c || '').replace(/"/g, '""')}"`).join(','))].join('\n');
+  const encodedUri = encodeURI(csvContent);
+  const link = document.createElement('a');
+  link.setAttribute('href', encodedUri);
+  link.setAttribute('download', `Log_Aktivitas_SMP_AlImam_${Utilities_getTodayStr()}.csv`);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  showToast('Log aktivitas berhasil diexport ke file CSV/Excel.', 'success');
+}
+
+function clearActivityLogsAction() {
+  if (AppState.currentUser.role !== 'admin') {
+    showToast('Akses ditolak: Hanya Administrator yang dapat membersihkan riwayat log.', 'error');
+    return;
+  }
+  if (!confirm('Apakah Anda yakin ingin membersihkan seluruh riwayat log aktivitas? Tindakan ini tidak dapat dibatalkan.')) return;
+
+  AppState.activityLogs = [];
+  renderActivityLogsTable();
+  showToast('Seluruh riwayat log aktivitas berhasil dibersihkan.');
+  callApi('clearActivityLogs', {});
 }
 
 // Global window exposure for robust inline onclick execution
@@ -5003,6 +6343,24 @@ window.renderLegerGrid = renderLegerGrid;
 window.renderKepribadianGrid = renderKepribadianGrid;
 window.saveBulkLegerAkademik = saveBulkLegerAkademik;
 window.autoGenerateAllLegerCapaian = autoGenerateAllLegerCapaian;
+window.autoGenerateModalCapaian = autoGenerateModalCapaian;
+window.switchAkademikInputMode = switchAkademikInputMode;
+window.onLegerMapelChange = onLegerMapelChange;
+window.onModalMapelChange = onModalMapelChange;
+window.toggleRowTpCheck = toggleRowTpCheck;
+window.autoRecommendAllLegerTP = autoRecommendAllLegerTP;
+window.renderCekDeskripsiView = renderCekDeskripsiView;
+window.openStudentReportDirectly = openStudentReportDirectly;
+window.loadTujuanPembelajaran = loadTujuanPembelajaran;
+window.renderTPTable = renderTPTable;
+window.openModalTP = openModalTP;
+window.closeModalTP = closeModalTP;
+window.syncTpRingkasanPreview = syncTpRingkasanPreview;
+window.submitFormTP = submitFormTP;
+window.toggleTPStatus = toggleTPStatus;
+window.deleteTP = deleteTP;
+window.importKurikulumMerdekaDefaultTP = importKurikulumMerdekaDefaultTP;
+window.downloadTPTemplate = downloadTPTemplate;
 window.saveBulkKepribadianGrid = saveBulkKepribadianGrid;
 window.applyFastSklPresets = applyFastSklPresets;
 window.saveSklLegerGrid = saveSklLegerGrid;
@@ -5016,6 +6374,13 @@ window.testGasConnection = testGasConnection;
 window.resetDefaultGasUrl = resetDefaultGasUrl;
 window.populateAcademicYearsFilterDropdowns = populateAcademicYearsFilterDropdowns;
 window.populateSemesterFilterDropdowns = populateSemesterFilterDropdowns;
+window.recordActivity = recordActivity;
+window.loadActivityLogs = loadActivityLogs;
+window.renderActivityLogsTable = renderActivityLogsTable;
+window.renderActivityLogsTimeline = renderActivityLogsTimeline;
+window.switchLogsDisplayMode = switchLogsDisplayMode;
+window.exportActivityLogsToExcel = exportActivityLogsToExcel;
+window.clearActivityLogsAction = clearActivityLogsAction;
 
 // 19. APP STARTUP INITIALIZATION
 window.addEventListener('DOMContentLoaded', () => {
@@ -5032,9 +6397,12 @@ window.addEventListener('DOMContentLoaded', () => {
   updateDashboardWithStats(null);
   renderDashboardMiniTables();
   loadDashboardStats();
+  renderActivityLogsTable();
 
   // Background fetch from Google Sheets
   loadCmsSettings();
   loadMuridList();
+  loadActivityLogs();
 });
 </script>
+

@@ -265,7 +265,10 @@
         <!-- View 1: Beranda / Dashboard -->
         <?!= include('views/DashboardHome') ?>
 
-        <!-- View 2: Nilai Akademik -->
+        <!-- View 1b: Modul Tujuan Pembelajaran (TP) -->
+        <?!= include('views/TPView') ?>
+
+        <!-- View 2: Nilai Akademik & Checklist TP -->
         <?!= include('views/AkademikView') ?>
 
         <!-- View 3: Nilai Kepemimpinan -->
@@ -282,6 +285,9 @@
 
         <!-- View 7: CMS & SaaS Config -->
         <?!= include('views/CMSView') ?>
+
+        <!-- View 7b: Log Aktivitas & Audit Trail Akun -->
+        <?!= include('views/LogsView') ?>
 
         <!-- View 8: Cetak Rapor -->
         <?!= include('views/CetakRapor') ?>

@@ -194,6 +194,21 @@ function dispatchApiAction(action, payload) {
       case 'deleteNilaiDiniyah':
         return deleteNilaiDiniyah(payload.id);
 
+      // Tujuan Pembelajaran (TP)
+      case 'getTujuanPembelajaran':
+      case 'getTP':
+        return { success: true, data: getTujuanPembelajaranList(payload) };
+      case 'saveTujuanPembelajaran':
+      case 'saveTP':
+        return saveTujuanPembelajaran(payload);
+      case 'saveBulkTujuanPembelajaran':
+        return saveBulkTujuanPembelajaran(payload.items || payload);
+      case 'deleteTujuanPembelajaran':
+      case 'deleteTP':
+        return deleteTujuanPembelajaran(payload.id);
+      case 'importDefaultTujuanPembelajaran':
+        return importDefaultTujuanPembelajaran(payload.forceReset);
+
       // SKL Kepemimpinan (28 Indikator)
       case 'getSklKepemimpinan':
         return { success: true, data: getSklKepemimpinanList(payload) };
@@ -208,6 +223,14 @@ function dispatchApiAction(action, payload) {
       case 'getMuridReport':
       case 'getSantriReport':
         return getMuridReportData(payload.nis);
+
+      // Log Aktivitas & Audit Trail Akun
+      case 'getActivityLogs':
+        return { success: true, data: getActivityLogsList(payload) };
+      case 'logActivity':
+        return logActivity(payload);
+      case 'clearActivityLogs':
+        return clearActivityLogs();
         
       default:
         return { success: false, message: 'Action API tidak dikenali: ' + action };
@@ -251,6 +274,12 @@ function apiSaveNilaiAkademik(data) { return dispatchApiAction('saveNilaiAkademi
 function apiSaveBulkNilaiAkademik(data) { return dispatchApiAction('saveBulkNilaiAkademik', data); }
 function apiDeleteNilaiAkademik(id) { return dispatchApiAction('deleteNilaiAkademik', { id: id }); }
 
+function apiGetTujuanPembelajaran(filters) { return dispatchApiAction('getTujuanPembelajaran', filters || {}); }
+function apiSaveTujuanPembelajaran(data) { return dispatchApiAction('saveTujuanPembelajaran', data); }
+function apiSaveBulkTujuanPembelajaran(items) { return dispatchApiAction('saveBulkTujuanPembelajaran', items); }
+function apiDeleteTujuanPembelajaran(id) { return dispatchApiAction('deleteTujuanPembelajaran', { id: id }); }
+function apiImportDefaultTujuanPembelajaran(forceReset) { return dispatchApiAction('importDefaultTujuanPembelajaran', { forceReset: forceReset }); }
+
 function apiGetNilaiKepemimpinan(filters) { return dispatchApiAction('getNilaiKepemimpinan', filters || {}); }
 function apiSaveNilaiKepemimpinan(data) { return dispatchApiAction('saveNilaiKepemimpinan', data); }
 function apiGetNilaiKepribadian(filters) { return dispatchApiAction('getNilaiKepribadian', filters || {}); }
@@ -267,4 +296,9 @@ function apiDeleteSklKepemimpinan(id) { return dispatchApiAction('deleteSklKepem
 function apiGetNilaiDiniyah(filters) { return dispatchApiAction('getNilaiDiniyah', filters || {}); }
 function apiSaveNilaiDiniyah(data) { return dispatchApiAction('saveNilaiDiniyah', data); }
 function apiDeleteNilaiDiniyah(id) { return dispatchApiAction('deleteNilaiDiniyah', { id: id }); }
+
+function apiGetActivityLogs(filters) { return dispatchApiAction('getActivityLogs', filters || {}); }
+function apiLogActivity(data) { return dispatchApiAction('logActivity', data); }
+function apiClearActivityLogs() { return dispatchApiAction('clearActivityLogs', {}); }
+
 

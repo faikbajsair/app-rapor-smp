@@ -14,7 +14,9 @@ const DB_CONFIG = {
   SHEET_AKADEMIK: 'Nilai_Akademik',
   SHEET_KEPEMIMPINAN: 'Nilai_Kepemimpinan',
   SHEET_SKL_KEPEMIMPINAN: 'Nilai_SKL_Kepemimpinan',
-  SHEET_DINIYAH: 'Nilai_Diniyah'
+  SHEET_DINIYAH: 'Nilai_Diniyah',
+  SHEET_TP: 'Tujuan_Pembelajaran',
+  SHEET_LOGS: 'Log_Aktivitas'
 };
 
 const DEFAULT_SPREADSHEET_ID = '1EwOvL7qrFnHU9IC30sIV4ie73XiqExCpy1EuWZw7vsM';
@@ -386,30 +388,54 @@ function initDatabase() {
     sheetMurid.getRange(2, 1, defaultMurid.length, 15).setValues(defaultMurid);
   }
   
-  // 4. Skema Nilai_Akademik (REKAP NILAI & CAPAIAN KOMPETENSI)
+  // 4. Skema Nilai_Akademik (REKAP NILAI, CHECKLIST TP & CAPAIAN KOMPETENSI)
   const sheetAkademik = getOrCreateSheet(DB_CONFIG.SHEET_AKADEMIK, [
-    'id', 'nis', 'semester', 'tahun_ajaran', 'mata_pelajaran', 'kkm', 'nilai_tugas', 'nilai_uts', 'nilai_akhir', 'predikat', 'capaian_kompetensi', 'catatan_guru'
+    'id', 'nis', 'semester', 'tahun_ajaran', 'mata_pelajaran', 'kkm', 'nilai_tugas', 'nilai_uts', 'nilai_akhir', 'predikat', 'capaian_kompetensi', 'catatan_guru', 'tp_optimal', 'tp_peningkatan'
   ]);
   if (sheetAkademik.getLastRow() <= 1) {
     const defaultAkademik = [
-      ['NA-001', '232407021', 'Ganjil', '2025/2026', 'Akidah', 75, 87, 87, 87, 'A', 'Ananda menunjukkan pemahaman baik tentang adab dalam menyebut Asma\' Allah, Al-Qur\'an, dan Rasul-Nya serta baik dalam memahami makna bersyukur.', 'Sangat aktif dalam pembelajaran.'],
-      ['NA-002', '232407021', 'Ganjil', '2025/2026', 'Akhlak', 75, 88, 88, 88, 'A', 'Ananda baik dalam menerapkan adab terhadap orang tua dan guru.', 'Pertahankan akhlak terpuji.'],
-      ['NA-003', '232407021', 'Ganjil', '2025/2026', 'Hadits', 75, 82, 82, 82, 'B', 'Ananda baik dalam menghafal matan dan terjemah hadits kebersihan.', 'Tingkatkan muroja\'ah hadits.'],
-      ['NA-004', '232407021', 'Ganjil', '2025/2026', 'Fikih', 75, 90, 92, 91, 'A', 'Ananda menguasai tata cara thaharah dan sholat fardhu secara sempurna.', 'Praktik ibadah sangat baik.'],
-      ['NA-005', '232407021', 'Ganjil', '2025/2026', 'SKI', 75, 80, 80, 80, 'B', 'Ananda memahami sejarah perkembangan islam.', 'Terus tingkatkan literasi sejarah.'],
-      ['NA-006', '232407021', 'Ganjil', '2025/2026', 'Pendidikan Pancasila', 75, 85, 85, 85, 'B', 'Ananda memiliki pemahaman wawasan kebangsaan yang baik.', 'Sikap toleran dan beradab.'],
-      ['NA-007', '232407021', 'Ganjil', '2025/2026', 'Bahasa Indonesia', 75, 93, 93, 93, 'A', 'Ananda sangat baik dalam memahami struktur teks laporan percobaan.', 'Literasi sangat baik.'],
-      ['NA-008', '232407021', 'Ganjil', '2025/2026', 'Bahasa Inggris', 75, 78, 78, 78, 'B', 'Ananda cukup baik dalam menggunakan berbagai ungkapan bahasa Inggris.', 'Tingkatkan conversation.'],
-      ['NA-009', '232407021', 'Ganjil', '2025/2026', 'Matematika', 75, 84, 84, 84, 'B', 'Ananda baik dalam mengenali pola susunan bilangan.', 'Penalaran baik.'],
-      ['NA-010', '232407021', 'Ganjil', '2025/2026', 'Ilmu Pengetahuan Alam', 75, 85, 85, 85, 'B', 'Ananda baik dalam memahami ciri makhluk hidup dan sistem reproduksi.', 'Eksperimen baik.'],
-      ['NA-011', '232407021', 'Ganjil', '2025/2026', 'Ilmu Pengetahuan Sosial', 75, 89, 89, 89, 'B', 'Ananda baik dalam memahami kondisi geografis Indonesia.', 'Analisis spasial baik.'],
-      ['NA-012', '232407021', 'Ganjil', '2025/2026', 'Prakarya', 75, 86, 86, 86, 'B', 'Ananda baik dalam membuat karya seni rupa modifikasi.', 'Kreatif.'],
-      ['NA-013', '232407021', 'Ganjil', '2025/2026', 'Pendidikan Jasmani, Olahraga, dan Kesehatan', 75, 89, 89, 89, 'B', 'Ananda baik dalam mempraktikkan permainan bola voli dan sepak bola.', 'Sportif.'],
-      ['NA-014', '232407021', 'Ganjil', '2025/2026', 'Bahasa Sunda', 75, 90, 90, 90, 'A', 'Ananda sangat baik dalam menganalisis biantara.', 'Sangat baik.'],
-      ['NA-015', '232407021', 'Ganjil', '2025/2026', 'Informatika', 75, 85, 85, 85, 'B', 'Ananda baik dalam pemecahan persoalan komputasional.', 'Logika baik.'],
-      ['NA-016', '232407021', 'Ganjil', '2025/2026', 'Bahasa Arab', 75, 76, 76, 76, 'C', 'Ananda cukup baik dalam penguasaan mufrodat dan dhomir.', 'Tingkatkan hafalan mufrodat.']
+      ['NA-001', '232407021', 'Ganjil', '2025/2026', 'Akidah', 75, 87, 87, 87, 'A', 'Menunjukkan penguasaan yang sangat baik dalam memahami dasar aqidah Islam tentang mengenal Allah & sifat-sifat-Nya dan menjelaskan rukun iman.', 'Sangat aktif dalam pembelajaran.', 'TP-AKD-01,TP-AKD-02', ''],
+      ['NA-002', '232407021', 'Ganjil', '2025/2026', 'Akhlak', 75, 88, 88, 88, 'A', 'Menunjukkan penguasaan yang sangat baik dalam menerapkan adab menuntut ilmu dan menghormati guru serta menunjukkan adab birrul walidain.', 'Pertahankan akhlak terpuji.', 'TP-AKH-01,TP-AKH-02', ''],
+      ['NA-003', '232407021', 'Ganjil', '2025/2026', 'Hadits', 75, 82, 82, 82, 'B', 'Menunjukkan penguasaan yang baik dalam menghafal matan & terjemah hadits tentang niat dan kebersihan.', 'Tingkatkan muroja\'ah hadits.', 'TP-HDT-01', 'TP-HDT-02'],
+      ['NA-004', '232407021', 'Ganjil', '2025/2026', 'Fikih', 75, 90, 92, 91, 'A', 'Menunjukkan penguasaan yang sangat baik dalam memahami tata cara thaharah dan mempraktikkan shalat fardhu dengan tertib.', 'Praktik ibadah sangat baik.', 'TP-FKH-01,TP-FKH-02', ''],
+      ['NA-005', '232407021', 'Ganjil', '2025/2026', 'SKI', 75, 80, 80, 80, 'B', 'Menunjukkan penguasaan yang baik dalam memahami strategi dakwah Rasulullah SAW periode Makkah.', 'Terus tingkatkan literasi sejarah.', 'TP-SKI-01', 'TP-SKI-02'],
+      ['NA-006', '232407021', 'Ganjil', '2025/2026', 'Pendidikan Pancasila', 75, 85, 85, 85, 'B', 'Menunjukkan penguasaan yang baik dalam menganalisis sejarah kelahiran dan penetapan Pancasila serta norma warga negara.', 'Sikap toleran dan beradab.', 'TP-PPN-01,TP-PPN-02', ''],
+      ['NA-007', '232407021', 'Ganjil', '2025/2026', 'Bahasa Indonesia', 75, 93, 93, 93, 'A', 'Menunjukkan penguasaan yang sangat baik dalam menganalisis struktur dan ciri kebahasaan teks deskripsi serta menelaah unsur pembangun puisi rakyat.', 'Literasi sangat baik.', 'TP-BIN-01,TP-BIN-02', ''],
+      ['NA-008', '232407021', 'Ganjil', '2025/2026', 'Bahasa Inggris', 75, 78, 78, 78, 'B', 'Menunjukkan penguasaan yang baik dalam menggunakan ungkapan salam dan to be. Perlu peningkatan dalam memahami teks deskriptif Simple Present Tense.', 'Tingkatkan conversation.', 'TP-BIG-01', 'TP-BIG-02'],
+      ['NA-009', '232407021', 'Ganjil', '2025/2026', 'Matematika', 75, 84, 84, 84, 'B', 'Menunjukkan penguasaan yang baik dalam memahami operasi hitung bilangan bulat dan bilangan rasional.', 'Penalaran baik.', 'TP-MTK-01', 'TP-MTK-02'],
+      ['NA-010', '232407021', 'Ganjil', '2025/2026', 'Ilmu Pengetahuan Alam', 75, 85, 85, 85, 'B', 'Menunjukkan penguasaan yang baik dalam menerapkan konsep besaran dan pengukuran fisis secara akurat serta menganalisis klasifikasi zat.', 'Eksperimen baik.', 'TP-IPA-01,TP-IPA-02', ''],
+      ['NA-011', '232407021', 'Ganjil', '2025/2026', 'Ilmu Pengetahuan Sosial', 75, 89, 89, 89, 'B', 'Menunjukkan penguasaan yang baik dalam menghubungkan kondisi geografis dengan karakteristik sosial masyarakat dan potensi sumber daya alam.', 'Analisis spasial baik.', 'TP-IPS-01,TP-IPS-02', ''],
+      ['NA-012', '232407021', 'Ganjil', '2025/2026', 'Prakarya', 75, 86, 86, 86, 'B', 'Menunjukkan penguasaan yang baik dalam mengidentifikasi bahan baku alami untuk produk kerajinan bernilai estetika.', 'Kreatif.', 'TP-PKY-01', ''],
+      ['NA-013', '232407021', 'Ganjil', '2025/2026', 'Pendidikan Jasmani, Olahraga, dan Kesehatan', 75, 89, 89, 89, 'B', 'Menunjukkan penguasaan yang baik dalam mempraktikkan gerak dasar permainan invasi bola basket dan bola voli.', 'Sportif.', 'TP-PJK-01,TP-PJK-02', ''],
+      ['NA-014', '232407021', 'Ganjil', '2025/2026', 'Bahasa Sunda', 75, 90, 90, 90, 'A', 'Menunjukkan penguasaan yang sangat baik dalam memahami struktur carita dongeng Sunda dan tatakrama basa Sunda.', 'Sangat baik.', 'TP-SUN-01,TP-SUN-02', ''],
+      ['NA-015', '232407021', 'Ganjil', '2025/2026', 'Informatika', 75, 85, 85, 85, 'B', 'Menunjukkan penguasaan yang baik dalam menerapkan berpikir komputasional dalam menyelesaikan persoalan serta mengolah data lembar kerja.', 'Logika baik.', 'TP-INF-01,TP-INF-02', ''],
+      ['NA-016', '232407021', 'Ganjil', '2025/2026', 'Bahasa Arab', 75, 76, 76, 76, 'C', 'Menunjukkan penguasaan yang cukup baik dalam mufrodat perkenalan. Perlu bimbingan dalam membedakan isim isyarah mudzakkar dan muannats.', 'Tingkatkan hafalan mufrodat.', 'TP-ARB-01', 'TP-ARB-02']
     ];
-    sheetAkademik.getRange(2, 1, defaultAkademik.length, 12).setValues(defaultAkademik);
+    sheetAkademik.getRange(2, 1, defaultAkademik.length, 14).setValues(defaultAkademik);
+  }
+
+  // 4b. Skema Tujuan_Pembelajaran (MODUL TP KURIKULUM MERDEKA 16 MAPEL)
+  const sheetTP = getOrCreateSheet(DB_CONFIG.SHEET_TP, [
+    'id', 'kode_tp', 'mata_pelajaran', 'tingkat_kelas', 'fase', 'semester', 'tahun_ajaran', 'deskripsi_tp', 'ringkasan_tp', 'status', 'created_at'
+  ]);
+  if (sheetTP.getLastRow() <= 1) {
+    const defaultTPs = getDefaultTujuanPembelajaranData();
+    if (defaultTPs && defaultTPs.length > 0) {
+      const tpRows = defaultTPs.map(t => [
+        t.id,
+        t.kode_tp,
+        t.mata_pelajaran,
+        t.tingkat_kelas,
+        t.fase,
+        t.semester,
+        t.tahun_ajaran,
+        t.deskripsi_tp,
+        t.ringkasan_tp,
+        t.status,
+        t.created_at || '2026-07-01'
+      ]);
+      sheetTP.getRange(2, 1, tpRows.length, 11).setValues(tpRows);
+    }
   }
   
   // 5. Skema Nilai_Kepemimpinan (6 ASPEK AHLAQ & KEPRIBADIAN EXCEL AL-IMAM)
@@ -470,6 +496,21 @@ function initDatabase() {
       ['ND-002', '232407001', 'Ganjil', '2025/2026', 'Juz 30 (15 Halaman)', 'Juz 30 (Surah An-Naba s.d At-Takwir)', 86, 'Jayyid Jiddan (B)', 'Mumtaz (A)', 84, 'Konsisten dalam halaqah tahfidz. Perlu penekanan pada kelancaran murojaah juz 30 secara mandiri.']
     ];
     sheetDiniyah.getRange(2, 1, defaultDiniyah.length, 11).setValues(defaultDiniyah);
+  }
+
+  // 8. Skema Log_Aktivitas (AUDIT TRAIL LOG AKTIVITAS AKUN)
+  const sheetLogs = getOrCreateSheet(DB_CONFIG.SHEET_LOGS, [
+    'id', 'timestamp', 'username', 'user_nama', 'role', 'action_type', 'module', 'details', 'ip_address', 'status'
+  ]);
+  if (sheetLogs.getLastRow() <= 1) {
+    const defaultLogs = [
+      ['LOG-001', '2026-10-02 18:30:15', 'admin', 'Administrator Utama', 'admin', 'LOGIN', 'Autentikasi', 'Login berhasil ke dashboard sistem', '127.0.0.1', 'success'],
+      ['LOG-002', '2026-10-02 18:35:40', 'dewi', 'Dewi Fitria Nugraheni, S.Pd., Gr.', 'guru', 'BULK_SAVE_GRADE', 'Nilai Akademik', 'Menyimpan nilai sekelas Bahasa Indonesia untuk 24 siswa di IX ABU BAKAR', '192.168.1.12', 'success'],
+      ['LOG-003', '2026-10-02 18:42:10', 'dewi', 'Dewi Fitria Nugraheni, S.Pd., Gr.', 'guru', 'AUTO_CHECKLIST_TP', 'Tujuan Pembelajaran', 'Melakukan auto-checklist rekomendasi TP dan narasi rapor kelas IX ABU BAKAR', '192.168.1.12', 'success'],
+      ['LOG-004', '2026-10-02 18:50:22', 'triyuli', 'Tri Yuli Aryani, S.Pd., Gr.', 'guru', 'UPDATE_TP', 'Tujuan Pembelajaran', 'Memperbarui ringkasan TP 2 Matematika Fase D', '192.168.1.15', 'success'],
+      ['LOG-005', '2026-10-02 19:10:05', 'kepsek', 'Arif Rohman, S.Sos., M.Pd.', 'kepala_sekolah', 'VIEW_RAPOR', 'Rapor Portofolio', 'Melihat pratinjau buku leger dan validasi siap cetak kelas IX', '192.168.1.5', 'success']
+    ];
+    sheetLogs.getRange(2, 1, defaultLogs.length, 10).setValues(defaultLogs);
   }
   
   return { status: 'success', message: 'Inisialisasi skema database Google Sheets berhasil!' };
@@ -819,6 +860,8 @@ function saveNilaiAkademik(data) {
   const tugas = Number(data.nilai_tugas !== undefined && data.nilai_tugas !== '' ? data.nilai_tugas : uts);
   const akhir = data.nilai_akhir !== undefined && data.nilai_akhir !== '' ? Number(data.nilai_akhir) : uts;
   const kkm = Number(data.kkm) || 75;
+  const tpOptimal = Array.isArray(data.tp_optimal) ? data.tp_optimal.join(',') : (data.tp_optimal || '');
+  const tpPeningkatan = Array.isArray(data.tp_peningkatan) ? data.tp_peningkatan.join(',') : (data.tp_peningkatan || '');
   
   let predikat = data.predikat;
   if (!predikat) {
@@ -839,7 +882,9 @@ function saveNilaiAkademik(data) {
       nilai_tugas: tugas,
       nilai_uts: uts,
       nilai_akhir: akhir,
-      predikat: predikat
+      predikat: predikat,
+      tp_optimal: tpOptimal,
+      tp_peningkatan: tpPeningkatan
     };
     headers.forEach((h, colIdx) => {
       if (payload[h] !== undefined) {
@@ -859,7 +904,9 @@ function saveNilaiAkademik(data) {
       akhir,
       predikat,
       data.capaian_kompetensi || '',
-      data.catatan_guru || ''
+      data.catatan_guru || '',
+      tpOptimal,
+      tpPeningkatan
     ]);
   }
   return { status: 'success', message: 'Nilai akademik berhasil disimpan', id: id };
@@ -885,7 +932,9 @@ function saveBulkNilaiAkademik(payload) {
       nilai_akhir: item.nilai_akhir || item.nilai || 0,
       predikat: item.predikat || '',
       capaian_kompetensi: item.capaian_kompetensi || '',
-      catatan_guru: item.catatan_guru || ''
+      catatan_guru: item.catatan_guru || '',
+      tp_optimal: item.tp_optimal || '',
+      tp_peningkatan: item.tp_peningkatan || ''
     });
   });
   
@@ -1178,3 +1227,328 @@ function deleteNilaiDiniyah(id) {
   }
   return { status: 'error', message: 'Data nilai diniyah tidak ditemukan' };
 }
+
+/**
+ * ============================================================================
+ * MODEL: TUJUAN PEMBELAJARAN (TP) - KURIKULUM MERDEKA FASE D (16 MAPEL)
+ * ============================================================================
+ */
+function getTujuanPembelajaranList(filters = {}) {
+  const sheet = getOrCreateSheet(DB_CONFIG.SHEET_TP);
+  let list = sheetToObjects(sheet);
+  
+  if (list.length === 0) {
+    list = getDefaultTujuanPembelajaranData();
+  }
+  
+  if (filters.mata_pelajaran && filters.mata_pelajaran !== 'Semua') {
+    list = list.filter(item => String(item.mata_pelajaran).toLowerCase() === String(filters.mata_pelajaran).toLowerCase());
+  }
+  if (filters.tingkat_kelas && filters.tingkat_kelas !== 'Semua') {
+    list = list.filter(item => !item.tingkat_kelas || item.tingkat_kelas === 'Semua' || String(item.tingkat_kelas).toLowerCase().includes(String(filters.tingkat_kelas).toLowerCase()));
+  }
+  if (filters.semester && filters.semester !== 'Semua') {
+    list = list.filter(item => !item.semester || item.semester === 'Semua' || String(item.semester).toLowerCase().includes(String(filters.semester).toLowerCase()));
+  }
+  if (filters.status && filters.status !== 'Semua') {
+    list = list.filter(item => String(item.status).toLowerCase() === String(filters.status).toLowerCase());
+  }
+  
+  return list;
+}
+
+function saveTujuanPembelajaran(data) {
+  const sheet = getOrCreateSheet(DB_CONFIG.SHEET_TP);
+  const isNew = !data.id;
+  const id = isNew ? 'TP-' + Utilities.getUuid().substring(0, 8).toUpperCase() : data.id;
+  
+  const existing = findRowByField(sheet, 'id', id);
+  if (existing) {
+    const rowIdx = existing.rowIndex;
+    const headers = existing.headers;
+    headers.forEach((h, colIdx) => {
+      if (data[h] !== undefined) {
+        sheet.getRange(rowIdx, colIdx + 1).setValue(data[h]);
+      }
+    });
+  } else {
+    sheet.appendRow([
+      id,
+      data.kode_tp || 'TP 1',
+      data.mata_pelajaran || '',
+      data.tingkat_kelas || 'Semua Kelas',
+      data.fase || 'Fase D',
+      data.semester || 'Tengah Semester 1',
+      data.tahun_ajaran || '2026/2027',
+      data.deskripsi_tp || '',
+      data.ringkasan_tp || data.deskripsi_tp || '',
+      data.status || 'Aktif',
+      data.created_at || Utilities.formatDate(new Date(), Session.getScriptTimeZone() || 'Asia/Jakarta', 'yyyy-MM-dd')
+    ]);
+  }
+  return { status: 'success', message: 'Tujuan Pembelajaran berhasil disimpan', id: id };
+}
+
+function saveBulkTujuanPembelajaran(items) {
+  if (!items || !Array.isArray(items) || items.length === 0) {
+    return { status: 'error', message: 'Daftar TP tidak valid' };
+  }
+  items.forEach(item => {
+    saveTujuanPembelajaran(item);
+  });
+  return { status: 'success', message: 'Berhasil menyimpan ' + items.length + ' Tujuan Pembelajaran!' };
+}
+
+function deleteTujuanPembelajaran(id) {
+  const sheet = getOrCreateSheet(DB_CONFIG.SHEET_TP);
+  const match = findRowByField(sheet, 'id', id);
+  if (match) {
+    sheet.deleteRow(match.rowIndex);
+    return { status: 'success', message: 'Tujuan Pembelajaran berhasil dihapus' };
+  }
+  return { status: 'error', message: 'Data TP tidak ditemukan' };
+}
+
+function importDefaultTujuanPembelajaran(forceReset = false) {
+  const sheet = getOrCreateSheet(DB_CONFIG.SHEET_TP);
+  if (forceReset) {
+    sheet.clearContents();
+    sheet.appendRow(['id', 'kode_tp', 'mata_pelajaran', 'tingkat_kelas', 'fase', 'semester', 'tahun_ajaran', 'deskripsi_tp', 'ringkasan_tp', 'status', 'created_at']);
+  }
+  const defaultTPs = getDefaultTujuanPembelajaranData();
+  const rows = defaultTPs.map(t => [
+    t.id,
+    t.kode_tp,
+    t.mata_pelajaran,
+    t.tingkat_kelas,
+    t.fase,
+    t.semester,
+    t.tahun_ajaran,
+    t.deskripsi_tp,
+    t.ringkasan_tp,
+    t.status,
+    t.created_at || '2026-07-01'
+  ]);
+  if (rows.length > 0) {
+    sheet.getRange(sheet.getLastRow() + 1, 1, rows.length, 11).setValues(rows);
+  }
+  return { status: 'success', message: 'Berhasil mengimpor ' + rows.length + ' Tujuan Pembelajaran Kurikulum Merdeka!' };
+}
+
+function getDefaultTujuanPembelajaranData() {
+  return [
+    // 1. Akidah
+    { id: 'TP-AKD-01', kode_tp: 'TP 1', mata_pelajaran: 'Akidah', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Memahami dasar-dasar aqidah Islam tentang mengenal Allah & sifat-sifat-Nya berdasarkan Al-Qur\'an dan As-Sunnah', ringkasan_tp: 'memahami dasar aqidah Islam tentang mengenal Allah & sifat-sifat-Nya', status: 'Aktif' },
+    { id: 'TP-AKD-02', kode_tp: 'TP 2', mata_pelajaran: 'Akidah', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menjelaskan rukun iman dan implementasinya dalam kehidupan sehari-hari', ringkasan_tp: 'menjelaskan rukun iman dan implementasinya dalam kehidupan', status: 'Aktif' },
+    { id: 'TP-AKD-03', kode_tp: 'TP 3', mata_pelajaran: 'Akidah', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Meneladani sifat-sifat mulia Rasulullah SAW dan menjauhi perilaku syirik', ringkasan_tp: 'meneladani sifat mulia Rasulullah SAW dan menjauhi kesyirikan', status: 'Aktif' },
+    { id: 'TP-AKD-04', kode_tp: 'TP 4', mata_pelajaran: 'Akidah', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Memahami makna bersyukur dan tawakal dalam menghadapi berbagai ujian hidup', ringkasan_tp: 'memahami hakikat syukur dan tawakal dalam kehidupan', status: 'Aktif' },
+
+    // 2. Akhlak
+    { id: 'TP-AKH-01', kode_tp: 'TP 1', mata_pelajaran: 'Akhlak', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menerapkan etika dan adab menuntut ilmu di majelis serta menghormati guru', ringkasan_tp: 'menerapkan adab menuntut ilmu dan menghormati guru', status: 'Aktif' },
+    { id: 'TP-AKH-02', kode_tp: 'TP 2', mata_pelajaran: 'Akhlak', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menunjukkan adab berbakti kepada orang tua (birrul walidain) dalam keseharian', ringkasan_tp: 'menunjukkan adab birrul walidain kepada orang tua', status: 'Aktif' },
+    { id: 'TP-AKH-03', kode_tp: 'TP 3', mata_pelajaran: 'Akhlak', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Membiasakan sifat jujur, amanah, dan menjaga lisan dalam pergaulan', ringkasan_tp: 'membiasakan sifat jujur, amanah, dan menjaga lisan', status: 'Aktif' },
+    { id: 'TP-AKH-04', kode_tp: 'TP 4', mata_pelajaran: 'Akhlak', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menghindari perilaku tercela seperti ghibah, namimah, dan kesombongan', ringkasan_tp: 'menghindari perilaku tercela seperti ghibah dan sombong', status: 'Aktif' },
+
+    // 3. Hadits
+    { id: 'TP-HDT-01', kode_tp: 'TP 1', mata_pelajaran: 'Hadits', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menghafal matan dan terjemah Hadits Arbain tentang niat serta kebersihan', ringkasan_tp: 'menghafal matan & terjemah hadits tentang niat dan kebersihan', status: 'Aktif' },
+    { id: 'TP-HDT-02', kode_tp: 'TP 2', mata_pelajaran: 'Hadits', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menjelaskan kandungan hadits tentang ukhuwah islamiyah dan larangan berbuat dzalim', ringkasan_tp: 'memahami hadits tentang ukhuwah islamiyah dan larangan dzalim', status: 'Aktif' },
+    { id: 'TP-HDT-03', kode_tp: 'TP 3', mata_pelajaran: 'Hadits', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menerapkan pesan hadits tentang menjaga lisan dan memuliakan tamu', ringkasan_tp: 'menerapkan adab memuliakan tamu dan menjaga perkataan', status: 'Aktif' },
+    { id: 'TP-HDT-04', kode_tp: 'TP 4', mata_pelajaran: 'Hadits', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menganalisis intisari sanad dan matan hadits-hadits shahih pilihan', ringkasan_tp: 'menganalisis intisari kandungan hadits shahih pilihan', status: 'Aktif' },
+
+    // 4. Fikih
+    { id: 'TP-FKH-01', kode_tp: 'TP 1', mata_pelajaran: 'Fikih', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Memahami konsep bersuci (thaharah), jenis-jenis air, dan tata cara membersihkan najis', ringkasan_tp: 'memahami tata cara thaharah dari hadats dan najis', status: 'Aktif' },
+    { id: 'TP-FKH-02', kode_tp: 'TP 2', mata_pelajaran: 'Fikih', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Mempraktikkan rukun, syarat sah, dan gerakan shalat fardhu secara tertib dan benar', ringkasan_tp: 'mempraktikkan shalat fardhu dan sunnah dengan sempurna', status: 'Aktif' },
+    { id: 'TP-FKH-03', kode_tp: 'TP 3', mata_pelajaran: 'Fikih', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menjelaskan ketentuan shalat berjamaah, shalat jamak, dan shalat qashar', ringkasan_tp: 'memahami ketentuan shalat berjamaah, jamak, dan qashar', status: 'Aktif' },
+    { id: 'TP-FKH-04', kode_tp: 'TP 4', mata_pelajaran: 'Fikih', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Memahami tata cara sujud sahwi, sujud tilawah, dan sujud syukur', ringkasan_tp: 'mempraktikkan sujud sahwi, sujud tilawah, dan sujud syukur', status: 'Aktif' },
+
+    // 5. SKI
+    { id: 'TP-SKI-01', kode_tp: 'TP 1', mata_pelajaran: 'SKI', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menganalisis kondisi bangsa Arab pra-Islam dan latar belakang diutusnya Rasulullah SAW', ringkasan_tp: 'menganalisis kondisi bangsa Arab pra-Islam dan diutusnya Rasulullah', status: 'Aktif' },
+    { id: 'TP-SKI-02', kode_tp: 'TP 2', mata_pelajaran: 'SKI', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menjelaskan misi dakwah Nabi Muhammad SAW periode Makkah dan ketabahan para sahabat', ringkasan_tp: 'memahami strategi dakwah Rasulullah SAW periode Makkah', status: 'Aktif' },
+    { id: 'TP-SKI-03', kode_tp: 'TP 3', mata_pelajaran: 'SKI', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menganalisis peristiwa hijrah ke Madinah dan pembentukan Piagam Madinah', ringkasan_tp: 'menganalisis sejarah peristiwa hijrah dan piagam Madinah', status: 'Aktif' },
+    { id: 'TP-SKI-04', kode_tp: 'TP 4', mata_pelajaran: 'SKI', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Meneladani kepemimpinan dan perjuangan Khulafaur Rasyidin dalam peradaban Islam', ringkasan_tp: 'meneladani kepemimpinan dan perjuangan Khulafaur Rasyidin', status: 'Aktif' },
+
+    // 6. Pendidikan Pancasila
+    { id: 'TP-PPN-01', kode_tp: 'TP 1', mata_pelajaran: 'Pendidikan Pancasila', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menganalisis sejarah perumusan dan penetapan Pancasila sebagai dasar negara', ringkasan_tp: 'menganalisis sejarah kelahiran dan penetapan Pancasila', status: 'Aktif' },
+    { id: 'TP-PPN-02', kode_tp: 'TP 2', mata_pelajaran: 'Pendidikan Pancasila', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Mengidentifikasi norma, hak, dan kewajiban warga negara dalam bermasyarakat', ringkasan_tp: 'mengidentifikasi norma, hak, dan kewajiban warga negara', status: 'Aktif' },
+    { id: 'TP-PPN-03', kode_tp: 'TP 3', mata_pelajaran: 'Pendidikan Pancasila', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menunjukkan komitmen persatuan dan kesatuan bangsa dalam bingkai kebinekaan', ringkasan_tp: 'menunjukkan sikap persatuan dalam keberagaman suku dan budaya', status: 'Aktif' },
+    { id: 'TP-PPN-04', kode_tp: 'TP 4', mata_pelajaran: 'Pendidikan Pancasila', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Memahami hierarki dan ketaatan terhadap peraturan perundang-undangan nasional', ringkasan_tp: 'memahami hierarki peraturan perundang-undangan nasional', status: 'Aktif' },
+
+    // 7. Bahasa Indonesia
+    { id: 'TP-BIN-01', kode_tp: 'TP 1', mata_pelajaran: 'Bahasa Indonesia', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menganalisis struktur dan ciri kebahasaan teks deskripsi tentang objek dan lingkungan sekitar', ringkasan_tp: 'menganalisis struktur dan ciri kebahasaan teks deskripsi', status: 'Aktif' },
+    { id: 'TP-BIN-02', kode_tp: 'TP 2', mata_pelajaran: 'Bahasa Indonesia', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menelaah unsur-unsur pembangun dan nilai kearifan dalam puisi rakyat dan pantun', ringkasan_tp: 'menelaah unsur pembangun dan pesan dalam puisi rakyat', status: 'Aktif' },
+    { id: 'TP-BIN-03', kode_tp: 'TP 3', mata_pelajaran: 'Bahasa Indonesia', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menulis teks cerita fantasi / narasi imajinatif dengan memperhatikan kaidah PUEBI', ringkasan_tp: 'menulis teks cerita narasi kreatif dengan kaidah ejaan yang tepat', status: 'Aktif' },
+    { id: 'TP-BIN-04', kode_tp: 'TP 4', mata_pelajaran: 'Bahasa Indonesia', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menyajikan petunjuk langkah-langkah kerja secara sistematis dalam teks prosedur', ringkasan_tp: 'menyajikan langkah-langkah sistematis dalam teks prosedur', status: 'Aktif' },
+
+    // 8. Bahasa Inggris
+    { id: 'TP-BIG-01', kode_tp: 'TP 1', mata_pelajaran: 'Bahasa Inggris', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menggunakan ungkapan greeting, self-introduction, dan penggunaan to be (is, am, are) secara tepat', ringkasan_tp: 'menggunakan ungkapan salam, perkenalan diri, dan to be dengan tepat', status: 'Aktif' },
+    { id: 'TP-BIG-02', kode_tp: 'TP 2', mata_pelajaran: 'Bahasa Inggris', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Memahami teks deskriptif sederhana tentang orang, hewan, dan tempat menggunakan Simple Present Tense', ringkasan_tp: 'memahami teks deskriptif dan struktur Simple Present Tense', status: 'Aktif' },
+    { id: 'TP-BIG-03', kode_tp: 'TP 3', mata_pelajaran: 'Bahasa Inggris', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Mengidentifikasi fungsi sosial teks interaksi transaksional memberi dan meminta informasi', ringkasan_tp: 'mengidentifikasi fungsi sosial teks interaksi transaksional', status: 'Aktif' },
+    { id: 'TP-BIG-04', kode_tp: 'TP 4', mata_pelajaran: 'Bahasa Inggris', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menyusun kalimat sederhana mendeskripsikan aktivitas sehari-hari (daily routines)', ringkasan_tp: 'menyusun teks deskripsi aktivitas harian secara runtut', status: 'Aktif' },
+
+    // 9. Matematika
+    { id: 'TP-MTK-01', kode_tp: 'TP 1', mata_pelajaran: 'Matematika', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Membaca, menulis, membandingkan bilangan bulat serta melakukan operasi hitung bilangan bulat & pecahan rasional', ringkasan_tp: 'memahami operasi hitung bilangan bulat dan bilangan rasional', status: 'Aktif' },
+    { id: 'TP-MTK-02', kode_tp: 'TP 2', mata_pelajaran: 'Matematika', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Mengoperasikan bentuk aljabar dan menyederhanakan persamaan linear satu variabel', ringkasan_tp: 'mengoperasikan bentuk aljabar dan menyederhanakan persamaan', status: 'Aktif' },
+    { id: 'TP-MTK-03', kode_tp: 'TP 3', mata_pelajaran: 'Matematika', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menyelesaikan masalah kontekstual berkaitan dengan perbandingan senilai dan berbalik nilai', ringkasan_tp: 'menyelesaikan soal cerita perbandingan senilai dan berbalik nilai', status: 'Aktif' },
+    { id: 'TP-MTK-04', kode_tp: 'TP 4', mata_pelajaran: 'Matematika', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Mengenal pola bilangan, barisan aritmatika dasar, dan penalaran logika numerik', ringkasan_tp: 'mengidentifikasi pola barisan bilangan dan pemecahan masalah numerik', status: 'Aktif' },
+
+    // 10. IPA
+    { id: 'TP-IPA-01', kode_tp: 'TP 1', mata_pelajaran: 'Ilmu Pengetahuan Alam', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menerapkan besaran fisis, satuan baku, dan metode pengukuran ilmiah secara tepat', ringkasan_tp: 'menerapkan konsep besaran dan pengukuran fisis secara akurat', status: 'Aktif' },
+    { id: 'TP-IPA-02', kode_tp: 'TP 2', mata_pelajaran: 'Ilmu Pengetahuan Alam', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menganalisis wujud zat, sifat fisika-kimia, dan perubahan wujud zat dalam kehidupan', ringkasan_tp: 'menganalisis klasifikasi zat, wujud materi, dan perubahan zat', status: 'Aktif' },
+    { id: 'TP-IPA-03', kode_tp: 'TP 3', mata_pelajaran: 'Ilmu Pengetahuan Alam', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menjelaskan konsep suhu, kalor, perpindahan kalor, dan pemuaian zat', ringkasan_tp: 'memahami konsep suhu, perpindahan kalor, dan pengaruhnya', status: 'Aktif' },
+    { id: 'TP-IPA-04', kode_tp: 'TP 4', mata_pelajaran: 'Ilmu Pengetahuan Alam', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Mengidentifikasi ciri makhluk hidup dan sistem organisasi kehidupan dari sel hingga organisme', ringkasan_tp: 'mengidentifikasi ciri makhluk hidup dan sistem organisasi kehidupan', status: 'Aktif' },
+
+    // 11. IPS
+    { id: 'TP-IPS-01', kode_tp: 'TP 1', mata_pelajaran: 'Ilmu Pengetahuan Sosial', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menghubungkan letak geografis wilayah Indonesia dengan karakteristik sosial masyarakat', ringkasan_tp: 'menghubungkan kondisi geografis dengan karakteristik sosial masyarakat', status: 'Aktif' },
+    { id: 'TP-IPS-02', kode_tp: 'TP 2', mata_pelajaran: 'Ilmu Pengetahuan Sosial', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menganalisis potensi sumber daya alam kemaritiman dan daratan serta pelestariannya', ringkasan_tp: 'menganalisis potensi sumber daya alam dan upaya pelestariannya', status: 'Aktif' },
+    { id: 'TP-IPS-03', kode_tp: 'TP 3', mata_pelajaran: 'Ilmu Pengetahuan Sosial', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menjelaskan konsep kebutuhan manusia, kelangkaan barang, dan prinsip-prinsip ekonomi', ringkasan_tp: 'memahami konsep kebutuhan manusia, kelangkaan, dan motif ekonomi', status: 'Aktif' },
+    { id: 'TP-IPS-04', kode_tp: 'TP 4', mata_pelajaran: 'Ilmu Pengetahuan Sosial', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menelaah interaksi antarruang dan dinamika hubungan sosial kemasyarakatan', ringkasan_tp: 'menelaah interaksi antarruang dan dinamika sosial kemasyarakatan', status: 'Aktif' },
+
+    // 12. Prakarya
+    { id: 'TP-PKY-01', kode_tp: 'TP 1', mata_pelajaran: 'Prakarya', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Mengidentifikasi karakteristik bahan lunak dan serat alami untuk produk kerajinan', ringkasan_tp: 'mengidentifikasi bahan baku alami dan sintetis untuk produk kerajinan', status: 'Aktif' },
+    { id: 'TP-PKY-02', kode_tp: 'TP 2', mata_pelajaran: 'Prakarya', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Merancang dan membuat produk kerajinan yang ergonomis, bernilai estetis dan ekonomis', ringkasan_tp: 'merancang karya kerajinan bernilai estetika dan fungsi pakai', status: 'Aktif' },
+    { id: 'TP-PKY-03', kode_tp: 'TP 3', mata_pelajaran: 'Prakarya', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menerapkan teknik pengolahan bahan pangan buah dan sayuran menjadi makanan sehat', ringkasan_tp: 'menerapkan teknik pengolahan bahan pangan higienis dan sehat', status: 'Aktif' },
+    { id: 'TP-PKY-04', kode_tp: 'TP 4', mata_pelajaran: 'Prakarya', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Mengevaluasi dan mendesain kemasan produk kerajinan secara kreatif dan menarik', ringkasan_tp: 'mengevaluasi dan mengemas produk kerajinan secara kreatif', status: 'Aktif' },
+
+    // 13. PJOK
+    { id: 'TP-PJK-01', kode_tp: 'TP 1', mata_pelajaran: 'Pendidikan Jasmani, Olahraga, dan Kesehatan', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Mempraktikkan gerak dasar passing, dribbling, dan shooting pada permainan bola basket & sepak bola', ringkasan_tp: 'mempraktikkan gerak dasar permainan invasi dan kerja sama tim', status: 'Aktif' },
+    { id: 'TP-PJK-02', kode_tp: 'TP 2', mata_pelajaran: 'Pendidikan Jasmani, Olahraga, dan Kesehatan', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Mempraktikkan variasi passing dan servis pada permainan bola voli dan bulu tangkis', ringkasan_tp: 'menguasai variasi gerak servis dan passing pada permainan net', status: 'Aktif' },
+    { id: 'TP-PJK-03', kode_tp: 'TP 3', mata_pelajaran: 'Pendidikan Jasmani, Olahraga, dan Kesehatan', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Melakukan latihan kebugaran jasmani untuk daya tahan jantung, kekuatan otot, dan kelenturan tubuh', ringkasan_tp: 'melakukan latihan kebugaran jasmani dan menjaga stamina tubuh', status: 'Aktif' },
+    { id: 'TP-PJK-04', kode_tp: 'TP 4', mata_pelajaran: 'Pendidikan Jasmani, Olahraga, dan Kesehatan', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menunjukkan sportivitas, disiplin, kerja sama tim, dan kepatuhan pada aturan olahraga', ringkasan_tp: 'menunjukkan sportivitas, ketahanan fisik, dan disiplin berolahraga', status: 'Aktif' },
+
+    // 14. Bahasa Sunda
+    { id: 'TP-SUN-01', kode_tp: 'TP 1', mata_pelajaran: 'Bahasa Sunda', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Memahami struktur, unsur kebahasaan, dan pesan moral dalam teks dongeng Sunda', ringkasan_tp: 'memahami struktur carita dongeng Sunda dan pesan moralnya', status: 'Aktif' },
+    { id: 'TP-SUN-02', kode_tp: 'TP 2', mata_pelajaran: 'Bahasa Sunda', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menelaah ragam tatakrama basa Sunda (basa loma jeung lemes) dalam percakapan sehari-hari', ringkasan_tp: 'menerapkan tatakrama basa Sunda loma jeung lemes sacara merenah', status: 'Aktif' },
+    { id: 'TP-SUN-03', kode_tp: 'TP 3', mata_pelajaran: 'Bahasa Sunda', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menganalisis teks biantara (pidato) dan paguneman bahasa Sunda yang santun', ringkasan_tp: 'menganalisis struktur biantara dan paguneman bahasa Sunda', status: 'Aktif' },
+    { id: 'TP-SUN-04', kode_tp: 'TP 4', mata_pelajaran: 'Bahasa Sunda', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menulis karangan pendek deskriptif ngagunakeun ejaan basa Sunda anu merenah', ringkasan_tp: 'menulis teks deskripsi pendek menggunakan kosa kata Sunda yang tepat', status: 'Aktif' },
+
+    // 15. Informatika
+    { id: 'TP-INF-01', kode_tp: 'TP 1', mata_pelajaran: 'Informatika', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menerapkan berpikir komputasional (computational thinking) untuk memecahkan persoalan logis', ringkasan_tp: 'menerapkan berpikir komputasional dalam menyelesaikan persoalan', status: 'Aktif' },
+    { id: 'TP-INF-02', kode_tp: 'TP 2', mata_pelajaran: 'Informatika', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Memanfaatkan aplikasi pengolah kata dan lembar kerja untuk mengolah dan memvisualisasikan data', ringkasan_tp: 'mengolah data terstruktur menggunakan lembar kerja digital', status: 'Aktif' },
+    { id: 'TP-INF-03', kode_tp: 'TP 3', mata_pelajaran: 'Informatika', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Memahami konsep jaringan komputer lokal/internet dan etika keamanan berselancar digital', ringkasan_tp: 'memahami dasar jaringan komputer dan etika keamanan digital', status: 'Aktif' },
+    { id: 'TP-INF-04', kode_tp: 'TP 4', mata_pelajaran: 'Informatika', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Merancang algoritma sederhana menggunakan blok pemrograman visual (Scratch/Blockly)', ringkasan_tp: 'merancang logika algoritma dan alur pemrograman visual dasar', status: 'Aktif' },
+
+    // 16. Bahasa Arab
+    { id: 'TP-ARB-01', kode_tp: 'TP 1', mata_pelajaran: 'Bahasa Arab', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menguasai mufrodat tentang perkenalan diri (ta\'aruf) dan sarana prasarana sekolah', ringkasan_tp: 'menguasai mufrodat perkenalan dan lingkungan madrasah', status: 'Aktif' },
+    { id: 'TP-ARB-02', kode_tp: 'TP 2', mata_pelajaran: 'Bahasa Arab', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Membedakan penggunaan Isim Isyaroh (mudzakkar dan muannats) serta Isim Dhomir', ringkasan_tp: 'membedakan isim isyarah mudzakkar-muannats dan isim dhomir', status: 'Aktif' },
+    { id: 'TP-ARB-03', kode_tp: 'TP 3', mata_pelajaran: 'Bahasa Arab', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Mempraktikkan percakapan sehari-hari (al-hiwar) dengan intonasi dan makhraj fasih', ringkasan_tp: 'mempraktikkan percakapan al-hiwar dengan pelafalan fasih', status: 'Aktif' },
+    { id: 'TP-ARB-04', kode_tp: 'TP 4', mata_pelajaran: 'Bahasa Arab', tingkat_kelas: 'Kelas VII', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menyusun pola kalimat tarkib sederhana (jumlah ismiyyah dan jumlah fi\'liyyah dasar)', ringkasan_tp: 'menyusun pola kalimat tarkib sederhana berbahasa Arab', status: 'Aktif' }
+  ];
+}
+
+/**
+ * ============================================================================
+ * 10. MODUL LOG AKTIVITAS & AUDIT TRAIL AKUN
+ * ============================================================================
+ */
+
+/**
+ * Mencatat log aktivitas setiap akun (User, Admin, Guru, Walas, Kepsek)
+ */
+function logActivity(data) {
+  try {
+    if (!data) return { success: false, message: 'Data log tidak boleh kosong.' };
+
+    const ss = getDb();
+    const headers = ['id', 'timestamp', 'username', 'user_nama', 'role', 'action_type', 'module', 'details', 'ip_address', 'status'];
+    const sheet = getOrCreateSheet(DB_CONFIG.SHEET_LOGS, headers);
+
+    const now = new Date();
+    const formattedTime = Utilities.formatDate(now, 'Asia/Jakarta', 'yyyy-MM-dd HH:mm:ss');
+    const logId = data.id || ('LOG-' + now.getTime().toString(36).toUpperCase() + '-' + Math.floor(Math.random() * 1000));
+
+    const row = [
+      logId,
+      data.timestamp || formattedTime,
+      data.username || 'system',
+      data.user_nama || data.nama_lengkap || data.username || 'Pengguna',
+      data.role || 'guru',
+      data.action_type || data.action || 'GENERAL_ACTION',
+      data.module || 'Sistem',
+      data.details || data.keterangan || '-',
+      data.ip_address || '127.0.0.1',
+      data.status || 'success'
+    ];
+
+    sheet.appendRow(row);
+
+    // Prune logs if sheet exceeds 2,000 rows to keep spreadsheet performant
+    if (sheet.getLastRow() > 2000) {
+      sheet.deleteRows(2, 200);
+    }
+
+    return { success: true, log_id: logId, message: 'Aktivitas berhasil dicatat.' };
+  } catch (err) {
+    console.warn('Gagal mencatat log aktivitas:', err);
+    return { success: false, message: 'Error log: ' + err.toString() };
+  }
+}
+
+/**
+ * Mengambil daftar log aktivitas dengan filter
+ */
+function getActivityLogsList(filters = {}) {
+  try {
+    const sheet = getOrCreateSheet(DB_CONFIG.SHEET_LOGS, [
+      'id', 'timestamp', 'username', 'user_nama', 'role', 'action_type', 'module', 'details', 'ip_address', 'status'
+    ]);
+
+    let list = sheetToObjects(sheet);
+
+    if (filters.username && filters.username !== 'Semua') {
+      list = list.filter(item => String(item.username).toLowerCase() === String(filters.username).toLowerCase());
+    }
+
+    if (filters.role && filters.role !== 'Semua') {
+      list = list.filter(item => String(item.role).toLowerCase() === String(filters.role).toLowerCase());
+    }
+
+    if (filters.module && filters.module !== 'Semua') {
+      list = list.filter(item => String(item.module).toLowerCase().includes(String(filters.module).toLowerCase()));
+    }
+
+    if (filters.action_type && filters.action_type !== 'Semua') {
+      list = list.filter(item => String(item.action_type).toLowerCase() === String(filters.action_type).toLowerCase());
+    }
+
+    if (filters.search) {
+      const q = String(filters.search).toLowerCase().trim();
+      list = list.filter(item => 
+        String(item.details || '').toLowerCase().includes(q) ||
+        String(item.username || '').toLowerCase().includes(q) ||
+        String(item.user_nama || '').toLowerCase().includes(q) ||
+        String(item.module || '').toLowerCase().includes(q) ||
+        String(item.action_type || '').toLowerCase().includes(q)
+      );
+    }
+
+    // Sort descending by timestamp / row
+    list.reverse();
+
+    // Limit returned records to maximum 200 for fast responsiveness
+    return list.slice(0, 200);
+  } catch (err) {
+    console.warn('Gagal mengambil daftar log aktivitas:', err);
+    return [];
+  }
+}
+
+/**
+ * Menghapus log aktivitas lama (Admin only)
+ */
+function clearActivityLogs() {
+  try {
+    const sheet = getOrCreateSheet(DB_CONFIG.SHEET_LOGS, [
+      'id', 'timestamp', 'username', 'user_nama', 'role', 'action_type', 'module', 'details', 'ip_address', 'status'
+    ]);
+
+    const lastRow = sheet.getLastRow();
+    if (lastRow > 1) {
+      sheet.deleteRows(2, lastRow - 1);
+    }
+
+    return { success: true, message: 'Seluruh riwayat log aktivitas berhasil dibersihkan.' };
+  } catch (err) {
+    return { success: false, message: 'Gagal membersihkan log: ' + err.toString() };
+  }
+}
+

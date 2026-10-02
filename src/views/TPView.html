@@ -1,0 +1,283 @@
+<!-- View: Modul Tujuan Pembelajaran (TP) - Kurikulum Merdeka SMP Al-Imam (16 Mapel) -->
+<div id="view-tp" class="view-panel hidden space-y-6">
+  
+  <!-- Header Card & Quick Actions -->
+  <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-[#00a66c]"></span>
+          <h2 class="text-lg font-bold text-slate-900">Modul Tujuan Pembelajaran (TP)</h2>
+          <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-emerald-100 text-emerald-800 border border-emerald-300">
+            Fase D (SMP Kelas 7, 8, 9)
+          </span>
+        </div>
+        <p class="text-xs text-slate-500 mt-0.5">Kelola daftar Tujuan Pembelajaran per mata pelajaran sesuai penugasan Dapodik untuk penilaian rapor berbasis capaian kompetensi.</p>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex flex-wrap items-center gap-2">
+        <button onclick="openModalTP()" 
+                class="px-4 py-2 bg-[#00a66c] hover:bg-[#008f5d] text-white font-bold rounded-xl text-xs shadow-md shadow-[#00a66c]/20 transition flex items-center gap-2 cursor-pointer">
+          <i class="fa-solid fa-plus"></i>
+          <span>Tambah TP Baru</span>
+        </button>
+        <button onclick="importKurikulumMerdekaDefaultTP()" 
+                class="px-3.5 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm cursor-pointer"
+                title="Muat ulang paket default 64 TP Kurikulum Merdeka untuk 16 Mapel">
+          <i class="fa-solid fa-wand-magic-sparkles text-[#00a66c]"></i>
+          <span>Import Bank TP 16 Mapel</span>
+        </button>
+        <button onclick="downloadTPTemplate()" 
+                class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 rounded-xl text-xs font-semibold transition flex items-center gap-1.5"
+                title="Download template CSV/Excel TP">
+          <i class="fa-solid fa-file-arrow-down text-slate-600"></i>
+          <span>Template TP</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Statistik Ringkasan TP Widgets -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4 pt-4 border-t border-slate-100">
+      <div class="bg-emerald-50/70 border border-emerald-100 p-3 rounded-xl">
+        <span class="text-[10px] font-bold text-[#00a66c] uppercase tracking-wider block">Total TP Terdaftar</span>
+        <span class="text-xl font-extrabold text-emerald-950" id="widget-tp-total">0</span>
+      </div>
+      <div class="bg-blue-50/70 border border-blue-100 p-3 rounded-xl">
+        <span class="text-[10px] font-bold text-blue-700 uppercase tracking-wider block">TP Status Aktif</span>
+        <span class="text-xl font-extrabold text-blue-950" id="widget-tp-active">0</span>
+      </div>
+      <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl">
+        <span class="text-[10px] font-bold text-slate-600 uppercase tracking-wider block">Mapel Terisi TP</span>
+        <span class="text-xl font-extrabold text-slate-800" id="widget-tp-mapel-count">16 / 16</span>
+      </div>
+      <div class="bg-amber-50/70 border border-amber-100 p-3 rounded-xl">
+        <span class="text-[10px] font-bold text-amber-700 uppercase tracking-wider block">Fase Penilaian</span>
+        <span class="text-base font-extrabold text-amber-950 block mt-0.5">Fase D (Kelas VII - IX)</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filter Bar & Search -->
+  <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+      
+      <!-- Filter Mapel -->
+      <div>
+        <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Pilih Mata Pelajaran</label>
+        <select id="filter-tp-mapel" onchange="renderTPTable()" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 font-bold text-slate-800 focus:ring-2 focus:ring-[#00a66c]">
+          <option value="Semua">Semua 16 Mata Pelajaran</option>
+          <option value="Akidah">1. Akidah</option>
+          <option value="Akhlak">2. Akhlak</option>
+          <option value="Hadits">3. Hadits</option>
+          <option value="Fikih">4. Fikih</option>
+          <option value="SKI">5. SKI</option>
+          <option value="Pendidikan Pancasila">6. Pendidikan Pancasila</option>
+          <option value="Bahasa Indonesia">7. Bahasa Indonesia</option>
+          <option value="Bahasa Inggris">8. Bahasa Inggris</option>
+          <option value="Matematika">9. Matematika</option>
+          <option value="Ilmu Pengetahuan Alam">10. IPA</option>
+          <option value="Ilmu Pengetahuan Sosial">11. IPS</option>
+          <option value="Prakarya">12. Prakarya</option>
+          <option value="Pendidikan Jasmani, Olahraga, dan Kesehatan">13. PJOK</option>
+          <option value="Bahasa Sunda">14. Bahasa Sunda</option>
+          <option value="Informatika">15. Informatika</option>
+          <option value="Bahasa Arab">16. Bahasa Arab</option>
+        </select>
+      </div>
+
+      <!-- Filter Tingkat Kelas -->
+      <div>
+        <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Tingkat Kelas</label>
+        <select id="filter-tp-tingkat" onchange="renderTPTable()" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 font-bold text-slate-800 focus:ring-2 focus:ring-[#00a66c]">
+          <option value="Semua">Semua Tingkat (Fase D)</option>
+          <option value="Kelas VII">Kelas VII</option>
+          <option value="Kelas VIII">Kelas VIII</option>
+          <option value="Kelas IX">Kelas IX</option>
+        </select>
+      </div>
+
+      <!-- Filter Semester -->
+      <div>
+        <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Semester</label>
+        <select id="filter-tp-semester" onchange="renderTPTable()" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 font-bold text-slate-800 focus:ring-2 focus:ring-[#00a66c]">
+          <option value="Semua">Semua Semester</option>
+          <option value="Tengah Semester 1" selected>Tengah Semester 1</option>
+          <option value="Akhir Semester 1">Akhir Semester 1</option>
+          <option value="Tengah Semester 2">Tengah Semester 2</option>
+          <option value="Akhir Semester 2">Akhir Semester 2</option>
+        </select>
+      </div>
+
+      <!-- Filter Status -->
+      <div>
+        <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Status TP</label>
+        <select id="filter-tp-status" onchange="renderTPTable()" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 font-bold text-slate-800 focus:ring-2 focus:ring-[#00a66c]">
+          <option value="Semua">Semua Status</option>
+          <option value="Aktif" selected>Hanya Aktif</option>
+          <option value="Non-Aktif">Hanya Non-Aktif</option>
+        </select>
+      </div>
+
+      <!-- Search Box -->
+      <div>
+        <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Cari Materi TP</label>
+        <div class="relative">
+          <input type="text" id="filter-tp-search" oninput="renderTPTable()" placeholder="Ketik kata kunci TP..." 
+                 class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg pl-8 pr-3 py-2 text-slate-800 focus:ring-2 focus:ring-[#00a66c]" />
+          <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-2.5 text-slate-400 text-xs"></i>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- TP Data Table -->
+  <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden space-y-3 p-5">
+    
+    <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+      <div class="flex items-center gap-2">
+        <i class="fa-solid fa-list-check text-[#00a66c]"></i>
+        <h3 class="text-sm font-bold text-slate-900">Daftar Tujuan Pembelajaran Aktif</h3>
+        <span class="text-xs text-slate-500">(<span id="table-tp-count" class="font-bold text-[#00a66c]">0</span> TP ditemukan)</span>
+      </div>
+      <div class="text-[11px] text-slate-400 font-medium">
+        * TP yang berstatus <strong>Aktif</strong> otomatis ditarik saat input nilai rapor sekelas.
+      </div>
+    </div>
+
+    <div class="overflow-x-auto rounded-xl border border-slate-200">
+      <table class="w-full text-left text-xs text-slate-700">
+        <thead class="bg-slate-100 text-slate-800 uppercase text-[10px] font-extrabold tracking-wider border-b border-slate-200">
+          <tr>
+            <th class="w-12 px-3 py-3 text-center border-r border-slate-200">Kode</th>
+            <th class="w-40 px-3 py-3 border-r border-slate-200">Mata Pelajaran</th>
+            <th class="w-24 px-2 py-3 text-center border-r border-slate-200">Tingkat / Fase</th>
+            <th class="w-32 px-2 py-3 text-center border-r border-slate-200">Semester</th>
+            <th class="px-4 py-3 border-r border-slate-200">Deskripsi Lengkap Tujuan Pembelajaran</th>
+            <th class="px-4 py-3 border-r border-slate-200">Ringkasan Narasi Rapor (Auto-Generate)</th>
+            <th class="w-20 px-2 py-3 text-center border-r border-slate-200">Status</th>
+            <th class="w-24 px-3 py-3 text-right">Aksi</th>
+          </tr>
+        </thead>
+        <tbody id="table-tp-tbody" class="divide-y divide-slate-100 bg-white">
+          <!-- Populated dynamically via JS -->
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- Modal Form: Tambah / Edit Tujuan Pembelajaran (TP) -->
+<div id="modal-tp" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+  <div class="bg-white rounded-2xl max-w-xl w-full shadow-2xl border border-slate-100 overflow-hidden transform transition-all">
+    <div class="px-6 py-4 bg-gradient-to-r from-emerald-800 to-teal-900 text-white flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <i class="fa-solid fa-bullseye text-emerald-300"></i>
+        <h3 class="font-bold text-sm" id="modal-tp-title">Tambah Tujuan Pembelajaran (TP)</h3>
+      </div>
+      <button onclick="closeModalTP()" class="text-slate-300 hover:text-white text-lg cursor-pointer">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <form id="form-tp" onsubmit="submitFormTP(event)" class="p-6 space-y-4">
+      <input type="hidden" id="tp-id" />
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Mata Pelajaran *</label>
+          <select id="tp-mapel" required class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-[#00a66c] font-bold">
+            <option value="Akidah">1. Akidah</option>
+            <option value="Akhlak">2. Akhlak</option>
+            <option value="Hadits">3. Hadits</option>
+            <option value="Fikih">4. Fikih</option>
+            <option value="SKI">5. SKI</option>
+            <option value="Pendidikan Pancasila">6. Pendidikan Pancasila</option>
+            <option value="Bahasa Indonesia">7. Bahasa Indonesia</option>
+            <option value="Bahasa Inggris">8. Bahasa Inggris</option>
+            <option value="Matematika">9. Matematika</option>
+            <option value="Ilmu Pengetahuan Alam">10. Ilmu Pengetahuan Alam</option>
+            <option value="Ilmu Pengetahuan Sosial">11. Ilmu Pengetahuan Sosial</option>
+            <option value="Prakarya">12. Prakarya</option>
+            <option value="Pendidikan Jasmani, Olahraga, dan Kesehatan">13. PJOK</option>
+            <option value="Bahasa Sunda">14. Bahasa Sunda</option>
+            <option value="Informatika">15. Informatika</option>
+            <option value="Bahasa Arab">16. Bahasa Arab</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Kode TP *</label>
+          <input type="text" id="tp-kode" required class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-[#00a66c] font-mono font-bold" placeholder="Contoh: TP 1 atau TP 7.1" />
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Tingkat Kelas *</label>
+          <select id="tp-tingkat" required class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-[#00a66c]">
+            <option value="Kelas VII">Kelas VII</option>
+            <option value="Kelas VIII">Kelas VIII</option>
+            <option value="Kelas IX">Kelas IX</option>
+            <option value="Semua Kelas">Semua Kelas (Fase D)</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Fase *</label>
+          <select id="tp-fase" required class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-[#00a66c]">
+            <option value="Fase D" selected>Fase D (SMP)</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Semester *</label>
+          <select id="tp-semester" required class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-[#00a66c]">
+            <option value="Tengah Semester 1" selected>Tengah Semester 1</option>
+            <option value="Akhir Semester 1">Akhir Semester 1</option>
+            <option value="Tengah Semester 2">Tengah Semester 2</option>
+            <option value="Akhir Semester 2">Akhir Semester 2</option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold text-slate-700 mb-1">Deskripsi Lengkap Tujuan Pembelajaran (TP) *</label>
+        <textarea id="tp-deskripsi" rows="3" required oninput="syncTpRingkasanPreview()" 
+                  class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-[#00a66c]" 
+                  placeholder="Contoh: Menganalisis struktur dan ciri kebahasaan teks deskripsi tentang objek dan lingkungan sekitar"></textarea>
+      </div>
+
+      <div>
+        <div class="flex items-center justify-between mb-1">
+          <label class="text-xs font-bold text-slate-700">Ringkasan untuk Narasi Rapor (Auto-Generate) *</label>
+          <span class="text-[10px] text-slate-400">Dimulai dengan kata kerja (misal: memahami..., menganalisis...)</span>
+        </div>
+        <textarea id="tp-ringkasan" rows="2" required 
+                  class="w-full text-xs bg-emerald-50/50 border border-emerald-300 rounded-lg px-3 py-2 text-emerald-950 focus:ring-2 focus:ring-[#00a66c]" 
+                  placeholder="Contoh: menganalisis struktur dan ciri kebahasaan teks deskripsi"></textarea>
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold text-slate-700 mb-1">Status Keterpakaian TP *</label>
+        <select id="tp-status" required class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-[#00a66c] font-bold">
+          <option value="Aktif" selected>✅ Aktif (Digunakan saat input nilai rapor)</option>
+          <option value="Non-Aktif">⏸️ Non-Aktif (Disimpan sebagai bank materi)</option>
+        </select>
+      </div>
+
+      <div class="pt-3 border-t border-slate-100 flex items-center justify-end gap-2">
+        <button type="button" onclick="closeModalTP()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold">
+          Batal
+        </button>
+        <button type="submit" id="btn-save-tp" class="px-5 py-2 bg-[#00a66c] hover:bg-[#008f5d] text-white rounded-xl text-xs font-bold shadow flex items-center gap-2">
+          <i class="fa-solid fa-floppy-disk"></i>
+          <span>Simpan TP</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

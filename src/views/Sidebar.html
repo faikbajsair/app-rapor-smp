@@ -27,17 +27,37 @@
         <span>Dashboard</span>
       </a>
 
-      <!-- 2. Kategori Penilaian Utama (Akademik, Ahlaq & Kepribadian, Diniyah) -->
-      <div class="pt-3 px-3 py-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider menu-assessment-header">Penilaian Santri</div>
+      <!-- 2. Kategori Penilaian Utama (TP, Akademik & Checklist, Cek Deskripsi, Ahlaq, Diniyah) -->
+      <div class="pt-3 px-3 py-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider menu-assessment-header">Penilaian Kurikulum Merdeka</div>
       
-      <!-- Akademik -->
+      <!-- Tujuan Pembelajaran (TP) -->
+      <a href="javascript:void(0)" onclick="switchView('tp')" id="nav-item-tp" 
+         class="sidebar-nav-link menu-assessment-item flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none">
+        <div class="flex items-center gap-3">
+          <i class="fa-solid fa-bullseye w-4 text-center text-sm"></i>
+          <span>Tujuan Pembelajaran (TP)</span>
+        </div>
+        <span class="text-[10px] bg-[#e8f8f2] text-[#00a66c] px-2 py-0.5 rounded-full font-bold" id="badge-count-tp">64 TP</span>
+      </a>
+
+      <!-- Nilai Akademik & Checklist TP -->
       <a href="javascript:void(0)" onclick="switchView('akademik')" id="nav-item-akademik" 
          class="sidebar-nav-link menu-assessment-item flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none">
         <div class="flex items-center gap-3">
           <i class="fa-solid fa-book-open w-4 text-center text-sm"></i>
-          <span>Nilai Akademik (UTS)</span>
+          <span>Input Nilai & Checklist TP</span>
         </div>
         <span class="text-[10px] bg-[#e8f8f2] text-[#00a66c] px-2 py-0.5 rounded-full font-bold" id="badge-count-akademik">1,376</span>
+      </a>
+
+      <!-- Cek Deskripsi Rapor -->
+      <a href="javascript:void(0)" onclick="switchView('deskripsi')" id="nav-item-deskripsi" 
+         class="sidebar-nav-link menu-assessment-item flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none">
+        <div class="flex items-center gap-3">
+          <i class="fa-solid fa-file-circle-check w-4 text-center text-sm"></i>
+          <span>Cek Deskripsi Rapor</span>
+        </div>
+        <span class="text-[10px] bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full font-bold">Auto</span>
       </a>
 
       <!-- Ahlaq & Kepribadian -->
@@ -84,12 +104,22 @@
         <span>Data Siswa & Ekskul</span>
       </a>
 
-      <!-- 4. Konfigurasi CMS -->
+      <!-- 4. Konfigurasi CMS & Audit Log -->
       <div class="pt-3 px-3 py-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider menu-admin-only">Sistem & CMS</div>
+      
       <a href="javascript:void(0)" onclick="switchView('cms')" id="nav-item-cms" 
          class="sidebar-nav-link menu-admin-only flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none">
         <i class="fa-solid fa-sliders w-4 text-center text-sm"></i>
         <span>Pengaturan CMS & SaaS</span>
+      </a>
+
+      <a href="javascript:void(0)" onclick="switchView('logs')" id="nav-item-logs" 
+         class="sidebar-nav-link flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none">
+        <div class="flex items-center gap-3">
+          <i class="fa-solid fa-clock-rotate-left w-4 text-center text-sm"></i>
+          <span>Log Aktivitas Akun</span>
+        </div>
+        <span class="text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full font-bold" id="badge-count-logs">Live</span>
       </a>
 
     </nav>
