@@ -822,9 +822,9 @@ function saveNilaiAkademik(data) {
   
   let predikat = data.predikat;
   if (!predikat) {
-    if (akhir >= 90) predikat = 'A';
-    else if (akhir >= 80) predikat = 'B';
-    else if (akhir >= kkm) predikat = 'C';
+    if (akhir >= 92) predikat = 'A';
+    else if (akhir >= 84) predikat = 'B';
+    else if (akhir >= 75) predikat = 'C';
     else predikat = 'D';
   }
   

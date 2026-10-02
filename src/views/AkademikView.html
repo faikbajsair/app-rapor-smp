@@ -47,7 +47,7 @@
         <span class="text-lg font-extrabold text-indigo-950" id="widget-ak-pass-rate">100%</span>
       </div>
       <div class="bg-amber-50/70 border border-amber-100 p-3 rounded-xl">
-        <span class="text-[10px] font-bold text-amber-700 uppercase tracking-wider block">Predikat A (Mumtaz)</span>
+        <span class="text-[10px] font-bold text-amber-700 uppercase tracking-wider block">Predikat A (Sangat Baik ≥92)</span>
         <span class="text-lg font-extrabold text-amber-950" id="widget-ak-count-a">0</span>
       </div>
     </div>
@@ -138,13 +138,22 @@
         </div>
       </div>
 
-      <!-- Quick Tips Card -->
+      <!-- Quick Tips & Interval Guide Card -->
       <div class="p-3 bg-blue-50/60 border border-blue-100 rounded-xl text-xs text-blue-900 flex flex-col md:flex-row md:items-center justify-between gap-2">
-        <div class="flex items-center gap-2">
-          <i class="fa-solid fa-lightbulb text-amber-500 text-sm"></i>
-          <span><strong>Navigasi Cepat:</strong> Ketik nilai murid lalu tekan <kbd class="px-1.5 py-0.5 bg-white border border-blue-200 rounded text-[10px] font-mono">Enter</kbd> atau <kbd class="px-1.5 py-0.5 bg-white border border-blue-200 rounded text-[10px] font-mono">Panah Bawah</kbd> untuk berpindah ke baris murid berikutnya.</span>
+        <div class="space-y-1">
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-lightbulb text-amber-500 text-sm"></i>
+            <span><strong>Navigasi Cepat:</strong> Ketik nilai lalu tekan <kbd class="px-1.5 py-0.5 bg-white border border-blue-200 rounded text-[10px] font-mono">Enter / Panah Bawah</kbd> untuk berpindah murid.</span>
+          </div>
+          <div class="text-[11px] text-blue-800 flex flex-wrap items-center gap-1.5 font-medium">
+            <strong class="text-blue-950">Interval (KKM 75):</strong>
+            <span class="inline-block px-1.5 py-0.25 rounded bg-emerald-100 text-emerald-800 font-bold text-[10px]">A: 92–100 (Sangat Baik)</span>
+            <span class="inline-block px-1.5 py-0.25 rounded bg-blue-100 text-blue-800 font-bold text-[10px]">B: 84–91 (Baik)</span>
+            <span class="inline-block px-1.5 py-0.25 rounded bg-amber-100 text-amber-900 font-bold text-[10px]">C: 75–83 (Cukup)</span>
+            <span class="inline-block px-1.5 py-0.25 rounded bg-rose-100 text-rose-800 font-bold text-[10px]">D: ≤ 74 (Perlu Bimbingan)</span>
+          </div>
         </div>
-        <div class="text-[11px] font-semibold text-blue-700">
+        <div class="text-[11px] font-semibold text-blue-700 whitespace-nowrap">
           Total Murid: <span id="leger-student-count" class="font-bold">12</span>
         </div>
       </div>
