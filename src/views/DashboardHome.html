@@ -6,20 +6,101 @@
     <div>
       <h1 class="text-base sm:text-lg font-black text-slate-900 tracking-tight flex items-center gap-2">
         <i class="fa-solid fa-table-cells-large text-[#00a66c]"></i>
-        <span>Dashboard Utama</span>
+        <span id="dashboard-title-heading">Dashboard Utama</span>
       </h1>
     </div>
     <div class="flex items-center gap-2">
       <span class="text-xs bg-slate-50 border border-slate-200 px-3.5 py-1.5 rounded-full text-slate-500 font-semibold">
-        Yayasan / Sekolah: <strong class="text-slate-700">SMP Al-Imam Islamic School</strong>
+        Yayasan / Sekolah: <strong class="text-slate-700">SMP AL IMAM ISLAMIC SCHOOL (AI IS)</strong>
       </span>
     </div>
   </div>
 
+  <!-- Dedicated Parent Portal View (Wali Murid) -->
+  <div id="dashboard-wali-view" class="hidden space-y-6">
+    <!-- Parent Banner -->
+    <div class="bg-gradient-to-r from-emerald-800 to-teal-900 text-white rounded-3xl p-6 sm:p-8 shadow-md relative overflow-hidden">
+      <div class="relative z-10 space-y-2">
+        <span class="px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-xs font-bold text-emerald-200 inline-flex items-center gap-1.5">
+          <i class="fa-solid fa-user-shield"></i> Portal Orang Tua / Wali Murid
+        </span>
+        <h2 class="text-xl sm:text-2xl font-black tracking-tight" id="wali-hero-title">
+          Selamat Datang, Bapak / Ibu Wali Murid
+        </h2>
+        <p class="text-xs sm:text-sm text-emerald-100 max-w-2xl leading-relaxed" id="wali-hero-subtitle">
+          Pantau perkembangan akademik, kehadiran, kegiatan ekstrakurikuler, dan lembar rapor resmi ananda.
+        </p>
+      </div>
+      <i class="fa-solid fa-graduation-cap absolute -right-6 -bottom-6 text-9xl text-white/5 pointer-events-none"></i>
+    </div>
+
+    <!-- Child Summary Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <!-- Card 1: Identitas & Status Rapor -->
+      <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm space-y-3">
+        <div class="flex items-center justify-between">
+          <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Identitas Ananda</span>
+          <span id="wali-card-status-badge" class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-amber-100 text-amber-800 border border-amber-300">
+            DRAFT
+          </span>
+        </div>
+        <div>
+          <h3 class="font-extrabold text-sm text-slate-900" id="wali-child-name">-</h3>
+          <p class="text-xs text-slate-500 font-mono mt-0.5">NISN: <span id="wali-child-nisn" class="font-bold text-slate-700">-</span></p>
+          <p class="text-xs text-slate-500 font-bold mt-0.5">Kelas: <span id="wali-child-kelas" class="text-purple-700">-</span></p>
+        </div>
+        <div class="pt-2 border-t border-slate-100">
+          <p class="text-[11px] text-slate-500">Wali Kelas: <strong id="wali-child-walas" class="text-slate-800">-</strong></p>
+        </div>
+      </div>
+
+      <!-- Card 2: Rekap Presensi -->
+      <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm space-y-3">
+        <div class="flex items-center justify-between">
+          <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Kehadiran (Absen UTS)</span>
+          <i class="fa-solid fa-clipboard-user text-emerald-600"></i>
+        </div>
+        <div class="grid grid-cols-3 gap-2 text-center">
+          <div class="bg-rose-50 p-2 rounded-xl border border-rose-100">
+            <span class="text-base font-black text-rose-700" id="wali-absen-s">0</span>
+            <span class="block text-[10px] font-bold text-rose-600">Sakit (S)</span>
+          </div>
+          <div class="bg-amber-50 p-2 rounded-xl border border-amber-100">
+            <span class="text-base font-black text-amber-700" id="wali-absen-i">0</span>
+            <span class="block text-[10px] font-bold text-amber-600">Izin (I)</span>
+          </div>
+          <div class="bg-slate-100 p-2 rounded-xl border border-slate-200">
+            <span class="text-base font-black text-slate-700" id="wali-absen-a">0</span>
+            <span class="block text-[10px] font-bold text-slate-600">Alpa (A)</span>
+          </div>
+        </div>
+        <p class="text-[10px] text-slate-400 italic text-center">Data presensi terhitung hingga pelaksanaan UTS</p>
+      </div>
+
+      <!-- Card 3: Quick Action Rapor -->
+      <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm flex flex-col justify-between space-y-3">
+        <div>
+          <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Lembar Rapor</span>
+          <h4 class="font-extrabold text-xs text-slate-900 mt-1">Rapor Tengah Semester 1 (2026/2027)</h4>
+          <p class="text-[11px] text-slate-500 mt-1" id="wali-rapor-quick-desc">
+            Lihat rincian capaian kompetensi 16 mapel, karakter, dan ekstrakurikuler ananda.
+          </p>
+        </div>
+        <button onclick="switchView('rapor')" class="w-full py-2.5 px-4 bg-[#00a66c] hover:bg-[#008f5d] text-white font-bold rounded-xl text-xs shadow-md shadow-[#00a66c]/20 transition flex items-center justify-center gap-2 cursor-pointer">
+          <i class="fa-solid fa-file-invoice"></i>
+          <span>Buka Lembar Rapor Ananda</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Teacher / Administrator Dashboard View -->
+  <div id="dashboard-admin-view" class="space-y-6 menu-non-wali">
+
   <!-- Hero / Welcome Banner (Matching Screenshot) -->
   <div class="bg-white rounded-3xl p-6 sm:p-8 border border-[#e2f3ea] shadow-sm space-y-2">
     <h2 class="text-xl sm:text-2xl font-black text-slate-900 uppercase tracking-tight">
-      SEKOLAH MENENGAH PERTAMA AL-IMAM ISLAMIC SCHOOL
+      SMP AL IMAM ISLAMIC SCHOOL (AI IS)
     </h2>
     <p class="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-4xl">
       Sistem penilaian rapor belajar siswa di bawah naungan Yayasan / Sekolah SMP Al-Imam. 

@@ -219,10 +219,14 @@ function dispatchApiAction(action, payload) {
       case 'deleteSklKepemimpinan':
         return deleteSklKepemimpinan(payload.id);
         
-      // Rapor Lengkap
+      // Rapor Lengkap & Status Publikasi
       case 'getMuridReport':
       case 'getSantriReport':
         return getMuridReportData(payload.nis);
+      case 'getRaporPublishStatus':
+        return getRaporPublishStatus(payload);
+      case 'setRaporPublishStatus':
+        return setRaporPublishStatus(payload);
 
       // Log Aktivitas & Audit Trail Akun
       case 'getActivityLogs':
@@ -300,5 +304,8 @@ function apiDeleteNilaiDiniyah(id) { return dispatchApiAction('deleteNilaiDiniya
 function apiGetActivityLogs(filters) { return dispatchApiAction('getActivityLogs', filters || {}); }
 function apiLogActivity(data) { return dispatchApiAction('logActivity', data); }
 function apiClearActivityLogs() { return dispatchApiAction('clearActivityLogs', {}); }
+
+function apiGetRaporPublishStatus(filters) { return dispatchApiAction('getRaporPublishStatus', filters || {}); }
+function apiSetRaporPublishStatus(data) { return dispatchApiAction('setRaporPublishStatus', data); }
 
 

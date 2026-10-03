@@ -80,6 +80,55 @@
     </div>
   </div>
 
+  <!-- Status Publikasi & Kontrol Approval Rapor (No-Print) -->
+  <div id="rapor-publish-control-bar" class="no-print bg-white p-3.5 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-3">
+    <div class="flex items-center gap-2.5">
+      <div id="rapor-publish-status-icon" class="w-8 h-8 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-sm border border-amber-200">
+        <i class="fa-solid fa-lock"></i>
+      </div>
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="text-xs font-bold text-slate-800">Status Akses Rapor Wali Murid:</span>
+          <span id="rapor-publish-badge" class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-amber-100 text-amber-800 border border-amber-300">
+            DRAFT (Belum Dipublish)
+          </span>
+        </div>
+        <p id="rapor-publish-desc" class="text-[11px] text-slate-500">
+          Wali murid belum dapat melihat nilai & rapor semester ini sampai dipublikasikan oleh wali kelas / kepala sekolah.
+        </p>
+      </div>
+    </div>
+
+    <!-- Teacher/Admin Action Buttons -->
+    <div id="rapor-publish-admin-actions" class="flex items-center gap-2">
+      <button id="btn-toggle-publish-rapor" onclick="togglePublishRaporActive()" 
+              class="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-sm transition flex items-center gap-1.5 cursor-pointer">
+        <i class="fa-solid fa-paper-plane"></i>
+        <span>Publish Rapor Kelas Ini</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Pemberitahuan Khusus Wali Murid jika Rapor Belum Dipublish -->
+  <div id="wali-murid-unpublished-notice" class="hidden no-print bg-white rounded-3xl p-8 sm:p-12 text-center border border-amber-200 shadow-sm max-w-2xl mx-auto space-y-4 my-6">
+    <div class="w-16 h-16 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center mx-auto text-2xl border border-amber-200 shadow-inner">
+      <i class="fa-solid fa-lock"></i>
+    </div>
+    <div>
+      <span class="px-3 py-1 rounded-full text-[11px] font-bold bg-amber-100 text-amber-800 border border-amber-200 inline-block mb-2">
+        Tahap Finalisasi Penilaian
+      </span>
+      <h3 class="text-lg font-black text-slate-900">Rapor Ananda Belum Dipublikasikan</h3>
+    </div>
+    <p class="text-xs text-slate-600 leading-relaxed max-w-md mx-auto">
+      Laporan Hasil Belajar Tengah Semester untuk ananda <strong class="text-slate-900" id="unpublished-student-name">...</strong> sedang dalam proses penilaian, verifikasi, dan penyelarasan akhir oleh Dewan Guru, Wali Kelas, dan Kepala Sekolah.
+    </p>
+    <div class="p-3.5 bg-slate-50 rounded-2xl border border-slate-200 text-[11px] text-slate-500 flex items-center justify-center gap-2 max-w-lg mx-auto">
+      <i class="fa-solid fa-circle-info text-amber-500 text-sm"></i>
+      <span>Rapor resmi dapat diakses dan diunduh segera setelah resmi diterbitkan (dipublish) oleh pihak sekolah.</span>
+    </div>
+  </div>
+
   <!-- ========================================================================= -->
   <!-- 1. FORMAT RAPOR PORTOFOLIO TENGAH SEMESTER (16 MAPEL + 6 KARAKTER + EKSKUL) -->
   <!-- ========================================================================= -->

@@ -1480,22 +1480,85 @@ function applyRoleUIPermissions(role) {
     else el.classList.add('hidden');
   });
 
-  // Wali Murid Lock and Auto Selection
+  // Wali Murid Lock and UI Permissions
   const isWali = (role === 'wali_murid');
   const childNis = user.nis || '242507001';
-  
+
+  // Toggle non-wali elements (assessment, TP, student database, CMS, logs)
+  const nonWaliElements = document.querySelectorAll('.menu-non-wali');
+  nonWaliElements.forEach(el => {
+    if (isWali) el.classList.add('hidden');
+    else el.classList.remove('hidden');
+  });
+
+  // Toggle Dashboard view panels (Parent Portal vs Teacher/Admin Dashboard)
+  const dashWaliView = document.getElementById('dashboard-wali-view');
+  const dashAdminView = document.getElementById('dashboard-admin-view');
+  if (isWali) {
+    dashWaliView?.classList.remove('hidden');
+    dashAdminView?.classList.add('hidden');
+  } else {
+    dashWaliView?.classList.add('hidden');
+    dashAdminView?.classList.remove('hidden');
+  }
+
+  // Wali Murid Lock and Auto Selection
   if (isWali) {
     AppState.activePrintNis = childNis;
     const filterKelas = document.getElementById('filter-rapor-kelas');
-    if (filterKelas) {
-      const childMurid = AppState.muridList.find(s => String(s.nis).trim() === String(childNis).trim());
-      if (childMurid && childMurid.kelas) filterKelas.value = childMurid.kelas;
+    const childMurid = AppState.muridList.find(s => 
+      String(s.nis).trim() === String(childNis).trim() || 
+      String(s.nisn).trim() === String(childNis).trim() ||
+      (s.nama_murid || s.nama || '').toLowerCase().includes('abdillah')
+    ) || AppState.muridList[0] || {};
+
+    if (filterKelas && childMurid && childMurid.kelas) {
+      filterKelas.value = childMurid.kelas;
+    }
+
+    // Populate Parent Portal Dashboard
+    if (document.getElementById('wali-child-name')) document.getElementById('wali-child-name').innerText = childMurid.nama_murid || childMurid.nama_santri || user.nama_lengkap;
+    if (document.getElementById('wali-child-nisn')) document.getElementById('wali-child-nisn').innerText = childMurid.nisn || childMurid.nis || '-';
+    if (document.getElementById('wali-child-kelas')) document.getElementById('wali-child-kelas').innerText = childMurid.kelas || 'IX ABU BAKAR';
+    if (document.getElementById('wali-child-walas')) document.getElementById('wali-child-walas').innerText = formatWaliKelasTitleCase(childMurid.wali_kelas || WALI_KELAS_MAP[childMurid.kelas] || 'Dewi Fitria Nugraheni, S.Pd., Gr.');
+    
+    const formatAbsen = (val) => (!val || Number(val) === 0 || val === '-') ? '0' : val;
+    if (document.getElementById('wali-absen-s')) document.getElementById('wali-absen-s').innerText = formatAbsen(childMurid.kehadiran_s);
+    if (document.getElementById('wali-absen-i')) document.getElementById('wali-absen-i').innerText = formatAbsen(childMurid.kehadiran_i);
+    if (document.getElementById('wali-absen-a')) document.getElementById('wali-absen-a').innerText = formatAbsen(childMurid.kehadiran_a);
+
+    // Check publish status
+    const curYear = AppState.cmsSettings?.academic_year || '2026/2027';
+    const curSem = AppState.cmsSettings?.semester_active || 'Tengah Semester 1';
+    const classKey = `${childMurid.kelas || 'IX ABU BAKAR'}_${curYear}_${curSem}`;
+    const studentKey = `${childMurid.nis || childNis}_${curYear}_${curSem}`;
+    const pubClasses = (AppState.cmsSettings?.published_rapor_classes || '').split(',').map(s => s.trim()).filter(Boolean);
+    const pubStudents = (AppState.cmsSettings?.published_rapor_students || '').split(',').map(s => s.trim()).filter(Boolean);
+    const isPub = pubClasses.includes(classKey) || pubStudents.includes(studentKey);
+
+    const statusBadge = document.getElementById('wali-card-status-badge');
+    if (statusBadge) {
+      if (isPub) {
+        statusBadge.className = 'px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-300';
+        statusBadge.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-600 mr-1"></i> SUDAH DIPUBLISH';
+      } else {
+        statusBadge.className = 'px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-amber-100 text-amber-800 border border-amber-300';
+        statusBadge.innerHTML = '<i class="fa-solid fa-lock text-amber-600 mr-1"></i> DRAFT (Dalam Review)';
+      }
     }
   }
 
   const muridSelect = document.getElementById('rapor-murid-select');
   if (muridSelect) {
     muridSelect.disabled = isWali;
+  }
+  const filterKelasSelect = document.getElementById('filter-rapor-kelas');
+  if (filterKelasSelect) {
+    filterKelasSelect.disabled = isWali;
+  }
+  const filterSearchInput = document.getElementById('filter-rapor-search');
+  if (filterSearchInput) {
+    filterSearchInput.disabled = isWali;
   }
 
   populateMuridDropdowns();
@@ -5487,6 +5550,144 @@ function onRaporSearchInput() {
   onRaporFilterChange();
 }
 
+function getActiveRaporFilterInfo() {
+  const year = document.getElementById('filter-rapor-tahun-ajaran')?.value || AppState.cmsSettings?.academic_year || '2026/2027';
+  const semester = document.getElementById('filter-rapor-semester')?.value || AppState.cmsSettings?.semester_active || 'Tengah Semester 1';
+  let kelas = document.getElementById('filter-rapor-kelas')?.value || 'IX ABU BAKAR';
+  
+  const currentMurid = AppState.muridList.find(s => String(s.nis).trim() === String(AppState.activePrintNis).trim());
+  if (kelas === 'Semua' && currentMurid && currentMurid.kelas) {
+    kelas = currentMurid.kelas;
+  }
+  return { year, semester, kelas, murid: currentMurid };
+}
+
+function updatePublishUIState(isPublished, targetKelas, studentName) {
+  const badge = document.getElementById('rapor-publish-badge');
+  const desc = document.getElementById('rapor-publish-desc');
+  const icon = document.getElementById('rapor-publish-status-icon');
+  const btn = document.getElementById('btn-toggle-publish-rapor');
+  const noticeEl = document.getElementById('wali-murid-unpublished-notice');
+  const studentNoticeName = document.getElementById('unpublished-student-name');
+  const sheetPortofolio = document.getElementById('print-sheet-portofolio');
+  const sheetKepemimpinan = document.getElementById('print-sheet-kepemimpinan');
+  const isWali = (AppState.currentUser?.role === 'wali_murid');
+
+  if (studentNoticeName && studentName) {
+    studentNoticeName.innerText = studentName;
+  }
+
+  if (badge) {
+    if (isPublished) {
+      badge.className = 'px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-300';
+      badge.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-600 mr-1"></i> SUDAH DIPUBLISH';
+    } else {
+      badge.className = 'px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-amber-100 text-amber-800 border border-amber-300';
+      badge.innerHTML = '<i class="fa-solid fa-lock text-amber-600 mr-1"></i> DRAFT (Belum Dipublish)';
+    }
+  }
+
+  if (desc) {
+    if (isPublished) {
+      desc.innerText = `Rapor kelas ${targetKelas || ''} telah dipublikasikan resmi dan dapat diakses/diunduh oleh wali murid.`;
+    } else {
+      desc.innerText = `Rapor kelas ${targetKelas || ''} masih dalam status DRAFT / proses verifikasi. Wali murid belum dapat melihat nilai sampai dipublish.`;
+    }
+  }
+
+  if (icon) {
+    if (isPublished) {
+      icon.className = 'w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-sm border border-emerald-200';
+      icon.innerHTML = '<i class="fa-solid fa-circle-check"></i>';
+    } else {
+      icon.className = 'w-8 h-8 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-sm border border-amber-200';
+      icon.innerHTML = '<i class="fa-solid fa-lock"></i>';
+    }
+  }
+
+  if (btn) {
+    if (isPublished) {
+      btn.className = 'px-3.5 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs font-bold shadow-sm transition flex items-center gap-1.5 cursor-pointer';
+      btn.innerHTML = '<i class="fa-solid fa-lock"></i><span>Tarik / Batal Publish Rapor</span>';
+    } else {
+      btn.className = 'px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-sm transition flex items-center gap-1.5 cursor-pointer';
+      btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i><span>Publish Rapor Kelas Ini</span>';
+    }
+  }
+
+  // Handle Wali Murid View Lockout vs Teacher/Admin Preview
+  if (isWali) {
+    if (!isPublished) {
+      if (noticeEl) noticeEl.classList.remove('hidden');
+      if (sheetPortofolio) sheetPortofolio.classList.add('hidden');
+      if (sheetKepemimpinan) sheetKepemimpinan.classList.add('hidden');
+    } else {
+      if (noticeEl) noticeEl.classList.add('hidden');
+      if (AppState.activePrintFormat === 'kepemimpinan') {
+        if (sheetPortofolio) sheetPortofolio.classList.add('hidden');
+        if (sheetKepemimpinan) sheetKepemimpinan.classList.remove('hidden');
+      } else {
+        if (sheetPortofolio) sheetPortofolio.classList.remove('hidden');
+        if (sheetKepemimpinan) sheetKepemimpinan.classList.add('hidden');
+      }
+    }
+  } else {
+    if (noticeEl) noticeEl.classList.add('hidden');
+    if (AppState.activePrintFormat === 'kepemimpinan') {
+      if (sheetPortofolio) sheetPortofolio.classList.add('hidden');
+      if (sheetKepemimpinan) sheetKepemimpinan.classList.remove('hidden');
+    } else {
+      if (sheetPortofolio) sheetPortofolio.classList.remove('hidden');
+      if (sheetKepemimpinan) sheetKepemimpinan.classList.add('hidden');
+    }
+  }
+}
+
+function togglePublishRaporActive() {
+  const role = AppState.currentUser?.role;
+  if (role === 'wali_murid') {
+    showToast('Wali murid tidak memiliki wewenang untuk mengubah status publikasi rapor.', 'error');
+    return;
+  }
+
+  const { year, semester, kelas, murid } = getActiveRaporFilterInfo();
+  const classKey = `${kelas}_${year}_${semester}`;
+  let pubClasses = (AppState.cmsSettings?.published_rapor_classes || '').split(',').map(s => s.trim()).filter(Boolean);
+  const currentlyPublished = pubClasses.includes(classKey);
+  const newPublishedState = !currentlyPublished;
+
+  if (newPublishedState) {
+    if (!pubClasses.includes(classKey)) pubClasses.push(classKey);
+  } else {
+    pubClasses = pubClasses.filter(k => k !== classKey);
+  }
+  AppState.cmsSettings.published_rapor_classes = pubClasses.join(',');
+
+  const studentName = murid ? (murid.nama_murid || murid.nama_santri || murid.nama || '') : '';
+  updatePublishUIState(newPublishedState, kelas, studentName);
+
+  showToast(newPublishedState 
+    ? `Rapor kelas ${kelas} (${semester}) BERHASIL DIPUBLISH untuk wali murid.` 
+    : `Status publikasi rapor kelas ${kelas} (${semester}) ditarik kembali ke status DRAFT.`, 
+    newPublishedState ? 'success' : 'info'
+  );
+
+  recordActivity('RAPOR_PUBLISH', 'Publikasi Rapor', 
+    `${newPublishedState ? 'Mempublikasikan' : 'Membatalkan publikasi'} rapor kelas: ${kelas} (${semester} ${year})`, 
+    'success'
+  );
+
+  callApi('setRaporPublishStatus', {
+    target: 'class',
+    kelas: kelas,
+    tahun_ajaran: year,
+    semester: semester,
+    is_published: newPublishedState
+  }).catch(err => {
+    console.warn('Sync publish status error:', err);
+  });
+}
+
 function loadMuridReportForPrint(nis) {
   if (!nis) return;
   const cleanNis = String(nis).trim();
@@ -5542,8 +5743,8 @@ function loadMuridReportForPrint(nis) {
         nilai_uts: null,
         predikat: '-',
         capaian_kompetensi: '',
-        tahun_ajaran: AppState.cmsSettings.academic_year || '2026/2027',
-        semester: AppState.cmsSettings.semester_active || 'Tengah Semester 1'
+        tahun_ajaran: AppState.cmsSettings?.academic_year || '2026/2027',
+        semester: AppState.cmsSettings?.semester_active || 'Tengah Semester 1'
       });
     });
   }
@@ -5554,8 +5755,19 @@ function loadMuridReportForPrint(nis) {
   const skl = AppState.sklList.find(x => String(x.nis || '').trim() === cleanNis) || (DEMO_DATA.skl && DEMO_DATA.skl[0]) || { scores: {}, catatan_walas: '' };
   const dn = AppState.diniyahList.find(x => String(x.nis || '').trim() === cleanNis) || DEMO_DATA.diniyah[0] || {};
 
+  // Check publication state
+  const curYear = document.getElementById('filter-rapor-tahun-ajaran')?.value || AppState.cmsSettings?.academic_year || '2026/2027';
+  const curSem = document.getElementById('filter-rapor-semester')?.value || AppState.cmsSettings?.semester_active || 'Tengah Semester 1';
+  const classKey = `${normalizedMurid.kelas || ''}_${curYear}_${curSem}`;
+  const studentKey = `${cleanNis}_${curYear}_${curSem}`;
+  const pubClasses = (AppState.cmsSettings?.published_rapor_classes || '').split(',').map(s => s.trim()).filter(Boolean);
+  const pubStudents = (AppState.cmsSettings?.published_rapor_students || '').split(',').map(s => s.trim()).filter(Boolean);
+  const isPublished = pubClasses.includes(classKey) || pubStudents.includes(studentKey);
+
   const localReport = {
     settings: AppState.cmsSettings,
+    is_published: isPublished,
+    publish_key: classKey,
     murid: normalizedMurid,
     santri: normalizedMurid,
     akademik: { items: akItems, totalNilai: totalAk, rataRata: avgAk, jumlahMapel: akItems.length },
@@ -5586,9 +5798,12 @@ function loadMuridReportForPrint(nis) {
           const backendAk = res.data.akademik;
           const mergedAk = (backendAk && backendAk.items && backendAk.items.length > 0) ? backendAk : localReport.akademik;
           
+          const backendIsPublished = (res.data.is_published !== undefined) ? res.data.is_published : localReport.is_published;
+
           const mergedReport = {
             ...localReport,
             ...res.data,
+            is_published: backendIsPublished,
             murid: mergedMurid,
             santri: mergedMurid,
             akademik: mergedAk,
@@ -5695,6 +5910,17 @@ function renderRaporSheet(report) {
     const walasNip = m.wali_nip || m.niy || m.niy_walas || set.wali_nip;
     document.getElementById('print-ttd-wali-nip').innerText = walasNip ? `NIP. ${walasNip}` : 'NIP.';
   }
+
+  // Update Publish UI State (Badge, Buttons, Lock/Notice for Parents)
+  const classKey = `${kelasMurid}_${tahunAjaran}_${semester}`;
+  const studentKey = `${m.nis || ''}_${tahunAjaran}_${semester}`;
+  const pubClasses = (AppState.cmsSettings?.published_rapor_classes || '').split(',').map(s => s.trim()).filter(Boolean);
+  const pubStudents = (AppState.cmsSettings?.published_rapor_students || '').split(',').map(s => s.trim()).filter(Boolean);
+  const isPublished = (report.is_published !== undefined) 
+    ? report.is_published 
+    : (pubClasses.includes(classKey) || pubStudents.includes(studentKey));
+
+  updatePublishUIState(isPublished, kelasMurid, namaMurid);
 }
 
 function renderRaporKepemimpinanSheet(report) {
@@ -6416,6 +6642,9 @@ window.renderActivityLogsTimeline = renderActivityLogsTimeline;
 window.switchLogsDisplayMode = switchLogsDisplayMode;
 window.exportActivityLogsToExcel = exportActivityLogsToExcel;
 window.clearActivityLogsAction = clearActivityLogsAction;
+window.togglePublishRaporActive = togglePublishRaporActive;
+window.updatePublishUIState = updatePublishUIState;
+window.getActiveRaporFilterInfo = getActiveRaporFilterInfo;
 
 // 19. APP STARTUP INITIALIZATION
 window.addEventListener('DOMContentLoaded', () => {

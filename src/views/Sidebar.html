@@ -28,11 +28,11 @@
       </a>
 
       <!-- 2. Kategori Penilaian Utama (TP, Akademik & Checklist, Cek Deskripsi, Ahlaq, Diniyah) -->
-      <div class="pt-3 px-3 py-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider menu-assessment-header">Penilaian Kurikulum Merdeka</div>
+      <div class="pt-3 px-3 py-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider menu-assessment-header menu-non-wali">Penilaian Kurikulum Merdeka</div>
       
       <!-- Tujuan Pembelajaran (TP) -->
       <a href="javascript:void(0)" onclick="switchView('tp')" id="nav-item-tp" 
-         class="sidebar-nav-link menu-assessment-item flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none">
+         class="sidebar-nav-link menu-assessment-item menu-non-wali flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none">
         <div class="flex items-center gap-3">
           <i class="fa-solid fa-bullseye w-4 text-center text-sm"></i>
           <span>Tujuan Pembelajaran (TP)</span>
@@ -42,7 +42,7 @@
 
       <!-- Nilai Akademik & Checklist TP -->
       <a href="javascript:void(0)" onclick="switchView('akademik')" id="nav-item-akademik" 
-         class="sidebar-nav-link menu-assessment-item flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none">
+         class="sidebar-nav-link menu-assessment-item menu-non-wali flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none">
         <div class="flex items-center gap-3">
           <i class="fa-solid fa-book-open w-4 text-center text-sm"></i>
           <span>Input Nilai & Checklist TP</span>
@@ -52,7 +52,7 @@
 
       <!-- Cek Deskripsi Rapor -->
       <a href="javascript:void(0)" onclick="switchView('deskripsi')" id="nav-item-deskripsi" 
-         class="sidebar-nav-link menu-assessment-item flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none">
+         class="sidebar-nav-link menu-assessment-item menu-non-wali flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none">
         <div class="flex items-center gap-3">
           <i class="fa-solid fa-file-circle-check w-4 text-center text-sm"></i>
           <span>Cek Deskripsi Rapor</span>
@@ -62,7 +62,7 @@
 
       <!-- Ahlaq & Kepribadian -->
       <a href="javascript:void(0)" onclick="switchView('kepemimpinan')" id="nav-item-kepemimpinan" 
-         class="sidebar-nav-link menu-assessment-item flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none">
+         class="sidebar-nav-link menu-assessment-item menu-non-wali flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none">
         <div class="flex items-center gap-3">
           <i class="fa-solid fa-heart-pulse w-4 text-center text-sm"></i>
           <span>Ahlaq & Kepribadian</span>
@@ -72,7 +72,7 @@
 
       <!-- Diniyah -->
       <a href="javascript:void(0)" onclick="switchView('diniyah')" id="nav-item-diniyah" 
-         class="sidebar-nav-link menu-assessment-item flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none">
+         class="sidebar-nav-link menu-assessment-item menu-non-wali flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none">
         <div class="flex items-center gap-3">
           <i class="fa-solid fa-quran w-4 text-center text-sm"></i>
           <span>Diniyah & Tahfidz</span>
@@ -85,7 +85,7 @@
       
       <!-- Buku Leger Nilai Lengkap -->
       <a href="javascript:void(0)" onclick="switchView('leger')" id="nav-item-leger" 
-         class="sidebar-nav-link flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none">
+         class="sidebar-nav-link menu-non-wali flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none">
         <i class="fa-solid fa-table-list w-4 text-center text-sm"></i>
         <span>Buku Leger 16 Mapel</span>
       </a>
@@ -94,27 +94,27 @@
       <a href="javascript:void(0)" onclick="switchView('rapor')" id="nav-item-rapor" 
          class="sidebar-nav-link flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none">
         <i class="fa-solid fa-file-invoice w-4 text-center text-sm"></i>
-        <span>Cetak Lembar Rapor</span>
+        <span id="nav-label-rapor">Cetak Lembar Rapor</span>
       </a>
 
       <!-- Data Murid -->
       <a href="javascript:void(0)" onclick="switchView('murid')" id="nav-item-murid" 
-         class="sidebar-nav-link menu-murid-management flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none">
+         class="sidebar-nav-link menu-murid-management menu-non-wali flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none">
         <i class="fa-solid fa-users-gear w-4 text-center text-sm"></i>
         <span>Data Siswa & Ekskul</span>
       </a>
 
       <!-- 4. Konfigurasi CMS & Audit Log -->
-      <div class="pt-3 px-3 py-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider menu-admin-only">Sistem & CMS</div>
+      <div class="pt-3 px-3 py-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider menu-admin-only menu-non-wali">Sistem & CMS</div>
       
       <a href="javascript:void(0)" onclick="switchView('cms')" id="nav-item-cms" 
-         class="sidebar-nav-link menu-admin-only flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none">
+         class="sidebar-nav-link menu-admin-only menu-non-wali flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none">
         <i class="fa-solid fa-sliders w-4 text-center text-sm"></i>
         <span>Pengaturan CMS & SaaS</span>
       </a>
 
       <a href="javascript:void(0)" onclick="switchView('logs')" id="nav-item-logs" 
-         class="sidebar-nav-link flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none">
+         class="sidebar-nav-link menu-non-wali flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none">
         <div class="flex items-center gap-3">
           <i class="fa-solid fa-clock-rotate-left w-4 text-center text-sm"></i>
           <span>Log Aktivitas Akun</span>

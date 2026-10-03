@@ -685,6 +685,70 @@ function getAcademicYearsList() {
 }
 
 /**
+ * Kelola Status Publikasi Rapor (Publish/Draft untuk Hak Akses Wali Murid)
+ */
+function getRaporPublishStatus(filters) {
+  filters = filters || {};
+  const settings = getSettings();
+  const publishedClassesStr = settings.published_rapor_classes || '';
+  const publishedStudentsStr = settings.published_rapor_students || '';
+  
+  const classKey = `${filters.kelas || ''}_${filters.tahun_ajaran || ''}_${filters.semester || ''}`;
+  const studentKey = `${filters.nis || ''}_${filters.tahun_ajaran || ''}_${filters.semester || ''}`;
+  
+  const isClassPublished = publishedClassesStr.split(',').map(s => s.trim()).includes(classKey);
+  const isStudentPublished = publishedStudentsStr.split(',').map(s => s.trim()).includes(studentKey);
+  
+  return {
+    success: true,
+    isPublished: isClassPublished || isStudentPublished,
+    publishedClasses: publishedClassesStr,
+    publishedStudents: publishedStudentsStr
+  };
+}
+
+function setRaporPublishStatus(payload) {
+  payload = payload || {};
+  const settings = getSettings();
+  let publishedClasses = (settings.published_rapor_classes || '').split(',').map(s => s.trim()).filter(Boolean);
+  let publishedStudents = (settings.published_rapor_students || '').split(',').map(s => s.trim()).filter(Boolean);
+  
+  const classKey = `${payload.kelas || ''}_${payload.tahun_ajaran || ''}_${payload.semester || ''}`;
+  const studentKey = `${payload.nis || ''}_${payload.tahun_ajaran || ''}_${payload.semester || ''}`;
+  
+  if (payload.target === 'class' || (!payload.target && payload.kelas)) {
+    if (payload.is_published) {
+      if (!publishedClasses.includes(classKey)) publishedClasses.push(classKey);
+    } else {
+      publishedClasses = publishedClasses.filter(k => k !== classKey);
+    }
+  }
+  
+  if (payload.target === 'student' || (!payload.target && payload.nis)) {
+    if (payload.is_published) {
+      if (!publishedStudents.includes(studentKey)) publishedStudents.push(studentKey);
+    } else {
+      publishedStudents = publishedStudents.filter(k => k !== studentKey);
+    }
+  }
+  
+  updateSettings({
+    published_rapor_classes: publishedClasses.join(','),
+    published_rapor_students: publishedStudents.join(',')
+  });
+  
+  return {
+    success: true,
+    message: payload.is_published 
+      ? 'Rapor kelas ' + (payload.kelas || '') + ' berhasil dipublikasikan ke Wali Murid!' 
+      : 'Publikasi rapor kelas ' + (payload.kelas || '') + ' ditarik kembali ke mode Draft.',
+    isPublished: payload.is_published,
+    publishedClasses: publishedClasses.join(','),
+    publishedStudents: publishedStudents.join(',')
+  };
+}
+
+/**
  * ============================================================================
  * MODEL: USERS MANAGEMENT
  * ============================================================================

@@ -81,12 +81,22 @@ function getMuridReportData(nis) {
     catatan_walas: 'Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan'
   };
 
+  // 5. Cek Status Publikasi Rapor (Draft vs Published)
+  const classKey = `${murid.kelas || ''}_${currentYear}_${currentSemester}`;
+  const studentKey = `${murid.nis || ''}_${currentYear}_${currentSemester}`;
+  const publishedClasses = (settings.published_rapor_classes || '').split(',').map(s => s.trim()).filter(Boolean);
+  const publishedStudents = (settings.published_rapor_students || '').split(',').map(s => s.trim()).filter(Boolean);
+  const isPublished = publishedClasses.includes(classKey) || publishedStudents.includes(studentKey);
+
   return {
     success: true,
     data: {
       settings: settings,
+      is_published: isPublished,
+      publish_key: classKey,
       murid: {
         ...murid,
+        is_published: isPublished,
         kehadiran_s: murid.kehadiran_s || '-',
         kehadiran_i: murid.kehadiran_i || '-',
         kehadiran_a: murid.kehadiran_a || '-',
