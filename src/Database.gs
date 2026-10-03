@@ -208,7 +208,7 @@ function initDatabase() {
   
   // 3. Skema Murid (DATA SISWA SESUAI EXCEL AL-IMAM)
   const sheetMurid = getOrCreateSheet(DB_CONFIG.SHEET_MURID, [
-    'nis', 'nisn', 'nama_murid', 'kelas', 'jenis_kelamin', 'nama_wali', 'kontak_wali', 'status', 'kehadiran_s', 'kehadiran_i', 'kehadiran_a', 'ekskul_1', 'ekskul_2', 'ekskul_3', 'wali_kelas'
+    'nis', 'nisn', 'nama_murid', 'kelas', 'jenis_kelamin', 'nama_wali', 'kontak_wali', 'status', 'kehadiran_s', 'kehadiran_i', 'kehadiran_a', 'ekskul_1', 'ekskul_1_nilai', 'ekskul_2', 'ekskul_2_nilai', 'ekskul_3', 'ekskul_3_nilai', 'wali_kelas'
   ]);
   if (sheetMurid.getLastRow() <= 1) {
     const defaultMurid = [
@@ -585,11 +585,11 @@ function forceSyncDatabaseToSpreadsheet() {
   }
   if (!sheetMurid) {
     sheetMurid = getOrCreateSheet(DB_CONFIG.SHEET_MURID, [
-      'nis', 'nisn', 'nama_murid', 'kelas', 'jenis_kelamin', 'nama_wali', 'kontak_wali', 'status', 'kehadiran_s', 'kehadiran_i', 'kehadiran_a', 'ekskul_1', 'ekskul_2', 'ekskul_3', 'wali_kelas'
+      'nis', 'nisn', 'nama_murid', 'kelas', 'jenis_kelamin', 'nama_wali', 'kontak_wali', 'status', 'kehadiran_s', 'kehadiran_i', 'kehadiran_a', 'ekskul_1', 'ekskul_1_nilai', 'ekskul_2', 'ekskul_2_nilai', 'ekskul_3', 'ekskul_3_nilai', 'wali_kelas'
     ]);
   }
   
-  const muridHeaders = ['nis', 'nisn', 'nama_murid', 'kelas', 'jenis_kelamin', 'nama_wali', 'kontak_wali', 'status', 'kehadiran_s', 'kehadiran_i', 'kehadiran_a', 'ekskul_1', 'ekskul_2', 'ekskul_3', 'wali_kelas'];
+  const muridHeaders = ['nis', 'nisn', 'nama_murid', 'kelas', 'jenis_kelamin', 'nama_wali', 'kontak_wali', 'status', 'kehadiran_s', 'kehadiran_i', 'kehadiran_a', 'ekskul_1', 'ekskul_1_nilai', 'ekskul_2', 'ekskul_2_nilai', 'ekskul_3', 'ekskul_3_nilai', 'wali_kelas'];
   sheetMurid.getRange(1, 1, 1, muridHeaders.length).setValues([muridHeaders]);
   sheetMurid.getRange(1, 1, 1, muridHeaders.length)
             .setBackground('#1e293b')
@@ -763,34 +763,50 @@ function getMuridByNis(nis) {
 
 function saveMurid(murid) {
   const sheet = getOrCreateSheet(DB_CONFIG.SHEET_MURID);
+  const data = sheet.getDataRange().getValues();
+  let headers = data.length > 0 ? data[0].map(h => String(h).trim()) : [];
+  
+  const requiredHeaders = [
+    'nis', 'nisn', 'nama_murid', 'kelas', 'jenis_kelamin', 'nama_wali', 'kontak_wali', 'status',
+    'kehadiran_s', 'kehadiran_i', 'kehadiran_a',
+    'ekskul_1', 'ekskul_1_nilai', 'ekskul_2', 'ekskul_2_nilai', 'ekskul_3', 'ekskul_3_nilai', 'wali_kelas'
+  ];
+  
+  let headerChanged = false;
+  requiredHeaders.forEach(reqH => {
+    if (headers.indexOf(reqH) === -1) {
+      headers.push(reqH);
+      headerChanged = true;
+    }
+  });
+
+  if (headerChanged || headers.length === 0) {
+    if (headers.length === 0) headers = requiredHeaders;
+    sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
+  }
+
   const existing = findRowByField(sheet, 'nis', murid.nis);
   
   if (existing) {
     const rowIdx = existing.rowIndex;
-    const headers = existing.headers;
     headers.forEach((h, colIdx) => {
       if (murid[h] !== undefined) {
         sheet.getRange(rowIdx, colIdx + 1).setValue(murid[h]);
       }
     });
   } else {
-    sheet.appendRow([
-      murid.nis,
-      murid.nisn || '',
-      murid.nama_murid || murid.nama_santri || '',
-      murid.kelas || '7A',
-      murid.jenis_kelamin || 'L',
-      murid.nama_wali || '',
-      murid.kontak_wali || '',
-      murid.status || 'Aktif',
-      murid.kehadiran_s || '-',
-      murid.kehadiran_i || '-',
-      murid.kehadiran_a || '-',
-      murid.ekskul_1 || 'Pramuka',
-      murid.ekskul_2 || 'Wushu',
-      murid.ekskul_3 || 'Futsal',
-      murid.wali_kelas || 'Dewi Fitria Nugraheni, S.Pd., Gr.'
-    ]);
+    const newRow = headers.map(h => {
+      if (murid[h] !== undefined) return murid[h];
+      if (h === 'ekskul_1') return murid.ekskul_1 || 'Pramuka';
+      if (h === 'ekskul_1_nilai') return murid.ekskul_1_nilai || 'Baik';
+      if (h === 'ekskul_2') return murid.ekskul_2 || 'Wushu';
+      if (h === 'ekskul_2_nilai') return murid.ekskul_2_nilai || 'Baik';
+      if (h === 'ekskul_3') return murid.ekskul_3 || 'Basket';
+      if (h === 'ekskul_3_nilai') return murid.ekskul_3_nilai || 'Baik';
+      if (h === 'status') return 'Aktif';
+      return '-';
+    });
+    sheet.appendRow(newRow);
   }
   return { status: 'success', message: 'Data murid berhasil disimpan' };
 }
