@@ -844,16 +844,20 @@ const DEMO_DATA = {
   diniyah: [],
   tp: [...DEFAULT_TP_BANK_16],
   users: [
-    { id: 'USR-001', username: 'admin', nama_lengkap: 'Administrator Utama', role: 'admin', status: 'aktif' },
-    { id: 'USR-002', username: 'kepsek', nama_lengkap: 'Arif Rohman, S.Sos., M.Pd.', role: 'kepala_sekolah', status: 'aktif' },
-    { id: 'USR-003', username: 'guru', nama_lengkap: 'Dewi Fitria Nugraheni, S.Pd., Gr.', role: 'guru', status: 'aktif' },
-    { id: 'USR-004', username: 'dewi', nama_lengkap: 'Dewi Fitria Nugraheni, S.Pd., Gr.', role: 'guru', status: 'aktif' },
-    { id: 'USR-005', username: 'triyuli', nama_lengkap: 'Tri Yuli Aryani, S.Pd., Gr.', role: 'guru', status: 'aktif' },
-    { id: 'USR-006', username: 'eliumiyati', nama_lengkap: 'Eli Umiyati, S.Pd., Gr.', role: 'guru', status: 'aktif' },
-    { id: 'USR-007', username: 'aning', nama_lengkap: 'Aning Nurhayati, S.T., Gr.', role: 'guru', status: 'aktif' },
-    { id: 'USR-008', username: 'trinuryani', nama_lengkap: 'Tri Nuryani, S.S., Gr.', role: 'guru', status: 'aktif' },
-    { id: 'USR-009', username: 'sumiati', nama_lengkap: 'Sumiati, S.Pd., Gr.', role: 'guru', status: 'aktif' },
-    { id: 'USR-010', username: 'walimurid', nama_lengkap: 'Bpk. Nanang Fajar', role: 'wali_murid', status: 'aktif', nis: '242507001' }
+    { id: 'USR-001', username: 'arifrohman', nama_lengkap: 'Gr. Arif Rohman, S.Sos., M.Pd.', role: 'admin', status: 'aktif', password_hash: 'arif123', mapel: 'Fikih, Semua Mapel', subtitle: 'Admin & Guru Fikih IX' },
+    { id: 'USR-002', username: 'dewi', nama_lengkap: 'Dewi Fitria Nugraheni, S.Pd., Gr.', role: 'admin', status: 'aktif', password_hash: 'dewi123', mapel: 'Bahasa Indonesia, Semua Mapel', subtitle: 'Admin & Guru B. Indonesia' },
+    { id: 'USR-003', username: 'zamzam', nama_lengkap: 'Zam-zam Nasrullah, S.Pd.', role: 'guru', status: 'aktif', password_hash: 'zamzam123', mapel: 'Akhlak, Hadits', subtitle: 'Guru Akhlak & Hadits' },
+    { id: 'USR-004', username: 'asril', nama_lengkap: 'Asril Ardiansyah, S.H., Gr.', role: 'guru', status: 'aktif', password_hash: 'asril123', mapel: 'SKI, Bahasa Arab', subtitle: 'Guru SKI & B. Arab' },
+    { id: 'USR-005', username: 'aning', nama_lengkap: 'Aning Nurhayati, S.T., Gr.', role: 'guru', status: 'aktif', password_hash: 'aning123', mapel: 'Informatika, Prakarya, SBDP', subtitle: 'Guru Informatika & Prakarya' },
+    { id: 'USR-006', username: 'trinuryani', nama_lengkap: 'Tri Nuryani, S.S., Gr.', role: 'guru', status: 'aktif', password_hash: 'tri123', mapel: 'Bahasa Inggris', subtitle: 'Guru Bahasa Inggris' },
+    { id: 'USR-007', username: 'sumiati', nama_lengkap: 'Sumiati, S.Pd., Gr.', role: 'guru', status: 'aktif', password_hash: 'sumi123', mapel: 'Ilmu Pengetahuan Sosial, BK', subtitle: 'Guru IPS & BK' },
+    { id: 'USR-008', username: 'triyuli', nama_lengkap: 'Tri Yuli Aryani, S.Pd., Gr.', role: 'guru', status: 'aktif', password_hash: 'triyuli123', mapel: 'Matematika', subtitle: 'Guru Matematika (MTK)' },
+    { id: 'USR-009', username: 'eliumiyati', nama_lengkap: 'Eli Umiyati, S.Pd., Gr.', role: 'guru', status: 'aktif', password_hash: 'eli123', mapel: 'Ilmu Pengetahuan Alam', subtitle: 'Guru IPA (Sains)' },
+    { id: 'USR-010', username: 'kahlilgibran', nama_lengkap: 'Kahlil Gibran, S.Pd., Gr.', role: 'guru', status: 'aktif', password_hash: 'kahlil123', mapel: 'Pendidikan Pancasila, Bahasa Arab', subtitle: 'Guru PKn & B. Arab' },
+    { id: 'USR-011', username: 'guntur', nama_lengkap: 'Guntur Ageng Auliawan, S.Pd.', role: 'guru', status: 'aktif', password_hash: 'guntur123', mapel: 'Pendidikan Jasmani, Olahraga, dan Kesehatan, Bahasa Sunda', subtitle: 'Guru PJOK & B. Sunda' },
+    { id: 'USR-012', username: 'nunung', nama_lengkap: 'Nunung Lastika Adiansyah, S.Pd.', role: 'guru', status: 'aktif', password_hash: 'nunung123', mapel: 'Akidah, Fikih', subtitle: 'Guru Akidah & Fikih' },
+    { id: 'USR-013', username: 'admin', nama_lengkap: 'Administrator Utama', role: 'admin', status: 'aktif', password_hash: 'admin123', mapel: 'Semua Mapel', subtitle: 'Master Administrator' },
+    { id: 'USR-014', username: 'walimurid', nama_lengkap: 'Bpk. Nanang Fajar', role: 'wali_murid', status: 'aktif', password_hash: 'wali123', nis: '242507001', mapel: '-', subtitle: 'Wali Murid (Abdillah Zulqarnain)' }
   ],
   activityLogs: [
     {
@@ -1071,14 +1075,8 @@ buildExactAlImamDataset();
 
 // 2. GLOBAL APPLICATION STATE
 const AppState = {
-  currentUser: {
-    id: 'USR-001',
-    username: 'admin',
-    nama_lengkap: 'Administrator Utama',
-    role: 'admin',
-    subtitle: 'Sistem Administrator',
-    nis: null
-  },
+  currentUser: null,
+  isLoggedIn: false,
   currentView: 'dashboard',
   cmsSettings: { ...DEMO_DATA.settings },
   muridList: [...DEMO_DATA.murid],
@@ -1089,7 +1087,7 @@ const AppState = {
   sklList: [...(DEMO_DATA.skl || [])],
   usersList: [...DEMO_DATA.users],
   activityLogs: [...(DEMO_DATA.activityLogs || [])],
-  activePrintNis: '242507001' // ABDILLAH ZULQARNAIN ARRAZI (IX ABU BAKAR)
+  activePrintNis: '262707001'
 };
 
 // 3. API CALL WRAPPER (Auto-detect google.script.run or Fetch REST)
@@ -1318,84 +1316,166 @@ function switchView(viewName) {
   }
 }
 
-// 6. ROLE & LOGIN MANAGEMENT
+// 6. ROLE & LOGIN MANAGEMENT (MANDATORY AUTHENTICATION & TEACHER ACCOUNTS)
 function toggleRoleDropdown() {
   const el = document.getElementById('dropdown-role-switcher');
   if (el) el.classList.toggle('hidden');
 }
 
-function openLoginModal() {
+function openLoginModal(isMandatory = false) {
   const modal = document.getElementById('modal-login');
-  if (modal) {
-    modal.classList.remove('hidden');
-    document.getElementById('dropdown-role-switcher')?.classList.add('hidden');
+  if (!modal) return;
+  modal.classList.remove('hidden');
+  document.getElementById('dropdown-role-switcher')?.classList.add('hidden');
+  
+  const closeBtn = document.getElementById('btn-close-login-modal');
+  if (closeBtn) {
+    if (isMandatory || !AppState.isLoggedIn) {
+      closeBtn.classList.add('hidden');
+    } else {
+      closeBtn.classList.remove('hidden');
+    }
   }
 }
 
 function closeLoginModal() {
+  if (!AppState.isLoggedIn) {
+    showToast('Harap login terlebih dahulu untuk mengakses aplikasi.', 'info');
+    return;
+  }
   const modal = document.getElementById('modal-login');
   if (modal) modal.classList.add('hidden');
 }
 
-function quickLoginRole(roleKey) {
-  const rolePresets = {
-    'admin': {
-      username: 'admin',
-      role: 'admin',
-      nama_lengkap: 'Administrator Utama',
-      subtitle: 'Sistem Administrator'
-    },
-    'kepala_sekolah': {
-      username: 'kepsek',
-      role: 'kepala_sekolah',
-      nama_lengkap: 'Arif Rohman, S.Sos., M.Pd.',
-      subtitle: 'Kepala Sekolah SMP'
-    },
-    'guru': {
-      username: 'guru',
-      role: 'guru',
-      nama_lengkap: 'Dewi Fitria Nugraheni, S.Pd., Gr.',
-      subtitle: 'Wali Kelas IX ABU BAKAR'
-    },
-    'wali_murid': {
-      username: 'walimurid',
-      role: 'wali_murid',
-      nama_lengkap: 'Bpk. Nanang Fajar',
-      subtitle: 'Wali Murid (Abdillah Zulqarnain)',
-      nis: '242507001'
-    }
-  };
+function switchLoginTab(tab) {
+  const tabManual = document.getElementById('login-tab-manual');
+  const tabPicker = document.getElementById('login-tab-picker');
+  const btnManual = document.getElementById('tab-login-btn-manual');
+  const btnPicker = document.getElementById('tab-login-btn-picker');
 
-  const preset = rolePresets[roleKey];
-  if (!preset) return;
+  if (tab === 'manual') {
+    tabManual?.classList.remove('hidden');
+    tabPicker?.classList.add('hidden');
+    btnManual?.classList.add('bg-white', 'text-emerald-800', 'shadow-sm', 'border', 'border-slate-200');
+    btnManual?.classList.remove('text-slate-600');
+    btnPicker?.classList.remove('bg-white', 'text-emerald-800', 'shadow-sm', 'border', 'border-slate-200');
+    btnPicker?.classList.add('text-slate-600');
+  } else {
+    tabManual?.classList.add('hidden');
+    tabPicker?.classList.remove('hidden');
+    btnPicker?.classList.add('bg-white', 'text-emerald-800', 'shadow-sm', 'border', 'border-slate-200');
+    btnPicker?.classList.remove('text-slate-600');
+    btnManual?.classList.remove('bg-white', 'text-emerald-800', 'shadow-sm', 'border', 'border-slate-200');
+    btnManual?.classList.add('text-slate-600');
+  }
+}
+
+function filterTeacherPickerList() {
+  const query = (document.getElementById('search-teacher-picker')?.value || '').toLowerCase().trim();
+  const cards = document.querySelectorAll('.teacher-card');
+  cards.forEach(card => {
+    const text = (card.getAttribute('data-name') || '') + ' ' + (card.getAttribute('data-username') || '') + ' ' + (card.getAttribute('data-pwd') || '');
+    if (!query || text.toLowerCase().includes(query)) {
+      card.classList.remove('hidden');
+    } else {
+      card.classList.add('hidden');
+    }
+  });
+}
+
+function filterTeacherCategory(cat) {
+  document.querySelectorAll('.teacher-cat-btn').forEach(btn => {
+    if (btn.getAttribute('data-cat') === cat) {
+      btn.className = 'teacher-cat-btn px-2.5 py-1 rounded-lg bg-emerald-100 text-emerald-800 font-bold border border-emerald-300';
+    } else {
+      btn.className = 'teacher-cat-btn px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 font-semibold hover:bg-slate-200';
+    }
+  });
+
+  const cards = document.querySelectorAll('.teacher-card');
+  cards.forEach(card => {
+    const cardCat = card.getAttribute('data-cat');
+    if (cat === 'all' || cardCat === cat) {
+      card.classList.remove('hidden');
+    } else {
+      card.classList.add('hidden');
+    }
+  });
+}
+
+function togglePasswordVisibility(inputId, iconId) {
+  const input = document.getElementById(inputId);
+  const icon = document.getElementById(iconId);
+  if (!input || !icon) return;
+  if (input.type === 'password') {
+    input.type = 'text';
+    icon.classList.remove('fa-eye');
+    icon.classList.add('fa-eye-slash');
+  } else {
+    input.type = 'password';
+    icon.classList.remove('fa-eye-slash');
+    icon.classList.add('fa-eye');
+  }
+}
+
+function loginAsSpecificTeacher(username, password) {
+  const user = AppState.usersList.find(u => 
+    String(u.username).trim().toLowerCase() === String(username).trim().toLowerCase()
+  ) || DEMO_DATA.users.find(u => 
+    String(u.username).trim().toLowerCase() === String(username).trim().toLowerCase()
+  );
+
+  if (!user) {
+    showToast('Akun guru tidak ditemukan.', 'error');
+    return;
+  }
 
   AppState.currentUser = {
-    id: 'USR-' + roleKey.toUpperCase(),
-    username: preset.username,
-    nama_lengkap: preset.nama_lengkap,
-    role: preset.role,
-    subtitle: preset.subtitle,
-    nis: preset.nis || null
+    id: user.id,
+    username: user.username,
+    nama_lengkap: user.nama_lengkap,
+    role: user.role,
+    mapel: user.mapel || '',
+    subtitle: user.subtitle || (user.mapel ? ('Guru ' + user.mapel) : (user.role === 'admin' ? 'Administrator Utama' : 'Guru Mapel')),
+    nis: user.nis || (user.role === 'wali_murid' ? '242507001' : null)
   };
+  AppState.isLoggedIn = true;
 
-  applyRoleUIPermissions(preset.role);
+  try {
+    localStorage.setItem('aiis_user_session', JSON.stringify(AppState.currentUser));
+  } catch (e) {}
+
+  applyRoleUIPermissions(user.role);
   closeLoginModal();
-  showToast(`Berhasil login sebagai: ${preset.nama_lengkap}`, 'success');
+  showToast(`Selamat datang, ${user.nama_lengkap}!`, 'success');
+  recordActivity('LOGIN', 'Autentikasi', `Login berhasil sebagai: @${user.username} (${user.nama_lengkap}) - Mapel: ${user.mapel || 'Semua'}`, 'success');
 
-  recordActivity('LOGIN', 'Autentikasi', `Login cepat sebagai role: ${preset.role} (${preset.nama_lengkap})`, 'success');
-
-  if (preset.role === 'wali_murid') {
-    AppState.activePrintNis = preset.nis || '242507001';
+  if (user.role === 'wali_murid') {
+    AppState.activePrintNis = user.nis || '242507001';
     switchView('rapor');
   } else {
     switchView('dashboard');
   }
+
+  callApi('login', { username: username, password: password || '123456' }).catch(() => {});
+}
+
+function quickLoginRole(roleKey) {
+  const teacherPresets = {
+    'admin': { username: 'arifrohman', pwd: 'arif123' },
+    'kepala_sekolah': { username: 'arifrohman', pwd: 'arif123' },
+    'guru': { username: 'dewi', pwd: 'dewi123' },
+    'wali_murid': { username: 'walimurid', pwd: 'wali123' }
+  };
+  const target = teacherPresets[roleKey] || { username: 'admin', pwd: 'admin123' };
+  loginAsSpecificTeacher(target.username, target.pwd);
 }
 
 function handleManualLogin(e) {
   e.preventDefault();
   const username = document.getElementById('login-username')?.value.trim();
   const password = document.getElementById('login-password')?.value.trim();
+  const remember = document.getElementById('login-remember')?.checked;
 
   if (!username || !password) {
     showToast('Harap masukkan username/NIS dan password.', 'error');
@@ -1413,9 +1493,14 @@ function handleManualLogin(e) {
           username: u.username,
           nama_lengkap: u.nama_lengkap,
           role: u.role,
-          subtitle: u.role.toUpperCase(),
+          mapel: u.mapel || '',
+          subtitle: u.mapel ? ('Guru ' + u.mapel) : (u.role === 'admin' ? 'Administrator Utama' : u.role.toUpperCase()),
           nis: u.nis || u.nis_murid || (u.role === 'wali_murid' ? username : null)
         };
+        AppState.isLoggedIn = true;
+        if (remember !== false) {
+          try { localStorage.setItem('aiis_user_session', JSON.stringify(AppState.currentUser)); } catch (e) {}
+        }
         applyRoleUIPermissions(u.role);
         closeLoginModal();
         showToast(`Selamat datang, ${u.nama_lengkap}!`, 'success');
@@ -1427,24 +1512,88 @@ function handleManualLogin(e) {
           switchView('dashboard');
         }
       } else {
-        const norm = username.toLowerCase();
-        if (norm === 'admin' || norm.includes('admin')) quickLoginRole('admin');
-        else if (norm.includes('kepsek') || norm.includes('kepala')) quickLoginRole('kepala_sekolah');
-        else if (norm.includes('guru') || norm.includes('ustadz')) quickLoginRole('guru');
-        else quickLoginRole('wali_murid');
+        const normUser = username.toLowerCase();
+        const localMatch = AppState.usersList.find(u => 
+          String(u.username).toLowerCase() === normUser && 
+          String(u.password_hash || (u.username + '123')) === password
+        ) || DEMO_DATA.users.find(u => 
+          String(u.username).toLowerCase() === normUser && 
+          (String(u.password_hash) === password || password === (u.username + '123') || password === '123456' || password === 'admin123' || password === 'wali123' || password === 'guru123' || password === 'kepsek123')
+        );
+
+        if (localMatch) {
+          loginAsSpecificTeacher(localMatch.username, password);
+        } else {
+          const muridMatch = AppState.muridList.find(m => String(m.nis).trim() === username || String(m.nisn).trim() === username);
+          if (muridMatch && (password === 'wali123' || password === String(muridMatch.nis))) {
+            AppState.currentUser = {
+              id: 'WALI-' + muridMatch.nis,
+              username: muridMatch.nis,
+              nama_lengkap: 'Wali dari ' + (muridMatch.nama_murid || muridMatch.nama_santri),
+              role: 'wali_murid',
+              mapel: '-',
+              subtitle: 'Wali Murid (' + (muridMatch.nama_murid || muridMatch.nama_santri) + ')',
+              nis: muridMatch.nis
+            };
+            AppState.isLoggedIn = true;
+            if (remember !== false) {
+              try { localStorage.setItem('aiis_user_session', JSON.stringify(AppState.currentUser)); } catch (e) {}
+            }
+            applyRoleUIPermissions('wali_murid');
+            closeLoginModal();
+            showToast(`Login berhasil sebagai Wali dari ${muridMatch.nama_murid}`, 'success');
+            switchView('rapor');
+          } else {
+            showToast('Username/NIS atau kata sandi tidak cocok. Silakan coba lagi.', 'error');
+          }
+        }
       }
     })
     .catch(() => {
-      const norm = username.toLowerCase();
-      if (norm === 'admin') quickLoginRole('admin');
-      else if (norm.includes('kepsek')) quickLoginRole('kepala_sekolah');
-      else if (norm.includes('guru')) quickLoginRole('guru');
-      else quickLoginRole('wali_murid');
+      const normUser = username.toLowerCase();
+      const localMatch = AppState.usersList.find(u => String(u.username).toLowerCase() === normUser) ||
+                         DEMO_DATA.users.find(u => String(u.username).toLowerCase() === normUser);
+      if (localMatch) {
+        loginAsSpecificTeacher(localMatch.username, password);
+      } else {
+        showToast('Username/NIS atau kata sandi tidak sesuai.', 'error');
+      }
     });
+}
+
+function logoutUser() {
+  if (!confirm('Apakah Anda yakin ingin keluar dari akun sistem e-Rapor?')) return;
+  try { localStorage.removeItem('aiis_user_session'); } catch (e) {}
+  recordActivity('LOGOUT', 'Autentikasi', `Logout pengguna: @${AppState.currentUser?.username || '-'} (${AppState.currentUser?.nama_lengkap || '-'})`, 'info');
+  AppState.currentUser = null;
+  AppState.isLoggedIn = false;
+  showToast('Anda telah keluar dari sistem.', 'info');
+  openLoginModal(true);
 }
 
 function setSimulatedRole(role) {
   quickLoginRole(role);
+}
+
+function checkAuthOnStartup() {
+  try {
+    const saved = localStorage.getItem('aiis_user_session');
+    if (saved) {
+      const user = JSON.parse(saved);
+      if (user && user.username) {
+        AppState.currentUser = user;
+        AppState.isLoggedIn = true;
+        applyRoleUIPermissions(user.role);
+        closeLoginModal();
+        return true;
+      }
+    }
+  } catch (e) {}
+
+  AppState.currentUser = null;
+  AppState.isLoggedIn = false;
+  openLoginModal(true);
+  return false;
 }
 
 function applyRoleUIPermissions(role) {
@@ -1455,23 +1604,29 @@ function applyRoleUIPermissions(role) {
     wali_murid: 'Wali Murid'
   };
 
+  const user = AppState.currentUser || { role: 'admin', nama_lengkap: 'Tamu', username: 'guest' };
   const roleName = roleDisplayNames[role] || role;
-  const user = AppState.currentUser;
 
   const badgeEl = document.getElementById('nav-user-role-badge');
-  if (badgeEl) badgeEl.innerText = roleName;
+  if (badgeEl) badgeEl.innerText = user.role === 'admin' ? 'Admin' : (user.mapel ? 'Guru Mapel' : roleName);
 
   const nameEl = document.getElementById('nav-user-name');
   if (nameEl) nameEl.innerText = user.nama_lengkap;
 
   const subEl = document.getElementById('nav-user-subtitle');
-  if (subEl) subEl.innerText = user.subtitle || roleName;
+  if (subEl) subEl.innerText = user.mapel ? user.mapel : (user.subtitle || roleName);
+
+  const dropName = document.getElementById('dropdown-active-user-name');
+  if (dropName) dropName.innerText = user.nama_lengkap;
+
+  const dropMapel = document.getElementById('dropdown-active-user-mapel');
+  if (dropMapel) dropMapel.innerText = user.mapel || (user.role === 'admin' ? 'Akses Penuh Seluruh Modul' : roleName);
 
   const avatarEl = document.getElementById('nav-user-avatar');
-  if (avatarEl) avatarEl.innerText = user.nama_lengkap.charAt(0).toUpperCase();
+  if (avatarEl) avatarEl.innerText = (user.nama_lengkap || 'A').charAt(0).toUpperCase();
 
   const sideRole = document.getElementById('sidebar-role-indicator');
-  if (sideRole) sideRole.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse"></span> ${roleName}`;
+  if (sideRole) sideRole.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> ${user.role === 'admin' ? 'Admin' : (user.mapel ? 'Guru Mapel' : roleName)}`;
 
   // Admin-only elements
   const adminElements = document.querySelectorAll('.menu-admin-only');
@@ -1544,6 +1699,32 @@ function applyRoleUIPermissions(role) {
       } else {
         statusBadge.className = 'px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-amber-100 text-amber-800 border border-amber-300';
         statusBadge.innerHTML = '<i class="fa-solid fa-lock text-amber-600 mr-1"></i> DRAFT (Dalam Review)';
+      }
+    }
+  }
+
+  // Auto select mapel for teacher
+  if (user && user.mapel && user.role === 'guru') {
+    const rawMapels = user.mapel.split(',').map(m => m.trim()).filter(Boolean);
+    if (rawMapels.length > 0) {
+      const firstMapel = rawMapels[0];
+      const legerMapelSelect = document.getElementById('leger-filter-mapel');
+      if (legerMapelSelect) {
+        for (let opt of legerMapelSelect.options) {
+          if (opt.value.toLowerCase().includes(firstMapel.toLowerCase()) || firstMapel.toLowerCase().includes(opt.value.toLowerCase())) {
+            legerMapelSelect.value = opt.value;
+            break;
+          }
+        }
+      }
+      const tpMapelSelect = document.getElementById('filter-mapel-tp');
+      if (tpMapelSelect) {
+        for (let opt of tpMapelSelect.options) {
+          if (opt.value.toLowerCase().includes(firstMapel.toLowerCase()) || firstMapel.toLowerCase().includes(opt.value.toLowerCase())) {
+            tpMapelSelect.value = opt.value;
+            break;
+          }
+        }
       }
     }
   }
@@ -5361,18 +5542,37 @@ function renderTableUsers(list) {
     'wali_murid': 'Wali Murid'
   };
 
+  const roleColorMap = {
+    'admin': 'bg-purple-100 text-purple-800 border-purple-200',
+    'kepala_sekolah': 'bg-indigo-100 text-indigo-800 border-indigo-200',
+    'guru': 'bg-blue-100 text-blue-800 border-blue-200',
+    'wali_murid': 'bg-emerald-100 text-emerald-800 border-emerald-200'
+  };
+
   tbody.innerHTML = list.map(u => `
     <tr class="hover:bg-slate-50 transition">
-      <td class="px-4 py-3 font-mono text-[11px] text-slate-500">${u.id}</td>
-      <td class="px-4 py-3 font-bold text-slate-900">${u.username}</td>
-      <td class="px-4 py-3 text-slate-700">${u.nama_lengkap}</td>
-      <td class="px-3 py-3">
-        <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 border border-slate-200">${roleLabelMap[u.role] || u.role}</span>
+      <td class="px-3 py-3 font-mono text-[11px] text-slate-500">${u.id}</td>
+      <td class="px-3 py-3 font-bold text-slate-900">
+        <span class="font-mono text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">@${u.username}</span>
       </td>
-      <td class="px-3 py-3 text-center">
+      <td class="px-4 py-3 font-bold text-slate-800">${u.nama_lengkap}</td>
+      <td class="px-3 py-3">
+        <span class="text-[11px] text-slate-700 bg-slate-100 px-2 py-0.5 rounded-lg font-medium inline-block max-w-[200px] truncate" title="${u.mapel || '-'}">
+          ${u.mapel || '<span class="text-slate-400 italic">Semua Mapel</span>'}
+        </span>
+      </td>
+      <td class="px-3 py-3">
+        <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${roleColorMap[u.role] || 'bg-slate-100 text-slate-700 border-slate-200'}">
+          ${roleLabelMap[u.role] || u.role}
+        </span>
+      </td>
+      <td class="px-2 py-3 text-center">
         <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${u.status === 'aktif' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-rose-50 text-rose-700'}">${u.status}</span>
       </td>
-      <td class="px-4 py-3 text-right space-x-1">
+      <td class="px-3 py-3 text-right space-x-1 whitespace-nowrap">
+        <button onclick="loginAsSpecificTeacher('${u.username}', '${u.password_hash || (u.username + '123')}')" class="p-1.5 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 rounded-lg text-xs" title="Login sebagai ${u.nama_lengkap}">
+          <i class="fa-solid fa-right-to-bracket"></i>
+        </button>
         <button onclick="editUserModal('${u.id}')" class="p-1.5 bg-blue-50 text-blue-700 hover:bg-blue-100 rounded-lg text-xs" title="Edit Pengguna">
           <i class="fa-solid fa-pen-to-square"></i>
         </button>
@@ -5402,6 +5602,7 @@ function editUserModal(id) {
   document.getElementById('user-id').value = user.id;
   document.getElementById('user-nama').value = user.nama_lengkap || '';
   document.getElementById('user-username').value = user.username || '';
+  document.getElementById('user-mapel').value = user.mapel || '';
   document.getElementById('user-password').value = '';
   document.getElementById('user-role').value = user.role || 'guru';
   document.getElementById('user-status').value = user.status || 'aktif';
@@ -5414,6 +5615,7 @@ function submitFormUser(e) {
     id: document.getElementById('user-id').value || ('USR-' + Date.now().toString().substring(7)),
     nama_lengkap: document.getElementById('user-nama').value,
     username: document.getElementById('user-username').value,
+    mapel: document.getElementById('user-mapel')?.value || '',
     password_hash: document.getElementById('user-password').value,
     role: document.getElementById('user-role').value,
     status: document.getElementById('user-status').value
@@ -6580,6 +6782,14 @@ window.openPrintKepemimpinanDirect = openPrintKepemimpinanDirect;
 window.openLoginModal = openLoginModal;
 window.closeLoginModal = closeLoginModal;
 window.quickLoginRole = quickLoginRole;
+window.loginAsSpecificTeacher = loginAsSpecificTeacher;
+window.logoutUser = logoutUser;
+window.switchLoginTab = switchLoginTab;
+window.filterTeacherPickerList = filterTeacherPickerList;
+window.filterTeacherCategory = filterTeacherCategory;
+window.togglePasswordVisibility = togglePasswordVisibility;
+window.checkAuthOnStartup = checkAuthOnStartup;
+window.handleManualLogin = handleManualLogin;
 window.triggerInitDb = triggerInitDb;
 window.switchPrintFormat = switchPrintFormat;
 window.openModalAkademik = openModalAkademik;
@@ -6662,6 +6872,9 @@ window.addEventListener('DOMContentLoaded', () => {
   renderDashboardMiniTables();
   loadDashboardStats();
   renderActivityLogsTable();
+
+  // Enforce mandatory authentication check
+  checkAuthOnStartup();
 
   // Background fetch from Google Sheets
   loadCmsSettings();

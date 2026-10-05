@@ -47,86 +47,92 @@
           <span class="hidden sm:inline">Cetak Rapor</span>
         </button>
 
-        <!-- Multi-Role Switcher & Login Portal Button -->
+        <!-- Multi-Role Switcher & Teacher Account Selector -->
         <div class="relative">
-          <button id="btn-role-switcher" onclick="toggleRoleDropdown()" class="flex items-center gap-2 px-3 py-1.5 bg-slate-50 hover:bg-emerald-50/50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 transition">
+          <button id="btn-role-switcher" onclick="toggleRoleDropdown()" class="flex items-center gap-2 px-3 py-1.5 bg-slate-50 hover:bg-emerald-50/50 border border-slate-200 hover:border-emerald-300 rounded-xl text-xs font-semibold text-slate-700 transition shadow-sm">
             <i class="fa-solid fa-user-shield text-[#00a66c]"></i>
             <span id="nav-user-role-badge" class="font-bold text-slate-800">Admin</span>
             <i class="fa-solid fa-chevron-down text-[10px] text-slate-400"></i>
           </button>
           
-          <div id="dropdown-role-switcher" class="hidden absolute right-0 mt-2 w-60 bg-white rounded-2xl shadow-2xl border border-slate-100 py-2 z-50 text-xs">
-            <div class="px-3.5 py-1.5 text-slate-400 uppercase font-bold text-[10px] tracking-wider border-b border-slate-100">
-              Ganti Role Akses Pengguna:
+          <div id="dropdown-role-switcher" class="hidden absolute right-0 mt-2 w-72 bg-white rounded-2xl shadow-2xl border border-slate-100 py-2 z-50 text-xs overflow-hidden">
+            <div class="px-4 py-2 bg-slate-50 border-b border-slate-100">
+              <span class="text-slate-400 uppercase font-bold text-[10px] tracking-wider block">Akun Aktif Saat Ini:</span>
+              <div class="font-bold text-slate-800 text-xs truncate" id="dropdown-active-user-name">Administrator Utama</div>
+              <div class="text-[11px] text-emerald-700 font-semibold truncate" id="dropdown-active-user-mapel">Semua Mapel</div>
             </div>
             
-            <!-- 1. Admin -->
-            <button onclick="setSimulatedRole('admin')" class="w-full text-left px-3.5 py-2.5 hover:bg-purple-50 flex items-center justify-between text-slate-700 transition">
-              <div class="flex items-center gap-2">
-                <span class="w-2.5 h-2.5 rounded-full bg-purple-600"></span>
-                <div>
-                  <strong class="text-slate-900 block leading-tight">Admin Utama</strong>
-                  <span class="text-[10px] text-slate-400">Akses Penuh & CMS</span>
+            <div class="px-3.5 py-1.5 text-slate-400 uppercase font-bold text-[9px] tracking-wider">
+              Akses Cepat Pengguna:
+            </div>
+            
+            <!-- 1. Admin Arif Rohman -->
+            <button onclick="loginAsSpecificTeacher('arifrohman', 'arif123')" class="w-full text-left px-3.5 py-2 hover:bg-purple-50 flex items-center justify-between text-slate-700 transition">
+              <div class="flex items-center gap-2 overflow-hidden">
+                <span class="w-2.5 h-2.5 rounded-full bg-purple-600 flex-shrink-0"></span>
+                <div class="truncate">
+                  <strong class="text-slate-900 block leading-tight text-[11px] truncate">Gr. Arif Rohman, S.Sos., M.Pd.</strong>
+                  <span class="text-[10px] text-slate-400">Admin / Guru Fikih IX</span>
                 </div>
               </div>
-              <span class="text-[9px] bg-purple-100 text-purple-800 font-bold px-1.5 py-0.5 rounded">All</span>
+              <span class="text-[9px] bg-purple-100 text-purple-800 font-bold px-1.5 py-0.2 rounded flex-shrink-0">Admin</span>
             </button>
 
-            <!-- 2. Kepala Sekolah -->
-            <button onclick="setSimulatedRole('kepala_sekolah')" class="w-full text-left px-3.5 py-2.5 hover:bg-indigo-50 flex items-center justify-between text-slate-700 transition">
-              <div class="flex items-center gap-2">
-                <span class="w-2.5 h-2.5 rounded-full bg-indigo-600"></span>
-                <div>
-                  <strong class="text-slate-900 block leading-tight">Kepala Sekolah</strong>
-                  <span class="text-[10px] text-slate-400">Monitoring & Leger Rapor</span>
+            <!-- 2. Admin Dewi Fitria -->
+            <button onclick="loginAsSpecificTeacher('dewi', 'dewi123')" class="w-full text-left px-3.5 py-2 hover:bg-purple-50 flex items-center justify-between text-slate-700 transition">
+              <div class="flex items-center gap-2 overflow-hidden">
+                <span class="w-2.5 h-2.5 rounded-full bg-purple-600 flex-shrink-0"></span>
+                <div class="truncate">
+                  <strong class="text-slate-900 block leading-tight text-[11px] truncate">Dewi Fitria Nugraheni, S.Pd.</strong>
+                  <span class="text-[10px] text-slate-400">Admin / Guru B. Indonesia</span>
                 </div>
               </div>
-              <span class="text-[9px] bg-indigo-100 text-indigo-800 font-bold px-1.5 py-0.5 rounded">Kepsek</span>
+              <span class="text-[9px] bg-purple-100 text-purple-800 font-bold px-1.5 py-0.2 rounded flex-shrink-0">Admin</span>
             </button>
 
-            <!-- 3. Guru -->
-            <button onclick="setSimulatedRole('guru')" class="w-full text-left px-3.5 py-2.5 hover:bg-blue-50 flex items-center justify-between text-slate-700 transition">
-              <div class="flex items-center gap-2">
-                <span class="w-2.5 h-2.5 rounded-full bg-blue-600"></span>
-                <div>
-                  <strong class="text-slate-900 block leading-tight">Guru / Pendidik</strong>
-                  <span class="text-[10px] text-slate-400">Input Nilai 3 Dashboard</span>
+            <!-- 3. Zam-zam Nasrullah (Akhlak & Hadits) -->
+            <button onclick="loginAsSpecificTeacher('zamzam', 'zamzam123')" class="w-full text-left px-3.5 py-2 hover:bg-teal-50 flex items-center justify-between text-slate-700 transition">
+              <div class="flex items-center gap-2 overflow-hidden">
+                <span class="w-2.5 h-2.5 rounded-full bg-teal-600 flex-shrink-0"></span>
+                <div class="truncate">
+                  <strong class="text-slate-900 block leading-tight text-[11px] truncate">Zam-zam Nasrullah, S.Pd.</strong>
+                  <span class="text-[10px] text-slate-400">Guru Akhlak & Hadits</span>
                 </div>
               </div>
-              <span class="text-[9px] bg-blue-100 text-blue-800 font-bold px-1.5 py-0.5 rounded">Guru</span>
-            </button>
-
-            <!-- 4. Wali Murid -->
-            <button onclick="setSimulatedRole('wali_murid')" class="w-full text-left px-3.5 py-2.5 hover:bg-emerald-50 flex items-center justify-between text-slate-700 transition">
-              <div class="flex items-center gap-2">
-                <span class="w-2.5 h-2.5 rounded-full bg-emerald-600"></span>
-                <div>
-                  <strong class="text-slate-900 block leading-tight">Wali Murid</strong>
-                  <span class="text-[10px] text-slate-400">Lihat & Cetak E-Rapor Anak</span>
-                </div>
-              </div>
-              <span class="text-[9px] bg-emerald-100 text-emerald-800 font-bold px-1.5 py-0.5 rounded">Wali</span>
+              <span class="text-[9px] bg-teal-100 text-teal-800 font-bold px-1.5 py-0.2 rounded flex-shrink-0">Guru</span>
             </button>
 
             <div class="my-1 border-t border-slate-100"></div>
 
-            <!-- Login Modal Trigger -->
-            <button onclick="openLoginModal()" class="w-full text-left px-3.5 py-2 hover:bg-slate-100 flex items-center gap-2 text-theme-primary font-bold">
-              <i class="fa-solid fa-right-to-bracket text-xs"></i>
-              <span>Login / Masuk Akun Lain...</span>
+            <!-- Open Full Teacher Picker / Login Modal -->
+            <button onclick="openLoginModal()" class="w-full text-left px-3.5 py-2 hover:bg-emerald-50 flex items-center gap-2 text-emerald-700 font-bold text-xs transition">
+              <i class="fa-solid fa-users text-xs"></i>
+              <span>Daftar 12 Akun Guru Lengkap...</span>
+            </button>
+
+            <!-- Logout Button -->
+            <button onclick="logoutUser()" class="w-full text-left px-3.5 py-2 hover:bg-rose-50 flex items-center gap-2 text-rose-600 font-bold text-xs transition border-t border-slate-100">
+              <i class="fa-solid fa-right-from-bracket text-xs"></i>
+              <span>Keluar (Logout)</span>
             </button>
           </div>
         </div>
 
-        <!-- User Profile -->
+        <!-- User Profile & Logout Button -->
         <div class="flex items-center space-x-2 pl-2 border-l border-slate-200">
-          <div class="w-8 h-8 rounded-full bg-theme-primary text-white flex items-center justify-center font-bold text-xs shadow-inner" id="nav-user-avatar">
+          <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-emerald-600 to-teal-500 text-white flex items-center justify-center font-bold text-xs shadow-inner cursor-pointer" 
+               id="nav-user-avatar" onclick="openLoginModal()" title="Klik untuk ganti akun">
             A
           </div>
-          <div class="hidden lg:block text-left">
-            <div id="nav-user-name" class="text-xs font-bold text-slate-800 leading-tight">Admin Utama</div>
-            <div id="nav-user-subtitle" class="text-[10px] text-slate-400">Sistem Administrator</div>
+          <div class="hidden lg:block text-left cursor-pointer" onclick="openLoginModal()">
+            <div id="nav-user-name" class="text-xs font-bold text-slate-800 leading-tight max-w-[140px] truncate">Administrator Utama</div>
+            <div id="nav-user-subtitle" class="text-[10px] text-slate-400 font-medium max-w-[140px] truncate">Sistem Administrator</div>
           </div>
+          
+          <!-- Direct Logout Quick Button -->
+          <button onclick="logoutUser()" class="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition cursor-pointer" title="Keluar dari Akun">
+            <i class="fa-solid fa-power-off text-sm"></i>
+          </button>
         </div>
 
       </div>

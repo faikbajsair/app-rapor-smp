@@ -1,108 +1,486 @@
-<!-- Modal Login & Multi-Role Access Portal (Admin, Kepala Sekolah, Guru, Wali Murid) -->
-<div id="modal-login" class="fixed inset-0 bg-slate-950/70 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
-  <div class="bg-white rounded-3xl max-w-lg w-full shadow-2xl border border-slate-200 overflow-hidden transform transition-all duration-300">
+<!-- Modal Login & Multi-Role Access Portal (Admin, Guru Mapel, Wali Murid) -->
+<div id="modal-login" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+  <div class="bg-white rounded-3xl max-w-2xl w-full shadow-2xl border border-slate-200 overflow-hidden transform transition-all duration-300 my-auto">
     
     <!-- Modal Header with Gradient & School Identity -->
-    <div class="px-6 py-5 bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 text-white relative overflow-hidden">
+    <div class="px-6 py-5 bg-gradient-to-r from-emerald-900 via-teal-900 to-slate-900 text-white relative overflow-hidden">
       <div class="absolute -right-8 -bottom-8 text-white/5 transform rotate-12 pointer-events-none">
-        <i class="fa-solid fa-school-flag text-9xl"></i>
+        <i class="fa-solid fa-graduation-cap text-9xl"></i>
       </div>
       
       <div class="relative z-10 flex items-center justify-between">
         <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 shadow-inner">
-            <i class="fa-solid fa-shield-halved text-amber-300 text-lg"></i>
+          <div class="w-12 h-12 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 shadow-inner">
+            <img src="https://alimamischool.com/wp-content/uploads/2020/08/Al-Imam-Islamic-School-alimamischool.com-sekolah-sunnah-logo.png" 
+                 alt="Logo AI IS" class="h-8 w-auto object-contain drop-shadow" />
           </div>
           <div>
-            <h3 class="font-extrabold text-base tracking-tight text-white">Portal Akses Multi-Role</h3>
-            <p class="text-[11px] text-blue-200 font-medium">SMP Al-Imam Islamic School (AI IS)</p>
+            <div class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-500/30 text-emerald-200 text-[10px] font-bold border border-emerald-400/30 mb-0.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+              PORTAL AUTENTIKASI RESMI
+            </div>
+            <h3 class="font-extrabold text-base sm:text-lg tracking-tight text-white leading-tight">SMP Al-Imam Islamic School</h3>
+            <p class="text-[11px] text-emerald-200/90 font-medium">Sistem Penilaian Rapor & Capaian Pembelajaran Siswa</p>
           </div>
         </div>
         
-        <button onclick="closeLoginModal()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition">
+        <!-- Close button (Only visible when user is already logged in and switching accounts) -->
+        <button id="btn-close-login-modal" onclick="closeLoginModal()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition hidden" title="Tutup">
           <i class="fa-solid fa-xmark text-sm"></i>
         </button>
       </div>
     </div>
 
-    <!-- Quick Role Selector Chips (1-Click Login for Demo & Teachers) -->
-    <div class="p-6 bg-slate-50 border-b border-slate-100">
-      <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-2.5">Pilih Akses Cepat (1-Click Role Login):</span>
-      <div class="grid grid-cols-2 gap-2.5">
-        
-        <!-- 1. Admin -->
-        <button type="button" onclick="quickLoginRole('admin')" class="p-3 bg-white hover:bg-purple-50 hover:border-purple-300 border border-slate-200 rounded-2xl text-left transition shadow-sm group">
-          <div class="flex items-center gap-2 mb-1">
-            <span class="w-2.5 h-2.5 rounded-full bg-purple-600 group-hover:scale-110 transition-transform"></span>
-            <span class="text-xs font-extrabold text-slate-900">Admin</span>
-          </div>
-          <p class="text-[10px] text-slate-500 line-clamp-1">Akses Penuh Master & CMS</p>
-          <span class="text-[9px] font-mono text-purple-700 bg-purple-100 px-1.5 py-0.5 rounded font-bold mt-1 inline-block">admin / admin123</span>
-        </button>
-
-        <!-- 2. Kepala Sekolah -->
-        <button type="button" onclick="quickLoginRole('kepala_sekolah')" class="p-3 bg-white hover:bg-indigo-50 hover:border-indigo-300 border border-slate-200 rounded-2xl text-left transition shadow-sm group">
-          <div class="flex items-center gap-2 mb-1">
-            <span class="w-2.5 h-2.5 rounded-full bg-indigo-600 group-hover:scale-110 transition-transform"></span>
-            <span class="text-xs font-extrabold text-slate-900">Kepala Sekolah</span>
-          </div>
-          <p class="text-[10px] text-slate-500 line-clamp-1">Pemantauan & Leger Rapor</p>
-          <span class="text-[9px] font-mono text-indigo-700 bg-indigo-100 px-1.5 py-0.5 rounded font-bold mt-1 inline-block">kepsek / kepsek123</span>
-        </button>
-
-        <!-- 3. Guru -->
-        <button type="button" onclick="quickLoginRole('guru')" class="p-3 bg-white hover:bg-blue-50 hover:border-blue-300 border border-slate-200 rounded-2xl text-left transition shadow-sm group">
-          <div class="flex items-center gap-2 mb-1">
-            <span class="w-2.5 h-2.5 rounded-full bg-blue-600 group-hover:scale-110 transition-transform"></span>
-            <span class="text-xs font-extrabold text-slate-900">Guru</span>
-          </div>
-          <p class="text-[10px] text-slate-500 line-clamp-1">Input Nilai 3 Dashboard</p>
-          <span class="text-[9px] font-mono text-blue-700 bg-blue-100 px-1.5 py-0.5 rounded font-bold mt-1 inline-block">guru / guru123</span>
-        </button>
-
-        <!-- 4. Wali Murid -->
-        <button type="button" onclick="quickLoginRole('wali_murid')" class="p-3 bg-white hover:bg-emerald-50 hover:border-emerald-300 border border-slate-200 rounded-2xl text-left transition shadow-sm group">
-          <div class="flex items-center gap-2 mb-1">
-            <span class="w-2.5 h-2.5 rounded-full bg-emerald-600 group-hover:scale-110 transition-transform"></span>
-            <span class="text-xs font-extrabold text-slate-900">Wali Murid</span>
-          </div>
-          <p class="text-[10px] text-slate-500 line-clamp-1">Portal Nilai & Cetak E-Rapor</p>
-          <span class="text-[9px] font-mono text-emerald-700 bg-emerald-100 px-1.5 py-0.5 rounded font-bold mt-1 inline-block">walimurid / wali123</span>
-        </button>
-
-      </div>
+    <!-- Login Mode Switcher Tabs -->
+    <div class="flex border-b border-slate-200 bg-slate-50 p-1.5 gap-1.5">
+      <button type="button" onclick="switchLoginTab('manual')" id="tab-login-btn-manual" 
+              class="tab-login-btn flex-1 py-2.5 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 bg-white text-emerald-800 shadow-sm border border-slate-200">
+        <i class="fa-solid fa-right-to-bracket text-emerald-600"></i>
+        <span>Form Login Akun</span>
+      </button>
+      <button type="button" onclick="switchLoginTab('picker')" id="tab-login-btn-picker" 
+              class="tab-login-btn flex-1 py-2.5 px-3 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 transition flex items-center justify-center gap-2">
+        <i class="fa-solid fa-users text-blue-600"></i>
+        <span>Pilih Akun Guru (1-Click)</span>
+        <span class="text-[10px] bg-blue-100 text-blue-800 px-1.5 py-0.2 rounded-full font-bold">12 Guru</span>
+      </button>
     </div>
 
-    <!-- Manual Form Login -->
-    <form id="form-login-manual" onsubmit="handleManualLogin(event)" class="p-6 space-y-4">
-      <div>
-        <label class="block text-xs font-bold text-slate-700 mb-1">Username / NIS Murid</label>
-        <div class="relative">
-          <input type="text" id="login-username" required placeholder="Contoh: admin / guru / 202507001" 
-                 class="w-full text-xs bg-slate-50 border border-slate-300 rounded-xl pl-9 pr-3 py-2.5 text-slate-900 font-medium focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none" />
-          <i class="fa-solid fa-user absolute left-3 top-3 text-slate-400 text-xs"></i>
+    <!-- TAB 1: FORM LOGIN MANUAL -->
+    <div id="login-tab-manual" class="login-tab-panel p-6 space-y-4">
+      
+      <div class="bg-emerald-50 border border-emerald-200/80 rounded-2xl p-3 text-[11px] text-emerald-900 flex items-start gap-2.5">
+        <i class="fa-solid fa-shield-halved text-emerald-600 text-base mt-0.5"></i>
+        <div>
+          <strong class="font-bold block">Autentikasi Wajib Sebelum Masuk Sistem</strong>
+          <span>Silakan masukkan Username / NIS dan Kata Sandi Anda. Untuk login cepat, gunakan tab <strong>"Pilih Akun Guru (1-Click)"</strong> di atas.</span>
         </div>
       </div>
 
-      <div>
-        <label class="block text-xs font-bold text-slate-700 mb-1">Kata Sandi (Password)</label>
-        <div class="relative">
-          <input type="password" id="login-password" required placeholder="Masukkan kata sandi..." 
-                 class="w-full text-xs bg-slate-50 border border-slate-300 rounded-xl pl-9 pr-3 py-2.5 text-slate-900 font-medium focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none" />
-          <i class="fa-solid fa-lock absolute left-3 top-3 text-slate-400 text-xs"></i>
+      <form id="form-login-manual" onsubmit="handleManualLogin(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1.5">
+            Username / NIS Siswa <span class="text-rose-500">*</span>
+          </label>
+          <div class="relative">
+            <input type="text" id="login-username" required placeholder="Contoh: arifrohman / dewi / zamzam / 262707001" 
+                   class="w-full text-xs bg-slate-50 border border-slate-300 rounded-xl pl-9 pr-3 py-2.5 text-slate-900 font-semibold focus:ring-2 focus:ring-emerald-500 focus:bg-white outline-none transition" />
+            <i class="fa-solid fa-user absolute left-3 top-3 text-slate-400 text-xs"></i>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1.5">
+            Kata Sandi (Password) <span class="text-rose-500">*</span>
+          </label>
+          <div class="relative">
+            <input type="password" id="login-password" required placeholder="Masukkan kata sandi..." 
+                   class="w-full text-xs bg-slate-50 border border-slate-300 rounded-xl pl-9 pr-10 py-2.5 text-slate-900 font-semibold focus:ring-2 focus:ring-emerald-500 focus:bg-white outline-none transition" />
+            <i class="fa-solid fa-lock absolute left-3 top-3 text-slate-400 text-xs"></i>
+            <button type="button" onclick="togglePasswordVisibility('login-password', 'eye-login-pwd')" class="absolute right-3 top-2.5 text-slate-400 hover:text-slate-600 focus:outline-none" title="Lihat Password">
+              <i id="eye-login-pwd" class="fa-regular fa-eye text-xs"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between text-[11px] text-slate-500">
+          <label class="flex items-center gap-2 cursor-pointer select-none">
+            <input type="checkbox" id="login-remember" class="rounded text-emerald-600 focus:ring-emerald-500 w-3.5 h-3.5" checked />
+            <span>Ingat sesi login di perangkat ini</span>
+          </label>
+          <button type="button" onclick="switchLoginTab('picker')" class="text-emerald-700 hover:text-emerald-900 font-bold">
+            Lihat daftar akun guru &raquo;
+          </button>
+        </div>
+
+        <div class="pt-2 flex items-center gap-3">
+          <button type="submit" id="btn-login-submit" class="w-full py-3 bg-[#00a66c] hover:bg-[#008f5d] text-white rounded-xl text-xs font-black shadow-lg shadow-[#00a66c]/25 transition flex items-center justify-center gap-2 cursor-pointer">
+            <i class="fa-solid fa-right-to-bracket text-sm"></i>
+            <span>Masuk ke Aplikasi Rapor</span>
+          </button>
+        </div>
+      </form>
+
+    </div>
+
+    <!-- TAB 2: PILIH AKUN GURU (1-CLICK DIRECT LOGIN) -->
+    <div id="login-tab-picker" class="login-tab-panel p-5 space-y-3.5 hidden">
+      
+      <!-- Search Box & Filter -->
+      <div class="flex items-center gap-2">
+        <div class="relative flex-1">
+          <input type="text" id="search-teacher-picker" oninput="filterTeacherPickerList()" 
+                 placeholder="Cari nama guru atau mata pelajaran (misal: Fikih, MTK, IPA)..." 
+                 class="w-full text-xs bg-slate-50 border border-slate-300 rounded-xl pl-9 pr-3 py-2 text-slate-800 focus:ring-2 focus:ring-emerald-500 focus:bg-white outline-none" />
+          <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400 text-xs"></i>
         </div>
       </div>
 
-      <div class="pt-2 flex items-center justify-between gap-3">
-        <button type="button" onclick="closeLoginModal()" class="px-4 py-2.5 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 text-xs font-bold transition">
-          Batal
-        </button>
-        <button type="submit" id="btn-login-submit" class="flex-1 px-5 py-2.5 bg-theme-primary hover:opacity-90 text-white rounded-xl text-xs font-extrabold shadow-md transition flex items-center justify-center gap-2">
-          <i class="fa-solid fa-right-to-bracket"></i>
-          <span>Masuk ke Sistem</span>
-        </button>
+      <!-- Quick Category Chips -->
+      <div class="flex flex-wrap gap-1.5 text-[10px]">
+        <button type="button" onclick="filterTeacherCategory('all')" class="teacher-cat-btn px-2.5 py-1 rounded-lg bg-emerald-100 text-emerald-800 font-bold border border-emerald-300" data-cat="all">Semua Akun (14)</button>
+        <button type="button" onclick="filterTeacherCategory('admin')" class="teacher-cat-btn px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 font-semibold hover:bg-purple-100 hover:text-purple-800" data-cat="admin">Admin (2)</button>
+        <button type="button" onclick="filterTeacherCategory('diniyah')" class="teacher-cat-btn px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 font-semibold hover:bg-teal-100 hover:text-teal-800" data-cat="diniyah">Diniyah & Bahasa (5)</button>
+        <button type="button" onclick="filterTeacherCategory('umum')" class="teacher-cat-btn px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 font-semibold hover:bg-blue-100 hover:text-blue-800" data-cat="umum">Mapel Umum (5)</button>
+        <button type="button" onclick="filterTeacherCategory('wali')" class="teacher-cat-btn px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 font-semibold hover:bg-amber-100 hover:text-amber-800" data-cat="wali">Wali Murid (1)</button>
       </div>
-    </form>
+
+      <!-- Teachers Grid (Scrollable List of all 12 Teachers + Admin + Wali) -->
+      <div id="teacher-picker-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-h-80 overflow-y-auto pr-1">
+        
+        <!-- 1. Gr. Arif Rohman, S.Sos., M.Pd. -->
+        <div class="teacher-card p-3 bg-white hover:bg-purple-50/70 border border-purple-200 rounded-2xl transition shadow-sm hover:shadow-md group flex flex-col justify-between"
+             data-cat="admin" data-name="Gr. Arif Rohman, S.Sos., M.Pd. Fikih Kelas IX Admin" data-username="arifrohman" data-pwd="arif123">
+          <div>
+            <div class="flex items-center justify-between gap-1 mb-1">
+              <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-purple-100 text-purple-800 border border-purple-200 flex items-center gap-1">
+                <i class="fa-solid fa-crown text-[8px]"></i> Admin (Akses Semua)
+              </span>
+              <span class="text-[9px] font-mono text-slate-400">@arifrohman</span>
+            </div>
+            <h4 class="text-xs font-bold text-slate-900 group-hover:text-purple-900 leading-snug">Gr. Arif Rohman, S.Sos., M.Pd.</h4>
+            <div class="flex flex-wrap gap-1 mt-1">
+              <span class="text-[9px] bg-amber-50 text-amber-800 border border-amber-200 px-1.5 py-0.2 rounded font-semibold">Guru Fikih IX</span>
+              <span class="text-[9px] bg-purple-50 text-purple-700 px-1 py-0.2 rounded">Semua Modul</span>
+            </div>
+          </div>
+          <div class="pt-2 mt-2 border-t border-slate-100 flex items-center justify-between">
+            <span class="text-[9px] font-mono text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded">pass: arif123</span>
+            <button type="button" onclick="loginAsSpecificTeacher('arifrohman', 'arif123')" class="px-2.5 py-1 bg-purple-700 hover:bg-purple-800 text-white rounded-lg text-[10px] font-bold transition flex items-center gap-1">
+              <span>Masuk</span>
+              <i class="fa-solid fa-arrow-right text-[9px]"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- 2. Dewi Fitria Nugraheni, S.Pd., Gr. -->
+        <div class="teacher-card p-3 bg-white hover:bg-purple-50/70 border border-purple-200 rounded-2xl transition shadow-sm hover:shadow-md group flex flex-col justify-between"
+             data-cat="admin" data-name="Dewi Fitria Nugraheni, S.Pd., Gr. Bahasa Indonesia Admin" data-username="dewi" data-pwd="dewi123">
+          <div>
+            <div class="flex items-center justify-between gap-1 mb-1">
+              <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-purple-100 text-purple-800 border border-purple-200 flex items-center gap-1">
+                <i class="fa-solid fa-crown text-[8px]"></i> Admin (Akses Semua)
+              </span>
+              <span class="text-[9px] font-mono text-slate-400">@dewi</span>
+            </div>
+            <h4 class="text-xs font-bold text-slate-900 group-hover:text-purple-900 leading-snug">Dewi Fitria Nugraheni, S.Pd., Gr.</h4>
+            <div class="flex flex-wrap gap-1 mt-1">
+              <span class="text-[9px] bg-blue-50 text-blue-800 border border-blue-200 px-1.5 py-0.2 rounded font-semibold">Bahasa Indonesia</span>
+              <span class="text-[9px] bg-purple-50 text-purple-700 px-1 py-0.2 rounded">Semua Modul</span>
+            </div>
+          </div>
+          <div class="pt-2 mt-2 border-t border-slate-100 flex items-center justify-between">
+            <span class="text-[9px] font-mono text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded">pass: dewi123</span>
+            <button type="button" onclick="loginAsSpecificTeacher('dewi', 'dewi123')" class="px-2.5 py-1 bg-purple-700 hover:bg-purple-800 text-white rounded-lg text-[10px] font-bold transition flex items-center gap-1">
+              <span>Masuk</span>
+              <i class="fa-solid fa-arrow-right text-[9px]"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- 3. Zam-zam Nasrullah, S.Pd. -->
+        <div class="teacher-card p-3 bg-white hover:bg-teal-50/70 border border-slate-200 hover:border-teal-300 rounded-2xl transition shadow-sm hover:shadow-md group flex flex-col justify-between"
+             data-cat="diniyah" data-name="Zam-zam Nasrullah, S.Pd. Akhlak Hadits" data-username="zamzam" data-pwd="zamzam123">
+          <div>
+            <div class="flex items-center justify-between gap-1 mb-1">
+              <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-teal-100 text-teal-800 border border-teal-200">
+                <i class="fa-solid fa-book-quran text-[8px]"></i> Guru Mapel
+              </span>
+              <span class="text-[9px] font-mono text-slate-400">@zamzam</span>
+            </div>
+            <h4 class="text-xs font-bold text-slate-900 group-hover:text-teal-900 leading-snug">Zam-zam Nasrullah, S.Pd.</h4>
+            <div class="flex flex-wrap gap-1 mt-1">
+              <span class="text-[9px] bg-teal-50 text-teal-800 border border-teal-200 px-1.5 py-0.2 rounded font-semibold">Akhlak</span>
+              <span class="text-[9px] bg-teal-50 text-teal-800 border border-teal-200 px-1.5 py-0.2 rounded font-semibold">Hadits</span>
+            </div>
+          </div>
+          <div class="pt-2 mt-2 border-t border-slate-100 flex items-center justify-between">
+            <span class="text-[9px] font-mono text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded">pass: zamzam123</span>
+            <button type="button" onclick="loginAsSpecificTeacher('zamzam', 'zamzam123')" class="px-2.5 py-1 bg-teal-700 hover:bg-teal-800 text-white rounded-lg text-[10px] font-bold transition flex items-center gap-1">
+              <span>Masuk</span>
+              <i class="fa-solid fa-arrow-right text-[9px]"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- 4. Asril Ardiansyah, S.H., Gr. -->
+        <div class="teacher-card p-3 bg-white hover:bg-teal-50/70 border border-slate-200 hover:border-teal-300 rounded-2xl transition shadow-sm hover:shadow-md group flex flex-col justify-between"
+             data-cat="diniyah" data-name="Asril Ardiansyah, S.H., Gr. SKI Bahasa Arab" data-username="asril" data-pwd="asril123">
+          <div>
+            <div class="flex items-center justify-between gap-1 mb-1">
+              <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-teal-100 text-teal-800 border border-teal-200">
+                <i class="fa-solid fa-book-quran text-[8px]"></i> Guru Mapel
+              </span>
+              <span class="text-[9px] font-mono text-slate-400">@asril</span>
+            </div>
+            <h4 class="text-xs font-bold text-slate-900 group-hover:text-teal-900 leading-snug">Asril Ardiansyah, S.H., Gr.</h4>
+            <div class="flex flex-wrap gap-1 mt-1">
+              <span class="text-[9px] bg-teal-50 text-teal-800 border border-teal-200 px-1.5 py-0.2 rounded font-semibold">SKI</span>
+              <span class="text-[9px] bg-emerald-50 text-emerald-800 border border-emerald-200 px-1.5 py-0.2 rounded font-semibold">Bahasa Arab</span>
+            </div>
+          </div>
+          <div class="pt-2 mt-2 border-t border-slate-100 flex items-center justify-between">
+            <span class="text-[9px] font-mono text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded">pass: asril123</span>
+            <button type="button" onclick="loginAsSpecificTeacher('asril', 'asril123')" class="px-2.5 py-1 bg-teal-700 hover:bg-teal-800 text-white rounded-lg text-[10px] font-bold transition flex items-center gap-1">
+              <span>Masuk</span>
+              <i class="fa-solid fa-arrow-right text-[9px]"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- 5. Aning Nurhayati, S.T., Gr. -->
+        <div class="teacher-card p-3 bg-white hover:bg-blue-50/70 border border-slate-200 hover:border-blue-300 rounded-2xl transition shadow-sm hover:shadow-md group flex flex-col justify-between"
+             data-cat="umum" data-name="Aning Nurhayati Informatika Prakarya SBDP" data-username="aning" data-pwd="aning123">
+          <div>
+            <div class="flex items-center justify-between gap-1 mb-1">
+              <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-blue-100 text-blue-800 border border-blue-200">
+                <i class="fa-solid fa-laptop-code text-[8px]"></i> Guru Mapel
+              </span>
+              <span class="text-[9px] font-mono text-slate-400">@aning</span>
+            </div>
+            <h4 class="text-xs font-bold text-slate-900 group-hover:text-blue-900 leading-snug">Aning Nurhayati, S.T., Gr.</h4>
+            <div class="flex flex-wrap gap-1 mt-1">
+              <span class="text-[9px] bg-indigo-50 text-indigo-800 border border-indigo-200 px-1.5 py-0.2 rounded font-semibold">Informatika</span>
+              <span class="text-[9px] bg-amber-50 text-amber-800 border border-amber-200 px-1.5 py-0.2 rounded font-semibold">Prakarya</span>
+              <span class="text-[9px] bg-purple-50 text-purple-800 border border-purple-200 px-1.5 py-0.2 rounded font-semibold">SBDP</span>
+            </div>
+          </div>
+          <div class="pt-2 mt-2 border-t border-slate-100 flex items-center justify-between">
+            <span class="text-[9px] font-mono text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded">pass: aning123</span>
+            <button type="button" onclick="loginAsSpecificTeacher('aning', 'aning123')" class="px-2.5 py-1 bg-blue-700 hover:bg-blue-800 text-white rounded-lg text-[10px] font-bold transition flex items-center gap-1">
+              <span>Masuk</span>
+              <i class="fa-solid fa-arrow-right text-[9px]"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- 6. Tri Nuryani, S.S., Gr. -->
+        <div class="teacher-card p-3 bg-white hover:bg-blue-50/70 border border-slate-200 hover:border-blue-300 rounded-2xl transition shadow-sm hover:shadow-md group flex flex-col justify-between"
+             data-cat="umum" data-name="Tri Nuryani, S.S., Gr. Bahasa Inggris" data-username="trinuryani" data-pwd="tri123">
+          <div>
+            <div class="flex items-center justify-between gap-1 mb-1">
+              <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-blue-100 text-blue-800 border border-blue-200">
+                <i class="fa-solid fa-language text-[8px]"></i> Guru Mapel
+              </span>
+              <span class="text-[9px] font-mono text-slate-400">@trinuryani</span>
+            </div>
+            <h4 class="text-xs font-bold text-slate-900 group-hover:text-blue-900 leading-snug">Tri Nuryani, S.S., Gr.</h4>
+            <div class="flex flex-wrap gap-1 mt-1">
+              <span class="text-[9px] bg-blue-50 text-blue-800 border border-blue-200 px-1.5 py-0.2 rounded font-semibold">Bahasa Inggris</span>
+            </div>
+          </div>
+          <div class="pt-2 mt-2 border-t border-slate-100 flex items-center justify-between">
+            <span class="text-[9px] font-mono text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded">pass: tri123</span>
+            <button type="button" onclick="loginAsSpecificTeacher('trinuryani', 'tri123')" class="px-2.5 py-1 bg-blue-700 hover:bg-blue-800 text-white rounded-lg text-[10px] font-bold transition flex items-center gap-1">
+              <span>Masuk</span>
+              <i class="fa-solid fa-arrow-right text-[9px]"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- 7. Sumiati, S.Pd., Gr. -->
+        <div class="teacher-card p-3 bg-white hover:bg-blue-50/70 border border-slate-200 hover:border-blue-300 rounded-2xl transition shadow-sm hover:shadow-md group flex flex-col justify-between"
+             data-cat="umum" data-name="Sumiati, S.Pd., Gr. IPS BK Ilmu Pengetahuan Sosial" data-username="sumiati" data-pwd="sumi123">
+          <div>
+            <div class="flex items-center justify-between gap-1 mb-1">
+              <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-blue-100 text-blue-800 border border-blue-200">
+                <i class="fa-solid fa-earth-americas text-[8px]"></i> Guru Mapel
+              </span>
+              <span class="text-[9px] font-mono text-slate-400">@sumiati</span>
+            </div>
+            <h4 class="text-xs font-bold text-slate-900 group-hover:text-blue-900 leading-snug">Sumiati, S.Pd., Gr.</h4>
+            <div class="flex flex-wrap gap-1 mt-1">
+              <span class="text-[9px] bg-orange-50 text-orange-800 border border-orange-200 px-1.5 py-0.2 rounded font-semibold">IPS</span>
+              <span class="text-[9px] bg-rose-50 text-rose-800 border border-rose-200 px-1.5 py-0.2 rounded font-semibold">BK</span>
+            </div>
+          </div>
+          <div class="pt-2 mt-2 border-t border-slate-100 flex items-center justify-between">
+            <span class="text-[9px] font-mono text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded">pass: sumi123</span>
+            <button type="button" onclick="loginAsSpecificTeacher('sumiati', 'sumi123')" class="px-2.5 py-1 bg-blue-700 hover:bg-blue-800 text-white rounded-lg text-[10px] font-bold transition flex items-center gap-1">
+              <span>Masuk</span>
+              <i class="fa-solid fa-arrow-right text-[9px]"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- 8. Tri Yuli Aryani, S.Pd., Gr. -->
+        <div class="teacher-card p-3 bg-white hover:bg-blue-50/70 border border-slate-200 hover:border-blue-300 rounded-2xl transition shadow-sm hover:shadow-md group flex flex-col justify-between"
+             data-cat="umum" data-name="Tri Yuli Aryani, S.Pd., Gr. Matematika MTK" data-username="triyuli" data-pwd="triyuli123">
+          <div>
+            <div class="flex items-center justify-between gap-1 mb-1">
+              <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-blue-100 text-blue-800 border border-blue-200">
+                <i class="fa-solid fa-calculator text-[8px]"></i> Guru Mapel
+              </span>
+              <span class="text-[9px] font-mono text-slate-400">@triyuli</span>
+            </div>
+            <h4 class="text-xs font-bold text-slate-900 group-hover:text-blue-900 leading-snug">Tri Yuli Aryani, S.Pd., Gr.</h4>
+            <div class="flex flex-wrap gap-1 mt-1">
+              <span class="text-[9px] bg-blue-50 text-blue-800 border border-blue-200 px-1.5 py-0.2 rounded font-semibold">Matematika (MTK)</span>
+            </div>
+          </div>
+          <div class="pt-2 mt-2 border-t border-slate-100 flex items-center justify-between">
+            <span class="text-[9px] font-mono text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded">pass: triyuli123</span>
+            <button type="button" onclick="loginAsSpecificTeacher('triyuli', 'triyuli123')" class="px-2.5 py-1 bg-blue-700 hover:bg-blue-800 text-white rounded-lg text-[10px] font-bold transition flex items-center gap-1">
+              <span>Masuk</span>
+              <i class="fa-solid fa-arrow-right text-[9px]"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- 9. Eli Umiyati, S.Pd., Gr. -->
+        <div class="teacher-card p-3 bg-white hover:bg-blue-50/70 border border-slate-200 hover:border-blue-300 rounded-2xl transition shadow-sm hover:shadow-md group flex flex-col justify-between"
+             data-cat="umum" data-name="Eli Umiyati, S.Pd. IPA Ilmu Pengetahuan Alam" data-username="eliumiyati" data-pwd="eli123">
+          <div>
+            <div class="flex items-center justify-between gap-1 mb-1">
+              <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-blue-100 text-blue-800 border border-blue-200">
+                <i class="fa-solid fa-flask text-[8px]"></i> Guru Mapel
+              </span>
+              <span class="text-[9px] font-mono text-slate-400">@eliumiyati</span>
+            </div>
+            <h4 class="text-xs font-bold text-slate-900 group-hover:text-blue-900 leading-snug">Eli Umiyati, S.Pd., Gr.</h4>
+            <div class="flex flex-wrap gap-1 mt-1">
+              <span class="text-[9px] bg-emerald-50 text-emerald-800 border border-emerald-200 px-1.5 py-0.2 rounded font-semibold">IPA (Sains)</span>
+            </div>
+          </div>
+          <div class="pt-2 mt-2 border-t border-slate-100 flex items-center justify-between">
+            <span class="text-[9px] font-mono text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded">pass: eli123</span>
+            <button type="button" onclick="loginAsSpecificTeacher('eliumiyati', 'eli123')" class="px-2.5 py-1 bg-blue-700 hover:bg-blue-800 text-white rounded-lg text-[10px] font-bold transition flex items-center gap-1">
+              <span>Masuk</span>
+              <i class="fa-solid fa-arrow-right text-[9px]"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- 10. Kahlil Gibran, S.Pd., Gr. -->
+        <div class="teacher-card p-3 bg-white hover:bg-teal-50/70 border border-slate-200 hover:border-teal-300 rounded-2xl transition shadow-sm hover:shadow-md group flex flex-col justify-between"
+             data-cat="diniyah" data-name="Kahlil Gibran, S.Pd., Gr. PKn Pendidikan Pancasila Bahasa Arab" data-username="kahlilgibran" data-pwd="kahlil123">
+          <div>
+            <div class="flex items-center justify-between gap-1 mb-1">
+              <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-teal-100 text-teal-800 border border-teal-200">
+                <i class="fa-solid fa-landmark text-[8px]"></i> Guru Mapel
+              </span>
+              <span class="text-[9px] font-mono text-slate-400">@kahlilgibran</span>
+            </div>
+            <h4 class="text-xs font-bold text-slate-900 group-hover:text-teal-900 leading-snug">Kahlil Gibran, S.Pd., Gr.</h4>
+            <div class="flex flex-wrap gap-1 mt-1">
+              <span class="text-[9px] bg-red-50 text-red-800 border border-red-200 px-1.5 py-0.2 rounded font-semibold">Pendidikan Pancasila</span>
+              <span class="text-[9px] bg-emerald-50 text-emerald-800 border border-emerald-200 px-1.5 py-0.2 rounded font-semibold">Bahasa Arab</span>
+            </div>
+          </div>
+          <div class="pt-2 mt-2 border-t border-slate-100 flex items-center justify-between">
+            <span class="text-[9px] font-mono text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded">pass: kahlil123</span>
+            <button type="button" onclick="loginAsSpecificTeacher('kahlilgibran', 'kahlil123')" class="px-2.5 py-1 bg-teal-700 hover:bg-teal-800 text-white rounded-lg text-[10px] font-bold transition flex items-center gap-1">
+              <span>Masuk</span>
+              <i class="fa-solid fa-arrow-right text-[9px]"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- 11. Guntur Ageng Auliawan, S.Pd. -->
+        <div class="teacher-card p-3 bg-white hover:bg-blue-50/70 border border-slate-200 hover:border-blue-300 rounded-2xl transition shadow-sm hover:shadow-md group flex flex-col justify-between"
+             data-cat="umum" data-name="Guntur Ageng Auliawan, S.Pd. PJOK Penjas Bahasa Sunda" data-username="guntur" data-pwd="guntur123">
+          <div>
+            <div class="flex items-center justify-between gap-1 mb-1">
+              <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-blue-100 text-blue-800 border border-blue-200">
+                <i class="fa-solid fa-volleyball text-[8px]"></i> Guru Mapel
+              </span>
+              <span class="text-[9px] font-mono text-slate-400">@guntur</span>
+            </div>
+            <h4 class="text-xs font-bold text-slate-900 group-hover:text-blue-900 leading-snug">Guntur Ageng Auliawan, S.Pd.</h4>
+            <div class="flex flex-wrap gap-1 mt-1">
+              <span class="text-[9px] bg-emerald-50 text-emerald-800 border border-emerald-200 px-1.5 py-0.2 rounded font-semibold">PJOK</span>
+              <span class="text-[9px] bg-amber-50 text-amber-800 border border-amber-200 px-1.5 py-0.2 rounded font-semibold">Bahasa Sunda</span>
+            </div>
+          </div>
+          <div class="pt-2 mt-2 border-t border-slate-100 flex items-center justify-between">
+            <span class="text-[9px] font-mono text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded">pass: guntur123</span>
+            <button type="button" onclick="loginAsSpecificTeacher('guntur', 'guntur123')" class="px-2.5 py-1 bg-blue-700 hover:bg-blue-800 text-white rounded-lg text-[10px] font-bold transition flex items-center gap-1">
+              <span>Masuk</span>
+              <i class="fa-solid fa-arrow-right text-[9px]"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- 12. Nunung Lastika Adiansyah, S.Pd. -->
+        <div class="teacher-card p-3 bg-white hover:bg-teal-50/70 border border-slate-200 hover:border-teal-300 rounded-2xl transition shadow-sm hover:shadow-md group flex flex-col justify-between"
+             data-cat="diniyah" data-name="Nunung Lastika Adiansyah, S.Pd. Akidah Fikih" data-username="nunung" data-pwd="nunung123">
+          <div>
+            <div class="flex items-center justify-between gap-1 mb-1">
+              <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-teal-100 text-teal-800 border border-teal-200">
+                <i class="fa-solid fa-book-quran text-[8px]"></i> Guru Mapel
+              </span>
+              <span class="text-[9px] font-mono text-slate-400">@nunung</span>
+            </div>
+            <h4 class="text-xs font-bold text-slate-900 group-hover:text-teal-900 leading-snug">Nunung Lastika Adiansyah, S.Pd.</h4>
+            <div class="flex flex-wrap gap-1 mt-1">
+              <span class="text-[9px] bg-teal-50 text-teal-800 border border-teal-200 px-1.5 py-0.2 rounded font-semibold">Akidah</span>
+              <span class="text-[9px] bg-teal-50 text-teal-800 border border-teal-200 px-1.5 py-0.2 rounded font-semibold">Fikih</span>
+            </div>
+          </div>
+          <div class="pt-2 mt-2 border-t border-slate-100 flex items-center justify-between">
+            <span class="text-[9px] font-mono text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded">pass: nunung123</span>
+            <button type="button" onclick="loginAsSpecificTeacher('nunung', 'nunung123')" class="px-2.5 py-1 bg-teal-700 hover:bg-teal-800 text-white rounded-lg text-[10px] font-bold transition flex items-center gap-1">
+              <span>Masuk</span>
+              <i class="fa-solid fa-arrow-right text-[9px]"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- 13. Master Admin -->
+        <div class="teacher-card p-3 bg-white hover:bg-purple-50/70 border border-purple-200 rounded-2xl transition shadow-sm hover:shadow-md group flex flex-col justify-between"
+             data-cat="admin" data-name="Administrator Utama Master Admin" data-username="admin" data-pwd="admin123">
+          <div>
+            <div class="flex items-center justify-between gap-1 mb-1">
+              <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-purple-100 text-purple-800 border border-purple-200 flex items-center gap-1">
+                <i class="fa-solid fa-shield-halved text-[8px]"></i> Master Admin
+              </span>
+              <span class="text-[9px] font-mono text-slate-400">@admin</span>
+            </div>
+            <h4 class="text-xs font-bold text-slate-900 group-hover:text-purple-900 leading-snug">Administrator Utama</h4>
+            <div class="flex flex-wrap gap-1 mt-1">
+              <span class="text-[9px] bg-purple-50 text-purple-700 px-1.5 py-0.2 rounded font-semibold">Full Master & CMS</span>
+            </div>
+          </div>
+          <div class="pt-2 mt-2 border-t border-slate-100 flex items-center justify-between">
+            <span class="text-[9px] font-mono text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded">pass: admin123</span>
+            <button type="button" onclick="loginAsSpecificTeacher('admin', 'admin123')" class="px-2.5 py-1 bg-purple-700 hover:bg-purple-800 text-white rounded-lg text-[10px] font-bold transition flex items-center gap-1">
+              <span>Masuk</span>
+              <i class="fa-solid fa-arrow-right text-[9px]"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- 14. Wali Murid Demo -->
+        <div class="teacher-card p-3 bg-white hover:bg-emerald-50/70 border border-emerald-200 rounded-2xl transition shadow-sm hover:shadow-md group flex flex-col justify-between"
+             data-cat="wali" data-name="Wali Murid Bpk. Nanang Fajar Abdillah Zulqarnain" data-username="walimurid" data-pwd="wali123">
+          <div>
+            <div class="flex items-center justify-between gap-1 mb-1">
+              <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 border border-emerald-200 flex items-center gap-1">
+                <i class="fa-solid fa-user-group text-[8px]"></i> Wali Murid
+              </span>
+              <span class="text-[9px] font-mono text-slate-400">@walimurid</span>
+            </div>
+            <h4 class="text-xs font-bold text-slate-900 group-hover:text-emerald-900 leading-snug">Bpk. Nanang Fajar (Wali Siswa)</h4>
+            <div class="flex flex-wrap gap-1 mt-1">
+              <span class="text-[9px] bg-emerald-50 text-emerald-700 px-1.5 py-0.2 rounded font-semibold">NIS: 242507001 (IX ABU BAKAR)</span>
+            </div>
+          </div>
+          <div class="pt-2 mt-2 border-t border-slate-100 flex items-center justify-between">
+            <span class="text-[9px] font-mono text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded">pass: wali123</span>
+            <button type="button" onclick="loginAsSpecificTeacher('walimurid', 'wali123')" class="px-2.5 py-1 bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg text-[10px] font-bold transition flex items-center gap-1">
+              <span>Masuk</span>
+              <i class="fa-solid fa-arrow-right text-[9px]"></i>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="text-[11px] text-slate-500 text-center pt-1">
+        Atau kembali ke <button type="button" onclick="switchLoginTab('manual')" class="text-emerald-700 hover:underline font-bold">Form Login Manual</button>
+      </div>
+
+    </div>
 
   </div>
 </div>

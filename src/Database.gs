@@ -188,22 +188,26 @@ function initDatabase() {
     sheetSettings.getRange(2, 1, defaultSettings.length, 4).setValues(defaultSettings);
   }
   
-  // 2. Skema Users (4 Role: Admin, Kepala Sekolah, Guru, Wali Murid)
-  const sheetUsers = getOrCreateSheet(DB_CONFIG.SHEET_USERS, ['id', 'username', 'password_hash', 'nama_lengkap', 'role', 'status', 'created_at', 'nis']);
+  // 2. Skema Users (Admin, Kepala Sekolah, 12 Guru Mapel, Wali Murid)
+  const sheetUsers = getOrCreateSheet(DB_CONFIG.SHEET_USERS, ['id', 'username', 'password_hash', 'nama_lengkap', 'role', 'status', 'created_at', 'nis', 'mapel']);
   if (sheetUsers.getLastRow() <= 1) {
     const defaultUsers = [
-      ['USR-001', 'admin', 'admin123', 'Administrator Utama', 'admin', 'aktif', '2025-01-01', ''],
-      ['USR-002', 'kepsek', 'kepsek123', 'Arif Rohman, S.Sos., M.Pd.', 'kepala_sekolah', 'aktif', '2025-01-01', ''],
-      ['USR-003', 'guru', 'guru123', 'Dewi Fitria Nugraheni, S.Pd., Gr.', 'guru', 'aktif', '2025-01-01', ''],
-      ['USR-004', 'dewi', 'dewi123', 'Dewi Fitria Nugraheni, S.Pd., Gr.', 'guru', 'aktif', '2025-01-01', ''],
-      ['USR-005', 'triyuli', 'tri123', 'Tri Yuli Aryani, S.Pd., Gr.', 'guru', 'aktif', '2025-01-01', ''],
-      ['USR-006', 'eliumiyati', 'eli123', 'Eli Umiyati, S.Pd., Gr.', 'guru', 'aktif', '2025-01-01', ''],
-      ['USR-007', 'aning', 'aning123', 'Aning Nurhayati, S.T., Gr.', 'guru', 'aktif', '2025-01-01', ''],
-      ['USR-008', 'trinuryani', 'tri123', 'Tri Nuryani, S.S., Gr.', 'guru', 'aktif', '2025-01-01', ''],
-      ['USR-009', 'sumiati', 'sumi123', 'Sumiati, S.Pd., Gr.', 'guru', 'aktif', '2025-01-01', ''],
-      ['USR-010', 'walimurid', 'wali123', 'Bpk. Nanang Fajar', 'wali_murid', 'aktif', '2025-01-01', '242507001']
+      ['USR-001', 'arifrohman', 'arif123', 'Gr. Arif Rohman, S.Sos., M.Pd.', 'admin', 'aktif', '2026-07-01', '', 'Fikih, Semua Mapel'],
+      ['USR-002', 'dewi', 'dewi123', 'Dewi Fitria Nugraheni, S.Pd., Gr.', 'admin', 'aktif', '2026-07-01', '', 'Bahasa Indonesia, Semua Mapel'],
+      ['USR-003', 'zamzam', 'zamzam123', 'Zam-zam Nasrullah, S.Pd.', 'guru', 'aktif', '2026-07-01', '', 'Akhlak, Hadits'],
+      ['USR-004', 'asril', 'asril123', 'Asril Ardiansyah, S.H., Gr.', 'guru', 'aktif', '2026-07-01', '', 'SKI, Bahasa Arab'],
+      ['USR-005', 'aning', 'aning123', 'Aning Nurhayati, S.T., Gr.', 'guru', 'aktif', '2026-07-01', '', 'Informatika, Prakarya, SBDP'],
+      ['USR-006', 'trinuryani', 'tri123', 'Tri Nuryani, S.S., Gr.', 'guru', 'aktif', '2026-07-01', '', 'Bahasa Inggris'],
+      ['USR-007', 'sumiati', 'sumi123', 'Sumiati, S.Pd., Gr.', 'guru', 'aktif', '2026-07-01', '', 'Ilmu Pengetahuan Sosial, BK'],
+      ['USR-008', 'triyuli', 'triyuli123', 'Tri Yuli Aryani, S.Pd., Gr.', 'guru', 'aktif', '2026-07-01', '', 'Matematika'],
+      ['USR-009', 'eliumiyati', 'eli123', 'Eli Umiyati, S.Pd., Gr.', 'guru', 'aktif', '2026-07-01', '', 'Ilmu Pengetahuan Alam'],
+      ['USR-010', 'kahlilgibran', 'kahlil123', 'Kahlil Gibran, S.Pd., Gr.', 'guru', 'aktif', '2026-07-01', '', 'Pendidikan Pancasila, Bahasa Arab'],
+      ['USR-011', 'guntur', 'guntur123', 'Guntur Ageng Auliawan, S.Pd.', 'guru', 'aktif', '2026-07-01', '', 'Pendidikan Jasmani, Olahraga, dan Kesehatan, Bahasa Sunda'],
+      ['USR-012', 'nunung', 'nunung123', 'Nunung Lastika Adiansyah, S.Pd.', 'guru', 'aktif', '2026-07-01', '', 'Akidah, Fikih'],
+      ['USR-013', 'admin', 'admin123', 'Administrator Utama', 'admin', 'aktif', '2026-07-01', '', 'Semua Mapel'],
+      ['USR-014', 'walimurid', 'wali123', 'Bpk. Nanang Fajar', 'wali_murid', 'aktif', '2026-07-01', '242507001', '-']
     ];
-    sheetUsers.getRange(2, 1, defaultUsers.length, 8).setValues(defaultUsers);
+    sheetUsers.getRange(2, 1, defaultUsers.length, 9).setValues(defaultUsers);
   }
   
   // 3. Skema Murid (DATA SISWA SESUAI EXCEL AL-IMAM)
@@ -553,24 +557,28 @@ function forceSyncDatabaseToSpreadsheet() {
   ];
   sheetSettings.getRange(2, 1, defaultSettings.length, 4).setValues(defaultSettings);
 
-  // 2. Users (Role Admin, Kepsek, & 6 Wali Kelas Jenjang)
-  const sheetUsers = getOrCreateSheet(DB_CONFIG.SHEET_USERS, ['id', 'username', 'password_hash', 'nama_lengkap', 'role', 'status', 'created_at', 'nis']);
+  // 2. Users (Role Admin, 12 Guru Mapel, & Wali Murid)
+  const sheetUsers = getOrCreateSheet(DB_CONFIG.SHEET_USERS, ['id', 'username', 'password_hash', 'nama_lengkap', 'role', 'status', 'created_at', 'nis', 'mapel']);
   if (sheetUsers.getLastRow() > 1) {
-    sheetUsers.getRange(2, 1, sheetUsers.getLastRow() - 1, 8).clearContent();
+    sheetUsers.getRange(2, 1, sheetUsers.getLastRow() - 1, sheetUsers.getLastColumn()).clearContent();
   }
   const defaultUsers = [
-    ['USR-001', 'admin', 'admin123', 'Administrator Utama', 'admin', 'aktif', '2025-01-01', ''],
-    ['USR-002', 'kepsek', 'kepsek123', 'Arif Rohman, S.Sos., M.Pd.', 'kepala_sekolah', 'aktif', '2025-01-01', ''],
-    ['USR-003', 'guru', 'guru123', 'Dewi Fitria Nugraheni, S.Pd., Gr.', 'guru', 'aktif', '2025-01-01', ''],
-    ['USR-004', 'dewi', 'dewi123', 'Dewi Fitria Nugraheni, S.Pd., Gr.', 'guru', 'aktif', '2025-01-01', ''],
-    ['USR-005', 'triyuli', 'tri123', 'Tri Yuli Aryani, S.Pd., Gr.', 'guru', 'aktif', '2025-01-01', ''],
-    ['USR-006', 'eliumiyati', 'eli123', 'Eli Umiyati, S.Pd., Gr.', 'guru', 'aktif', '2025-01-01', ''],
-    ['USR-007', 'aning', 'aning123', 'Aning Nurhayati, S.T., Gr.', 'guru', 'aktif', '2025-01-01', ''],
-    ['USR-008', 'trinuryani', 'tri123', 'Tri Nuryani, S.S., Gr.', 'guru', 'aktif', '2025-01-01', ''],
-    ['USR-009', 'sumiati', 'sumi123', 'Sumiati, S.Pd., Gr.', 'guru', 'aktif', '2025-01-01', ''],
-    ['USR-010', 'walimurid', 'wali123', 'Bpk. Nanang Fajar', 'wali_murid', 'aktif', '2025-01-01', '242507001']
+    ['USR-001', 'arifrohman', 'arif123', 'Gr. Arif Rohman, S.Sos., M.Pd.', 'admin', 'aktif', '2026-07-01', '', 'Fikih, Semua Mapel'],
+    ['USR-002', 'dewi', 'dewi123', 'Dewi Fitria Nugraheni, S.Pd., Gr.', 'admin', 'aktif', '2026-07-01', '', 'Bahasa Indonesia, Semua Mapel'],
+    ['USR-003', 'zamzam', 'zamzam123', 'Zam-zam Nasrullah, S.Pd.', 'guru', 'aktif', '2026-07-01', '', 'Akhlak, Hadits'],
+    ['USR-004', 'asril', 'asril123', 'Asril Ardiansyah, S.H., Gr.', 'guru', 'aktif', '2026-07-01', '', 'SKI, Bahasa Arab'],
+    ['USR-005', 'aning', 'aning123', 'Aning Nurhayati, S.T., Gr.', 'guru', 'aktif', '2026-07-01', '', 'Informatika, Prakarya, SBDP'],
+    ['USR-006', 'trinuryani', 'tri123', 'Tri Nuryani, S.S., Gr.', 'guru', 'aktif', '2026-07-01', '', 'Bahasa Inggris'],
+    ['USR-007', 'sumiati', 'sumi123', 'Sumiati, S.Pd., Gr.', 'guru', 'aktif', '2026-07-01', '', 'Ilmu Pengetahuan Sosial, BK'],
+    ['USR-008', 'triyuli', 'triyuli123', 'Tri Yuli Aryani, S.Pd., Gr.', 'guru', 'aktif', '2026-07-01', '', 'Matematika'],
+    ['USR-009', 'eliumiyati', 'eli123', 'Eli Umiyati, S.Pd., Gr.', 'guru', 'aktif', '2026-07-01', '', 'Ilmu Pengetahuan Alam'],
+    ['USR-010', 'kahlilgibran', 'kahlil123', 'Kahlil Gibran, S.Pd., Gr.', 'guru', 'aktif', '2026-07-01', '', 'Pendidikan Pancasila, Bahasa Arab'],
+    ['USR-011', 'guntur', 'guntur123', 'Guntur Ageng Auliawan, S.Pd.', 'guru', 'aktif', '2026-07-01', '', 'Pendidikan Jasmani, Olahraga, dan Kesehatan, Bahasa Sunda'],
+    ['USR-012', 'nunung', 'nunung123', 'Nunung Lastika Adiansyah, S.Pd.', 'guru', 'aktif', '2026-07-01', '', 'Akidah, Fikih'],
+    ['USR-013', 'admin', 'admin123', 'Administrator Utama', 'admin', 'aktif', '2026-07-01', '', 'Semua Mapel'],
+    ['USR-014', 'walimurid', 'wali123', 'Bpk. Nanang Fajar', 'wali_murid', 'aktif', '2026-07-01', '242507001', '-']
   ];
-  sheetUsers.getRange(2, 1, defaultUsers.length, 8).setValues(defaultUsers);
+  sheetUsers.getRange(2, 1, defaultUsers.length, 9).setValues(defaultUsers);
 
   // 3. Murid (Data 159 Murid Resmi Sesuai Excel Al-Imam)
   let sheetMurid = ss.getSheetByName(DB_CONFIG.SHEET_MURID);
@@ -759,7 +767,7 @@ function getAllUsers() {
 }
 
 function saveUser(user) {
-  const sheet = getOrCreateSheet(DB_CONFIG.SHEET_USERS);
+  const sheet = getOrCreateSheet(DB_CONFIG.SHEET_USERS, ['id', 'username', 'password_hash', 'nama_lengkap', 'role', 'status', 'created_at', 'nis', 'mapel']);
   const isNew = !user.id;
   const id = isNew ? 'USR-' + Utilities.getUuid().substring(0, 6).toUpperCase() : user.id;
   
@@ -783,7 +791,9 @@ function saveUser(user) {
       user.nama_lengkap,
       user.role || 'guru',
       user.status || 'aktif',
-      Utilities.formatDate(new Date(), 'Asia/Jakarta', 'yyyy-MM-dd')
+      Utilities.formatDate(new Date(), 'Asia/Jakarta', 'yyyy-MM-dd'),
+      user.nis || '',
+      user.mapel || ''
     ]);
   }
   return { status: 'success', message: 'User berhasil disimpan', id: id };
