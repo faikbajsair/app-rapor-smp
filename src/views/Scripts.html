@@ -1090,6 +1090,95 @@ const AppState = {
   activePrintNis: '262707001'
 };
 
+// 2B. LOCAL PERSISTENCE STORAGE MANAGER (Mencegah data hilang saat logout/refresh)
+const LOCAL_STORAGE_KEYS = {
+  SETTINGS: 'aiis_db_cms_settings',
+  MURID: 'aiis_db_murid_list',
+  AKADEMIK: 'aiis_db_akademik_list',
+  TP: 'aiis_db_tp_list',
+  KEPEMIMPINAN: 'aiis_db_kepemimpinan_list',
+  DINIYAH: 'aiis_db_diniyah_list',
+  SKL: 'aiis_db_skl_list',
+  USERS: 'aiis_db_users_list',
+  LOGS: 'aiis_db_activity_logs'
+};
+
+function saveStateToLocal(key = 'all') {
+  try {
+    if (key === 'all' || key === 'settings') localStorage.setItem(LOCAL_STORAGE_KEYS.SETTINGS, JSON.stringify(AppState.cmsSettings));
+    if (key === 'all' || key === 'murid') localStorage.setItem(LOCAL_STORAGE_KEYS.MURID, JSON.stringify(AppState.muridList));
+    if (key === 'all' || key === 'akademik') localStorage.setItem(LOCAL_STORAGE_KEYS.AKADEMIK, JSON.stringify(AppState.akademikList));
+    if (key === 'all' || key === 'tp') localStorage.setItem(LOCAL_STORAGE_KEYS.TP, JSON.stringify(AppState.tpList));
+    if (key === 'all' || key === 'kepemimpinan') localStorage.setItem(LOCAL_STORAGE_KEYS.KEPEMIMPINAN, JSON.stringify(AppState.kepemimpinanList));
+    if (key === 'all' || key === 'diniyah') localStorage.setItem(LOCAL_STORAGE_KEYS.DINIYAH, JSON.stringify(AppState.diniyahList));
+    if (key === 'all' || key === 'skl') localStorage.setItem(LOCAL_STORAGE_KEYS.SKL, JSON.stringify(AppState.sklList));
+    if (key === 'all' || key === 'users') localStorage.setItem(LOCAL_STORAGE_KEYS.USERS, JSON.stringify(AppState.usersList));
+    if (key === 'all' || key === 'logs') localStorage.setItem(LOCAL_STORAGE_KEYS.LOGS, JSON.stringify(AppState.activityLogs));
+  } catch (e) {
+    console.warn('Gagal menyimpan cache ke localStorage:', e);
+  }
+}
+
+function loadStateFromLocal() {
+  try {
+    const s = localStorage.getItem(LOCAL_STORAGE_KEYS.SETTINGS);
+    if (s) {
+      const parsed = JSON.parse(s);
+      if (parsed && typeof parsed === 'object') AppState.cmsSettings = { ...AppState.cmsSettings, ...parsed };
+    }
+    const m = localStorage.getItem(LOCAL_STORAGE_KEYS.MURID);
+    if (m) {
+      const parsed = JSON.parse(m);
+      if (Array.isArray(parsed) && parsed.length > 0) AppState.muridList = parsed;
+    }
+    const a = localStorage.getItem(LOCAL_STORAGE_KEYS.AKADEMIK);
+    if (a) {
+      const parsed = JSON.parse(a);
+      if (Array.isArray(parsed) && parsed.length > 0) AppState.akademikList = parsed;
+    }
+    const tp = localStorage.getItem(LOCAL_STORAGE_KEYS.TP);
+    if (tp) {
+      const parsed = JSON.parse(tp);
+      if (Array.isArray(parsed) && parsed.length > 0) AppState.tpList = parsed;
+    }
+    const kp = localStorage.getItem(LOCAL_STORAGE_KEYS.KEPEMIMPINAN);
+    if (kp) {
+      const parsed = JSON.parse(kp);
+      if (Array.isArray(parsed) && parsed.length > 0) AppState.kepemimpinanList = parsed;
+    }
+    const dn = localStorage.getItem(LOCAL_STORAGE_KEYS.DINIYAH);
+    if (dn) {
+      const parsed = JSON.parse(dn);
+      if (Array.isArray(parsed) && parsed.length > 0) AppState.diniyahList = parsed;
+    }
+    const skl = localStorage.getItem(LOCAL_STORAGE_KEYS.SKL);
+    if (skl) {
+      const parsed = JSON.parse(skl);
+      if (Array.isArray(parsed) && parsed.length > 0) AppState.sklList = parsed;
+    }
+    const u = localStorage.getItem(LOCAL_STORAGE_KEYS.USERS);
+    if (u) {
+      const parsed = JSON.parse(u);
+      if (Array.isArray(parsed) && parsed.length > 0) AppState.usersList = parsed;
+    }
+    const lg = localStorage.getItem(LOCAL_STORAGE_KEYS.LOGS);
+    if (lg) {
+      const parsed = JSON.parse(lg);
+      if (Array.isArray(parsed) && parsed.length > 0) AppState.activityLogs = parsed;
+    }
+  } catch (e) {
+    console.warn('Gagal memuat cache dari localStorage:', e);
+  }
+}
+
+// Inisialisasi awal membaca cache yang sudah pernah disimpan pengguna
+loadStateFromLocal();
+
+// Expose fungsi helper penyimpanan
+window.saveStateToLocal = saveStateToLocal;
+window.loadStateFromLocal = loadStateFromLocal;
+window.saveAkademikListLocally = () => saveStateToLocal('akademik');
+
 // 3. API CALL WRAPPER (Auto-detect google.script.run or Fetch REST)
 function callApi(actionName, payload = {}) {
   return new Promise((resolve, reject) => {
@@ -2000,6 +2089,7 @@ function loadMuridList() {
     .then(res => {
       if (res && res.data && res.data.length > 0) {
         AppState.muridList = res.data;
+        saveStateToLocal('murid');
       }
       populateMuridDropdowns();
       filterTableMuridLocal();
@@ -2202,6 +2292,7 @@ function submitFormMurid(e) {
     AppState.muridList.push(payload);
   }
 
+  saveStateToLocal('murid');
   showToast('Data murid & ekskul berhasil disimpan!');
   closeModalMurid();
   populateMuridDropdowns();
@@ -2216,6 +2307,7 @@ function submitFormMurid(e) {
 function deleteMuridAction(nis) {
   if (!confirm(`Yakin ingin menghapus murid dengan NIS ${nis}?`)) return;
   AppState.muridList = AppState.muridList.filter(m => String(m.nis) !== String(nis));
+  saveStateToLocal('murid');
   showToast('Data murid berhasil dihapus.');
   populateMuridDropdowns();
   renderMuridTable(AppState.muridList);
@@ -2307,6 +2399,7 @@ function saveBulkPresensiData() {
     }
   });
 
+  saveStateToLocal('murid');
   showToast(`Berhasil menyimpan presensi & ekskul untuk ${items.length} murid!`);
   closeModalBulkPresensi();
   renderMuridTable(AppState.muridList);
@@ -2334,6 +2427,7 @@ function loadTujuanPembelajaran() {
   }).then(res => {
     if (res && res.data && res.data.length > 0) {
       AppState.tpList = res.data;
+      saveStateToLocal('tp');
     } else if (!AppState.tpList || AppState.tpList.length === 0) {
       AppState.tpList = JSON.parse(JSON.stringify(DEFAULT_TP_BANK_16));
     }
@@ -2524,6 +2618,7 @@ function submitFormTP(e) {
     AppState.tpList.unshift(payload);
   }
 
+  saveStateToLocal('tp');
   showToast(`Tujuan Pembelajaran [${kode}] untuk ${mapel} berhasil disimpan!`, 'success');
   closeModalTP();
   renderTPTable();
@@ -2537,6 +2632,7 @@ function toggleTPStatus(id) {
   const item = AppState.tpList.find(t => String(t.id) === String(id));
   if (!item) return;
   item.status = item.status === 'Aktif' ? 'Non-Aktif' : 'Aktif';
+  saveStateToLocal('tp');
   showToast(`Status TP [${item.kode_tp}] diubah menjadi ${item.status}.`, 'info');
   renderTPTable();
   recordActivity('UPDATE_TP', 'Tujuan Pembelajaran', `Ubah status TP [${item.kode_tp}] menjadi ${item.status} (${item.mata_pelajaran})`, 'success');
@@ -2547,6 +2643,7 @@ function deleteTP(id) {
   const item = AppState.tpList.find(t => String(t.id) === String(id));
   if (!confirm(`Yakin ingin menghapus Tujuan Pembelajaran [${item?.kode_tp || id}] ini?`)) return;
   AppState.tpList = AppState.tpList.filter(t => String(t.id) !== String(id));
+  saveStateToLocal('tp');
   showToast('Tujuan Pembelajaran berhasil dihapus.');
   renderTPTable();
   recordActivity('DELETE_TP', 'Tujuan Pembelajaran', `Hapus Tujuan Pembelajaran [${item?.kode_tp || id}] mapel ${item?.mata_pelajaran || '-'}`, 'success');
@@ -2566,6 +2663,7 @@ function importKurikulumMerdekaDefaultTP() {
     }
   });
 
+  saveStateToLocal('tp');
   showToast('Alhamdulillah, 64 Tujuan Pembelajaran Kurikulum Merdeka Fase D berhasil dimuat!', 'success');
   renderTPTable();
   recordActivity('IMPORT_TP', 'Tujuan Pembelajaran', `Impor paket standar 64 Tujuan Pembelajaran Kurikulum Merdeka (Fase D) untuk seluruh 16 Mapel`, 'success');
@@ -3065,6 +3163,7 @@ function saveBulkLegerAkademik() {
     else AppState.akademikList.push(entry);
   });
 
+  saveStateToLocal('akademik');
   showToast(`Alhamdulillah, nilai & checklist TP mapel ${mapel} kelas ${kelas} berhasil disimpan! (${items.length} murid)`, 'success');
   loadDashboardStats();
 
@@ -3219,6 +3318,7 @@ function loadNilaiAkademik() {
     .then(res => {
       if (res && res.data && res.data.length > 0) {
         AppState.akademikList = res.data;
+        saveStateToLocal('akademik');
       }
       filterTableAkademikLocal();
     })
@@ -3423,6 +3523,7 @@ function submitFormAkademik(e) {
   if (idx !== -1) AppState.akademikList[idx] = payload;
   else AppState.akademikList.unshift(payload);
 
+  saveStateToLocal('akademik');
   showToast('Nilai akademik berhasil disimpan!');
   closeModalAkademik();
   renderTableAkademik(AppState.akademikList);
@@ -3437,6 +3538,7 @@ function submitFormAkademik(e) {
 function deleteAkademikAction(id) {
   if (!confirm('Yakin ingin menghapus entri nilai akademik ini?')) return;
   AppState.akademikList = AppState.akademikList.filter(x => String(x.id) !== String(id));
+  saveStateToLocal('akademik');
   showToast('Nilai akademik berhasil dihapus.');
   renderTableAkademik(AppState.akademikList);
   updateAkademikWidgets(AppState.akademikList);
@@ -4722,6 +4824,7 @@ function saveSklLegerGrid() {
     else AppState.sklList.push(entry);
   });
 
+  saveStateToLocal('skl');
   showToast(`Alhamdulillah, nilai SKL Kepemimpinan untuk ${updatedEntries.length} murid kelas ${currentKelas} berhasil disimpan!`, 'success');
   recordActivity('SAVE_KEPRIBADIAN', 'Rapor SKL 28 Indikator', `Simpan massal penilaian 28 Indikator SKL kelas ${currentKelas} (${updatedEntries.length} murid)`, 'success');
 
@@ -4974,6 +5077,7 @@ function saveBulkKepribadianGrid() {
     else AppState.kepemimpinanList.push(entry);
   });
 
+  saveStateToLocal('kepemimpinan');
   showToast(`Alhamdulillah, data Ahlaq & Kepribadian untuk ${items.length} murid berhasil disimpan!`, 'success');
   loadDashboardStats();
 
@@ -4990,6 +5094,7 @@ function loadNilaiKepemimpinan() {
     .then(res => {
       if (res && res.data && res.data.length > 0) {
         AppState.kepemimpinanList = res.data;
+        saveStateToLocal('kepemimpinan');
       }
       filterTableKepemimpinanLocal();
     })
@@ -5122,6 +5227,7 @@ function submitFormKepemimpinan(e) {
   if (idx !== -1) AppState.kepemimpinanList[idx] = payload;
   else AppState.kepemimpinanList.unshift(payload);
 
+  saveStateToLocal('kepemimpinan');
   showToast('Nilai kepribadian berhasil disimpan!');
   closeModalKepemimpinan();
   renderTableKepemimpinan(AppState.kepemimpinanList);
@@ -5136,6 +5242,7 @@ function submitFormKepemimpinan(e) {
 function deleteKepemimpinanAction(id) {
   if (!confirm('Yakin ingin menghapus entri kepribadian ini?')) return;
   AppState.kepemimpinanList = AppState.kepemimpinanList.filter(x => String(x.id) !== String(id));
+  saveStateToLocal('kepemimpinan');
   showToast('Nilai kepribadian berhasil dihapus.');
   renderTableKepemimpinan(AppState.kepemimpinanList);
   updateKepemimpinanWidgets(AppState.kepemimpinanList);
@@ -5153,6 +5260,7 @@ function loadNilaiDiniyah() {
     .then(res => {
       if (res && res.data && res.data.length > 0) {
         AppState.diniyahList = res.data;
+        saveStateToLocal('diniyah');
       }
       filterTableDiniyahLocal();
     })
@@ -5296,6 +5404,7 @@ function submitFormDiniyah(e) {
   if (idx !== -1) AppState.diniyahList[idx] = payload;
   else AppState.diniyahList.unshift(payload);
 
+  saveStateToLocal('diniyah');
   showToast('Nilai Diniyah berhasil disimpan!');
   closeModalDiniyah();
   renderTableDiniyah(AppState.diniyahList);
@@ -5310,6 +5419,7 @@ function submitFormDiniyah(e) {
 function deleteDiniyahAction(id) {
   if (!confirm('Yakin ingin menghapus nilai diniyah ini?')) return;
   AppState.diniyahList = AppState.diniyahList.filter(x => String(x.id) !== String(id));
+  saveStateToLocal('diniyah');
   showToast('Nilai diniyah berhasil dihapus.');
   renderTableDiniyah(AppState.diniyahList);
   updateDiniyahWidgets(AppState.diniyahList);
@@ -5344,6 +5454,7 @@ function loadCmsSettings() {
       if (res && res.data) {
         const s = res.data;
         AppState.cmsSettings = s;
+        saveStateToLocal('settings');
         applyCmsTheme(s);
       }
       populateCmsForm(AppState.cmsSettings);
@@ -5439,6 +5550,7 @@ function saveCmsSettingsAll() {
   };
 
   AppState.cmsSettings = payload;
+  saveStateToLocal('settings');
   applyCmsTheme(payload);
   showToast('Pengaturan CMS & Tampilan berhasil disimpan!');
   loadDashboardStats();
@@ -5525,6 +5637,7 @@ function loadUsersList() {
     .then(res => {
       if (res && res.data && res.data.length > 0) {
         AppState.usersList = res.data;
+        saveStateToLocal('users');
       }
       renderTableUsers(AppState.usersList);
     })
@@ -5625,6 +5738,7 @@ function submitFormUser(e) {
   if (idx !== -1) AppState.usersList[idx] = payload;
   else AppState.usersList.push(payload);
 
+  saveStateToLocal('users');
   showToast('Pengguna berhasil disimpan!');
   closeModalUser();
   renderTableUsers(AppState.usersList);
@@ -5635,6 +5749,7 @@ function submitFormUser(e) {
 function deleteUserAction(id) {
   if (!confirm('Yakin ingin menghapus pengguna ini?')) return;
   AppState.usersList = AppState.usersList.filter(u => String(u.id) !== String(id));
+  saveStateToLocal('users');
   showToast('Pengguna berhasil dihapus.');
   renderTableUsers(AppState.usersList);
   recordActivity('MANAGE_USER', 'Manajemen Pengguna', `Hapus akun pengguna ID: ${id}`, 'success');
@@ -6429,6 +6544,8 @@ function recordActivity(actionOrObj, moduleName, details, status = 'success') {
       AppState.activityLogs.pop();
     }
 
+    saveStateToLocal('logs');
+
     if (AppState.currentView === 'logs') {
       renderActivityLogsTable();
     }
@@ -6456,6 +6573,7 @@ function loadActivityLogs() {
   }).then(res => {
     if (res && res.data && res.data.length > 0) {
       AppState.activityLogs = res.data;
+      saveStateToLocal('logs');
     } else if (!AppState.activityLogs || AppState.activityLogs.length === 0) {
       AppState.activityLogs = JSON.parse(JSON.stringify(DEMO_DATA.activityLogs || []));
     }
@@ -6758,6 +6876,7 @@ function clearActivityLogsAction() {
   if (!confirm('Apakah Anda yakin ingin membersihkan seluruh riwayat log aktivitas? Tindakan ini tidak dapat dibatalkan.')) return;
 
   AppState.activityLogs = [];
+  saveStateToLocal('logs');
   renderActivityLogsTable();
   showToast('Seluruh riwayat log aktivitas berhasil dibersihkan.');
   callApi('clearActivityLogs', {});
@@ -6765,6 +6884,8 @@ function clearActivityLogsAction() {
 
 // Global window exposure for robust inline onclick execution
 window.AppState = AppState;
+window.saveStateToLocal = saveStateToLocal;
+window.loadStateFromLocal = loadStateFromLocal;
 window.switchView = switchView;
 window.switchDashboardTab = switchDashboardTab;
 window.toggleSidebar = toggleSidebar;
@@ -6858,10 +6979,13 @@ window.getActiveRaporFilterInfo = getActiveRaporFilterInfo;
 
 // 19. APP STARTUP INITIALIZATION
 window.addEventListener('DOMContentLoaded', () => {
+  // Load persistent cache from LocalStorage first so user edits are immediately restored
+  loadStateFromLocal();
+
   document.getElementById('btn-toggle-sidebar')?.addEventListener('click', toggleSidebar);
   document.getElementById('btn-close-sidebar')?.addEventListener('click', toggleSidebar);
 
-  // Instantly apply demo/default state
+  // Instantly apply state
   applyCmsTheme(AppState.cmsSettings);
   populateAcademicYearsFilterDropdowns();
   populateSemesterFilterDropdowns();
@@ -6879,6 +7003,10 @@ window.addEventListener('DOMContentLoaded', () => {
   // Background fetch from Google Sheets
   loadCmsSettings();
   loadMuridList();
+  loadNilaiAkademik();
+  loadTujuanPembelajaran();
+  loadNilaiKepemimpinan();
+  loadNilaiDiniyah();
   loadActivityLogs();
 });
 </script>

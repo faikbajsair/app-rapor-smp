@@ -142,7 +142,43 @@ function findRowByField(sheet, fieldName, fieldValue) {
   if (colIndex === -1) return null;
   
   for (let i = 1; i < data.length; i++) {
-    if (String(data[i][colIndex]) === String(fieldValue)) {
+    if (String(data[i][colIndex]).trim().toLowerCase() === String(fieldValue).trim().toLowerCase()) {
+      return {
+        rowIndex: i + 1,
+        headers: headers,
+        values: data[i]
+      };
+    }
+  }
+  return null;
+}
+
+/**
+ * Helper: Mengambil baris berdasarkan kombinasi beberapa kriteria (Composite Key)
+ */
+function findRowByCompositeKey(sheet, criteria) {
+  const data = sheet.getDataRange().getValues();
+  if (data.length <= 1) return null;
+  
+  const headers = data[0].map(h => String(h).trim());
+  const colMap = {};
+  for (const k in criteria) {
+    let idx = headers.indexOf(k);
+    if (idx === -1 && k === 'nama_murid') idx = headers.indexOf('nama_santri');
+    if (idx !== -1) colMap[k] = idx;
+  }
+  
+  for (let i = 1; i < data.length; i++) {
+    let match = true;
+    for (const k in colMap) {
+      const valExpected = String(criteria[k] || '').trim().toLowerCase();
+      const valActual = String(data[i][colMap[k]] || '').trim().toLowerCase();
+      if (valExpected && valActual !== valExpected) {
+        match = false;
+        break;
+      }
+    }
+    if (match) {
       return {
         rowIndex: i + 1,
         headers: headers,
@@ -943,8 +979,6 @@ function getNilaiAkademikList(filters = {}) {
 
 function saveNilaiAkademik(data) {
   const sheet = getOrCreateSheet(DB_CONFIG.SHEET_AKADEMIK);
-  const isNew = !data.id;
-  const id = isNew ? 'NA-' + Utilities.getUuid().substring(0, 6).toUpperCase() : data.id;
   
   const uts = Number(data.nilai_uts !== undefined && data.nilai_uts !== '' ? data.nilai_uts : (data.nilai_akhir || data.nilai || 85));
   const tugas = Number(data.nilai_tugas !== undefined && data.nilai_tugas !== '' ? data.nilai_tugas : uts);
@@ -961,7 +995,21 @@ function saveNilaiAkademik(data) {
     else predikat = 'D';
   }
   
-  const existing = findRowByField(sheet, 'id', id);
+  let existing = null;
+  if (data.id) {
+    existing = findRowByField(sheet, 'id', data.id);
+  }
+  if (!existing && data.nis && data.mata_pelajaran) {
+    existing = findRowByCompositeKey(sheet, {
+      nis: data.nis,
+      mata_pelajaran: data.mata_pelajaran,
+      semester: data.semester || 'Ganjil',
+      tahun_ajaran: data.tahun_ajaran || '2026/2027'
+    });
+  }
+  
+  const id = existing ? (existing.values[existing.headers.indexOf('id')] || data.id || ('NA-' + Utilities.getUuid().substring(0, 6).toUpperCase())) : (data.id || ('NA-' + Utilities.getUuid().substring(0, 6).toUpperCase()));
+  
   if (existing) {
     const rowIdx = existing.rowIndex;
     const headers = existing.headers;
@@ -1103,16 +1151,28 @@ function getNilaiKepemimpinanList(filters = {}) {
 
 function saveNilaiKepemimpinan(data) {
   const sheet = getOrCreateSheet(DB_CONFIG.SHEET_KEPEMIMPINAN);
-  const isNew = !data.id;
-  const id = isNew ? 'NK-' + Utilities.getUuid().substring(0, 6).toUpperCase() : data.id;
   
-  const existing = findRowByField(sheet, 'id', id);
+  let existing = null;
+  if (data.id) {
+    existing = findRowByField(sheet, 'id', data.id);
+  }
+  if (!existing && data.nis) {
+    existing = findRowByCompositeKey(sheet, {
+      nis: data.nis,
+      semester: data.semester || 'Ganjil',
+      tahun_ajaran: data.tahun_ajaran || '2026/2027'
+    });
+  }
+  
+  const id = existing ? (existing.values[existing.headers.indexOf('id')] || data.id || ('NK-' + Utilities.getUuid().substring(0, 6).toUpperCase())) : (data.id || ('NK-' + Utilities.getUuid().substring(0, 6).toUpperCase()));
+  
   if (existing) {
     const rowIdx = existing.rowIndex;
     const headers = existing.headers;
+    const payload = { ...data, id: id };
     headers.forEach((h, colIdx) => {
-      if (data[h] !== undefined) {
-        sheet.getRange(rowIdx, colIdx + 1).setValue(data[h]);
+      if (payload[h] !== undefined) {
+        sheet.getRange(rowIdx, colIdx + 1).setValue(payload[h]);
       }
     });
   } else {
@@ -1278,16 +1338,28 @@ function getNilaiDiniyahList(filters = {}) {
 
 function saveNilaiDiniyah(data) {
   const sheet = getOrCreateSheet(DB_CONFIG.SHEET_DINIYAH);
-  const isNew = !data.id;
-  const id = isNew ? 'ND-' + Utilities.getUuid().substring(0, 6).toUpperCase() : data.id;
   
-  const existing = findRowByField(sheet, 'id', id);
+  let existing = null;
+  if (data.id) {
+    existing = findRowByField(sheet, 'id', data.id);
+  }
+  if (!existing && data.nis) {
+    existing = findRowByCompositeKey(sheet, {
+      nis: data.nis,
+      semester: data.semester || 'Ganjil',
+      tahun_ajaran: data.tahun_ajaran || '2026/2027'
+    });
+  }
+  
+  const id = existing ? (existing.values[existing.headers.indexOf('id')] || data.id || ('ND-' + Utilities.getUuid().substring(0, 6).toUpperCase())) : (data.id || ('ND-' + Utilities.getUuid().substring(0, 6).toUpperCase()));
+  
   if (existing) {
     const rowIdx = existing.rowIndex;
     const headers = existing.headers;
+    const payload = { ...data, id: id };
     headers.forEach((h, colIdx) => {
-      if (data[h] !== undefined) {
-        sheet.getRange(rowIdx, colIdx + 1).setValue(data[h]);
+      if (payload[h] !== undefined) {
+        sheet.getRange(rowIdx, colIdx + 1).setValue(payload[h]);
       }
     });
   } else {
@@ -1349,16 +1421,28 @@ function getTujuanPembelajaranList(filters = {}) {
 
 function saveTujuanPembelajaran(data) {
   const sheet = getOrCreateSheet(DB_CONFIG.SHEET_TP);
-  const isNew = !data.id;
-  const id = isNew ? 'TP-' + Utilities.getUuid().substring(0, 8).toUpperCase() : data.id;
   
-  const existing = findRowByField(sheet, 'id', id);
+  let existing = null;
+  if (data.id) {
+    existing = findRowByField(sheet, 'id', data.id);
+  }
+  if (!existing && data.kode_tp && data.mata_pelajaran) {
+    existing = findRowByCompositeKey(sheet, {
+      kode_tp: data.kode_tp,
+      mata_pelajaran: data.mata_pelajaran,
+      fase: data.fase || 'Fase D'
+    });
+  }
+  
+  const id = existing ? (existing.values[existing.headers.indexOf('id')] || data.id || ('TP-' + Utilities.getUuid().substring(0, 8).toUpperCase())) : (data.id || ('TP-' + Utilities.getUuid().substring(0, 8).toUpperCase()));
+  
   if (existing) {
     const rowIdx = existing.rowIndex;
     const headers = existing.headers;
+    const payload = { ...data, id: id };
     headers.forEach((h, colIdx) => {
-      if (data[h] !== undefined) {
-        sheet.getRange(rowIdx, colIdx + 1).setValue(data[h]);
+      if (payload[h] !== undefined) {
+        sheet.getRange(rowIdx, colIdx + 1).setValue(payload[h]);
       }
     });
   } else {
