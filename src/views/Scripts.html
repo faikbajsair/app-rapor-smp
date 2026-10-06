@@ -76,7 +76,7 @@ function formatWaliKelasTitleCase(name) {
   return `${mainName}, ${titles}`;
 }
 
-const DEFAULT_GAS_URL = 'https://script.google.com/macros/s/AKfycbz9cCsXrFgtmjhuyyAL2vj4cQ1Iemrl-4aHQyX-cWRrVYW0-DoqdpsJ3JS2wZoSjGj3/exec';
+const DEFAULT_GAS_URL = 'https://script.google.com/macros/s/AKfycbz35FznhokF4kD3R9diXj1jY1aKxTXcMvAMrRccD9ptRAM-wIf3tCOQLMsgZ5PjLUgT/exec';
 
 const MAPEL_LIST_16 = [
   'Akidah',
@@ -1192,14 +1192,18 @@ function callApi(actionName, payload = {}) {
         });
       
       switch (actionName) {
+        case 'ping': runner.apiPing ? runner.apiPing() : resolve({ success: true, message: 'PONG' }); break;
         case 'initDatabase': runner.apiInitDatabase(); break;
         case 'login': runner.apiLogin(payload.username, payload.password); break;
         case 'getSettings': runner.apiGetSettings(); break;
         case 'updateSettings': runner.apiUpdateSettings(payload); break;
+        case 'saveCmsSettings': runner.apiSaveCmsSettings(payload.settings || payload); break;
+        case 'addAcademicYearSetting': runner.apiAddAcademicYearSetting(payload.academic_year || payload.newYear, payload.semester); break;
+        case 'getAcademicYearsList': runner.apiGetAcademicYearsList(); break;
         case 'getSummaryStats': runner.apiGetSummaryStats(); break;
         case 'getMurid': runner.apiGetMurid(payload.kelas); break;
         case 'saveMurid': runner.apiSaveMurid(payload); break;
-        case 'saveBulkMuridData': runner.apiSaveBulkMuridData(payload); break;
+        case 'saveBulkMuridData': runner.apiSaveBulkMuridData(payload.items || payload); break;
         case 'deleteMurid': runner.apiDeleteMurid(payload.nis); break;
         case 'getSantri': runner.apiGetMurid(payload.kelas); break;
         case 'saveSantri': runner.apiSaveMurid(payload); break;
@@ -1207,9 +1211,11 @@ function callApi(actionName, payload = {}) {
         case 'getUsers': runner.apiGetUsers(); break;
         case 'saveUser': runner.apiSaveUser(payload); break;
         case 'deleteUser': runner.apiDeleteUser(payload.id); break;
+        case 'changePassword': runner.apiChangePassword(payload.userId, payload.oldPassword, payload.newPassword); break;
         case 'getNilaiAkademik': runner.apiGetNilaiAkademik(payload); break;
         case 'saveNilaiAkademik': runner.apiSaveNilaiAkademik(payload); break;
         case 'saveBulkNilaiAkademik': runner.apiSaveBulkNilaiAkademik(payload); break;
+        case 'saveBulkUploadNilaiAkademik': runner.apiSaveBulkUploadNilaiAkademik(payload); break;
         case 'deleteNilaiAkademik': runner.apiDeleteNilaiAkademik(payload.id); break;
         case 'getTujuanPembelajaran':
         case 'getTP': runner.apiGetTujuanPembelajaran(payload); break;
@@ -1223,12 +1229,18 @@ function callApi(actionName, payload = {}) {
         case 'getNilaiKepribadian': runner.apiGetNilaiKepemimpinan(payload); break;
         case 'saveNilaiKepemimpinan':
         case 'saveNilaiKepribadian': runner.apiSaveNilaiKepemimpinan(payload); break;
-        case 'saveBulkKepribadian': runner.apiSaveBulkKepribadian(payload); break;
+        case 'saveBulkKepribadian': runner.apiSaveBulkKepribadian(payload.items || payload); break;
         case 'deleteNilaiKepemimpinan':
         case 'deleteNilaiKepribadian': runner.apiDeleteNilaiKepemimpinan(payload.id); break;
+        case 'getSklKepemimpinan': runner.apiGetSklKepemimpinan(payload); break;
+        case 'saveSklKepemimpinan': runner.apiSaveSklKepemimpinan(payload); break;
+        case 'saveBulkSklKepemimpinan': runner.apiSaveBulkSklKepemimpinan(payload.items || payload); break;
+        case 'deleteSklKepemimpinan': runner.apiDeleteSklKepemimpinan(payload.id); break;
         case 'getNilaiDiniyah': runner.apiGetNilaiDiniyah(payload); break;
         case 'saveNilaiDiniyah': runner.apiSaveNilaiDiniyah(payload); break;
         case 'deleteNilaiDiniyah': runner.apiDeleteNilaiDiniyah(payload.id); break;
+        case 'getRaporPublishStatus': runner.apiGetRaporPublishStatus(payload); break;
+        case 'setRaporPublishStatus': runner.apiSetRaporPublishStatus(payload); break;
         case 'forceSyncDatabase': runner.apiForceSyncDatabase(); break;
         case 'getMuridReport': runner.apiGetMuridReport(payload.nis); break;
         case 'getSantriReport': runner.apiGetMuridReport(payload.nis); break;

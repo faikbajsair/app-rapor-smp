@@ -22,11 +22,8 @@ function getMuridReportData(nis) {
   // 1. Data Rekap Nilai Akademik & Capaian Kompetensi
   const rawAkademik = getNilaiAkademikList({ nis: cleanNis });
   let akademikFiltered = rawAkademik.filter(n => 
-    (String(n.semester).toLowerCase() === currentSemester.toLowerCase() || 
-     String(n.semester).toLowerCase().includes('ganjil') || 
-     String(n.semester).toLowerCase().includes('1') || 
-     String(n.semester).toLowerCase().includes('satu')) &&
-    (String(n.tahun_ajaran) === currentYear || !n.tahun_ajaran)
+    (normalizeSemester(n.semester) === normalizeSemester(currentSemester) || !n.semester) &&
+    (normalizeYear(n.tahun_ajaran) === normalizeYear(currentYear) || !n.tahun_ajaran)
   );
   if (akademikFiltered.length === 0 && rawAkademik.length > 0) {
     akademikFiltered = rawAkademik;
@@ -41,11 +38,11 @@ function getMuridReportData(nis) {
     : 0;
   
   // 2. Data Ahlaq & Kepribadian (6 Aspek Al-Imam + Catatan Diperhatikan)
-  const rawKepemimpinan = getNilaiKepemimpinanList({ nis: nis });
+  const rawKepemimpinan = getNilaiKepemimpinanList({ nis: cleanNis });
   const kepribadian = rawKepemimpinan.find(n => 
-    String(n.semester).toLowerCase() === currentSemester.toLowerCase() &&
-    String(n.tahun_ajaran) === currentYear
-  ) || {
+    normalizeSemester(n.semester) === normalizeSemester(currentSemester) &&
+    normalizeYear(n.tahun_ajaran) === normalizeYear(currentYear)
+  ) || rawKepemimpinan[0] || {
     ibadah: 'Jadikan ibadah sebagai kebutuhan, bukan hanya kewajiban.',
     akhlak: 'Keseimbangan antara kemampuan akademis serta sikap & akhlak mulia menjadikanmu insan yang lebih baik.',
     kedisiplinan_kerajinan: 'Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita.',
@@ -57,11 +54,11 @@ function getMuridReportData(nis) {
   };
   
   // 3. Data Diniyah & Tahfidz
-  const rawDiniyah = getNilaiDiniyahList({ nis: nis });
+  const rawDiniyah = getNilaiDiniyahList({ nis: cleanNis });
   const diniyah = rawDiniyah.find(n => 
-    String(n.semester).toLowerCase() === currentSemester.toLowerCase() &&
-    String(n.tahun_ajaran) === currentYear
-  ) || {
+    normalizeSemester(n.semester) === normalizeSemester(currentSemester) &&
+    normalizeYear(n.tahun_ajaran) === normalizeYear(currentYear)
+  ) || rawDiniyah[0] || {
     ziyadah_juz: 'Juz 30 & Juz 29 (Lancar)',
     murojaah_juz: 'Juz 30 (Mutqin)',
     nilai_tahfidz: 94,
@@ -72,10 +69,10 @@ function getMuridReportData(nis) {
   };
   
   // 4. Data SKL Kepemimpinan (28 Indikator)
-  const rawSkl = getSklKepemimpinanList({ nis: nis });
+  const rawSkl = getSklKepemimpinanList({ nis: cleanNis });
   const sklEntry = rawSkl.find(n => 
-    String(n.semester).toLowerCase() === currentSemester.toLowerCase() &&
-    String(n.tahun_ajaran) === currentYear
+    normalizeSemester(n.semester) === normalizeSemester(currentSemester) &&
+    normalizeYear(n.tahun_ajaran) === normalizeYear(currentYear)
   ) || rawSkl[0] || {
     scores: {},
     catatan_walas: 'Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan'

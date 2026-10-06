@@ -78,9 +78,7 @@ function getOrCreateSheet(sheetName, headers = []) {
   if (!sheet) {
     sheet = ss.insertSheet(sheetName);
     if (headers && headers.length > 0) {
-      sheet.appendRow(headers);
-      
-      // Styling header sheet
+      sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
       const headerRange = sheet.getRange(1, 1, 1, headers.length);
       headerRange.setBackground('#1e293b')
                  .setFontColor('#ffffff')
@@ -88,8 +86,65 @@ function getOrCreateSheet(sheetName, headers = []) {
                  .setHorizontalAlignment('center');
       sheet.setFrozenRows(1);
     }
+  } else if (headers && headers.length > 0) {
+    ensureSheetHeaders(sheet, headers);
   }
   return sheet;
+}
+
+/**
+ * Self-healing Schema: Memastikan seluruh kolom wajib ada di header baris 1 tanpa merusak data
+ */
+function ensureSheetHeaders(sheet, expectedHeaders) {
+  if (!expectedHeaders || expectedHeaders.length === 0) return [];
+  const lastCol = sheet.getLastColumn();
+  if (lastCol === 0) {
+    sheet.getRange(1, 1, 1, expectedHeaders.length).setValues([expectedHeaders]);
+    sheet.getRange(1, 1, 1, expectedHeaders.length)
+      .setBackground('#1e293b')
+      .setFontColor('#ffffff')
+      .setFontWeight('bold')
+      .setHorizontalAlignment('center');
+    sheet.setFrozenRows(1);
+    return expectedHeaders;
+  }
+  
+  const currentHeaders = sheet.getRange(1, 1, 1, lastCol).getValues()[0].map(h => String(h).trim());
+  const missingHeaders = [];
+  expectedHeaders.forEach(eh => {
+    const exists = currentHeaders.some(ch => ch.toLowerCase() === eh.toLowerCase());
+    if (!exists) {
+      missingHeaders.push(eh);
+    }
+  });
+  
+  if (missingHeaders.length > 0) {
+    const startCol = lastCol + 1;
+    const addRange = sheet.getRange(1, startCol, 1, missingHeaders.length);
+    addRange.setValues([missingHeaders]);
+    addRange.setBackground('#1e293b').setFontColor('#ffffff').setFontWeight('bold').setHorizontalAlignment('center');
+    return currentHeaders.concat(missingHeaders);
+  }
+  return currentHeaders;
+}
+
+/**
+ * Helper Normalisasi Semester (Mendukung Ganjil, I, 1, Tengah Semester 1, dll)
+ */
+function normalizeSemester(sem) {
+  if (!sem) return '1';
+  const s = String(sem).toLowerCase().trim();
+  if (s.includes('1') || s.includes('ganjil') || s.includes('satu') || s === 'i') return '1';
+  if (s.includes('2') || s.includes('genap') || s.includes('dua') || s === 'ii') return '2';
+  return s;
+}
+
+/**
+ * Helper Normalisasi Tahun Ajaran (Mendukung 2026/2027, 2026-2027, dll)
+ */
+function normalizeYear(year) {
+  if (!year) return '';
+  return String(year).replace(/[^0-9]/g, '');
 }
 
 /**
@@ -133,16 +188,19 @@ function findRowByField(sheet, fieldName, fieldValue) {
   if (data.length <= 1) return null;
   
   const headers = data[0].map(h => String(h).trim());
-  let colIndex = headers.indexOf(fieldName);
+  const normField = fieldName.toLowerCase().trim();
+  let colIndex = headers.findIndex(h => h.toLowerCase().trim() === normField);
   
   // Fallback field check
-  if (colIndex === -1 && fieldName === 'nama_murid') {
-    colIndex = headers.indexOf('nama_santri');
+  if (colIndex === -1 && normField === 'nama_murid') {
+    colIndex = headers.findIndex(h => h.toLowerCase().trim() === 'nama_santri');
   }
   if (colIndex === -1) return null;
   
+  const expectedStr = String(fieldValue).trim().toLowerCase();
   for (let i = 1; i < data.length; i++) {
-    if (String(data[i][colIndex]).trim().toLowerCase() === String(fieldValue).trim().toLowerCase()) {
+    const actualStr = String(data[i][colIndex]).trim().toLowerCase();
+    if (actualStr === expectedStr) {
       return {
         rowIndex: i + 1,
         headers: headers,
@@ -163,19 +221,42 @@ function findRowByCompositeKey(sheet, criteria) {
   const headers = data[0].map(h => String(h).trim());
   const colMap = {};
   for (const k in criteria) {
-    let idx = headers.indexOf(k);
-    if (idx === -1 && k === 'nama_murid') idx = headers.indexOf('nama_santri');
-    if (idx !== -1) colMap[k] = idx;
+    const normK = k.toLowerCase().trim();
+    let idx = headers.findIndex(h => h.toLowerCase().trim() === normK);
+    if (idx === -1 && normK === 'nama_murid') idx = headers.findIndex(h => h.toLowerCase().trim() === 'nama_santri');
+    if (idx !== -1) colMap[normK] = { colIdx: idx, origKey: k };
   }
   
   for (let i = 1; i < data.length; i++) {
     let match = true;
-    for (const k in colMap) {
-      const valExpected = String(criteria[k] || '').trim().toLowerCase();
-      const valActual = String(data[i][colMap[k]] || '').trim().toLowerCase();
-      if (valExpected && valActual !== valExpected) {
-        match = false;
-        break;
+    for (const normK in colMap) {
+      const colIdx = colMap[normK].colIdx;
+      const origKey = colMap[normK].origKey;
+      const valExpected = criteria[origKey] !== undefined ? String(criteria[origKey]).trim() : '';
+      const valActual = data[i][colIdx] !== undefined ? String(data[i][colIdx]).trim() : '';
+      
+      if (!valExpected) continue;
+
+      if (normK === 'semester') {
+        if (normalizeSemester(valActual) !== normalizeSemester(valExpected)) {
+          match = false;
+          break;
+        }
+      } else if (normK === 'tahun_ajaran' || normK === 'academic_year') {
+        if (normalizeYear(valActual) !== normalizeYear(valExpected)) {
+          match = false;
+          break;
+        }
+      } else if (normK === 'nis' || normK === 'id') {
+        if (valActual.toLowerCase() !== valExpected.toLowerCase()) {
+          match = false;
+          break;
+        }
+      } else {
+        if (valActual.toLowerCase() !== valExpected.toLowerCase()) {
+          match = false;
+          break;
+        }
       }
     }
     if (match) {
@@ -978,136 +1059,274 @@ function getNilaiAkademikList(filters = {}) {
 }
 
 function saveNilaiAkademik(data) {
-  const sheet = getOrCreateSheet(DB_CONFIG.SHEET_AKADEMIK);
-  
-  const uts = Number(data.nilai_uts !== undefined && data.nilai_uts !== '' ? data.nilai_uts : (data.nilai_akhir || data.nilai || 85));
-  const tugas = Number(data.nilai_tugas !== undefined && data.nilai_tugas !== '' ? data.nilai_tugas : uts);
-  const akhir = data.nilai_akhir !== undefined && data.nilai_akhir !== '' ? Number(data.nilai_akhir) : uts;
-  const kkm = Number(data.kkm) || 75;
-  const tpOptimal = Array.isArray(data.tp_optimal) ? data.tp_optimal.join(',') : (data.tp_optimal || '');
-  const tpPeningkatan = Array.isArray(data.tp_peningkatan) ? data.tp_peningkatan.join(',') : (data.tp_peningkatan || '');
-  
-  let predikat = data.predikat;
-  if (!predikat) {
-    if (akhir >= 92) predikat = 'A';
-    else if (akhir >= 84) predikat = 'B';
-    else if (akhir >= 75) predikat = 'C';
-    else predikat = 'D';
-  }
-  
-  let existing = null;
-  if (data.id) {
-    existing = findRowByField(sheet, 'id', data.id);
-  }
-  if (!existing && data.nis && data.mata_pelajaran) {
-    existing = findRowByCompositeKey(sheet, {
-      nis: data.nis,
-      mata_pelajaran: data.mata_pelajaran,
-      semester: data.semester || 'Ganjil',
-      tahun_ajaran: data.tahun_ajaran || '2026/2027'
-    });
-  }
-  
-  const id = existing ? (existing.values[existing.headers.indexOf('id')] || data.id || ('NA-' + Utilities.getUuid().substring(0, 6).toUpperCase())) : (data.id || ('NA-' + Utilities.getUuid().substring(0, 6).toUpperCase()));
-  
-  if (existing) {
-    const rowIdx = existing.rowIndex;
-    const headers = existing.headers;
+  try {
+    const requiredHeaders = [
+      'id', 'nis', 'semester', 'tahun_ajaran', 'mata_pelajaran', 'kkm',
+      'nilai_tugas', 'nilai_uts', 'nilai_akhir', 'predikat',
+      'capaian_kompetensi', 'catatan_guru', 'tp_optimal', 'tp_peningkatan'
+    ];
+
+    const sheet = getOrCreateSheet(DB_CONFIG.SHEET_AKADEMIK, requiredHeaders);
+    const headers = ensureSheetHeaders(sheet, requiredHeaders);
+
+    const itemNis = String(data.nis || '').trim();
+    const itemMapel = String(data.mata_pelajaran || '').trim();
+    const itemSem = data.semester || 'Ganjil';
+    const itemTa = data.tahun_ajaran || '2026/2027';
+
+    const uts = Number(data.nilai_uts !== undefined && data.nilai_uts !== '' && !isNaN(data.nilai_uts) ? data.nilai_uts : (data.nilai_akhir || data.nilai || 85));
+    const tugas = Number(data.nilai_tugas !== undefined && data.nilai_tugas !== '' && !isNaN(data.nilai_tugas) ? data.nilai_tugas : uts);
+    const akhir = Number(data.nilai_akhir !== undefined && data.nilai_akhir !== '' && !isNaN(data.nilai_akhir) ? data.nilai_akhir : uts);
+    const kkm = Number(data.kkm) || 75;
+    const tpOptimal = Array.isArray(data.tp_optimal) ? data.tp_optimal.join(', ') : (data.tp_optimal || '');
+    const tpPeningkatan = Array.isArray(data.tp_peningkatan) ? data.tp_peningkatan.join(', ') : (data.tp_peningkatan || '');
+    const capaian = data.capaian_kompetensi || data.catatan_guru || '';
+
+    let predikat = data.predikat;
+    if (!predikat || predikat === '-') {
+      if (akhir >= 92) predikat = 'A';
+      else if (akhir >= 84) predikat = 'B';
+      else if (akhir >= 75) predikat = 'C';
+      else if (akhir > 0) predikat = 'D';
+      else predikat = '-';
+    }
+
+    let existing = null;
+    if (data.id) {
+      existing = findRowByField(sheet, 'id', data.id);
+    }
+    if (!existing && itemNis && itemMapel) {
+      existing = findRowByCompositeKey(sheet, {
+        nis: itemNis,
+        mata_pelajaran: itemMapel,
+        semester: itemSem,
+        tahun_ajaran: itemTa
+      });
+    }
+
+    const id = existing
+      ? (existing.values[existing.headers.indexOf('id')] || data.id || ('NA-' + itemNis + '-' + itemMapel.replace(/\s+/g, '')))
+      : (data.id || ('NA-' + itemNis + '-' + itemMapel.replace(/\s+/g, '')));
+
     const payload = {
       ...data,
       id: id,
+      nis: itemNis,
+      semester: itemSem,
+      tahun_ajaran: itemTa,
+      mata_pelajaran: itemMapel,
       kkm: kkm,
       nilai_tugas: tugas,
       nilai_uts: uts,
       nilai_akhir: akhir,
       predikat: predikat,
+      capaian_kompetensi: capaian,
+      catatan_guru: capaian,
       tp_optimal: tpOptimal,
       tp_peningkatan: tpPeningkatan
     };
-    headers.forEach((h, colIdx) => {
-      if (payload[h] !== undefined) {
-        sheet.getRange(rowIdx, colIdx + 1).setValue(payload[h]);
-      }
-    });
-  } else {
-    sheet.appendRow([
-      id,
-      data.nis,
-      data.semester || 'Ganjil',
-      data.tahun_ajaran || '2026/2027',
-      data.mata_pelajaran || '',
-      kkm,
-      tugas,
-      uts,
-      akhir,
-      predikat,
-      data.capaian_kompetensi || '',
-      data.catatan_guru || '',
-      tpOptimal,
-      tpPeningkatan
-    ]);
+
+    if (existing) {
+      const rowIdx = existing.rowIndex;
+      headers.forEach((h, colIdx) => {
+        const normH = String(h).toLowerCase().trim();
+        if (payload[normH] !== undefined) {
+          sheet.getRange(rowIdx, colIdx + 1).setValue(payload[normH]);
+        } else if (payload[h] !== undefined) {
+          sheet.getRange(rowIdx, colIdx + 1).setValue(payload[h]);
+        }
+      });
+    } else {
+      const newRow = headers.map(h => {
+        const normH = String(h).toLowerCase().trim();
+        if (payload[normH] !== undefined) return payload[normH];
+        if (payload[h] !== undefined) return payload[h];
+        return '';
+      });
+      sheet.appendRow(newRow);
+    }
+
+    return { status: 'success', success: true, message: 'Nilai akademik berhasil disimpan', id: id };
+  } catch (err) {
+    console.error('Error saveNilaiAkademik:', err);
+    return { status: 'error', success: false, message: 'Gagal menyimpan nilai akademik: ' + err.toString() };
   }
-  return { status: 'success', message: 'Nilai akademik berhasil disimpan', id: id };
 }
 
 /**
- * Bulk Save Nilai Akademik per Mapel Kelas (Teacher Speed Workflow)
+ * Bulk Save Nilai Akademik per Mapel Kelas (Teacher Speed Workflow - Fast In-Memory Batch)
  */
 function saveBulkNilaiAkademik(payload) {
-  const { mata_pelajaran, kkm, semester, tahun_ajaran, items } = payload;
-  if (!items || !Array.isArray(items)) return { status: 'error', message: 'Daftar nilai tidak valid' };
-  
-  items.forEach(item => {
-    saveNilaiAkademik({
-      id: item.id || '',
-      nis: item.nis,
-      mata_pelajaran: mata_pelajaran,
-      kkm: kkm || 75,
-      semester: semester || 'Ganjil',
-      tahun_ajaran: tahun_ajaran || '2026/2027',
-      nilai_tugas: item.nilai_tugas || item.nilai || 0,
-      nilai_uts: item.nilai_uts || item.nilai || 0,
-      nilai_akhir: item.nilai_akhir || item.nilai || 0,
-      predikat: item.predikat || '',
-      capaian_kompetensi: item.capaian_kompetensi || '',
-      catatan_guru: item.catatan_guru || '',
-      tp_optimal: item.tp_optimal || '',
-      tp_peningkatan: item.tp_peningkatan || ''
+  try {
+    const items = payload.items || (Array.isArray(payload) ? payload : []);
+    const mapel = payload.mata_pelajaran || (items[0] && items[0].mata_pelajaran) || '';
+    const semester = payload.semester || 'Ganjil';
+    const tahunAjaran = payload.tahun_ajaran || '2026/2027';
+    const kkmDefault = Number(payload.kkm) || 75;
+
+    if (!items || items.length === 0) {
+      return { status: 'error', success: false, message: 'Daftar nilai tidak boleh kosong' };
+    }
+
+    const requiredHeaders = [
+      'id', 'nis', 'semester', 'tahun_ajaran', 'mata_pelajaran', 'kkm',
+      'nilai_tugas', 'nilai_uts', 'nilai_akhir', 'predikat',
+      'capaian_kompetensi', 'catatan_guru', 'tp_optimal', 'tp_peningkatan'
+    ];
+
+    const sheet = getOrCreateSheet(DB_CONFIG.SHEET_AKADEMIK, requiredHeaders);
+    const headers = ensureSheetHeaders(sheet, requiredHeaders);
+    
+    // Read all existing rows at once for fast batch processing
+    const lastRow = sheet.getLastRow();
+    const lastCol = sheet.getLastColumn();
+    let allData = lastRow > 1 ? sheet.getRange(2, 1, lastRow - 1, lastCol).getValues() : [];
+
+    // Create index of existing rows
+    const rowMapById = new Map();
+    const rowMapByComp = new Map();
+
+    const idColIdx = headers.findIndex(h => h.toLowerCase() === 'id');
+    const nisColIdx = headers.findIndex(h => h.toLowerCase() === 'nis');
+    const mapelColIdx = headers.findIndex(h => h.toLowerCase() === 'mata_pelajaran');
+    const semColIdx = headers.findIndex(h => h.toLowerCase() === 'semester');
+    const taColIdx = headers.findIndex(h => h.toLowerCase() === 'tahun_ajaran');
+
+    allData.forEach((row, idx) => {
+      const rowId = idColIdx !== -1 ? String(row[idColIdx]).trim() : '';
+      const rowNis = nisColIdx !== -1 ? String(row[nisColIdx]).trim() : '';
+      const rowMapel = mapelColIdx !== -1 ? String(row[mapelColIdx]).trim().toLowerCase() : '';
+      const rowSem = semColIdx !== -1 ? normalizeSemester(row[semColIdx]) : '';
+      const rowTa = taColIdx !== -1 ? normalizeYear(row[taColIdx]) : '';
+
+      if (rowId) rowMapById.set(rowId.toLowerCase(), idx);
+      if (rowNis && rowMapel) {
+        const compKey = `${rowNis}|${rowMapel}|${rowSem}|${rowTa}`;
+        rowMapByComp.set(compKey, idx);
+        const looseCompKey = `${rowNis}|${rowMapel}`;
+        if (!rowMapByComp.has(looseCompKey)) {
+          rowMapByComp.set(looseCompKey, idx);
+        }
+      }
     });
-  });
-  
-  return { status: 'success', message: 'Berhasil menyimpan nilai mata pelajaran ' + mata_pelajaran + ' untuk ' + items.length + ' murid!' };
+
+    const newRowsToAppend = [];
+    let updatedCount = 0;
+    let createdCount = 0;
+
+    items.forEach(item => {
+      const itemNis = String(item.nis || '').trim();
+      const itemMapel = (item.mata_pelajaran || mapel).trim();
+      const itemSem = item.semester || semester || 'Ganjil';
+      const itemTa = item.tahun_ajaran || tahunAjaran || '2026/2027';
+      const itemKkm = Number(item.kkm) || kkmDefault;
+
+      const uts = Number(item.nilai_uts !== undefined && item.nilai_uts !== '' && !isNaN(item.nilai_uts) ? item.nilai_uts : (item.nilai_akhir || item.nilai || 0));
+      const tugas = Number(item.nilai_tugas !== undefined && item.nilai_tugas !== '' && !isNaN(item.nilai_tugas) ? item.nilai_tugas : uts);
+      const akhir = Number(item.nilai_akhir !== undefined && item.nilai_akhir !== '' && !isNaN(item.nilai_akhir) ? item.nilai_akhir : uts);
+      
+      let predikat = item.predikat;
+      if (!predikat || predikat === '-') {
+        if (akhir >= 92) predikat = 'A';
+        else if (akhir >= 84) predikat = 'B';
+        else if (akhir >= 75) predikat = 'C';
+        else if (akhir > 0) predikat = 'D';
+        else predikat = '-';
+      }
+
+      const tpOptimal = Array.isArray(item.tp_optimal) ? item.tp_optimal.join(', ') : (item.tp_optimal || '');
+      const tpPeningkatan = Array.isArray(item.tp_peningkatan) ? item.tp_peningkatan.join(', ') : (item.tp_peningkatan || '');
+      const capaian = item.capaian_kompetensi || item.catatan_guru || '';
+
+      const rowPayload = {
+        nis: itemNis,
+        semester: itemSem,
+        tahun_ajaran: itemTa,
+        mata_pelajaran: itemMapel,
+        kkm: itemKkm,
+        nilai_tugas: tugas,
+        nilai_uts: uts,
+        nilai_akhir: akhir,
+        predikat: predikat,
+        capaian_kompetensi: capaian,
+        catatan_guru: capaian,
+        tp_optimal: tpOptimal,
+        tp_peningkatan: tpPeningkatan
+      };
+
+      let matchedIdx = -1;
+      if (item.id && rowMapById.has(String(item.id).toLowerCase().trim())) {
+        matchedIdx = rowMapById.get(String(item.id).toLowerCase().trim());
+      }
+      if (matchedIdx === -1 && itemNis && itemMapel) {
+        const strictKey = `${itemNis}|${itemMapel.toLowerCase()}|${normalizeSemester(itemSem)}|${normalizeYear(itemTa)}`;
+        if (rowMapByComp.has(strictKey)) {
+          matchedIdx = rowMapByComp.get(strictKey);
+        } else {
+          const looseKey = `${itemNis}|${itemMapel.toLowerCase()}`;
+          if (rowMapByComp.has(looseKey)) {
+            matchedIdx = rowMapByComp.get(looseKey);
+          }
+        }
+      }
+
+      if (matchedIdx !== -1) {
+        const existingRow = allData[matchedIdx];
+        const currentId = idColIdx !== -1 ? existingRow[idColIdx] : (item.id || ('NA-' + itemNis + '-' + itemMapel.replace(/\s+/g, '')));
+        rowPayload.id = currentId;
+
+        headers.forEach((h, colIdx) => {
+          const normH = String(h).toLowerCase().trim();
+          if (rowPayload[normH] !== undefined) {
+            existingRow[colIdx] = rowPayload[normH];
+          } else if (rowPayload[h] !== undefined) {
+            existingRow[colIdx] = rowPayload[h];
+          }
+        });
+        updatedCount++;
+      } else {
+        const newId = item.id || `NA-${itemNis}-${itemMapel.replace(/\s+/g, '')}`;
+        rowPayload.id = newId;
+
+        const newRowArr = headers.map(h => {
+          const normH = String(h).toLowerCase().trim();
+          if (rowPayload[normH] !== undefined) return rowPayload[normH];
+          if (rowPayload[h] !== undefined) return rowPayload[h];
+          return '';
+        });
+        newRowsToAppend.push(newRowArr);
+        createdCount++;
+      }
+    });
+
+    // Write back all modified existing rows in 1 single API call
+    if (allData.length > 0) {
+      sheet.getRange(2, 1, allData.length, headers.length).setValues(allData);
+    }
+
+    // Append all new rows in 1 single API call
+    if (newRowsToAppend.length > 0) {
+      const startRow = sheet.getLastRow() + 1;
+      sheet.getRange(startRow, 1, newRowsToAppend.length, headers.length).setValues(newRowsToAppend);
+    }
+
+    return {
+      status: 'success',
+      success: true,
+      message: `Alhamdulillah! Berhasil menyimpan nilai ${mapel} (${updatedCount} diperbarui, ${createdCount} ditambah).`,
+      count: items.length
+    };
+  } catch (err) {
+    console.error('Error saveBulkNilaiAkademik:', err);
+    return { status: 'error', success: false, message: 'Gagal menyimpan nilai akademik: ' + err.toString() };
+  }
 }
 
 /**
  * Bulk Upload Nilai Siswa untuk Tahun Ajaran Baru (Excel / CSV / Multi-Mapel Batch)
  */
 function saveBulkUploadNilaiAkademik(payload) {
-  const { items, tahun_ajaran, semester } = payload;
-  if (!items || !Array.isArray(items) || items.length === 0) {
-    return { status: 'error', message: 'Data upload nilai tidak boleh kosong' };
-  }
-  let successCount = 0;
-  items.forEach(item => {
-    saveNilaiAkademik({
-      nis: item.nis,
-      mata_pelajaran: item.mata_pelajaran,
-      kkm: Number(item.kkm) || 75,
-      semester: item.semester || semester || 'I (Satu)',
-      tahun_ajaran: item.tahun_ajaran || tahun_ajaran || '2026/2027',
-      nilai_tugas: Number(item.nilai_tugas || item.nilai_uts || item.nilai || 0),
-      nilai_uts: Number(item.nilai_uts || item.nilai || 0),
-      nilai_akhir: Number(item.nilai_akhir || item.nilai_uts || item.nilai || 0),
-      predikat: item.predikat || '',
-      capaian_kompetensi: item.capaian_kompetensi || '',
-      catatan_guru: item.catatan_guru || item.capaian_kompetensi || ''
-    });
-    successCount++;
-  });
-  return { 
-    status: 'success', 
-    message: 'Alhamdulillah! Berhasil mengunggah ' + successCount + ' data nilai untuk Tahun Ajaran ' + (tahun_ajaran || '2026/2027') + '!' 
-  };
+  return saveBulkNilaiAkademik(payload);
 }
 
 function deleteNilaiAkademik(id) {
@@ -1150,56 +1369,208 @@ function getNilaiKepemimpinanList(filters = {}) {
 }
 
 function saveNilaiKepemimpinan(data) {
-  const sheet = getOrCreateSheet(DB_CONFIG.SHEET_KEPEMIMPINAN);
-  
-  let existing = null;
-  if (data.id) {
-    existing = findRowByField(sheet, 'id', data.id);
+  try {
+    const requiredHeaders = [
+      'id', 'nis', 'semester', 'tahun_ajaran', 'ibadah', 'akhlak',
+      'kedisiplinan_kerajinan', 'kerapihan_kebersihan', 'kepemimpinan',
+      'kerjasama', 'catatan_diperhatikan', 'catatan_pembina'
+    ];
+
+    const sheet = getOrCreateSheet(DB_CONFIG.SHEET_KEPEMIMPINAN, requiredHeaders);
+    const headers = ensureSheetHeaders(sheet, requiredHeaders);
+
+    const itemNis = String(data.nis || '').trim();
+    const itemSem = data.semester || 'Ganjil';
+    const itemTa = data.tahun_ajaran || '2026/2027';
+
+    let existing = null;
+    if (data.id) {
+      existing = findRowByField(sheet, 'id', data.id);
+    }
+    if (!existing && itemNis) {
+      existing = findRowByCompositeKey(sheet, {
+        nis: itemNis,
+        semester: itemSem,
+        tahun_ajaran: itemTa
+      });
+    }
+
+    const id = existing
+      ? (existing.values[existing.headers.indexOf('id')] || data.id || ('NK-' + itemNis))
+      : (data.id || ('NK-' + itemNis));
+
+    const payload = {
+      ...data,
+      id: id,
+      nis: itemNis,
+      semester: itemSem,
+      tahun_ajaran: itemTa,
+      ibadah: data.ibadah || 'Jadikan ibadah sebagai kebutuhan, bukan hanya kewajiban.',
+      akhlak: data.akhlak || data.karakter_adab || 'Keseimbangan antara kemampuan akademis serta sikap & akhlak mulia menjadikanmu insan yang lebih baik.',
+      kedisiplinan_kerajinan: data.kedisiplinan_kerajinan || data.kedisiplinan || 'Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita.',
+      kedisiplinan: data.kedisiplinan || data.kedisiplinan_kerajinan || 'Sangat Baik (A)',
+      organisasi: data.organisasi || data.kepemimpinan || 'Sangat Aktif (A)',
+      karakter_adab: data.karakter_adab || data.akhlak || 'Sangat Baik (A)',
+      inisiatif_kemandirian: data.inisiatif_kemandirian || data.kerjasama || 'Mandiri & Proaktif',
+      kerapihan_kebersihan: data.kerapihan_kebersihan || 'Kerapihan & kebersihan diri merupakan cermin pribadi seorang muslim, jadikanlah itu sebagai identitasmu.',
+      kepemimpinan: data.kepemimpinan || data.organisasi || 'Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan.',
+      kerjasama: data.kerjasama || data.inisiatif_kemandirian || 'Berbagi peran dalam kerjasama kelompok akan menciptakan keharmonisan.',
+      catatan_diperhatikan: data.catatan_diperhatikan || data.catatan_pembina || '',
+      catatan_pembina: data.catatan_pembina || data.catatan_diperhatikan || ''
+    };
+
+    if (existing) {
+      const rowIdx = existing.rowIndex;
+      headers.forEach((h, colIdx) => {
+        const normH = String(h).toLowerCase().trim();
+        if (payload[normH] !== undefined) {
+          sheet.getRange(rowIdx, colIdx + 1).setValue(payload[normH]);
+        } else if (payload[h] !== undefined) {
+          sheet.getRange(rowIdx, colIdx + 1).setValue(payload[h]);
+        }
+      });
+    } else {
+      const newRow = headers.map(h => {
+        const normH = String(h).toLowerCase().trim();
+        if (payload[normH] !== undefined) return payload[normH];
+        if (payload[h] !== undefined) return payload[h];
+        return '';
+      });
+      sheet.appendRow(newRow);
+    }
+
+    return { status: 'success', success: true, message: 'Nilai kepribadian berhasil disimpan', id: id };
+  } catch (err) {
+    console.error('Error saveNilaiKepemimpinan:', err);
+    return { status: 'error', success: false, message: 'Gagal menyimpan kepribadian: ' + err.toString() };
   }
-  if (!existing && data.nis) {
-    existing = findRowByCompositeKey(sheet, {
-      nis: data.nis,
-      semester: data.semester || 'Ganjil',
-      tahun_ajaran: data.tahun_ajaran || '2026/2027'
-    });
-  }
-  
-  const id = existing ? (existing.values[existing.headers.indexOf('id')] || data.id || ('NK-' + Utilities.getUuid().substring(0, 6).toUpperCase())) : (data.id || ('NK-' + Utilities.getUuid().substring(0, 6).toUpperCase()));
-  
-  if (existing) {
-    const rowIdx = existing.rowIndex;
-    const headers = existing.headers;
-    const payload = { ...data, id: id };
-    headers.forEach((h, colIdx) => {
-      if (payload[h] !== undefined) {
-        sheet.getRange(rowIdx, colIdx + 1).setValue(payload[h]);
-      }
-    });
-  } else {
-    sheet.appendRow([
-      id,
-      data.nis,
-      data.semester || 'Ganjil',
-      data.tahun_ajaran || '2026/2027',
-      data.ibadah || 'Jadikan ibadah sebagai kebutuhan, bukan hanya kewajiban.',
-      data.akhlak || 'Keseimbangan antara kemampuan akademis serta sikap & akhlak mulia menjadikanmu insan yang lebih baik.',
-      data.kedisiplinan_kerajinan || data.kedisiplinan || 'Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita.',
-      data.kerapihan_kebersihan || 'Kerapihan & kebersihan diri merupakan cermin pribadi seorang muslim, jadikanlah itu sebagai identitasmu.',
-      data.kepemimpinan || 'Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan.',
-      data.kerjasama || data.inisiatif_kemandirian || 'Berbagi peran dalam kerjasama kelompok akan menciptakan keharmonisan.',
-      data.catatan_diperhatikan || 'Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Tingkatkan semangat belajarmu.',
-      data.catatan_pembina || ''
-    ]);
-  }
-  return { status: 'success', message: 'Nilai kepribadian berhasil disimpan', id: id };
 }
 
-function saveBulkKepribadian(items) {
-  if (!items || !Array.isArray(items)) return { status: 'error', message: 'Data kepribadian tidak valid' };
-  items.forEach(item => {
-    saveNilaiKepemimpinan(item);
-  });
-  return { status: 'success', message: 'Berhasil menyimpan kepribadian untuk ' + items.length + ' murid' };
+function saveBulkKepribadian(payload) {
+  try {
+    const items = payload.items || (Array.isArray(payload) ? payload : []);
+    if (!items || items.length === 0) return { status: 'error', success: false, message: 'Data kepribadian tidak boleh kosong' };
+
+    const requiredHeaders = [
+      'id', 'nis', 'semester', 'tahun_ajaran', 'ibadah', 'akhlak',
+      'kedisiplinan_kerajinan', 'kerapihan_kebersihan', 'kepemimpinan',
+      'kerjasama', 'catatan_diperhatikan', 'catatan_pembina'
+    ];
+
+    const sheet = getOrCreateSheet(DB_CONFIG.SHEET_KEPEMIMPINAN, requiredHeaders);
+    const headers = ensureSheetHeaders(sheet, requiredHeaders);
+
+    const lastRow = sheet.getLastRow();
+    const lastCol = sheet.getLastColumn();
+    let allData = lastRow > 1 ? sheet.getRange(2, 1, lastRow - 1, lastCol).getValues() : [];
+
+    const rowMapById = new Map();
+    const rowMapByNis = new Map();
+
+    const idColIdx = headers.findIndex(h => h.toLowerCase() === 'id');
+    const nisColIdx = headers.findIndex(h => h.toLowerCase() === 'nis');
+    const semColIdx = headers.findIndex(h => h.toLowerCase() === 'semester');
+    const taColIdx = headers.findIndex(h => h.toLowerCase() === 'tahun_ajaran');
+
+    allData.forEach((row, idx) => {
+      const rowId = idColIdx !== -1 ? String(row[idColIdx]).trim().toLowerCase() : '';
+      const rowNis = nisColIdx !== -1 ? String(row[nisColIdx]).trim() : '';
+      const rowSem = semColIdx !== -1 ? normalizeSemester(row[semColIdx]) : '';
+      const rowTa = taColIdx !== -1 ? normalizeYear(row[taColIdx]) : '';
+
+      if (rowId) rowMapById.set(rowId, idx);
+      if (rowNis) {
+        rowMapByNis.set(`${rowNis}|${rowSem}|${rowTa}`, idx);
+        if (!rowMapByNis.has(rowNis)) rowMapByNis.set(rowNis, idx);
+      }
+    });
+
+    const newRowsToAppend = [];
+    let updatedCount = 0;
+    let createdCount = 0;
+
+    items.forEach(item => {
+      const itemNis = String(item.nis || '').trim();
+      const itemSem = item.semester || 'Ganjil';
+      const itemTa = item.tahun_ajaran || '2026/2027';
+
+      const rowPayload = {
+        nis: itemNis,
+        semester: itemSem,
+        tahun_ajaran: itemTa,
+        ibadah: item.ibadah || 'Jadikan ibadah sebagai kebutuhan, bukan hanya kewajiban.',
+        akhlak: item.akhlak || item.karakter_adab || 'Keseimbangan antara kemampuan akademis serta sikap & akhlak mulia menjadikanmu insan yang lebih baik.',
+        kedisiplinan_kerajinan: item.kedisiplinan_kerajinan || item.kedisiplinan || 'Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita.',
+        kedisiplinan: item.kedisiplinan || item.kedisiplinan_kerajinan || 'Sangat Baik (A)',
+        organisasi: item.organisasi || item.kepemimpinan || 'Sangat Aktif (A)',
+        karakter_adab: item.karakter_adab || item.akhlak || 'Sangat Baik (A)',
+        inisiatif_kemandirian: item.inisiatif_kemandirian || item.kerjasama || 'Mandiri & Proaktif',
+        kerapihan_kebersihan: item.kerapihan_kebersihan || 'Kerapihan & kebersihan diri merupakan cermin pribadi seorang muslim, jadikanlah itu sebagai identitasmu.',
+        kepemimpinan: item.kepemimpinan || item.organisasi || 'Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan.',
+        kerjasama: item.kerjasama || item.inisiatif_kemandirian || 'Berbagi peran dalam kerjasama kelompok akan menciptakan keharmonisan.',
+        catatan_diperhatikan: item.catatan_diperhatikan || item.catatan_pembina || '',
+        catatan_pembina: item.catatan_pembina || item.catatan_diperhatikan || ''
+      };
+
+      let matchedIdx = -1;
+      if (item.id && rowMapById.has(String(item.id).toLowerCase().trim())) {
+        matchedIdx = rowMapById.get(String(item.id).toLowerCase().trim());
+      }
+      if (matchedIdx === -1 && itemNis) {
+        const strictKey = `${itemNis}|${normalizeSemester(itemSem)}|${normalizeYear(itemTa)}`;
+        if (rowMapByNis.has(strictKey)) {
+          matchedIdx = rowMapByNis.get(strictKey);
+        } else if (rowMapByNis.has(itemNis)) {
+          matchedIdx = rowMapByNis.get(itemNis);
+        }
+      }
+
+      if (matchedIdx !== -1) {
+        const existingRow = allData[matchedIdx];
+        const currentId = idColIdx !== -1 ? existingRow[idColIdx] : (item.id || ('NK-' + itemNis));
+        rowPayload.id = currentId;
+
+        headers.forEach((h, colIdx) => {
+          const normH = String(h).toLowerCase().trim();
+          if (rowPayload[normH] !== undefined) {
+            existingRow[colIdx] = rowPayload[normH];
+          } else if (rowPayload[h] !== undefined) {
+            existingRow[colIdx] = rowPayload[h];
+          }
+        });
+        updatedCount++;
+      } else {
+        const newId = item.id || `NK-${itemNis}`;
+        rowPayload.id = newId;
+
+        const newRowArr = headers.map(h => {
+          const normH = String(h).toLowerCase().trim();
+          if (rowPayload[normH] !== undefined) return rowPayload[normH];
+          if (rowPayload[h] !== undefined) return rowPayload[h];
+          return '';
+        });
+        newRowsToAppend.push(newRowArr);
+        createdCount++;
+      }
+    });
+
+    if (allData.length > 0) {
+      sheet.getRange(2, 1, allData.length, headers.length).setValues(allData);
+    }
+    if (newRowsToAppend.length > 0) {
+      const startRow = sheet.getLastRow() + 1;
+      sheet.getRange(startRow, 1, newRowsToAppend.length, headers.length).setValues(newRowsToAppend);
+    }
+
+    return {
+      status: 'success',
+      success: true,
+      message: `Berhasil menyimpan kepribadian untuk ${items.length} murid (${updatedCount} diperbarui, ${createdCount} ditambah).`
+    };
+  } catch (err) {
+    console.error('Error saveBulkKepribadian:', err);
+    return { status: 'error', success: false, message: 'Gagal menyimpan kepribadian: ' + err.toString() };
+  }
 }
 
 function deleteNilaiKepemimpinan(id) {
@@ -1253,48 +1624,193 @@ function getSklKepemimpinanList(filters = {}) {
 }
 
 function saveSklKepemimpinan(data) {
-  const sklHeaders = ['id', 'nis', 'semester', 'tahun_ajaran', 'catatan_walas', 'd1','d2','d3','d4','d5','d6','d7','k1','k2','k3','k4','k5','p1','p2','p3','p4','p5','s1','s2','t1','t2','m1','m2','r1','r2','r3','j1','j2','h1'];
-  const sheet = getOrCreateSheet(DB_CONFIG.SHEET_SKL_KEPEMIMPINAN, sklHeaders);
-  const id = data.id || ('SKL-' + data.nis);
-  
-  const existing = findRowByField(sheet, 'id', id);
-  const scores = data.scores || {};
-  
-  const rowDataObj = {
-    id: id,
-    nis: data.nis,
-    semester: data.semester || 'Tengah Semester 1',
-    tahun_ajaran: data.tahun_ajaran || '2026/2027',
-    catatan_walas: data.catatan_walas || 'Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan'
-  };
-  
-  const sklKeys = ['d1','d2','d3','d4','d5','d6','d7','k1','k2','k3','k4','k5','p1','p2','p3','p4','p5','s1','s2','t1','t2','m1','m2','r1','r2','r3','j1','j2','h1'];
-  sklKeys.forEach(k => {
-    rowDataObj[k] = (scores[k] !== undefined) ? scores[k] : (data[k] || (k.startsWith('k') ? 'B' : 'A'));
-  });
-  
-  if (existing) {
-    const rowIdx = existing.rowIndex;
-    const headers = existing.headers;
-    headers.forEach((h, colIdx) => {
-      if (rowDataObj[h] !== undefined) {
-        sheet.getRange(rowIdx, colIdx + 1).setValue(rowDataObj[h]);
-      }
+  try {
+    const sklHeaders = ['id', 'nis', 'semester', 'tahun_ajaran', 'catatan_walas', 'd1','d2','d3','d4','d5','d6','d7','k1','k2','k3','k4','k5','p1','p2','p3','p4','p5','s1','s2','t1','t2','m1','m2','r1','r2','r3','j1','j2','h1'];
+    const sheet = getOrCreateSheet(DB_CONFIG.SHEET_SKL_KEPEMIMPINAN, sklHeaders);
+    const headers = ensureSheetHeaders(sheet, sklHeaders);
+
+    const itemNis = String(data.nis || '').trim();
+    const itemSem = data.semester || 'Tengah Semester 1';
+    const itemTa = data.tahun_ajaran || '2026/2027';
+    const id = data.id || ('SKL-' + itemNis);
+    
+    let existing = null;
+    if (data.id) {
+      existing = findRowByField(sheet, 'id', data.id);
+    }
+    if (!existing && itemNis) {
+      existing = findRowByCompositeKey(sheet, {
+        nis: itemNis,
+        semester: itemSem,
+        tahun_ajaran: itemTa
+      });
+    }
+
+    const scores = data.scores || {};
+    const rowDataObj = {
+      id: id,
+      nis: itemNis,
+      semester: itemSem,
+      tahun_ajaran: itemTa,
+      catatan_walas: data.catatan_walas || 'Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan'
+    };
+    
+    const sklKeys = ['d1','d2','d3','d4','d5','d6','d7','k1','k2','k3','k4','k5','p1','p2','p3','p4','p5','s1','s2','t1','t2','m1','m2','r1','r2','r3','j1','j2','h1'];
+    sklKeys.forEach(k => {
+      rowDataObj[k] = (scores[k] !== undefined) ? scores[k] : (data[k] || (k.startsWith('k') ? 'B' : 'A'));
     });
-  } else {
-    const rowArr = sklHeaders.map(h => rowDataObj[h] !== undefined ? rowDataObj[h] : '');
-    sheet.appendRow(rowArr);
+    
+    if (existing) {
+      const rowIdx = existing.rowIndex;
+      headers.forEach((h, colIdx) => {
+        const normH = String(h).toLowerCase().trim();
+        if (rowDataObj[normH] !== undefined) {
+          sheet.getRange(rowIdx, colIdx + 1).setValue(rowDataObj[normH]);
+        } else if (rowDataObj[h] !== undefined) {
+          sheet.getRange(rowIdx, colIdx + 1).setValue(rowDataObj[h]);
+        }
+      });
+    } else {
+      const newRow = headers.map(h => {
+        const normH = String(h).toLowerCase().trim();
+        if (rowDataObj[normH] !== undefined) return rowDataObj[normH];
+        if (rowDataObj[h] !== undefined) return rowDataObj[h];
+        return '';
+      });
+      sheet.appendRow(newRow);
+    }
+    
+    return { status: 'success', success: true, message: 'Nilai SKL Kepemimpinan berhasil disimpan', id: id };
+  } catch (err) {
+    console.error('Error saveSklKepemimpinan:', err);
+    return { status: 'error', success: false, message: 'Gagal menyimpan SKL: ' + err.toString() };
   }
-  
-  return { status: 'success', message: 'Nilai SKL Kepemimpinan berhasil disimpan', id: id };
 }
 
-function saveBulkSklKepemimpinan(items) {
-  if (!items || !Array.isArray(items)) return { status: 'error', message: 'Data SKL Kepemimpinan tidak valid' };
-  items.forEach(item => {
-    saveSklKepemimpinan(item);
-  });
-  return { status: 'success', message: 'Berhasil menyimpan SKL Kepemimpinan untuk ' + items.length + ' murid' };
+function saveBulkSklKepemimpinan(payload) {
+  try {
+    const items = payload.items || (Array.isArray(payload) ? payload : []);
+    if (!items || items.length === 0) return { status: 'error', success: false, message: 'Data SKL tidak boleh kosong' };
+
+    const sklHeaders = [
+      'id', 'nis', 'semester', 'tahun_ajaran', 'catatan_walas',
+      'd1','d2','d3','d4','d5','d6','d7',
+      'k1','k2','k3','k4','k5',
+      'p1','p2','p3','p4','p5',
+      's1','s2','t1','t2','m1','m2',
+      'r1','r2','r3','j1','j2','h1'
+    ];
+
+    const sheet = getOrCreateSheet(DB_CONFIG.SHEET_SKL_KEPEMIMPINAN, sklHeaders);
+    const headers = ensureSheetHeaders(sheet, sklHeaders);
+
+    const lastRow = sheet.getLastRow();
+    const lastCol = sheet.getLastColumn();
+    let allData = lastRow > 1 ? sheet.getRange(2, 1, lastRow - 1, lastCol).getValues() : [];
+
+    const rowMapById = new Map();
+    const rowMapByNis = new Map();
+
+    const idColIdx = headers.findIndex(h => h.toLowerCase() === 'id');
+    const nisColIdx = headers.findIndex(h => h.toLowerCase() === 'nis');
+    const semColIdx = headers.findIndex(h => h.toLowerCase() === 'semester');
+    const taColIdx = headers.findIndex(h => h.toLowerCase() === 'tahun_ajaran');
+
+    allData.forEach((row, idx) => {
+      const rowId = idColIdx !== -1 ? String(row[idColIdx]).trim().toLowerCase() : '';
+      const rowNis = nisColIdx !== -1 ? String(row[nisColIdx]).trim() : '';
+      const rowSem = semColIdx !== -1 ? normalizeSemester(row[semColIdx]) : '';
+      const rowTa = taColIdx !== -1 ? normalizeYear(row[taColIdx]) : '';
+
+      if (rowId) rowMapById.set(rowId, idx);
+      if (rowNis) {
+        rowMapByNis.set(`${rowNis}|${rowSem}|${rowTa}`, idx);
+        if (!rowMapByNis.has(rowNis)) rowMapByNis.set(rowNis, idx);
+      }
+    });
+
+    const newRowsToAppend = [];
+    let updatedCount = 0;
+    let createdCount = 0;
+
+    const sklKeys = ['d1','d2','d3','d4','d5','d6','d7','k1','k2','k3','k4','k5','p1','p2','p3','p4','p5','s1','s2','t1','t2','m1','m2','r1','r2','r3','j1','j2','h1'];
+
+    items.forEach(item => {
+      const itemNis = String(item.nis || '').trim();
+      const itemSem = item.semester || 'Tengah Semester 1';
+      const itemTa = item.tahun_ajaran || '2026/2027';
+      const scores = item.scores || {};
+
+      const rowPayload = {
+        nis: itemNis,
+        semester: itemSem,
+        tahun_ajaran: itemTa,
+        catatan_walas: item.catatan_walas || 'Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan'
+      };
+
+      sklKeys.forEach(k => {
+        rowPayload[k] = (scores[k] !== undefined) ? scores[k] : (item[k] || (k.startsWith('k') ? 'B' : 'A'));
+      });
+
+      let matchedIdx = -1;
+      if (item.id && rowMapById.has(String(item.id).toLowerCase().trim())) {
+        matchedIdx = rowMapById.get(String(item.id).toLowerCase().trim());
+      }
+      if (matchedIdx === -1 && itemNis) {
+        const strictKey = `${itemNis}|${normalizeSemester(itemSem)}|${normalizeYear(itemTa)}`;
+        if (rowMapByNis.has(strictKey)) {
+          matchedIdx = rowMapByNis.get(strictKey);
+        } else if (rowMapByNis.has(itemNis)) {
+          matchedIdx = rowMapByNis.get(itemNis);
+        }
+      }
+
+      if (matchedIdx !== -1) {
+        const existingRow = allData[matchedIdx];
+        const currentId = idColIdx !== -1 ? existingRow[idColIdx] : (item.id || ('SKL-' + itemNis));
+        rowPayload.id = currentId;
+
+        headers.forEach((h, colIdx) => {
+          const normH = String(h).toLowerCase().trim();
+          if (rowPayload[normH] !== undefined) {
+            existingRow[colIdx] = rowPayload[normH];
+          } else if (rowPayload[h] !== undefined) {
+            existingRow[colIdx] = rowPayload[h];
+          }
+        });
+        updatedCount++;
+      } else {
+        const newId = item.id || `SKL-${itemNis}`;
+        rowPayload.id = newId;
+
+        const newRowArr = headers.map(h => {
+          const normH = String(h).toLowerCase().trim();
+          if (rowPayload[normH] !== undefined) return rowPayload[normH];
+          if (rowPayload[h] !== undefined) return rowPayload[h];
+          return '';
+        });
+        newRowsToAppend.push(newRowArr);
+        createdCount++;
+      }
+    });
+
+    if (allData.length > 0) {
+      sheet.getRange(2, 1, allData.length, headers.length).setValues(allData);
+    }
+    if (newRowsToAppend.length > 0) {
+      const startRow = sheet.getLastRow() + 1;
+      sheet.getRange(startRow, 1, newRowsToAppend.length, headers.length).setValues(newRowsToAppend);
+    }
+
+    return {
+      status: 'success',
+      success: true,
+      message: `Berhasil menyimpan 28 Indikator SKL untuk ${items.length} murid (${updatedCount} diperbarui, ${createdCount} ditambah).`
+    };
+  } catch (err) {
+    console.error('Error saveBulkSklKepemimpinan:', err);
+    return { status: 'error', success: false, message: 'Gagal menyimpan SKL Kepemimpinan: ' + err.toString() };
+  }
 }
 
 function deleteSklKepemimpinan(id) {
@@ -1337,47 +1853,76 @@ function getNilaiDiniyahList(filters = {}) {
 }
 
 function saveNilaiDiniyah(data) {
-  const sheet = getOrCreateSheet(DB_CONFIG.SHEET_DINIYAH);
-  
-  let existing = null;
-  if (data.id) {
-    existing = findRowByField(sheet, 'id', data.id);
+  try {
+    const requiredHeaders = [
+      'id', 'nis', 'semester', 'tahun_ajaran', 'ziyadah_juz',
+      'murojaah_juz', 'nilai_tahfidz', 'adab_harian', 'ibadah_harian',
+      'bahasa_arab', 'catatan_musyrif'
+    ];
+
+    const sheet = getOrCreateSheet(DB_CONFIG.SHEET_DINIYAH, requiredHeaders);
+    const headers = ensureSheetHeaders(sheet, requiredHeaders);
+
+    const itemNis = String(data.nis || '').trim();
+    const itemSem = data.semester || 'Ganjil';
+    const itemTa = data.tahun_ajaran || '2026/2027';
+
+    let existing = null;
+    if (data.id) {
+      existing = findRowByField(sheet, 'id', data.id);
+    }
+    if (!existing && itemNis) {
+      existing = findRowByCompositeKey(sheet, {
+        nis: itemNis,
+        semester: itemSem,
+        tahun_ajaran: itemTa
+      });
+    }
+
+    const id = existing
+      ? (existing.values[existing.headers.indexOf('id')] || data.id || ('ND-' + itemNis))
+      : (data.id || ('ND-' + itemNis));
+
+    const payload = {
+      ...data,
+      id: id,
+      nis: itemNis,
+      semester: itemSem,
+      tahun_ajaran: itemTa,
+      ziyadah_juz: data.ziyadah_juz || '-',
+      murojaah_juz: data.murojaah_juz || '-',
+      nilai_tahfidz: Number(data.nilai_tahfidz) || 0,
+      adab_harian: data.adab_harian || 'Mumtaz (A)',
+      ibadah_harian: data.ibadah_harian || 'Mumtaz (A)',
+      bahasa_arab: Number(data.bahasa_arab) || 0,
+      catatan_musyrif: data.catatan_musyrif || ''
+    };
+
+    if (existing) {
+      const rowIdx = existing.rowIndex;
+      headers.forEach((h, colIdx) => {
+        const normH = String(h).toLowerCase().trim();
+        if (payload[normH] !== undefined) {
+          sheet.getRange(rowIdx, colIdx + 1).setValue(payload[normH]);
+        } else if (payload[h] !== undefined) {
+          sheet.getRange(rowIdx, colIdx + 1).setValue(payload[h]);
+        }
+      });
+    } else {
+      const newRow = headers.map(h => {
+        const normH = String(h).toLowerCase().trim();
+        if (payload[normH] !== undefined) return payload[normH];
+        if (payload[h] !== undefined) return payload[h];
+        return '';
+      });
+      sheet.appendRow(newRow);
+    }
+
+    return { status: 'success', success: true, message: 'Nilai diniyah berhasil disimpan', id: id };
+  } catch (err) {
+    console.error('Error saveNilaiDiniyah:', err);
+    return { status: 'error', success: false, message: 'Gagal menyimpan nilai diniyah: ' + err.toString() };
   }
-  if (!existing && data.nis) {
-    existing = findRowByCompositeKey(sheet, {
-      nis: data.nis,
-      semester: data.semester || 'Ganjil',
-      tahun_ajaran: data.tahun_ajaran || '2026/2027'
-    });
-  }
-  
-  const id = existing ? (existing.values[existing.headers.indexOf('id')] || data.id || ('ND-' + Utilities.getUuid().substring(0, 6).toUpperCase())) : (data.id || ('ND-' + Utilities.getUuid().substring(0, 6).toUpperCase()));
-  
-  if (existing) {
-    const rowIdx = existing.rowIndex;
-    const headers = existing.headers;
-    const payload = { ...data, id: id };
-    headers.forEach((h, colIdx) => {
-      if (payload[h] !== undefined) {
-        sheet.getRange(rowIdx, colIdx + 1).setValue(payload[h]);
-      }
-    });
-  } else {
-    sheet.appendRow([
-      id,
-      data.nis,
-      data.semester || 'Ganjil',
-      data.tahun_ajaran || '2026/2027',
-      data.ziyadah_juz || '-',
-      data.murojaah_juz || '-',
-      Number(data.nilai_tahfidz) || 0,
-      data.adab_harian || 'Mumtaz (A)',
-      data.ibadah_harian || 'Mumtaz (A)',
-      Number(data.bahasa_arab) || 0,
-      data.catatan_musyrif || ''
-    ]);
-  }
-  return { status: 'success', message: 'Nilai diniyah berhasil disimpan', id: id };
 }
 
 function deleteNilaiDiniyah(id) {

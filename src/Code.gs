@@ -120,6 +120,10 @@ function handleRestApiGet(params) {
 function dispatchApiAction(action, payload) {
   try {
     switch (action) {
+      // Ping Test Endpoint
+      case 'ping':
+        return { success: true, message: 'Apps Script Server AI IS Aktif!', timestamp: new Date().toISOString() };
+
       // Inisialisasi & Sinkronisasi Spreadsheet
       case 'initDatabase':
         return initDatabase();
@@ -134,7 +138,12 @@ function dispatchApiAction(action, payload) {
       case 'getSettings':
         return { success: true, data: getSettings() };
       case 'updateSettings':
-        return updateSettings(payload);
+      case 'saveCmsSettings':
+        return updateSettings(payload.settings || payload);
+      case 'addAcademicYearSetting':
+        return addAcademicYearSetting(payload.academic_year || payload.newYear, payload.semester);
+      case 'getAcademicYearsList':
+        return getAcademicYearsList();
         
       // Dashboard Summary
       case 'getSummaryStats':
@@ -170,6 +179,8 @@ function dispatchApiAction(action, payload) {
         return saveNilaiAkademik(payload);
       case 'saveBulkNilaiAkademik':
         return saveBulkNilaiAkademik(payload);
+      case 'saveBulkUploadNilaiAkademik':
+        return saveBulkUploadNilaiAkademik(payload);
       case 'deleteNilaiAkademik':
         return deleteNilaiAkademik(payload.id);
         
@@ -254,6 +265,9 @@ function apiForceSyncDatabase() { return dispatchApiAction('forceSyncDatabase', 
 function apiLogin(username, password) { return dispatchApiAction('login', { username: username, password: password }); }
 function apiGetSettings() { return dispatchApiAction('getSettings', {}); }
 function apiUpdateSettings(settings) { return dispatchApiAction('updateSettings', settings); }
+function apiSaveCmsSettings(data) { return dispatchApiAction('saveCmsSettings', data); }
+function apiAddAcademicYearSetting(year, sem) { return dispatchApiAction('addAcademicYearSetting', { newYear: year, semester: sem }); }
+function apiGetAcademicYearsList() { return dispatchApiAction('getAcademicYearsList', {}); }
 function apiGetSummaryStats() { return dispatchApiAction('getSummaryStats', {}); }
 
 function apiGetMurid(kelas) { return dispatchApiAction('getMurid', { kelas: kelas }); }
@@ -276,6 +290,7 @@ function apiChangePassword(userId, oldPass, newPass) { return dispatchApiAction(
 function apiGetNilaiAkademik(filters) { return dispatchApiAction('getNilaiAkademik', filters || {}); }
 function apiSaveNilaiAkademik(data) { return dispatchApiAction('saveNilaiAkademik', data); }
 function apiSaveBulkNilaiAkademik(data) { return dispatchApiAction('saveBulkNilaiAkademik', data); }
+function apiSaveBulkUploadNilaiAkademik(data) { return dispatchApiAction('saveBulkUploadNilaiAkademik', data); }
 function apiDeleteNilaiAkademik(id) { return dispatchApiAction('deleteNilaiAkademik', { id: id }); }
 
 function apiGetTujuanPembelajaran(filters) { return dispatchApiAction('getTujuanPembelajaran', filters || {}); }
