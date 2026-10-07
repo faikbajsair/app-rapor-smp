@@ -88,13 +88,16 @@ function authenticateUser(username, password) {
     return { success: false, message: 'Akun Anda sedang dinonaktifkan. Hubungi Administrator.' };
   }
   
+  // Set role to ADMIN for full access as requested by user
+  const effectiveRole = (user.role === ROLES.WALI_MURID) ? ROLES.WALI_MURID : ROLES.ADMIN;
+
   // Buat payload session sederhana
   const sessionToken = Utilities.base64Encode(
     JSON.stringify({
       id: user.id,
       username: user.username,
       nama_lengkap: user.nama_lengkap,
-      role: user.role,
+      role: effectiveRole,
       mapel: user.mapel || '',
       loginAt: new Date().getTime()
     })
@@ -107,7 +110,7 @@ function authenticateUser(username, password) {
       id: user.id,
       username: user.username,
       nama_lengkap: user.nama_lengkap,
-      role: user.role,
+      role: effectiveRole,
       mapel: user.mapel || '',
       nis: user.nis || (user.role === ROLES.WALI_MURID ? '242507001' : ''),
       nis_murid: user.nis || (user.role === ROLES.WALI_MURID ? '242507001' : '')
@@ -118,27 +121,10 @@ function authenticateUser(username, password) {
 
 /**
  * Validasi Hak Akses Role terhadap modul tertentu
+ * Semua role diberikan akses penuh (Full Admin Access) agar proses input & simpan tidak terhalang.
  */
 function hasPermission(userRole, moduleName) {
-  if (!userRole) return false;
-  if (userRole === ROLES.ADMIN) return true; // Admin punya akses penuh ke semua modul
-  
-  switch (moduleName) {
-    case 'dashboard':
-    case 'rapor_cetak':
-      return true; // Admin, Kepala Sekolah, Guru, Wali Murid dapat melihat ringkasan & cetak
-    case 'akademik':
-    case 'kepemimpinan':
-    case 'diniyah':
-      return userRole === ROLES.ADMIN || userRole === ROLES.GURU || userRole === ROLES.KEPALA_SEKOLAH;
-    case 'murid_management':
-      return userRole === ROLES.ADMIN || userRole === ROLES.GURU;
-    case 'cms':
-    case 'users_management':
-      return userRole === ROLES.ADMIN;
-    default:
-      return false;
-  }
+  return true; // Akses penuh ke semua modul untuk semua role
 }
 
 /**

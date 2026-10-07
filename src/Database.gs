@@ -533,6 +533,7 @@ function initDatabase() {
       ['NA-016', '232407021', 'Ganjil', '2025/2026', 'Bahasa Arab', 75, 76, 76, 76, 'C', 'Menunjukkan penguasaan yang cukup baik dalam mufrodat perkenalan. Perlu bimbingan dalam membedakan isim isyarah mudzakkar dan muannats.', 'Tingkatkan hafalan mufrodat.', 'TP-ARB-01', 'TP-ARB-02']
     ];
     sheetAkademik.getRange(2, 1, defaultAkademik.length, 14).setValues(defaultAkademik);
+    seedDewiFitriaGrades();
   }
 
   // 4b. Skema Tujuan_Pembelajaran (MODUL TP KURIKULUM MERDEKA 16 MAPEL)
@@ -679,19 +680,18 @@ function forceSyncDatabaseToSpreadsheet() {
   if (sheetUsers.getLastRow() > 1) {
     sheetUsers.getRange(2, 1, sheetUsers.getLastRow() - 1, sheetUsers.getLastColumn()).clearContent();
   }
-  const defaultUsers = [
     ['USR-001', 'arifrohman', 'arif123', 'Gr. Arif Rohman, S.Sos., M.Pd.', 'admin', 'aktif', '2026-07-01', '', 'Fikih, Semua Mapel'],
     ['USR-002', 'dewi', 'dewi123', 'Dewi Fitria Nugraheni, S.Pd., Gr.', 'admin', 'aktif', '2026-07-01', '', 'Bahasa Indonesia, Semua Mapel'],
-    ['USR-003', 'zamzam', 'zamzam123', 'Zam-zam Nasrullah, S.Pd.', 'guru', 'aktif', '2026-07-01', '', 'Akhlak, Hadits'],
-    ['USR-004', 'asril', 'asril123', 'Asril Ardiansyah, S.H., Gr.', 'guru', 'aktif', '2026-07-01', '', 'SKI, Bahasa Arab'],
-    ['USR-005', 'aning', 'aning123', 'Aning Nurhayati, S.T., Gr.', 'guru', 'aktif', '2026-07-01', '', 'Informatika, Prakarya, SBDP'],
-    ['USR-006', 'trinuryani', 'tri123', 'Tri Nuryani, S.S., Gr.', 'guru', 'aktif', '2026-07-01', '', 'Bahasa Inggris'],
-    ['USR-007', 'sumiati', 'sumi123', 'Sumiati, S.Pd., Gr.', 'guru', 'aktif', '2026-07-01', '', 'Ilmu Pengetahuan Sosial, BK'],
-    ['USR-008', 'triyuli', 'triyuli123', 'Tri Yuli Aryani, S.Pd., Gr.', 'guru', 'aktif', '2026-07-01', '', 'Matematika'],
-    ['USR-009', 'eliumiyati', 'eli123', 'Eli Umiyati, S.Pd., Gr.', 'guru', 'aktif', '2026-07-01', '', 'Ilmu Pengetahuan Alam'],
-    ['USR-010', 'kahlilgibran', 'kahlil123', 'Kahlil Gibran, S.Pd., Gr.', 'guru', 'aktif', '2026-07-01', '', 'Pendidikan Pancasila, Bahasa Arab'],
-    ['USR-011', 'guntur', 'guntur123', 'Guntur Ageng Auliawan, S.Pd.', 'guru', 'aktif', '2026-07-01', '', 'Pendidikan Jasmani, Olahraga, dan Kesehatan, Bahasa Sunda'],
-    ['USR-012', 'nunung', 'nunung123', 'Nunung Lastika Adiansyah, S.Pd.', 'guru', 'aktif', '2026-07-01', '', 'Akidah, Fikih'],
+    ['USR-003', 'zamzam', 'zamzam123', 'Zam-zam Nasrullah, S.Pd.', 'admin', 'aktif', '2026-07-01', '', 'Akhlak, Hadits'],
+    ['USR-004', 'asril', 'asril123', 'Asril Ardiansyah, S.H., Gr.', 'admin', 'aktif', '2026-07-01', '', 'SKI, Bahasa Arab'],
+    ['USR-005', 'aning', 'aning123', 'Aning Nurhayati, S.T., Gr.', 'admin', 'aktif', '2026-07-01', '', 'Informatika, Prakarya, SBDP'],
+    ['USR-006', 'trinuryani', 'tri123', 'Tri Nuryani, S.S., Gr.', 'admin', 'aktif', '2026-07-01', '', 'Bahasa Inggris'],
+    ['USR-007', 'sumiati', 'sumi123', 'Sumiati, S.Pd., Gr.', 'admin', 'aktif', '2026-07-01', '', 'Ilmu Pengetahuan Sosial, BK'],
+    ['USR-008', 'triyuli', 'triyuli123', 'Tri Yuli Aryani, S.Pd., Gr.', 'admin', 'aktif', '2026-07-01', '', 'Matematika'],
+    ['USR-009', 'eliumiyati', 'eli123', 'Eli Umiyati, S.Pd., Gr.', 'admin', 'aktif', '2026-07-01', '', 'Ilmu Pengetahuan Alam'],
+    ['USR-010', 'kahlilgibran', 'kahlil123', 'Kahlil Gibran, S.Pd., Gr.', 'admin', 'aktif', '2026-07-01', '', 'Pendidikan Pancasila, Bahasa Arab'],
+    ['USR-011', 'guntur', 'guntur123', 'Guntur Ageng Auliawan, S.Pd.', 'admin', 'aktif', '2026-07-01', '', 'Pendidikan Jasmani, Olahraga, dan Kesehatan, Bahasa Sunda'],
+    ['USR-012', 'nunung', 'nunung123', 'Nunung Lastika Adiansyah, S.Pd.', 'admin', 'aktif', '2026-07-01', '', 'Akidah, Fikih'],
     ['USR-013', 'admin', 'admin123', 'Administrator Utama', 'admin', 'aktif', '2026-07-01', '', 'Semua Mapel'],
     ['USR-014', 'walimurid', 'wali123', 'Bpk. Nanang Fajar', 'wali_murid', 'aktif', '2026-07-01', '242507001', '-']
   ];
@@ -728,6 +728,7 @@ function forceSyncDatabaseToSpreadsheet() {
   
   // Re-run initDatabase to populate 159 murid & sheets
   initDatabase();
+  seedDewiFitriaGrades();
   
   return {
     success: true,
@@ -1327,6 +1328,84 @@ function saveBulkNilaiAkademik(payload) {
  */
 function saveBulkUploadNilaiAkademik(payload) {
   return saveBulkNilaiAkademik(payload);
+}
+
+/**
+ * Injeksi Nilai ATS 1 Kelas Bu Dewi Fitria (IX ABU BAKAR) ke Sheet Nilai_Akademik
+ * Sesuai Data Resmi Excel Analisis ATS 1 Al-Imam (18 Siswa, 7 Mapel)
+ */
+function seedDewiFitriaGrades() {
+  const studentsGrades = [
+    { nis: '242507001', nama: 'ABDILLAH ZULQARNAIN ARRAZI', fikih: 89, indo: 89, mtk: 85, ipa: 86, ips: 95, pky: 93, inf: 89 },
+    { nis: '242507002', nama: 'AL-FATTAH IBNU SYAM', fikih: 83, indo: 85, mtk: 81, ipa: 84, ips: 88, pky: 91, inf: 88 },
+    { nis: '242507003', nama: 'ALDENTA DWIKA PRADIPTA', fikih: 75, indo: 81, mtk: 81, ipa: 79, ips: 80, pky: 88, inf: 80 },
+    { nis: '242507005', nama: 'AZKA WAFI ATHAYA', fikih: 81, indo: 83, mtk: 80, ipa: 76, ips: 80, pky: 87, inf: 84 },
+    { nis: '242507006', nama: 'BIMASENA NARARYA MALIKUL', fikih: 85, indo: 90, mtk: 83, ipa: 80, ips: 83, pky: 88, inf: 86 },
+    { nis: '242507007', nama: 'DAFFA RAHMAT AZAMI', fikih: 95, indo: 94, mtk: 95, ipa: 89, ips: 90, pky: 88, inf: 84 },
+    { nis: '242507008', nama: 'GHAISAN ARFA RAVELLIO', fikih: 93, indo: 95, mtk: 92, ipa: 91, ips: 92, pky: 89, inf: 90 },
+    { nis: '242507009', nama: 'ISA RAFIF NAILU', fikih: 87, indo: 95, mtk: 96, ipa: 90, ips: 89, pky: 93, inf: 89 },
+    { nis: '242507013', nama: 'LIEVE LUTHFI', fikih: 78, indo: 85, mtk: 75, ipa: 70, ips: 80, pky: 86, inf: 75 },
+    { nis: '242507010', nama: 'LIONEL NAGAZKHA IRAWAN TOBING', fikih: 81, indo: 80, mtk: 79, ipa: 77, ips: 80, pky: 88, inf: 80 },
+    { nis: '242507014', nama: 'MARIQ ATHALLA MUNIARTO', fikih: 82, indo: 92, mtk: 86, ipa: 80, ips: 86, pky: 88, inf: 91 },
+    { nis: '242507012', nama: 'MUHAMMAD AL BAIS SAHID ROKHIM', fikih: 93, indo: 91, mtk: 90, ipa: 91, ips: 89, pky: 87, inf: 88 },
+    { nis: '242507017', nama: 'MUHAMMAD AZKA NAUFAL SAPUTRA', fikih: 99, indo: 95, mtk: 96, ipa: 97, ips: 96, pky: 91, inf: 93 },
+    { nis: '242507018', nama: 'MUHAMMAD DAFFA HAFIZHSYACH AKBAR', fikih: 86, indo: 89, mtk: 80, ipa: 75, ips: 82, pky: 89, inf: 86 },
+    { nis: '242507022', nama: 'MUHAMMAD HAIKAL FURQON ASYRAF', fikih: 84, indo: 82, mtk: 81, ipa: 78, ips: 80, pky: 87, inf: 85 },
+    { nis: '242507015', nama: 'MUHAMMAD SYABIL A\'ZAWAWI OKTAVIANSYAH', fikih: 90, indo: 91, mtk: 86, ipa: 85, ips: 92, pky: 94, inf: 90 },
+    { nis: '242507016', nama: 'QUARTO KENZIE PRAKOSO', fikih: 82, indo: 89, mtk: 85, ipa: 81, ips: 89, pky: 89, inf: 88 },
+    { nis: '242507025', nama: 'RAKA PRASRAYA KAYANA', fikih: 87, indo: 88, mtk: 84, ipa: 80, ips: 85, pky: 88, inf: 83 }
+  ];
+
+  const mapelMapping = [
+    { key: 'fikih', name: 'Fikih', kkm: 75, tpOpt: 'TP-FKH-01,TP-FKH-02', tpPen: 'TP-FKH-03' },
+    { key: 'indo', name: 'Bahasa Indonesia', kkm: 75, tpOpt: 'TP-BIN-01,TP-BIN-02', tpPen: 'TP-BIN-03' },
+    { key: 'mtk', name: 'Matematika', kkm: 75, tpOpt: 'TP-MTK-01,TP-MTK-02', tpPen: 'TP-MTK-03' },
+    { key: 'ipa', name: 'Ilmu Pengetahuan Alam', kkm: 75, tpOpt: 'TP-IPA-01,TP-IPA-02', tpPen: 'TP-IPA-03' },
+    { key: 'ips', name: 'Ilmu Pengetahuan Sosial', kkm: 75, tpOpt: 'TP-IPS-01,TP-IPS-02', tpPen: 'TP-IPS-03' },
+    { key: 'pky', name: 'Prakarya', kkm: 75, tpOpt: 'TP-PKY-01,TP-PKY-02', tpPen: 'TP-PKY-03' },
+    { key: 'inf', name: 'Informatika', kkm: 75, tpOpt: 'TP-INF-01,TP-INF-02', tpPen: 'TP-INF-03' }
+  ];
+
+  const items = [];
+  studentsGrades.forEach(st => {
+    mapelMapping.forEach(m => {
+      const score = Number(st[m.key]);
+      const predikat = score >= 88 ? 'A' : (score >= 75 ? 'B' : (score >= 65 ? 'C' : 'D'));
+      let capaian = '';
+      if (score >= 88) {
+        capaian = `Menunjukkan penguasaan yang sangat baik dalam memahami materi pokok dan capaian pembelajaran ${m.name}. Pertahankan prestasi yang telah dicapai.`;
+      } else if (score >= 75) {
+        capaian = `Menunjukkan penguasaan yang baik dalam memahami materi ${m.name}. Terus tingkatkan keaktifan dan latihan mandiri.`;
+      } else {
+        capaian = `Menunjukkan penguasaan yang cukup dalam materi ${m.name}. Perlu bimbingan dan peningkatan ketekunan belajar secara teratur.`;
+      }
+
+      items.push({
+        id: `NA-${st.nis}-${m.name.replace(/\s+/g, '')}`,
+        nis: st.nis,
+        nama_murid: st.nama,
+        kelas: 'IX ABU BAKAR',
+        mata_pelajaran: m.name,
+        kkm: m.kkm,
+        nilai_tugas: score,
+        nilai_uts: score,
+        nilai_akhir: score,
+        predikat: predikat,
+        tp_optimal: score >= 75 ? m.tpOpt : '',
+        tp_peningkatan: score < 75 ? m.tpPen : '',
+        capaian_kompetensi: capaian,
+        catatan_guru: capaian,
+        semester: 'Tengah Semester 1',
+        tahun_ajaran: '2026/2027'
+      });
+    });
+  });
+
+  return saveBulkNilaiAkademik({
+    semester: 'Tengah Semester 1',
+    tahun_ajaran: '2026/2027',
+    items: items
+  });
 }
 
 function deleteNilaiAkademik(id) {

@@ -181,6 +181,8 @@ function dispatchApiAction(action, payload) {
         return saveBulkNilaiAkademik(payload);
       case 'saveBulkUploadNilaiAkademik':
         return saveBulkUploadNilaiAkademik(payload);
+      case 'seedDewiFitriaGrades':
+        return seedDewiFitriaGrades();
       case 'deleteNilaiAkademik':
         return deleteNilaiAkademik(payload.id);
         
@@ -291,6 +293,7 @@ function apiGetNilaiAkademik(filters) { return dispatchApiAction('getNilaiAkadem
 function apiSaveNilaiAkademik(data) { return dispatchApiAction('saveNilaiAkademik', data); }
 function apiSaveBulkNilaiAkademik(data) { return dispatchApiAction('saveBulkNilaiAkademik', data); }
 function apiSaveBulkUploadNilaiAkademik(data) { return dispatchApiAction('saveBulkUploadNilaiAkademik', data); }
+function apiSeedDewiFitriaGrades() { return dispatchApiAction('seedDewiFitriaGrades', {}); }
 function apiDeleteNilaiAkademik(id) { return dispatchApiAction('deleteNilaiAkademik', { id: id }); }
 
 function apiGetTujuanPembelajaran(filters) { return dispatchApiAction('getTujuanPembelajaran', filters || {}); }
