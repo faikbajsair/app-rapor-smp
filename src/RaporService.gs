@@ -8,7 +8,7 @@
 /**
  * Mengambil Seluruh Data Rapor Portofolio Lengkap untuk 1 Murid
  */
-function getMuridReportData(nis) {
+function getMuridReportData(nis, semesterParam, tahunAjaranParam) {
   if (!nis) return { success: false, message: 'NIS Murid wajib diisi.' };
   
   const cleanNis = String(nis).trim();
@@ -16,8 +16,8 @@ function getMuridReportData(nis) {
   if (!murid) return { success: false, message: 'Data murid dengan NIS ' + cleanNis + ' tidak ditemukan.' };
   
   const settings = getSettings();
-  const currentSemester = settings.semester_active || 'I (Satu)';
-  const currentYear = settings.academic_year || '2026/2027';
+  const currentSemester = semesterParam || settings.semester_active || 'Tengah Semester 1';
+  const currentYear = tahunAjaranParam || settings.academic_year || '2026/2027';
   
   // 1. Data Rekap Nilai Akademik & Capaian Kompetensi
   const rawAkademik = getNilaiAkademikList({ nis: cleanNis });
@@ -91,6 +91,8 @@ function getMuridReportData(nis) {
       settings: settings,
       is_published: isPublished,
       publish_key: classKey,
+      semester: currentSemester,
+      tahun_ajaran: currentYear,
       murid: {
         ...murid,
         is_published: isPublished,
@@ -121,8 +123,8 @@ function getMuridReportData(nis) {
   };
 }
 
-function getSantriReportData(nis) {
-  return getMuridReportData(nis);
+function getSantriReportData(nis, semesterParam, tahunAjaranParam) {
+  return getMuridReportData(nis, semesterParam, tahunAjaranParam);
 }
 
 /**

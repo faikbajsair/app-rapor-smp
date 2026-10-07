@@ -680,6 +680,7 @@ function forceSyncDatabaseToSpreadsheet() {
   if (sheetUsers.getLastRow() > 1) {
     sheetUsers.getRange(2, 1, sheetUsers.getLastRow() - 1, sheetUsers.getLastColumn()).clearContent();
   }
+  const defaultUsers = [
     ['USR-001', 'arifrohman', 'arif123', 'Gr. Arif Rohman, S.Sos., M.Pd.', 'admin', 'aktif', '2026-07-01', '', 'Fikih, Semua Mapel'],
     ['USR-002', 'dewi', 'dewi123', 'Dewi Fitria Nugraheni, S.Pd., Gr.', 'admin', 'aktif', '2026-07-01', '', 'Bahasa Indonesia, Semua Mapel'],
     ['USR-003', 'zamzam', 'zamzam123', 'Zam-zam Nasrullah, S.Pd.', 'admin', 'aktif', '2026-07-01', '', 'Akhlak, Hadits'],
@@ -1055,8 +1056,22 @@ function getNilaiAkademikList(filters = {}) {
   if (filters.mata_pelajaran && filters.mata_pelajaran !== 'Semua') {
     list = list.filter(item => String(item.mata_pelajaran).toLowerCase() === String(filters.mata_pelajaran).toLowerCase());
   }
+  if (filters.tahun_ajaran && filters.tahun_ajaran !== 'Semua') {
+    list = list.filter(item => normalizeYear(item.tahun_ajaran) === normalizeYear(filters.tahun_ajaran));
+  }
+  if (filters.semester && filters.semester !== 'Semua') {
+    list = list.filter(item => normalizeSemester(item.semester) === normalizeSemester(filters.semester));
+  }
   
   return list;
+}
+
+function generateAcademicGradeId(nis, mapel, semester, tahunAjaran) {
+  const cleanNis = String(nis || '').trim();
+  const cleanMapel = String(mapel || '').replace(/\s+/g, '');
+  const cleanSem = normalizeSemester(semester || 'Ganjil').replace(/\s+/g, '');
+  const cleanTa = normalizeYear(tahunAjaran || '2026/2027').replace(/[\/\s]/g, '');
+  return `NA-${cleanNis}-${cleanMapel}-${cleanSem}-${cleanTa}`;
 }
 
 function saveNilaiAkademik(data) {
@@ -1106,8 +1121,8 @@ function saveNilaiAkademik(data) {
     }
 
     const id = existing
-      ? (existing.values[existing.headers.indexOf('id')] || data.id || ('NA-' + itemNis + '-' + itemMapel.replace(/\s+/g, '')))
-      : (data.id || ('NA-' + itemNis + '-' + itemMapel.replace(/\s+/g, '')));
+      ? (existing.values[existing.headers.indexOf('id')] || data.id || generateAcademicGradeId(itemNis, itemMapel, itemSem, itemTa))
+      : (data.id || generateAcademicGradeId(itemNis, itemMapel, itemSem, itemTa));
 
     const payload = {
       ...data,
@@ -1183,7 +1198,7 @@ function saveBulkNilaiAkademik(payload) {
     const lastCol = sheet.getLastColumn();
     let allData = lastRow > 1 ? sheet.getRange(2, 1, lastRow - 1, lastCol).getValues() : [];
 
-    // Create index of existing rows
+    // Create index of existing rows with strict composite key (NIS + Mapel + Semester + Tahun Ajaran)
     const rowMapById = new Map();
     const rowMapByComp = new Map();
 
@@ -1201,13 +1216,9 @@ function saveBulkNilaiAkademik(payload) {
       const rowTa = taColIdx !== -1 ? normalizeYear(row[taColIdx]) : '';
 
       if (rowId) rowMapById.set(rowId.toLowerCase(), idx);
-      if (rowNis && rowMapel) {
+      if (rowNis && rowMapel && rowSem && rowTa) {
         const compKey = `${rowNis}|${rowMapel}|${rowSem}|${rowTa}`;
         rowMapByComp.set(compKey, idx);
-        const looseCompKey = `${rowNis}|${rowMapel}`;
-        if (!rowMapByComp.has(looseCompKey)) {
-          rowMapByComp.set(looseCompKey, idx);
-        }
       }
     });
 
@@ -1263,17 +1274,12 @@ function saveBulkNilaiAkademik(payload) {
         const strictKey = `${itemNis}|${itemMapel.toLowerCase()}|${normalizeSemester(itemSem)}|${normalizeYear(itemTa)}`;
         if (rowMapByComp.has(strictKey)) {
           matchedIdx = rowMapByComp.get(strictKey);
-        } else {
-          const looseKey = `${itemNis}|${itemMapel.toLowerCase()}`;
-          if (rowMapByComp.has(looseKey)) {
-            matchedIdx = rowMapByComp.get(looseKey);
-          }
         }
       }
 
       if (matchedIdx !== -1) {
         const existingRow = allData[matchedIdx];
-        const currentId = idColIdx !== -1 ? existingRow[idColIdx] : (item.id || ('NA-' + itemNis + '-' + itemMapel.replace(/\s+/g, '')));
+        const currentId = idColIdx !== -1 ? existingRow[idColIdx] : (item.id || generateAcademicGradeId(itemNis, itemMapel, itemSem, itemTa));
         rowPayload.id = currentId;
 
         headers.forEach((h, colIdx) => {
@@ -1286,7 +1292,7 @@ function saveBulkNilaiAkademik(payload) {
         });
         updatedCount++;
       } else {
-        const newId = item.id || `NA-${itemNis}-${itemMapel.replace(/\s+/g, '')}`;
+        const newId = item.id || generateAcademicGradeId(itemNis, itemMapel, itemSem, itemTa);
         rowPayload.id = newId;
 
         const newRowArr = headers.map(h => {
@@ -1314,7 +1320,7 @@ function saveBulkNilaiAkademik(payload) {
     return {
       status: 'success',
       success: true,
-      message: `Alhamdulillah! Berhasil menyimpan nilai ${mapel} (${updatedCount} diperbarui, ${createdCount} ditambah).`,
+      message: `Alhamdulillah! Berhasil menyimpan nilai ${mapel} (${updatedCount} diperbarui, ${createdCount} data baru ditambahkan).`,
       count: items.length
     };
   } catch (err) {
@@ -1423,6 +1429,13 @@ function deleteNilaiAkademik(id) {
  * MODEL: AHLAQ & KEPRIBADIAN (6 ASPEK AL-IMAM + CATATAN DIPERHATIKAN)
  * ============================================================================
  */
+function generateKepribadianGradeId(nis, semester, tahunAjaran) {
+  const cleanNis = String(nis || '').trim();
+  const cleanSem = normalizeSemester(semester || 'Ganjil').replace(/\s+/g, '');
+  const cleanTa = normalizeYear(tahunAjaran || '2026/2027').replace(/[\/\s]/g, '');
+  return `NK-${cleanNis}-${cleanSem}-${cleanTa}`;
+}
+
 function getNilaiKepemimpinanList(filters = {}) {
   const sheet = getOrCreateSheet(DB_CONFIG.SHEET_KEPEMIMPINAN);
   let list = sheetToObjects(sheet);
@@ -1437,12 +1450,18 @@ function getNilaiKepemimpinanList(filters = {}) {
       ...item,
       nama_murid: s.nama_murid || s.nama_santri || 'Tidak Diketahui',
       nama_santri: s.nama_murid || s.nama_santri || 'Tidak Diketahui',
-      kelas: s.kelas || '-'
+      kelas: s.kelas || item.kelas || '-'
     };
   });
   
   if (filters.nis) list = list.filter(item => String(item.nis) === String(filters.nis));
   if (filters.kelas && filters.kelas !== 'Semua') list = list.filter(item => String(item.kelas) === String(filters.kelas));
+  if (filters.tahun_ajaran && filters.tahun_ajaran !== 'Semua') {
+    list = list.filter(item => normalizeYear(item.tahun_ajaran) === normalizeYear(filters.tahun_ajaran));
+  }
+  if (filters.semester && filters.semester !== 'Semua') {
+    list = list.filter(item => normalizeSemester(item.semester) === normalizeSemester(filters.semester));
+  }
   
   return list;
 }
@@ -1475,8 +1494,8 @@ function saveNilaiKepemimpinan(data) {
     }
 
     const id = existing
-      ? (existing.values[existing.headers.indexOf('id')] || data.id || ('NK-' + itemNis))
-      : (data.id || ('NK-' + itemNis));
+      ? (existing.values[existing.headers.indexOf('id')] || data.id || generateKepribadianGradeId(itemNis, itemSem, itemTa))
+      : (data.id || generateKepribadianGradeId(itemNis, itemSem, itemTa));
 
     const payload = {
       ...data,
@@ -1544,7 +1563,7 @@ function saveBulkKepribadian(payload) {
     let allData = lastRow > 1 ? sheet.getRange(2, 1, lastRow - 1, lastCol).getValues() : [];
 
     const rowMapById = new Map();
-    const rowMapByNis = new Map();
+    const rowMapByComp = new Map();
 
     const idColIdx = headers.findIndex(h => h.toLowerCase() === 'id');
     const nisColIdx = headers.findIndex(h => h.toLowerCase() === 'nis');
@@ -1558,9 +1577,8 @@ function saveBulkKepribadian(payload) {
       const rowTa = taColIdx !== -1 ? normalizeYear(row[taColIdx]) : '';
 
       if (rowId) rowMapById.set(rowId, idx);
-      if (rowNis) {
-        rowMapByNis.set(`${rowNis}|${rowSem}|${rowTa}`, idx);
-        if (!rowMapByNis.has(rowNis)) rowMapByNis.set(rowNis, idx);
+      if (rowNis && rowSem && rowTa) {
+        rowMapByComp.set(`${rowNis}|${rowSem}|${rowTa}`, idx);
       }
     });
 
@@ -1597,16 +1615,14 @@ function saveBulkKepribadian(payload) {
       }
       if (matchedIdx === -1 && itemNis) {
         const strictKey = `${itemNis}|${normalizeSemester(itemSem)}|${normalizeYear(itemTa)}`;
-        if (rowMapByNis.has(strictKey)) {
-          matchedIdx = rowMapByNis.get(strictKey);
-        } else if (rowMapByNis.has(itemNis)) {
-          matchedIdx = rowMapByNis.get(itemNis);
+        if (rowMapByComp.has(strictKey)) {
+          matchedIdx = rowMapByComp.get(strictKey);
         }
       }
 
       if (matchedIdx !== -1) {
         const existingRow = allData[matchedIdx];
-        const currentId = idColIdx !== -1 ? existingRow[idColIdx] : (item.id || ('NK-' + itemNis));
+        const currentId = idColIdx !== -1 ? existingRow[idColIdx] : (item.id || generateKepribadianGradeId(itemNis, itemSem, itemTa));
         rowPayload.id = currentId;
 
         headers.forEach((h, colIdx) => {
@@ -1619,7 +1635,7 @@ function saveBulkKepribadian(payload) {
         });
         updatedCount++;
       } else {
-        const newId = item.id || `NK-${itemNis}`;
+        const newId = item.id || generateKepribadianGradeId(itemNis, itemSem, itemTa);
         rowPayload.id = newId;
 
         const newRowArr = headers.map(h => {
@@ -1644,7 +1660,7 @@ function saveBulkKepribadian(payload) {
     return {
       status: 'success',
       success: true,
-      message: `Berhasil menyimpan kepribadian untuk ${items.length} murid (${updatedCount} diperbarui, ${createdCount} ditambah).`
+      message: `Berhasil menyimpan kepribadian untuk ${items.length} murid (${updatedCount} diperbarui, ${createdCount} data baru).`
     };
   } catch (err) {
     console.error('Error saveBulkKepribadian:', err);
@@ -1667,6 +1683,13 @@ function deleteNilaiKepemimpinan(id) {
  * MODEL: SKL KEPEMIMPINAN (28 INDIKATOR EXCEL AL-IMAM)
  * ============================================================================
  */
+function generateSklGradeId(nis, semester, tahunAjaran) {
+  const cleanNis = String(nis || '').trim();
+  const cleanSem = normalizeSemester(semester || 'Tengah Semester 1').replace(/\s+/g, '');
+  const cleanTa = normalizeYear(tahunAjaran || '2026/2027').replace(/[\/\s]/g, '');
+  return `SKL-${cleanNis}-${cleanSem}-${cleanTa}`;
+}
+
 function getSklKepemimpinanList(filters = {}) {
   const sklHeaders = ['id', 'nis', 'semester', 'tahun_ajaran', 'catatan_walas', 'd1','d2','d3','d4','d5','d6','d7','k1','k2','k3','k4','k5','p1','p2','p3','p4','p5','s1','s2','t1','t2','m1','m2','r1','r2','r3','j1','j2','h1'];
   const sheet = getOrCreateSheet(DB_CONFIG.SHEET_SKL_KEPEMIMPINAN, sklHeaders);
@@ -1684,11 +1707,11 @@ function getSklKepemimpinanList(filters = {}) {
       scores[k] = item[k] || (k.startsWith('k') ? 'B' : 'A');
     });
     return {
-      id: item.id || ('SKL-' + item.nis),
+      id: item.id || generateSklGradeId(item.nis, item.semester, item.tahun_ajaran),
       nis: item.nis,
       nama_murid: s.nama_murid || s.nama_santri || 'Tidak Diketahui',
       nama_santri: s.nama_murid || s.nama_santri || 'Tidak Diketahui',
-      kelas: s.kelas || '-',
+      kelas: s.kelas || item.kelas || '-',
       semester: item.semester || 'Tengah Semester 1',
       tahun_ajaran: item.tahun_ajaran || '2026/2027',
       catatan_walas: item.catatan_walas || 'Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan',
@@ -1698,6 +1721,12 @@ function getSklKepemimpinanList(filters = {}) {
   
   if (filters.nis) list = list.filter(item => String(item.nis) === String(filters.nis));
   if (filters.kelas && filters.kelas !== 'Semua') list = list.filter(item => String(item.kelas) === String(filters.kelas));
+  if (filters.tahun_ajaran && filters.tahun_ajaran !== 'Semua') {
+    list = list.filter(item => normalizeYear(item.tahun_ajaran) === normalizeYear(filters.tahun_ajaran));
+  }
+  if (filters.semester && filters.semester !== 'Semua') {
+    list = list.filter(item => normalizeSemester(item.semester) === normalizeSemester(filters.semester));
+  }
   
   return list;
 }
@@ -1711,7 +1740,6 @@ function saveSklKepemimpinan(data) {
     const itemNis = String(data.nis || '').trim();
     const itemSem = data.semester || 'Tengah Semester 1';
     const itemTa = data.tahun_ajaran || '2026/2027';
-    const id = data.id || ('SKL-' + itemNis);
     
     let existing = null;
     if (data.id) {
@@ -1724,6 +1752,10 @@ function saveSklKepemimpinan(data) {
         tahun_ajaran: itemTa
       });
     }
+
+    const id = existing
+      ? (existing.values[existing.headers.indexOf('id')] || data.id || generateSklGradeId(itemNis, itemSem, itemTa))
+      : (data.id || generateSklGradeId(itemNis, itemSem, itemTa));
 
     const scores = data.scores || {};
     const rowDataObj = {
@@ -1788,7 +1820,7 @@ function saveBulkSklKepemimpinan(payload) {
     let allData = lastRow > 1 ? sheet.getRange(2, 1, lastRow - 1, lastCol).getValues() : [];
 
     const rowMapById = new Map();
-    const rowMapByNis = new Map();
+    const rowMapByComp = new Map();
 
     const idColIdx = headers.findIndex(h => h.toLowerCase() === 'id');
     const nisColIdx = headers.findIndex(h => h.toLowerCase() === 'nis');
@@ -1802,9 +1834,8 @@ function saveBulkSklKepemimpinan(payload) {
       const rowTa = taColIdx !== -1 ? normalizeYear(row[taColIdx]) : '';
 
       if (rowId) rowMapById.set(rowId, idx);
-      if (rowNis) {
-        rowMapByNis.set(`${rowNis}|${rowSem}|${rowTa}`, idx);
-        if (!rowMapByNis.has(rowNis)) rowMapByNis.set(rowNis, idx);
+      if (rowNis && rowSem && rowTa) {
+        rowMapByComp.set(`${rowNis}|${rowSem}|${rowTa}`, idx);
       }
     });
 
@@ -1837,16 +1868,14 @@ function saveBulkSklKepemimpinan(payload) {
       }
       if (matchedIdx === -1 && itemNis) {
         const strictKey = `${itemNis}|${normalizeSemester(itemSem)}|${normalizeYear(itemTa)}`;
-        if (rowMapByNis.has(strictKey)) {
-          matchedIdx = rowMapByNis.get(strictKey);
-        } else if (rowMapByNis.has(itemNis)) {
-          matchedIdx = rowMapByNis.get(itemNis);
+        if (rowMapByComp.has(strictKey)) {
+          matchedIdx = rowMapByComp.get(strictKey);
         }
       }
 
       if (matchedIdx !== -1) {
         const existingRow = allData[matchedIdx];
-        const currentId = idColIdx !== -1 ? existingRow[idColIdx] : (item.id || ('SKL-' + itemNis));
+        const currentId = idColIdx !== -1 ? existingRow[idColIdx] : (item.id || generateSklGradeId(itemNis, itemSem, itemTa));
         rowPayload.id = currentId;
 
         headers.forEach((h, colIdx) => {
@@ -1859,7 +1888,7 @@ function saveBulkSklKepemimpinan(payload) {
         });
         updatedCount++;
       } else {
-        const newId = item.id || `SKL-${itemNis}`;
+        const newId = item.id || generateSklGradeId(itemNis, itemSem, itemTa);
         rowPayload.id = newId;
 
         const newRowArr = headers.map(h => {
@@ -1884,7 +1913,7 @@ function saveBulkSklKepemimpinan(payload) {
     return {
       status: 'success',
       success: true,
-      message: `Berhasil menyimpan 28 Indikator SKL untuk ${items.length} murid (${updatedCount} diperbarui, ${createdCount} ditambah).`
+      message: `Berhasil menyimpan 28 Indikator SKL untuk ${items.length} murid (${updatedCount} diperbarui, ${createdCount} data baru).`
     };
   } catch (err) {
     console.error('Error saveBulkSklKepemimpinan:', err);
@@ -1907,6 +1936,13 @@ function deleteSklKepemimpinan(id) {
  * MODEL: NILAI DINIYAH & TAHFIDZ
  * ============================================================================
  */
+function generateDiniyahGradeId(nis, semester, tahunAjaran) {
+  const cleanNis = String(nis || '').trim();
+  const cleanSem = normalizeSemester(semester || 'Ganjil').replace(/\s+/g, '');
+  const cleanTa = normalizeYear(tahunAjaran || '2026/2027').replace(/[\/\s]/g, '');
+  return `ND-${cleanNis}-${cleanSem}-${cleanTa}`;
+}
+
 function getNilaiDiniyahList(filters = {}) {
   const sheet = getOrCreateSheet(DB_CONFIG.SHEET_DINIYAH);
   let list = sheetToObjects(sheet);
@@ -1919,14 +1955,21 @@ function getNilaiDiniyahList(filters = {}) {
     const s = muridMap[item.nis] || {};
     return {
       ...item,
+      id: item.id || generateDiniyahGradeId(item.nis, item.semester, item.tahun_ajaran),
       nama_murid: s.nama_murid || s.nama_santri || 'Tidak Diketahui',
       nama_santri: s.nama_murid || s.nama_santri || 'Tidak Diketahui',
-      kelas: s.kelas || '-'
+      kelas: s.kelas || item.kelas || '-'
     };
   });
   
   if (filters.nis) list = list.filter(item => String(item.nis) === String(filters.nis));
   if (filters.kelas && filters.kelas !== 'Semua') list = list.filter(item => String(item.kelas) === String(filters.kelas));
+  if (filters.tahun_ajaran && filters.tahun_ajaran !== 'Semua') {
+    list = list.filter(item => normalizeYear(item.tahun_ajaran) === normalizeYear(filters.tahun_ajaran));
+  }
+  if (filters.semester && filters.semester !== 'Semua') {
+    list = list.filter(item => normalizeSemester(item.semester) === normalizeSemester(filters.semester));
+  }
   
   return list;
 }
@@ -1959,8 +2002,8 @@ function saveNilaiDiniyah(data) {
     }
 
     const id = existing
-      ? (existing.values[existing.headers.indexOf('id')] || data.id || ('ND-' + itemNis))
-      : (data.id || ('ND-' + itemNis));
+      ? (existing.values[existing.headers.indexOf('id')] || data.id || generateDiniyahGradeId(itemNis, itemSem, itemTa))
+      : (data.id || generateDiniyahGradeId(itemNis, itemSem, itemTa));
 
     const payload = {
       ...data,
@@ -2000,6 +2043,125 @@ function saveNilaiDiniyah(data) {
     return { status: 'success', success: true, message: 'Nilai diniyah berhasil disimpan', id: id };
   } catch (err) {
     console.error('Error saveNilaiDiniyah:', err);
+    return { status: 'error', success: false, message: 'Gagal menyimpan nilai diniyah: ' + err.toString() };
+  }
+}
+
+function saveBulkNilaiDiniyah(payload) {
+  try {
+    const items = payload.items || (Array.isArray(payload) ? payload : []);
+    if (!items || items.length === 0) return { status: 'error', success: false, message: 'Data nilai diniyah tidak boleh kosong' };
+
+    const requiredHeaders = [
+      'id', 'nis', 'semester', 'tahun_ajaran', 'ziyadah_juz',
+      'murojaah_juz', 'nilai_tahfidz', 'adab_harian', 'ibadah_harian',
+      'bahasa_arab', 'catatan_musyrif'
+    ];
+
+    const sheet = getOrCreateSheet(DB_CONFIG.SHEET_DINIYAH, requiredHeaders);
+    const headers = ensureSheetHeaders(sheet, requiredHeaders);
+
+    const lastRow = sheet.getLastRow();
+    const lastCol = sheet.getLastColumn();
+    let allData = lastRow > 1 ? sheet.getRange(2, 1, lastRow - 1, lastCol).getValues() : [];
+
+    const rowMapById = new Map();
+    const rowMapByComp = new Map();
+
+    const idColIdx = headers.findIndex(h => h.toLowerCase() === 'id');
+    const nisColIdx = headers.findIndex(h => h.toLowerCase() === 'nis');
+    const semColIdx = headers.findIndex(h => h.toLowerCase() === 'semester');
+    const taColIdx = headers.findIndex(h => h.toLowerCase() === 'tahun_ajaran');
+
+    allData.forEach((row, idx) => {
+      const rowId = idColIdx !== -1 ? String(row[idColIdx]).trim().toLowerCase() : '';
+      const rowNis = nisColIdx !== -1 ? String(row[nisColIdx]).trim() : '';
+      const rowSem = semColIdx !== -1 ? normalizeSemester(row[semColIdx]) : '';
+      const rowTa = taColIdx !== -1 ? normalizeYear(row[taColIdx]) : '';
+
+      if (rowId) rowMapById.set(rowId, idx);
+      if (rowNis && rowSem && rowTa) {
+        rowMapByComp.set(`${rowNis}|${rowSem}|${rowTa}`, idx);
+      }
+    });
+
+    const newRowsToAppend = [];
+    let updatedCount = 0;
+    let createdCount = 0;
+
+    items.forEach(item => {
+      const itemNis = String(item.nis || '').trim();
+      const itemSem = item.semester || 'Ganjil';
+      const itemTa = item.tahun_ajaran || '2026/2027';
+
+      const rowPayload = {
+        nis: itemNis,
+        semester: itemSem,
+        tahun_ajaran: itemTa,
+        ziyadah_juz: item.ziyadah_juz || '-',
+        murojaah_juz: item.murojaah_juz || '-',
+        nilai_tahfidz: Number(item.nilai_tahfidz) || 0,
+        adab_harian: item.adab_harian || 'Mumtaz (A)',
+        ibadah_harian: item.ibadah_harian || 'Mumtaz (A)',
+        bahasa_arab: Number(item.bahasa_arab) || 0,
+        catatan_musyrif: item.catatan_musyrif || ''
+      };
+
+      let matchedIdx = -1;
+      if (item.id && rowMapById.has(String(item.id).toLowerCase().trim())) {
+        matchedIdx = rowMapById.get(String(item.id).toLowerCase().trim());
+      }
+      if (matchedIdx === -1 && itemNis) {
+        const strictKey = `${itemNis}|${normalizeSemester(itemSem)}|${normalizeYear(itemTa)}`;
+        if (rowMapByComp.has(strictKey)) {
+          matchedIdx = rowMapByComp.get(strictKey);
+        }
+      }
+
+      if (matchedIdx !== -1) {
+        const existingRow = allData[matchedIdx];
+        const currentId = idColIdx !== -1 ? existingRow[idColIdx] : (item.id || generateDiniyahGradeId(itemNis, itemSem, itemTa));
+        rowPayload.id = currentId;
+
+        headers.forEach((h, colIdx) => {
+          const normH = String(h).toLowerCase().trim();
+          if (rowPayload[normH] !== undefined) {
+            existingRow[colIdx] = rowPayload[normH];
+          } else if (rowPayload[h] !== undefined) {
+            existingRow[colIdx] = rowPayload[h];
+          }
+        });
+        updatedCount++;
+      } else {
+        const newId = item.id || generateDiniyahGradeId(itemNis, itemSem, itemTa);
+        rowPayload.id = newId;
+
+        const newRowArr = headers.map(h => {
+          const normH = String(h).toLowerCase().trim();
+          if (rowPayload[normH] !== undefined) return rowPayload[normH];
+          if (rowPayload[h] !== undefined) return rowPayload[h];
+          return '';
+        });
+        newRowsToAppend.push(newRowArr);
+        createdCount++;
+      }
+    });
+
+    if (allData.length > 0) {
+      sheet.getRange(2, 1, allData.length, headers.length).setValues(allData);
+    }
+    if (newRowsToAppend.length > 0) {
+      const startRow = sheet.getLastRow() + 1;
+      sheet.getRange(startRow, 1, newRowsToAppend.length, headers.length).setValues(newRowsToAppend);
+    }
+
+    return {
+      status: 'success',
+      success: true,
+      message: `Berhasil menyimpan nilai Diniyah & Tahfidz untuk ${items.length} murid (${updatedCount} diperbarui, ${createdCount} data baru).`
+    };
+  } catch (err) {
+    console.error('Error saveBulkNilaiDiniyah:', err);
     return { status: 'error', success: false, message: 'Gagal menyimpan nilai diniyah: ' + err.toString() };
   }
 }

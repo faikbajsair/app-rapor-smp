@@ -204,6 +204,8 @@ function dispatchApiAction(action, payload) {
         return { success: true, data: getNilaiDiniyahList(payload) };
       case 'saveNilaiDiniyah':
         return saveNilaiDiniyah(payload);
+      case 'saveBulkNilaiDiniyah':
+        return saveBulkNilaiDiniyah(payload.items || payload);
       case 'deleteNilaiDiniyah':
         return deleteNilaiDiniyah(payload.id);
 
@@ -235,7 +237,7 @@ function dispatchApiAction(action, payload) {
       // Rapor Lengkap & Status Publikasi
       case 'getMuridReport':
       case 'getSantriReport':
-        return getMuridReportData(payload.nis);
+        return getMuridReportData(payload.nis, payload.semester, payload.tahun_ajaran);
       case 'getRaporPublishStatus':
         return getRaporPublishStatus(payload);
       case 'setRaporPublishStatus':
@@ -317,6 +319,7 @@ function apiDeleteSklKepemimpinan(id) { return dispatchApiAction('deleteSklKepem
 
 function apiGetNilaiDiniyah(filters) { return dispatchApiAction('getNilaiDiniyah', filters || {}); }
 function apiSaveNilaiDiniyah(data) { return dispatchApiAction('saveNilaiDiniyah', data); }
+function apiSaveBulkNilaiDiniyah(data) { return dispatchApiAction('saveBulkNilaiDiniyah', data); }
 function apiDeleteNilaiDiniyah(id) { return dispatchApiAction('deleteNilaiDiniyah', { id: id }); }
 
 function apiGetActivityLogs(filters) { return dispatchApiAction('getActivityLogs', filters || {}); }

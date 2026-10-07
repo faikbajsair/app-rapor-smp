@@ -1272,12 +1272,13 @@ function callApi(actionName, payload = {}) {
         case 'deleteSklKepemimpinan': runner.apiDeleteSklKepemimpinan(payload.id); break;
         case 'getNilaiDiniyah': runner.apiGetNilaiDiniyah(payload); break;
         case 'saveNilaiDiniyah': runner.apiSaveNilaiDiniyah(payload); break;
+        case 'saveBulkNilaiDiniyah': runner.apiSaveBulkNilaiDiniyah(payload.items || payload); break;
         case 'deleteNilaiDiniyah': runner.apiDeleteNilaiDiniyah(payload.id); break;
         case 'getRaporPublishStatus': runner.apiGetRaporPublishStatus(payload); break;
         case 'setRaporPublishStatus': runner.apiSetRaporPublishStatus(payload); break;
         case 'forceSyncDatabase': runner.apiForceSyncDatabase(); break;
-        case 'getMuridReport': runner.apiGetMuridReport(payload.nis); break;
-        case 'getSantriReport': runner.apiGetMuridReport(payload.nis); break;
+        case 'getMuridReport': runner.apiGetMuridReport(payload.nis, payload.semester, payload.tahun_ajaran); break;
+        case 'getSantriReport': runner.apiGetMuridReport(payload.nis, payload.semester, payload.tahun_ajaran); break;
         case 'getActivityLogs': runner.apiGetActivityLogs(payload); break;
         case 'logActivity': runner.apiLogActivity(payload); break;
         case 'clearActivityLogs': runner.apiClearActivityLogs(); break;
@@ -4878,6 +4879,9 @@ function saveSklLegerGrid() {
   const kelasSelect = document.getElementById('skl-kp-kelas');
   const currentKelas = kelasSelect ? kelasSelect.value : 'IX ABU BAKAR';
   const selectedYear = document.getElementById('skl-kp-tahun-ajaran')?.value || AppState.cmsSettings.academic_year || '2026/2027';
+  const selectedSem = AppState.cmsSettings.semester_active || 'Tengah Semester 1';
+  const cleanSem = selectedSem.replace(/\s+/g, '');
+  const cleanTa = selectedYear.replace(/[\/\s]/g, '');
   const students = AppState.muridList.filter(x => x.kelas === currentKelas);
 
   const updatedEntries = [];
@@ -4893,11 +4897,11 @@ function saveSklLegerGrid() {
     });
 
     const entry = {
-      id: `SKL-${st.nis}`,
+      id: `SKL-${st.nis}-${cleanSem}-${cleanTa}`,
       nis: st.nis,
       nama_murid: st.nama_murid || st.nama_santri,
       kelas: currentKelas,
-      semester: 'Tengah Semester 1',
+      semester: selectedSem,
       tahun_ajaran: selectedYear,
       scores: scores,
       catatan_walas: catatanInput ? catatanInput.value : 'Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan'
@@ -4905,7 +4909,7 @@ function saveSklLegerGrid() {
 
     updatedEntries.push(entry);
 
-    const idx = AppState.sklList.findIndex(x => String(x.nis) === String(st.nis));
+    const idx = AppState.sklList.findIndex(x => String(x.nis) === String(st.nis) && normalizeSemester(x.semester) === normalizeSemester(selectedSem) && normalizeYear(x.tahun_ajaran) === normalizeYear(selectedYear));
     if (idx !== -1) AppState.sklList[idx] = entry;
     else AppState.sklList.push(entry);
   });
@@ -5014,13 +5018,16 @@ function onKpCardInput(textareaEl) {
   if (!card) return;
   const nis = card.getAttribute('data-nis');
   const kelas = document.getElementById('leger-kp-kelas')?.value || 'IX ABU BAKAR';
-  const ta = document.getElementById('leger-kp-tahun-ajaran')?.value || '2026/2027';
+  const ta = document.getElementById('leger-kp-tahun-ajaran')?.value || AppState.cmsSettings.academic_year || '2026/2027';
+  const sem = AppState.cmsSettings.semester_active || 'Tengah Semester 1';
+  const cleanSem = sem.replace(/\s+/g, '');
+  const cleanTa = ta.replace(/[\/\s]/g, '');
 
   const entry = {
-    id: `NK-${nis}`,
+    id: `NK-${nis}-${cleanSem}-${cleanTa}`,
     nis: nis,
     kelas: kelas,
-    semester: 'Tengah Semester 1',
+    semester: sem,
     tahun_ajaran: ta,
     ibadah: card.querySelector('.kp-card-ibadah')?.value || '',
     akhlak: card.querySelector('.kp-card-akhlak')?.value || '',
@@ -5032,7 +5039,7 @@ function onKpCardInput(textareaEl) {
     catatan_pembina: card.querySelector('.kp-card-catatan')?.value || ''
   };
 
-  const idx = AppState.kepemimpinanList.findIndex(k => String(k.nis) === String(nis));
+  const idx = AppState.kepemimpinanList.findIndex(k => String(k.nis) === String(nis) && normalizeSemester(k.semester) === normalizeSemester(sem) && normalizeYear(k.tahun_ajaran) === normalizeYear(ta));
   if (idx !== -1) AppState.kepemimpinanList[idx] = { ...AppState.kepemimpinanList[idx], ...entry };
   else AppState.kepemimpinanList.push(entry);
 
@@ -5165,17 +5172,20 @@ function saveBulkKepribadianGrid() {
   const cards = document.querySelectorAll('.kp-student-card');
   const items = [];
   const selectedYear = document.getElementById('leger-kp-tahun-ajaran')?.value || AppState.cmsSettings.academic_year || '2026/2027';
+  const selectedSem = AppState.cmsSettings.semester_active || 'Tengah Semester 1';
+  const cleanSem = selectedSem.replace(/\s+/g, '');
+  const cleanTa = selectedYear.replace(/[\/\s]/g, '');
 
   cards.forEach(card => {
     const nis = card.getAttribute('data-nis');
     const m = AppState.muridList.find(x => String(x.nis) === String(nis)) || {};
 
     const entry = {
-      id: `NK-${nis}`,
+      id: `NK-${nis}-${cleanSem}-${cleanTa}`,
       nis: nis,
       nama_murid: m.nama_murid || m.nama_santri || 'Murid',
       kelas: m.kelas || 'IX ABU BAKAR',
-      semester: AppState.cmsSettings.semester_active || 'I (Satu)',
+      semester: selectedSem,
       tahun_ajaran: selectedYear,
       ibadah: card.querySelector('.kp-card-ibadah')?.value || '',
       akhlak: card.querySelector('.kp-card-akhlak')?.value || '',
@@ -5190,7 +5200,7 @@ function saveBulkKepribadianGrid() {
 
     items.push(entry);
 
-    const idx = AppState.kepemimpinanList.findIndex(k => String(k.nis) === String(nis));
+    const idx = AppState.kepemimpinanList.findIndex(k => String(k.nis) === String(nis) && normalizeSemester(k.semester) === normalizeSemester(selectedSem) && normalizeYear(k.tahun_ajaran) === normalizeYear(selectedYear));
     if (idx !== -1) AppState.kepemimpinanList[idx] = entry;
     else AppState.kepemimpinanList.push(entry);
   });
@@ -5504,11 +5514,18 @@ function submitFormDiniyah(e) {
   e.preventDefault();
   const nis = document.getElementById('diniyah-nis').value;
   const m = AppState.muridList.find(x => String(x.nis) === String(nis)) || {};
+  const currentTa = document.getElementById('filter-diniyah-tahun-ajaran')?.value || AppState.cmsSettings?.academic_year || '2026/2027';
+  const currentSem = AppState.cmsSettings?.semester_active || 'Tengah Semester 1';
+  const cleanSem = currentSem.replace(/\s+/g, '');
+  const cleanTa = currentTa.replace(/[\/\s]/g, '');
+
   const payload = {
-    id: document.getElementById('diniyah-id').value || ('ND-' + Date.now().toString().substring(7)),
+    id: document.getElementById('diniyah-id').value || `ND-${nis}-${cleanSem}-${cleanTa}`,
     nis: nis,
     nama_murid: m.nama_murid || m.nama_santri || 'Murid',
     kelas: m.kelas || 'IX ABU BAKAR',
+    semester: currentSem,
+    tahun_ajaran: currentTa,
     ziyadah_juz: document.getElementById('diniyah-ziyadah').value,
     murojaah_juz: document.getElementById('diniyah-murojaah').value,
     nilai_tahfidz: Number(document.getElementById('diniyah-tahfidz').value) || 0,
@@ -5518,7 +5535,7 @@ function submitFormDiniyah(e) {
     catatan_musyrif: document.getElementById('diniyah-catatan').value
   };
 
-  const idx = AppState.diniyahList.findIndex(x => String(x.id) === String(payload.id));
+  const idx = AppState.diniyahList.findIndex(x => String(x.id) === String(payload.id) || (String(x.nis) === String(payload.nis) && normalizeSemester(x.semester) === normalizeSemester(currentSem) && normalizeYear(x.tahun_ajaran) === normalizeYear(currentTa)));
   if (idx !== -1) AppState.diniyahList[idx] = payload;
   else AppState.diniyahList.unshift(payload);
 
@@ -6217,7 +6234,7 @@ function loadMuridReportForPrint(nis) {
   renderRaporKepemimpinanSheet(localReport);
 
   // Background fetch from backend if available
-  callApi('getMuridReport', { nis: cleanNis })
+  callApi('getMuridReport', { nis: cleanNis, semester: curSem, tahun_ajaran: curYear })
     .then(res => {
       if (res && res.success && res.data && typeof res.data === 'object' && !Array.isArray(res.data)) {
         const backendMurid = res.data.murid || res.data.santri;
