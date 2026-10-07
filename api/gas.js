@@ -22,7 +22,7 @@ module.exports = async (req, res) => {
   let targetUrl = req.headers['x-target-gas-url'] ||
                   req.query.gasUrl ||
                   process.env.APPS_SCRIPT_URL ||
-                  'https://script.google.com/macros/s/AKfycbz35FznhokF4kD3R9diXj1jY1aKxTXcMvAMrRccD9ptRAM-wIf3tCOQLMsgZ5PjLUgT/exec';
+                  'https://script.google.com/macros/s/AKfycbxyA9q8promp9_rmxyI_pkx4UwEBLBITjoP4eeKxvHbrd4QJ83MDEsG73SmwQkTlwfy/exec';
 
   // Normalize Google Workspace domain prefix if present (/a/domain/s/ -> /macros/s/)
   if (targetUrl && typeof targetUrl === 'string') {
