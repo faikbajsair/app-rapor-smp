@@ -345,7 +345,7 @@ function initDatabase() {
       ['262707007', '3137629982', 'AZRIEL PUTRA NATAFA', 'VII UTSMAN', 'L', 'MUSTAFA', '081234567106', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Panahan', 'Eli Umiyati, S.Pd., Gr.'],
       ['262707008', '3139505292', 'BASTIAN ARIF ABDILLAH', 'VII UTSMAN', 'L', 'KHOLID RIDWAN', '081234567107', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Futsal', 'Eli Umiyati, S.Pd., Gr.'],
       ['262707009', '0132557813', 'FATHAN ATHARSYAH ATTHALLA', 'VII UTSMAN', 'L', 'RICKY MOCHAMAD YULIANSYAH', '081234567108', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'English Club', 'Eli Umiyati, S.Pd., Gr.'],
-      ['262707010', '3140036034', 'GIBRAN HARUNSYAKA UBAIDILLAH', 'VII UTSMAN', 'L', 'GUNARDI', '081234567109', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Basket', 'Eli Umiyati, S.Pd., Gr.'],
+      ['262707010', '3140036034', 'GIBRAN HARUNSYAKA UBAIDILLAH', 'VII UTSMAN', 'L', 'GUNARDI', '081234567109', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', '-', 'Eli Umiyati, S.Pd., Gr.'],
       ['262707011', '0141620854', 'HAFIZH KURNIA STYAWAN', 'VII UTSMAN', 'L', 'BONI STYAWAN', '081234567110', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Futsal', 'Eli Umiyati, S.Pd., Gr.'],
       ['262707012', '3148386262', 'IBRAHIM AL AQSA SHALEH', 'VII UTSMAN', 'L', 'SALMAN', '081234567111', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Panahan', 'Eli Umiyati, S.Pd., Gr.'],
       ['262707024', '0136381212', 'KEANO AQUILLA SAKHA RESPATI', 'VII UTSMAN', 'L', 'GAMA RIZQI RESPATI', '081234567112', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Basket', 'Eli Umiyati, S.Pd., Gr.'],
