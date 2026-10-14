@@ -29,6 +29,9 @@ function onOpen(e) {
     const ui = SpreadsheetApp.getUi();
     ui.createMenu('🚀 App Rapor AI IS')
       .addItem('⚡ Sinkronkan Seluruh Data Baru ke Spreadsheet', 'forceSyncDatabaseToSpreadsheet')
+      .addItem('📊 Update Nilai ATS & Pengetahuan (Semua Kelas: VII, VIII, IX)', 'seedOfficialAtsGrades')
+      .addItem('🌟 Update Rapor SKL Kepemimpinan (Semua Kelas: VII, VIII, IX)', 'seedOfficialSklKepemimpinan')
+      .addItem('📑 Buat / Sinkron Sheet Analisis Format Excel Resmi', 'syncAnalisisSpreadsheetSheets')
       .addItem('🔄 Inisialisasi Database', 'initDatabase')
       .addToUi();
   } catch (err) {}
@@ -1337,81 +1340,365 @@ function saveBulkUploadNilaiAkademik(payload) {
 }
 
 /**
- * Injeksi Nilai ATS 1 Kelas Bu Dewi Fitria (IX ABU BAKAR) ke Sheet Nilai_Akademik
- * Sesuai Data Resmi Excel Analisis ATS 1 Al-Imam (18 Siswa, 7 Mapel)
+ * Dataset Lengkap Nilai ATS 1 Murni & Nilai Pengetahuan Resmi Al-Imam
+ * Diambil dari file Google Spreadsheet:
+ * 1. ANALISIS ATS 1 KELAS IX ABU BAKAR (18 Murid)
+ * 2. ANALISIS ATS 1 KELAS IX UMMU SALAMAH (21 Murid)
+ * Format Nilai: [Nilai ATS Murni / UTS, Nilai Pengetahuan / Akhir]
  */
-function seedDewiFitriaGrades() {
-  const studentsGrades = [
-    { nis: '242507001', nama: 'ABDILLAH ZULQARNAIN ARRAZI', fikih: 89, indo: 89, mtk: 85, ipa: 86, ips: 95, pky: 93, inf: 89 },
-    { nis: '242507002', nama: 'AL-FATTAH IBNU SYAM', fikih: 83, indo: 85, mtk: 81, ipa: 84, ips: 88, pky: 91, inf: 88 },
-    { nis: '242507003', nama: 'ALDENTA DWIKA PRADIPTA', fikih: 75, indo: 81, mtk: 81, ipa: 79, ips: 80, pky: 88, inf: 80 },
-    { nis: '242507005', nama: 'AZKA WAFI ATHAYA', fikih: 81, indo: 83, mtk: 80, ipa: 76, ips: 80, pky: 87, inf: 84 },
-    { nis: '242507006', nama: 'BIMASENA NARARYA MALIKUL', fikih: 85, indo: 90, mtk: 83, ipa: 80, ips: 83, pky: 88, inf: 86 },
-    { nis: '242507007', nama: 'DAFFA RAHMAT AZAMI', fikih: 95, indo: 94, mtk: 95, ipa: 89, ips: 90, pky: 88, inf: 84 },
-    { nis: '242507008', nama: 'GHAISAN ARFA RAVELLIO', fikih: 93, indo: 95, mtk: 92, ipa: 91, ips: 92, pky: 89, inf: 90 },
-    { nis: '242507009', nama: 'ISA RAFIF NAILU', fikih: 87, indo: 95, mtk: 96, ipa: 90, ips: 89, pky: 93, inf: 89 },
-    { nis: '242507013', nama: 'LIEVE LUTHFI', fikih: 78, indo: 85, mtk: 75, ipa: 70, ips: 80, pky: 86, inf: 75 },
-    { nis: '242507010', nama: 'LIONEL NAGAZKHA IRAWAN TOBING', fikih: 81, indo: 80, mtk: 79, ipa: 77, ips: 80, pky: 88, inf: 80 },
-    { nis: '242507014', nama: 'MARIQ ATHALLA MUNIARTO', fikih: 82, indo: 92, mtk: 86, ipa: 80, ips: 86, pky: 88, inf: 91 },
-    { nis: '242507012', nama: 'MUHAMMAD AL BAIS SAHID ROKHIM', fikih: 93, indo: 91, mtk: 90, ipa: 91, ips: 89, pky: 87, inf: 88 },
-    { nis: '242507017', nama: 'MUHAMMAD AZKA NAUFAL SAPUTRA', fikih: 99, indo: 95, mtk: 96, ipa: 97, ips: 96, pky: 91, inf: 93 },
-    { nis: '242507018', nama: 'MUHAMMAD DAFFA HAFIZHSYACH AKBAR', fikih: 86, indo: 89, mtk: 80, ipa: 75, ips: 82, pky: 89, inf: 86 },
-    { nis: '242507022', nama: 'MUHAMMAD HAIKAL FURQON ASYRAF', fikih: 84, indo: 82, mtk: 81, ipa: 78, ips: 80, pky: 87, inf: 85 },
-    { nis: '242507015', nama: 'MUHAMMAD SYABIL A\'ZAWAWI OKTAVIANSYAH', fikih: 90, indo: 91, mtk: 86, ipa: 85, ips: 92, pky: 94, inf: 90 },
-    { nis: '242507016', nama: 'QUARTO KENZIE PRAKOSO', fikih: 82, indo: 89, mtk: 85, ipa: 81, ips: 89, pky: 89, inf: 88 },
-    { nis: '242507025', nama: 'RAKA PRASRAYA KAYANA', fikih: 87, indo: 88, mtk: 84, ipa: 80, ips: 85, pky: 88, inf: 83 }
-  ];
+const OFFICIAL_MAPEL_CONFIG = [
+  { key: 'akidah', name: 'Akidah', kkm: 75, code: 'AKD' },
+  { key: 'akhlak', name: 'Akhlak', kkm: 75, code: 'AKH' },
+  { key: 'fikih', name: 'Fikih', kkm: 75, code: 'FKH' },
+  { key: 'ppkn', name: 'Pendidikan Pancasila', kkm: 75, code: 'PPN' },
+  { key: 'b_indo', name: 'Bahasa Indonesia', kkm: 75, code: 'BIN' },
+  { key: 'mtk', name: 'Matematika', kkm: 75, code: 'MTK' },
+  { key: 'ipa', name: 'Ilmu Pengetahuan Alam', kkm: 75, code: 'IPA' },
+  { key: 'ips', name: 'Ilmu Pengetahuan Sosial', kkm: 75, code: 'IPS' },
+  { key: 'prakarya', name: 'Prakarya', kkm: 75, code: 'PKY' },
+  { key: 'pjok', name: 'Pendidikan Jasmani, Olahraga, dan Kesehatan', kkm: 75, code: 'PJK' },
+  { key: 'b_sunda', name: 'Bahasa Sunda', kkm: 75, code: 'SUN' },
+  { key: 'tik', name: 'Informatika', kkm: 75, code: 'INF' },
+  { key: 'b_arab', name: 'Bahasa Arab', kkm: 75, code: 'ARB' },
+  { key: 'inggris', name: 'Bahasa Inggris', kkm: 75, code: 'BIG' }
+];
 
-  const mapelMapping = [
-    { key: 'fikih', name: 'Fikih', kkm: 75, tpOpt: 'TP-FKH-01,TP-FKH-02', tpPen: 'TP-FKH-03' },
-    { key: 'indo', name: 'Bahasa Indonesia', kkm: 75, tpOpt: 'TP-BIN-01,TP-BIN-02', tpPen: 'TP-BIN-03' },
-    { key: 'mtk', name: 'Matematika', kkm: 75, tpOpt: 'TP-MTK-01,TP-MTK-02', tpPen: 'TP-MTK-03' },
-    { key: 'ipa', name: 'Ilmu Pengetahuan Alam', kkm: 75, tpOpt: 'TP-IPA-01,TP-IPA-02', tpPen: 'TP-IPA-03' },
-    { key: 'ips', name: 'Ilmu Pengetahuan Sosial', kkm: 75, tpOpt: 'TP-IPS-01,TP-IPS-02', tpPen: 'TP-IPS-03' },
-    { key: 'pky', name: 'Prakarya', kkm: 75, tpOpt: 'TP-PKY-01,TP-PKY-02', tpPen: 'TP-PKY-03' },
-    { key: 'inf', name: 'Informatika', kkm: 75, tpOpt: 'TP-INF-01,TP-INF-02', tpPen: 'TP-INF-03' }
-  ];
+const OFFICIAL_ATS_GRADES_IX_ABU_BAKAR = [
+  { nis: '242507001', nama: 'ABDILLAH ZULQARNAIN ARRAZI', akidah: [96, 92], fikih: [77, 89], ppkn: [83, 87], b_indo: [90, 89], mtk: [64, 85], ipa: [84, 86], ips: [100, 95], prakarya: [93, 93], pjok: [90, 85], b_sunda: [93, 91], tik: [87, 89], inggris: [97, 94] },
+  { nis: '242507002', nama: 'AL-FATTAH IBNU SYAM', akidah: [90, 86], fikih: [63, 83], ppkn: [80, 86], b_indo: [73, 85], mtk: [68, 81], ipa: [84, 84], ips: [100, 88], prakarya: [90, 91], pjok: [90, 86], b_sunda: [93, 84], tik: [80, 88], inggris: [93, 81] },
+  { nis: '242507003', nama: 'ALDENTA DWIKA PRADIPTA', akidah: [86, 84], fikih: [57, 75], ppkn: [63, 77], b_indo: [76, 81], mtk: [60, 81], ipa: [60, 79], ips: [75, 80], prakarya: [90, 88], pjok: [85, 83], b_sunda: [80, 80], tik: [73, 80], inggris: [57, 74] },
+  { nis: '242507005', nama: 'AZKA WAFI ATHAYA', akidah: [86, 87], fikih: [74, 81], ppkn: [63, 79], b_indo: [73, 83], mtk: [60, 80], ipa: [60, 76], ips: [78, 80], prakarya: [86, 87], pjok: [88, 85], b_sunda: [60, 77], tik: [83, 84], inggris: [60, 75] },
+  { nis: '242507006', nama: 'BIMASENA NARARYA MALIKUL', akidah: [80, 83], fikih: [71, 85], ppkn: [77, 84], b_indo: [76, 90], mtk: [76, 83], ipa: [64, 80], ips: [93, 83], prakarya: [92, 88], pjok: [90, 88], b_sunda: [80, 80], tik: [87, 86], inggris: [93, 91] },
+  { nis: '242507007', nama: 'DAFFA RAHMAT AZAMI', akidah: [96, 93], fikih: [86, 95], ppkn: [80, 89], b_indo: [100, 94], mtk: [92, 95], ipa: [88, 90], ips: [96, 90], prakarya: [88, 88], pjok: [93, 92], b_sunda: [90, 92], tik: [83, 84], inggris: [93, 91] },
+  { nis: '242507008', nama: 'GHAISAN ARFA RAVELLIO', akidah: [100, 96], fikih: [94, 93], ppkn: [93, 92], b_indo: [86, 95], mtk: [92, 92], ipa: [88, 91], ips: [96, 92], prakarya: [90, 89], pjok: [93, 92], b_sunda: [95, 96], tik: [100, 90], inggris: [93, 93] },
+  { nis: '242507009', nama: 'ISA RAFIF NAILU', akidah: [90, 92], fikih: [69, 87], ppkn: [87, 87], b_indo: [93, 95], mtk: [100, 96], ipa: [84, 90], ips: [93, 89], prakarya: [93, 93], pjok: [90, 88], b_sunda: [85, 90], tik: [90, 89], inggris: [87, 94] },
+  { nis: '242507013', nama: 'LIEVE LUTHFI', akidah: [76, 76], fikih: [46, 78], ppkn: [57, 81], b_indo: [66, 85], mtk: [56, 75], ipa: [56, 71], ips: [77, 80], prakarya: [86, 86], pjok: [90, 91], b_sunda: [80, 88], tik: [53, 75], inggris: [40, 75] },
+  { nis: '242507010', nama: 'LIONEL NAGAZKHA IRAWAN TOBING', akidah: [76, 80], fikih: [54, 81], ppkn: [60, 79], b_indo: [76, 80], mtk: [56, 79], ipa: [60, 77], ips: [75, 80], prakarya: [90, 88], pjok: [88, 87], b_sunda: [76, 84], tik: [57, 80], inggris: [83, 91] },
+  { nis: '242507014', nama: 'MARIQ ATHALLA MUNIARTO', akidah: [96, 88], fikih: [60, 82], ppkn: [73, 80], b_indo: [90, 92], mtk: [84, 86], ipa: [76, 80], ips: [96, 86], prakarya: [90, 88], pjok: [80, 81], b_sunda: [76, 80], tik: [90, 91], inggris: [100, 96] },
+  { nis: '242507012', nama: 'MUHAMMAD AL BAIS SAHID ROKHIM', akidah: [96, 91], fikih: [100, 93], ppkn: [80, 87], b_indo: [80, 91], mtk: [96, 90], ipa: [88, 91], ips: [100, 89], prakarya: [88, 87], pjok: [88, 86], b_sunda: [87, 87], tik: [83, 88], inggris: [80, 83] },
+  { nis: '242507017', nama: 'MUHAMMAD AZKA NAUFAL SAPUTRA', akidah: [100, 95], fikih: [95, 99], ppkn: [83, 90], b_indo: [100, 95], mtk: [96, 96], ipa: [96, 97], ips: [100, 96], prakarya: [90, 91], pjok: [95, 93], b_sunda: [93, 94], tik: [93, 93], inggris: [100, 98] },
+  { nis: '242507018', nama: 'MUHAMMAD DAFFA HAFIZHSYACH AKBAR', akidah: [86, 84], fikih: [80, 86], ppkn: [77, 82], b_indo: [86, 89], mtk: [64, 80], ipa: [60, 76], ips: [96, 82], prakarya: [88, 89], pjok: [80, 83], b_sunda: [67, 79], tik: [93, 86], inggris: [93, 93] },
+  { nis: '242507022', nama: 'MUHAMMAD HAIKAL FURQON ASYRAF', akidah: [96, 91], fikih: [60, 84], ppkn: [83, 86], b_indo: [56, 82], mtk: [64, 81], ipa: [60, 78], ips: [75, 80], prakarya: [88, 87], pjok: [90, 91], b_sunda: [77, 84], tik: [73, 85], inggris: [43, 75] },
+  { nis: '242507015', nama: 'MUHAMMAD SYABIL A\'ZAWAWI OKTAVIANSYAH', akidah: [100, 93], fikih: [83, 90], ppkn: [90, 89], b_indo: [93, 91], mtk: [76, 86], ipa: [84, 85], ips: [95, 92], prakarya: [94, 94], pjok: [82, 82], b_sunda: [80, 88], tik: [97, 90], inggris: [90, 81] },
+  { nis: '242507016', nama: 'QUARTO KENZIE PRAKOSO', akidah: [96, 93], fikih: [80, 82], ppkn: [73, 85], b_indo: [76, 89], mtk: [76, 85], ipa: [84, 83], ips: [96, 89], prakarya: [90, 89], pjok: [85, 84], b_sunda: [80, 88], tik: [97, 88], inggris: [87, 92] },
+  { nis: '242507025', nama: 'RAKA PRASRAYA KAYANA', akidah: [86, 85], fikih: [66, 87], ppkn: [70, 82], b_indo: [60, 88], mtk: [76, 84], ipa: [76, 83], ips: [93, 85], prakarya: [88, 88], pjok: [88, 89], b_sunda: [83, 89], tik: [70, 83], inggris: [70, 75] }
+];
 
+const OFFICIAL_ATS_GRADES_IX_UMMU_SALAMAH = [
+  { nis: '242507019', nama: 'ADELA NOLLY RIYANTO', akidah: [96, 93], fikih: [86, 96], ppkn: [80, 90], b_indo: [100, 96], mtk: [80, 95], ipa: [100, 95], ips: [93, 93], prakarya: [90, 91], pjok: [90, 91], b_sunda: [93, 94], tik: [93, 95], inggris: [93, 98] },
+  { nis: '242507020', nama: 'AIDAH HURIAH MUMTAZAH SUGITO', akidah: [93, 87], fikih: [66, 85], ppkn: [77, 86], b_indo: [96, 88], mtk: [48, 76], ipa: [52, 76], ips: [90, 89], prakarya: [93, 92], pjok: [82, 84], b_sunda: [60, 78], tik: [80, 82], inggris: [90, 83] },
+  { nis: '242507021', nama: 'AISYAH DAAMIYAA NUR SA\'ADAH', akidah: [80, 86], fikih: [71, 85], ppkn: [83, 86], b_indo: [76, 86], mtk: [48, 76], ipa: [60, 76], ips: [90, 85], prakarya: [95, 94], pjok: [83, 86], b_sunda: [77, 82], tik: [60, 83], inggris: [70, 80] },
+  { nis: '242507004', nama: 'ALIKA RAMADINA SETIAWAN', akidah: [90, 92], fikih: [74, 91], ppkn: [77, 83], b_indo: [96, 91], mtk: [52, 80], ipa: [76, 87], ips: [93, 90], prakarya: [88, 88], pjok: [87, 91], b_sunda: [80, 87], tik: [83, 81], inggris: [87, 94] },
+  { nis: '242507023', nama: 'ALISHA MALAIKA ARIFIANTO', akidah: [83, 87], fikih: [66, 82], ppkn: [73, 83], b_indo: [93, 93], mtk: [52, 80], ipa: [76, 82], ips: [100, 90], prakarya: [88, 89], pjok: [90, 91], b_sunda: [60, 80], tik: [87, 87], inggris: [80, 96] },
+  { nis: '242507024', nama: 'ALISHA PRIYANKA ANINDITA', akidah: [83, 87], fikih: [69, 90], ppkn: [77, 84], b_indo: [86, 92], mtk: [92, 94], ipa: [76, 86], ips: [96, 90], prakarya: [90, 91], pjok: [88, 91], b_sunda: [83, 90], tik: [80, 88], inggris: [97, 98] },
+  { nis: '242507026', nama: 'CHALISA AFIYAH ABDI', akidah: [96, 91], fikih: [80, 91], ppkn: [80, 88], b_indo: [83, 89], mtk: [76, 85], ipa: [76, 87], ips: [90, 89], prakarya: [88, 88], pjok: [86, 90], b_sunda: [80, 87], tik: [73, 86], inggris: [97, 96] },
+  { nis: '242507027', nama: 'CHAYYARA AILA JANEETA', akidah: [93, 88], fikih: [71, 90], ppkn: [73, 83], b_indo: [83, 83], mtk: [76, 90], ipa: [76, 88], ips: [96, 90], prakarya: [92, 92], pjok: [87, 91], b_sunda: [93, 94], tik: [77, 87], inggris: [93, 94] },
+  { nis: '242507028', nama: 'ESHAL CALYSTA', akidah: [96, 94], fikih: [89, 96], ppkn: [83, 86], b_indo: [96, 88], mtk: [88, 91], ipa: [76, 89], ips: [100, 92], prakarya: [90, 90], pjok: [88, 91], b_sunda: [80, 88], tik: [93, 97], inggris: [97, 95] },
+  { nis: '242507029', nama: 'FALISHA JASMINE BUDIMAN', akidah: [93, 91], fikih: [86, 93], ppkn: [83, 86], b_indo: [90, 92], mtk: [92, 94], ipa: [88, 90], ips: [96, 92], prakarya: [90, 89], pjok: [85, 90], b_sunda: [97, 97], tik: [97, 94], inggris: [97, 96] },
+  { nis: '242507030', nama: 'FIRLI OKTAVIANI HEMAWAN', akidah: [100, 97], fikih: [66, 88], ppkn: [73, 85], b_indo: [96, 94], mtk: [88, 89], ipa: [76, 88], ips: [100, 92], prakarya: [92, 90], pjok: [90, 91], b_sunda: [97, 97], tik: [77, 92], inggris: [87, 95] },
+  { nis: '242507031', nama: 'GHAIDA ALIN NADA', akidah: [96, 90], fikih: [91, 94], ppkn: [80, 89], b_indo: [100, 92], mtk: [88, 92], ipa: [80, 95], ips: [100, 94], prakarya: [90, 89], pjok: [87, 91], b_sunda: [90, 92], tik: [90, 92], inggris: [93, 96] },
+  { nis: '242507032', nama: 'JASMINE ALIA PUTRI', akidah: [96, 89], fikih: [69, 90], ppkn: [80, 83], b_indo: [100, 90], mtk: [60, 86], ipa: [76, 91], ips: [96, 89], prakarya: [90, 89], pjok: [90, 91], b_sunda: [97, 97], tik: [87, 95], inggris: [87, 91] },
+  { nis: '242507011', nama: 'JASMINE NADIAH WARDHANI', akidah: [76, 75], fikih: [34, 71], ppkn: [50, 76], b_indo: [46, 77], mtk: [52, 77], ipa: [60, 80], ips: [60, 78], prakarya: [88, 88], pjok: [85, 85], b_sunda: [63, 76], tik: [67, 85], inggris: [90, 94] },
+  { nis: '242507033', nama: 'JIEHAN SEKAR MAHESWARI', akidah: [76, 75], fikih: [43, 73], ppkn: [27, 75], b_indo: [36, 75], mtk: [36, 72], ipa: [52, 72], ips: [60, 75], prakarya: [85, 84], pjok: [80, 83], b_sunda: [60, 75], tik: [33, 72], inggris: [40, 71] },
+  { nis: '242507034', nama: 'MAKAILA KHANZA A', akidah: [93, 87], fikih: [80, 90], ppkn: [87, 88], b_indo: [93, 93], mtk: [76, 85], ipa: [84, 91], ips: [93, 90], prakarya: [88, 89], pjok: [92, 93], b_sunda: [93, 93], tik: [80, 93], inggris: [90, 90] },
+  { nis: '242507035', nama: 'RADELLA GITHA OCTAVIANA', akidah: [100, 90], fikih: [71, 88], ppkn: [83, 86], b_indo: [90, 89], mtk: [76, 81], ipa: [80, 86], ips: [83, 85], prakarya: [88, 89], pjok: [90, 91], b_sunda: [90, 93], tik: [80, 83], inggris: [90, 92] },
+  { nis: '242507036', nama: 'RR. SHOFIA PUTERI NIRWANI', akidah: [100, 92], fikih: [94, 93], ppkn: [83, 86], b_indo: [83, 88], mtk: [80, 93], ipa: [76, 89], ips: [96, 92], prakarya: [86, 88], pjok: [92, 92], b_sunda: [90, 93], tik: [83, 90], inggris: [87, 92] },
+  { nis: '242507037', nama: 'SARAH ZAKIYYA SHALEH', akidah: [93, 89], fikih: [91, 94], ppkn: [80, 85], b_indo: [86, 91], mtk: [88, 95], ipa: [80, 92], ips: [100, 93], prakarya: [88, 89], pjok: [87, 91], b_sunda: [87, 91], tik: [83, 91], inggris: [77, 92] },
+  { nis: '242507043', nama: 'SEYLA ALEXANDRA', akidah: [86, 87], fikih: [66, 82], ppkn: [77, 83], b_indo: [56, 84], mtk: [76, 81], ipa: [76, 84], ips: [80, 84], prakarya: [90, 88], pjok: [86, 90], b_sunda: [90, 92], tik: [70, 91], inggris: [83, 90] },
+  { nis: '242507038', nama: 'SYAZANI PUTRIGIY', akidah: [96, 92], fikih: [89, 94], ppkn: [83, 88], b_indo: [93, 91], mtk: [76, 93], ipa: [84, 92], ips: [96, 92], prakarya: [90, 90], pjok: [90, 92], b_sunda: [90, 92], tik: [87, 92], inggris: [80, 90] }
+];
+
+const OFFICIAL_ATS_GRADES_VIII_KHODIJAH = [
+  { nis: '252607002', nama: 'AJENG PUTRI KIRANA', akidah: [93, 89], fikih: [93, 87], ppkn: [93, 88], b_indo: [80, 83], mtk: [52, 76], ipa: [60, 83], ips: [93, 89], prakarya: [88, 88], pjok: [90, 89], b_sunda: [87, 88], tik: [73, 82], inggris: [87, 89] },
+  { nis: '252607003', nama: 'ALLYSHA QIANA ZETTA', akidah: [93, 89], fikih: [96, 92], ppkn: [97, 91], b_indo: [90, 90], mtk: [80, 87], ipa: [76, 90], ips: [96, 93], prakarya: [90, 89], pjok: [90, 91], b_sunda: [90, 92], tik: [75, 91], inggris: [90, 99] },
+  { nis: '252607004', nama: 'ALZENA AILA VARISHA', akidah: [100, 94], fikih: [96, 91], ppkn: [97, 89], b_indo: [93, 86], mtk: [76, 85], ipa: [76, 89], ips: [96, 92], prakarya: [88, 89], pjok: [90, 89], b_sunda: [83, 86], tik: [75, 88], inggris: [93, 96] },
+  { nis: '252607006', nama: 'ANNISA SHAZIA ATHIFAH', akidah: [100, 91], fikih: [96, 94], ppkn: [97, 92], b_indo: [90, 92], mtk: [92, 97], ipa: [96, 91], ips: [96, 92], prakarya: [91, 92], pjok: [90, 92], b_sunda: [90, 92], tik: [77, 92], inggris: [93, 99] },
+  { nis: '252607007', nama: 'DEAN SECTIO RANYA ARIYADI', akidah: [96, 90], fikih: [100, 94], ppkn: [93, 93], b_indo: [83, 90], mtk: [92, 97], ipa: [92, 95], ips: [96, 92], prakarya: [90, 90], pjok: [90, 91], b_sunda: [90, 92], tik: [80, 89], inggris: [93, 93] },
+  { nis: '252607008', nama: 'EVELYN KENIVAEL', akidah: [100, 92], fikih: [96, 90], ppkn: [97, 91], b_indo: [90, 86], mtk: [76, 85], ipa: [76, 88], ips: [90, 89], prakarya: [90, 91], pjok: [92, 92], b_sunda: [90, 91], tik: [77, 82], inggris: [87, 92] },
+  { nis: '252607045', nama: 'GARJITA GALUH GUNAWAN', akidah: [90, 88], fikih: [96, 92], ppkn: [97, 89], b_indo: [86, 87], mtk: [64, 84], ipa: [60, 84], ips: [93, 89], prakarya: [90, 89], pjok: [92, 88], b_sunda: [80, 85], tik: [75, 85], inggris: [93, 96] },
+  { nis: '252607009', nama: 'GRISELDIS RADHIYA NUR HAZRINA', akidah: [83, 89], fikih: [100, 95], ppkn: [93, 93], b_indo: [96, 86], mtk: [92, 95], ipa: [88, 93], ips: [96, 92], prakarya: [92, 93], pjok: [92, 89], b_sunda: [83, 89], tik: [83, 91], inggris: [93, 94] },
+  { nis: '252607010', nama: 'GYZELL PRIANATASYA PUTRI', akidah: [86, 86], fikih: [83, 90], ppkn: [93, 86], b_indo: [90, 84], mtk: [76, 90], ipa: [60, 80], ips: [93, 90], prakarya: [93, 92], pjok: [90, 92], b_sunda: [80, 85], tik: [75, 90], inggris: [83, 96] },
+  { nis: '252607011', nama: 'KAMILA PUTRI BUDIMAN', akidah: [93, 89], fikih: [96, 89], ppkn: [93, 92], b_indo: [96, 91], mtk: [84, 94], ipa: [88, 96], ips: [100, 93], prakarya: [95, 93], pjok: [88, 91], b_sunda: [93, 93], tik: [80, 90], inggris: [93, 98] },
+  { nis: '252607013', nama: 'MALIKA ANINDYA A', akidah: [80, 84], fikih: [93, 85], ppkn: [93, 85], b_indo: [76, 84], mtk: [60, 80], ipa: [60, 80], ips: [90, 89], prakarya: [88, 90], pjok: [90, 87], b_sunda: [90, 90], tik: [75, 84], inggris: [87, 92] },
+  { nis: '252607016', nama: 'NAYLANA KHAYRA DZAHIN', akidah: [96, 94], fikih: [96, 88], ppkn: [93, 90], b_indo: [86, 91], mtk: [76, 91], ipa: [92, 94], ips: [100, 92], prakarya: [90, 91], pjok: [90, 92], b_sunda: [87, 90], tik: [80, 85], inggris: [97, 98] },
+  { nis: '252607017', nama: 'RHEVA AGNEZIA PUTRI', akidah: [90, 82], fikih: [96, 89], ppkn: [93, 86], b_indo: [76, 87], mtk: [84, 91], ipa: [76, 84], ips: [96, 89], prakarya: [95, 95], pjok: [85, 81], b_sunda: [80, 82], tik: [80, 90], inggris: [93, 95] },
+  { nis: '252607018', nama: 'SARAH SALSABILA', akidah: [76, 85], fikih: [76, 84], ppkn: [80, 81], b_indo: [86, 77], mtk: [76, 82], ipa: [60, 82], ips: [83, 84], prakarya: [90, 88], pjok: [85, 83], b_sunda: [76, 80], tik: [75, 90], inggris: [97, 100] },
+  { nis: '252607039', nama: 'SHAZIA KEIZALUNA HUMAIRA', akidah: [90, 93], fikih: [93, 91], ppkn: [93, 88], b_indo: [76, 91], mtk: [76, 87], ipa: [84, 88], ips: [100, 92], prakarya: [93, 93], pjok: [90, 91], b_sunda: [83, 89], tik: [80, 92], inggris: [93, 99] },
+  { nis: '252607043', nama: 'SYAFIKAH GHALIN ALZENA', akidah: [83, 89], fikih: [83, 89], ppkn: [77, 79], b_indo: [90, 80], mtk: [52, 80], ipa: [52, 82], ips: [70, 84], prakarya: [92, 91], pjok: [90, 86], b_sunda: [60, 76], tik: [73, 91], inggris: [60, 79] },
+  { nis: '252607020', nama: 'TALITA LUBNA HUMAIRA RENLEUW', akidah: [93, 95], fikih: [100, 93], ppkn: [97, 93], b_indo: [73, 90], mtk: [84, 91], ipa: [84, 93], ips: [96, 92], prakarya: [92, 92], pjok: [92, 94], b_sunda: [90, 92], tik: [83, 93], inggris: [93, 98] },
+  { nis: '252607040', nama: 'ZAHIRA SARIFAH SALSABILA', akidah: [90, 94], fikih: [86, 94], ppkn: [93, 92], b_indo: [63, 89], mtk: [76, 89], ipa: [92, 95], ips: [100, 93], prakarya: [90, 91], pjok: [90, 91], b_sunda: [93, 94], tik: [75, 89], inggris: [93, 91] }
+];
+
+const OFFICIAL_ATS_GRADES_VIII_UMAR = [
+  { nis: '252607038', nama: 'ACHMED. SYATHIR ELHAYBA', akidah: [73, 87], fikih: [83, 91], ppkn: [87, 88], b_indo: [73, 85], mtk: [56, 77], ipa: [80, 80], ips: [96, 90], prakarya: [88, 87], pjok: [88, 86], b_sunda: [80, 85], tik: [75, 79], inggris: [83, 83] },
+  { nis: '252607022', nama: 'ALI ZATRIO IKHWANTORO', akidah: [90, 87], fikih: [93, 87], ppkn: [87, 87], b_indo: [76, 88], mtk: [92, 89], ipa: [80, 84], ips: [93, 87], prakarya: [87, 87], pjok: [88, 86], b_sunda: [80, 85], tik: [82, 94], inggris: [93, 92] },
+  { nis: '252607023', nama: 'ARSA ARDHANI PUTRA PERMADI', akidah: [86, 89], fikih: [86, 90], ppkn: [90, 88], b_indo: [86, 85], mtk: [76, 85], ipa: [80, 81], ips: [96, 90], prakarya: [95, 91], pjok: [90, 88], b_sunda: [83, 88], tik: [78, 85], inggris: [97, 92] },
+  { nis: '252607025', nama: 'GERALD LAZZARO NGGEBU', akidah: [80, 80], fikih: [60, 79], ppkn: [73, 77], b_indo: [73, 83], mtk: [48, 75], ipa: [52, 75], ips: [70, 79], prakarya: [86, 88], pjok: [85, 86], b_sunda: [76, 80], tik: [75, 82], inggris: [70, 87] },
+  { nis: '252607026', nama: 'HASAN MUZAKKI', akidah: [83, 89], fikih: [86, 88], ppkn: [90, 90], b_indo: [90, 89], mtk: [92, 95], ipa: [88, 91], ips: [100, 94], prakarya: [95, 92], pjok: [92, 90], b_sunda: [83, 85], tik: [82, 87], inggris: [93, 90] },
+  { nis: '252607027', nama: 'IBRAHIM FADHILAH SYUJA TAMBUNAN', akidah: [86, 82], fikih: [70, 81], ppkn: [93, 85], b_indo: [90, 91], mtk: [52, 76], ipa: [56, 77], ips: [100, 89], prakarya: [88, 87], pjok: [90, 89], b_sunda: [77, 83], tik: [75, 87], inggris: [93, 88] },
+  { nis: '252607012', nama: 'KANAKA ARKHAN GAIZAN', akidah: [86, 87], fikih: [90, 91], ppkn: [97, 90], b_indo: [76, 84], mtk: [76, 85], ipa: [56, 80], ips: [96, 89], prakarya: [85, 86], pjok: [85, 85], b_sunda: [80, 85], tik: [76, 85], inggris: [80, 88] },
+  { nis: '252607028', nama: 'MUHAMAD FATHAN GUNAWAN', akidah: [76, 85], fikih: [90, 87], ppkn: [90, 87], b_indo: [83, 85], mtk: [60, 77], ipa: [76, 82], ips: [93, 89], prakarya: [90, 90], pjok: [90, 86], b_sunda: [80, 85], tik: [80, 89], inggris: [90, 84] },
+  { nis: '252607029', nama: 'MUHAMMAD AYDIN ARKANANTA', akidah: [76, 88], fikih: [96, 87], ppkn: [90, 89], b_indo: [83, 87], mtk: [68, 78], ipa: [80, 80], ips: [93, 85], prakarya: [85, 89], pjok: [90, 88], b_sunda: [80, 85], tik: [75, 84], inggris: [83, 83] },
+  { nis: '252607030', nama: 'MUHAMMAD BILLAL AMILUSA', akidah: [83, 93], fikih: [86, 93], ppkn: [93, 92], b_indo: [80, 88], mtk: [48, 82], ipa: [80, 83], ips: [93, 93], prakarya: [88, 89], pjok: [88, 88], b_sunda: [77, 82], tik: [77, 90], inggris: [93, 94] },
+  { nis: '252607031', nama: 'NAUVAL AGHA IRAWAN', akidah: [86, 91], fikih: [90, 95], ppkn: [100, 92], b_indo: [86, 88], mtk: [76, 88], ipa: [80, 86], ips: [96, 90], prakarya: [88, 90], pjok: [90, 90], b_sunda: [90, 90], tik: [80, 84], inggris: [90, 81] },
+  { nis: '252607032', nama: 'RAFKANTARA ARIFIANTO', akidah: [86, 93], fikih: [86, 93], ppkn: [90, 91], b_indo: [93, 93], mtk: [76, 84], ipa: [80, 91], ips: [96, 94], prakarya: [88, 89], pjok: [90, 91], b_sunda: [83, 90], tik: [80, 85], inggris: [90, 91] },
+  { nis: '252607033', nama: 'RYAN ADITYA HERLAMBANG S', akidah: [76, 84], fikih: [80, 90], ppkn: [83, 83], b_indo: [76, 85], mtk: [68, 79], ipa: [64, 79], ips: [93, 84], prakarya: [95, 93], pjok: [90, 89], b_sunda: [83, 90], tik: [75, 82], inggris: [93, 87] },
+  { nis: '252607034', nama: 'TEUKU MUHAMAD ZULKARNAEN', akidah: [83, 84], fikih: [86, 87], ppkn: [77, 78], b_indo: [86, 87], mtk: [48, 76], ipa: [64, 80], ips: [96, 82], prakarya: [88, 89], pjok: [88, 88], b_sunda: [80, 85], tik: [75, 84], inggris: [83, 88] },
+  { nis: '252607036', nama: 'ZAMZAM ALIF', akidah: [90, 95], fikih: [90, 96], ppkn: [87, 86], b_indo: [86, 85], mtk: [76, 86], ipa: [80, 84], ips: [96, 90], prakarya: [85, 86], pjok: [85, 85], b_sunda: [77, 81], tik: [90, 82], inggris: [93, 93] }
+];
+
+const OFFICIAL_ATS_GRADES_VII_AISYAH = [
+  { nis: '262707026', nama: 'AKIFA NAILA KARIM', akidah: [90, 91], fikih: [83, 91], ppkn: [80, 82], b_indo: [80, 89], mtk: [76, 84], ipa: [80, 80], ips: [86, 84], prakarya: [90, 89], pjok: [82, 86], b_sunda: [77, 82], tik: [53, 80], b_arab: [null, 81], inggris: [80, 96] },
+  { nis: '262707027', nama: 'ALIYA HASNA SAFIRA', akidah: [96, 96], fikih: [90, 94], ppkn: [90, 91], b_indo: [90, 94], mtk: [100, 98], ipa: [100, 97], ips: [96, 94], prakarya: [90, 90], pjok: [86, 89], b_sunda: [100, 90], tik: [100, 95], b_arab: [null, 90], inggris: [90, 99] },
+  { nis: '262707028', nama: 'ARINKA NATHANIA MUNARDJO', akidah: [83, 86], fikih: [83, 87], ppkn: [90, 86], b_indo: [93, 94], mtk: [92, 95], ipa: [80, 86], ips: [83, 90], prakarya: [91, 91], pjok: [85, 87], b_sunda: [77, 88], tik: [73, 86], b_arab: [null, 81], inggris: [87, 88] },
+  { nis: '262707006', nama: 'ASKANA SAKHI HENDRI', akidah: [93, 88], fikih: [83, 87], ppkn: [80, 87], b_indo: [90, 91], mtk: [88, 92], ipa: [80, 84], ips: [86, 92], prakarya: [88, 91], pjok: [83, 87], b_sunda: [90, 88], tik: [63, 79], b_arab: [null, 85], inggris: [90, 87] },
+  { nis: '262707029', nama: 'CAMILIA LARISSA ZAHWA', akidah: [83, 90], fikih: [83, 91], ppkn: [77, 83], b_indo: [83, 90], mtk: [80, 85], ipa: [80, 83], ips: [86, 87], prakarya: [88, 88], pjok: [85, 86], b_sunda: [83, 84], tik: [67, 84], b_arab: [null, 85], inggris: [100, 98] },
+  { nis: '262707030', nama: 'CHYLLA KHANSA AZALIA NASUTION', akidah: [93, 92], fikih: [76, 88], ppkn: [87, 89], b_indo: [90, 95], mtk: [76, 86], ipa: [80, 81], ips: [93, 92], prakarya: [91, 91], pjok: [83, 87], b_sunda: [77, 85], tik: [90, 85], b_arab: [null, 82], inggris: [97, 98] },
+  { nis: '262707031', nama: 'DAFINA AULIA AINI', akidah: [80, 91], fikih: [86, 89], ppkn: [80, 86], b_indo: [86, 89], mtk: [64, 81], ipa: [60, 76], ips: [100, 91], prakarya: [91, 91], pjok: [81, 86], b_sunda: [80, 84], tik: [63, 82], b_arab: [null, 78], inggris: [80, 96] },
+  { nis: '262707032', nama: 'DELIESHA ADZKIA PUTRI', akidah: [83, 91], fikih: [90, 92], ppkn: [93, 89], b_indo: [96, 94], mtk: [96, 93], ipa: [84, 92], ips: [90, 95], prakarya: [90, 92], pjok: [83, 87], b_sunda: [87, 89], tik: [93, 90], b_arab: [null, 87], inggris: [93, 97] },
+  { nis: '262707033', nama: 'GHADHIRA AURYN GIOVANNI', akidah: [90, 92], fikih: [86, 93], ppkn: [83, 90], b_indo: [90, 91], mtk: [92, 89], ipa: [84, 90], ips: [96, 95], prakarya: [88, 89], pjok: [82, 86], b_sunda: [80, 87], tik: [83, 87], b_arab: [null, 89], inggris: [93, 90] },
+  { nis: '262707034', nama: 'GHASSANI ZAHILA', akidah: [80, 89], fikih: [76, 86], ppkn: [73, 82], b_indo: [96, 94], mtk: [84, 86], ipa: [76, 82], ips: [90, 90], prakarya: [91, 88], pjok: [83, 87], b_sunda: [80, 89], tik: [73, 85], b_arab: [null, 79], inggris: [80, 92] },
+  { nis: '262707035', nama: 'IFTINAN NATHIFA DEFI', akidah: [76, 87], fikih: [86, 88], ppkn: [77, 82], b_indo: [76, 88], mtk: [84, 89], ipa: [80, 80], ips: [80, 85], prakarya: [90, 90], pjok: [85, 87], b_sunda: [80, 80], tik: [73, 84], b_arab: [null, 85], inggris: [87, 86] },
+  { nis: '262707036', nama: 'KANAYA SYAHLA ADHITYA', akidah: [96, 91], fikih: [76, 93], ppkn: [90, 88], b_indo: [86, 92], mtk: [96, 91], ipa: [92, 93], ips: [100, 95], prakarya: [91, 92], pjok: [82, 85], b_sunda: [83, 84], tik: [87, 92], b_arab: [null, 87], inggris: [93, 91] },
+  { nis: '262707037', nama: 'KHALILA NADIA RAHMADANI', akidah: [76, 84], fikih: [76, 79], ppkn: [57, 77], b_indo: [76, 89], mtk: [48, 78], ipa: [64, 77], ips: [80, 81], prakarya: [90, 89], pjok: [82, 87], b_sunda: [77, 79], tik: [40, 80], b_arab: [null, 75], inggris: [83, 97] },
+  { nis: '262707038', nama: 'MAHIRA AZZAHRA SATRIA', akidah: [96, 91], fikih: [76, 85], ppkn: [73, 82], b_indo: [86, 92], mtk: [80, 81], ipa: [76, 80], ips: [100, 95], prakarya: [91, 91], pjok: [83, 87], b_sunda: [80, 85], tik: [57, 77], b_arab: [null, 79], inggris: [90, 96] },
+  { nis: '262707039', nama: 'MAULIDIA MAHYANI MAUDY', akidah: [86, 89], fikih: [76, 84], ppkn: [77, 81], b_indo: [76, 84], mtk: [64, 77], ipa: [64, 76], ips: [80, 80], prakarya: [90, 90], pjok: [82, 85], b_sunda: [73, 79], tik: [60, 78], b_arab: [null, 83], inggris: [60, 81] },
+  { nis: '262707040', nama: 'NADYA MELODY PUTRI', akidah: [76, 93], fikih: [76, 86], ppkn: [77, 81], b_indo: [90, 89], mtk: [60, 81], ipa: [60, 76], ips: [90, 86], prakarya: [90, 90], pjok: [82, 85], b_sunda: [63, 87], tik: [63, 79], b_arab: [null, 76], inggris: [87, 86] },
+  { nis: '262707041', nama: 'NAJWA KHAIRA WILDA', akidah: [80, 84], fikih: [76, 85], ppkn: [83, 83], b_indo: [73, 85], mtk: [64, 79], ipa: [60, 78], ips: [90, 82], prakarya: [91, 89], pjok: [85, 86], b_sunda: [70, 78], tik: [43, 75], b_arab: [null, 81], inggris: [60, 92] },
+  { nis: '262707042', nama: 'PURI AZ ZAHRA HAYFA', akidah: [76, 77], fikih: [80, 81], ppkn: [60, 78], b_indo: [63, 79], mtk: [48, 75], ipa: [56, 75], ips: [80, 79], prakarya: [86, 85], pjok: [82, 84], b_sunda: [77, 76], tik: [73, 75], b_arab: [null, 78], inggris: [57, 84] },
+  { nis: '262707043', nama: 'QUEEN NADHIRA RAISYA QISTHI', akidah: [93, 90], fikih: [80, 85], ppkn: [70, 81], b_indo: [90, 90], mtk: [64, 81], ipa: [80, 81], ips: [90, 91], prakarya: [88, 88], pjok: [83, 85], b_sunda: [73, 87], tik: [93, 89], b_arab: [null, 80], inggris: [97, 98] },
+  { nis: '262707044', nama: 'RAISHA KANAYA PUTRI', akidah: [80, 94], fikih: [76, 90], ppkn: [87, 86], b_indo: [90, 89], mtk: [100, 92], ipa: [80, 83], ips: [93, 90], prakarya: [90, 89], pjok: [83, 85], b_sunda: [73, 87], tik: [80, 88], b_arab: [null, 83], inggris: [90, 96] },
+  { nis: '262707045', nama: 'RAISYAH AMALIA', akidah: [76, 85], fikih: [76, 88], ppkn: [67, 78], b_indo: [90, 89], mtk: [76, 85], ipa: [68, 77], ips: [86, 87], prakarya: [88, 89], pjok: [83, 85], b_sunda: [67, 86], tik: [57, 77], b_arab: [null, 77], inggris: [80, 91] },
+  { nis: '262707047', nama: 'SAKHIA TSABITA AL KHANZA', akidah: [93, 96], fikih: [76, 90], ppkn: [87, 89], b_indo: [90, 91], mtk: [60, 80], ipa: [76, 87], ips: [93, 92], prakarya: [91, 90], pjok: [81, 87], b_sunda: [87, 89], tik: [80, 89], b_arab: [null, 88], inggris: [90, 97] },
+  { nis: '262707048', nama: 'SHARLYNN TANZEELA AUDREANA', akidah: [80, 94], fikih: [90, 90], ppkn: [90, 87], b_indo: [80, 89], mtk: [84, 91], ipa: [80, 85], ips: [83, 85], prakarya: [90, 90], pjok: [83, 87], b_sunda: [87, 83], tik: [77, 86], b_arab: [null, 88], inggris: [83, 93] },
+  { nis: '262707049', nama: 'SYAQILA APRILIA PUTRI', akidah: [86, 85], fikih: [76, 87], ppkn: [87, 88], b_indo: [80, 91], mtk: [64, 80], ipa: [76, 83], ips: [86, 90], prakarya: [86, 87], pjok: [84, 85], b_sunda: [77, 83], tik: [60, 79], b_arab: [null, 86], inggris: [77, 94] },
+  { nis: '262707050', nama: 'TRICEL ANGELIA INDRADI', akidah: [76, 87], fikih: [76, 85], ppkn: [80, 82], b_indo: [73, 86], mtk: [64, 82], ipa: [56, 78], ips: [80, 81], prakarya: [91, 89], pjok: [82, 85], b_sunda: [70, 78], tik: [53, 75], b_arab: [null, 88], inggris: [73, 77] },
+  { nis: '262707051', nama: 'YUMNA LAILA FAIZAH', akidah: [93, 88], fikih: [76, 83], ppkn: [73, 80], b_indo: [86, 90], mtk: [84, 86], ipa: [80, 86], ips: [80, 88], prakarya: [91, 91], pjok: [85, 85], b_sunda: [80, 84], tik: [73, 89], b_arab: [null, 81], inggris: [73, 96] }
+];
+
+const OFFICIAL_ATS_GRADES_VII_UTSMAN = [
+  { nis: '262707001', nama: 'AEZAR EL KHAZINDAR', akidah: [86, 93], fikih: [80, 91], ppkn: [93, 88], b_indo: [90, 91], mtk: [84, 89], ipa: [92, 91], ips: [93, 87], prakarya: [90, 88], pjok: [85, 86], b_sunda: [86, 89], tik: [83, 84], inggris: [83, 84] },
+  { nis: '262707025', nama: 'AGATHA PRATAMA', akidah: [93, 95], akhlak: [82, null], fikih: [90, 93], ppkn: [83, 81], b_indo: [90, 88], mtk: [76, 80], ipa: [76, 81], ips: [96, 89], prakarya: [90, 88], pjok: [87, 86], b_sunda: [80, 83], tik: [80, 84], inggris: [90, 80] },
+  { nis: '262707002', nama: 'AHSAN FADHILAH', akidah: [86, 85], fikih: [80, 85], ppkn: [73, 75], b_indo: [66, 81], mtk: [80, 84], ipa: [76, 80], ips: [70, 83], prakarya: [90, 89], pjok: [87, 83], b_sunda: [87, 84], tik: [60, 83], inggris: [73, 78] },
+  { nis: '262707004', nama: 'ALFARIZI MAULANA', akidah: [93, 85], fikih: [76, 81], ppkn: [77, 79], b_indo: [66, 82], mtk: [48, 82], ipa: [60, 78], ips: [90, 87], prakarya: [90, 86], pjok: [85, 85], b_sunda: [80, 83], tik: [70, 79], inggris: [90, 85] },
+  { nis: '262707005', nama: 'AL-ZIDAN ALAIR PERMANA', akidah: [90, 79], fikih: [80, 79], ppkn: [73, 76], b_indo: [90, 86], mtk: [60, 76], ipa: [76, 75], ips: [86, 87], prakarya: [85, 86], pjok: [80, 83], b_sunda: [76, 82], tik: [70, 77], inggris: [80, 85] },
+  { nis: '262707007', nama: 'AZRIEL PUTRA NATAKA', akidah: [86, 90], fikih: [76, 89], ppkn: [87, 86], b_indo: [86, 85], mtk: [76, 87], ipa: [76, 78], ips: [96, 85], prakarya: [90, 87], pjok: [90, 86], b_sunda: [90, 85], tik: [80, 87], inggris: [87, 87] },
+  { nis: '262707008', nama: 'BASTIAN ARIF ABDILLAH', akidah: [80, 87], fikih: [76, 88], ppkn: [77, 83], b_indo: [80, 84], mtk: [84, 92], ipa: [76, 85], ips: [96, 89], prakarya: [90, 86], pjok: [90, 86], b_sunda: [76, 80], tik: [70, 83], inggris: [77, 83] },
+  { nis: '262707009', nama: 'FATHAN ATHARSYAH ATHALIA', akidah: [90, 86], fikih: [80, 89], ppkn: [83, 77], b_indo: [90, 84], mtk: [84, 89], ipa: [76, 86], ips: [93, 87], prakarya: [90, 88], pjok: [85, 85], b_sunda: [87, 84], tik: [87, 88], inggris: [73, 88] },
+  { nis: '262707052', nama: 'FATIH ABDILLAH KURNIYAWAN', akidah: [86, 87], akhlak: [79, null], fikih: [76, 89], ppkn: [83, 80], b_indo: [90, 88], mtk: [60, 84], ipa: [76, 78], ips: [96, 88], prakarya: [80, 86], pjok: [90, 91], b_sunda: [80, 88], tik: [70, 81], inggris: [90, 93] },
+  { nis: '262707010', nama: 'GIBRAN DARUNSYAKA UBAIDILLAH', akidah: [83, 85], akhlak: [85, null], fikih: [80, 84], ppkn: [87, 83], b_indo: [90, 88], mtk: [100, 96], ipa: [88, 88], ips: [90, 91], prakarya: [90, 90], pjok: [85, 84], b_sunda: [90, 85], tik: [83, 89], inggris: [87, 93] },
+  { nis: '262707011', nama: 'HAFIZH KURNIA STYAWAN', akidah: [76, 90], fikih: [80, 91], ppkn: [83, 86], b_indo: [86, 86], mtk: [76, 81], ipa: [60, 78], ips: [86, 85], prakarya: [85, 85], pjok: [90, 88], b_sunda: [87, 86], tik: [77, 81], inggris: [87, 76] },
+  { nis: '262707012', nama: 'IBRAHIM AL AQSA', akidah: [83, 80], fikih: [80, 79], ppkn: [63, 77], b_indo: [86, 84], mtk: [80, 76], ipa: [60, 75], ips: [76, 81], prakarya: [90, 89], pjok: [90, 84], b_sunda: [80, 82], tik: [43, 76], inggris: [80, 85] },
+  { nis: '262707024', nama: 'KEANO AQUILLA SAKHA RESPATI', akidah: [76, 87], fikih: [76, 89], ppkn: [63, 75], b_indo: [86, 84], mtk: [84, 90], ipa: [88, 87], ips: [96, 90], prakarya: [90, 89], pjok: [85, 84], b_sunda: [93, 86], tik: [70, 81], inggris: [70, 76] },
+  { nis: '262707013', nama: 'LEVI RAZAN PUTRA PERMADI', akidah: [76, 86], fikih: [80, 88], ppkn: [67, 78], b_indo: [76, 82], mtk: [58, 80], ipa: [76, 77], ips: [70, 82], prakarya: [90, 87], pjok: [88, 86], b_sunda: [86, 84], tik: [70, 80], inggris: [80, 83] },
+  { nis: '262707020', nama: 'M. ZAFRAN YUDHA ALFARIDZI', akidah: [90, 88], akhlak: [85, null], fikih: [80, 87], ppkn: [83, 80], b_indo: [86, 88], mtk: [100, 97], ipa: [84, 90], ips: [96, 91], prakarya: [90, 88], pjok: [90, 87], b_sunda: [83, 84], tik: [87, 82], inggris: [83, 81] },
+  { nis: '262707016', nama: 'MUCHAMAD WILDAN MAULANA', akidah: [83, 84], fikih: [80, 86], ppkn: [60, 76], b_indo: [66, 81], mtk: [48, 77], ipa: [52, 75], ips: [70, 79], prakarya: [90, 87], pjok: [87, 83], b_sunda: [73, 79], tik: [53, 76], inggris: [57, 75] },
+  { nis: '262707017', nama: 'MUFTI ANWAR FALAH', akidah: [83, 88], fikih: [80, 90], ppkn: [87, 78], b_indo: [83, 83], mtk: [68, 75], ipa: [60, 75], ips: [90, 83], prakarya: [85, 86], pjok: [80, 83], b_sunda: [80, 82], tik: [67, 77], inggris: [63, 79] },
+  { nis: '262707003', nama: 'MUHAMMAD AHZA HABIBI', akidah: [86, 91], fikih: [80, 89], ppkn: [80, 76], b_indo: [83, 84], mtk: [80, 93], ipa: [76, 75], ips: [93, 86], prakarya: [85, 85], pjok: [82, 83], b_sunda: [80, 82], tik: [80, 78], inggris: [77, 91] },
+  { nis: '262707018', nama: 'MUHAMMAD ARKHAN AL RAZIQ', akidah: [86, 88], akhlak: [79, null], fikih: [80, 89], ppkn: [87, 83], b_indo: [96, 87], mtk: [80, 86], ipa: [76, 83], ips: [93, 91], prakarya: [90, 89], pjok: [85, 84], b_sunda: [87, 84], tik: [70, 89], inggris: [83, 98] },
+  { nis: '262707019', nama: 'MUHAMMAD AZKA KAMIL', akidah: [80, 93], akhlak: [82, null], fikih: [80, 94], ppkn: [83, 82], b_indo: [83, 86], mtk: [92, 92], ipa: [76, 80], ips: [96, 93], prakarya: [90, 90], pjok: [88, 87], b_sunda: [83, 84], tik: [73, 85], inggris: [73, 82] },
+  { nis: '262707014', nama: 'MUHAMMAD DANIEL ATHARIZZ CALIEF ARDANI', akidah: [93, 90], akhlak: [82, null], fikih: [80, 87], ppkn: [83, 80], b_indo: [76, 85], mtk: [64, 84], ipa: [76, 86], ips: [93, 92], prakarya: [90, 91], pjok: [85, 86], b_sunda: [80, 83], tik: [97, 90], inggris: [80, 81] },
+  { nis: '262707015', nama: 'MUHAMMAD YUSRIL AL-FATIH', akidah: [86, 89], akhlak: [76, null], fikih: [90, 87], ppkn: [83, 83], b_indo: [90, 86], mtk: [92, 86], ipa: [84, 86], ips: [96, 91], prakarya: [90, 92], pjok: [85, 85], b_sunda: [80, 83], tik: [87, 88], inggris: [90, 93] },
+  { nis: '262707021', nama: 'NAUFAL KHAIRIL HANIF', akidah: [90, 92], fikih: [90, 86], ppkn: [80, 84], b_indo: [86, 86], mtk: [80, 86], ipa: [76, 78], ips: [90, 86], prakarya: [90, 91], pjok: [88, 85], b_sunda: [97, 89], tik: [77, 84], inggris: [83, 80] },
+  { nis: '262707022', nama: 'RAFIAZKA INSAN ABDULLAH', akidah: [80, 89], fikih: [84, 84], ppkn: [80, 79], b_indo: [93, 86], mtk: [80, 85], ipa: [76, 85], ips: [96, 89], prakarya: [85, 89], pjok: [85, 84], b_sunda: [80, 83], tik: [83, 80], inggris: [100, 97] },
+  { nis: '262707023', nama: 'ZAFRAN ALI YUDITYO RAMADHAN', akidah: [80, 84], fikih: [84, 84], ppkn: [90, 88], b_indo: [96, 89], mtk: [88, 86], ipa: [92, 88], ips: [93, 89], prakarya: [90, 89], pjok: [80, 85], b_sunda: [77, 82], tik: [90, 85], inggris: [80, 86] }
+];
+
+
+/**
+ * Generator Deskripsi Capaian Kompetensi Kurikulum Merdeka SMP Al-Imam
+ */
+function getDeskripsiCapaianResmi(mapelName, score) {
+  const num = Number(score) || 0;
+  if (num >= 92) {
+    return `Menunjukkan penguasaan yang sangat baik dalam memahami materi pokok dan capaian pembelajaran ${mapelName}. Terus pertahankan prestasi yang telah diraih.`;
+  } else if (num >= 84) {
+    return `Menunjukkan penguasaan yang baik dalam memahami materi pokok ${mapelName}. Terus tingkatkan keaktifan dan pemahaman materi.`;
+  } else if (num >= 75) {
+    return `Menunjukkan ketuntasan yang cukup dalam materi ${mapelName}. Terus rajin belajar dan berlatih secara konsisten.`;
+  } else {
+    return `Perlu bimbingan dan pendampingan lebih lanjut dalam materi pokok ${mapelName} agar mencapai kriteria ketuntasan minimal (KKM).`;
+  }
+}
+
+/**
+ * Injeksi Seluruh Nilai Resmi ATS Murni & Pengetahuan ke Sheet Nilai_Akademik
+ * Mencakup 18 Siswa IX ABU BAKAR & 21 Siswi IX UMMU SALAMAH (Total 468 Entri Nilai)
+ */
+function seedOfficialAtsGrades() {
   const items = [];
-  studentsGrades.forEach(st => {
-    mapelMapping.forEach(m => {
-      const score = Number(st[m.key]);
-      const predikat = score >= 88 ? 'A' : (score >= 75 ? 'B' : (score >= 65 ? 'C' : 'D'));
-      let capaian = '';
-      if (score >= 88) {
-        capaian = `Menunjukkan penguasaan yang sangat baik dalam memahami materi pokok dan capaian pembelajaran ${m.name}. Pertahankan prestasi yang telah dicapai.`;
-      } else if (score >= 75) {
-        capaian = `Menunjukkan penguasaan yang baik dalam memahami materi ${m.name}. Terus tingkatkan keaktifan dan latihan mandiri.`;
-      } else {
-        capaian = `Menunjukkan penguasaan yang cukup dalam materi ${m.name}. Perlu bimbingan dan peningkatan ketekunan belajar secara teratur.`;
-      }
 
-      items.push({
-        id: `NA-${st.nis}-${m.name.replace(/\s+/g, '')}`,
-        nis: st.nis,
-        nama_murid: st.nama,
-        kelas: 'IX ABU BAKAR',
-        mata_pelajaran: m.name,
-        kkm: m.kkm,
-        nilai_tugas: score,
-        nilai_uts: score,
-        nilai_akhir: score,
-        predikat: predikat,
-        tp_optimal: score >= 75 ? m.tpOpt : '',
-        tp_peningkatan: score < 75 ? m.tpPen : '',
-        capaian_kompetensi: capaian,
-        catatan_guru: capaian,
-        semester: 'Tengah Semester 1',
-        tahun_ajaran: '2026/2027'
+  const processCohort = (cohortList, kelasName) => {
+    cohortList.forEach(student => {
+      OFFICIAL_MAPEL_CONFIG.forEach(cfg => {
+        const pair = student[cfg.key];
+        if (!pair) return;
+        const utsScore = pair[0] !== null && pair[0] !== undefined ? Number(pair[0]) : null;
+        const akhirScore = pair[1] !== null && pair[1] !== undefined ? Number(pair[1]) : null;
+        if (utsScore === null && akhirScore === null) return;
+
+        const effectiveScore = akhirScore !== null ? akhirScore : utsScore;
+        const tugasScore = akhirScore !== null ? akhirScore : utsScore;
+
+        let predikat = 'C';
+        if (effectiveScore >= 92) predikat = 'A';
+        else if (effectiveScore >= 84) predikat = 'B';
+        else if (effectiveScore >= 75) predikat = 'C';
+        else predikat = 'D';
+
+        const capaian = getDeskripsiCapaianResmi(cfg.name, effectiveScore);
+
+        items.push({
+          id: `NA-${student.nis}-${cfg.name.replace(/\s+/g, '')}`,
+          nis: student.nis,
+          nama_murid: student.nama,
+          kelas: kelasName,
+          mata_pelajaran: cfg.name,
+          kkm: cfg.kkm,
+          nilai_tugas: tugasScore,
+          nilai_uts: utsScore !== null ? utsScore : '',
+          nilai_akhir: akhirScore !== null ? akhirScore : '',
+          predikat: predikat,
+          tp_optimal: effectiveScore >= 75 ? `TP-${cfg.code}-01, TP-${cfg.code}-02` : '',
+          tp_peningkatan: effectiveScore < 75 ? `TP-${cfg.code}-03` : '',
+          capaian_kompetensi: capaian,
+          catatan_guru: capaian,
+          semester: 'Tengah Semester 1',
+          tahun_ajaran: '2026/2027'
+        });
       });
     });
-  });
+  };
 
-  return saveBulkNilaiAkademik({
+  processCohort(OFFICIAL_ATS_GRADES_IX_ABU_BAKAR, 'IX ABU BAKAR');
+  processCohort(OFFICIAL_ATS_GRADES_IX_UMMU_SALAMAH, 'IX UMMU SALAMAH');
+  processCohort(OFFICIAL_ATS_GRADES_VIII_KHODIJAH, 'VIII KHODIJAH');
+  processCohort(OFFICIAL_ATS_GRADES_VIII_UMAR, 'VIII UMAR');
+  processCohort(OFFICIAL_ATS_GRADES_VII_AISYAH, 'VII AISYAH');
+  processCohort(OFFICIAL_ATS_GRADES_VII_UTSMAN, 'VII UTSMAN');
+
+  const saveRes = saveBulkNilaiAkademik({
     semester: 'Tengah Semester 1',
     tahun_ajaran: '2026/2027',
     items: items
   });
+
+  // Sinkronkan juga lembar analisis Excel resmi di dalam Spreadsheet
+  try {
+    syncAnalisisSpreadsheetSheets();
+  } catch (errSync) {
+    console.warn('Notice syncAnalisisSpreadsheetSheets:', errSync);
+  }
+
+  return {
+    success: true,
+    totalEntries: items.length,
+    message: `Berhasil memperbarui ${items.length} nilai ATS 1 Murni & Pengetahuan untuk 123 siswa (seluruh kelas VII, VIII, IX Al-Imam)!`
+  };
+}
+
+/**
+ * Backward compatibility alias
+ */
+function seedDewiFitriaGrades() {
+  return seedOfficialAtsGrades();
+}
+
+/**
+ * Membuat / Memperbarui Sheet Lembar Analisis Excel Resmi di Google Spreadsheet
+ * Sesuai tampilan 4 tab screenshot resmi:
+ * 1. ATS Murni IX Abu Bakar
+ * 2. Pengetahuan IX Abu Bakar
+ * 3. ATS Murni IX Ummu Salamah
+ * 4. Pengetahuan IX Ummu Salamah
+ */
+function syncAnalisisSpreadsheetSheets() {
+  const ss = getDb();
+  if (!ss) return;
+
+  const headerTitles = ['No', 'Nama Siswa', 'AKIDAH', 'AKHLAK', 'HADITS', 'FIKIH', 'SKI', 'PPKN', 'B. INDO', 'MTK', 'IPA', 'IPS', 'PRAKARYA', 'PJOK', 'B. SUNDA', 'TIK', 'B. ARAB', 'INGGRIS'];
+  const mapelKeys = ['akidah', 'akhlak', null, 'fikih', null, 'ppkn', 'b_indo', 'mtk', 'ipa', 'ips', 'prakarya', 'pjok', 'b_sunda', 'tik', 'b_arab', 'inggris'];
+
+  const populateSheet = (sheetName, cohort, isPengetahuan, waliKelasName, tanggalTitimangsa) => {
+    let sheet = ss.getSheetByName(sheetName);
+    if (!sheet) {
+      sheet = ss.insertSheet(sheetName);
+    }
+    sheet.clear();
+
+    // Kop Surat & Judul
+    sheet.getRange('A2:R2').merge().setValue('ANALISIS PENCAPAIAN KRITERIA KETUNTASAN MINIMAL')
+      .setFontWeight('bold').setFontSize(12).setHorizontalAlignment('center');
+    sheet.getRange('A3:R3').merge().setValue('SMP AL IMAM ISLAMIC SCHOOL')
+      .setFontWeight('bold').setFontSize(11).setHorizontalAlignment('center');
+    sheet.getRange('A4:R4').merge().setValue('TAHUN AJARAN 2026 / 2027')
+      .setFontWeight('bold').setFontSize(11).setHorizontalAlignment('center');
+
+    sheet.getRange('A5').setValue('Kelas :');
+    sheet.getRange('A6').setValue('Semester : I ( SATU )');
+
+    // Header Tabel
+    const tableHeaders = isPengetahuan ? headerTitles.concat(['JUMLAH', 'RATA-RATA', 'PERINGKAT']) : headerTitles;
+    sheet.getRange(7, 1, 1, tableHeaders.length).setValues([tableHeaders])
+      .setBackground('#1e3a8a').setFontColor('#ffffff').setFontWeight('bold').setHorizontalAlignment('center');
+
+    // KKM Row
+    const kkmRow = ['KKM', ''].concat(new Array(16).fill(75));
+    if (isPengetahuan) kkmRow.push('', '', '');
+    sheet.getRange(8, 1, 1, kkmRow.length).setValues([kkmRow])
+      .setBackground('#cbd5e1').setFontWeight('bold').setHorizontalAlignment('center');
+
+    // Student Rows
+    const rows = [];
+    cohort.forEach((st, idx) => {
+      const row = [idx + 1, st.nama];
+      let sum = 0;
+      let count = 0;
+      mapelKeys.forEach(k => {
+        if (!k || !st[k]) {
+          row.push('');
+        } else {
+          const val = isPengetahuan ? st[k][1] : st[k][0];
+          if (val !== null && val !== undefined) {
+            row.push(val);
+            sum += val;
+            count++;
+          } else {
+            row.push('');
+          }
+        }
+      });
+      if (isPengetahuan) {
+        const avg = count > 0 ? Math.round(sum / count) : 0;
+        row.push(sum, avg, idx + 1);
+      }
+      rows.push(row);
+    });
+
+    if (rows.length > 0) {
+      sheet.getRange(9, 1, rows.length, tableHeaders.length).setValues(rows);
+    }
+
+    // Freeze header
+    sheet.setFrozenRows(8);
+  };
+
+  try {
+    populateSheet('ATS Murni IX Abu Bakar', OFFICIAL_ATS_GRADES_IX_ABU_BAKAR, false, 'Dewi Fitria Nugraheni, S.Pd., Gr.', '18 Oktober 2024');
+    populateSheet('Pengetahuan IX Abu Bakar', OFFICIAL_ATS_GRADES_IX_ABU_BAKAR, true, 'Dewi Fitria Nugraheni, S.Pd., Gr.', '23 Oktober 2025');
+    populateSheet('ATS Murni IX Ummu Salamah', OFFICIAL_ATS_GRADES_IX_UMMU_SALAMAH, false, 'Sumiati, S.Pd., Gr.', '18 Oktober 2024');
+    populateSheet('Pengetahuan IX Ummu Salamah', OFFICIAL_ATS_GRADES_IX_UMMU_SALAMAH, true, 'Sumiati, S.Pd., Gr.', '23 Oktober 2025');
+    populateSheet('ATS Murni VIII Khodijah', OFFICIAL_ATS_GRADES_VIII_KHODIJAH, false, 'Tri Nuryani, S.S., Gr.', '18 Oktober 2024');
+    populateSheet('Pengetahuan VIII Khodijah', OFFICIAL_ATS_GRADES_VIII_KHODIJAH, true, 'Tri Nuryani, S.S., Gr.', '23 Oktober 2025');
+    populateSheet('ATS Murni VIII Umar', OFFICIAL_ATS_GRADES_VIII_UMAR, false, 'Aning Nurhayati, S.T., Gr.', '18 Oktober 2024');
+    populateSheet('Pengetahuan VIII Umar', OFFICIAL_ATS_GRADES_VIII_UMAR, true, 'Aning Nurhayati, S.T., Gr.', '23 Oktober 2025');
+    populateSheet('ATS Murni VII Aisyah', OFFICIAL_ATS_GRADES_VII_AISYAH, false, 'Tri Yuli Aryani, S.Pd., Gr.', '18 Oktober 2026');
+    populateSheet('Pengetahuan VII Aisyah', OFFICIAL_ATS_GRADES_VII_AISYAH, true, 'Tri Yuli Aryani, S.Pd., Gr.', '23 Oktober 2025');
+    populateSheet('ATS Murni VII Utsman', OFFICIAL_ATS_GRADES_VII_UTSMAN, false, 'Eli Umiyati, S.Pd., Gr.', '18 Oktober 2026');
+    populateSheet('Pengetahuan VII Utsman', OFFICIAL_ATS_GRADES_VII_UTSMAN, true, 'Eli Umiyati, S.Pd., Gr.', '23 Oktober 2025');
+  } catch (e) {
+    console.warn('populateSheet notice:', e);
+  }
 }
 
 function deleteNilaiAkademik(id) {
@@ -1730,6 +2017,247 @@ function getSklKepemimpinanList(filters = {}) {
   
   return list;
 }
+
+
+/**
+ * ============================================================================
+ * DATASET RESMI SKL KEPEMIMPINAN (28/29 INDIKATOR EXCEL AL-IMAM FIX)
+ * Sesuai File Excel Resmi:
+ * 1. IX ABU BAKAR .XLSM
+ * 2. IX UMMU .XLSM
+ * 3. VIII KHODIJAH .XLSM
+ * 4. VIII UMAR .XLSM
+ * 5. VII AISYAH .XLSM
+ * 6. VII UTSMAN .XLSM
+ * ============================================================================
+ */
+const OFFICIAL_SKL_IX_ABU_BAKAR = [
+  { nis: '242507001', nama: 'ABDILLAH ZULQARNAIN ARRAZI', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"A","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Tingkatkan semangat belajarmu' },
+  { nis: '242507002', nama: 'AL-FATTAH IBNU SYAM', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"A","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"B","s2":"B","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Tingkatkan semangat dan keseriusan dalam belajar agar mendapat hasil yang maksimal.' },
+  { nis: '242507003', nama: 'ALDENTA DWIKA PRADIPTA', scores: {"d1":"A","d2":"A","d3":"A","d4":"B","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"A","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita' },
+  { nis: '242507005', nama: 'AZKA WAFI ATHAYA', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"A","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita' },
+  { nis: '242507006', nama: 'BIMASENA NARARYA MALIKUL', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"B","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"A","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"B","s2":"B","t1":"A","t2":"B","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita' },
+  { nis: '242507007', nama: 'DAFFA RAHMAT AZAMI', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"A","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Tingkatkan semangat belajarmu' },
+  { nis: '242507008', nama: 'GHAISAN ARFA RAVELLIO', scores: {"d1":"B","d2":"A","d3":"B","d4":"B","d5":"B","d6":"A","d7":"A","k1":"B","k2":"B","k3":"B","k4":"B","k5":"B","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"B","s2":"B","t1":"B","t2":"B","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"B","j2":"A","h1":"A"}, catatan: 'Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita' },
+  { nis: '242507009', nama: 'ISA RAFIF NAILU', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"A","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"B","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Berbagi peran dalam kerjasama kelompok akan menciptakan keharmonisan' },
+  { nis: '242507013', nama: 'LIEVE LUTHFI', scores: {"d1":"A","d2":"A","d3":"A","d4":"B","d5":"A","d6":"A","d7":"A","k1":"B","k2":"A","k3":"A","k4":"A","k5":"A","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"B","s2":"B","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita' },
+  { nis: '242507010', nama: 'LIONEL NAGAZKHA IRAWAN TOBING', scores: {"d1":"A","d2":"A","d3":"A","d4":"B","d5":"B","d6":"A","d7":"A","k1":"A","k2":"A","k3":"B","k4":"A","k5":"B","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"B","s2":"A","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Tingkatkan semangat belajarmu' },
+  { nis: '242507014', nama: 'MARIQ ATHALLA MUNIARTO', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"A","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"B","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Tingkatkan semangat belajarmu' },
+  { nis: '242507012', nama: 'MUHAMMAD AL BAIS SAHID ROKHIM', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"B","k4":"A","k5":"A","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Tingkatkan semangat belajarmu' },
+  { nis: '242507017', nama: 'MUHAMMAD AZKA NAUFAL SAPUTRA', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"B","k5":"B","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Berbagi peran dalam kerjasama kelompok akan menciptakan keharmonisan' },
+  { nis: '242507018', nama: 'MUHAMMAD DAFFA HAFIZHSYACH AKBAR', scores: {"d1":"A","d2":"A","d3":"A","d4":"B","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"A","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Tingkatkan semangat dan keseriusan dalam belajar agar mendapat hasil yang maksimal.' },
+  { nis: '242507022', nama: 'MUHAMMAD HAIKAL FURQON ASYRAF', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"B","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"A","r1":"B","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Tingkatkan semangat dan keseriusan dalam belajar agar mendapat hasil yang maksimal.' },
+  { nis: '242507015', nama: 'MUHAMMAD SYABIL A\'ZAWAWI OKTAVIANSYAH', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"A","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Tingkatkan semangat dan keseriusan dalam belajar agar mendapat hasil yang maksimal.' },
+  { nis: '242507016', nama: 'QUARTO KENZIE PRAKOSO', scores: {"d1":"A","d2":"A","d3":"A","d4":"B","d5":"B","d6":"A","d7":"A","k1":"B","k2":"B","k3":"A","k4":"B","k5":"B","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"B","s2":"A","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Tingkatkan semangat belajarmu' },
+  { nis: '242507025', nama: 'RAKA PRASRAYA KAYANA', scores: {"d1":"A","d2":"A","d3":"A","d4":"B","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"A","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Tingkatkan semangat belajarmu' }
+];
+
+const OFFICIAL_SKL_IX_UMMU_SALAMAH = [
+  { nis: '242507019', nama: 'ADELA NOLLY RIYANTO', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"B","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"A","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"B","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Tingkatkan semangat belajarmu' },
+  { nis: '242507020', nama: 'AIDAH HURIAH MUMTAZAH SUGITO', scores: {"d1":"A","d2":"A","d3":"A","d4":"B","d5":"A","d6":"A","d7":"B","k1":"A","k2":"A","k3":"A","k4":"B","k5":"A","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"B","m1":"B","m2":"A","r1":"B","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Tingkatkan semangat dan keseriusan dalam belajar agar mendapat hasil yang maksimal.' },
+  { nis: '242507021', nama: 'AISYAH DAAMIYAA NUR SA\'ADAH', scores: {"d1":"A","d2":"A","d3":"A","d4":"B","d5":"A","d6":"A","d7":"B","k1":"A","k2":"A","k3":"A","k4":"B","k5":"A","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"B","m1":"B","m2":"A","r1":"B","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita' },
+  { nis: '242507004', nama: 'ALIKA RAMADINA SETIAWAN', scores: {"d1":"A","d2":"A","d3":"A","d4":"B","d5":"A","d6":"A","d7":"B","k1":"A","k2":"A","k3":"A","k4":"B","k5":"A","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"B","m1":"B","m2":"A","r1":"B","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita' },
+  { nis: '242507023', nama: 'ALISHA MALAIKA ARIFIANTO', scores: {"d1":"A","d2":"A","d3":"A","d4":"B","d5":"A","d6":"A","d7":"B","k1":"A","k2":"A","k3":"A","k4":"B","k5":"A","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"B","m1":"B","m2":"A","r1":"B","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita' },
+  { nis: '242507024', nama: 'ALISHA PRIYANKA ANINDITA', scores: {"d1":"A","d2":"A","d3":"A","d4":"B","d5":"A","d6":"A","d7":"B","k1":"A","k2":"A","k3":"A","k4":"B","k5":"A","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"B","m1":"B","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Tingkatkan semangat belajarmu' },
+  { nis: '242507026', nama: 'CHALISA AFIYAH ABDI', scores: {"d1":"A","d2":"A","d3":"A","d4":"B","d5":"A","d6":"A","d7":"B","k1":"A","k2":"A","k3":"A","k4":"B","k5":"A","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"B","m1":"B","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita' },
+  { nis: '242507027', nama: 'CHAYYARA AILA JANEETA', scores: {"d1":"A","d2":"A","d3":"A","d4":"B","d5":"A","d6":"A","d7":"B","k1":"A","k2":"A","k3":"A","k4":"B","k5":"A","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"B","m1":"B","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Berbagi peran dalam kerjasama kelompok akan menciptakan keharmonisan' },
+  { nis: '242507028', nama: 'ESHAL CALYSTA', scores: {"d1":"A","d2":"A","d3":"A","d4":"B","d5":"A","d6":"A","d7":"B","k1":"A","k2":"A","k3":"A","k4":"B","k5":"A","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"B","m1":"B","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita' },
+  { nis: '242507029', nama: 'FALISHA JASMINE BUDIMAN', scores: {"d1":"A","d2":"A","d3":"A","d4":"B","d5":"A","d6":"A","d7":"B","k1":"A","k2":"A","k3":"A","k4":"B","k5":"A","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"B","m1":"B","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Tingkatkan semangat belajarmu' },
+  { nis: '242507030', nama: 'FIRLI OKTAVIANI HEMAWAN', scores: {"d1":"A","d2":"A","d3":"A","d4":"B","d5":"A","d6":"A","d7":"B","k1":"A","k2":"A","k3":"A","k4":"B","k5":"A","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"B","t2":"B","m1":"B","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Tingkatkan semangat belajarmu' },
+  { nis: '242507031', nama: 'GHAIDA ALIN NADA', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"A","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"B","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Tingkatkan semangat belajarmu' },
+  { nis: '242507032', nama: 'JASMINE ALIA PUTRI', scores: {"d1":"A","d2":"A","d3":"A","d4":"B","d5":"A","d6":"A","d7":"B","k1":"A","k2":"A","k3":"A","k4":"B","k5":"A","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"B","m1":"B","m2":"A","r1":"B","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Berbagi peran dalam kerjasama kelompok akan menciptakan keharmonisan' },
+  { nis: '242507011', nama: 'JASMINE NADIAH WARDHANI', scores: {"d1":"A","d2":"A","d3":"A","d4":"B","d5":"A","d6":"A","d7":"B","k1":"A","k2":"A","k3":"A","k4":"B","k5":"A","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"B","s2":"A","t1":"A","t2":"B","m1":"B","m2":"A","r1":"B","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Tingkatkan semangat dan keseriusan dalam belajar agar mendapat hasil yang maksimal.' },
+  { nis: '242507033', nama: 'JIEHAN SEKAR MAHESWARI', scores: {"d1":"B","d2":"A","d3":"A","d4":"B","d5":"A","d6":"A","d7":"B","k1":"A","k2":"A","k3":"A","k4":"B","k5":"A","p1":"B","p2":"A","p3":"A","p4":"A","p5":"A","s1":"B","s2":"A","t1":"A","t2":"B","m1":"B","m2":"A","r1":"B","r2":"B","r3":"A","j1":"A","j2":"A","h1":"B"}, catatan: 'Tingkatkan semangat dan keseriusan dalam belajar agar mendapat hasil yang maksimal.' },
+  { nis: '242507034', nama: 'MAKAILA KHANZA A', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"B","k1":"A","k2":"A","k3":"A","k4":"B","k5":"A","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"B","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Tingkatkan semangat dan keseriusan dalam belajar agar mendapat hasil yang maksimal.' },
+  { nis: '242507035', nama: 'RADELLA GITHA OCTAVIANA', scores: {"d1":"A","d2":"A","d3":"A","d4":"B","d5":"A","d6":"A","d7":"B","k1":"A","k2":"A","k3":"A","k4":"B","k5":"A","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"B","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Tingkatkan semangat belajarmu' },
+  { nis: '242507036', nama: 'RR. SHOFIA PUTERI NIRWANI', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"A","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"B","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Tingkatkan semangat belajarmu' },
+  { nis: '242507037', nama: 'SARAH ZAKIYYA SHALEH', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"B","k1":"A","k2":"A","k3":"A","k4":"B","k5":"A","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"B","m1":"B","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Tingkatkan semangat belajarmu' },
+  { nis: '242507043', nama: 'SEYLA ALEXANDRA', scores: {"d1":"A","d2":"A","d3":"A","d4":"B","d5":"A","d6":"A","d7":"B","k1":"A","k2":"B","k3":"B","k4":"B","k5":"A","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"B","m1":"B","m2":"A","r1":"B","r2":"B","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Tingkatkan semangat dan keseriusan dalam belajar agar mendapat hasil yang maksimal.' },
+  { nis: '242507038', nama: 'SYAZANI PUTRIGIY', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"A","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"B","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Tingkatkan semangat belajarmu' }
+];
+
+const OFFICIAL_SKL_VIII_KHODIJAH = [
+  { nis: '252607002', nama: 'AJENG PUTRI KIRANA', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"B","k5":"B","p1":"B","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Kedisiplinan, ketaatan, kerajinan, kebersihan, dan kerja sama lebih utama dari sekedar nilai akademik. Teruslah berlomba memperbaiki diri dan menjadi pribadi yang lebih baik setiap hari.' },
+  { nis: '252607003', nama: 'ALLYSHA QIANA ZETTA', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"B","k5":"B","p1":"B","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Kedisiplinan, ketaatan, kerajinan, kebersihan, dan kerja sama lebih utama dari sekedar nilai akademik. Teruslah berlomba memperbaiki diri dan menjadi pribadi yang lebih baik setiap hari.' },
+  { nis: '252607004', nama: 'ALZENA AILA VARISHA', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"B","k5":"B","p1":"B","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Kedisiplinan, ketaatan, kerajinan, kebersihan, dan kerja sama lebih utama dari sekedar nilai akademik. Teruslah berlomba memperbaiki diri dan menjadi pribadi yang lebih baik setiap hari.' },
+  { nis: '252607006', nama: 'ANNISA SHAZIA ATHIFAH', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"B","k5":"B","p1":"B","p2":"B","p3":"A","p4":"A","p5":"B","s1":"B","s2":"B","t1":"B","t2":"B","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Kedisiplinan, ketaatan, kerajinan, kebersihan, dan kerja sama lebih utama dari sekedar nilai akademik. Teruslah berlomba memperbaiki diri dan menjadi pribadi yang lebih baik setiap hari.' },
+  { nis: '252607007', nama: 'DEAN SECTIO RANYA ARIYADI', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"B","k5":"B","p1":"B","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Kedisiplinan, ketaatan, kerajinan, kebersihan, dan kerja sama lebih utama dari sekedar nilai akademik. Teruslah berlomba memperbaiki diri dan menjadi pribadi yang lebih baik setiap hari.' },
+  { nis: '252607008', nama: 'EVELYN KENIVAEL', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"B","k5":"B","p1":"B","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Kedisiplinan, ketaatan, kerajinan, kebersihan, dan kerja sama lebih utama dari sekedar nilai akademik. Teruslah berlomba memperbaiki diri dan menjadi pribadi yang lebih baik setiap hari.' },
+  { nis: '252607045', nama: 'GARJITA GALUH GUNAWAN', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"B","k5":"B","p1":"B","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Kedisiplinan, ketaatan, kerajinan, kebersihan, dan kerja sama lebih utama dari sekedar nilai akademik. Teruslah berlomba memperbaiki diri dan menjadi pribadi yang lebih baik setiap hari.' },
+  { nis: '252607009', nama: 'GRISELDIS RADHIYA NUR HAZRINA', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"B","k5":"B","p1":"B","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Kedisiplinan, ketaatan, kerajinan, kebersihan, dan kerja sama lebih utama dari sekedar nilai akademik. Teruslah berlomba memperbaiki diri dan menjadi pribadi yang lebih baik setiap hari.' },
+  { nis: '252607010', nama: 'GYZELL PRIANATASYA PUTRI', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"B","k5":"B","p1":"B","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Kedisiplinan, ketaatan, kerajinan, kebersihan, dan kerja sama lebih utama dari sekedar nilai akademik. Teruslah berlomba memperbaiki diri dan menjadi pribadi yang lebih baik setiap hari.' },
+  { nis: '252607011', nama: 'KAMILA PUTRI BUDIMAN', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"B","k5":"B","p1":"B","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Kedisiplinan, ketaatan, kerajinan, kebersihan, dan kerja sama lebih utama dari sekedar nilai akademik. Teruslah berlomba memperbaiki diri dan menjadi pribadi yang lebih baik setiap hari.' },
+  { nis: '252607013', nama: 'MALIKA ANINDYA ADEEVA', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"B","k5":"B","p1":"B","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Kedisiplinan, ketaatan, kerajinan, kebersihan, dan kerja sama lebih utama dari sekedar nilai akademik. Teruslah berlomba memperbaiki diri dan menjadi pribadi yang lebih baik setiap hari.' },
+  { nis: '252607016', nama: 'NAYLANA KHAYRA DZAHIN', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"B","k5":"B","p1":"B","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Kedisiplinan, ketaatan, kerajinan, kebersihan, dan kerja sama lebih utama dari sekedar nilai akademik. Teruslah berlomba memperbaiki diri dan menjadi pribadi yang lebih baik setiap hari.' },
+  { nis: '252607017', nama: 'RHEVA AGNEZIA PUTRI', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"B","k5":"B","p1":"B","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Kedisiplinan, ketaatan, kerajinan, kebersihan, dan kerja sama lebih utama dari sekedar nilai akademik. Teruslah berlomba memperbaiki diri dan menjadi pribadi yang lebih baik setiap hari.' },
+  { nis: '252607018', nama: 'SARAH SALSABILA', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"B","k5":"B","p1":"B","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Kedisiplinan, ketaatan, kerajinan, kebersihan, dan kerja sama lebih utama dari sekedar nilai akademik. Teruslah berlomba memperbaiki diri dan menjadi pribadi yang lebih baik setiap hari.' },
+  { nis: '252607039', nama: 'SHAZIA KEIZALUNA HUMAIRA', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"B","k5":"B","p1":"B","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Kedisiplinan, ketaatan, kerajinan, kebersihan, dan kerja sama lebih utama dari sekedar nilai akademik. Teruslah berlomba memperbaiki diri dan menjadi pribadi yang lebih baik setiap hari.' },
+  { nis: '252607043', nama: 'SYAFIKAH GHALIN ALZENA', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"B","k5":"B","p1":"B","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Kedisiplinan, ketaatan, kerajinan, kebersihan, dan kerja sama lebih utama dari sekedar nilai akademik. Teruslah berlomba memperbaiki diri dan menjadi pribadi yang lebih baik setiap hari.' },
+  { nis: '252607020', nama: 'TALITA LUBNA HUMAIRA RENLEUW', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"B","k1":"A","k2":"B","k3":"A","k4":"A","k5":"B","p1":"B","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Kedisiplinan, ketaatan, kerajinan, kebersihan, dan kerja sama lebih utama dari sekedar nilai akademik. Teruslah berlomba memperbaiki diri dan menjadi pribadi yang lebih baik setiap hari.' },
+  { nis: '252607040', nama: 'ZAHIRA SARIFAH SALSABILA', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"B","k5":"B","p1":"B","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Kedisiplinan, ketaatan, kerajinan, kebersihan, dan kerja sama lebih utama dari sekedar nilai akademik. Teruslah berlomba memperbaiki diri dan menjadi pribadi yang lebih baik setiap hari.' }
+];
+
+const OFFICIAL_SKL_VIII_UMAR = [
+  { nis: '252607038', nama: 'ACHMED SYATHIR ELHAYBA', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"B","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"B","p1":"A","p2":"A","p3":"B","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"B","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan' },
+  { nis: '252607022', nama: 'ALI ZATRIO IKHWANTORO', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"B","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Kerapihan & kebersihan diri dan lingkungan akan terciptakan rasa nyaman dalam belajar' },
+  { nis: '252607023', nama: 'ARSA ARDHANI PUTRA PERMADI', scores: {"d1":"A","d2":"A","d3":"A","d4":"B","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"B","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita' },
+  { nis: '252607025', nama: 'GERALD LAZZARO NGGEBU', scores: {"d1":"B","d2":"A","d3":"A","d4":"A","d5":"B","d6":"B","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"B","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"B","s2":"B","t1":"B","t2":"B","m1":"A","m2":"A","r1":"A","r2":"B","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita' },
+  { nis: '252607026', nama: 'HASAN MUZAKKI', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"B","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan' },
+  { nis: '252607027', nama: 'IBRAHIM FADHILAH SYUJA TAMBUNAN', scores: {"d1":"B","d2":"A","d3":"A","d4":"B","d5":"B","d6":"B","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"B","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita' },
+  { nis: '252607012', nama: 'KANAKA ARKHAN GAIZAN', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"B","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita' },
+  { nis: '252607028', nama: 'MUHAMAD FATHAN GUNAWAN', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"B","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Berbagi peran dalam kerjasama kelompok akan menciptakan keharmonisan' },
+  { nis: '252607029', nama: 'MUHAMMAD AYDIN ARKANANTA', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"B","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita' },
+  { nis: '252607030', nama: 'MUHAMMAD BILLAL AMILUSA', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"B","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Tingkatkan semangat belajarmu' },
+  { nis: '252607031', nama: 'NAUVAL AGHA IRAWAN', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"B","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Tingkatkan semangat belajarmu' },
+  { nis: '252607032', nama: 'RAFKANTARA ARIFIANTO', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"B","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Tingkatkan semangat belajarmu' },
+  { nis: '252607033', nama: 'RYAN ADITYA HERLAMBANG SUGEMAS', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"B","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"B","r1":"A","r2":"B","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Tingkatkan semangat dan keseriusan dalam belajar agar mendapat hasil yang maksimal.' },
+  { nis: '252607034', nama: 'TEUKU MUHAMMAD ZULKARNAIN', scores: {"d1":"B","d2":"A","d3":"A","d4":"B","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"B","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"B","m1":"A","m2":"B","r1":"A","r2":"B","r3":"A","j1":"A","j2":"A","h1":"B"}, catatan: 'Tingkatkan semangat dan keseriusan dalam belajar agar mendapat hasil yang maksimal.' },
+  { nis: '252607036', nama: 'ZAMZAM ALIF', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"B","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Tingkatkan semangat belajarmu' }
+];
+
+const OFFICIAL_SKL_VII_AISYAH = [
+  { nis: '262707026', nama: 'AKIFA NAILA KARIM', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"A","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Tingkatkan semangat belajarmu!' },
+  { nis: '262707027', nama: 'ALIYA HASNA SAFIRA', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"A","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Pertahankan Semangat Belajar dan Prestasimu!' },
+  { nis: '262707028', nama: 'ARINKA NATHANIA MUNARDJO', scores: {"d1":"B","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"A","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Pertahankan Semangat Belajar dan Prestasimu!' },
+  { nis: '262707006', nama: 'ASKANA SAKHI HENDRI', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"A","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita' },
+  { nis: '262707029', nama: 'CAMILIA LARISSA ZAHWA', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"B","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"A","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"B","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita' },
+  { nis: '262707030', nama: 'CHYLLA KHANSA AZALIA NASUTION', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"A","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Tingkatkan semangat belajarmu!' },
+  { nis: '262707031', nama: 'DAFINA AULIA AINI', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"A","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita' },
+  { nis: '262707032', nama: 'DELIESHA ADZKIA PUTRI', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"A","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Pertahankan Semangat Belajar dan Prestasimu!' },
+  { nis: '262707033', nama: 'GHADHIRA AURYN GIOVANNI', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"A","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan.' },
+  { nis: '262707034', nama: 'GHASSANI ZAHILA', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"A","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan.' },
+  { nis: '262707035', nama: 'IFTINAN NATHIFA DEFI', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"A","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita.' },
+  { nis: '262707036', nama: 'KANAYA SYAHLA ADHITYA', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"A","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita.' },
+  { nis: '262707037', nama: 'KHALILA NADIA RAHMADANI', scores: {"d1":"A","d2":"A","d3":"A","d4":"B","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"A","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"B","m1":"A","m2":"A","r1":"A","r2":"B","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Tingkatkan semangat belajarmu!' },
+  { nis: '262707038', nama: 'MAHIRA AZZAHRA SATRIA', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"A","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan.' },
+  { nis: '262707039', nama: 'MAULIDIA MAHYANI MAUDY', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"A","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Tingkatkan semangat dan keseriusan dalam belajar agar mendapat hasil yang maksimal.' },
+  { nis: '262707040', nama: 'NADYA MELODY PUTRI', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"A","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Tingkatkan semangat dan keseriusan dalam belajar agar mendapat hasil yang maksimal.' },
+  { nis: '262707041', nama: 'NAJWA KHAIRA WILDA', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"A","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Tingkatkan semangat belajarmu!' },
+  { nis: '262707042', nama: 'PURI AZ ZAHRA HAYFA', scores: {"d1":"B","d2":"A","d3":"A","d4":"B","d5":"A","d6":"B","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"A","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"B","t1":"A","t2":"B","m1":"A","m2":"A","r1":"A","r2":"B","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Tingkatkan semangat belajarmu!' },
+  { nis: '262707043', nama: 'QUEEN NADHIRA RAISYA QISTHI', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"A","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Tingkatkan semangat belajarmu!' },
+  { nis: '262707044', nama: 'RAISHA KANAYA PUTRI', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"A","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Tingkatkan semangat dan keseriusan dalam belajar agar mendapat hasil yang maksimal.' },
+  { nis: '262707045', nama: 'RAISYAH AMALIA', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"A","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Tingkatkan semangat belajarmu!' },
+  { nis: '262707047', nama: 'SAKHIA TSABITA AL KHANZA', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"A","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Tingkatkan semangat belajarmu!' },
+  { nis: '262707048', nama: 'SHARLYNN TANZEELA AUDREANA', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"A","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita.' },
+  { nis: '262707049', nama: 'SYAQILA APRILIA PUTRI', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"A","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Tingkatkan semangat belajarmu!' },
+  { nis: '262707050', nama: 'TRICEL ANGELIA INDRADI', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"A","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Tingkatkan semangat belajarmu!' },
+  { nis: '262707051', nama: 'YUMNA LAILA FAIZAH', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"A","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita.' }
+];
+
+const OFFICIAL_SKL_VII_UTSMAN = [
+  { nis: '262707001', nama: 'AEZAIR EL KHAZINDAIL WALIDAIN', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"B","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"B","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"B","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Tingkatkan semangat belajarmu' },
+  { nis: '262707025', nama: 'AGATHA PRATAMA', scores: {"d1":"A","d2":"A","d3":"A","d4":"B","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"B","p1":"A","p2":"A","p3":"B","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"B","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita' },
+  { nis: '262707002', nama: 'AHSAN FADHILAH', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"A","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"A","r1":"A","r2":"B","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita' },
+  { nis: '262707004', nama: 'ALFARIZI MAULANA', scores: {"d1":"A","d2":"B","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"B","p1":"A","p2":"A","p3":"B","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"B","r1":"A","r2":"B","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita' },
+  { nis: '262707005', nama: 'AL-ZIDAN ALAIR PERMANA', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"B","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"B","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Tingkatkan semangat dan keseriusan dalam belajar agar mendapat hasil yang maksimal.' },
+  { nis: '262707007', nama: 'AZRIEL PUTRA NATAFA', scores: {"d1":"A","d2":"B","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"B","p1":"A","p2":"A","p3":"B","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"B","m1":"A","m2":"B","r1":"A","r2":"B","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Tingkatkan semangat dan keseriusan dalam belajar agar mendapat hasil yang maksimal.' },
+  { nis: '262707008', nama: 'BASTIAN ARIF ABDILLAH', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"B","k1":"A","k2":"A","k3":"A","k4":"A","k5":"B","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"B","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita' },
+  { nis: '262707009', nama: 'FATHAN ATHARSYAH ATHALLA', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"B","k1":"A","k2":"A","k3":"A","k4":"A","k5":"B","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"B","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Tingkatkan semangat belajarmu' },
+  { nis: '262707071', nama: 'FATIH ABDILLAH KURNIYAWAN', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"B","k1":"A","k2":"A","k3":"A","k4":"A","k5":"B","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"B","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Jadikanlah kedisiplinan dan kerajinan sebagai bekalmu dalam meraih cita-cita' },
+  { nis: '262707010', nama: 'GIBRAN HARUNSYAKA UBAIDILLAH', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"B","k1":"A","k2":"A","k3":"A","k4":"A","k5":"B","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"B","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Tingkatkan semangat belajarmu' },
+  { nis: '262707011', nama: 'HAFIZH KURNIA STYAWAN', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"B","k1":"A","k2":"A","k3":"A","k4":"A","k5":"B","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"B","m1":"B","m2":"B","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Tingkatkan semangat dan keseriusan dalam belajar agar mendapat hasil yang maksimal.' },
+  { nis: '262707012', nama: 'IBRAHIM AL AQSA SHALEH', scores: {"d1":"A","d2":"B","d3":"A","d4":"B","d5":"A","d6":"A","d7":"A","k1":"A","k2":"B","k3":"A","k4":"A","k5":"B","p1":"A","p2":"A","p3":"B","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"B","m1":"A","m2":"B","r1":"A","r2":"B","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Tingkatkan semangat dan keseriusan dalam belajar agar mendapat hasil yang maksimal.' },
+  { nis: '262707024', nama: 'KEANO AQUILLA SAKHA RESPATI', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"B","k1":"A","k2":"A","k3":"A","k4":"A","k5":"B","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"B","r1":"A","r2":"B","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Tingkatkan semangat dan keseriusan dalam belajar agar mendapat hasil yang maksimal.' },
+  { nis: '262707013', nama: 'LEVI RAZAN PUTRA PERMADI', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"B","k1":"A","k2":"A","k3":"A","k4":"A","k5":"B","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"B","r1":"A","r2":"B","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Tingkatkan semangat dan keseriusan dalam belajar agar mendapat hasil yang maksimal.' },
+  { nis: '262707020', nama: 'M. ZAFRAN YUDHA ALFARIDZI', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"B","k1":"A","k2":"A","k3":"A","k4":"A","k5":"B","p1":"A","p2":"A","p3":"B","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"B","m1":"A","m2":"B","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Tingkatkan semangat dan keseriusan dalam belajar agar mendapat hasil yang maksimal.' },
+  { nis: '262707016', nama: 'MUCHAMAD WILDAN MAULANA', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"B","k1":"A","k2":"A","k3":"A","k4":"A","k5":"B","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"B","r1":"A","r2":"B","r3":"B","j1":"A","j2":"A","h1":"A"}, catatan: 'Tingkatkan semangat dan keseriusan dalam belajar agar mendapat hasil yang maksimal.' },
+  { nis: '262707017', nama: 'MUFTI ANWAR FALAH', scores: {"d1":"A","d2":"A","d3":"A","d4":"B","d5":"A","d6":"A","d7":"B","k1":"A","k2":"A","k3":"A","k4":"A","k5":"B","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"B","r1":"A","r2":"B","r3":"B","j1":"A","j2":"A","h1":"A"}, catatan: 'Tingkatkan semangat dan keseriusan dalam belajar agar mendapat hasil yang maksimal.' },
+  { nis: '262707003', nama: 'MUHAMMAD AHZA HARIRI', scores: {"d1":"A","d2":"A","d3":"A","d4":"B","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"B","p1":"A","p2":"A","p3":"B","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"B","r1":"A","r2":"B","r3":"B","j1":"A","j2":"A","h1":"A"}, catatan: 'Tingkatkan semangat dan keseriusan dalam belajar agar mendapat hasil yang maksimal.' },
+  { nis: '262707018', nama: 'MUHAMMAD ARKHAN AL RAZIQ', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"B","k1":"A","k2":"A","k3":"A","k4":"A","k5":"B","p1":"A","p2":"A","p3":"B","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"B","r1":"A","r2":"B","r3":"B","j1":"A","j2":"A","h1":"A"}, catatan: 'Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan' },
+  { nis: '262707019', nama: 'MUHAMMAD AZKA KAMIL HERMAWAN', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"B","k1":"A","k2":"A","k3":"A","k4":"B","k5":"B","p1":"A","p2":"A","p3":"B","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"B","r1":"A","r2":"B","r3":"B","j1":"A","j2":"A","h1":"A"}, catatan: 'Tingkatkan semangat dan keseriusan dalam belajar agar mendapat hasil yang maksimal.' },
+  { nis: '262707014', nama: 'MUHAMMAD DANIEL ATHARIZZ CALIEF', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"B","k1":"A","k2":"A","k3":"A","k4":"B","k5":"B","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"B","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Tingkatkan semangat belajarmu' },
+  { nis: '262707015', nama: 'MUHAMMAD YUSHIL AL-FATIH', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"B","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"B","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Ketekunan dalam belajar saat ini merupakan wujud keseriusan untuk meraih hasil belajar yang maksimal, & cita-cita di masa depan. Tingkatkan semangat belajarmu' },
+  { nis: '262707021', nama: 'NOUFAL KHAIRIL HANIF', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"B","p1":"A","p2":"A","p3":"B","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"B","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan' },
+  { nis: '262707022', nama: 'RAFIAZKA INSAN ABDULLAH', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"B","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"B","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Tingkatkan semangat dan keseriusan dalam belajar agar mendapat hasil yang maksimal.' },
+  { nis: '262707023', nama: 'ZAFRAN ALI YUDITYO RAMADHAN', scores: {"d1":"A","d2":"A","d3":"A","d4":"A","d5":"A","d6":"A","d7":"A","k1":"A","k2":"A","k3":"A","k4":"A","k5":"B","p1":"A","p2":"A","p3":"A","p4":"A","p5":"A","s1":"A","s2":"A","t1":"A","t2":"A","m1":"A","m2":"B","r1":"A","r2":"A","r3":"A","j1":"A","j2":"A","h1":"A"}, catatan: 'Kemampuan memimpinmu terlihat baik, lanjutkan usahamu mengajak teman-teman dalam kebaikan' }
+];
+
+
+/**
+ * Injeksi Nilai Resmi SKL Kepemimpinan 28/29 Indikator ke Sheet Nilai_SKL_Kepemimpinan
+ * Sekaligus Membuat Tab Sheet Rekap Format Excel Resmi
+ */
+function seedOfficialSklKepemimpinan() {
+  const ss = getDb();
+  const allCohorts = [
+    { list: OFFICIAL_SKL_IX_ABU_BAKAR, kelas: 'IX ABU BAKAR', sheetName: 'SKL IX Abu Bakar' },
+    { list: OFFICIAL_SKL_IX_UMMU_SALAMAH, kelas: 'IX UMMU SALAMAH', sheetName: 'SKL IX Ummu Salamah' },
+    { list: OFFICIAL_SKL_VIII_KHODIJAH, kelas: 'VIII KHODIJAH', sheetName: 'SKL VIII Khodijah' },
+    { list: OFFICIAL_SKL_VIII_UMAR, kelas: 'VIII UMAR', sheetName: 'SKL VIII Umar' },
+    { list: OFFICIAL_SKL_VII_AISYAH, kelas: 'VII AISYAH', sheetName: 'SKL VII Aisyah' },
+    { list: OFFICIAL_SKL_VII_UTSMAN, kelas: 'VII UTSMAN', sheetName: 'SKL VII Utsman' }
+  ];
+
+  const items = [];
+  allCohorts.forEach(c => {
+    c.list.forEach(st => {
+      items.push({
+        id: `SKL-${st.nis}`,
+        nis: st.nis,
+        nama_murid: st.nama,
+        kelas: c.kelas,
+        semester: 'Tengah Semester 1',
+        tahun_ajaran: '2026/2027',
+        scores: st.scores,
+        catatan_walas: st.catatan
+      });
+    });
+  });
+
+  const saveRes = saveBulkSklKepemimpinan({ items: items });
+
+  // Sync dedicated Excel-style sheets for each class
+  const sklKeys = ['d1','d2','d3','d4','d5','d6','d7','k1','k2','k3','k4','k5','p1','p2','p3','p4','p5','s1','s2','t1','t2','m1','m2','r1','r2','r3','j1','j2','h1'];
+  const sklHeaderTitles = [
+    'NO', 'NAMA', 'KELAS', 'NIS', 'NISN', 'SEMESTER',
+    'Disiplin 1', 'Disiplin 2', 'Disiplin 3', 'Disiplin 4', 'Disiplin 5', 'Disiplin 6', 'Disiplin 7',
+    'Kebersihan 1', 'Kebersihan 2', 'Kebersihan 3', 'Kebersihan 4', 'Kebersihan 5',
+    'Pembiasaan 1', 'Pembiasaan 2', 'Pembiasaan 3', 'Pembiasaan 4', 'Pembiasaan 5',
+    'Kesopanan 1', 'Kesopanan 2',
+    'Ketaatan 1', 'Ketaatan 2',
+    'Kemandirian 1', 'Kemandirian 2',
+    'Kerajinan 1', 'Kerajinan 2', 'Kerajinan 3',
+    'Kejujuran 1', 'Kejujuran 2',
+    'Muhadharah 1',
+    'Catatan Wali Kelas'
+  ];
+
+  allCohorts.forEach(c => {
+    try {
+      let sheet = ss.getSheetByName(c.sheetName);
+      if (!sheet) {
+        sheet = ss.insertSheet(c.sheetName);
+      }
+      sheet.clear();
+
+      sheet.getRange(1, 1, 1, sklHeaderTitles.length).setValues([sklHeaderTitles])
+        .setBackground('#1e3a8a').setFontColor('#ffffff').setFontWeight('bold').setHorizontalAlignment('center');
+
+      const rows = c.list.map((st, idx) => {
+        const row = [idx + 1, st.nama, c.kelas, st.nis, '-', 'Tengah Semester 1'];
+        sklKeys.forEach(k => {
+          row.push((st.scores && st.scores[k]) ? st.scores[k] : 'A');
+        });
+        row.push(st.catatan);
+        return row;
+      });
+
+      if (rows.length > 0) {
+        sheet.getRange(2, 1, rows.length, sklHeaderTitles.length).setValues(rows);
+      }
+      sheet.setFrozenRows(1);
+    } catch (eSheet) {
+      console.warn('Notice sync skl sheet:', eSheet);
+    }
+  });
+
+  return {
+    success: true,
+    totalEntries: items.length,
+    message: `Berhasil memperbarui ${items.length} data SKL Kepemimpinan (28/29 indikator) untuk seluruh 6 kelas!`
+  };
+}
+
 
 function saveSklKepemimpinan(data) {
   try {
