@@ -96,7 +96,7 @@ const fullRekapData = {
     { no: 8, nis: '262707009', nama: 'Fathan Atharsyah Athalla', scores: [86, 92, 87, 89, 90, 77, 84, 88, 89, 86, 87, 88, 85, 84, 88, 88], ekskul: ['Sangat Baik', 'Sangat Baik', 'Baik'] },
     { no: 9, nis: '262707071', nama: 'Fatih Abdillah Kurniyawan', scores: [87, 91, 87, 89, 80, 80, 88, 93, 84, 78, 88, 86, 91, 88, 81, 83], ekskul: ['Sangat Baik', 'Sangat Baik', 'Sangat Baik'] },
     { no: 10, nis: '262707010', nama: 'Gibran Harunsyaka Ubaidillah', scores: [85, 90, 87, 84, 90, 83, 88, 93, 96, 88, 91, 90, 84, 85, 89, 89], ekskul: ['Sangat Baik', 'Sangat Baik', 'Baik'] },
-    { no: 11, nis: '262707011', nama: 'Hafizh Kurnia Styawan', scores: [90, 90, 87, 91, 80, 86, 86, 86, 81, 78, 84, 85, 88, 86, 81, 79], ekskul: ['Sangat Baik', 'Sangat Baik', 'Baik'] },
+    { no: 11, nis: '262707011', nama: 'Hafizh Kurnia Styawan', scores: [90, 90, 87, 91, 80, 86, 86, 76, 81, 78, 84, 85, 88, 86, 81, 79], ekskul: ['Sangat Baik', 'Sangat Baik', 'Baik'] },
     { no: 12, nis: '262707012', nama: 'Ibrahim Al Aqsa Shaleh', scores: [80, 88, 87, 79, 77, 77, 84, 85, 76, 76, 81, 89, 84, 82, 76, 76], ekskul: ['Sangat Baik', 'Sangat Baik', 'Sangat Baik'] },
     { no: 13, nis: '262707024', nama: 'Keano Aquilla Sakha Respati', scores: [87, 92, 87, 89, 77, 75, 84, 76, 90, 87, 90, 89, 84, 86, 81, 77], ekskul: ['Sangat Baik', 'Sangat Baik', 'Baik'] },
     { no: 14, nis: '262707013', nama: 'Levi Razan Putra Permadi', scores: [86, 89, 87, 88, 79, 78, 82, 83, 80, 77, 82, 87, 86, 84, 80, 85], ekskul: ['Sangat Baik', 'Sangat Baik', 'Sangat Baik'] },
