@@ -8,6 +8,7 @@
 const ROLES = {
   ADMIN: 'admin',
   KEPALA_SEKOLAH: 'kepala_sekolah',
+  WALI_KELAS: 'wali_kelas',
   GURU: 'guru',
   WALI_MURID: 'wali_murid'
 };
@@ -23,7 +24,7 @@ function authenticateUser(username, password) {
   const cleanUser = String(username).trim().toLowerCase();
   const cleanPass = String(password).trim();
 
-  const sheet = getOrCreateSheet(DB_CONFIG.SHEET_USERS, ['id', 'username', 'password_hash', 'nama_lengkap', 'role', 'status', 'created_at', 'nis', 'mapel']);
+  const sheet = getOrCreateSheet(DB_CONFIG.SHEET_USERS, ['id', 'username', 'password_hash', 'nama_lengkap', 'role', 'status', 'created_at', 'nis', 'mapel', 'wali_kelas']);
   const users = sheetToObjects(sheet);
   
   let user = users.find(u => 
@@ -35,11 +36,11 @@ function authenticateUser(username, password) {
   if (!user) {
     if ((cleanUser === 'kepsek' || cleanUser === 'arif') && (cleanPass === 'kepsek123' || cleanPass === 'arif123')) {
       user = users.find(u => String(u.username).toLowerCase() === 'arifrohman') || {
-        id: 'USR-002', username: 'arifrohman', nama_lengkap: 'Gr. Arif Rohman, S.Sos., M.Pd.', role: ROLES.ADMIN, status: 'aktif', mapel: 'Fikih (Kelas IX), Semua Mapel'
+        id: 'USR-001', username: 'arifrohman', nama_lengkap: 'Gr. Arif Rohman, S.Sos., M.Pd.', role: ROLES.ADMIN, status: 'aktif', mapel: 'Fikih, Semua Mapel', wali_kelas: ''
       };
     } else if (cleanUser === 'guru' && cleanPass === 'guru123') {
       user = users.find(u => String(u.username).toLowerCase() === 'dewi') || {
-        id: 'USR-003', username: 'dewi', nama_lengkap: 'Dewi Fitria Nugraheni, S.Pd., Gr.', role: ROLES.ADMIN, status: 'aktif', mapel: 'Bahasa Indonesia, Semua Mapel'
+        id: 'USR-002', username: 'dewi', nama_lengkap: 'Dewi Fitria Nugraheni, S.Pd., Gr.', role: ROLES.WALI_KELAS, status: 'aktif', mapel: 'Bahasa Indonesia', wali_kelas: 'IX ABU BAKAR'
       };
     } else if (cleanUser === 'kahlil' && (cleanPass === 'kahlil123' || cleanPass === 'kahlilgibran123')) {
       user = users.find(u => String(u.username).toLowerCase() === 'kahlilgibran');
@@ -60,6 +61,7 @@ function authenticateUser(username, password) {
           nama_lengkap: 'Wali dari ' + (murid.nama_murid || murid.nama_santri),
           role: ROLES.WALI_MURID,
           nis_murid: murid.nis,
+          wali_kelas: '',
           mapel: '',
           loginAt: new Date().getTime()
         })
@@ -74,6 +76,7 @@ function authenticateUser(username, password) {
           nama_lengkap: 'Wali dari ' + (murid.nama_murid || murid.nama_santri),
           role: ROLES.WALI_MURID,
           mapel: '',
+          wali_kelas: '',
           nis: murid.nis,
           nis_murid: murid.nis
         },
@@ -88,8 +91,8 @@ function authenticateUser(username, password) {
     return { success: false, message: 'Akun Anda sedang dinonaktifkan. Hubungi Administrator.' };
   }
   
-  // Set role to ADMIN for full access as requested by user
-  const effectiveRole = (user.role === ROLES.WALI_MURID) ? ROLES.WALI_MURID : ROLES.ADMIN;
+  // Set accurate effective role
+  const effectiveRole = user.role || (user.wali_kelas ? ROLES.WALI_KELAS : ROLES.GURU);
 
   // Buat payload session sederhana
   const sessionToken = Utilities.base64Encode(
@@ -98,6 +101,7 @@ function authenticateUser(username, password) {
       username: user.username,
       nama_lengkap: user.nama_lengkap,
       role: effectiveRole,
+      wali_kelas: user.wali_kelas || '',
       mapel: user.mapel || '',
       loginAt: new Date().getTime()
     })
@@ -111,9 +115,10 @@ function authenticateUser(username, password) {
       username: user.username,
       nama_lengkap: user.nama_lengkap,
       role: effectiveRole,
+      wali_kelas: user.wali_kelas || '',
       mapel: user.mapel || '',
-      nis: user.nis || (user.role === ROLES.WALI_MURID ? '242507001' : ''),
-      nis_murid: user.nis || (user.role === ROLES.WALI_MURID ? '242507001' : '')
+      nis: user.nis || (effectiveRole === ROLES.WALI_MURID ? '242507001' : ''),
+      nis_murid: user.nis || (effectiveRole === ROLES.WALI_MURID ? '242507001' : '')
     },
     token: sessionToken
   };

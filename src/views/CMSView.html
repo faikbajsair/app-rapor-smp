@@ -416,20 +416,34 @@
       <div class="grid grid-cols-2 gap-3">
         <div>
           <label class="block text-xs font-bold text-slate-700 mb-1">Role / Hak Akses *</label>
-          <select id="user-role" required class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-blue-500">
-            <option value="admin">Admin Utama / CMS</option>
-            <option value="kepala_sekolah">Kepala Sekolah</option>
-            <option value="guru">Guru / Pendidik</option>
-            <option value="wali_murid">Orang Tua / Wali Murid</option>
+          <select id="user-role" required onchange="toggleCmsWalasClassField()" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-blue-500 font-bold">
+            <option value="admin">Admin Utama / CMS (Akses Penuh)</option>
+            <option value="kepala_sekolah">Kepala Sekolah (Akses Penuh)</option>
+            <option value="wali_kelas">Wali Kelas (Khusus Kelasnya Saja)</option>
+            <option value="guru">Guru Mata Pelajaran (Khusus Mapelnya Saja)</option>
+            <option value="wali_murid">Orang Tua / Wali Murid (Rapor Anaknya)</option>
           </select>
         </div>
         <div>
           <label class="block text-xs font-bold text-slate-700 mb-1">Status Akun *</label>
-          <select id="user-status" required class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-blue-500">
+          <select id="user-status" required class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-blue-500 font-bold">
             <option value="aktif">Aktif</option>
             <option value="nonaktif">Nonaktif</option>
           </select>
         </div>
+      </div>
+
+      <div id="wrapper-user-wali-kelas">
+        <label class="block text-xs font-bold text-slate-700 mb-1">Kelas Binaan (Wajib Diisi jika Wali Kelas)</label>
+        <select id="user-wali-kelas" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-blue-500 font-bold">
+          <option value="">- Bukan Wali Kelas (Pilih jika Guru Mapel/Admin) -</option>
+          <option value="IX ABU BAKAR">IX ABU BAKAR</option>
+          <option value="IX UMMU SALAMAH">IX UMMU SALAMAH</option>
+          <option value="VIII UMAR">VIII UMAR</option>
+          <option value="VIII KHODIJAH">VIII KHODIJAH</option>
+          <option value="VII UTSMAN">VII UTSMAN</option>
+          <option value="VII AISYAH">VII AISYAH</option>
+        </select>
       </div>
 
       <div class="pt-3 border-t border-slate-100 flex items-center justify-end gap-2">

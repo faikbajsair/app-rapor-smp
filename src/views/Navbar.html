@@ -62,52 +62,130 @@
               <div class="text-[11px] text-emerald-700 font-semibold truncate" id="dropdown-active-user-mapel">Semua Mapel</div>
             </div>
             
-            <div class="px-3.5 py-1.5 text-slate-400 uppercase font-bold text-[9px] tracking-wider">
-              Akses Cepat Pengguna:
+            <div class="px-3 py-1.5 bg-slate-50 border-b border-slate-100 flex items-center justify-between text-[10px] font-black text-slate-500 uppercase tracking-wider">
+              <span>Ganti Akun & Hak Akses:</span>
+              <span class="text-[9px] text-[#00a66c] font-bold">Role Guard Active</span>
             </div>
             
-            <!-- 1. Admin Arif Rohman -->
-            <button onclick="loginAsSpecificTeacher('arifrohman', 'arif123')" class="w-full text-left px-3.5 py-2 hover:bg-purple-50 flex items-center justify-between text-slate-700 transition">
-              <div class="flex items-center gap-2 overflow-hidden">
-                <span class="w-2.5 h-2.5 rounded-full bg-purple-600 flex-shrink-0"></span>
-                <div class="truncate">
-                  <strong class="text-slate-900 block leading-tight text-[11px] truncate">Gr. Arif Rohman, S.Sos., M.Pd.</strong>
-                  <span class="text-[10px] text-slate-400">Admin / Guru Fikih IX</span>
-                </div>
+            <div class="max-h-[360px] overflow-y-auto divide-y divide-slate-100">
+              <!-- Kategori 1: Admin / Kepala Sekolah -->
+              <div class="px-3 pt-2 pb-1 text-[9px] font-black text-purple-700 uppercase tracking-wider flex items-center gap-1.5">
+                <i class="fa-solid fa-crown text-[10px]"></i>
+                <span>Administrator (Semua Kelas & Mapel)</span>
               </div>
-              <span class="text-[9px] bg-purple-100 text-purple-800 font-bold px-1.5 py-0.2 rounded flex-shrink-0">Admin</span>
-            </button>
+              <button onclick="loginAsSpecificTeacher('admin', 'admin123')" class="w-full text-left px-3 py-2 hover:bg-purple-50 flex items-center justify-between text-slate-700 transition">
+                <div class="truncate">
+                  <strong class="text-slate-900 block leading-tight text-[11px] truncate">Administrator Utama</strong>
+                  <span class="text-[10px] text-slate-500">Akses Penuh Semua 6 Kelas & 16 Mapel</span>
+                </div>
+                <span class="text-[9px] bg-purple-100 text-purple-800 font-bold px-1.5 py-0.5 rounded flex-shrink-0">Super Admin</span>
+              </button>
 
-            <!-- 2. Admin Dewi Fitria -->
-            <button onclick="loginAsSpecificTeacher('dewi', 'dewi123')" class="w-full text-left px-3.5 py-2 hover:bg-purple-50 flex items-center justify-between text-slate-700 transition">
-              <div class="flex items-center gap-2 overflow-hidden">
-                <span class="w-2.5 h-2.5 rounded-full bg-purple-600 flex-shrink-0"></span>
+              <!-- Kategori 2: Wali Kelas (Khusus Siswa Kelasnya Saja) -->
+              <div class="px-3 pt-2 pb-1 text-[9px] font-black text-emerald-700 uppercase tracking-wider flex items-center gap-1.5">
+                <i class="fa-solid fa-chalkboard-user text-[10px]"></i>
+                <span>Akun Wali Kelas (Khusus Siswa Kelasnya)</span>
+              </div>
+              <button onclick="loginAsSpecificTeacher('dewi', 'dewi123')" class="w-full text-left px-3 py-1.5 hover:bg-emerald-50 flex items-center justify-between text-slate-700 transition">
                 <div class="truncate">
                   <strong class="text-slate-900 block leading-tight text-[11px] truncate">Dewi Fitria Nugraheni, S.Pd.</strong>
-                  <span class="text-[10px] text-slate-400">Admin / Guru B. Indonesia</span>
+                  <span class="text-[10px] text-emerald-700 font-bold">🔒 Khusus Kelas IX Abu Bakar (18 Siswa)</span>
                 </div>
-              </div>
-              <span class="text-[9px] bg-purple-100 text-purple-800 font-bold px-1.5 py-0.2 rounded flex-shrink-0">Admin</span>
-            </button>
+                <span class="text-[9px] bg-emerald-100 text-emerald-800 font-bold px-1.5 py-0.5 rounded flex-shrink-0">Wali Kelas IX</span>
+              </button>
+              <button onclick="loginAsSpecificTeacher('aning', 'aning123')" class="w-full text-left px-3 py-1.5 hover:bg-emerald-50 flex items-center justify-between text-slate-700 transition">
+                <div class="truncate">
+                  <strong class="text-slate-900 block leading-tight text-[11px] truncate">Aning Nurhayati, S.T., Gr.</strong>
+                  <span class="text-[10px] text-emerald-700 font-bold">🔒 Khusus Kelas VIII Umar (15 Siswa)</span>
+                </div>
+                <span class="text-[9px] bg-emerald-100 text-emerald-800 font-bold px-1.5 py-0.5 rounded flex-shrink-0">Wali Kelas VIII</span>
+              </button>
+              <button onclick="loginAsSpecificTeacher('trinuryani', 'tri123')" class="w-full text-left px-3 py-1.5 hover:bg-emerald-50 flex items-center justify-between text-slate-700 transition">
+                <div class="truncate">
+                  <strong class="text-slate-900 block leading-tight text-[11px] truncate">Tri Nuryani, S.S., Gr.</strong>
+                  <span class="text-[10px] text-emerald-700 font-bold">🔒 Khusus Kelas VIII Khodijah (18 Siswa)</span>
+                </div>
+                <span class="text-[9px] bg-emerald-100 text-emerald-800 font-bold px-1.5 py-0.5 rounded flex-shrink-0">Wali Kelas VIII</span>
+              </button>
+              <button onclick="loginAsSpecificTeacher('triyuli', 'triyuli123')" class="w-full text-left px-3 py-1.5 hover:bg-emerald-50 flex items-center justify-between text-slate-700 transition">
+                <div class="truncate">
+                  <strong class="text-slate-900 block leading-tight text-[11px] truncate">Tri Yuli Aryani, S.Pd., Gr.</strong>
+                  <span class="text-[10px] text-emerald-700 font-bold">🔒 Khusus Kelas VII Aisyah (26 Siswa)</span>
+                </div>
+                <span class="text-[9px] bg-emerald-100 text-emerald-800 font-bold px-1.5 py-0.5 rounded flex-shrink-0">Wali Kelas VII</span>
+              </button>
+              <button onclick="loginAsSpecificTeacher('eliumiyati', 'eli123')" class="w-full text-left px-3 py-1.5 hover:bg-emerald-50 flex items-center justify-between text-slate-700 transition">
+                <div class="truncate">
+                  <strong class="text-slate-900 block leading-tight text-[11px] truncate">Eli Umiyati, S.Pd., Gr.</strong>
+                  <span class="text-[10px] text-emerald-700 font-bold">🔒 Khusus Kelas VII Utsman (25 Siswa)</span>
+                </div>
+                <span class="text-[9px] bg-emerald-100 text-emerald-800 font-bold px-1.5 py-0.5 rounded flex-shrink-0">Wali Kelas VII</span>
+              </button>
+              <button onclick="loginAsSpecificTeacher('sumiati', 'sumi123')" class="w-full text-left px-3 py-1.5 hover:bg-emerald-50 flex items-center justify-between text-slate-700 transition">
+                <div class="truncate">
+                  <strong class="text-slate-900 block leading-tight text-[11px] truncate">Sumiati, S.Pd., Gr.</strong>
+                  <span class="text-[10px] text-emerald-700 font-bold">🔒 Khusus Kelas IX Ummu Salamah (21 Siswa)</span>
+                </div>
+                <span class="text-[9px] bg-emerald-100 text-emerald-800 font-bold px-1.5 py-0.5 rounded flex-shrink-0">Wali Kelas IX</span>
+              </button>
 
-            <!-- 3. Zam-zam Nasrullah (Akhlak & Hadits) -->
-            <button onclick="loginAsSpecificTeacher('zamzam', 'zamzam123')" class="w-full text-left px-3.5 py-2 hover:bg-teal-50 flex items-center justify-between text-slate-700 transition">
-              <div class="flex items-center gap-2 overflow-hidden">
-                <span class="w-2.5 h-2.5 rounded-full bg-teal-600 flex-shrink-0"></span>
+              <!-- Kategori 3: Guru Mata Pelajaran (Khusus Mapel yang Diampu Saja) -->
+              <div class="px-3 pt-2 pb-1 text-[9px] font-black text-blue-700 uppercase tracking-wider flex items-center gap-1.5">
+                <i class="fa-solid fa-book-bookmark text-[10px]"></i>
+                <span>Akun Guru Mapel (Khusus Mapel yang Diampu)</span>
+              </div>
+              <button onclick="loginAsSpecificTeacher('zamzam', 'zamzam123')" class="w-full text-left px-3 py-1.5 hover:bg-blue-50 flex items-center justify-between text-slate-700 transition">
                 <div class="truncate">
                   <strong class="text-slate-900 block leading-tight text-[11px] truncate">Zam-zam Nasrullah, S.Pd.</strong>
-                  <span class="text-[10px] text-slate-400">Guru Akhlak & Hadits</span>
+                  <span class="text-[10px] text-blue-700 font-bold">🔒 Khusus Mapel Akhlak & Hadits</span>
                 </div>
-              </div>
-              <span class="text-[9px] bg-teal-100 text-teal-800 font-bold px-1.5 py-0.2 rounded flex-shrink-0">Guru</span>
-            </button>
+                <span class="text-[9px] bg-blue-100 text-blue-800 font-bold px-1.5 py-0.5 rounded flex-shrink-0">Guru Mapel</span>
+              </button>
+              <button onclick="loginAsSpecificTeacher('asril', 'asril123')" class="w-full text-left px-3 py-1.5 hover:bg-blue-50 flex items-center justify-between text-slate-700 transition">
+                <div class="truncate">
+                  <strong class="text-slate-900 block leading-tight text-[11px] truncate">Asril Ardiansyah, S.H., Gr.</strong>
+                  <span class="text-[10px] text-blue-700 font-bold">🔒 Khusus Mapel SKI & Bahasa Arab</span>
+                </div>
+                <span class="text-[9px] bg-blue-100 text-blue-800 font-bold px-1.5 py-0.5 rounded flex-shrink-0">Guru Mapel</span>
+              </button>
+              <button onclick="loginAsSpecificTeacher('guntur', 'guntur123')" class="w-full text-left px-3 py-1.5 hover:bg-blue-50 flex items-center justify-between text-slate-700 transition">
+                <div class="truncate">
+                  <strong class="text-slate-900 block leading-tight text-[11px] truncate">Guntur Ageng Auliawan, S.Pd.</strong>
+                  <span class="text-[10px] text-blue-700 font-bold">🔒 Khusus Mapel PJOK & Bahasa Sunda</span>
+                </div>
+                <span class="text-[9px] bg-blue-100 text-blue-800 font-bold px-1.5 py-0.5 rounded flex-shrink-0">Guru Mapel</span>
+              </button>
+              <button onclick="loginAsSpecificTeacher('kahlilgibran', 'kahlil123')" class="w-full text-left px-3 py-1.5 hover:bg-blue-50 flex items-center justify-between text-slate-700 transition">
+                <div class="truncate">
+                  <strong class="text-slate-900 block leading-tight text-[11px] truncate">Kahlil Gibran, S.Pd., Gr.</strong>
+                  <span class="text-[10px] text-blue-700 font-bold">🔒 Khusus Mapel PPKn & Bahasa Arab</span>
+                </div>
+                <span class="text-[9px] bg-blue-100 text-blue-800 font-bold px-1.5 py-0.5 rounded flex-shrink-0">Guru Mapel</span>
+              </button>
+              <button onclick="loginAsSpecificTeacher('nunung', 'nunung123')" class="w-full text-left px-3 py-1.5 hover:bg-blue-50 flex items-center justify-between text-slate-700 transition">
+                <div class="truncate">
+                  <strong class="text-slate-900 block leading-tight text-[11px] truncate">Nunung Lastika Adiansyah, S.Pd.</strong>
+                  <span class="text-[10px] text-blue-700 font-bold">🔒 Khusus Mapel Akidah & Fikih</span>
+                </div>
+                <span class="text-[9px] bg-blue-100 text-blue-800 font-bold px-1.5 py-0.5 rounded flex-shrink-0">Guru Mapel</span>
+              </button>
+
+              <!-- Kategori 4: Wali Murid -->
+              <button onclick="loginAsSpecificTeacher('walimurid', 'wali123')" class="w-full text-left px-3 py-1.5 hover:bg-amber-50 flex items-center justify-between text-slate-700 transition">
+                <div class="truncate">
+                  <strong class="text-slate-900 block leading-tight text-[11px] truncate">Bpk. Nanang Fajar</strong>
+                  <span class="text-[10px] text-amber-700 font-bold">🔒 Orang Tua Abdillah Z. (Rapor Only)</span>
+                </div>
+                <span class="text-[9px] bg-amber-100 text-amber-800 font-bold px-1.5 py-0.5 rounded flex-shrink-0">Wali Murid</span>
+              </button>
+            </div>
 
             <div class="my-1 border-t border-slate-100"></div>
 
             <!-- Open Full Teacher Picker / Login Modal -->
             <button onclick="openLoginModal()" class="w-full text-left px-3.5 py-2 hover:bg-emerald-50 flex items-center gap-2 text-emerald-700 font-bold text-xs transition">
               <i class="fa-solid fa-users text-xs"></i>
-              <span>Daftar 12 Akun Guru Lengkap...</span>
+              <span>Daftar Semua 14 Akun Lengkap...</span>
             </button>
 
             <!-- Logout Button -->
