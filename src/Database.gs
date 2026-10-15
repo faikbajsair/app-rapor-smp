@@ -408,7 +408,7 @@ function initDatabase() {
       // 4. VIII UMAR (19 Murid Ikhwan - Sesuai File Excel SISWA FIX LENGKAP SMP 2026-2027)
       ['252607038', '0135559636', 'ACHMED SYATHIR ELHAYBA', 'VIII UMAR', 'L', 'AKHMAD ASYARI', '081234567401', 'Aktif', '1', '-', '-', 'Pramuka', 'Wushu', 'Basket', 'Aning Nurhayati, S.T., Gr.'],
       ['252607022', '0122543534', 'ALI ZATRIO IKHWANTORO', 'VIII UMAR', 'L', 'C. ONEI HEROUANTORO', '081234567402', 'Aktif', '2', '-', '-', 'Pramuka', 'Wushu', 'Desain grafis', 'Aning Nurhayati, S.T., Gr.'],
-      ['252607023', '3122299878', 'ARSA ARDHANI PUTRA PERMADI', 'VIII UMAR', 'L', 'ARIF PERMADI', '081234567403', 'Aktif', '4', '-', '-', 'Pramuka', 'Wushu', 'English Club', 'Aning Nurhayati, S.T., Gr.'],
+      ['252607023', '3122299878', 'ARSA ARDHANI PUTRA PERMADI', 'VIII UMAR', 'L', 'ARIF PERMADI', '081234567403', 'Aktif', '4', '-', '-', 'Pramuka', 'Wushu', '-', 'Aning Nurhayati, S.T., Gr.'],
       ['252607024', '3121661913', 'FRANANDA ADJI SAEFUDIN', 'VIII UMAR', 'L', 'MUHAMAD SAEFUDIN', '081234567404', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'Futsal', 'Aning Nurhayati, S.T., Gr.'],
       ['252607025', '3125545030', 'GERALD LAZZARO NGGEBU', 'VIII UMAR', 'L', 'HAPPY YURALDO NGGEB', '081234567405', 'Aktif', '5', '1', '-', 'Pramuka', 'Wushu', 'English Club', 'Aning Nurhayati, S.T., Gr.'],
       ['252607026', '3131067683', 'HASAN MUZAKKI', 'VIII UMAR', 'L', 'SUPODO', '081234567406', 'Aktif', '-', '-', '-', 'Pramuka', 'Wushu', 'English Club', 'Aning Nurhayati, S.T., Gr.'],
