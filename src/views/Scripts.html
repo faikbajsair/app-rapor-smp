@@ -1623,11 +1623,7 @@ function openLoginModal(isMandatory = false) {
   
   const closeBtn = document.getElementById('btn-close-login-modal');
   if (closeBtn) {
-    if (isMandatory || !AppState.isLoggedIn) {
-      closeBtn.classList.add('hidden');
-    } else {
-      closeBtn.classList.remove('hidden');
-    }
+    closeBtn.classList.add('hidden');
   }
 }
 
@@ -2136,26 +2132,40 @@ function applyRoleUIPermissions(role) {
   else if (isWalas) roleDisplayName = `Wali Kelas ${assignedClass}`;
   else if (isWali) roleDisplayName = 'Wali Murid';
 
+  const badgeContainer = document.getElementById('nav-role-badge-container');
+  const badgeIcon = document.getElementById('nav-role-badge-icon');
   const badgeEl = document.getElementById('nav-user-role-badge');
-  if (badgeEl) badgeEl.innerText = isAdmin ? 'Admin' : (isWalas ? 'Wali Kelas' : (isWali ? 'Wali Murid' : 'Guru Mapel'));
+  if (badgeEl) {
+    if (isAdmin) {
+      badgeEl.innerText = (user.username === 'arifrohman' ? 'Kepala Sekolah (Akses Penuh)' : 'Super Admin (Akses Penuh)');
+      if (badgeContainer) badgeContainer.className = 'flex items-center gap-1.5 px-3 py-1.5 bg-purple-50 border border-purple-200 rounded-xl text-xs font-bold text-purple-900 shadow-sm select-none';
+      if (badgeIcon) badgeIcon.className = 'fa-solid fa-crown text-purple-600 text-xs';
+    } else if (isWalas) {
+      badgeEl.innerText = `Wali Kelas ${assignedClass}`;
+      if (badgeContainer) badgeContainer.className = 'flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 border border-emerald-200 rounded-xl text-xs font-bold text-emerald-900 shadow-sm select-none';
+      if (badgeIcon) badgeIcon.className = 'fa-solid fa-lock text-emerald-600 text-xs';
+    } else if (isMapel) {
+      badgeEl.innerText = `Guru Mapel: ${user.mapel || (assignedMapels.join(', ') || 'Mapel')}`;
+      if (badgeContainer) badgeContainer.className = 'flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 border border-blue-200 rounded-xl text-xs font-bold text-blue-900 shadow-sm select-none';
+      if (badgeIcon) badgeIcon.className = 'fa-solid fa-lock text-blue-600 text-xs';
+    } else if (isWali) {
+      badgeEl.innerText = 'Wali Murid';
+      if (badgeContainer) badgeContainer.className = 'flex items-center gap-1.5 px-3 py-1.5 bg-amber-50 border border-amber-200 rounded-xl text-xs font-bold text-amber-900 shadow-sm select-none';
+      if (badgeIcon) badgeIcon.className = 'fa-solid fa-user text-amber-600 text-xs';
+    }
+  }
 
   const nameEl = document.getElementById('nav-user-name');
   if (nameEl) nameEl.innerText = user.nama_lengkap;
 
   const subEl = document.getElementById('nav-user-subtitle');
-  if (subEl) subEl.innerText = isWalas ? `Wali Kelas ${assignedClass}` : (user.mapel || roleDisplayName);
-
-  const dropName = document.getElementById('dropdown-active-user-name');
-  if (dropName) dropName.innerText = user.nama_lengkap;
-
-  const dropMapel = document.getElementById('dropdown-active-user-mapel');
-  if (dropMapel) dropMapel.innerText = isWalas ? `Wali Kelas ${assignedClass} & Guru ${user.mapel || ''}` : (user.mapel || (isAdmin ? 'Akses Penuh Seluruh Modul' : roleDisplayName));
+  if (subEl) subEl.innerText = isWalas ? `Khusus Kelas ${assignedClass}` : (isMapel ? `Khusus Mapel ${user.mapel}` : (isAdmin ? 'Semua Kelas & Mapel' : 'Akses Rapor Anak'));
 
   const avatarEl = document.getElementById('nav-user-avatar');
   if (avatarEl) avatarEl.innerText = (user.nama_lengkap || 'A').charAt(0).toUpperCase();
 
   const sideRole = document.getElementById('sidebar-role-indicator');
-  if (sideRole) sideRole.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> ${isAdmin ? 'Admin Utama' : (isWalas ? `Walas ${assignedClass}` : (isWali ? 'Wali Murid' : 'Guru Mapel'))}`;
+  if (sideRole) sideRole.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> ${isAdmin ? 'Admin Utama' : (isWalas ? `Walas ${assignedClass}` : (isWali ? 'Wali Murid' : `Guru ${user.mapel || 'Mapel'}`))}`;
 
   // Admin-only elements
   const adminElements = document.querySelectorAll('.menu-admin-only');
@@ -6453,9 +6463,6 @@ function renderTableUsers(list) {
         <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${u.status === 'aktif' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-rose-50 text-rose-700'}">${u.status}</span>
       </td>
       <td class="px-3 py-3 text-right space-x-1 whitespace-nowrap">
-        <button onclick="loginAsSpecificTeacher('${u.username}', '${u.password_hash || (u.username + '123')}')" class="p-1.5 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 rounded-lg text-xs" title="Login sebagai ${u.nama_lengkap}">
-          <i class="fa-solid fa-right-to-bracket"></i>
-        </button>
         <button onclick="editUserModal('${u.id}')" class="p-1.5 bg-blue-50 text-blue-700 hover:bg-blue-100 rounded-lg text-xs" title="Edit Pengguna">
           <i class="fa-solid fa-pen-to-square"></i>
         </button>

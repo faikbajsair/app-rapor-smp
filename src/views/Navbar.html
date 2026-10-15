@@ -47,170 +47,31 @@
           <span class="hidden sm:inline">Cetak Rapor</span>
         </button>
 
-        <!-- Multi-Role Switcher & Teacher Account Selector -->
-        <div class="relative">
-          <button id="btn-role-switcher" onclick="toggleRoleDropdown()" class="flex items-center gap-2 px-3 py-1.5 bg-slate-50 hover:bg-emerald-50/50 border border-slate-200 hover:border-emerald-300 rounded-xl text-xs font-semibold text-slate-700 transition shadow-sm">
-            <i class="fa-solid fa-user-shield text-[#00a66c]"></i>
-            <span id="nav-user-role-badge" class="font-bold text-slate-800">Admin</span>
-            <i class="fa-solid fa-chevron-down text-[10px] text-slate-400"></i>
-          </button>
-          
-          <div id="dropdown-role-switcher" class="hidden absolute right-0 mt-2 w-72 bg-white rounded-2xl shadow-2xl border border-slate-100 py-2 z-50 text-xs overflow-hidden">
-            <div class="px-4 py-2 bg-slate-50 border-b border-slate-100">
-              <span class="text-slate-400 uppercase font-bold text-[10px] tracking-wider block">Akun Aktif Saat Ini:</span>
-              <div class="font-bold text-slate-800 text-xs truncate" id="dropdown-active-user-name">Administrator Utama</div>
-              <div class="text-[11px] text-emerald-700 font-semibold truncate" id="dropdown-active-user-mapel">Semua Mapel</div>
+        <!-- Active User Profile & Secure Logout (Strictly Private Account, No Switcher) -->
+        <div class="flex items-center space-x-2.5">
+          <!-- Active Role / Class / Mapel Badge (Locked, Non-interactive) -->
+          <div id="nav-role-badge-container" class="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 border border-emerald-200/80 rounded-xl text-xs font-bold text-emerald-900 shadow-sm select-none">
+            <i id="nav-role-badge-icon" class="fa-solid fa-lock text-emerald-600 text-xs"></i>
+            <span id="nav-user-role-badge">Wali Kelas</span>
+          </div>
+
+          <!-- User Identity (Private, No Switcher) -->
+          <div class="flex items-center space-x-2 pl-2 border-l border-slate-200">
+            <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-emerald-600 to-teal-500 text-white flex items-center justify-center font-bold text-xs shadow-inner select-none" 
+                 id="nav-user-avatar">
+              A
+            </div>
+            <div class="hidden lg:block text-left select-none">
+              <div id="nav-user-name" class="text-xs font-bold text-slate-800 leading-tight max-w-[160px] truncate">Administrator Utama</div>
+              <div id="nav-user-subtitle" class="text-[10px] text-slate-500 font-medium max-w-[160px] truncate">Sistem Administrator</div>
             </div>
             
-            <div class="px-3 py-1.5 bg-slate-50 border-b border-slate-100 flex items-center justify-between text-[10px] font-black text-slate-500 uppercase tracking-wider">
-              <span>Ganti Akun & Hak Akses:</span>
-              <span class="text-[9px] text-[#00a66c] font-bold">Role Guard Active</span>
-            </div>
-            
-            <div class="max-h-[360px] overflow-y-auto divide-y divide-slate-100">
-              <!-- Kategori 1: Admin / Kepala Sekolah -->
-              <div class="px-3 pt-2 pb-1 text-[9px] font-black text-purple-700 uppercase tracking-wider flex items-center gap-1.5">
-                <i class="fa-solid fa-crown text-[10px]"></i>
-                <span>Administrator (Semua Kelas & Mapel)</span>
-              </div>
-              <button onclick="loginAsSpecificTeacher('admin', 'admin123')" class="w-full text-left px-3 py-2 hover:bg-purple-50 flex items-center justify-between text-slate-700 transition">
-                <div class="truncate">
-                  <strong class="text-slate-900 block leading-tight text-[11px] truncate">Administrator Utama</strong>
-                  <span class="text-[10px] text-slate-500">Akses Penuh Semua 6 Kelas & 16 Mapel</span>
-                </div>
-                <span class="text-[9px] bg-purple-100 text-purple-800 font-bold px-1.5 py-0.5 rounded flex-shrink-0">Super Admin</span>
-              </button>
-
-              <!-- Kategori 2: Wali Kelas (Khusus Siswa Kelasnya Saja) -->
-              <div class="px-3 pt-2 pb-1 text-[9px] font-black text-emerald-700 uppercase tracking-wider flex items-center gap-1.5">
-                <i class="fa-solid fa-chalkboard-user text-[10px]"></i>
-                <span>Akun Wali Kelas (Khusus Siswa Kelasnya)</span>
-              </div>
-              <button onclick="loginAsSpecificTeacher('dewi', 'dewi123')" class="w-full text-left px-3 py-1.5 hover:bg-emerald-50 flex items-center justify-between text-slate-700 transition">
-                <div class="truncate">
-                  <strong class="text-slate-900 block leading-tight text-[11px] truncate">Dewi Fitria Nugraheni, S.Pd.</strong>
-                  <span class="text-[10px] text-emerald-700 font-bold">🔒 Khusus Kelas IX Abu Bakar (18 Siswa)</span>
-                </div>
-                <span class="text-[9px] bg-emerald-100 text-emerald-800 font-bold px-1.5 py-0.5 rounded flex-shrink-0">Wali Kelas IX</span>
-              </button>
-              <button onclick="loginAsSpecificTeacher('aning', 'aning123')" class="w-full text-left px-3 py-1.5 hover:bg-emerald-50 flex items-center justify-between text-slate-700 transition">
-                <div class="truncate">
-                  <strong class="text-slate-900 block leading-tight text-[11px] truncate">Aning Nurhayati, S.T., Gr.</strong>
-                  <span class="text-[10px] text-emerald-700 font-bold">🔒 Khusus Kelas VIII Umar (15 Siswa)</span>
-                </div>
-                <span class="text-[9px] bg-emerald-100 text-emerald-800 font-bold px-1.5 py-0.5 rounded flex-shrink-0">Wali Kelas VIII</span>
-              </button>
-              <button onclick="loginAsSpecificTeacher('trinuryani', 'tri123')" class="w-full text-left px-3 py-1.5 hover:bg-emerald-50 flex items-center justify-between text-slate-700 transition">
-                <div class="truncate">
-                  <strong class="text-slate-900 block leading-tight text-[11px] truncate">Tri Nuryani, S.S., Gr.</strong>
-                  <span class="text-[10px] text-emerald-700 font-bold">🔒 Khusus Kelas VIII Khodijah (18 Siswa)</span>
-                </div>
-                <span class="text-[9px] bg-emerald-100 text-emerald-800 font-bold px-1.5 py-0.5 rounded flex-shrink-0">Wali Kelas VIII</span>
-              </button>
-              <button onclick="loginAsSpecificTeacher('triyuli', 'triyuli123')" class="w-full text-left px-3 py-1.5 hover:bg-emerald-50 flex items-center justify-between text-slate-700 transition">
-                <div class="truncate">
-                  <strong class="text-slate-900 block leading-tight text-[11px] truncate">Tri Yuli Aryani, S.Pd., Gr.</strong>
-                  <span class="text-[10px] text-emerald-700 font-bold">🔒 Khusus Kelas VII Aisyah (26 Siswa)</span>
-                </div>
-                <span class="text-[9px] bg-emerald-100 text-emerald-800 font-bold px-1.5 py-0.5 rounded flex-shrink-0">Wali Kelas VII</span>
-              </button>
-              <button onclick="loginAsSpecificTeacher('eliumiyati', 'eli123')" class="w-full text-left px-3 py-1.5 hover:bg-emerald-50 flex items-center justify-between text-slate-700 transition">
-                <div class="truncate">
-                  <strong class="text-slate-900 block leading-tight text-[11px] truncate">Eli Umiyati, S.Pd., Gr.</strong>
-                  <span class="text-[10px] text-emerald-700 font-bold">🔒 Khusus Kelas VII Utsman (25 Siswa)</span>
-                </div>
-                <span class="text-[9px] bg-emerald-100 text-emerald-800 font-bold px-1.5 py-0.5 rounded flex-shrink-0">Wali Kelas VII</span>
-              </button>
-              <button onclick="loginAsSpecificTeacher('sumiati', 'sumi123')" class="w-full text-left px-3 py-1.5 hover:bg-emerald-50 flex items-center justify-between text-slate-700 transition">
-                <div class="truncate">
-                  <strong class="text-slate-900 block leading-tight text-[11px] truncate">Sumiati, S.Pd., Gr.</strong>
-                  <span class="text-[10px] text-emerald-700 font-bold">🔒 Khusus Kelas IX Ummu Salamah (21 Siswa)</span>
-                </div>
-                <span class="text-[9px] bg-emerald-100 text-emerald-800 font-bold px-1.5 py-0.5 rounded flex-shrink-0">Wali Kelas IX</span>
-              </button>
-
-              <!-- Kategori 3: Guru Mata Pelajaran (Khusus Mapel yang Diampu Saja) -->
-              <div class="px-3 pt-2 pb-1 text-[9px] font-black text-blue-700 uppercase tracking-wider flex items-center gap-1.5">
-                <i class="fa-solid fa-book-bookmark text-[10px]"></i>
-                <span>Akun Guru Mapel (Khusus Mapel yang Diampu)</span>
-              </div>
-              <button onclick="loginAsSpecificTeacher('zamzam', 'zamzam123')" class="w-full text-left px-3 py-1.5 hover:bg-blue-50 flex items-center justify-between text-slate-700 transition">
-                <div class="truncate">
-                  <strong class="text-slate-900 block leading-tight text-[11px] truncate">Zam-zam Nasrullah, S.Pd.</strong>
-                  <span class="text-[10px] text-blue-700 font-bold">🔒 Khusus Mapel Akhlak & Hadits</span>
-                </div>
-                <span class="text-[9px] bg-blue-100 text-blue-800 font-bold px-1.5 py-0.5 rounded flex-shrink-0">Guru Mapel</span>
-              </button>
-              <button onclick="loginAsSpecificTeacher('asril', 'asril123')" class="w-full text-left px-3 py-1.5 hover:bg-blue-50 flex items-center justify-between text-slate-700 transition">
-                <div class="truncate">
-                  <strong class="text-slate-900 block leading-tight text-[11px] truncate">Asril Ardiansyah, S.H., Gr.</strong>
-                  <span class="text-[10px] text-blue-700 font-bold">🔒 Khusus Mapel SKI & Bahasa Arab</span>
-                </div>
-                <span class="text-[9px] bg-blue-100 text-blue-800 font-bold px-1.5 py-0.5 rounded flex-shrink-0">Guru Mapel</span>
-              </button>
-              <button onclick="loginAsSpecificTeacher('guntur', 'guntur123')" class="w-full text-left px-3 py-1.5 hover:bg-blue-50 flex items-center justify-between text-slate-700 transition">
-                <div class="truncate">
-                  <strong class="text-slate-900 block leading-tight text-[11px] truncate">Guntur Ageng Auliawan, S.Pd.</strong>
-                  <span class="text-[10px] text-blue-700 font-bold">🔒 Khusus Mapel PJOK & Bahasa Sunda</span>
-                </div>
-                <span class="text-[9px] bg-blue-100 text-blue-800 font-bold px-1.5 py-0.5 rounded flex-shrink-0">Guru Mapel</span>
-              </button>
-              <button onclick="loginAsSpecificTeacher('kahlilgibran', 'kahlil123')" class="w-full text-left px-3 py-1.5 hover:bg-blue-50 flex items-center justify-between text-slate-700 transition">
-                <div class="truncate">
-                  <strong class="text-slate-900 block leading-tight text-[11px] truncate">Kahlil Gibran, S.Pd., Gr.</strong>
-                  <span class="text-[10px] text-blue-700 font-bold">🔒 Khusus Mapel PPKn & Bahasa Arab</span>
-                </div>
-                <span class="text-[9px] bg-blue-100 text-blue-800 font-bold px-1.5 py-0.5 rounded flex-shrink-0">Guru Mapel</span>
-              </button>
-              <button onclick="loginAsSpecificTeacher('nunung', 'nunung123')" class="w-full text-left px-3 py-1.5 hover:bg-blue-50 flex items-center justify-between text-slate-700 transition">
-                <div class="truncate">
-                  <strong class="text-slate-900 block leading-tight text-[11px] truncate">Nunung Lastika Adiansyah, S.Pd.</strong>
-                  <span class="text-[10px] text-blue-700 font-bold">🔒 Khusus Mapel Akidah & Fikih</span>
-                </div>
-                <span class="text-[9px] bg-blue-100 text-blue-800 font-bold px-1.5 py-0.5 rounded flex-shrink-0">Guru Mapel</span>
-              </button>
-
-              <!-- Kategori 4: Wali Murid -->
-              <button onclick="loginAsSpecificTeacher('walimurid', 'wali123')" class="w-full text-left px-3 py-1.5 hover:bg-amber-50 flex items-center justify-between text-slate-700 transition">
-                <div class="truncate">
-                  <strong class="text-slate-900 block leading-tight text-[11px] truncate">Bpk. Nanang Fajar</strong>
-                  <span class="text-[10px] text-amber-700 font-bold">🔒 Orang Tua Abdillah Z. (Rapor Only)</span>
-                </div>
-                <span class="text-[9px] bg-amber-100 text-amber-800 font-bold px-1.5 py-0.5 rounded flex-shrink-0">Wali Murid</span>
-              </button>
-            </div>
-
-            <div class="my-1 border-t border-slate-100"></div>
-
-            <!-- Open Full Teacher Picker / Login Modal -->
-            <button onclick="openLoginModal()" class="w-full text-left px-3.5 py-2 hover:bg-emerald-50 flex items-center gap-2 text-emerald-700 font-bold text-xs transition">
-              <i class="fa-solid fa-users text-xs"></i>
-              <span>Daftar Semua 14 Akun Lengkap...</span>
-            </button>
-
-            <!-- Logout Button -->
-            <button onclick="logoutUser()" class="w-full text-left px-3.5 py-2 hover:bg-rose-50 flex items-center gap-2 text-rose-600 font-bold text-xs transition border-t border-slate-100">
-              <i class="fa-solid fa-right-from-bracket text-xs"></i>
-              <span>Keluar (Logout)</span>
+            <!-- Direct Logout Button -->
+            <button onclick="logoutUser()" class="flex items-center gap-1.5 px-2.5 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 hover:text-rose-800 border border-rose-200/80 rounded-xl text-xs font-bold transition shadow-sm cursor-pointer ml-1" title="Keluar dari Akun">
+              <i class="fa-solid fa-power-off text-rose-600 text-xs"></i>
+              <span class="hidden sm:inline">Keluar</span>
             </button>
           </div>
-        </div>
-
-        <!-- User Profile & Logout Button -->
-        <div class="flex items-center space-x-2 pl-2 border-l border-slate-200">
-          <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-emerald-600 to-teal-500 text-white flex items-center justify-center font-bold text-xs shadow-inner cursor-pointer" 
-               id="nav-user-avatar" onclick="openLoginModal()" title="Klik untuk ganti akun">
-            A
-          </div>
-          <div class="hidden lg:block text-left cursor-pointer" onclick="openLoginModal()">
-            <div id="nav-user-name" class="text-xs font-bold text-slate-800 leading-tight max-w-[140px] truncate">Administrator Utama</div>
-            <div id="nav-user-subtitle" class="text-[10px] text-slate-400 font-medium max-w-[140px] truncate">Sistem Administrator</div>
-          </div>
-          
-          <!-- Direct Logout Quick Button -->
-          <button onclick="logoutUser()" class="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition cursor-pointer" title="Keluar dari Akun">
-            <i class="fa-solid fa-power-off text-sm"></i>
-          </button>
         </div>
 
       </div>
