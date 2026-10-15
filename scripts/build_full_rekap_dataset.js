@@ -129,7 +129,7 @@ const fullRekapData = {
     { no: 12, nis: '252607016', nama: 'Naylana Khayra Dzahin', scores: [94, 93, 94, 88, 98, 90, 91, 98, 91, 94, 93, 91, 92, 90, 85, 98], ekskul: ['Baik', 'Sangat Baik', 'Baik'] },
     { no: 13, nis: '252607017', nama: 'Rheva Agnezia Putri', scores: [82, 88, 88, 89, 90, 86, 87, 95, 91, 84, 89, 95, 81, 82, 90, 88], ekskul: ['Sangat Baik', 'Sangat Baik', 'Sangat Baik'] },
     { no: 14, nis: '252607018', nama: 'Sarah Salsabila', scores: [85, 85, 88, 84, 78, 81, 77, 100, 82, 82, 84, 88, 83, 80, 90, 77], ekskul: ['Sangat Baik', 'Sangat Baik', 'Sangat Baik'] },
-    { no: 15, nis: '252607039', nama: 'Shazia Keizaluna Humaira', scores: [89, 92, 92, 91, 88, 88, 91, 99, 87, 88, 92, 93, 91, 89, 89, 80], ekskul: ['Sangat Baik', 'Sangat Baik', 'Sangat Baik'] },
+    { no: 15, nis: '252607039', nama: 'Shazia Keizaluna Humaira', scores: [89, 92, 92, 91, 88, 88, 91, 99, 87, 88, 92, 93, 91, 89, 92, 80], ekskul: ['Sangat Baik', 'Sangat Baik', 'Sangat Baik'] },
     { no: 16, nis: '252607043', nama: 'Syafikah Ghalin Alzena', scores: [93, 89, 90, 89, 78, 79, 80, 79, 80, 82, 86, 91, 86, 76, 91, 80], ekskul: ['Baik', 'Sangat Baik', 'Sangat Baik'] },
     { no: 17, nis: '252607020', nama: 'Talita Lubna Humaira Renleuw', scores: [95, 90, 93, 93, 98, 93, 90, 98, 91, 93, 92, 92, 94, 92, 93, 98], ekskul: ['Sangat Baik', 'Sangat Baik', 'Sangat Baik'] },
     { no: 18, nis: '252607040', nama: 'Zahira Sarifah Salsabila', scores: [94, 91, 94, 94, 98, 92, 89, 91, 89, 95, 93, 91, 91, 94, 89, 96], ekskul: ['Sangat Baik', 'Sangat Baik', 'Sangat Baik'] }
