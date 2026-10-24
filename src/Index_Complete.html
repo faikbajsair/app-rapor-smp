@@ -285,10 +285,16 @@
           <i class="fa-solid fa-chevron-down text-[9px] text-emerald-400 group-hover:text-emerald-600 ml-0.5"></i>
         </button>
 
+        <!-- Petunjuk & Panduan Membaca Rapor Button -->
+        <button onclick="openModalPetunjukRapor('baca_rapor')" class="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200/90 rounded-xl text-xs font-bold transition-all shadow-sm cursor-pointer" title="Petunjuk Penggunaan & Cara Membaca Lembar Rapor">
+          <i class="fa-solid fa-book-open-reader text-amber-600"></i>
+          <span class="hidden sm:inline">Petunjuk Rapor</span>
+        </button>
+
         <!-- Interactive Guide Button -->
         <button onclick="openInteractiveGuide(1)" class="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-[#00a66c] border border-emerald-200 rounded-xl text-xs font-bold transition-all shadow-sm">
           <i class="fa-solid fa-lightbulb text-amber-500"></i>
-          <span class="hidden sm:inline">Panduan</span>
+          <span class="hidden sm:inline">Tutorial</span>
         </button>
 
         <!-- Quick Cetak Rapor Button -->
@@ -362,6 +368,16 @@
          class="sidebar-nav-link flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-bold text-white bg-[#00a66c] shadow-md shadow-[#00a66c]/20 transition-all cursor-pointer select-none">
         <i class="fa-solid fa-table-cells-large w-4 text-center text-sm"></i>
         <span>Dashboard</span>
+      </a>
+
+      <!-- Petunjuk Rapor -->
+      <a href="javascript:void(0)" onclick="openModalPetunjukRapor('baca_rapor')" id="nav-item-petunjuk" 
+         class="sidebar-nav-link flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none">
+        <div class="flex items-center gap-3">
+          <i class="fa-solid fa-book-open-reader w-4 text-center text-sm text-[#00a66c]"></i>
+          <span>Petunjuk & Cara Baca</span>
+        </div>
+        <span class="text-[9px] bg-emerald-50 text-emerald-700 border border-emerald-200 px-1.5 py-0.5 rounded-md font-bold uppercase">Panduan</span>
       </a>
 
       <!-- 2. Kategori Penilaian Utama (TP, Akademik & Checklist, Cek Deskripsi, Ahlaq, Diniyah) -->
@@ -509,9 +525,13 @@
       </h1>
     </div>
     <div class="flex items-center gap-2">
-      <span class="text-xs bg-slate-50 border border-slate-200 px-3.5 py-1.5 rounded-full text-slate-500 font-semibold">
+      <span class="text-xs bg-slate-50 border border-slate-200 px-3.5 py-1.5 rounded-full text-slate-500 font-semibold hidden sm:inline-block">
         Yayasan / Sekolah: <strong class="text-slate-700">SMP AL IMAM ISLAMIC SCHOOL (AI IS)</strong>
       </span>
+      <button onclick="openModalPetunjukRapor('baca_rapor')" class="text-xs font-bold text-[#00a66c] bg-[#e8f8f2] hover:bg-[#d1f2e4] border border-[#a7f3d0] px-3.5 py-1.5 rounded-full flex items-center gap-1.5 transition shadow-xs cursor-pointer">
+        <i class="fa-solid fa-book-open-reader"></i>
+        <span>Petunjuk Rapor</span>
+      </button>
     </div>
   </div>
 
@@ -519,10 +539,16 @@
   <div id="dashboard-wali-view" class="hidden space-y-6">
     <!-- Parent Banner -->
     <div class="bg-gradient-to-r from-emerald-800 to-teal-900 text-white rounded-3xl p-6 sm:p-8 shadow-md relative overflow-hidden">
-      <div class="relative z-10 space-y-2">
-        <span class="px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-xs font-bold text-emerald-200 inline-flex items-center gap-1.5">
-          <i class="fa-solid fa-user-shield"></i> Portal Orang Tua / Wali Murid
-        </span>
+      <div class="relative z-10 space-y-3">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <span class="px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-xs font-bold text-emerald-200 inline-flex items-center gap-1.5">
+            <i class="fa-solid fa-user-shield"></i> Portal Orang Tua / Wali Murid
+          </span>
+          <button onclick="openModalPetunjukRapor('wali_murid')" class="px-3.5 py-1.5 bg-white/15 hover:bg-white/25 border border-white/20 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 backdrop-blur-md transition shadow-xs cursor-pointer">
+            <i class="fa-solid fa-circle-question text-emerald-300"></i>
+            <span>Petunjuk Membaca Rapor</span>
+          </button>
+        </div>
         <h2 class="text-xl sm:text-2xl font-black tracking-tight" id="wali-hero-title">
           Selamat Datang, Bapak / Ibu Wali Murid
         </h2>
@@ -4554,12 +4580,17 @@
         <!-- Populated via JS -->
       </select>
 
-      <button onclick="window.print()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-xs shadow flex items-center gap-1.5">
+      <button onclick="window.print()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-xs shadow flex items-center gap-1.5 transition cursor-pointer">
         <i class="fa-solid fa-print"></i>
         <span>Cetak / PDF</span>
       </button>
 
-      <button onclick="switchView('dashboard')" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-xl text-xs">
+      <button onclick="openModalPetunjukRapor('baca_rapor')" class="px-3.5 py-2 bg-emerald-50 hover:bg-emerald-100 text-[#00a66c] border border-emerald-300 font-bold rounded-xl text-xs shadow-sm flex items-center gap-1.5 transition cursor-pointer" title="Petunjuk Cara Membaca Lembar Rapor & KKM">
+        <i class="fa-solid fa-book-open-reader text-[#00a66c]"></i>
+        <span>Petunjuk Rapor</span>
+      </button>
+
+      <button onclick="switchView('dashboard')" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-xl text-xs transition cursor-pointer">
         Kembali
       </button>
     </div>
@@ -5023,6 +5054,423 @@
 
   <!-- Toast Container -->
   <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none max-w-sm w-full"></div>
+
+  <!-- Petunjuk Membaca Rapor & Panduan Penggunaan Modal -->
+  <!-- Modal Petunjuk Penggunaan & Cara Membaca Lembar Rapor SMP Al-Imam -->
+<div id="modal-petunjuk-rapor" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-slate-950/80 backdrop-blur-md hidden">
+  <div class="bg-white rounded-3xl shadow-2xl border border-slate-200/90 max-w-4xl w-full overflow-hidden flex flex-col max-h-[92vh] animate-in fade-in zoom-in-95 duration-200">
+    
+    <!-- Modal Header -->
+    <div class="bg-gradient-to-r from-emerald-800 via-teal-900 to-slate-900 text-white p-5 sm:p-6 relative border-b border-emerald-700/40">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-11 h-11 rounded-2xl bg-white/15 border border-white/20 flex items-center justify-center text-emerald-200 text-xl shadow-inner">
+            <i class="fa-solid fa-book-open-reader"></i>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h3 class="text-base sm:text-lg font-black text-white leading-tight">Petunjuk & Panduan Membaca Rapor</h3>
+              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-emerald-400/20 text-emerald-300 border border-emerald-400/30">Resmi AI IS</span>
+            </div>
+            <p class="text-xs text-emerald-100/90 mt-0.5">Pedoman penilaian holistik, interpretasi capaian kompetensi, dan panduan portal orang tua & guru</p>
+          </div>
+        </div>
+        <button onclick="closeModalPetunjukRapor()" class="text-white/70 hover:text-white p-2 rounded-xl hover:bg-white/10 transition cursor-pointer" title="Tutup Petunjuk">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <!-- Tab Switcher Navigation -->
+      <div class="flex items-center gap-1.5 mt-4 overflow-x-auto pb-1 scrollbar-none text-xs font-bold text-emerald-100">
+        <button type="button" onclick="switchPetunjukTab('baca_rapor')" id="tab-btn-petunjuk-baca" 
+                class="tab-petunjuk-btn px-3.5 py-1.5 rounded-xl transition whitespace-nowrap bg-white text-emerald-900 shadow-sm cursor-pointer flex items-center gap-1.5">
+          <i class="fa-solid fa-file-invoice"></i>
+          <span>1. Cara Membaca Lembar Rapor</span>
+        </button>
+        <button type="button" onclick="switchPetunjukTab('wali_murid')" id="tab-btn-petunjuk-ortu" 
+                class="tab-petunjuk-btn px-3.5 py-1.5 rounded-xl transition whitespace-nowrap bg-white/10 text-white hover:bg-white/20 cursor-pointer flex items-center gap-1.5">
+          <i class="fa-solid fa-user-shield"></i>
+          <span>2. Panduan Orang Tua (Wali Murid)</span>
+        </button>
+        <button type="button" onclick="switchPetunjukTab('guru_walas')" id="tab-btn-petunjuk-guru" 
+                class="tab-petunjuk-btn px-3.5 py-1.5 rounded-xl transition whitespace-nowrap bg-white/10 text-white hover:bg-white/20 cursor-pointer flex items-center gap-1.5">
+          <i class="fa-solid fa-chalkboard-user"></i>
+          <span>3. Panduan Guru & Wali Kelas</span>
+        </button>
+        <button type="button" onclick="switchPetunjukTab('skema_kkm')" id="tab-btn-petunjuk-kkm" 
+                class="tab-petunjuk-btn px-3.5 py-1.5 rounded-xl transition whitespace-nowrap bg-white/10 text-white hover:bg-white/20 cursor-pointer flex items-center gap-1.5">
+          <i class="fa-solid fa-table-cells text-amber-300"></i>
+          <span>4. Skema KKM & Predikat</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Modal Content Body -->
+    <div class="p-6 sm:p-7 overflow-y-auto flex-1 space-y-6 text-xs text-slate-700" id="petunjuk-modal-body">
+
+      <!-- ================================================================= -->
+      <!-- TAB 1: CARA MEMBACA LEMBAR RAPOR RESMI -->
+      <!-- ================================================================= -->
+      <div id="petunjuk-pane-baca_rapor" class="petunjuk-pane space-y-5">
+        <div class="p-4 bg-emerald-50/80 border border-emerald-200/80 rounded-2xl flex items-start gap-3">
+          <div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center shrink-0 text-lg shadow-sm">
+            <i class="fa-solid fa-circle-info"></i>
+          </div>
+          <div>
+            <h4 class="font-black text-sm text-emerald-950">Mengenal Format Rapor Portofolio SMP Al-Imam (AI IS)</h4>
+            <p class="text-xs text-emerald-800 leading-relaxed mt-0.5">
+              Rapor Tengah Semester Al-Imam mengadopsi <strong>Sistem Portofolio Holistik</strong> yang menyajikan capaian akademik 16 mata pelajaran, evaluasi karakter 6 aspek kepribadian, nilai diniyah, serta 28 indikator kepemimpinan secara transparan dan berlandaskan adab islami.
+            </p>
+          </div>
+        </div>
+
+        <!-- Section 1: 16 Mapel & Capaian Kompetensi -->
+        <div class="space-y-3">
+          <h4 class="font-extrabold text-sm text-slate-900 flex items-center gap-2 border-b border-slate-200 pb-2">
+            <span class="w-6 h-6 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center text-xs font-black">A</span>
+            <span>Tabel 16 Mata Pelajaran & Capaian Kompetensi</span>
+          </h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-[11px]">
+            <div class="p-3.5 bg-slate-50 rounded-2xl border border-slate-200 space-y-2">
+              <strong class="text-slate-900 block font-bold text-xs text-emerald-800">1. Pengelompokan 16 Mata Pelajaran</strong>
+              <p class="text-slate-600 leading-relaxed">
+                Mata pelajaran terdiri dari:
+              </p>
+              <ul class="list-disc list-inside space-y-1 text-slate-600 pl-1">
+                <li><strong>Agama Islam (5 Mapel):</strong> Akidah, Akhlak, Hadits, Fikih, Sejarah Kebudayaan Islam (SKI).</li>
+                <li><strong>Mata Pelajaran Umum (8 Mapel):</strong> Pendidikan Pancasila, Bahasa Indonesia, Bahasa Inggris, Matematika, IPA, IPS, PJOK, Informatika.</li>
+                <li><strong>Muatan Lokal & Keterampilan (3 Mapel):</strong> Bahasa Arab, Bahasa Sunda, Prakarya.</li>
+              </ul>
+            </div>
+            <div class="p-3.5 bg-slate-50 rounded-2xl border border-slate-200 space-y-2">
+              <strong class="text-slate-900 block font-bold text-xs text-emerald-800">2. Cara Membaca Kolom Nilai & Predikat</strong>
+              <p class="text-slate-600 leading-relaxed">
+                Setiap mata pelajaran memiliki <strong>KKM (Kriteria Ketuntasan Minimal) = 75</strong>.
+              </p>
+              <div class="space-y-1 text-slate-700">
+                <p>• <strong>Nilai ≥ 90 (Predikat A):</strong> Sangat Baik / Menguasai materi dengan istimewa.</p>
+                <p>• <strong>Nilai 80 - 89 (Predikat B):</strong> Baik / Menguasai materi sesuai standar unggul.</p>
+                <p>• <strong>Nilai 75 - 79 (Predikat C):</strong> Cukup / Tuntas memenuhi standar minimal KKM.</p>
+                <p class="text-rose-700 font-bold">• <strong>Nilai &lt; 75 (Predikat D):</strong> Perlu Bimbingan / Belum tuntas KKM.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-3.5 bg-blue-50/70 border border-blue-200/80 rounded-2xl space-y-1.5">
+            <strong class="text-blue-950 font-bold text-xs flex items-center gap-1.5">
+              <i class="fa-solid fa-bullseye text-blue-600"></i>
+              <span>3. Membaca Kolom "Capaian Kompetensi" (Deskripsi Naratif TP)</span>
+            </strong>
+            <p class="text-slate-600 leading-relaxed text-[11px]">
+              Kolom Capaian Kompetensi tidak sekadar berupa angka, melainkan uraian deskriptif Tujuan Pembelajaran (TP) yang dicapai siswa:
+            </p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1 text-[11px]">
+              <div class="bg-white p-2.5 rounded-xl border border-blue-100 space-y-1">
+                <span class="text-emerald-700 font-bold block text-[10px] uppercase">Capaian Tertinggi:</span>
+                <p class="text-slate-700 italic">"Menunjukkan penguasaan sangat baik dalam memahami kaidah hukum bacaan nun sukun..."</p>
+                <span class="text-[10px] text-slate-500">➔ Menunjukkan materi yang paling dikuasai ananda dengan cemerlang.</span>
+              </div>
+              <div class="bg-white p-2.5 rounded-xl border border-blue-100 space-y-1">
+                <span class="text-amber-700 font-bold block text-[10px] uppercase">Perlu Peningkatan / Bimbingan:</span>
+                <p class="text-slate-700 italic">"Perlu bimbingan lebih lanjut dalam menyelesaikan soal cerita persamaan linier..."</p>
+                <span class="text-[10px] text-slate-500">➔ Poin evaluasi yang perlu didampingi saat belajar di rumah.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 2: Ekstrakurikuler, Sikap & Presensi -->
+        <div class="space-y-3 pt-2">
+          <h4 class="font-extrabold text-sm text-slate-900 flex items-center gap-2 border-b border-slate-200 pb-2">
+            <span class="w-6 h-6 rounded-lg bg-teal-100 text-teal-700 flex items-center justify-center text-xs font-black">B</span>
+            <span>Ekstrakurikuler, Penilaian Sikap 6 Aspek & Presensi</span>
+          </h4>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-[11px]">
+            <div class="p-3 bg-slate-50 rounded-2xl border border-slate-200 space-y-1.5">
+              <strong class="text-teal-900 font-bold block text-xs">Ekstrakurikuler</strong>
+              <p class="text-slate-600 leading-snug">
+                Menampilkan 3 kegiatan ekskul siswa (Pramuka Wajib, serta pilihan seperti Wushu, Basket, Futsal, Panahan, dll.) dengan predikat <em>Sangat Baik / Baik</em>.
+              </p>
+            </div>
+            <div class="p-3 bg-slate-50 rounded-2xl border border-slate-200 space-y-1.5">
+              <strong class="text-teal-900 font-bold block text-xs">Sikap 6 Aspek Walas</strong>
+              <p class="text-slate-600 leading-snug">
+                Evaluasi naratif langsung dari wali kelas mencakup 6 dimensi: <strong>Ibadah, Akhlak, Kedisiplinan, Kerapihan, Kepemimpinan, dan Kerja Sama</strong>.
+              </p>
+            </div>
+            <div class="p-3 bg-slate-50 rounded-2xl border border-slate-200 space-y-1.5">
+              <strong class="text-teal-900 font-bold block text-xs">Rekapitulasi Presensi</strong>
+              <p class="text-slate-600 leading-snug">
+                Jumlah hari ketidakhadiran hingga pelaksanaan UTS: <strong>Sakit (S)</strong>, <strong>Izin (I)</strong>, dan <strong>Tanpa Keterangan (A)</strong>.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 3: Pengesahan & Tanda Tangan -->
+        <div class="p-3.5 bg-amber-50/70 border border-amber-200/80 rounded-2xl space-y-1.5">
+          <strong class="text-amber-950 font-bold text-xs flex items-center gap-1.5">
+            <i class="fa-solid fa-stamp text-amber-600"></i>
+            <span>3 Kolom Pengesahan Tanda Tangan Resmi</span>
+          </strong>
+          <p class="text-slate-600 text-[11px] leading-relaxed">
+            Lembar rapor resmi dinyatakan sah dengan titimangsa resmi (<em>Bogor, 17 Oktober 2026</em>) dan dibubuhi tanda tangan oleh tiga pihak: <strong>Orang Tua / Wali Murid</strong>, <strong>Wali Kelas</strong>, serta <strong>Kepala Sekolah SMP Al-Imam (Arif Rohman, S.Sos., M.Pd.)</strong>.
+          </p>
+        </div>
+      </div>
+
+      <!-- ================================================================= -->
+      <!-- TAB 2: PANDUAN ORANG TUA (WALI MURID) -->
+      <!-- ================================================================= -->
+      <div id="petunjuk-pane-wali_murid" class="petunjuk-pane hidden space-y-5">
+        <div class="p-4 bg-teal-50/80 border border-teal-200/80 rounded-2xl flex items-start gap-3">
+          <div class="w-10 h-10 rounded-xl bg-teal-600 text-white flex items-center justify-center shrink-0 text-lg shadow-sm">
+            <i class="fa-solid fa-user-shield"></i>
+          </div>
+          <div>
+            <h4 class="font-black text-sm text-teal-950">Panduan Penggunaan Portal Orang Tua / Wali Murid</h4>
+            <p class="text-xs text-teal-800 leading-relaxed mt-0.5">
+              Portal Wali Murid didesain dengan privasi ketat. Anda hanya dapat melihat data nilai, kehadiran, catatan anekdot, dan lembar rapor milik putra/putri Anda sendiri.
+            </p>
+          </div>
+        </div>
+
+        <!-- Step by Step Workflow for Parents -->
+        <div class="space-y-3">
+          <div class="flex items-start gap-3 p-3.5 bg-slate-50 rounded-2xl border border-slate-200">
+            <span class="w-7 h-7 rounded-full bg-emerald-100 text-[#00a66c] flex items-center justify-center font-black text-xs shrink-0 mt-0.5">1</span>
+            <div class="space-y-1">
+              <h5 class="font-bold text-xs text-slate-900">Cara Masuk (Login) ke Portal Orang Tua</h5>
+              <p class="text-slate-600 text-[11px] leading-relaxed">
+                Buka portal rapor ➔ Klik tombol <strong>"Masuk / Login"</strong> di pojok kanan atas ➔ Pilih tab <strong>"Wali Murid / Orang Tua"</strong> ➔ Masukkan <strong>NIS Siswa</strong> (atau username <code>wali.&lt;panggilan&gt;</code>) dan password default <code>wali123</code> (atau nomor NIS anak Anda).
+              </p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-3 p-3.5 bg-slate-50 rounded-2xl border border-slate-200">
+            <span class="w-7 h-7 rounded-full bg-emerald-100 text-[#00a66c] flex items-center justify-center font-black text-xs shrink-0 mt-0.5">2</span>
+            <div class="space-y-1">
+              <h5 class="font-bold text-xs text-slate-900">Melihat Status Publikasi Rapor Ananda</h5>
+              <p class="text-slate-600 text-[11px] leading-relaxed">
+                Periksa badge status di dashboard:
+              </p>
+              <div class="flex flex-wrap items-center gap-2 pt-1 text-[10px]">
+                <span class="px-2.5 py-0.5 rounded-full font-extrabold bg-amber-100 text-amber-800 border border-amber-300">
+                  <i class="fa-solid fa-lock mr-1"></i> DRAFT (Dalam Review)
+                </span>
+                <span class="text-slate-500">➔ Nilai masih dalam tahap finalisasi oleh dewan guru.</span>
+              </div>
+              <div class="flex flex-wrap items-center gap-2 pt-1 text-[10px]">
+                <span class="px-2.5 py-0.5 rounded-full font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-300">
+                  <i class="fa-solid fa-circle-check mr-1"></i> SUDAH DIPUBLISH
+                </span>
+                <span class="text-slate-500">➔ Rapor resmi telah dirilis dan dapat dilihat/diunduh.</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-3 p-3.5 bg-slate-50 rounded-2xl border border-slate-200">
+            <span class="w-7 h-7 rounded-full bg-emerald-100 text-[#00a66c] flex items-center justify-center font-black text-xs shrink-0 mt-0.5">3</span>
+            <div class="space-y-1">
+              <h5 class="font-bold text-xs text-slate-900">Membaca Laporan Catatan Anekdot (A-Record)</h5>
+              <p class="text-slate-600 text-[11px] leading-relaxed">
+                Di bagian bawah dashboard, Anda dapat membaca catatan observasi guru terhadap kebiasaan positif ananda (contoh: inisiatif adab shalat berjamaah, kepemimpinan kelompok, dan kerapian tugas). Anda juga dapat mencetak lembar resmi A-Record dengan tombol <strong>"Cetak Lembar A-Record"</strong>.
+              </p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-3 p-3.5 bg-slate-50 rounded-2xl border border-slate-200">
+            <span class="w-7 h-7 rounded-full bg-emerald-100 text-[#00a66c] flex items-center justify-center font-black text-xs shrink-0 mt-0.5">4</span>
+            <div class="space-y-1">
+              <h5 class="font-bold text-xs text-slate-900">Membaca Laporan Konseling BK & Rekomendasi di Rumah</h5>
+              <p class="text-slate-600 text-[11px] leading-relaxed">
+                Perhatikan kotak hijau <strong>"Rekomendasi Khusus Untuk Orang Tua di Rumah"</strong> pada kartu bimbingan konseling. Tips ini memuat arahan praktis mengenai jam belajar mandiri, pembatasan gawai, dan dorongan motivasi ananda.
+              </p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-3 p-3.5 bg-slate-50 rounded-2xl border border-slate-200">
+            <span class="w-7 h-7 rounded-full bg-emerald-100 text-[#00a66c] flex items-center justify-center font-black text-xs shrink-0 mt-0.5">5</span>
+            <div class="space-y-1">
+              <h5 class="font-bold text-xs text-slate-900">Mengunduh / Mencetak Lembar Rapor Ananda (PDF A4)</h5>
+              <p class="text-slate-600 text-[11px] leading-relaxed">
+                Buka menu <strong>"Rapor Ananda"</strong> di sidebar ➔ Pilih format yang diinginkan (<strong>Rapor Portofolio</strong> atau <strong>Rapor Kepemimpinan</strong>) ➔ Klik tombol <strong>"Cetak / PDF"</strong> ➔ Pada dialog printer pilih <em>"Save as PDF"</em> (Ukuran A4).
+              </p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-3 p-3.5 bg-slate-50 rounded-2xl border border-slate-200">
+            <span class="w-7 h-7 rounded-full bg-emerald-100 text-[#00a66c] flex items-center justify-center font-black text-xs shrink-0 mt-0.5">6</span>
+            <div class="space-y-1">
+              <h5 class="font-bold text-xs text-slate-900">Konsultasi dengan Guru BK / Wali Kelas</h5>
+              <p class="text-slate-600 text-[11px] leading-relaxed">
+                Gunakan tombol <strong>"Konsultasi BK / Walas"</strong> atau <strong>"Chat BK"</strong> di kartu konseling untuk mengirimkan pesan WhatsApp resmi dengan format otomatis ke pihak sekolah.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================================================================= -->
+      <!-- TAB 3: PANDUAN GURU & WALI KELAS -->
+      <!-- ================================================================= -->
+      <div id="petunjuk-pane-guru_walas" class="petunjuk-pane hidden space-y-5">
+        <div class="p-4 bg-indigo-50/80 border border-indigo-200/80 rounded-2xl flex items-start gap-3">
+          <div class="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center shrink-0 text-lg shadow-sm">
+            <i class="fa-solid fa-chalkboard-user"></i>
+          </div>
+          <div>
+            <h4 class="font-black text-sm text-indigo-950">Panduan Operasional Guru Mata Pelajaran & Wali Kelas</h4>
+            <p class="text-xs text-indigo-800 leading-relaxed mt-0.5">
+              Alur kerja terpadu penginputan nilai, perumusan capaian kompetensi otomatis, pengisian kepribadian, hingga publikasi rapor resmi.
+            </p>
+          </div>
+        </div>
+
+        <div class="space-y-3">
+          <div class="p-3.5 bg-slate-50 rounded-2xl border border-slate-200 space-y-1.5">
+            <h5 class="font-bold text-xs text-slate-900 flex items-center gap-2">
+              <span class="w-5 h-5 rounded-md bg-indigo-100 text-indigo-700 flex items-center justify-center text-[10px] font-black">1</span>
+              <span>Hak Akses Berdasarkan Peran (Role-Based Access Control)</span>
+            </h5>
+            <p class="text-slate-600 text-[11px] leading-relaxed">
+              • <strong>Guru Mapel:</strong> Hanya dapat menginput dan mengedit nilai pada mata pelajaran yang ditugaskan.<br>
+              • <strong>Wali Kelas:</strong> Memiliki akses penuh atas seluruh nilai siswa di kelas perwaliannya, mengisi sikap 6 aspek, presensi S/I/A, 3 ekskul, catatan walas, serta menerbitkan rapor.<br>
+              • <strong>Super Admin / Kepala Sekolah:</strong> Memiliki kontrol penuh atas seluruh 6 kelas (VII, VIII, IX), CMS, akun, dan leger nilai sekolah.
+            </p>
+          </div>
+
+          <div class="p-3.5 bg-slate-50 rounded-2xl border border-slate-200 space-y-1.5">
+            <h5 class="font-bold text-xs text-slate-900 flex items-center gap-2">
+              <span class="w-5 h-5 rounded-md bg-indigo-100 text-indigo-700 flex items-center justify-center text-[10px] font-black">2</span>
+              <span>Input Nilai UTS & Checklist TP (Tujuan Pembelajaran)</span>
+            </h5>
+            <p class="text-slate-600 text-[11px] leading-relaxed">
+              Masuk ke menu <strong>"Input Nilai & Checklist TP"</strong>. Guru dapat memilih siswa, memasukkan nilai angka (0-100), dan mencentang TP yang sudah dikuasai maupun yang butuh bimbingan. Sistem secara otomatis merumuskan kalimat narasi Capaian Kompetensi yang siap cetak.
+            </p>
+          </div>
+
+          <div class="p-3.5 bg-slate-50 rounded-2xl border border-slate-200 space-y-1.5">
+            <h5 class="font-bold text-xs text-slate-900 flex items-center gap-2">
+              <span class="w-5 h-5 rounded-md bg-indigo-100 text-indigo-700 flex items-center justify-center text-[10px] font-black">3</span>
+              <span>Unggah Massal Nilai (Bulk Import CSV / Excel)</span>
+            </h5>
+            <p class="text-slate-600 text-[11px] leading-relaxed">
+              Tersedia fitur <strong>"Unggah Nilai Excel"</strong> untuk mengimpor format nilai rekap mata pelajaran sekaligus sehingga menghemat waktu penginputan nilai saat menjelang pembagian rapor.
+            </p>
+          </div>
+
+          <div class="p-3.5 bg-slate-50 rounded-2xl border border-slate-200 space-y-1.5">
+            <h5 class="font-bold text-xs text-slate-900 flex items-center gap-2">
+              <span class="w-5 h-5 rounded-md bg-indigo-100 text-indigo-700 flex items-center justify-center text-[10px] font-black">4</span>
+              <span>Publikasi Rapor ke Akun Orang Tua (Publish)</span>
+            </h5>
+            <p class="text-slate-600 text-[11px] leading-relaxed">
+              Setelah seluruh nilai 16 mapel, kepribadian, dan presensi tervalidasi, Wali Kelas atau Admin membuka menu <strong>"Cetak Lembar Rapor"</strong> dan mengklik tombol hijau <strong>"Publish Rapor Kelas Ini"</strong>. Rapor seketika dapat diakses oleh seluruh wali murid kelas tersebut.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================================================================= -->
+      <!-- TAB 4: SKEMA KKM & PREDIKAT -->
+      <!-- ================================================================= -->
+      <div id="petunjuk-pane-skema_kkm" class="petunjuk-pane hidden space-y-5">
+        <div class="p-4 bg-amber-50/80 border border-amber-200/80 rounded-2xl flex items-start gap-3">
+          <div class="w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center shrink-0 text-lg shadow-sm">
+            <i class="fa-solid fa-calculator"></i>
+          </div>
+          <div>
+            <h4 class="font-black text-sm text-amber-950">Tabel Kriteria Ketuntasan Minimal (KKM) & Interval Predikat</h4>
+            <p class="text-xs text-amber-800 leading-relaxed mt-0.5">
+              Standar baku KKM <strong>SMP Al-Imam Islamic School</strong> ditetapkan sebesar <strong>75</strong> untuk seluruh mata pelajaran.
+            </p>
+          </div>
+        </div>
+
+        <!-- Grade Conversion Table -->
+        <div class="overflow-x-auto border border-slate-200 rounded-2xl shadow-sm">
+          <table class="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr class="bg-slate-100 text-slate-800 font-extrabold border-b border-slate-200">
+                <th class="p-3 text-center w-16">Predikat</th>
+                <th class="p-3 text-center w-28">Rentang Nilai</th>
+                <th class="p-3 w-40">Status Ketuntasan</th>
+                <th class="p-3">Arti & Makna Kualitatif</th>
+                <th class="p-3 w-48">Rekomendasi untuk Orang Tua</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+              <tr class="hover:bg-slate-50">
+                <td class="p-3 text-center">
+                  <span class="px-2.5 py-1 rounded-lg font-black text-xs bg-emerald-100 text-emerald-800 border border-emerald-300">
+                    A
+                  </span>
+                </td>
+                <td class="p-3 text-center font-bold font-mono text-slate-900">90 – 100</td>
+                <td class="p-3 font-bold text-emerald-700">Tuntas Sangat Baik</td>
+                <td class="p-3 text-slate-700">Siswa menunjukkan penguasaan konsep yang sangat mendalam dan istimewa, serta mampu menerapkan pada soal tingkat tinggi (HOTS).</td>
+                <td class="p-3 text-slate-600">Pertahankan konsistensi dan beri penguatan pada materi pengayaan / olimpiade.</td>
+              </tr>
+              <tr class="hover:bg-slate-50">
+                <td class="p-3 text-center">
+                  <span class="px-2.5 py-1 rounded-lg font-black text-xs bg-sky-100 text-sky-800 border border-sky-300">
+                    B
+                  </span>
+                </td>
+                <td class="p-3 text-center font-bold font-mono text-slate-900">80 – 89</td>
+                <td class="p-3 font-bold text-sky-700">Tuntas Baik</td>
+                <td class="p-3 text-slate-700">Siswa menguasai kompetensi dasar dengan baik dan mampu menyelesaikan tugas-tugas mandiri secara mandiri.</td>
+                <td class="p-3 text-slate-600">Tingkatkan latihan soal dan perluas literasi bacaan siswa.</td>
+              </tr>
+              <tr class="hover:bg-slate-50">
+                <td class="p-3 text-center">
+                  <span class="px-2.5 py-1 rounded-lg font-black text-xs bg-amber-100 text-amber-800 border border-amber-300">
+                    C
+                  </span>
+                </td>
+                <td class="p-3 text-center font-bold font-mono text-slate-900">75 – 79</td>
+                <td class="p-3 font-bold text-amber-700">Tuntas Minimal (KKM)</td>
+                <td class="p-3 text-slate-700">Siswa memenuhi standar KKM minimal, namun masih memerlukan penguatan pemahaman pada beberapa indikator materi tertentu.</td>
+                <td class="p-3 text-slate-600">Dampingi waktu belajar malam dan tinjau catatan tugas yang belum tuntas.</td>
+              </tr>
+              <tr class="hover:bg-slate-50 bg-rose-50/40">
+                <td class="p-3 text-center">
+                  <span class="px-2.5 py-1 rounded-lg font-black text-xs bg-rose-100 text-rose-800 border border-rose-300">
+                    D
+                  </span>
+                </td>
+                <td class="p-3 text-center font-bold font-mono text-rose-700">&lt; 75</td>
+                <td class="p-3 font-bold text-rose-700">Belum Tuntas (Perlu Bimbingan)</td>
+                <td class="p-3 text-slate-700">Siswa belum mencapai kriteria ketuntasan minimal (KKM 75). Memerlukan program remedial dan pendampingan khusus dari guru mapel.</td>
+                <td class="p-3 text-slate-600">Segera berkonsultasi dengan guru mapel / wali kelas untuk program remedial intensif.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl space-y-1 text-[11px] text-slate-600">
+          <p><strong>Catatan Tambahan:</strong> Untuk Rapor Karakter SKL Kepemimpinan (28 Indikator), predikat menggunakan skala mutu <strong>A (Sangat Baik / Mumtaz)</strong>, <strong>B (Baik / Jayyid)</strong>, <strong>C (Cukup / Maqbul)</strong>, dan <strong>D (Perlu Pembinaan)</strong>.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Modal Footer -->
+    <div class="bg-slate-50 px-6 py-4 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div class="text-[11px] text-slate-500 font-medium text-center sm:text-left">
+        SMP Al-Imam Islamic School • Yayasan Al-Imam EduTech
+      </div>
+      <div class="flex items-center gap-2">
+        <button onclick="closeModalPetunjukRapor()" class="px-4 py-2 bg-[#00a66c] hover:bg-[#008f5d] text-white text-xs font-bold rounded-xl transition shadow-sm cursor-pointer">
+          Saya Mengerti
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 
   <!-- Interactive Guide Onboarding Modal -->
   <!-- Modal Panduan Interaktif Penggunaan Aplikasi (Interactive Onboarding Guide) -->
@@ -8886,6 +9334,70 @@ window.openModalBkConsult = openModalBkConsult;
 window.closeModalBkConsult = closeModalBkConsult;
 window.submitParentBkConsultation = submitParentBkConsultation;
 window.contactBkWhatsApp = contactBkWhatsApp;
+
+// Petunjuk Penggunaan & Cara Membaca Rapor Modal Controller
+function openModalPetunjukRapor(defaultTab = 'baca_rapor') {
+  switchPetunjukTab(defaultTab);
+  const modal = document.getElementById('modal-petunjuk-rapor');
+  if (modal) {
+    modal.classList.remove('hidden');
+    document.body.classList.add('overflow-hidden');
+  }
+}
+
+function closeModalPetunjukRapor() {
+  const modal = document.getElementById('modal-petunjuk-rapor');
+  if (modal) {
+    modal.classList.add('hidden');
+    document.body.classList.remove('overflow-hidden');
+  }
+}
+
+function switchPetunjukTab(tabKey) {
+  let key = tabKey;
+  if (key === 'panduan_wali' || key === 'ortu') key = 'wali_murid';
+  if (key === 'baca') key = 'baca_rapor';
+  if (key === 'guru' || key === 'walas') key = 'guru_walas';
+  if (key === 'kkm') key = 'skema_kkm';
+
+  const panes = ['baca_rapor', 'wali_murid', 'guru_walas', 'skema_kkm'];
+  const btnMapping = {
+    'baca_rapor': 'tab-btn-petunjuk-baca',
+    'wali_murid': 'tab-btn-petunjuk-ortu',
+    'guru_walas': 'tab-btn-petunjuk-guru',
+    'skema_kkm': 'tab-btn-petunjuk-kkm'
+  };
+
+  panes.forEach(paneId => {
+    const paneEl = document.getElementById(`petunjuk-pane-${paneId}`);
+    if (paneEl) {
+      if (paneId === key) {
+        paneEl.classList.remove('hidden');
+      } else {
+        paneEl.classList.add('hidden');
+      }
+    }
+
+    const btnId = btnMapping[paneId];
+    const btnEl = document.getElementById(btnId);
+    if (btnEl) {
+      if (paneId === key) {
+        btnEl.className = 'tab-petunjuk-btn px-3.5 py-1.5 rounded-xl transition whitespace-nowrap bg-white text-emerald-900 shadow-sm cursor-pointer flex items-center gap-1.5';
+      } else {
+        btnEl.className = 'tab-petunjuk-btn px-3.5 py-1.5 rounded-xl transition whitespace-nowrap bg-white/10 text-white hover:bg-white/20 cursor-pointer flex items-center gap-1.5';
+      }
+    }
+  });
+
+  const bodyEl = document.getElementById('petunjuk-modal-body');
+  if (bodyEl) {
+    bodyEl.scrollTop = 0;
+  }
+}
+
+window.openModalPetunjukRapor = openModalPetunjukRapor;
+window.closeModalPetunjukRapor = closeModalPetunjukRapor;
+window.switchPetunjukTab = switchPetunjukTab;
 
 
 // 7. THEME & CMS APPLICATION

@@ -3118,6 +3118,70 @@ window.closeModalBkConsult = closeModalBkConsult;
 window.submitParentBkConsultation = submitParentBkConsultation;
 window.contactBkWhatsApp = contactBkWhatsApp;
 
+// Petunjuk Penggunaan & Cara Membaca Rapor Modal Controller
+function openModalPetunjukRapor(defaultTab = 'baca_rapor') {
+  switchPetunjukTab(defaultTab);
+  const modal = document.getElementById('modal-petunjuk-rapor');
+  if (modal) {
+    modal.classList.remove('hidden');
+    document.body.classList.add('overflow-hidden');
+  }
+}
+
+function closeModalPetunjukRapor() {
+  const modal = document.getElementById('modal-petunjuk-rapor');
+  if (modal) {
+    modal.classList.add('hidden');
+    document.body.classList.remove('overflow-hidden');
+  }
+}
+
+function switchPetunjukTab(tabKey) {
+  let key = tabKey;
+  if (key === 'panduan_wali' || key === 'ortu') key = 'wali_murid';
+  if (key === 'baca') key = 'baca_rapor';
+  if (key === 'guru' || key === 'walas') key = 'guru_walas';
+  if (key === 'kkm') key = 'skema_kkm';
+
+  const panes = ['baca_rapor', 'wali_murid', 'guru_walas', 'skema_kkm'];
+  const btnMapping = {
+    'baca_rapor': 'tab-btn-petunjuk-baca',
+    'wali_murid': 'tab-btn-petunjuk-ortu',
+    'guru_walas': 'tab-btn-petunjuk-guru',
+    'skema_kkm': 'tab-btn-petunjuk-kkm'
+  };
+
+  panes.forEach(paneId => {
+    const paneEl = document.getElementById(`petunjuk-pane-${paneId}`);
+    if (paneEl) {
+      if (paneId === key) {
+        paneEl.classList.remove('hidden');
+      } else {
+        paneEl.classList.add('hidden');
+      }
+    }
+
+    const btnId = btnMapping[paneId];
+    const btnEl = document.getElementById(btnId);
+    if (btnEl) {
+      if (paneId === key) {
+        btnEl.className = 'tab-petunjuk-btn px-3.5 py-1.5 rounded-xl transition whitespace-nowrap bg-white text-emerald-900 shadow-sm cursor-pointer flex items-center gap-1.5';
+      } else {
+        btnEl.className = 'tab-petunjuk-btn px-3.5 py-1.5 rounded-xl transition whitespace-nowrap bg-white/10 text-white hover:bg-white/20 cursor-pointer flex items-center gap-1.5';
+      }
+    }
+  });
+
+  const bodyEl = document.getElementById('petunjuk-modal-body');
+  if (bodyEl) {
+    bodyEl.scrollTop = 0;
+  }
+}
+
+window.openModalPetunjukRapor = openModalPetunjukRapor;
+window.closeModalPetunjukRapor = closeModalPetunjukRapor;
+window.switchPetunjukTab = switchPetunjukTab;
+
 
 // 7. THEME & CMS APPLICATION
 function applyCmsTheme(settings) {
