@@ -87,19 +87,25 @@
         <p class="text-[10px] text-slate-400 italic text-center">Data presensi terhitung hingga pelaksanaan UTS</p>
       </div>
 
-      <!-- Card 3: Quick Action Rapor -->
+      <!-- Card 3: Quick Action Rapor & Grafik -->
       <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm flex flex-col justify-between space-y-3">
         <div>
-          <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Lembar Rapor</span>
+          <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Lembar Rapor & Analisis</span>
           <h4 class="font-extrabold text-xs text-slate-900 mt-1">Rapor Tengah Semester 1 (2026/2027)</h4>
           <p class="text-[11px] text-slate-500 mt-1" id="wali-rapor-quick-desc">
             Lihat rincian capaian kompetensi 16 mapel, karakter, dan ekstrakurikuler ananda.
           </p>
         </div>
-        <button onclick="switchView('rapor')" class="w-full py-2.5 px-4 bg-[#00a66c] hover:bg-[#008f5d] text-white font-bold rounded-xl text-xs shadow-md shadow-[#00a66c]/20 transition flex items-center justify-center gap-2 cursor-pointer">
-          <i class="fa-solid fa-file-invoice"></i>
-          <span>Buka Lembar Rapor Ananda</span>
-        </button>
+        <div class="space-y-2">
+          <button onclick="switchView('rapor')" class="w-full py-2.5 px-4 bg-[#00a66c] hover:bg-[#008f5d] text-white font-bold rounded-xl text-xs shadow-md shadow-[#00a66c]/20 transition flex items-center justify-center gap-2 cursor-pointer">
+            <i class="fa-solid fa-file-invoice"></i>
+            <span>Buka Lembar Rapor Ananda</span>
+          </button>
+          <button onclick="openResumeChartForWali()" class="w-full py-2 px-3 bg-purple-50 hover:bg-purple-100 text-purple-800 border border-purple-200 font-bold rounded-xl text-xs transition flex items-center justify-center gap-1.5 cursor-pointer">
+            <i class="fa-solid fa-chart-column text-purple-600"></i>
+            <span>Lihat Resume Grafik Nilai</span>
+          </button>
+        </div>
       </div>
     </div>
 
@@ -108,16 +114,21 @@
       <div class="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0">
         <button type="button" onclick="filterWaliReportCards('all')" id="tab-wali-all" class="wali-report-tab px-3.5 py-2 rounded-xl text-xs font-black bg-[#00a66c] text-white shadow-sm transition flex items-center gap-2 whitespace-nowrap cursor-pointer">
           <i class="fa-solid fa-layer-group"></i>
-          <span>Semua Laporan Ananda</span>
+          <span>Semua Laporan</span>
+        </button>
+        <button type="button" onclick="filterWaliReportCards('grafik')" id="tab-wali-grafik" class="wali-report-tab px-3.5 py-2 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition flex items-center gap-2 whitespace-nowrap cursor-pointer">
+          <i class="fa-solid fa-chart-column text-purple-600"></i>
+          <span>Resume Grafik Nilai</span>
+          <span class="ml-1 px-1.5 py-0.2 rounded-full text-[10px] font-black bg-purple-100 text-purple-800">16 Mapel</span>
         </button>
         <button type="button" onclick="filterWaliReportCards('anekdot')" id="tab-wali-anekdot" class="wali-report-tab px-3.5 py-2 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition flex items-center gap-2 whitespace-nowrap cursor-pointer">
           <i class="fa-solid fa-clipboard-list text-amber-500"></i>
-          <span>Catatan Anekdot (A-Record)</span>
+          <span>Catatan Anekdot</span>
           <span id="tab-badge-anekdot" class="ml-1 px-1.5 py-0.2 rounded-full text-[10px] font-black bg-amber-100 text-amber-800">0</span>
         </button>
         <button type="button" onclick="filterWaliReportCards('konseling')" id="tab-wali-konseling" class="wali-report-tab px-3.5 py-2 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition flex items-center gap-2 whitespace-nowrap cursor-pointer">
           <i class="fa-solid fa-comments text-teal-600"></i>
-          <span>Bimbingan Konseling (BK)</span>
+          <span>Bimbingan Konseling</span>
           <span id="tab-badge-bk" class="ml-1 px-1.5 py-0.2 rounded-full text-[10px] font-black bg-teal-100 text-teal-800">0</span>
         </button>
       </div>
@@ -206,6 +217,104 @@
       <!-- Container BK Cards List -->
       <div id="wali-bk-list" class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <!-- Rendered by JavaScript dynamically -->
+      </div>
+    </div>
+
+    <!-- Section 3: Resume Grafik Capaian Nilai Ananda (Wali Murid) -->
+    <div id="section-wali-grafik" class="bg-white rounded-3xl p-5 sm:p-7 border border-[#e2f3ea] shadow-sm space-y-6">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-slate-100 pb-4">
+        <div>
+          <div class="flex items-center gap-2.5">
+            <div class="w-10 h-10 rounded-2xl bg-purple-50 text-purple-700 flex items-center justify-center text-lg border border-purple-200">
+              <i class="fa-solid fa-chart-column"></i>
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <h3 class="font-extrabold text-sm sm:text-base text-slate-900">Resume Grafik Capaian Nilai Ananda</h3>
+                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-purple-100 text-purple-800 border border-purple-200" id="wali-grafik-kkm-badge">
+                  16 MAPEL LENGKAP
+                </span>
+              </div>
+              <p class="text-xs text-slate-500 mt-0.5">
+                Visualisasi perbandingan nilai seluruh mata pelajaran terhadap batas KKM 75, analisis rumpun, dan jaring kompetensi.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <button type="button" onclick="openResumeChartForWali()" class="px-3.5 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm cursor-pointer">
+            <i class="fa-solid fa-expand"></i>
+            <span>Buka Layar Penuh (Modal)</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 4 Quick KPI Summary Cards for Parents -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3.5 space-y-1">
+          <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 block">Rata-Rata Nilai</span>
+          <div class="flex items-baseline gap-2">
+            <span class="text-2xl font-black text-slate-900 font-mono" id="wali-kpi-avg">0.0</span>
+            <span class="px-2 py-0.5 rounded-md text-[10px] font-black bg-emerald-100 text-emerald-800" id="wali-kpi-predikat">A</span>
+          </div>
+          <p class="text-[10px] text-slate-500">Skala 0 - 100</p>
+        </div>
+
+        <div class="bg-emerald-50/70 border border-emerald-200 rounded-2xl p-3.5 space-y-1">
+          <span class="text-[10px] font-extrabold uppercase tracking-wider text-emerald-700 block">Nilai Tertinggi</span>
+          <div class="flex items-baseline gap-2">
+            <span class="text-2xl font-black text-emerald-800 font-mono" id="wali-kpi-max-score">0</span>
+            <span class="text-[11px] font-bold text-emerald-700 truncate max-w-[110px]" id="wali-kpi-max-mapel">-</span>
+          </div>
+          <p class="text-[10px] text-emerald-600">Materi paling dikuasai</p>
+        </div>
+
+        <div class="bg-amber-50/70 border border-amber-200 rounded-2xl p-3.5 space-y-1">
+          <span class="text-[10px] font-extrabold uppercase tracking-wider text-amber-700 block">Fokus Peningkatan</span>
+          <div class="flex items-baseline gap-2">
+            <span class="text-2xl font-black text-amber-800 font-mono" id="wali-kpi-min-score">0</span>
+            <span class="text-[11px] font-bold text-amber-700 truncate max-w-[110px]" id="wali-kpi-min-mapel">-</span>
+          </div>
+          <p class="text-[10px] text-amber-600">Perlu pendampingan di rumah</p>
+        </div>
+
+        <div class="bg-indigo-50/70 border border-indigo-200 rounded-2xl p-3.5 space-y-1">
+          <span class="text-[10px] font-extrabold uppercase tracking-wider text-indigo-700 block">Ketuntasan KKM (75)</span>
+          <div class="flex items-baseline gap-2">
+            <span class="text-2xl font-black text-indigo-900 font-mono" id="wali-kpi-tuntas-count">16/16</span>
+            <span class="text-xs font-bold text-indigo-700" id="wali-kpi-tuntas-pct">100%</span>
+          </div>
+          <p class="text-[10px] text-indigo-600">Standar kelulusan minimum</p>
+        </div>
+      </div>
+
+      <!-- Embedded Bar Chart Container in Parent View -->
+      <div class="bg-slate-50/80 border border-slate-200 rounded-2xl p-4 sm:p-5 space-y-3">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <h4 class="font-extrabold text-xs text-slate-800 flex items-center gap-1.5">
+            <i class="fa-solid fa-chart-simple text-purple-600"></i>
+            <span>Grafik Nilai 16 Mata Pelajaran vs Garis KKM 75</span>
+          </h4>
+          <div class="flex flex-wrap items-center gap-2 text-[10px] font-bold">
+            <span class="inline-flex items-center gap-1 text-emerald-700 bg-emerald-100/80 px-2 py-0.5 rounded">
+              <span class="w-2 h-2 rounded-full bg-emerald-500"></span> A (90-100)
+            </span>
+            <span class="inline-flex items-center gap-1 text-teal-700 bg-teal-100/80 px-2 py-0.5 rounded">
+              <span class="w-2 h-2 rounded-full bg-teal-500"></span> B (80-89)
+            </span>
+            <span class="inline-flex items-center gap-1 text-amber-700 bg-amber-100/80 px-2 py-0.5 rounded">
+              <span class="w-2 h-2 rounded-full bg-amber-500"></span> C (75-79)
+            </span>
+            <span class="inline-flex items-center gap-1 text-rose-700 bg-rose-100/80 px-2 py-0.5 rounded">
+              <span class="w-2 h-2 rounded-full bg-rose-500"></span> D (&lt;75)
+            </span>
+          </div>
+        </div>
+
+        <div class="relative h-64 sm:h-72 w-full" id="container-chart-bar-wali">
+          <canvas id="canvas-chart-bar-wali" class="w-full h-full"></canvas>
+          <div id="fallback-chart-bar-wali" class="hidden h-full flex items-end gap-1.5 pt-6 pb-6 px-2 overflow-x-auto"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -630,6 +739,112 @@
           <div class="w-12 h-12 rounded-2xl bg-purple-50 text-purple-700 flex items-center justify-center text-xl">
             <i class="fa-solid fa-file-lines"></i>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Analisis & Resume Grafik Capaian Nilai Siswa (Teacher & Admin Interactive Analytics) -->
+    <div class="bg-white rounded-3xl p-5 sm:p-7 border border-[#e2f3ea] shadow-sm space-y-5">
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-slate-100 pb-4">
+        <div>
+          <div class="flex items-center gap-2.5">
+            <div class="w-10 h-10 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center text-lg border border-emerald-200">
+              <i class="fa-solid fa-chart-column"></i>
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <h3 class="font-extrabold text-sm sm:text-base text-slate-900">Analisis & Resume Grafik Nilai Mata Pelajaran</h3>
+                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-emerald-100 text-emerald-800 border border-emerald-300">
+                  Standar KKM: 75
+                </span>
+              </div>
+              <p class="text-xs text-slate-500 mt-0.5">
+                Visualisasi komparatif nilai siswa atau rata-rata rombel terhadap batas ketuntasan 16 mata pelajaran.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Controls: Class Selector, Student Selector, and Mode Switch -->
+        <div class="flex flex-wrap items-center gap-2">
+          <!-- Class Filter -->
+          <select id="admin-chart-kelas-select" onchange="onAdminChartFilterChange()" 
+                  class="text-xs bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-slate-800 font-bold focus:ring-2 focus:ring-emerald-500">
+            <option value="IX ABU BAKAR" selected>IX ABU BAKAR</option>
+            <option value="IX UMMU SALAMAH">IX UMMU SALAMAH</option>
+            <option value="VIII UMAR">VIII UMAR</option>
+            <option value="VIII KHODIJAH">VIII KHODIJAH</option>
+            <option value="VII UTSMAN">VII UTSMAN</option>
+            <option value="VII AISYAH">VII AISYAH</option>
+            <option value="VII MBU">VII MBU</option>
+          </select>
+
+          <!-- Student Filter -->
+          <select id="admin-chart-student-select" onchange="onAdminChartFilterChange()" 
+                  class="text-xs bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-slate-800 font-bold focus:ring-2 focus:ring-emerald-500 min-w-[180px]">
+            <option value="CLASS_AVG">📊 Rata-Rata Seluruh Kelas</option>
+            <!-- Populated via JS -->
+          </select>
+
+          <!-- Modal Trigger Button -->
+          <button type="button" onclick="openCurrentAdminResumeModal()" class="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm cursor-pointer">
+            <i class="fa-solid fa-expand"></i>
+            <span>Detail Lengkap</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick Indicator Badges in Admin Chart -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3">
+          <span class="text-[10px] font-extrabold uppercase text-slate-400 block">Rata-Rata Capaian</span>
+          <div class="flex items-baseline gap-2 mt-1">
+            <span class="text-xl font-black text-slate-900 font-mono" id="admin-chart-kpi-avg">87.4</span>
+            <span class="text-[10px] font-black px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800" id="admin-chart-kpi-predikat">B</span>
+          </div>
+        </div>
+        <div class="bg-emerald-50/70 border border-emerald-200 rounded-2xl p-3">
+          <span class="text-[10px] font-extrabold uppercase text-emerald-700 block">Nilai Tertinggi</span>
+          <div class="flex items-baseline gap-2 mt-1">
+            <span class="text-xl font-black text-emerald-800 font-mono" id="admin-chart-kpi-max">98</span>
+            <span class="text-[11px] font-bold text-emerald-700 truncate" id="admin-chart-kpi-max-mapel">Informatika</span>
+          </div>
+        </div>
+        <div class="bg-amber-50/70 border border-amber-200 rounded-2xl p-3">
+          <span class="text-[10px] font-extrabold uppercase text-amber-700 block">Nilai Terendah</span>
+          <div class="flex items-baseline gap-2 mt-1">
+            <span class="text-xl font-black text-amber-800 font-mono" id="admin-chart-kpi-min">75</span>
+            <span class="text-[11px] font-bold text-amber-700 truncate" id="admin-chart-kpi-min-mapel">Bahasa Sunda</span>
+          </div>
+        </div>
+        <div class="bg-indigo-50/70 border border-indigo-200 rounded-2xl p-3">
+          <span class="text-[10px] font-extrabold uppercase text-indigo-700 block">Ketuntasan KKM 75</span>
+          <div class="flex items-baseline gap-2 mt-1">
+            <span class="text-xl font-black text-indigo-900 font-mono" id="admin-chart-kpi-tuntas">100%</span>
+            <span class="text-[10px] font-bold text-indigo-600">16/16 Mapel Tuntas</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chart Display Container -->
+      <div class="bg-slate-50 border border-slate-200/90 rounded-2xl p-4 sm:p-5 space-y-3">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 pb-2.5">
+          <span class="text-xs font-bold text-slate-800 flex items-center gap-1.5" id="admin-chart-canvas-title">
+            <i class="fa-solid fa-chart-column text-emerald-600"></i>
+            Grafik 16 Mata Pelajaran vs KKM (75)
+          </span>
+          <div class="flex flex-wrap items-center gap-2 text-[10px] font-bold">
+            <span class="inline-flex items-center gap-1 text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded">A (90-100)</span>
+            <span class="inline-flex items-center gap-1 text-teal-700 bg-teal-100 px-2 py-0.5 rounded">B (80-89)</span>
+            <span class="inline-flex items-center gap-1 text-amber-700 bg-amber-100 px-2 py-0.5 rounded">C (75-79)</span>
+            <span class="inline-flex items-center gap-1 text-rose-700 bg-rose-100 px-2 py-0.5 rounded">D (&lt;75)</span>
+            <span class="inline-flex items-center gap-1 text-slate-700 bg-slate-200 px-2 py-0.5 rounded border border-dashed border-slate-400">Garis KKM 75</span>
+          </div>
+        </div>
+
+        <div class="relative h-64 sm:h-72 w-full" id="container-chart-bar-admin">
+          <canvas id="canvas-chart-bar-admin" class="w-full h-full"></canvas>
+          <div id="fallback-chart-bar-admin" class="hidden h-full flex items-end gap-1.5 pt-6 pb-6 px-2 overflow-x-auto"></div>
         </div>
       </div>
     </div>
