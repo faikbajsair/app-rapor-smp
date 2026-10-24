@@ -44,6 +44,18 @@ function authenticateUser(username, password) {
       };
     } else if (cleanUser === 'kahlil' && (cleanPass === 'kahlil123' || cleanPass === 'kahlilgibran123')) {
       user = users.find(u => String(u.username).toLowerCase() === 'kahlilgibran');
+    } else if ((cleanUser === 'walimurid' || cleanUser === 'wali') && (cleanPass === 'wali123' || cleanPass === 'walimurid123')) {
+      user = users.find(u => String(u.username).toLowerCase() === 'walimurid') || {
+        id: 'USR-014', username: 'walimurid', nama_lengkap: 'Bpk. Nanang Fajar', role: ROLES.WALI_MURID, status: 'aktif', mapel: '-', wali_kelas: '', nis: '242507001'
+      };
+    } else if (cleanUser === 'wali.aezar' && cleanPass === 'wali123') {
+      user = users.find(u => String(u.username).toLowerCase() === 'wali.aezar') || {
+        id: 'USR-015', username: 'wali.aezar', nama_lengkap: 'Bpk. Angger Kerti Wasiat', role: ROLES.WALI_MURID, status: 'aktif', mapel: '-', wali_kelas: '', nis: '262707001'
+      };
+    } else if (cleanUser === 'wali.akifa' && cleanPass === 'wali123') {
+      user = users.find(u => String(u.username).toLowerCase() === 'wali.akifa') || {
+        id: 'USR-016', username: 'wali.akifa', nama_lengkap: 'Bpk. Azdni Karim', role: ROLES.WALI_MURID, status: 'aktif', mapel: '-', wali_kelas: '', nis: '262707026'
+      };
     }
   }
 

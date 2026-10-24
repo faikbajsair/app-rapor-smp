@@ -124,5 +124,48 @@ setTimeout(() => {
   }
   console.log('✅ Super Admin has full unrestricted access to all 16 subjects and all classes');
 
-  console.log('\n🎉 ALL RBAC VERIFICATION TESTS PASSED 100% SUCCESSFULLY!');
+  // TEST 6: WALI MURID - WALIMURID (Abdillah Zulqarnain - IX Abu Bakar)
+  console.log('\n--- TEST 6: WALI MURID - WALIMURID (@walimurid) ---');
+  win.loginAsSpecificTeacher('walimurid', 'wali123');
+  console.log('Logged in user:', win.AppState.currentUser.username, '| Role:', win.AppState.currentUser.role, '| NIS:', win.AppState.currentUser.nis);
+  if (win.AppState.currentUser.role !== 'wali_murid') throw new Error('User role should be wali_murid!');
+  if (win.AppState.currentUser.nis !== '242507001') throw new Error('Wali murid NIS mismatch!');
+
+  // Check UI: non-wali elements should be hidden
+  const nonWaliEls = Array.from(doc.querySelectorAll('.menu-non-wali'));
+  const visibleNonWali = nonWaliEls.filter(el => !el.classList.contains('hidden'));
+  if (visibleNonWali.length > 0) throw new Error(`Wali murid should not see non-wali menu elements! Found: ${visibleNonWali.length}`);
+  console.log('✅ Prohibited non-wali menus successfully hidden from Wali Murid');
+
+  // Check Rapor menu item is visible for Wali Murid
+  const raporNav = doc.getElementById('nav-item-rapor');
+  if (!raporNav || raporNav.classList.contains('hidden')) throw new Error('nav-item-rapor should be visible for Wali Murid!');
+  const raporLabel = doc.getElementById('nav-label-rapor')?.textContent.trim();
+  console.log('Rapor menu label for Wali Murid:', raporLabel);
+  if (raporLabel !== 'Rapor Ananda') throw new Error(`Expected label "Rapor Ananda", got "${raporLabel}"`);
+  console.log('✅ Rapor menu correctly accessible and renamed to "Rapor Ananda"');
+
+  // Check student isolation in Rapor dropdown
+  win.populateMuridDropdowns();
+  const raporStudentOptions = Array.from(doc.getElementById('rapor-murid-select')?.options || []);
+  console.log('Total students accessible to Wali Murid in Rapor select:', raporStudentOptions.length);
+  if (raporStudentOptions.length !== 1 || !raporStudentOptions[0].textContent.includes('ABDILLAH')) {
+    throw new Error('Wali Murid should only see their own child in the report dropdown!');
+  }
+  console.log('✅ Student dropdown isolated strictly to child: Abdillah Zulqarnain');
+
+  // TEST 7: WALI MURID LOGIN USING NIS (NIS 262707001 - Aezar El Khazindar Walidain)
+  console.log('\n--- TEST 7: WALI MURID DIRECT LOGIN VIA STUDENT NIS ---');
+  win.loginAsSpecificTeacher('wali.aezar', 'wali123');
+  console.log('Logged in user:', win.AppState.currentUser.username, '| Role:', win.AppState.currentUser.role, '| NIS:', win.AppState.currentUser.nis);
+  if (win.AppState.currentUser.role !== 'wali_murid') throw new Error('Role should be wali_murid!');
+  if (win.AppState.currentUser.nis !== '262707001') throw new Error('NIS should be 262707001!');
+  win.populateMuridDropdowns();
+  const aezarOptions = Array.from(doc.getElementById('rapor-murid-select')?.options || []);
+  if (aezarOptions.length !== 1 || !aezarOptions[0].textContent.includes('AEZAR')) {
+    throw new Error('Aezar parent should only see Aezar El Khazindar Walidain!');
+  }
+  console.log('✅ Aezar parent successfully isolated to Aezar El Khazindar Walidain');
+
+  console.log('\n🎉 ALL RBAC & WALI MURID VERIFICATION TESTS PASSED 100% SUCCESSFULLY!');
 }, 500);

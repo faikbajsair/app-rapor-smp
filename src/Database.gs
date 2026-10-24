@@ -325,7 +325,9 @@ function initDatabase() {
       ['USR-011', 'guntur', 'guntur123', 'Guntur Ageng Auliawan, S.Pd.', 'guru', 'aktif', '2026-07-01', '', 'Pendidikan Jasmani, Olahraga, dan Kesehatan, Bahasa Sunda', ''],
       ['USR-012', 'nunung', 'nunung123', 'Nunung Lastika Adiansyah, S.Pd.', 'guru', 'aktif', '2026-07-01', '', 'Akidah, Fikih', ''],
       ['USR-013', 'admin', 'admin123', 'Administrator Utama', 'admin', 'aktif', '2026-07-01', '', 'Semua Mapel', ''],
-      ['USR-014', 'walimurid', 'wali123', 'Bpk. Nanang Fajar', 'wali_murid', 'aktif', '2026-07-01', '242507001', '-', '']
+      ['USR-014', 'walimurid', 'wali123', 'Bpk. Nanang Fajar', 'wali_murid', 'aktif', '2026-07-01', '242507001', '-', ''],
+      ['USR-015', 'wali.aezar', 'wali123', 'Bpk. Angger Kerti Wasiat', 'wali_murid', 'aktif', '2026-07-01', '262707001', '-', ''],
+      ['USR-016', 'wali.akifa', 'wali123', 'Bpk. Azdni Karim', 'wali_murid', 'aktif', '2026-07-01', '262707026', '-', '']
     ];
     sheetUsers.getRange(2, 1, defaultUsers.length, 10).setValues(defaultUsers);
   }
@@ -697,7 +699,9 @@ function forceSyncDatabaseToSpreadsheet() {
     ['USR-011', 'guntur', 'guntur123', 'Guntur Ageng Auliawan, S.Pd.', 'guru', 'aktif', '2026-07-01', '', 'Pendidikan Jasmani, Olahraga, dan Kesehatan, Bahasa Sunda', ''],
     ['USR-012', 'nunung', 'nunung123', 'Nunung Lastika Adiansyah, S.Pd.', 'guru', 'aktif', '2026-07-01', '', 'Akidah, Fikih', ''],
     ['USR-013', 'admin', 'admin123', 'Administrator Utama', 'admin', 'aktif', '2026-07-01', '', 'Semua Mapel', ''],
-    ['USR-014', 'walimurid', 'wali123', 'Bpk. Nanang Fajar', 'wali_murid', 'aktif', '2026-07-01', '242507001', '-', '']
+    ['USR-014', 'walimurid', 'wali123', 'Bpk. Nanang Fajar', 'wali_murid', 'aktif', '2026-07-01', '242507001', '-', ''],
+    ['USR-015', 'wali.aezar', 'wali123', 'Bpk. Angger Kerti Wasiat', 'wali_murid', 'aktif', '2026-07-01', '262707001', '-', ''],
+    ['USR-016', 'wali.akifa', 'wali123', 'Bpk. Azdni Karim', 'wali_murid', 'aktif', '2026-07-01', '262707026', '-', '']
   ];
   sheetUsers.getRange(2, 1, defaultUsers.length, 10).setValues(defaultUsers);
 
@@ -889,7 +893,7 @@ function getAllUsers() {
 }
 
 function saveUser(user) {
-  const sheet = getOrCreateSheet(DB_CONFIG.SHEET_USERS, ['id', 'username', 'password_hash', 'nama_lengkap', 'role', 'status', 'created_at', 'nis', 'mapel']);
+  const sheet = getOrCreateSheet(DB_CONFIG.SHEET_USERS, ['id', 'username', 'password_hash', 'nama_lengkap', 'role', 'status', 'created_at', 'nis', 'mapel', 'wali_kelas']);
   const isNew = !user.id;
   const id = isNew ? 'USR-' + Utilities.getUuid().substring(0, 6).toUpperCase() : user.id;
   
@@ -915,7 +919,8 @@ function saveUser(user) {
       user.status || 'aktif',
       Utilities.formatDate(new Date(), 'Asia/Jakarta', 'yyyy-MM-dd'),
       user.nis || '',
-      user.mapel || ''
+      user.mapel || '',
+      user.wali_kelas || ''
     ]);
   }
   return { status: 'success', message: 'User berhasil disimpan', id: id };

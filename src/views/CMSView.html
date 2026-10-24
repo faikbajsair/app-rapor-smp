@@ -170,10 +170,16 @@
           </h3>
           <p class="text-xs text-slate-500 mt-0.5">Kelola akun Admin, Kepala Sekolah, Guru / Pendidik, dan Orang Tua / Wali Murid.</p>
         </div>
-        <button onclick="openModalUser()" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs shadow flex items-center gap-2">
-          <i class="fa-solid fa-user-plus"></i>
-          <span>Tambah Pengguna</span>
-        </button>
+        <div class="flex flex-wrap items-center gap-2">
+          <button type="button" onclick="openModalGenerateWali()" class="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs shadow flex items-center gap-1.5 transition cursor-pointer" title="Daftar & Generator Akun Wali Murid">
+            <i class="fa-solid fa-users-viewfinder"></i>
+            <span>Daftar & Buat Akun Wali Murid</span>
+          </button>
+          <button type="button" onclick="openModalUser()" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs shadow flex items-center gap-2 transition cursor-pointer">
+            <i class="fa-solid fa-user-plus"></i>
+            <span>Tambah Pengguna</span>
+          </button>
+        </div>
       </div>
 
       <div class="overflow-x-auto">
@@ -446,6 +452,15 @@
         </select>
       </div>
 
+      <!-- Field Siswa Binaan (Khusus Wali Murid) -->
+      <div id="wrapper-user-nis" class="hidden">
+        <label class="block text-xs font-bold text-slate-700 mb-1">Hubungkan ke Siswa (Ananda Binaan) <span class="text-rose-500">*</span></label>
+        <select id="user-nis" onchange="onCmsUserNisChange()" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-emerald-500 font-bold">
+          <option value="">- Pilih Siswa yang Diwakili -</option>
+        </select>
+        <p class="text-[10px] text-slate-500 mt-1">Akun wali murid ini akan otomatis terhubung ke laporan dan lembar rapor siswa yang dipilih.</p>
+      </div>
+
       <div class="pt-3 border-t border-slate-100 flex items-center justify-end gap-2">
         <button type="button" onclick="closeModalUser()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold">
           Batal
@@ -456,5 +471,104 @@
         </button>
       </div>
     </form>
+  </div>
+</div>
+
+<!-- Modal: Daftar & Generator Akun Wali Murid Seluruh Siswa -->
+<div id="modal-generate-wali" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+  <div class="bg-white rounded-3xl max-w-4xl w-full shadow-2xl border border-slate-100 overflow-hidden transform transition-all my-auto max-h-[90vh] flex flex-col">
+    <!-- Header Modal -->
+    <div class="px-6 py-5 bg-gradient-to-r from-emerald-900 via-teal-900 to-slate-900 text-white flex items-center justify-between flex-shrink-0">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-2xl bg-white/10 flex items-center justify-center text-emerald-300 text-lg border border-white/20">
+          <i class="fa-solid fa-users-viewfinder"></i>
+        </div>
+        <div>
+          <h3 class="font-black text-sm tracking-tight text-white leading-tight">Manajemen Akun Orang Tua / Wali Murid</h3>
+          <p class="text-[11px] text-emerald-200/90 font-medium">Generate & bagikan akses portal rapor kepada seluruh wali murid</p>
+        </div>
+      </div>
+      <button onclick="closeModalGenerateWali()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition" title="Tutup">
+        <i class="fa-solid fa-xmark text-sm"></i>
+      </button>
+    </div>
+
+    <!-- Body Modal -->
+    <div class="p-6 space-y-4 overflow-y-auto flex-1">
+      <!-- Info Banner -->
+      <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
+        <div class="flex items-start gap-3">
+          <i class="fa-solid fa-circle-info text-emerald-600 text-lg mt-0.5"></i>
+          <div>
+            <h4 class="font-bold text-xs text-emerald-950">Akses Portal Wali Murid Standar</h4>
+            <p class="text-[11px] text-emerald-800 leading-relaxed mt-0.5">
+              Setiap wali murid dapat langsung masuk menggunakan <strong>NIS Siswa</strong> dengan kata sandi default <strong>wali123</strong> atau NIS siswa. Anda juga dapat men-generate akun khusus ke tabel pengguna.
+            </p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 flex-shrink-0">
+          <button type="button" onclick="generateAllWaliAccounts()" class="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-black shadow transition flex items-center gap-1.5 cursor-pointer">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+            <span>Sinkron Semua Akun Wali (159 Siswa)</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Filter Bar -->
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 bg-slate-50 p-3 rounded-2xl border border-slate-200">
+        <div class="flex items-center gap-2">
+          <label class="text-xs font-bold text-slate-700">Filter Kelas:</label>
+          <select id="filter-gen-wali-kelas" onchange="renderModalWaliTable()" class="text-xs bg-white border border-slate-300 rounded-xl px-3 py-1.5 text-slate-800 font-bold focus:ring-2 focus:ring-emerald-500">
+            <option value="Semua">Semua Kelas (159 Siswa)</option>
+            <option value="IX ABU BAKAR">IX ABU BAKAR (24 Siswa)</option>
+            <option value="IX UMMU SALAMAH">IX UMMU SALAMAH (26 Siswa)</option>
+            <option value="VIII UMAR">VIII UMAR (27 Siswa)</option>
+            <option value="VIII KHODIJAH">VIII KHODIJAH (31 Siswa)</option>
+            <option value="VII UTSMAN">VII UTSMAN (25 Siswa)</option>
+            <option value="VII AISYAH">VII AISYAH (26 Siswa)</option>
+          </select>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <div class="relative">
+            <input type="text" id="filter-gen-wali-search" oninput="renderModalWaliTable()" placeholder="Cari nama / NIS..." 
+                   class="text-xs bg-white border border-slate-300 rounded-xl pl-7 pr-3 py-1.5 text-slate-800 focus:ring-2 focus:ring-emerald-500 w-44" />
+            <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-2.5 text-slate-400 text-[10px]"></i>
+          </div>
+          <button type="button" onclick="copyWaliBroadcastTemplate()" class="px-3 py-1.5 bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 rounded-xl text-xs font-bold transition flex items-center gap-1.5" title="Salin format pengumuman WhatsApp">
+            <i class="fa-brands fa-whatsapp text-emerald-600"></i>
+            <span>Salin Format WA</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Table Wali Accounts List -->
+      <div class="border border-slate-200 rounded-2xl overflow-hidden shadow-xs">
+        <table class="w-full text-left text-xs text-slate-700">
+          <thead class="bg-slate-100 text-slate-700 uppercase text-[10px] font-black tracking-wider border-b border-slate-200">
+            <tr>
+              <th class="px-3 py-2.5 w-10 text-center">No</th>
+              <th class="px-3 py-2.5">NIS & Kelas</th>
+              <th class="px-4 py-2.5">Nama Siswa (Ananda)</th>
+              <th class="px-3 py-2.5">Nama Wali Murid</th>
+              <th class="px-3 py-2.5">Username Login</th>
+              <th class="px-3 py-2.5">Kata Sandi</th>
+              <th class="px-3 py-2.5 text-center">Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="table-modal-wali-body" class="divide-y divide-slate-100">
+            <!-- Populated via JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Footer Modal -->
+    <div class="px-6 py-4 bg-slate-50 border-t border-slate-200 flex items-center justify-between flex-shrink-0 text-xs">
+      <span class="text-slate-500 font-medium" id="modal-wali-footer-info">Menampilkan daftar akun wali murid</span>
+      <button type="button" onclick="closeModalGenerateWali()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-xl font-bold">
+        Tutup
+      </button>
+    </div>
   </div>
 </div>
