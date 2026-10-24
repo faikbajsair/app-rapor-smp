@@ -152,8 +152,6 @@ setTimeout(() => {
   if (raporStudentOptions.length !== 1 || !raporStudentOptions[0].textContent.includes('ABDILLAH')) {
     throw new Error('Wali Murid should only see their own child in the report dropdown!');
   }
-  console.log('✅ Student dropdown isolated strictly to child: Abdillah Zulqarnain');
-
   // TEST 7: WALI MURID LOGIN USING NIS (NIS 262707001 - Aezar El Khazindar Walidain)
   console.log('\n--- TEST 7: WALI MURID DIRECT LOGIN VIA STUDENT NIS ---');
   win.loginAsSpecificTeacher('wali.aezar', 'wali123');
@@ -167,5 +165,61 @@ setTimeout(() => {
   }
   console.log('✅ Aezar parent successfully isolated to Aezar El Khazindar Walidain');
 
-  console.log('\n🎉 ALL RBAC & WALI MURID VERIFICATION TESTS PASSED 100% SUCCESSFULLY!');
+  // TEST 8: WALI MURID DASHBOARD - ANEKDOT (A-RECORD) & BIMBINGAN KONSELING (BK)
+  console.log('\n--- TEST 8: WALI MURID DASHBOARD - ANEKDOT (A-RECORD) & BIMBINGAN KONSELING (BK) ---');
+  win.loginAsSpecificTeacher('walimurid', 'wali123');
+  win.switchView('dashboard');
+  
+  const waliDash = doc.getElementById('dashboard-wali-view');
+  if (!waliDash || waliDash.classList.contains('hidden')) {
+    throw new Error('dashboard-wali-view should be visible for Wali Murid!');
+  }
+  
+  const anekdotList = doc.getElementById('wali-anekdot-list');
+  const bkList = doc.getElementById('wali-bk-list');
+  if (!anekdotList || !bkList) throw new Error('Anekdot or BK container not found!');
+  
+  console.log('Anekdot cards count:', anekdotList.children.length);
+  if (anekdotList.children.length < 3) {
+    throw new Error(`Expected at least 3 Anecdotal record cards for Abdillah, got ${anekdotList.children.length}`);
+  }
+  
+  console.log('BK cards count:', bkList.children.length);
+  if (bkList.children.length < 2) {
+    throw new Error(`Expected at least 2 BK counseling cards for Abdillah, got ${bkList.children.length}`);
+  }
+
+  const anekdotCountBadge = doc.getElementById('badge-anekdot-count')?.textContent.trim();
+  const bkCountBadge = doc.getElementById('badge-bk-count')?.textContent.trim();
+  console.log('Badges:', { anekdotCountBadge, bkCountBadge });
+  if (!anekdotCountBadge.includes('3 Catatan')) throw new Error('Anekdot count badge mismatch');
+  if (!bkCountBadge.includes('2 Sesi')) throw new Error('BK count badge mismatch');
+
+  // Test Filter Switcher
+  win.filterWaliReportCards('anekdot');
+  if (doc.getElementById('section-wali-anekdot').classList.contains('hidden')) throw new Error('Anekdot section should be visible in anekdot filter!');
+  if (!doc.getElementById('section-wali-konseling').classList.contains('hidden')) throw new Error('BK section should be hidden in anekdot filter!');
+
+  win.filterWaliReportCards('konseling');
+  if (!doc.getElementById('section-wali-anekdot').classList.contains('hidden')) throw new Error('Anekdot section should be hidden in konseling filter!');
+  if (doc.getElementById('section-wali-konseling').classList.contains('hidden')) throw new Error('BK section should be visible in konseling filter!');
+
+  win.filterWaliReportCards('all');
+  if (doc.getElementById('section-wali-anekdot').classList.contains('hidden') || doc.getElementById('section-wali-konseling').classList.contains('hidden')) {
+    throw new Error('Both sections should be visible in all filter!');
+  }
+  console.log('✅ Filter tabs between All, Anekdot, and BK working seamlessly');
+
+  // Test Printable Modal
+  win.openModalAnekdotPrint();
+  const printModal = doc.getElementById('modal-wali-anekdot-print');
+  if (!printModal || printModal.classList.contains('hidden')) throw new Error('Print modal should be visible after openModalAnekdotPrint!');
+  const printName = doc.getElementById('print-anekdot-nama')?.textContent.trim();
+  console.log('Print modal student name:', printName);
+  if (!printName.includes('ABDILLAH')) throw new Error(`Print modal student name mismatch: ${printName}`);
+  win.closeModalAnekdotPrint();
+  if (!printModal.classList.contains('hidden')) throw new Error('Print modal should be hidden after closeModalAnekdotPrint!');
+  console.log('✅ Official Printable Anekdot Modal verified successfully');
+
+  console.log('\n🎉 ALL RBAC, WALI MURID, ANEKDOT & BK VERIFICATION TESTS PASSED 100% SUCCESSFULLY!');
 }, 500);

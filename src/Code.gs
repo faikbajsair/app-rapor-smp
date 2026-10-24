@@ -256,6 +256,16 @@ function dispatchApiAction(action, payload) {
       case 'clearActivityLogs':
         return clearActivityLogs();
         
+      // Catatan Anekdot (A-Record) & Bimbingan Konseling (BK)
+      case 'getAnekdot':
+        return { success: true, data: getAllAnekdot(payload) };
+      case 'saveAnekdot':
+        return saveAnekdot(payload);
+      case 'getKonseling':
+        return { success: true, data: getAllKonseling(payload) };
+      case 'saveKonseling':
+        return saveKonseling(payload);
+
       default:
         return { success: false, message: 'Action API tidak dikenali: ' + action };
     }
@@ -336,7 +346,10 @@ function apiClearActivityLogs() { return dispatchApiAction('clearActivityLogs', 
 function apiGetRaporPublishStatus(filters) { return dispatchApiAction('getRaporPublishStatus', filters || {}); }
 function apiSetRaporPublishStatus(data) { return dispatchApiAction('setRaporPublishStatus', data); }
 
-
+function apiGetAnekdot(filters) { return dispatchApiAction('getAnekdot', filters || {}); }
+function apiSaveAnekdot(data) { return dispatchApiAction('saveAnekdot', data); }
+function apiGetKonseling(filters) { return dispatchApiAction('getKonseling', filters || {}); }
+function apiSaveKonseling(data) { return dispatchApiAction('saveKonseling', data); }
 
 function apiSeedOfficialSklKepemimpinan() {
   try {

@@ -591,6 +591,262 @@
         </button>
       </div>
     </div>
+
+    <!-- Parent Report Tabs & Quick Actions -->
+    <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-white p-3 sm:p-4 rounded-2xl border border-[#e2f3ea] shadow-sm">
+      <div class="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0">
+        <button type="button" onclick="filterWaliReportCards('all')" id="tab-wali-all" class="wali-report-tab px-3.5 py-2 rounded-xl text-xs font-black bg-[#00a66c] text-white shadow-sm transition flex items-center gap-2 whitespace-nowrap cursor-pointer">
+          <i class="fa-solid fa-layer-group"></i>
+          <span>Semua Laporan Ananda</span>
+        </button>
+        <button type="button" onclick="filterWaliReportCards('anekdot')" id="tab-wali-anekdot" class="wali-report-tab px-3.5 py-2 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition flex items-center gap-2 whitespace-nowrap cursor-pointer">
+          <i class="fa-solid fa-clipboard-list text-amber-500"></i>
+          <span>Catatan Anekdot (A-Record)</span>
+          <span id="tab-badge-anekdot" class="ml-1 px-1.5 py-0.2 rounded-full text-[10px] font-black bg-amber-100 text-amber-800">0</span>
+        </button>
+        <button type="button" onclick="filterWaliReportCards('konseling')" id="tab-wali-konseling" class="wali-report-tab px-3.5 py-2 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition flex items-center gap-2 whitespace-nowrap cursor-pointer">
+          <i class="fa-solid fa-comments text-teal-600"></i>
+          <span>Bimbingan Konseling (BK)</span>
+          <span id="tab-badge-bk" class="ml-1 px-1.5 py-0.2 rounded-full text-[10px] font-black bg-teal-100 text-teal-800">0</span>
+        </button>
+      </div>
+      <div class="flex items-center gap-2 self-end sm:self-auto">
+        <button type="button" onclick="openModalAnekdotPrint()" class="px-3.5 py-2 text-xs font-bold text-slate-700 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl transition flex items-center gap-1.5 cursor-pointer">
+          <i class="fa-solid fa-print text-slate-500"></i>
+          <span>Cetak Lembar A-Record</span>
+        </button>
+        <button type="button" onclick="openModalBkConsult()" class="px-3.5 py-2 text-xs font-bold text-white bg-teal-600 hover:bg-teal-700 rounded-xl shadow-sm transition flex items-center gap-1.5 cursor-pointer">
+          <i class="fa-solid fa-user-doctor"></i>
+          <span>Konsultasi BK / Walas</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Section 1: Laporan Catatan Anekdot (A-Record) -->
+    <div id="section-wali-anekdot" class="bg-white rounded-3xl p-5 sm:p-7 border border-[#e2f3ea] shadow-sm space-y-5">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-slate-100 pb-4">
+        <div>
+          <div class="flex items-center gap-2.5">
+            <span class="w-9 h-9 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-base shadow-sm">
+              <i class="fa-solid fa-clipboard-list"></i>
+            </span>
+            <div>
+              <div class="flex items-center gap-2">
+                <h3 class="text-base font-extrabold text-slate-900 tracking-tight">
+                  Laporan Catatan Anekdot (A-Record Ananda)
+                </h3>
+                <span id="badge-anekdot-count" class="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-amber-100 text-amber-800 border border-amber-200">
+                  0 Catatan
+                </span>
+              </div>
+              <p class="text-xs text-slate-500 mt-0.5">
+                Observasi faktual guru terhadap akhlak, kemandirian, adab shalat, kepemimpinan, dan kebiasaan positif ananda di sekolah.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-xs text-amber-800 bg-amber-50 border border-amber-200/80 px-3 py-1 rounded-full font-bold flex items-center gap-1.5">
+            <i class="fa-solid fa-circle-check text-amber-600"></i> Terverifikasi Berkala
+          </span>
+          <button type="button" onclick="openModalAnekdotPrint()" class="p-2 text-slate-400 hover:text-slate-700 transition cursor-pointer" title="Cetak Riwayat A-Record">
+            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Container Anekdot Cards List -->
+      <div id="wali-anekdot-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <!-- Rendered by JavaScript dynamically -->
+      </div>
+    </div>
+
+    <!-- Section 2: Laporan Bimbingan Konseling (BK) -->
+    <div id="section-wali-konseling" class="bg-white rounded-3xl p-5 sm:p-7 border border-[#e2f3ea] shadow-sm space-y-5">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-slate-100 pb-4">
+        <div>
+          <div class="flex items-center gap-2.5">
+            <span class="w-9 h-9 rounded-2xl bg-teal-100 text-teal-700 flex items-center justify-center font-bold text-base shadow-sm">
+              <i class="fa-solid fa-comments"></i>
+            </span>
+            <div>
+              <div class="flex items-center gap-2">
+                <h3 class="text-base font-extrabold text-slate-900 tracking-tight">
+                  Laporan Bimbingan Konseling (BK Ananda)
+                </h3>
+                <span id="badge-bk-count" class="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-teal-100 text-teal-800 border border-teal-200">
+                  0 Sesi
+                </span>
+              </div>
+              <p class="text-xs text-slate-500 mt-0.5">
+                Hasil pendampingan konseling belajar, sosialisasi, perkembangan emosional, dan arahan kolaborasi untuk orang tua di rumah.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <button type="button" onclick="openModalBkConsult()" class="px-3.5 py-1.5 bg-teal-50 hover:bg-teal-100 text-teal-800 border border-teal-200 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer">
+            <i class="fa-brands fa-whatsapp text-teal-600"></i>
+            <span>Jadwalkan Konsultasi</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Container BK Cards List -->
+      <div id="wali-bk-list" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Rendered by JavaScript dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 1: Cetak Lengkap Lembar Catatan Anekdot (A-Record) -->
+  <div id="modal-wali-anekdot-print" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 backdrop-blur-sm hidden">
+    <div class="bg-white rounded-3xl w-full max-w-4xl max-h-[90vh] shadow-2xl flex flex-col overflow-hidden animate-fade-in border border-slate-200">
+      <div class="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-slate-50/50">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-sm">
+            <i class="fa-solid fa-clipboard-check"></i>
+          </div>
+          <div>
+            <h3 class="font-black text-sm text-slate-900">Lembar Resmi Catatan Anekdot (A-Record Siswa)</h3>
+            <p class="text-[11px] text-slate-500">Portofolio Observasi Perkembangan Karakter & Sikap Ananda</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="printAnekdotSheet()" class="px-3.5 py-1.5 bg-[#00a66c] hover:bg-[#008f5d] text-white rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer">
+            <i class="fa-solid fa-print"></i> Cetak / Simpan PDF
+          </button>
+          <button onclick="closeModalAnekdotPrint()" class="w-8 h-8 rounded-full hover:bg-slate-200 text-slate-400 hover:text-slate-700 flex items-center justify-center transition cursor-pointer">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="p-6 overflow-y-auto space-y-6" id="anekdot-printable-content">
+        <!-- Official Printable Header -->
+        <div class="border-b-2 border-slate-900 pb-4 text-center space-y-1">
+          <h2 class="text-base font-black uppercase text-slate-900">SMP AL IMAM ISLAMIC SCHOOL (AI IS)</h2>
+          <p class="text-xs text-slate-600 font-medium">Jl. KH. M. Usman No. 128, Kukusan, Beji, Kota Depok, Jawa Barat</p>
+          <h1 class="text-sm font-black uppercase tracking-wider text-emerald-800 pt-2">LEMBAR REKAM OBSERVASI ANEKDOT (A-RECORD) PESERTA DIDIK</h1>
+          <p class="text-[11px] text-slate-500" id="print-anekdot-period">Tahun Ajaran 2026/2027 - Tengah Semester 1</p>
+        </div>
+
+        <!-- Student Meta Details -->
+        <div class="grid grid-cols-2 gap-4 bg-slate-50 p-4 rounded-2xl border border-slate-200 text-xs">
+          <div class="space-y-1">
+            <p><span class="text-slate-500 inline-block w-28">Nama Lengkap:</span> <strong id="print-anekdot-nama" class="text-slate-900">-</strong></p>
+            <p><span class="text-slate-500 inline-block w-28">NIS / NISN:</span> <strong id="print-anekdot-nis" class="text-slate-900">-</strong></p>
+          </div>
+          <div class="space-y-1">
+            <p><span class="text-slate-500 inline-block w-28">Kelas:</span> <strong id="print-anekdot-kelas" class="text-purple-700">-</strong></p>
+            <p><span class="text-slate-500 inline-block w-28">Wali Kelas:</span> <strong id="print-anekdot-walas" class="text-slate-900">-</strong></p>
+          </div>
+        </div>
+
+        <!-- Detailed Observations Table -->
+        <div class="overflow-x-auto border border-slate-200 rounded-2xl">
+          <table class="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr class="bg-slate-100 text-slate-800 font-extrabold border-b border-slate-200">
+                <th class="p-3 w-10 text-center">No</th>
+                <th class="p-3 w-28">Tanggal</th>
+                <th class="p-3 w-36">Kategori Sikap</th>
+                <th class="p-3">Peristiwa Teramati (Catatan Anekdot)</th>
+                <th class="p-3">Analisis & Tindak Lanjut Guru</th>
+                <th class="p-3 w-28">Observer</th>
+              </tr>
+            </thead>
+            <tbody id="print-anekdot-table-body" class="divide-y divide-slate-100">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Official Signatures Box -->
+        <div class="grid grid-cols-3 gap-4 pt-6 text-center text-xs text-slate-800">
+          <div>
+            <p class="text-slate-500">Mengetahui Orang Tua / Wali,</p>
+            <div class="h-20 flex items-end justify-center">
+              <p class="font-bold border-b border-slate-400 pb-1 w-44" id="print-anekdot-ttd-ortu">( ............................................ )</p>
+            </div>
+          </div>
+          <div>
+            <p class="text-slate-500">Guru Bimbingan Konseling,</p>
+            <div class="h-20 flex items-end justify-center">
+              <p class="font-bold border-b border-slate-400 pb-1 w-44">Ustadzah Fatimah Azzahra, S.Psi.</p>
+            </div>
+          </div>
+          <div>
+            <p class="text-slate-500" id="print-anekdot-city-date">Bogor, 17 Oktober 2026</p>
+            <p class="text-slate-500">Wali Kelas,</p>
+            <div class="h-20 flex items-end justify-center">
+              <p class="font-bold border-b border-slate-400 pb-1 w-44" id="print-anekdot-ttd-walas">Dewi Fitria Nugraheni, S.Pd., Gr.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 2: Formulir Konsultasi BK / Permohonan Janji Temu -->
+  <div id="modal-wali-bk-consult" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 backdrop-blur-sm hidden">
+    <div class="bg-white rounded-3xl w-full max-w-lg shadow-2xl overflow-hidden animate-fade-in border border-slate-200">
+      <div class="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-slate-50">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-xl bg-teal-100 text-teal-700 flex items-center justify-center font-bold text-xs">
+            <i class="fa-solid fa-calendar-check"></i>
+          </div>
+          <div>
+            <h3 class="font-black text-sm text-slate-900">Konsultasi BK & Wali Kelas</h3>
+            <p class="text-[11px] text-slate-500">Jadwalkan pendampingan atau diskusikan perkembangan ananda</p>
+          </div>
+        </div>
+        <button onclick="closeModalBkConsult()" class="w-8 h-8 rounded-full hover:bg-slate-200 text-slate-400 hover:text-slate-700 flex items-center justify-center transition cursor-pointer">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <form onsubmit="submitParentBkConsultation(event)" class="p-6 space-y-4 text-xs">
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Nama Ananda & Kelas</label>
+          <input type="text" id="consult-child-info" readonly class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3.5 py-2 font-semibold text-slate-800" value="-">
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Topik Bimbingan / Konsultasi <span class="text-rose-500">*</span></label>
+          <select id="consult-topic" required class="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2 font-medium text-slate-800 focus:outline-none focus:border-teal-500">
+            <option value="Bimbingan Belajar & Strategi Pemahaman Mapel">Bimbingan Belajar & Strategi Pemahaman Mapel</option>
+            <option value="Pengembangan Karakter, Ibadah & Adab Keseharian">Pengembangan Karakter, Ibadah & Adab Keseharian</option>
+            <option value="Adaptasi Sosial & Komunikasi Teman Sebaya">Adaptasi Sosial & Komunikasi Teman Sebaya</option>
+            <option value="Manajemen Waktu Belajar & Penggunaan Gadget di Rumah">Manajemen Waktu Belajar & Penggunaan Gadget di Rumah</option>
+            <option value="Konsultasi Minat Bakat & Persiapan Kelulusan">Konsultasi Minat Bakat & Persiapan Kelulusan</option>
+            <option value="Permohonan Janji Temu Tatap Muka di Sekolah">Permohonan Janji Temu Tatap Muka di Sekolah</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Catatan / Pesan Orang Tua <span class="text-rose-500">*</span></label>
+          <textarea id="consult-message" rows="3" required placeholder="Tuliskan catatan, kendala yang dihadapi di rumah, atau pertanyaan untuk Guru BK / Wali Kelas..." class="w-full bg-white border border-slate-200 rounded-xl p-3 font-normal text-slate-800 focus:outline-none focus:border-teal-500 placeholder-slate-400"></textarea>
+        </div>
+
+        <div class="p-3 bg-teal-50 border border-teal-200 rounded-2xl flex items-start gap-2.5">
+          <i class="fa-solid fa-circle-info text-teal-600 mt-0.5"></i>
+          <p class="text-[11px] text-teal-800 leading-snug">
+            Pesan ini dapat langsung dikirimkan melalui <strong>WhatsApp Resmi Sekolah</strong> ke nomor Wali Kelas atau Guru BK untuk respon yang lebih cepat.
+          </p>
+        </div>
+
+        <div class="flex items-center justify-end gap-2 pt-2">
+          <button type="button" onclick="closeModalBkConsult()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl transition cursor-pointer">
+            Batal
+          </button>
+          <button type="submit" class="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white font-bold rounded-xl shadow-md shadow-teal-600/20 transition flex items-center gap-2 cursor-pointer">
+            <i class="fa-brands fa-whatsapp"></i>
+            <span>Kirim Pesan ke Guru BK / Walas</span>
+          </button>
+        </div>
+      </form>
+    </div>
   </div>
 
   <!-- Teacher / Administrator Dashboard View -->
@@ -6447,8 +6703,195 @@ const DEMO_DATA = {
       ip_address: '127.0.0.1',
       status: 'success'
     }
-  ]
+  ],
+  anekdot: [],
+  konseling: []
 };
+
+function buildDefaultAnekdotData() {
+  return [
+    // Abdillah Zulqarnain Arrazi (242507001 - IX ABU BAKAR)
+    {
+      id: 'ANK-242507001-1',
+      nis: '242507001',
+      nama_murid: 'ABDILLAH ZULQARNAIN ARRAZI',
+      kelas: 'IX ABU BAKAR',
+      semester: 'Tengah Semester 1',
+      tahun_ajaran: '2026/2027',
+      tanggal: '14 Oktober 2026',
+      kategori: 'Adab & Shalat Berjamaah',
+      kejadian: 'Saat adzan Dzuhur berkumandang, Abdillah dengan inisiatif tinggi berwudhu lebih awal, membantu merapikan shaf shalat, dan menyusun sajadah imam di musholla utama.',
+      analisis: 'Memperlihatkan kedisiplinan ibadah yang istiqomah, adab islami yang luhur, dan kepedulian terhadap kemaslahatan jamaah tanpa pamrih.',
+      tindak_lanjut: 'Diberikan apresiasi positif secara lisan oleh wali kelas pada evaluasi harian dan dimotivasi untuk mempertahankan keteladanan.',
+      observer: 'Dewi Fitria Nugraheni, S.Pd., Gr.',
+      status: 'Apresiasi Positif'
+    },
+    {
+      id: 'ANK-242507001-2',
+      nis: '242507001',
+      nama_murid: 'ABDILLAH ZULQARNAIN ARRAZI',
+      kelas: 'IX ABU BAKAR',
+      semester: 'Tengah Semester 1',
+      tahun_ajaran: '2026/2027',
+      tanggal: '06 Oktober 2026',
+      kategori: 'Inisiatif & Kepemimpinan Kelompok',
+      kejadian: 'Dalam diskusi kelompok pemecahan masalah materi Fikih & Sains, Abdillah bertindak sebagai moderator yang santun, membagi giliran bicara dengan adil, dan menyemangati rekan yang pendiam.',
+      analisis: 'Keterampilan kepemimpinan (leadership), empati sosial, dan komunikasi interpersonal ananda berkembang sangat matang.',
+      tindak_lanjut: 'Direkomendasikan oleh tim kesiswaan untuk aktif dalam kepengurusan dewan kepemimpinan santri (Imarah/OSIS).',
+      observer: 'Dewi Fitria Nugraheni, S.Pd., Gr.',
+      status: 'Terverifikasi'
+    },
+    {
+      id: 'ANK-242507001-3',
+      nis: '242507001',
+      nama_murid: 'ABDILLAH ZULQARNAIN ARRAZI',
+      kelas: 'IX ABU BAKAR',
+      semester: 'Tengah Semester 1',
+      tahun_ajaran: '2026/2027',
+      tanggal: '24 September 2026',
+      kategori: 'Kedisiplinan & Tanggung Jawab',
+      kejadian: 'Mengumpulkan laporan portofolio tugas mandiri tepat pada tenggat waktu pagi hari dengan kerapian tulisan dan catatan referensi yang sangat terstruktur.',
+      analisis: 'Menunjukkan rasa tanggung jawab belajar yang tinggi dan kemampuan manajemen tugas yang prima.',
+      tindak_lanjut: 'Karya resume dijadikan model referensi positif bagi rekan sekelas.',
+      observer: 'Zam-zam Nasrullah, S.Pd.',
+      status: 'Apresiasi Positif'
+    },
+    // Aezar El Khazindar Walidain (262707001 - VII UTSMAN)
+    {
+      id: 'ANK-262707001-1',
+      nis: '262707001',
+      nama_murid: 'AEZAR EL KHAZINDAR WALIDAIN',
+      kelas: 'VII UTSMAN',
+      semester: 'Tengah Semester 1',
+      tahun_ajaran: '2026/2027',
+      tanggal: '12 Oktober 2026',
+      kategori: 'Kedisiplinan Belajar & Adab',
+      kejadian: 'Aezar selalu hadir di kelas 10 menit sebelum jam pertama dimulai, meletakkan sepatu di rak dengan rapi, dan langsung menyiapkan Al-Quran untuk halaqah pagi.',
+      analisis: 'Sikap kedisiplinan dan adab penuntut ilmu (adab tholibul ilmi) yang sangat baik untuk jenjang kelas VII awal.',
+      tindak_lanjut: 'Diberikan stiker apresiasi karakter oleh wali kelas dan penguatan motivasi saat sesi wali kelas.',
+      observer: 'Eli Umiyati, S.Pd., Gr.',
+      status: 'Apresiasi Positif'
+    },
+    {
+      id: 'ANK-262707001-2',
+      nis: '262707001',
+      nama_murid: 'AEZAR EL KHAZINDAR WALIDAIN',
+      kelas: 'VII UTSMAN',
+      semester: 'Tengah Semester 1',
+      tahun_ajaran: '2026/2027',
+      tanggal: '29 September 2026',
+      kategori: 'Sosial & Kepedulian',
+      kejadian: 'Membantu teman sekelas yang tertinggal catatan materi IPA karena sakit, meminjamkan buku catatan dengan sukarela dan menjelaskan poin tugas.',
+      analisis: 'Jiwa sosial, ukhuwah islamiyah, dan sikap tolong-menolong yang patut dicontoh.',
+      tindak_lanjut: 'Dicatat dalam buku perkembangan kepribadian sebagai poin kebaikan sosial.',
+      observer: 'Eli Umiyati, S.Pd., Gr.',
+      status: 'Terverifikasi'
+    },
+    // Akifa Naila Karim (262707026 - VII AISYAH)
+    {
+      id: 'ANK-262707026-1',
+      nis: '262707026',
+      nama_murid: 'AKIFA NAILA KARIM',
+      kelas: 'VII AISYAH',
+      semester: 'Tengah Semester 1',
+      tahun_ajaran: '2026/2027',
+      tanggal: '15 Oktober 2026',
+      kategori: 'Kemandirian & Kerapian',
+      kejadian: 'Akifa proaktif memimpin piket kebersihan kelas VII Aisyah, memastikan papan tulis bersih, dan mengajak teman-teman merapikan sudut baca kelas.',
+      analisis: 'Menunjukkan inisiatif kepedulian lingkungan yang bersih, kepemimpinan putri yang santun dan disenangi teman.',
+      tindak_lanjut: 'Mendapat apresiasi dari wali kelas dan dicatat dalam rekapitulasi adab keputrian.',
+      observer: 'Tri Yuli Aryani, S.Pd., Gr.',
+      status: 'Apresiasi Positif'
+    },
+    {
+      id: 'ANK-262707026-2',
+      nis: '262707026',
+      nama_murid: 'AKIFA NAILA KARIM',
+      kelas: 'VII AISYAH',
+      semester: 'Tengah Semester 1',
+      tahun_ajaran: '2026/2027',
+      tanggal: '01 Oktober 2026',
+      kategori: 'Semangat Tahsin & Tahfizh',
+      kejadian: 'Fokus dan bersungguh-sungguh saat muraja\'ah hafalan Al-Qur\'an juz 30, menyimak setoran teman dengan takzim.',
+      analisis: 'Keseriusan belajar dan kecintaan terhadap Al-Qur\'an terpancar dengan nyata.',
+      tindak_lanjut: 'Didorong untuk terus mempertahankan tajwid dan kelancaran hafalan.',
+      observer: 'Tri Yuli Aryani, S.Pd., Gr.',
+      status: 'Terverifikasi'
+    }
+  ];
+}
+
+function buildDefaultKonselingData() {
+  return [
+    // Abdillah Zulqarnain Arrazi (242507001 - IX ABU BAKAR)
+    {
+      id: 'BK-242507001-1',
+      nis: '242507001',
+      nama_murid: 'ABDILLAH ZULQARNAIN ARRAZI',
+      kelas: 'IX ABU BAKAR',
+      semester: 'Tengah Semester 1',
+      tahun_ajaran: '2026/2027',
+      tanggal: '08 Oktober 2026',
+      bidang_bimbingan: 'Bimbingan Belajar & Akademik',
+      topik: 'Optimalisasi Manajemen Waktu Menjelang Ujian Tengah Semester & Jenjang Lanjutan',
+      uraian_konseling: 'Sesi konsultasi belajar berkala. Abdillah berdiskusi mengenai ritme belajar malam di rumah agar tidak mudah lelah. Guru BK memberikan panduan teknik pomodoro (belajar fokus 25 menit, istirahat 5 menit) dan penyusunan checklist target harian.',
+      rencana_tindak_lanjut: 'Siswa membuat jadwal belajar terstruktur mandiri di kamar belajar pukul 19.30 - 20.45 WIB dan menyicil resume mata pelajaran eksakta.',
+      rekomendasi_orang_tua: 'Mohon dukungan Bapak/Ibu Fajar untuk menciptakan suasana rumah yang tenang saat jam belajar malam, memberikan asupan air putih dan nutrisi seimbang, serta membatasi waktu layar (screen-time) gawai setelah pukul 21.00 WIB.',
+      konselor: 'Ustadzah Fatimah Azzahra, S.Psi. (Guru BK) & Dewi Fitria Nugraheni, S.Pd., Gr.',
+      status: 'Selesai - Progres Sangat Baik'
+    },
+    {
+      id: 'BK-242507001-2',
+      nis: '242507001',
+      nama_murid: 'ABDILLAH ZULQARNAIN ARRAZI',
+      kelas: 'IX ABU BAKAR',
+      semester: 'Tengah Semester 1',
+      tahun_ajaran: '2026/2027',
+      tanggal: '17 September 2026',
+      bidang_bimbingan: 'Bimbingan Minat & Bakat Karir',
+      topik: 'Penyaluran Minat Ekstrakurikuler dan Perencanaan Studi Tingkat SMA',
+      uraian_konseling: 'Eksplorasi kecenderungan bakat Abdillah pada bidang kepemimpinan dan minat olahraga (Wushu & Futsal). Konselor memberikan pengarahan agar kegiatan ekstrakurikuler selaras dengan target prestasi akademik kelas IX.',
+      rencana_tindak_lanjut: 'Menjaga komitmen kedisiplinan waktu antara latihan fisik ekstrakurikuler dan pengulangan materi pelajaran sekolah.',
+      rekomendasi_orang_tua: 'Apresiasi yang tinggi kepada orang tua yang senantiasa mendampingi kegiatan hobi positif ananda. Tetap berikan dorongan moral yang menenangkan jelang persiapan ujian akhir nanti.',
+      konselor: 'Ustadzah Fatimah Azzahra, S.Psi. (Guru BK)',
+      status: 'Selesai'
+    },
+    // Aezar El Khazindar Walidain (262707001 - VII UTSMAN)
+    {
+      id: 'BK-262707001-1',
+      nis: '262707001',
+      nama_murid: 'AEZAR EL KHAZINDAR WALIDAIN',
+      kelas: 'VII UTSMAN',
+      semester: 'Tengah Semester 1',
+      tahun_ajaran: '2026/2027',
+      tanggal: '05 Oktober 2026',
+      bidang_bimbingan: 'Bimbingan Adaptasi Sosial & Belajar',
+      topik: 'Adaptasi Transisi Belajar dari Jenjang SD ke SMP Al-Imam',
+      uraian_konseling: 'Pendampingan psikologis murid baru kelas VII. Aezar menyampaikan rasa senang dengan lingkungan sekolah baru dan sudah mulai akrab dengan rekan-rekan sekelas, namun butuh penyesuaian dengan bertambahnya jumlah mata pelajaran (16 mapel).',
+      rencana_tindak_lanjut: 'Aezar membiasakan mengecek agenda buku penghubung dan menyiapkan buku pelajaran pada malam hari sebelum tidur.',
+      rekomendasi_orang_tua: 'Bapak/Ibu diharapkan rutin mengecek agenda sekolah ananda setiap sore dan memberikan ruang diskusi hangat mengenai apa yang dipelajari ananda di sekolah setiap harinya.',
+      konselor: 'Ustadzah Fatimah Azzahra, S.Psi. (Guru BK) & Eli Umiyati, S.Pd., Gr.',
+      status: 'Selesai - Progres Positif'
+    },
+    // Akifa Naila Karim (262707026 - VII AISYAH)
+    {
+      id: 'BK-262707026-1',
+      nis: '262707026',
+      nama_murid: 'AKIFA NAILA KARIM',
+      kelas: 'VII AISYAH',
+      semester: 'Tengah Semester 1',
+      tahun_ajaran: '2026/2027',
+      tanggal: '07 Oktober 2026',
+      bidang_bimbingan: 'Bimbingan Pribadi & Manajemen Diri',
+      topik: 'Peningkatan Rasa Percaya Diri Saat Tampil Presentasi di Depan Kelas',
+      uraian_konseling: 'Akifa memiliki pemahaman materi yang sangat baik, namun terkadang masih merasa malu saat diminta berbicara di depan forum. Guru BK memberikan tips latihan pernapasan dan metode berbicara dengan kontak mata ramah.',
+      rencana_tindak_lanjut: 'Berlatih berbicara di depan cermin atau bercerita di depan keluarga di rumah untuk mengasah kelancaran bertutur kata.',
+      rekomendasi_orang_tua: 'Mohon orang tua memberikan pujian tulus saat ananda berhasil menceritakan pengalamannya dan mengajak ananda berdialog aktif santai saat waktu berkumpul bersama keluarga.',
+      konselor: 'Ustadzah Fatimah Azzahra, S.Psi. (Guru BK) & Tri Yuli Aryani, S.Pd., Gr.',
+      status: 'Selesai - Progres Positif'
+    }
+  ];
+}
 
 // Populate DEMO_DATA: 159 Students preserved with empty grades ready for teacher input
 function buildExactAlImamDataset() {
@@ -6739,6 +7182,8 @@ function buildExactAlImamDataset() {
   DEMO_DATA.diniyah = dnList;
   DEMO_DATA.skl = sklList;
   DEMO_DATA.tp = [...DEFAULT_TP_BANK_16];
+  DEMO_DATA.anekdot = buildDefaultAnekdotData();
+  DEMO_DATA.konseling = buildDefaultKonselingData();
 }
 
 buildExactAlImamDataset();
@@ -6757,6 +7202,8 @@ const AppState = {
   sklList: [...(DEMO_DATA.skl || [])],
   usersList: [...DEMO_DATA.users],
   activityLogs: [...(DEMO_DATA.activityLogs || [])],
+  anekdotList: [...(DEMO_DATA.anekdot || [])],
+  konselingList: [...(DEMO_DATA.konseling || [])],
   activePrintNis: '262707001'
 };
 
@@ -6770,7 +7217,9 @@ const LOCAL_STORAGE_KEYS = {
   DINIYAH: 'aiis_db_diniyah_list',
   SKL: 'aiis_db_skl_list',
   USERS: 'aiis_db_users_list',
-  LOGS: 'aiis_db_activity_logs'
+  LOGS: 'aiis_db_activity_logs',
+  ANEKDOT: 'aiis_db_anekdot_list',
+  KONSELING: 'aiis_db_konseling_list'
 };
 
 function saveStateToLocal(key = 'all') {
@@ -6784,6 +7233,8 @@ function saveStateToLocal(key = 'all') {
     if (key === 'all' || key === 'skl') localStorage.setItem(LOCAL_STORAGE_KEYS.SKL, JSON.stringify(AppState.sklList));
     if (key === 'all' || key === 'users') localStorage.setItem(LOCAL_STORAGE_KEYS.USERS, JSON.stringify(AppState.usersList));
     if (key === 'all' || key === 'logs') localStorage.setItem(LOCAL_STORAGE_KEYS.LOGS, JSON.stringify(AppState.activityLogs));
+    if (key === 'all' || key === 'anekdot') localStorage.setItem(LOCAL_STORAGE_KEYS.ANEKDOT, JSON.stringify(AppState.anekdotList));
+    if (key === 'all' || key === 'konseling') localStorage.setItem(LOCAL_STORAGE_KEYS.KONSELING, JSON.stringify(AppState.konselingList));
   } catch (e) {
     console.warn('Gagal menyimpan cache ke localStorage:', e);
   }
@@ -6851,6 +7302,16 @@ function loadStateFromLocal() {
     if (lg) {
       const parsed = JSON.parse(lg);
       if (Array.isArray(parsed) && parsed.length > 0) AppState.activityLogs = parsed;
+    }
+    const ank = localStorage.getItem(LOCAL_STORAGE_KEYS.ANEKDOT);
+    if (ank) {
+      const parsed = JSON.parse(ank);
+      if (Array.isArray(parsed) && parsed.length > 0) AppState.anekdotList = parsed;
+    }
+    const kns = localStorage.getItem(LOCAL_STORAGE_KEYS.KONSELING);
+    if (kns) {
+      const parsed = JSON.parse(kns);
+      if (Array.isArray(parsed) && parsed.length > 0) AppState.konselingList = parsed;
     }
   } catch (e) {
     console.warn('Gagal memuat cache dari localStorage:', e);
@@ -7952,6 +8413,9 @@ function applyRoleUIPermissions(role) {
         statusBadge.innerHTML = '<i class="fa-solid fa-lock text-amber-600 mr-1"></i> DRAFT (Dalam Review)';
       }
     }
+
+    // Render Anekdot A-Record and BK Counseling cards for child
+    renderWaliAnekdotAndKonseling(childNis, childMurid);
   }
 
   const muridSelect = document.getElementById('rapor-murid-select');
@@ -7973,6 +8437,456 @@ function applyRoleUIPermissions(role) {
     loadMuridReportForPrint(childNis);
   }
 }
+
+/**
+ * ============================================================================
+ * LAPORAN CATATAN ANEKDOT (A-RECORD) & BIMBINGAN KONSELING (BK) KHUSUS WALI MURID
+ * ============================================================================
+ */
+
+function getAnekdotForStudent(nis, studentObj) {
+  const cleanNis = String(nis || '').trim();
+  const existing = (AppState.anekdotList || []).filter(a => String(a.nis).trim() === cleanNis);
+  if (existing.length > 0) return existing;
+
+  const name = studentObj?.nama_murid || studentObj?.nama_santri || 'Ananda';
+  const kelas = studentObj?.kelas || 'SMP Al-Imam';
+  const walas = formatWaliKelasTitleCase(studentObj?.wali_kelas || WALI_KELAS_MAP[kelas] || 'Dewi Fitria Nugraheni, S.Pd., Gr.');
+
+  return [
+    {
+      id: `ANK-${cleanNis}-1`,
+      nis: cleanNis,
+      nama_murid: name,
+      kelas: kelas,
+      semester: 'Tengah Semester 1',
+      tahun_ajaran: '2026/2027',
+      tanggal: '14 Oktober 2026',
+      kategori: 'Adab & Shalat Berjamaah',
+      kejadian: `Ananda ${name} menunjukkan kesiapan prima saat shalat berjamaah, berwudhu dengan tertib lebih awal, dan aktif merapikan shaf shalat bersama rekan-rekan.`,
+      analisis: 'Memperlihatkan kedisiplinan beribadah yang istiqomah, adab islami yang luhur, dan keteladanan yang konsisten.',
+      tindak_lanjut: 'Diberikan apresiasi oleh wali kelas saat evaluasi harian dan dimotivasi untuk mempertahankan kebiasaan baik.',
+      observer: walas,
+      status: 'Apresiasi Positif'
+    },
+    {
+      id: `ANK-${cleanNis}-2`,
+      nis: cleanNis,
+      nama_murid: name,
+      kelas: kelas,
+      semester: 'Tengah Semester 1',
+      tahun_ajaran: '2026/2027',
+      tanggal: '06 Oktober 2026',
+      kategori: 'Inisiatif & Kerjasama Belajar',
+      kejadian: `Dalam pembelajaran kelompok kolaboratif, ananda ${name} proaktif membantu rekan yang kesulitan memahami materi dan menjaga suasana belajar tetap tertib.`,
+      analisis: 'Keterampilan komunikasi sosial, empati, dan kepemimpinan suportif berkembang sangat baik.',
+      tindak_lanjut: 'Dicatat dalam buku perkembangan kepemimpinan siswa sebagai poin kebaikan karakter.',
+      observer: walas,
+      status: 'Terverifikasi'
+    },
+    {
+      id: `ANK-${cleanNis}-3`,
+      nis: cleanNis,
+      nama_murid: name,
+      kelas: kelas,
+      semester: 'Tengah Semester 1',
+      tahun_ajaran: '2026/2027',
+      tanggal: '24 September 2026',
+      kategori: 'Kedisiplinan & Tanggung Jawab',
+      kejadian: `Mengumpulkan lembar portofolio tugas tepat waktu dengan format rapi dan catatan mandiri yang lengkap.`,
+      analisis: 'Rasa tanggung jawab belajar dan etos kerja mandiri ananda sangat membanggakan.',
+      tindak_lanjut: 'Hasil portofolio dijadikan contoh kerapian penugasan di kelas.',
+      observer: walas,
+      status: 'Apresiasi Positif'
+    }
+  ];
+}
+
+function getKonselingForStudent(nis, studentObj) {
+  const cleanNis = String(nis || '').trim();
+  const existing = (AppState.konselingList || []).filter(k => String(k.nis).trim() === cleanNis);
+  if (existing.length > 0) return existing;
+
+  const name = studentObj?.nama_murid || studentObj?.nama_santri || 'Ananda';
+  const kelas = studentObj?.kelas || 'SMP Al-Imam';
+  const walas = formatWaliKelasTitleCase(studentObj?.wali_kelas || WALI_KELAS_MAP[kelas] || 'Dewi Fitria Nugraheni, S.Pd., Gr.');
+
+  return [
+    {
+      id: `BK-${cleanNis}-1`,
+      nis: cleanNis,
+      nama_murid: name,
+      kelas: kelas,
+      semester: 'Tengah Semester 1',
+      tahun_ajaran: '2026/2027',
+      tanggal: '08 Oktober 2026',
+      bidang_bimbingan: 'Bimbingan Belajar & Akademik',
+      topik: 'Optimalisasi Manajemen Waktu & Strategi Belajar Menjelang UTS',
+      uraian_konseling: `Siswa berdiskusi dengan konselor mengenai penjadwalan belajar di rumah agar seimbang antara hafalan Qur'an dan penugasan 16 mata pelajaran. Guru BK memberikan teknik pomodoro dan penyusunan checklist belajar.`,
+      rencana_tindak_lanjut: `Ananda menyusun jadwal belajar mandiri harian 45 menit setiap malam dan menjaga waktu istirahat yang cukup.`,
+      rekomendasi_orang_tua: `Mohon Bapak/Ibu memberikan ruang dan suasana belajar yang tenang di rumah, serta mendampingi ananda dalam pembatasan penggunaan gawai pada malam hari.`,
+      konselor: `Ustadzah Fatimah Azzahra, S.Psi. (Guru BK) & ${walas}`,
+      status: 'Selesai - Progres Sangat Baik'
+    },
+    {
+      id: `BK-${cleanNis}-2`,
+      nis: cleanNis,
+      nama_murid: name,
+      kelas: kelas,
+      semester: 'Tengah Semester 1',
+      tahun_ajaran: '2026/2027',
+      tanggal: '18 September 2026',
+      bidang_bimbingan: 'Bimbingan Minat, Bakat & Karakter',
+      topik: 'Pengembangan Potensi Diri & Keseimbangan Aktivitas Sekolah',
+      uraian_konseling: `Konseling pengembangan minat ananda pada kegiatan ekstrakurikuler serta bagaimana memupuk rasa percaya diri saat tampil berbicara di depan forum umum.`,
+      rencana_tindak_lanjut: `Aktif berpartisipasi dalam kegiatan kultum / presentasi kelas dan berolahraga secara teratur.`,
+      rekomendasi_orang_tua: `Dukungan dan apresiasi berkala dari orang tua di rumah sangat efektif membangun kepercayaan diri ananda. Berikan pujian atas setiap proses usaha positif yang telah ananda lakukan.`,
+      konselor: 'Ustadzah Fatimah Azzahra, S.Psi. (Guru BK)',
+      status: 'Selesai'
+    }
+  ];
+}
+
+function renderWaliAnekdotAndKonseling(childNis, childMurid) {
+  if (!childMurid) {
+    childMurid = AppState.muridList.find(m => String(m.nis).trim() === String(childNis).trim()) || {
+      nis: childNis,
+      nama_murid: AppState.currentUser?.nama_lengkap || 'Ananda',
+      kelas: 'IX ABU BAKAR',
+      wali_kelas: 'Dewi Fitria Nugraheni, S.Pd., Gr.'
+    };
+  }
+
+  const cleanNis = String(childNis || childMurid.nis || '').trim();
+  const anekdotRecords = getAnekdotForStudent(cleanNis, childMurid);
+  const bkRecords = getKonselingForStudent(cleanNis, childMurid);
+
+  // Update Counters & Badges
+  const badgeAnekdot = document.getElementById('badge-anekdot-count');
+  if (badgeAnekdot) {
+    badgeAnekdot.textContent = `${anekdotRecords.length} Catatan`;
+    badgeAnekdot.innerText = `${anekdotRecords.length} Catatan`;
+  }
+  const tabBadgeAnekdot = document.getElementById('tab-badge-anekdot');
+  if (tabBadgeAnekdot) {
+    tabBadgeAnekdot.textContent = String(anekdotRecords.length);
+    tabBadgeAnekdot.innerText = String(anekdotRecords.length);
+  }
+
+  const badgeBk = document.getElementById('badge-bk-count');
+  if (badgeBk) {
+    badgeBk.textContent = `${bkRecords.length} Sesi Bimbingan`;
+    badgeBk.innerText = `${bkRecords.length} Sesi Bimbingan`;
+  }
+  const tabBadgeBk = document.getElementById('tab-badge-bk');
+  if (tabBadgeBk) {
+    tabBadgeBk.textContent = String(bkRecords.length);
+    tabBadgeBk.innerText = String(bkRecords.length);
+  }
+
+  // Render Anekdot List
+  const anekdotContainer = document.getElementById('wali-anekdot-list');
+  if (anekdotContainer) {
+    if (anekdotRecords.length === 0) {
+      anekdotContainer.innerHTML = `
+        <div class="col-span-full py-8 text-center bg-slate-50 border border-dashed border-slate-200 rounded-3xl space-y-2">
+          <i class="fa-solid fa-clipboard-question text-3xl text-slate-300"></i>
+          <p class="text-xs text-slate-500 font-medium">Belum ada catatan observasi anekdot untuk semester ini.</p>
+        </div>
+      `;
+    } else {
+      anekdotContainer.innerHTML = anekdotRecords.map((item) => {
+        let badgeColor = 'bg-amber-50 text-amber-800 border-amber-200';
+        let iconCat = 'fa-solid fa-star text-amber-500';
+        const kat = (item.kategori || '').toLowerCase();
+        if (kat.includes('adab') || kat.includes('shalat') || kat.includes('ibadah')) {
+          badgeColor = 'bg-emerald-50 text-emerald-800 border-emerald-200';
+          iconCat = 'fa-solid fa-mosque text-emerald-600';
+        } else if (kat.includes('inisiatif') || kat.includes('pemimpin') || kat.includes('kerja')) {
+          badgeColor = 'bg-indigo-50 text-indigo-800 border-indigo-200';
+          iconCat = 'fa-solid fa-award text-indigo-600';
+        } else if (kat.includes('sosial') || kat.includes('peduli')) {
+          badgeColor = 'bg-teal-50 text-teal-800 border-teal-200';
+          iconCat = 'fa-solid fa-hands-holding-child text-teal-600';
+        }
+
+        return `
+          <div class="bg-slate-50/70 hover:bg-[#edf9f3] rounded-2xl p-4 sm:p-5 border border-slate-200/90 hover:border-[#a7f3d0] transition-all duration-200 shadow-sm flex flex-col justify-between space-y-3.5">
+            <div class="space-y-2">
+              <div class="flex items-center justify-between gap-2">
+                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black border ${badgeColor} inline-flex items-center gap-1.5">
+                  <i class="${iconCat}"></i> ${item.kategori || 'Observasi Karakter'}
+                </span>
+                <span class="text-[10px] text-slate-500 font-bold flex items-center gap-1">
+                  <i class="fa-regular fa-calendar text-slate-400"></i> ${item.tanggal}
+                </span>
+              </div>
+              <div>
+                <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 block mb-0.5">Peristiwa Teramati (Catatan Anekdot):</span>
+                <p class="text-xs font-bold text-slate-800 leading-relaxed">
+                  "${item.kejadian}"
+                </p>
+              </div>
+              <div class="bg-white/90 p-2.5 rounded-xl border border-slate-200/60 text-[11px] space-y-1">
+                <p class="text-slate-600">
+                  <strong class="text-slate-700">Analisis Sikap:</strong> ${item.analisis}
+                </p>
+              </div>
+              <div class="bg-emerald-50/90 p-2.5 rounded-xl border border-emerald-200/70 text-[11px] text-emerald-900 leading-snug">
+                <p class="flex items-start gap-1.5">
+                  <i class="fa-solid fa-circle-check text-emerald-600 mt-0.5 shrink-0"></i>
+                  <span><strong>Tindak Lanjut Guru:</strong> ${item.tindak_lanjut}</span>
+                </p>
+              </div>
+            </div>
+            <div class="pt-2 border-t border-slate-200/70 flex items-center justify-between text-[10px] text-slate-500">
+              <span class="truncate" title="${item.observer}">
+                <i class="fa-solid fa-user-pen mr-1 text-slate-400"></i> ${item.observer}
+              </span>
+              <span class="px-2 py-0.5 rounded-md font-bold bg-white border border-slate-200 text-slate-600">
+                ${item.status || 'Terverifikasi'}
+              </span>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+  }
+
+  // Render BK List
+  const bkContainer = document.getElementById('wali-bk-list');
+  if (bkContainer) {
+    if (bkRecords.length === 0) {
+      bkContainer.innerHTML = `
+        <div class="col-span-full py-8 text-center bg-slate-50 border border-dashed border-slate-200 rounded-3xl space-y-2">
+          <i class="fa-solid fa-comments text-3xl text-slate-300"></i>
+          <p class="text-xs text-slate-500 font-medium">Belum ada riwayat bimbingan konseling untuk semester ini.</p>
+        </div>
+      `;
+    } else {
+      bkContainer.innerHTML = bkRecords.map((item) => {
+        return `
+          <div class="bg-slate-50/70 hover:bg-[#f0fbf7] rounded-3xl p-5 sm:p-6 border border-slate-200/90 hover:border-[#a7f3d0] transition-all duration-200 shadow-sm flex flex-col justify-between space-y-4">
+            <div class="space-y-3">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <span class="px-3 py-1 rounded-full text-[10px] font-black bg-teal-100 text-teal-800 border border-teal-200 inline-flex items-center gap-1.5">
+                  <i class="fa-solid fa-hand-holding-heart text-teal-600"></i> ${item.bidang_bimbingan}
+                </span>
+                <span class="text-[10px] text-slate-500 font-bold flex items-center gap-1">
+                  <i class="fa-regular fa-calendar-check text-teal-600"></i> ${item.tanggal}
+                </span>
+              </div>
+              <div>
+                <h4 class="font-extrabold text-xs sm:text-sm text-slate-900 leading-snug">
+                  ${item.topik}
+                </h4>
+                <p class="text-xs text-slate-600 leading-relaxed mt-1.5">
+                  ${item.uraian_konseling}
+                </p>
+              </div>
+              <div class="bg-white p-3 rounded-2xl border border-slate-200/80 text-xs text-slate-700">
+                <p class="text-[11px] font-bold text-teal-800 uppercase tracking-wider mb-0.5">Rencana Aksi & Komitmen Ananda:</p>
+                <p class="text-[11px] text-slate-600 leading-snug">${item.rencana_tindak_lanjut}</p>
+              </div>
+              <!-- Highlighted Recommendation for Parents -->
+              <div class="bg-gradient-to-r from-emerald-50 to-teal-50/90 border border-emerald-200/80 rounded-2xl p-3.5 space-y-1">
+                <div class="flex items-center gap-1.5 text-xs font-black text-emerald-900">
+                  <i class="fa-solid fa-house-chimney-user text-emerald-600"></i>
+                  <span>Rekomendasi Kolaborasi Untuk Orang Tua di Rumah:</span>
+                </div>
+                <p class="text-xs text-emerald-800 leading-relaxed font-medium">
+                  ${item.rekomendasi_orang_tua}
+                </p>
+              </div>
+            </div>
+            <div class="pt-3 border-t border-slate-200/70 flex flex-wrap items-center justify-between gap-2 text-xs">
+              <span class="text-[11px] text-slate-500 font-medium">
+                <i class="fa-solid fa-chalkboard-user mr-1 text-teal-600"></i> Konselor: <strong class="text-slate-800">${item.konselor}</strong>
+              </span>
+              <div class="flex items-center gap-2">
+                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-300">
+                  <i class="fa-solid fa-check-double text-emerald-600 mr-1"></i> ${item.status || 'Selesai'}
+                </span>
+                <button type="button" onclick="contactBkWhatsApp('${encodeURIComponent(item.topik)}')" class="px-2.5 py-1 text-[11px] font-bold bg-teal-600 hover:bg-teal-700 text-white rounded-lg transition flex items-center gap-1 cursor-pointer">
+                  <i class="fa-brands fa-whatsapp"></i> Chat BK
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+  }
+}
+
+function filterWaliReportCards(type) {
+  const tabAll = document.getElementById('tab-wali-all');
+  const tabAnekdot = document.getElementById('tab-wali-anekdot');
+  const tabKonseling = document.getElementById('tab-wali-konseling');
+
+  const secAnekdot = document.getElementById('section-wali-anekdot');
+  const secKonseling = document.getElementById('section-wali-konseling');
+
+  const tabs = [tabAll, tabAnekdot, tabKonseling];
+  tabs.forEach(t => {
+    if (!t) return;
+    t.className = 'wali-report-tab px-3.5 py-2 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition flex items-center gap-2 whitespace-nowrap cursor-pointer';
+  });
+
+  if (type === 'all') {
+    if (tabAll) tabAll.className = 'wali-report-tab px-3.5 py-2 rounded-xl text-xs font-black bg-[#00a66c] text-white shadow-sm transition flex items-center gap-2 whitespace-nowrap cursor-pointer';
+    secAnekdot?.classList.remove('hidden');
+    secKonseling?.classList.remove('hidden');
+  } else if (type === 'anekdot') {
+    if (tabAnekdot) tabAnekdot.className = 'wali-report-tab px-3.5 py-2 rounded-xl text-xs font-black bg-[#00a66c] text-white shadow-sm transition flex items-center gap-2 whitespace-nowrap cursor-pointer';
+    secAnekdot?.classList.remove('hidden');
+    secKonseling?.classList.add('hidden');
+  } else if (type === 'konseling') {
+    if (tabKonseling) tabKonseling.className = 'wali-report-tab px-3.5 py-2 rounded-xl text-xs font-black bg-[#00a66c] text-white shadow-sm transition flex items-center gap-2 whitespace-nowrap cursor-pointer';
+    secAnekdot?.classList.add('hidden');
+    secKonseling?.classList.remove('hidden');
+  }
+}
+
+function openModalAnekdotPrint() {
+  const user = AppState.currentUser || {};
+  const childNis = user.nis || AppState.activePrintNis || '242507001';
+  const childMurid = AppState.muridList.find(m => String(m.nis).trim() === String(childNis).trim()) || {
+    nis: childNis,
+    nama_murid: user.nama_lengkap || 'Ananda',
+    kelas: 'IX ABU BAKAR',
+    wali_kelas: 'Dewi Fitria Nugraheni, S.Pd., Gr.'
+  };
+
+  const cName = childMurid.nama_murid || childMurid.nama_santri || user.nama_lengkap || 'Ananda';
+  const cNis = childMurid.nisn || childMurid.nis || childNis;
+  const cKelas = childMurid.kelas || 'IX ABU BAKAR';
+  const cWalas = formatWaliKelasTitleCase(childMurid.wali_kelas || WALI_KELAS_MAP[cKelas] || 'Dewi Fitria Nugraheni, S.Pd., Gr.');
+
+  const setText = (id, txt) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.textContent = txt;
+      el.innerText = txt;
+    }
+  };
+
+  setText('print-anekdot-nama', cName);
+  setText('print-anekdot-nis', `${childMurid.nis || childNis} / ${cNis}`);
+  setText('print-anekdot-kelas', cKelas);
+  setText('print-anekdot-walas', cWalas);
+  setText('print-anekdot-ttd-walas', cWalas);
+  setText('print-anekdot-ttd-ortu', `( ${user.nama_lengkap || 'Bpk/Ibu Wali Murid'} )`);
+
+  const records = getAnekdotForStudent(childNis, childMurid);
+  const tbody = document.getElementById('print-anekdot-table-body');
+  if (tbody) {
+    if (records.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-400">Belum ada catatan observasi.</td></tr>`;
+    } else {
+      tbody.innerHTML = records.map((r, i) => `
+        <tr class="hover:bg-slate-50 border-b border-slate-100">
+          <td class="p-3 text-center font-bold text-slate-500">${i + 1}</td>
+          <td class="p-3 font-semibold text-slate-700 whitespace-nowrap">${r.tanggal}</td>
+          <td class="p-3 font-bold text-slate-800">${r.kategori}</td>
+          <td class="p-3 text-slate-700 leading-relaxed font-medium">"${r.kejadian}"</td>
+          <td class="p-3 text-slate-600 leading-relaxed">
+            <p><strong>Analisis:</strong> ${r.analisis}</p>
+            <p class="text-emerald-700 mt-1"><strong>Tindak Lanjut:</strong> ${r.tindak_lanjut}</p>
+          </td>
+          <td class="p-3 text-slate-600 text-[11px]">${r.observer}</td>
+        </tr>
+      `).join('');
+    }
+  }
+
+  document.getElementById('modal-wali-anekdot-print')?.classList.remove('hidden');
+}
+
+function closeModalAnekdotPrint() {
+  document.getElementById('modal-wali-anekdot-print')?.classList.add('hidden');
+}
+
+function printAnekdotSheet() {
+  window.print();
+}
+
+function openModalBkConsult() {
+  const user = AppState.currentUser || {};
+  const childNis = user.nis || AppState.activePrintNis || '242507001';
+  const childMurid = AppState.muridList.find(m => String(m.nis).trim() === String(childNis).trim()) || {
+    nis: childNis,
+    nama_murid: user.nama_lengkap || 'Ananda',
+    kelas: 'IX ABU BAKAR'
+  };
+
+  const infoInput = document.getElementById('consult-child-info');
+  if (infoInput) {
+    infoInput.value = `${childMurid.nama_murid || 'Ananda'} (${childMurid.kelas || 'SMP AI IS'}) - NIS: ${childMurid.nis || childNis}`;
+  }
+
+  document.getElementById('modal-wali-bk-consult')?.classList.remove('hidden');
+}
+
+function closeModalBkConsult() {
+  document.getElementById('modal-wali-bk-consult')?.classList.add('hidden');
+}
+
+function submitParentBkConsultation(e) {
+  if (e && e.preventDefault) e.preventDefault();
+  const user = AppState.currentUser || {};
+  const childNis = user.nis || AppState.activePrintNis || '242507001';
+  const childMurid = AppState.muridList.find(m => String(m.nis).trim() === String(childNis).trim()) || {
+    nama_murid: 'Ananda',
+    kelas: 'IX ABU BAKAR'
+  };
+
+  const topic = document.getElementById('consult-topic')?.value || 'Konsultasi Belajar & Karakter';
+  const msg = document.getElementById('consult-message')?.value || '';
+
+  const parentName = user.nama_lengkap || 'Wali Murid';
+  const childName = childMurid.nama_murid || 'Ananda';
+  const childClass = childMurid.kelas || 'SMP Al-Imam';
+
+  const waText = `Assalamu'alaikum Warahmatullahi Wabarakatuh.\n\n` +
+    `Yth. Guru Bimbingan Konseling / Wali Kelas SMP Al-Imam,\n` +
+    `Saya: *${parentName}* (Orang Tua / Wali dari *${childName}* - Kelas *${childClass}*).\n\n` +
+    `Ingin berkonsultasi mengenai:\n` +
+    `📌 *Topik:* ${topic}\n` +
+    `💬 *Catatan / Pertanyaan:* ${msg}\n\n` +
+    `Mohon waktu dan arahannya, Ustadz/Ustadzah. Jazaakumullahu khairan.`;
+
+  closeModalBkConsult();
+  showToast('Permohonan konsultasi disiapkan. Membuka WhatsApp...', 'success');
+
+  const waUrl = `https://wa.me/?text=${encodeURIComponent(waText)}`;
+  if (typeof window !== 'undefined' && window.open) {
+    window.open(waUrl, '_blank');
+  }
+}
+
+function contactBkWhatsApp(encodedTopic) {
+  const user = AppState.currentUser || {};
+  const topic = decodeURIComponent(encodedTopic || 'Bimbingan Konseling');
+  const waText = `Assalamu'alaikum Warahmatullahi Wabarakatuh, Ustadzah BK / Wali Kelas SMP Al-Imam. Saya *${user.nama_lengkap || 'Wali Murid'}*, ingin berdiskusi tindak lanjut mengenai sesi bimbingan: "${topic}". Mohon waktunya. Syukran.`;
+  const waUrl = `https://wa.me/?text=${encodeURIComponent(waText)}`;
+  if (typeof window !== 'undefined' && window.open) {
+    window.open(waUrl, '_blank');
+  }
+}
+
+window.renderWaliAnekdotAndKonseling = renderWaliAnekdotAndKonseling;
+window.filterWaliReportCards = filterWaliReportCards;
+window.getAnekdotForStudent = getAnekdotForStudent;
+window.getKonselingForStudent = getKonselingForStudent;
+window.openModalAnekdotPrint = openModalAnekdotPrint;
+window.closeModalAnekdotPrint = closeModalAnekdotPrint;
+window.printAnekdotSheet = printAnekdotSheet;
+window.openModalBkConsult = openModalBkConsult;
+window.closeModalBkConsult = closeModalBkConsult;
+window.submitParentBkConsultation = submitParentBkConsultation;
+window.contactBkWhatsApp = contactBkWhatsApp;
+
 
 // 7. THEME & CMS APPLICATION
 function applyCmsTheme(settings) {
@@ -8050,6 +8964,18 @@ function switchDashboardTab(tabName) {
 }
 
 function loadDashboardStats() {
+  if (AppState.currentUser && AppState.currentUser.role === 'wali_murid') {
+    const childNis = AppState.currentUser.nis || '242507001';
+    const childMurid = AppState.muridList.find(m => String(m.nis).trim() === String(childNis).trim()) || {
+      nis: childNis,
+      nama_murid: AppState.currentUser.nama_lengkap,
+      kelas: 'IX ABU BAKAR',
+      wali_kelas: 'Dewi Fitria Nugraheni, S.Pd., Gr.'
+    };
+    renderWaliAnekdotAndKonseling(childNis, childMurid);
+    return;
+  }
+
   callApi('getSummaryStats')
     .then(res => {
       if (res && res.stats && (res.stats.totalMurid > 0 || res.stats.totalSantri > 0)) {

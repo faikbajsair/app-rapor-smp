@@ -16,7 +16,9 @@ const DB_CONFIG = {
   SHEET_SKL_KEPEMIMPINAN: 'Nilai_SKL_Kepemimpinan',
   SHEET_DINIYAH: 'Nilai_Diniyah',
   SHEET_TP: 'Tujuan_Pembelajaran',
-  SHEET_LOGS: 'Log_Aktivitas'
+  SHEET_LOGS: 'Log_Aktivitas',
+  SHEET_ANEKDOT: 'Catatan_Anekdot',
+  SHEET_KONSELING: 'Bimbingan_Konseling'
 };
 
 const DEFAULT_SPREADSHEET_ID = '1EwOvL7qrFnHU9IC30sIV4ie73XiqExCpy1EuWZw7vsM';
@@ -3046,4 +3048,183 @@ function clearActivityLogs() {
     return { success: false, message: 'Gagal membersihkan log: ' + err.toString() };
   }
 }
+
+/**
+ * ============================================================================
+ * CATATAN ANEKDOT (A-RECORD) & BIMBINGAN KONSELING (BK)
+ * Khusus untuk observasi perkembangan siswa & laporan dashboard orang tua
+ * ============================================================================
+ */
+
+/**
+ * Mengambil daftar catatan anekdot (A-Record) dengan filter opsional (nis, kelas, semester)
+ */
+function getAllAnekdot(filters = {}) {
+  try {
+    const headers = ['id', 'nis', 'nama_murid', 'kelas', 'semester', 'tahun_ajaran', 'tanggal', 'kategori', 'kejadian', 'analisis', 'tindak_lanjut', 'observer', 'status'];
+    const sheet = getOrCreateSheet(DB_CONFIG.SHEET_ANEKDOT, headers);
+    const data = sheet.getDataRange().getValues();
+    if (data.length <= 1) return [];
+
+    const sheetHeaders = data[0].map(h => String(h).toLowerCase().trim());
+    let list = [];
+    for (let i = 1; i < data.length; i++) {
+      const row = data[i];
+      let obj = {};
+      sheetHeaders.forEach((h, idx) => {
+        obj[h] = row[idx];
+      });
+      list.push(obj);
+    }
+
+    if (filters.nis) {
+      const targetNis = String(filters.nis).trim();
+      list = list.filter(item => String(item.nis).trim() === targetNis);
+    }
+    if (filters.kelas) {
+      list = list.filter(item => String(item.kelas).trim() === String(filters.kelas).trim());
+    }
+    if (filters.semester) {
+      list = list.filter(item => String(item.semester).trim() === String(filters.semester).trim());
+    }
+
+    // Sort terbaru ke terlama
+    list.sort((a, b) => new Date(b.tanggal || 0) - new Date(a.tanggal || 0));
+    return list;
+  } catch (err) {
+    console.warn('Gagal mengambil daftar catatan anekdot:', err);
+    return [];
+  }
+}
+
+/**
+ * Menyimpan catatan anekdot baru atau memperbarui catatan yang ada
+ */
+function saveAnekdot(data) {
+  try {
+    const headers = ['id', 'nis', 'nama_murid', 'kelas', 'semester', 'tahun_ajaran', 'tanggal', 'kategori', 'kejadian', 'analisis', 'tindak_lanjut', 'observer', 'status'];
+    const sheet = getOrCreateSheet(DB_CONFIG.SHEET_ANEKDOT, headers);
+    const values = sheet.getDataRange().getValues();
+    const id = data.id || ('ANK-' + (data.nis || '000') + '-' + Date.now());
+
+    const rowData = [
+      id,
+      data.nis || '',
+      data.nama_murid || '',
+      data.kelas || '',
+      data.semester || 'Tengah Semester 1',
+      data.tahun_ajaran || '2026/2027',
+      data.tanggal || Utilities.formatDate(new Date(), 'Asia/Jakarta', 'yyyy-MM-dd'),
+      data.kategori || 'Kedisiplinan & Tanggung Jawab',
+      data.kejadian || '',
+      data.analisis || '',
+      data.tindak_lanjut || '',
+      data.observer || '',
+      data.status || 'Terverifikasi'
+    ];
+
+    let rowIndex = -1;
+    for (let i = 1; i < values.length; i++) {
+      if (String(values[i][0]).trim() === String(id).trim()) {
+        rowIndex = i + 1;
+        break;
+      }
+    }
+
+    if (rowIndex > 0) {
+      sheet.getRange(rowIndex, 1, 1, rowData.length).setValues([rowData]);
+    } else {
+      sheet.appendRow(rowData);
+    }
+
+    return { success: true, message: 'Catatan anekdot berhasil disimpan.', id: id };
+  } catch (err) {
+    return { success: false, message: 'Gagal menyimpan catatan anekdot: ' + err.toString() };
+  }
+}
+
+/**
+ * Mengambil daftar sesi bimbingan konseling (BK) dengan filter opsional
+ */
+function getAllKonseling(filters = {}) {
+  try {
+    const headers = ['id', 'nis', 'nama_murid', 'kelas', 'semester', 'tahun_ajaran', 'tanggal', 'bidang_bimbingan', 'topik', 'uraian_konseling', 'rencana_tindak_lanjut', 'rekomendasi_orang_tua', 'konselor', 'status'];
+    const sheet = getOrCreateSheet(DB_CONFIG.SHEET_KONSELING, headers);
+    const data = sheet.getDataRange().getValues();
+    if (data.length <= 1) return [];
+
+    const sheetHeaders = data[0].map(h => String(h).toLowerCase().trim());
+    let list = [];
+    for (let i = 1; i < data.length; i++) {
+      const row = data[i];
+      let obj = {};
+      sheetHeaders.forEach((h, idx) => {
+        obj[h] = row[idx];
+      });
+      list.push(obj);
+    }
+
+    if (filters.nis) {
+      const targetNis = String(filters.nis).trim();
+      list = list.filter(item => String(item.nis).trim() === targetNis);
+    }
+    if (filters.kelas) {
+      list = list.filter(item => String(item.kelas).trim() === String(filters.kelas).trim());
+    }
+
+    list.sort((a, b) => new Date(b.tanggal || 0) - new Date(a.tanggal || 0));
+    return list;
+  } catch (err) {
+    console.warn('Gagal mengambil daftar bimbingan konseling:', err);
+    return [];
+  }
+}
+
+/**
+ * Menyimpan sesi bimbingan konseling baru atau memperbarui sesi yang ada
+ */
+function saveKonseling(data) {
+  try {
+    const headers = ['id', 'nis', 'nama_murid', 'kelas', 'semester', 'tahun_ajaran', 'tanggal', 'bidang_bimbingan', 'topik', 'uraian_konseling', 'rencana_tindak_lanjut', 'rekomendasi_orang_tua', 'konselor', 'status'];
+    const sheet = getOrCreateSheet(DB_CONFIG.SHEET_KONSELING, headers);
+    const values = sheet.getDataRange().getValues();
+    const id = data.id || ('BK-' + (data.nis || '000') + '-' + Date.now());
+
+    const rowData = [
+      id,
+      data.nis || '',
+      data.nama_murid || '',
+      data.kelas || '',
+      data.semester || 'Tengah Semester 1',
+      data.tahun_ajaran || '2026/2027',
+      data.tanggal || Utilities.formatDate(new Date(), 'Asia/Jakarta', 'yyyy-MM-dd'),
+      data.bidang_bimbingan || 'Bimbingan Belajar & Akademik',
+      data.topik || '',
+      data.uraian_konseling || '',
+      data.rencana_tindak_lanjut || '',
+      data.rekomendasi_orang_tua || '',
+      data.konselor || '',
+      data.status || 'Selesai'
+    ];
+
+    let rowIndex = -1;
+    for (let i = 1; i < values.length; i++) {
+      if (String(values[i][0]).trim() === String(id).trim()) {
+        rowIndex = i + 1;
+        break;
+      }
+    }
+
+    if (rowIndex > 0) {
+      sheet.getRange(rowIndex, 1, 1, rowData.length).setValues([rowData]);
+    } else {
+      sheet.appendRow(rowData);
+    }
+
+    return { success: true, message: 'Laporan bimbingan konseling berhasil disimpan.', id: id };
+  } catch (err) {
+    return { success: false, message: 'Gagal menyimpan laporan BK: ' + err.toString() };
+  }
+}
+
 
