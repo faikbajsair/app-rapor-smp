@@ -346,6 +346,58 @@ setTimeout(() => {
   }
   console.log('✅ Tombol Petunjuk Rapor tersedia di Header Navbar dan bersih dari sidebar/lokasi lain');
 
+  // 2b. Pada akun Wali Murid, menu "3. Panduan Guru & Wali Kelas" di Petunjuk Rapor harus HILANG
+  win.openModalPetunjukRapor('baca_rapor');
+  const modalPetunjuk = doc.getElementById('modal-petunjuk-rapor');
+  if (!modalPetunjuk || modalPetunjuk.classList.contains('hidden')) {
+    throw new Error('Modal Petunjuk Rapor should be open!');
+  }
+  const tabGuruWali = doc.getElementById('tab-btn-petunjuk-guru');
+  if (tabGuruWali && !tabGuruWali.classList.contains('hidden')) {
+    throw new Error('Tab 3. Panduan Guru & Wali Kelas (#tab-btn-petunjuk-guru) must be HIDDEN for Wali Murid!');
+  }
+  const paneGuruWali = doc.getElementById('petunjuk-pane-guru_walas');
+  if (paneGuruWali && !paneGuruWali.classList.contains('hidden')) {
+    throw new Error('Content pane (#petunjuk-pane-guru_walas) must be HIDDEN for Wali Murid!');
+  }
+  const labelKkmWali = doc.getElementById('tab-label-petunjuk-kkm')?.textContent.trim();
+  if (labelKkmWali !== '3. Skema KKM & Predikat') {
+    throw new Error(`Expected KKM tab label for Wali Murid to be "3. Skema KKM & Predikat", got "${labelKkmWali}"`);
+  }
+
+  // Wali murid mencoba switch ke tab guru_walas harus dicegah / diarahkan ke baca_rapor
+  win.switchPetunjukTab('guru_walas');
+  if (!paneGuruWali.classList.contains('hidden')) {
+    throw new Error('Wali Murid should not be able to activate #petunjuk-pane-guru_walas!');
+  }
+  if (tabGuruWali && !tabGuruWali.classList.contains('hidden')) {
+    throw new Error('Tab Guru must remain hidden even after switchPetunjukTab!');
+  }
+  win.closeModalPetunjukRapor();
+  console.log('✅ Menu 3. Panduan Guru & Wali Kelas tersembunyi 100% pada Modal Petunjuk Rapor akun Wali Murid');
+
+  // Verifikasi pada akun Guru, menu "3. Panduan Guru & Wali Kelas" harus TETAP MUNCUL
+  win.loginAsSpecificTeacher('dewi');
+  win.openModalPetunjukRapor('baca_rapor');
+  const tabGuruTeacher = doc.getElementById('tab-btn-petunjuk-guru');
+  if (tabGuruTeacher && tabGuruTeacher.classList.contains('hidden')) {
+    throw new Error('Tab 3. Panduan Guru & Wali Kelas must be VISIBLE for Guru / Walas!');
+  }
+  const labelKkmTeacher = doc.getElementById('tab-label-petunjuk-kkm')?.textContent.trim();
+  if (labelKkmTeacher !== '4. Skema KKM & Predikat') {
+    throw new Error(`Expected KKM tab label for Guru to be "4. Skema KKM & Predikat", got "${labelKkmTeacher}"`);
+  }
+  win.switchPetunjukTab('guru_walas');
+  const paneGuruTeacher = doc.getElementById('petunjuk-pane-guru_walas');
+  if (paneGuruTeacher && paneGuruTeacher.classList.contains('hidden')) {
+    throw new Error('#petunjuk-pane-guru_walas should be visible for Guru when active!');
+  }
+  win.closeModalPetunjukRapor();
+  console.log('✅ Menu 3. Panduan Guru & Wali Kelas tetap muncul dan berfungsi normal untuk Guru & Walas');
+
+  // Kembalikan login ke Wali Murid untuk pengujian berikutnya
+  win.loginAsSpecificTeacher('walimurid', 'wali123');
+
   // 3. Tombol Tarik / Batal Publish Rapor harus tersembunyi bagi Wali Murid
   win.switchView('rapor');
   const btnPublish = doc.getElementById('btn-toggle-publish-rapor');

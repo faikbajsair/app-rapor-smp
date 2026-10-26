@@ -6756,14 +6756,14 @@
           <span>2. Panduan Orang Tua (Wali Murid)</span>
         </button>
         <button type="button" onclick="switchPetunjukTab('guru_walas')" id="tab-btn-petunjuk-guru" 
-                class="tab-petunjuk-btn px-3.5 py-1.5 rounded-xl transition whitespace-nowrap bg-white/10 text-white hover:bg-white/20 cursor-pointer flex items-center gap-1.5">
+                class="tab-petunjuk-btn menu-non-wali px-3.5 py-1.5 rounded-xl transition whitespace-nowrap bg-white/10 text-white hover:bg-white/20 cursor-pointer flex items-center gap-1.5">
           <i class="fa-solid fa-chalkboard-user"></i>
           <span>3. Panduan Guru & Wali Kelas</span>
         </button>
         <button type="button" onclick="switchPetunjukTab('skema_kkm')" id="tab-btn-petunjuk-kkm" 
                 class="tab-petunjuk-btn px-3.5 py-1.5 rounded-xl transition whitespace-nowrap bg-white/10 text-white hover:bg-white/20 cursor-pointer flex items-center gap-1.5">
           <i class="fa-solid fa-table-cells text-amber-300"></i>
-          <span>4. Skema KKM & Predikat</span>
+          <span id="tab-label-petunjuk-kkm">4. Skema KKM & Predikat</span>
         </button>
       </div>
     </div>
@@ -6977,7 +6977,7 @@
       <!-- ================================================================= -->
       <!-- TAB 3: PANDUAN GURU & WALI KELAS -->
       <!-- ================================================================= -->
-      <div id="petunjuk-pane-guru_walas" class="petunjuk-pane hidden space-y-5">
+      <div id="petunjuk-pane-guru_walas" class="petunjuk-pane menu-non-wali hidden space-y-5">
         <div class="p-4 bg-indigo-50/80 border border-indigo-200/80 rounded-2xl flex items-start gap-3">
           <div class="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center shrink-0 text-lg shadow-sm">
             <i class="fa-solid fa-chalkboard-user"></i>
@@ -10516,6 +10516,24 @@ function applyRoleUIPermissions(role) {
     if (publishActions) publishActions.classList.remove('hidden');
   }
 
+  // Modal Petunjuk Rapor: sembunyikan tab "3. Panduan Guru & Wali Kelas" khusus akun Wali Murid
+  const tabPetunjukGuru = document.getElementById('tab-btn-petunjuk-guru');
+  const panePetunjukGuru = document.getElementById('petunjuk-pane-guru_walas');
+  const labelPetunjukKkm = document.getElementById('tab-label-petunjuk-kkm');
+  if (tabPetunjukGuru) {
+    if (isWali) {
+      tabPetunjukGuru.classList.add('hidden');
+    } else {
+      tabPetunjukGuru.classList.remove('hidden');
+    }
+  }
+  if (panePetunjukGuru && isWali) {
+    panePetunjukGuru.classList.add('hidden');
+  }
+  if (labelPetunjukKkm) {
+    labelPetunjukKkm.textContent = isWali ? '3. Skema KKM & Predikat' : '4. Skema KKM & Predikat';
+  }
+
   // Hapus menu Petunjuk & Cara Baca di sidebar dan banner secara aktif (hanya ada di Header)
   const oldPetunjukSidebar = document.getElementById('nav-item-petunjuk');
   if (oldPetunjukSidebar) oldPetunjukSidebar.remove();
@@ -13103,7 +13121,27 @@ window.mapJadwalSubjectToRapor = mapJadwalSubjectToRapor;
 
 // Petunjuk Penggunaan & Cara Membaca Rapor Modal Controller
 function openModalPetunjukRapor(defaultTab = 'baca_rapor') {
+  const isWali = (AppState.currentUser && AppState.currentUser.role === 'wali_murid');
+  if (isWali && (defaultTab === 'guru_walas' || defaultTab === 'guru' || defaultTab === 'walas')) {
+    defaultTab = 'baca_rapor';
+  }
   switchPetunjukTab(defaultTab);
+  const tabPetunjukGuru = document.getElementById('tab-btn-petunjuk-guru');
+  const panePetunjukGuru = document.getElementById('petunjuk-pane-guru_walas');
+  const labelPetunjukKkm = document.getElementById('tab-label-petunjuk-kkm');
+  if (tabPetunjukGuru) {
+    if (isWali) {
+      tabPetunjukGuru.classList.add('hidden');
+    } else {
+      tabPetunjukGuru.classList.remove('hidden');
+    }
+  }
+  if (panePetunjukGuru && isWali) {
+    panePetunjukGuru.classList.add('hidden');
+  }
+  if (labelPetunjukKkm) {
+    labelPetunjukKkm.textContent = isWali ? '3. Skema KKM & Predikat' : '4. Skema KKM & Predikat';
+  }
   const modal = document.getElementById('modal-petunjuk-rapor');
   if (modal) {
     modal.classList.remove('hidden');
@@ -13126,6 +13164,11 @@ function switchPetunjukTab(tabKey) {
   if (key === 'guru' || key === 'walas') key = 'guru_walas';
   if (key === 'kkm') key = 'skema_kkm';
 
+  const isWali = (AppState.currentUser && AppState.currentUser.role === 'wali_murid');
+  if (isWali && key === 'guru_walas') {
+    key = 'baca_rapor';
+  }
+
   const panes = ['baca_rapor', 'wali_murid', 'guru_walas', 'skema_kkm'];
   const btnMapping = {
     'baca_rapor': 'tab-btn-petunjuk-baca',
@@ -13147,13 +13190,22 @@ function switchPetunjukTab(tabKey) {
     const btnId = btnMapping[paneId];
     const btnEl = document.getElementById(btnId);
     if (btnEl) {
+      const isGuruHidden = (paneId === 'guru_walas' && isWali);
       if (paneId === key) {
-        btnEl.className = 'tab-petunjuk-btn px-3.5 py-1.5 rounded-xl transition whitespace-nowrap bg-white text-emerald-900 shadow-sm cursor-pointer flex items-center gap-1.5';
+        btnEl.className = 'tab-petunjuk-btn px-3.5 py-1.5 rounded-xl transition whitespace-nowrap bg-white text-emerald-900 shadow-sm cursor-pointer flex items-center gap-1.5' + (isGuruHidden ? ' hidden' : '');
       } else {
-        btnEl.className = 'tab-petunjuk-btn px-3.5 py-1.5 rounded-xl transition whitespace-nowrap bg-white/10 text-white hover:bg-white/20 cursor-pointer flex items-center gap-1.5';
+        btnEl.className = 'tab-petunjuk-btn px-3.5 py-1.5 rounded-xl transition whitespace-nowrap bg-white/10 text-white hover:bg-white/20 cursor-pointer flex items-center gap-1.5' + (isGuruHidden ? ' hidden' : '');
+      }
+      if (paneId === 'guru_walas') {
+        btnEl.classList.add('menu-non-wali');
       }
     }
   });
+
+  const labelPetunjukKkm = document.getElementById('tab-label-petunjuk-kkm');
+  if (labelPetunjukKkm) {
+    labelPetunjukKkm.textContent = isWali ? '3. Skema KKM & Predikat' : '4. Skema KKM & Predikat';
+  }
 
   const bodyEl = document.getElementById('petunjuk-modal-body');
   if (bodyEl) {

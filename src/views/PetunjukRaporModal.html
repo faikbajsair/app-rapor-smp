@@ -35,14 +35,14 @@
           <span>2. Panduan Orang Tua (Wali Murid)</span>
         </button>
         <button type="button" onclick="switchPetunjukTab('guru_walas')" id="tab-btn-petunjuk-guru" 
-                class="tab-petunjuk-btn px-3.5 py-1.5 rounded-xl transition whitespace-nowrap bg-white/10 text-white hover:bg-white/20 cursor-pointer flex items-center gap-1.5">
+                class="tab-petunjuk-btn menu-non-wali px-3.5 py-1.5 rounded-xl transition whitespace-nowrap bg-white/10 text-white hover:bg-white/20 cursor-pointer flex items-center gap-1.5">
           <i class="fa-solid fa-chalkboard-user"></i>
           <span>3. Panduan Guru & Wali Kelas</span>
         </button>
         <button type="button" onclick="switchPetunjukTab('skema_kkm')" id="tab-btn-petunjuk-kkm" 
                 class="tab-petunjuk-btn px-3.5 py-1.5 rounded-xl transition whitespace-nowrap bg-white/10 text-white hover:bg-white/20 cursor-pointer flex items-center gap-1.5">
           <i class="fa-solid fa-table-cells text-amber-300"></i>
-          <span>4. Skema KKM & Predikat</span>
+          <span id="tab-label-petunjuk-kkm">4. Skema KKM & Predikat</span>
         </button>
       </div>
     </div>
@@ -256,7 +256,7 @@
       <!-- ================================================================= -->
       <!-- TAB 3: PANDUAN GURU & WALI KELAS -->
       <!-- ================================================================= -->
-      <div id="petunjuk-pane-guru_walas" class="petunjuk-pane hidden space-y-5">
+      <div id="petunjuk-pane-guru_walas" class="petunjuk-pane menu-non-wali hidden space-y-5">
         <div class="p-4 bg-indigo-50/80 border border-indigo-200/80 rounded-2xl flex items-start gap-3">
           <div class="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center shrink-0 text-lg shadow-sm">
             <i class="fa-solid fa-chalkboard-user"></i>
