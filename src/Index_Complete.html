@@ -251,23 +251,42 @@
         font-size: 7pt !important;
       }
 
-      /* Dedicated Print Layout for Resume Nilai Modal */
+      /* ========================================================= */
+      /* DEDICATED PRINT STYLES FOR RESUME NILAI MODAL (ALL 4 MENUS) */
+      /* ========================================================= */
+      body.printing-resume-all,
+      body.printing-resume-active,
       body.printing-resume-modal {
         background: #ffffff !important;
         font-size: 8.5pt !important;
       }
-      body.printing-resume-modal nav,
-      body.printing-resume-modal aside,
-      body.printing-resume-modal header,
-      body.printing-resume-modal footer,
-      body.printing-resume-modal main,
-      body.printing-resume-modal #sidebar-nav,
-      body.printing-resume-modal #sidebar-backdrop,
-      body.printing-resume-modal .no-print,
-      body.printing-resume-modal [class*="no-print"] {
+
+      body.printing-resume-all nav,
+      body.printing-resume-all aside,
+      body.printing-resume-all header,
+      body.printing-resume-all footer,
+      body.printing-resume-all main,
+      body.printing-resume-all #sidebar-nav,
+      body.printing-resume-all #sidebar-backdrop,
+      body.printing-resume-all #toast-container,
+      body.printing-resume-all .no-print,
+      body.printing-resume-all [class*="no-print"],
+      body.printing-resume-active nav,
+      body.printing-resume-active aside,
+      body.printing-resume-active header,
+      body.printing-resume-active footer,
+      body.printing-resume-active main,
+      body.printing-resume-active #sidebar-nav,
+      body.printing-resume-active #sidebar-backdrop,
+      body.printing-resume-active #toast-container,
+      body.printing-resume-active .no-print,
+      body.printing-resume-active [class*="no-print"] {
         display: none !important;
       }
-      body.printing-resume-modal #modal-resume-chart-nilai {
+
+      /* Modal Container Unwrapping for Print */
+      body.printing-resume-all #modal-resume-chart-nilai,
+      body.printing-resume-active #modal-resume-chart-nilai {
         display: block !important;
         position: static !important;
         inset: auto !important;
@@ -282,36 +301,97 @@
         box-shadow: none !important;
         border: none !important;
       }
-      body.printing-resume-modal #modal-resume-chart-nilai > div {
+
+      body.printing-resume-all #modal-resume-chart-nilai > div,
+      body.printing-resume-active #modal-resume-chart-nilai > div {
         max-width: 100% !important;
         max-height: none !important;
         height: auto !important;
-        border: 1px solid #cbd5e1 !important;
+        border: none !important;
         box-shadow: none !important;
-        border-radius: 12px !important;
+        border-radius: 0 !important;
         overflow: visible !important;
+        background: #ffffff !important;
       }
-      body.printing-resume-modal #modal-resume-chart-nilai #resume-chart-modal-body {
+
+      body.printing-resume-all #modal-resume-chart-nilai #resume-chart-modal-body,
+      body.printing-resume-active #modal-resume-chart-nilai #resume-chart-modal-body {
         max-height: none !important;
         overflow: visible !important;
-        padding: 12px 16px !important;
+        padding: 4px 0 !important;
       }
-      body.printing-resume-modal #modal-resume-chart-nilai button,
-      body.printing-resume-modal #modal-resume-chart-nilai .tab-resume-btn,
-      body.printing-resume-modal #modal-resume-chart-nilai #resume-chart-student-selector-box {
+
+      /* Hide interactive controls inside modal during print */
+      body.printing-resume-all #modal-resume-chart-nilai button,
+      body.printing-resume-all #modal-resume-chart-nilai .tab-resume-btn,
+      body.printing-resume-all #modal-resume-chart-nilai #resume-chart-student-selector-box,
+      body.printing-resume-active #modal-resume-chart-nilai button,
+      body.printing-resume-active #modal-resume-chart-nilai .tab-resume-btn,
+      body.printing-resume-active #modal-resume-chart-nilai #resume-chart-student-selector-box {
         display: none !important;
       }
-      body.printing-resume-modal #modal-resume-chart-nilai .resume-chart-pane:not(.hidden) {
+
+      /* 4 KPI Highlight Cards Layout in Print */
+      body.printing-resume-all #modal-resume-chart-nilai .grid.grid-cols-2.lg\:grid-cols-4,
+      body.printing-resume-active #modal-resume-chart-nilai .grid.grid-cols-2.lg\:grid-cols-4 {
+        display: grid !important;
+        grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+        gap: 6px !important;
+        margin-bottom: 8px !important;
+      }
+
+      /* ALL 4 PANES DISPLAYED IN printing-resume-all */
+      body.printing-resume-all #modal-resume-chart-nilai .resume-chart-pane {
+        display: block !important;
+        margin-bottom: 10px !important;
+      }
+
+      /* ACTIVE PANE ONLY IN printing-resume-active */
+      body.printing-resume-active #modal-resume-chart-nilai .resume-chart-pane:not(.hidden) {
         display: block !important;
       }
-      body.printing-resume-modal #modal-resume-chart-nilai table {
-        page-break-inside: avoid !important;
-        border: 1px solid #cbd5e1 !important;
+      body.printing-resume-active #modal-resume-chart-nilai .resume-chart-pane.hidden {
+        display: none !important;
       }
-      body.printing-resume-modal #modal-resume-chart-nilai table th,
-      body.printing-resume-modal #modal-resume-chart-nilai table td {
+
+      /* Page 1 Canvas Sizing so Menu 1 & Menu 2 Fit on Page 1 */
+      body.printing-resume-all #container-chart-bar-modal {
+        height: 65mm !important;
+        max-height: 65mm !important;
+      }
+      body.printing-resume-all #container-chart-radar-modal {
+        height: 70mm !important;
+        max-height: 70mm !important;
+      }
+
+      /* Page Break: Clean split so Menu 3 and Menu 4 start on Page 2 */
+      body.printing-resume-all #modal-resume-chart-nilai #resume-pane-rumpun {
+        page-break-before: always !important;
+        break-before: page !important;
+        padding-top: 6px !important;
+      }
+
+      /* Print-only Elements Visibility */
+      body.printing-resume-all .print\:block,
+      body.printing-resume-active .print\:block {
+        display: block !important;
+      }
+
+      /* Table formatting for Resume Nilai */
+      body.printing-resume-all #modal-resume-chart-nilai table,
+      body.printing-resume-active #modal-resume-chart-nilai table {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+        border: 1px solid #cbd5e1 !important;
+        width: 100% !important;
+      }
+      body.printing-resume-all #modal-resume-chart-nilai table th,
+      body.printing-resume-all #modal-resume-chart-nilai table td,
+      body.printing-resume-active #modal-resume-chart-nilai table th,
+      body.printing-resume-active #modal-resume-chart-nilai table td {
         border: 1px solid #e2e8f0 !important;
-        padding: 4px 6px !important;
+        padding: 3px 5px !important;
+        font-size: 7.5pt !important;
       }
     }
   </style>
@@ -6670,6 +6750,20 @@
       <!-- TAB 3: ANALISIS PER RUMPUN (AGAMA, NASIONAL, MULOK) -->
       <!-- ================================================================= -->
       <div id="resume-pane-rumpun" class="resume-chart-pane hidden space-y-4">
+        <!-- Print-Only Sub-Header on Page 2 -->
+        <div class="hidden print:block pb-2 mb-2 border-b-2 border-emerald-950/20">
+          <div class="flex items-center justify-between text-[10.5px]">
+            <div>
+              <span class="font-black text-emerald-950 uppercase tracking-wide">SMP AL-IMAM ISLAMIC SCHOOL</span>
+              <span class="text-slate-400 mx-1.5">•</span>
+              <span class="text-slate-700 font-bold">Lembar 2: Analisis Rumpun & Tabel Gap Terhadap KKM</span>
+            </div>
+            <div class="font-bold text-slate-800 text-[10px]">
+              <span id="resume-print-p2-name">-</span> (<span id="resume-print-p2-nis">-</span>) • <span id="resume-print-p2-kelas">-</span>
+            </div>
+          </div>
+        </div>
+
         <!-- 3 Cluster Comparison Cards -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="resume-rumpun-cards-container">
           <!-- Cluster A: Agama Islam & Bahasa Arab -->
@@ -6758,6 +6852,40 @@
         </div>
       </div>
 
+      <!-- Print Only: Pengesahan & Tanda Tangan Resmi Tiga Pihak (Halaman 2) -->
+      <div id="resume-print-signatures" class="hidden print:block page-break-inside-avoid mt-5 pt-3 border-t border-slate-300">
+        <div class="grid grid-cols-3 gap-4 text-[10px] font-sans text-center">
+          <!-- Kolom 1: Orang Tua / Wali Murid -->
+          <div class="flex flex-col items-center">
+            <p class="text-slate-600 font-medium leading-tight">Mengetahui,</p>
+            <p class="font-bold text-slate-900 leading-tight mt-0.5">Orang Tua / Wali Murid</p>
+            <div class="h-14 flex items-end justify-center">&nbsp;</div>
+            <div class="border-b border-slate-800 w-32 pb-0.5"></div>
+            <span class="text-[9px] text-slate-500 mt-1 block">Tanda Tangan & Nama Terang</span>
+          </div>
+
+          <!-- Kolom 2: Wali Kelas -->
+          <div class="flex flex-col items-center">
+            <p class="text-slate-600 font-medium leading-tight">
+              <span>Bogor</span>, <span>17 Oktober 2026</span>
+            </p>
+            <p class="font-bold text-slate-900 leading-tight mt-0.5">Wali Kelas,</p>
+            <div class="h-14 flex items-end justify-center">&nbsp;</div>
+            <span class="font-bold underline text-slate-950 block text-[10px]" id="resume-print-walas-name">Dewi Fitria Nugraheni, S.Pd., Gr.</span>
+            <span class="text-[9px] text-slate-600 block mt-0.5" id="resume-print-walas-nip">NIP. -</span>
+          </div>
+
+          <!-- Kolom 3: Kepala Sekolah -->
+          <div class="flex flex-col items-center">
+            <p class="text-slate-600 font-medium leading-tight">Mengetahui,</p>
+            <p class="font-bold text-slate-900 leading-tight mt-0.5">Kepala Sekolah SMP Al-Imam</p>
+            <div class="h-14 flex items-end justify-center">&nbsp;</div>
+            <span class="font-bold underline text-slate-950 block text-[10px]" id="resume-print-kepsek-name">Gr. Arif Rohman, S.Sos., M.Pd.</span>
+            <span class="text-[9px] text-slate-600 block mt-0.5" id="resume-print-kepsek-nip">NIY. 201807001</span>
+          </div>
+        </div>
+      </div>
+
     </div>
 
     <!-- Modal Footer -->
@@ -6766,12 +6894,16 @@
         <i class="fa-solid fa-circle-info text-emerald-600"></i>
         <span>Nilai bersumber dari Buku Leger Resmi & Rapor Portofolio Terpadu SMP Al-Imam.</span>
       </div>
-      <div class="flex items-center gap-2 self-end sm:self-auto">
-        <button onclick="printStudentResumeChart()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-xs shadow-md shadow-indigo-600/20 transition flex items-center gap-1.5 cursor-pointer">
+      <div class="flex flex-wrap items-center gap-2 self-end sm:self-auto">
+        <button onclick="printStudentResumeChart('all')" class="px-4 py-2 bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-700 hover:to-teal-800 text-white font-bold rounded-xl text-xs shadow-md shadow-emerald-700/20 transition flex items-center gap-1.5 cursor-pointer" title="Cetak Seluruh 4 Menu Lengkap (Format Resmi A4 2 Halaman)">
           <i class="fa-solid fa-print"></i>
-          <span>Cetak Resume Grafik</span>
+          <span>Cetak Lengkap (4 Menu)</span>
         </button>
-        <button onclick="closeResumeChartModal()" class="px-4 py-2 bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 font-bold rounded-xl text-xs transition cursor-pointer">
+        <button onclick="printStudentResumeChart('active')" class="px-3.5 py-2 bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 font-bold rounded-xl text-xs transition flex items-center gap-1.5 cursor-pointer" title="Cetak Menu / Tab yang Sedang Tampil Saja (1 Halaman)">
+          <i class="fa-solid fa-file-lines text-slate-500"></i>
+          <span>Cetak Tab Ini Saja</span>
+        </button>
+        <button onclick="closeResumeChartModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 font-bold rounded-xl text-xs transition cursor-pointer">
           Tutup
         </button>
       </div>
@@ -13859,6 +13991,7 @@ function closeResumeChartModal() {
 }
 
 function switchResumeChartTab(tabKey) {
+  AppState.activeResumeTab = tabKey;
   const tabs = ['bar', 'radar', 'rumpun', 'tabel'];
   const btnMapping = {
     'bar': 'tab-btn-resume-bar',
@@ -13919,16 +14052,80 @@ function openResumeChartForClass() {
   openResumeChartModal(nis);
 }
 
-function printStudentResumeChart() {
-  document.body.classList.add('printing-resume-modal');
+function printStudentResumeChart(mode = 'all') {
+  const modal = document.getElementById('modal-resume-chart-nilai');
+  if (!modal) return;
+
+  const studentSelect = document.getElementById('resume-chart-student-select');
+  const nis = studentSelect?.value || AppState.activePrintNis || '242507001';
+  const gradeData = getStudentGradeData(nis);
+  if (!gradeData) return;
+
+  // Track active tab before printing
+  const currentTab = AppState.activeResumeTab || 'bar';
+  window._prevResumeTabBeforePrint = currentTab;
+
+  // Update dynamic print placeholders (Page 2 header & signatures)
+  const p2Name = document.getElementById('resume-print-p2-name');
+  if (p2Name) p2Name.textContent = gradeData.nama_murid;
+  const p2Nis = document.getElementById('resume-print-p2-nis');
+  if (p2Nis) p2Nis.textContent = gradeData.nis;
+  const p2Kelas = document.getElementById('resume-print-p2-kelas');
+  if (p2Kelas) p2Kelas.textContent = gradeData.kelas;
+
+  const walasNameEl = document.getElementById('resume-print-walas-name');
+  if (walasNameEl) {
+    const walasName = (typeof WALI_KELAS_MAP !== 'undefined' && WALI_KELAS_MAP[gradeData.kelas]) ? WALI_KELAS_MAP[gradeData.kelas] : 'Dewi Fitria Nugraheni, S.Pd., Gr.';
+    walasNameEl.textContent = formatWaliKelasTitleCase(walasName);
+  }
+
+  if (mode === 'all') {
+    document.body.classList.remove('printing-resume-active');
+    document.body.classList.add('printing-resume-all');
+
+    // Unhide all 4 panes so layout engines calculate bounding boxes and canvas elements
+    ['bar', 'radar', 'rumpun', 'tabel'].forEach(t => {
+      const pane = document.getElementById(`resume-pane-${t}`);
+      if (pane) pane.classList.remove('hidden');
+    });
+
+    // Render & resize all chart canvases for high-fidelity printing
+    renderGradeBarChart('canvas-chart-bar-modal', 'fallback-chart-bar-modal', gradeData, false);
+    renderGradeRadarChart('canvas-chart-radar-modal', 'fallback-chart-radar-modal', gradeData);
+    renderClusterCards('rumpun', gradeData);
+    renderGradeTable('resume-table-tbody', gradeData);
+
+    if (window.AppCharts) {
+      if (window.AppCharts['canvas-chart-bar-modal']) {
+        try {
+          window.AppCharts['canvas-chart-bar-modal'].resize();
+          window.AppCharts['canvas-chart-bar-modal'].update();
+        } catch (e) {}
+      }
+      if (window.AppCharts['canvas-chart-radar-modal']) {
+        try {
+          window.AppCharts['canvas-chart-radar-modal'].resize();
+          window.AppCharts['canvas-chart-radar-modal'].update();
+        } catch (e) {}
+      }
+    }
+  } else {
+    document.body.classList.remove('printing-resume-all');
+    document.body.classList.add('printing-resume-active');
+  }
+
   setTimeout(() => {
     window.print();
-  }, 60);
+  }, 120);
 }
 
 if (typeof window !== 'undefined') {
   window.addEventListener('afterprint', () => {
-    document.body.classList.remove('printing-resume-modal');
+    document.body.classList.remove('printing-resume-all', 'printing-resume-active', 'printing-resume-modal');
+    if (window._prevResumeTabBeforePrint) {
+      switchResumeChartTab(window._prevResumeTabBeforePrint);
+      window._prevResumeTabBeforePrint = null;
+    }
   });
 }
 

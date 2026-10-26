@@ -5964,6 +5964,7 @@ function closeResumeChartModal() {
 }
 
 function switchResumeChartTab(tabKey) {
+  AppState.activeResumeTab = tabKey;
   const tabs = ['bar', 'radar', 'rumpun', 'tabel'];
   const btnMapping = {
     'bar': 'tab-btn-resume-bar',
@@ -6024,16 +6025,80 @@ function openResumeChartForClass() {
   openResumeChartModal(nis);
 }
 
-function printStudentResumeChart() {
-  document.body.classList.add('printing-resume-modal');
+function printStudentResumeChart(mode = 'all') {
+  const modal = document.getElementById('modal-resume-chart-nilai');
+  if (!modal) return;
+
+  const studentSelect = document.getElementById('resume-chart-student-select');
+  const nis = studentSelect?.value || AppState.activePrintNis || '242507001';
+  const gradeData = getStudentGradeData(nis);
+  if (!gradeData) return;
+
+  // Track active tab before printing
+  const currentTab = AppState.activeResumeTab || 'bar';
+  window._prevResumeTabBeforePrint = currentTab;
+
+  // Update dynamic print placeholders (Page 2 header & signatures)
+  const p2Name = document.getElementById('resume-print-p2-name');
+  if (p2Name) p2Name.textContent = gradeData.nama_murid;
+  const p2Nis = document.getElementById('resume-print-p2-nis');
+  if (p2Nis) p2Nis.textContent = gradeData.nis;
+  const p2Kelas = document.getElementById('resume-print-p2-kelas');
+  if (p2Kelas) p2Kelas.textContent = gradeData.kelas;
+
+  const walasNameEl = document.getElementById('resume-print-walas-name');
+  if (walasNameEl) {
+    const walasName = (typeof WALI_KELAS_MAP !== 'undefined' && WALI_KELAS_MAP[gradeData.kelas]) ? WALI_KELAS_MAP[gradeData.kelas] : 'Dewi Fitria Nugraheni, S.Pd., Gr.';
+    walasNameEl.textContent = formatWaliKelasTitleCase(walasName);
+  }
+
+  if (mode === 'all') {
+    document.body.classList.remove('printing-resume-active');
+    document.body.classList.add('printing-resume-all');
+
+    // Unhide all 4 panes so layout engines calculate bounding boxes and canvas elements
+    ['bar', 'radar', 'rumpun', 'tabel'].forEach(t => {
+      const pane = document.getElementById(`resume-pane-${t}`);
+      if (pane) pane.classList.remove('hidden');
+    });
+
+    // Render & resize all chart canvases for high-fidelity printing
+    renderGradeBarChart('canvas-chart-bar-modal', 'fallback-chart-bar-modal', gradeData, false);
+    renderGradeRadarChart('canvas-chart-radar-modal', 'fallback-chart-radar-modal', gradeData);
+    renderClusterCards('rumpun', gradeData);
+    renderGradeTable('resume-table-tbody', gradeData);
+
+    if (window.AppCharts) {
+      if (window.AppCharts['canvas-chart-bar-modal']) {
+        try {
+          window.AppCharts['canvas-chart-bar-modal'].resize();
+          window.AppCharts['canvas-chart-bar-modal'].update();
+        } catch (e) {}
+      }
+      if (window.AppCharts['canvas-chart-radar-modal']) {
+        try {
+          window.AppCharts['canvas-chart-radar-modal'].resize();
+          window.AppCharts['canvas-chart-radar-modal'].update();
+        } catch (e) {}
+      }
+    }
+  } else {
+    document.body.classList.remove('printing-resume-all');
+    document.body.classList.add('printing-resume-active');
+  }
+
   setTimeout(() => {
     window.print();
-  }, 60);
+  }, 120);
 }
 
 if (typeof window !== 'undefined') {
   window.addEventListener('afterprint', () => {
-    document.body.classList.remove('printing-resume-modal');
+    document.body.classList.remove('printing-resume-all', 'printing-resume-active', 'printing-resume-modal');
+    if (window._prevResumeTabBeforePrint) {
+      switchResumeChartTab(window._prevResumeTabBeforePrint);
+      window._prevResumeTabBeforePrint = null;
+    }
   });
 }
 
