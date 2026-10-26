@@ -2465,8 +2465,8 @@ function handleManualLogin(e) {
     });
 }
 
-function logoutUser() {
-  if (!confirm('Apakah Anda yakin ingin keluar dari akun sistem e-Rapor?')) return;
+function logoutUser(force = false) {
+  if (!force && typeof confirm === 'function' && !confirm('Apakah Anda yakin ingin keluar dari akun sistem e-Rapor?')) return;
   saveStateToLocal('all');
   try { localStorage.removeItem('aiis_user_session'); } catch (e) {}
   recordActivity('LOGOUT', 'Autentikasi', `Logout pengguna: @${AppState.currentUser?.username || '-'} (${AppState.currentUser?.nama_lengkap || '-'})`, 'info');
