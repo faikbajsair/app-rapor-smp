@@ -4897,10 +4897,10 @@
         <option value="IX UMMU SALAMAH">IX UMMU SALAMAH</option>
       </select>
 
-      <!-- Search Nama Siswa -->
-      <div class="relative">
+      <!-- Search Nama Siswa (Khusus Guru / Walas / Admin) -->
+      <div id="filter-rapor-search-container" class="menu-non-wali relative">
         <input type="text" id="filter-rapor-search" oninput="onRaporSearchInput()" placeholder="Cari nama siswa..." 
-               class="text-xs bg-slate-50 border border-slate-300 rounded-xl pl-7 pr-2.5 py-2 text-slate-800 focus:ring-2 focus:ring-indigo-500 w-36" />
+               class="menu-non-wali text-xs bg-slate-50 border border-slate-300 rounded-xl pl-7 pr-2.5 py-2 text-slate-800 focus:ring-2 focus:ring-indigo-500 w-36" />
         <i class="fa-solid fa-magnifying-glass absolute left-2 top-2.5 text-slate-400 text-xs"></i>
       </div>
 
@@ -9759,9 +9759,16 @@ function applyRoleUIPermissions(role) {
   if (filterKelasSelect) {
     filterKelasSelect.disabled = isWali;
   }
+  const searchContainer = document.getElementById('filter-rapor-search-container');
+  if (searchContainer) {
+    if (isWali) searchContainer.classList.add('hidden');
+    else searchContainer.classList.remove('hidden');
+  }
   const filterSearchInput = document.getElementById('filter-rapor-search');
   if (filterSearchInput) {
     filterSearchInput.disabled = isWali;
+    if (isWali) filterSearchInput.classList.add('hidden');
+    else filterSearchInput.classList.remove('hidden');
   }
 
   populateMuridDropdowns();

@@ -313,7 +313,29 @@ setTimeout(() => {
   if (adminPublishActions && !adminPublishActions.classList.contains('hidden')) {
     throw new Error('rapor-publish-admin-actions must be HIDDEN for Wali Murid when draft!');
   }
-  console.log('✅ Tombol Tarik / Batal Publish Rapor dan kontrol publish admin 100% tersembunyi dari Wali Murid');
+  // 4. Input Pencarian Siswa (filter-rapor-search) harus tersembunyi bagi Wali Murid
+  const searchContainerWali = doc.getElementById('filter-rapor-search-container');
+  const searchInputWali = doc.getElementById('filter-rapor-search');
+  if (searchContainerWali && !searchContainerWali.classList.contains('hidden')) {
+    throw new Error('Container Cari Nama Siswa (#filter-rapor-search-container) must be HIDDEN for Wali Murid!');
+  }
+  if (searchInputWali && !searchInputWali.classList.contains('hidden')) {
+    throw new Error('Input Cari Nama Siswa (#filter-rapor-search) must be HIDDEN for Wali Murid!');
+  }
+  console.log('✅ Input Cari Nama Siswa tersembunyi 100% untuk Wali Murid');
+
+  // Login Guru: Input Pencarian Siswa harus tampil
+  win.loginAsSpecificTeacher('dewi');
+  win.switchView('rapor');
+  const searchContainerTeacher = doc.getElementById('filter-rapor-search-container');
+  const searchInputTeacher = doc.getElementById('filter-rapor-search');
+  if (searchContainerTeacher && searchContainerTeacher.classList.contains('hidden')) {
+    throw new Error('Container Cari Nama Siswa should be VISIBLE for Guru / Walas!');
+  }
+  if (searchInputTeacher && searchInputTeacher.classList.contains('hidden')) {
+    throw new Error('Input Cari Nama Siswa should be VISIBLE for Guru / Walas!');
+  }
+  console.log('✅ Input Cari Nama Siswa tampil normal untuk Guru / Walas');
 
   console.log('\n🎉 ALL RBAC, WALI MURID, ANEKDOT & BK VERIFICATION TESTS PASSED 100% SUCCESSFULLY!');
 }, 500);

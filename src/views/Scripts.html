@@ -2699,9 +2699,16 @@ function applyRoleUIPermissions(role) {
   if (filterKelasSelect) {
     filterKelasSelect.disabled = isWali;
   }
+  const searchContainer = document.getElementById('filter-rapor-search-container');
+  if (searchContainer) {
+    if (isWali) searchContainer.classList.add('hidden');
+    else searchContainer.classList.remove('hidden');
+  }
   const filterSearchInput = document.getElementById('filter-rapor-search');
   if (filterSearchInput) {
     filterSearchInput.disabled = isWali;
+    if (isWali) filterSearchInput.classList.add('hidden');
+    else filterSearchInput.classList.remove('hidden');
   }
 
   populateMuridDropdowns();
