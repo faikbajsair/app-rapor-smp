@@ -985,7 +985,24 @@ function buildDefaultAnekdotData() {
       analisis: 'Menunjukkan rasa tanggung jawab belajar yang tinggi dan kemampuan manajemen tugas yang prima.',
       tindak_lanjut: 'Karya resume dijadikan model referensi positif bagi rekan sekelas.',
       observer: 'Zam-zam Nasrullah, S.Pd.',
-      status: 'Apresiasi Positif'
+      status: 'Apresiasi Positif',
+      jenis: 'amal_sholeh'
+    },
+    {
+      id: 'ANK-242507001-4',
+      nis: '242507001',
+      nama_murid: 'ABDILLAH ZULQARNAIN ARRAZI',
+      kelas: 'IX ABU BAKAR',
+      semester: 'Tengah Semester 1',
+      tahun_ajaran: '2026/2027',
+      tanggal: '18 September 2026',
+      jenis: 'amal_buruk',
+      kategori: 'Kedisiplinan Waktu (Terlambat Hadir / Pelajaran)',
+      kejadian: 'Terlambat berwudhu dan masuk ke musholla 7 menit setelah iqamah berkumandang karena merapikan loker terburu-buru.',
+      analisis: 'Perlu peningkatan manajemen jeda waktu antara jam pelajaran dengan persiapan ibadah shalat berjamaah.',
+      tindak_lanjut: 'Diberikan tadzkirah pengingat oleh wali kelas saat evaluasi harian dan berkomitmen hadir di shaf sebelum iqamah.',
+      observer: 'Dewi Fitria Nugraheni, S.Pd., Gr.',
+      status: 'Dalam Pembinaan'
     },
     // Aezar El Khazindar Walidain (262707001 - VII UTSMAN)
     {
@@ -1720,7 +1737,7 @@ function switchView(viewName) {
 
   // Role Access Checks
   if (role === 'wali_murid') {
-    if (viewName === 'cms' || viewName === 'murid' || viewName === 'akademik' || viewName === 'tp' || viewName === 'deskripsi' || viewName === 'kepemimpinan' || viewName === 'diniyah') {
+    if (viewName === 'cms' || viewName === 'murid' || viewName === 'akademik' || viewName === 'tp' || viewName === 'deskripsi' || viewName === 'kepemimpinan' || viewName === 'diniyah' || viewName === 'catatan_amal') {
       showToast('Akses Wali Murid terbatas pada Rapor & Ringkasan Nilai.', 'info');
       viewName = 'rapor';
     }
@@ -1794,6 +1811,8 @@ function switchView(viewName) {
     case 'dashboard': loadDashboardStats(); break;
     case 'jadwal': initJadwalCalendar(); break;
     case 'amalsholeh': renderAmalSholehView(); break;
+    case 'konseling': renderKonselingView(); break;
+    case 'catatan_amal': renderCatatAmalView(); break;
     case 'tp':
     case 'tujuan_pembelajaran': loadTujuanPembelajaran(); renderTPTable(); break;
     case 'akademik': loadNilaiAkademik(); renderLegerGrid(); break;
@@ -2787,7 +2806,8 @@ function getAnekdotForStudent(nis, studentObj) {
       analisis: 'Memperlihatkan kedisiplinan beribadah yang istiqomah, adab islami yang luhur, dan keteladanan yang konsisten.',
       tindak_lanjut: 'Diberikan apresiasi oleh wali kelas saat evaluasi harian dan dimotivasi untuk mempertahankan kebiasaan baik.',
       observer: walas,
-      status: 'Apresiasi Positif'
+      status: 'Apresiasi Positif',
+      jenis: 'amal_sholeh'
     },
     {
       id: `ANK-${cleanNis}-2`,
@@ -2802,7 +2822,8 @@ function getAnekdotForStudent(nis, studentObj) {
       analisis: 'Keterampilan komunikasi sosial, empati, dan kepemimpinan suportif berkembang sangat baik.',
       tindak_lanjut: 'Dicatat dalam buku perkembangan kepemimpinan siswa sebagai poin kebaikan karakter.',
       observer: walas,
-      status: 'Terverifikasi'
+      status: 'Terverifikasi',
+      jenis: 'amal_sholeh'
     },
     {
       id: `ANK-${cleanNis}-3`,
@@ -2817,7 +2838,8 @@ function getAnekdotForStudent(nis, studentObj) {
       analisis: 'Rasa tanggung jawab belajar dan etos kerja mandiri ananda sangat membanggakan.',
       tindak_lanjut: 'Hasil portofolio dijadikan contoh kerapian penugasan di kelas.',
       observer: walas,
-      status: 'Apresiasi Positif'
+      status: 'Apresiasi Positif',
+      jenis: 'amal_sholeh'
     }
   ];
 }
@@ -2913,8 +2935,55 @@ function renderWaliAnekdotAndKonseling(childNis, childMurid) {
   // Render Catatan Amal Sholeh (A-Record) View & Cards
   renderAmalSholehView(cleanNis, childMurid);
 
+  // Render Bimbingan Konseling (BK) View & Cards
+  renderKonselingView(cleanNis, childMurid);
+}
 
-  // Render BK List
+/**
+ * ============================================================================
+ * LAYANAN BIMBINGAN & KONSELING (BK) KHUSUS PORTAL SISWA & WALI MURID
+ * ============================================================================
+ */
+function renderKonselingView(customNis, customMurid) {
+  const user = AppState.currentUser || {};
+  let childNis = customNis || user.nis || AppState.activePrintNis || '242507001';
+  let childMurid = customMurid || AppState.muridList.find(m => String(m.nis).trim() === String(childNis).trim()) || {
+    nis: childNis,
+    nama_murid: user.nama_lengkap || 'Ananda',
+    kelas: 'IX ABU BAKAR',
+    wali_kelas: 'Dewi Fitria Nugraheni, S.Pd., Gr.'
+  };
+
+  const cleanNis = String(childNis || childMurid.nis || '').trim();
+  const cName = childMurid.nama_murid || childMurid.nama_santri || user.nama_lengkap || 'Ananda';
+  const cKelas = childMurid.kelas || 'IX ABU BAKAR';
+
+  // Update Header Profile Identity
+  const elName = document.getElementById('konseling-nama-murid');
+  if (elName) elName.textContent = cName;
+  const elNis = document.getElementById('konseling-nis-murid');
+  if (elNis) elNis.textContent = cleanNis;
+  const elKelas = document.getElementById('konseling-kelas-murid');
+  if (elKelas) elKelas.textContent = cKelas;
+
+  // Retrieve Counseling Records
+  const bkRecords = getKonselingForStudent(cleanNis, childMurid);
+  const total = bkRecords.length;
+  const belajarCount = bkRecords.filter(r => /belajar|akademik|manajemen/i.test(r.bidang_bimbingan || '')).length;
+  const karakterCount = bkRecords.filter(r => /minat|bakat|karakter|emosi/i.test(r.bidang_bimbingan || '')).length;
+
+  const setT = (id, val) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = val;
+  };
+
+  setT('stat-bk-total', `${total} Sesi`);
+  setT('stat-bk-belajar', `${belajarCount} Sesi`);
+  setT('stat-bk-karakter', `${karakterCount} Sesi`);
+  setT('stat-bk-selesai', `${total} Panduan`);
+  setT('badge-bk-count', `${total} Sesi Bimbingan`);
+
+  // Render BK Cards List
   const bkContainer = document.getElementById('wali-bk-list');
   if (bkContainer) {
     if (bkRecords.length === 0) {
@@ -2927,7 +2996,7 @@ function renderWaliAnekdotAndKonseling(childNis, childMurid) {
     } else {
       bkContainer.innerHTML = bkRecords.map((item) => {
         return `
-          <div class="bg-slate-50/70 hover:bg-[#f0fbf7] rounded-3xl p-5 sm:p-6 border border-slate-200/90 hover:border-[#a7f3d0] transition-all duration-200 shadow-sm flex flex-col justify-between space-y-4">
+          <div class="bg-white hover:bg-[#f0fbf7]/80 rounded-3xl p-5 sm:p-6 border border-slate-200/90 hover:border-[#a7f3d0] transition-all duration-200 shadow-sm flex flex-col justify-between space-y-4">
             <div class="space-y-3">
               <div class="flex flex-wrap items-center justify-between gap-2">
                 <span class="px-3 py-1 rounded-full text-[10px] font-black bg-teal-100 text-teal-800 border border-teal-200 inline-flex items-center gap-1.5">
@@ -2945,17 +3014,17 @@ function renderWaliAnekdotAndKonseling(childNis, childMurid) {
                   ${item.uraian_konseling}
                 </p>
               </div>
-              <div class="bg-white p-3 rounded-2xl border border-slate-200/80 text-xs text-slate-700">
+              <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200/80 text-xs text-slate-700">
                 <p class="text-[11px] font-bold text-teal-800 uppercase tracking-wider mb-0.5">Rencana Aksi & Komitmen Ananda:</p>
                 <p class="text-[11px] text-slate-600 leading-snug">${item.rencana_tindak_lanjut}</p>
               </div>
               <!-- Highlighted Recommendation for Parents -->
-              <div class="bg-gradient-to-r from-emerald-50 to-teal-50/90 border border-emerald-200/80 rounded-2xl p-3.5 space-y-1">
-                <div class="flex items-center gap-1.5 text-xs font-black text-emerald-900">
-                  <i class="fa-solid fa-house-chimney-user text-emerald-600"></i>
+              <div class="bg-gradient-to-r from-teal-50 to-emerald-50 border border-teal-200/80 rounded-2xl p-3.5 space-y-1">
+                <div class="flex items-center gap-1.5 text-xs font-black text-teal-900">
+                  <i class="fa-solid fa-house-chimney-user text-teal-600"></i>
                   <span>Rekomendasi Kolaborasi Untuk Orang Tua di Rumah:</span>
                 </div>
-                <p class="text-xs text-emerald-800 leading-relaxed font-medium">
+                <p class="text-xs text-teal-800 leading-relaxed font-medium">
                   ${item.rekomendasi_orang_tua}
                 </p>
               </div>
@@ -2978,6 +3047,7 @@ function renderWaliAnekdotAndKonseling(childNis, childMurid) {
       }).join('');
     }
   }
+
 }
 
 /**
@@ -3059,43 +3129,46 @@ function renderAmalSholehView(customNis, customMurid, filterCat) {
       </p>
     </div>
   ` : displayedRecords.map((item) => {
-    let badgeColor = 'bg-rose-50 text-rose-800 border-rose-200';
-    let iconCat = 'fa-solid fa-hand-holding-heart text-rose-500';
+    const isBuruk = (item.jenis || '') === 'amal_buruk';
+    let badgeColor = isBuruk ? 'bg-rose-100 text-rose-900 border-rose-300' : 'bg-rose-50 text-rose-800 border-rose-200';
+    let iconCat = isBuruk ? 'fa-solid fa-triangle-exclamation text-rose-600' : 'fa-solid fa-hand-holding-heart text-rose-500';
     const kat = (item.kategori || '').toLowerCase();
-    if (kat.includes('adab') || kat.includes('shalat') || kat.includes('ibadah')) {
-      badgeColor = 'bg-emerald-50 text-emerald-800 border-emerald-200';
-      iconCat = 'fa-solid fa-mosque text-emerald-600';
-    } else if (kat.includes('inisiatif') || kat.includes('pemimpin') || kat.includes('kerja')) {
-      badgeColor = 'bg-indigo-50 text-indigo-800 border-indigo-200';
-      iconCat = 'fa-solid fa-award text-indigo-600';
-    } else if (kat.includes('sosial') || kat.includes('peduli')) {
-      badgeColor = 'bg-teal-50 text-teal-800 border-teal-200';
-      iconCat = 'fa-solid fa-hands-holding-child text-teal-600';
-    } else if (kat.includes('disiplin') || kat.includes('tanggung')) {
-      badgeColor = 'bg-amber-50 text-amber-800 border-amber-200';
-      iconCat = 'fa-solid fa-circle-check text-amber-600';
+    if (!isBuruk) {
+      if (kat.includes('adab') || kat.includes('shalat') || kat.includes('ibadah')) {
+        badgeColor = 'bg-emerald-50 text-emerald-800 border-emerald-200';
+        iconCat = 'fa-solid fa-mosque text-emerald-600';
+      } else if (kat.includes('inisiatif') || kat.includes('pemimpin') || kat.includes('kerja')) {
+        badgeColor = 'bg-indigo-50 text-indigo-800 border-indigo-200';
+        iconCat = 'fa-solid fa-award text-indigo-600';
+      } else if (kat.includes('sosial') || kat.includes('peduli')) {
+        badgeColor = 'bg-teal-50 text-teal-800 border-teal-200';
+        iconCat = 'fa-solid fa-hands-holding-child text-teal-600';
+      } else if (kat.includes('disiplin') || kat.includes('tanggung')) {
+        badgeColor = 'bg-amber-50 text-amber-800 border-amber-200';
+        iconCat = 'fa-solid fa-circle-check text-amber-600';
+      }
     }
 
     return `
-      <div class="bg-white hover:bg-[#f0fbf7]/70 rounded-3xl p-5 sm:p-6 border border-slate-200/90 hover:border-[#a7f3d0] transition-all duration-200 shadow-sm hover:shadow-md flex flex-col justify-between space-y-4">
+      <div class="bg-white hover:bg-[#f0fbf7]/70 rounded-3xl p-5 sm:p-6 border ${isBuruk ? 'border-rose-200/90 hover:border-rose-300' : 'border-slate-200/90 hover:border-[#a7f3d0]'} transition-all duration-200 shadow-sm hover:shadow-md flex flex-col justify-between space-y-4">
         <div class="space-y-3">
           <div class="flex items-center justify-between gap-2">
             <span class="px-3 py-1 rounded-full text-[10px] font-black border ${badgeColor} inline-flex items-center gap-1.5">
-              <i class="${iconCat}"></i> ${item.kategori || 'Amal Sholeh & Adab'}
+              <i class="${iconCat}"></i> ${item.kategori || (isBuruk ? 'Evaluasi Perilaku' : 'Amal Sholeh & Adab')}
             </span>
             <span class="text-[10px] text-slate-500 font-bold flex items-center gap-1">
-              <i class="fa-regular fa-calendar-check text-emerald-600"></i> ${item.tanggal}
+              <i class="fa-regular fa-calendar-check ${isBuruk ? 'text-rose-600' : 'text-emerald-600'}"></i> ${item.tanggal}
             </span>
           </div>
 
           <div>
             <div class="flex items-center gap-1.5 mb-1">
-              <span class="w-2 h-2 rounded-full bg-rose-500"></span>
-              <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">
-                Peristiwa Amal Sholeh & Catatan Anekdot:
+              <span class="w-2 h-2 rounded-full ${isBuruk ? 'bg-rose-500' : 'bg-emerald-500'}"></span>
+              <span class="text-[10px] font-extrabold uppercase tracking-wider ${isBuruk ? 'text-rose-600 font-black' : 'text-slate-400'}">
+                ${isBuruk ? 'Catatan Evaluasi / Pembinaan Karakter (Anekdot):' : 'Peristiwa Amal Sholeh & Catatan Anekdot:'}
               </span>
             </div>
-            <p class="text-xs sm:text-sm font-bold text-slate-800 leading-relaxed italic bg-slate-50 p-3 rounded-2xl border border-slate-100">
+            <p class="text-xs sm:text-sm font-bold text-slate-800 leading-relaxed italic bg-slate-50 p-3 rounded-2xl border ${isBuruk ? 'border-rose-100 bg-rose-50/20' : 'border-slate-100'}">
               "${item.kejadian}"
             </p>
           </div>
@@ -3106,10 +3179,10 @@ function renderAmalSholehView(customNis, customMurid, filterCat) {
             </p>
           </div>
 
-          <div class="bg-gradient-to-r from-emerald-50 to-teal-50 p-3 rounded-2xl border border-emerald-200/80 text-xs text-emerald-950 leading-snug">
+          <div class="${isBuruk ? 'bg-gradient-to-r from-rose-50 to-amber-50 border border-rose-200/80 text-rose-950' : 'bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200/80 text-emerald-950'} p-3 rounded-2xl text-xs leading-snug">
             <p class="flex items-start gap-1.5 font-medium">
-              <i class="fa-solid fa-circle-check text-emerald-600 mt-0.5 shrink-0"></i>
-              <span><strong>Tindak Lanjut & Apresiasi Guru:</strong> ${item.tindak_lanjut}</span>
+              <i class="fa-solid ${isBuruk ? 'fa-triangle-exclamation text-rose-600' : 'fa-circle-check text-emerald-600'} mt-0.5 shrink-0"></i>
+              <span><strong>${isBuruk ? 'Arahan Pembinaan Guru & Tindak Lanjut:' : 'Tindak Lanjut & Apresiasi Guru:'}</strong> ${item.tindak_lanjut}</span>
             </p>
           </div>
         </div>
@@ -3327,6 +3400,358 @@ window.openModalBkConsult = openModalBkConsult;
 window.closeModalBkConsult = closeModalBkConsult;
 window.submitParentBkConsultation = submitParentBkConsultation;
 window.contactBkWhatsApp = contactBkWhatsApp;
+window.renderKonselingView = renderKonselingView;
+
+/**
+ * ============================================================================
+ * CONTROLLER: PENCATATAN OBSERVASI ANEKDOT (A-RECORD) & REKAM AMAL SISWA
+ * (KHUSUS GURU MATA PELAJARAN, WALI KELAS, & ADMINISTRATOR)
+ * ============================================================================
+ */
+
+const ANEKDOT_CATEGORIES_MAP = {
+  amal_sholeh: [
+    'Adab & Shalat Berjamaah',
+    'Inisiatif & Kepemimpinan Kelompok',
+    'Kedisiplinan & Tanggung Jawab',
+    'Sosial & Kepedulian Sesama',
+    'Semangat Tahsin & Tahfizh',
+    'Kebersihan & Kerapian Diri'
+  ],
+  amal_buruk: [
+    'Kedisiplinan Waktu (Terlambat Hadir / Pelajaran)',
+    'Kelengkapan Belajar & Buku/Mushaf Tertinggal',
+    'Kerapian Seragam & Tata Tertib Madrasah',
+    'Adab Terhadap Guru / Teman (Kurang Sopan)',
+    'Kurang Tertib Saat Halaqah / Pembelajaran',
+    'Penggunaan Fasilitas / Gawai Tanpa Izin'
+  ]
+};
+
+function formatIndoDate(dateStr) {
+  if (!dateStr) return '';
+  const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+  const parts = dateStr.split('-');
+  if (parts.length === 3) {
+    const day = parseInt(parts[2], 10);
+    const month = months[parseInt(parts[1], 10) - 1] || parts[1];
+    const year = parts[0];
+    return `${day} ${month} ${year}`;
+  }
+  return dateStr;
+}
+
+function renderCatatAmalView() {
+  const user = AppState.currentUser || {};
+  if (user.role === 'wali_murid') {
+    showToast('Akses ditolak: Menu ini dikhususkan untuk Guru & Wali Kelas.', 'warning');
+    switchView('dashboard');
+    return;
+  }
+
+  // Update Teacher & Role Banner
+  const teacherEl = document.getElementById('catat-amal-current-teacher');
+  if (teacherEl) {
+    teacherEl.textContent = user.nama_lengkap || 'Dewi Fitria Nugraheni, S.Pd., Gr.';
+  }
+
+  const roleEl = document.getElementById('catat-amal-current-role');
+  if (roleEl) {
+    let roleText = 'Guru Mata Pelajaran';
+    if (user.role === 'admin') roleText = 'Administrator Madrasah';
+    else if (user.role === 'wali_kelas') roleText = `Wali Kelas ${user.kelas || 'IX ABU BAKAR'}`;
+    roleEl.textContent = roleText;
+  }
+
+  // Handle Class Selector according to teacher's assigned class
+  const kelasSelect = document.getElementById('catat-amal-kelas');
+  if (kelasSelect) {
+    if (user.role === 'wali_kelas' && user.kelas) {
+      kelasSelect.value = user.kelas;
+    } else if (!kelasSelect.value) {
+      kelasSelect.value = 'IX ABU BAKAR';
+    }
+  }
+
+  // Set default date if empty
+  const dateInput = document.getElementById('catat-amal-tanggal');
+  if (dateInput && !dateInput.value) {
+    const today = new Date().toISOString().split('T')[0];
+    dateInput.value = today;
+  }
+
+  // Populate student dropdown based on selected class
+  onCatatAmalClassChange();
+
+  // Set default type to amal_sholeh
+  onCatatAmalTypeChange('amal_sholeh');
+
+  // Update stats & table
+  updateCatatAmalStats();
+  filterCatatAmalTable();
+}
+
+function onCatatAmalClassChange() {
+  const kelasSelect = document.getElementById('catat-amal-kelas');
+  const siswaSelect = document.getElementById('catat-amal-siswa');
+  if (!kelasSelect || !siswaSelect) return;
+
+  const selectedClass = kelasSelect.value || 'IX ABU BAKAR';
+  const students = (AppState.muridList || []).filter(m => String(m.kelas).trim() === selectedClass);
+
+  if (students.length === 0) {
+    siswaSelect.innerHTML = `<option value="">-- Tidak ada data santri di kelas ini --</option>`;
+  } else {
+    siswaSelect.innerHTML = students.map(m => {
+      const name = m.nama_murid || m.nama_santri || 'Santri';
+      return `<option value="${m.nis}" data-nama="${name}">${name} (NIS: ${m.nis})</option>`;
+    }).join('');
+  }
+}
+
+function onCatatAmalTypeChange(type) {
+  const isSholeh = type === 'amal_sholeh';
+  const radioSholeh = document.getElementById('radio-jenis-sholeh');
+  const radioBuruk = document.getElementById('radio-jenis-buruk');
+
+  if (radioSholeh) radioSholeh.checked = isSholeh;
+  if (radioBuruk) radioBuruk.checked = !isSholeh;
+
+  const cardSholeh = radioSholeh?.closest('.catat-amal-type-card');
+  const cardBuruk = radioBuruk?.closest('.catat-amal-type-card');
+
+  if (cardSholeh && cardBuruk) {
+    if (isSholeh) {
+      cardSholeh.className = 'catat-amal-type-card cursor-pointer block p-4 rounded-2xl border-2 border-emerald-500 bg-emerald-50/50 transition relative shadow-sm';
+      cardBuruk.className = 'catat-amal-type-card cursor-pointer block p-4 rounded-2xl border-2 border-slate-200 bg-white hover:bg-rose-50/30 transition relative';
+    } else {
+      cardSholeh.className = 'catat-amal-type-card cursor-pointer block p-4 rounded-2xl border-2 border-slate-200 bg-white hover:bg-emerald-50/30 transition relative';
+      cardBuruk.className = 'catat-amal-type-card cursor-pointer block p-4 rounded-2xl border-2 border-rose-500 bg-rose-50/50 transition relative shadow-sm';
+    }
+  }
+
+  // Populate categories
+  const katSelect = document.getElementById('catat-amal-kategori');
+  if (katSelect) {
+    const list = ANEKDOT_CATEGORIES_MAP[type] || ANEKDOT_CATEGORIES_MAP.amal_sholeh;
+    katSelect.innerHTML = list.map(c => `<option value="${c}">${c}</option>`).join('');
+  }
+
+  // Set default status
+  const statusSelect = document.getElementById('catat-amal-status');
+  if (statusSelect) {
+    statusSelect.value = isSholeh ? 'Apresiasi Positif' : 'Dalam Pembinaan';
+  }
+}
+
+function updateCatatAmalStats() {
+  const records = AppState.anekdotList || [];
+  const total = records.length;
+  const sholehCount = records.filter(r => r.jenis === 'amal_sholeh' || !r.jenis).length;
+  const burukCount = records.filter(r => r.jenis === 'amal_buruk').length;
+  const uniqueStudents = new Set(records.map(r => String(r.nis).trim())).size;
+
+  const setT = (id, val) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = val;
+  };
+
+  setT('stat-teacher-total-records', total);
+  setT('stat-catat-total', total);
+  setT('stat-catat-sholeh', sholehCount);
+  setT('stat-catat-buruk', burukCount);
+  setT('stat-catat-siswa', uniqueStudents);
+}
+
+function saveNewAnekdotRecord() {
+  const user = AppState.currentUser || {};
+  const kelasEl = document.getElementById('catat-amal-kelas');
+  const siswaEl = document.getElementById('catat-amal-siswa');
+  const tglEl = document.getElementById('catat-amal-tanggal');
+  const katEl = document.getElementById('catat-amal-kategori');
+  const statusEl = document.getElementById('catat-amal-status');
+  const kejadianEl = document.getElementById('catat-amal-kejadian');
+  const analisisEl = document.getElementById('catat-amal-analisis');
+  const tindakEl = document.getElementById('catat-amal-tindak-lanjut');
+
+  const radioBuruk = document.getElementById('radio-jenis-buruk');
+  const jenis = (radioBuruk && radioBuruk.checked) ? 'amal_buruk' : 'amal_sholeh';
+
+  const nis = siswaEl ? siswaEl.value : '';
+  const selectedOpt = siswaEl?.options[siswaEl.selectedIndex];
+  const namaMurid = selectedOpt ? (selectedOpt.getAttribute('data-nama') || selectedOpt.text.split('(')[0].trim()) : 'Santri';
+  const kelas = kelasEl ? kelasEl.value : 'IX ABU BAKAR';
+  const tanggal = tglEl?.value ? formatIndoDate(tglEl.value) : formatIndoDate(new Date().toISOString().split('T')[0]);
+  const kategori = katEl ? katEl.value : 'Adab & Shalat Berjamaah';
+  const status = statusEl ? statusEl.value : (jenis === 'amal_sholeh' ? 'Apresiasi Positif' : 'Dalam Pembinaan');
+  const kejadian = kejadianEl?.value ? kejadianEl.value.trim() : '';
+  const analisis = analisisEl?.value ? analisisEl.value.trim() : '';
+  const tindakLanjut = tindakEl?.value ? tindakEl.value.trim() : '';
+
+  if (!nis) {
+    showToast('Pilih santri terlebih dahulu!', 'warning');
+    return;
+  }
+  if (!kejadian || !analisis || !tindakLanjut) {
+    showToast('Harap lengkapi semua kolom observasi (Peristiwa, Analisis, dan Tindak Lanjut)!', 'warning');
+    return;
+  }
+
+  const newRecord = {
+    id: `ANK-${nis}-${Date.now()}`,
+    nis: String(nis).trim(),
+    nama_murid: namaMurid,
+    kelas: kelas,
+    semester: 'Tengah Semester 1',
+    tahun_ajaran: '2026/2027',
+    tanggal: tanggal,
+    jenis: jenis,
+    kategori: kategori,
+    kejadian: kejadian,
+    analisis: analisis,
+    tindak_lanjut: tindakLanjut,
+    observer: user.nama_lengkap || 'Dewi Fitria Nugraheni, S.Pd., Gr.',
+    status: status
+  };
+
+  if (!Array.isArray(AppState.anekdotList)) {
+    AppState.anekdotList = [];
+  }
+
+  AppState.anekdotList.unshift(newRecord);
+  saveStateToLocal('anekdot');
+
+  showToast(`Catatan ${jenis === 'amal_sholeh' ? 'Amal Sholeh' : 'Amal Buruk / Evaluasi'} berhasil disimpan!`, 'success');
+
+  resetCatatAmalForm(false);
+  updateCatatAmalStats();
+  filterCatatAmalTable();
+}
+
+function resetCatatAmalForm(resetClass = true) {
+  if (resetClass) {
+    const kelasSelect = document.getElementById('catat-amal-kelas');
+    if (kelasSelect) {
+      const user = AppState.currentUser || {};
+      if (user.role === 'wali_kelas' && user.kelas) {
+        kelasSelect.value = user.kelas;
+      } else {
+        kelasSelect.value = 'IX ABU BAKAR';
+      }
+      onCatatAmalClassChange();
+    }
+  }
+
+  const dateInput = document.getElementById('catat-amal-tanggal');
+  if (dateInput) {
+    dateInput.value = new Date().toISOString().split('T')[0];
+  }
+
+  onCatatAmalTypeChange('amal_sholeh');
+
+  const kj = document.getElementById('catat-amal-kejadian');
+  if (kj) kj.value = '';
+  const an = document.getElementById('catat-amal-analisis');
+  if (an) an.value = '';
+  const tl = document.getElementById('catat-amal-tindak-lanjut');
+  if (tl) tl.value = '';
+}
+
+function deleteAnekdotRecord(id) {
+  if (typeof confirm === 'function' && !confirm('Apakah Anda yakin ingin menghapus catatan observasi anekdot ini?')) {
+    return;
+  }
+
+  const index = (AppState.anekdotList || []).findIndex(r => String(r.id) === String(id));
+  if (index !== -1) {
+    AppState.anekdotList.splice(index, 1);
+    saveStateToLocal('anekdot');
+    showToast('Catatan observasi berhasil dihapus.', 'info');
+    updateCatatAmalStats();
+    filterCatatAmalTable();
+  }
+}
+
+function filterCatatAmalTable() {
+  const tbody = document.getElementById('table-catat-amal-body');
+  if (!tbody) return;
+
+  const kelasFilter = document.getElementById('filter-table-catat-kelas')?.value || 'ALL';
+  const jenisFilter = document.getElementById('filter-table-catat-jenis')?.value || 'ALL';
+
+  let list = AppState.anekdotList || [];
+
+  if (kelasFilter !== 'ALL') {
+    list = list.filter(r => String(r.kelas).trim() === kelasFilter);
+  }
+
+  if (jenisFilter !== 'ALL') {
+    list = list.filter(r => {
+      const j = r.jenis || 'amal_sholeh';
+      return j === jenisFilter;
+    });
+  }
+
+  if (list.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="8" class="p-8 text-center text-slate-400">
+          <i class="fa-solid fa-clipboard-question text-3xl mb-2 text-slate-300 block"></i>
+          <p class="text-xs font-semibold text-slate-500">Tidak ada catatan anekdot yang cocok dengan filter yang dipilih.</p>
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
+  tbody.innerHTML = list.map((r, idx) => {
+    const isSholeh = (r.jenis || 'amal_sholeh') === 'amal_sholeh';
+    const badgeType = isSholeh
+      ? `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-black bg-emerald-100 text-emerald-800 border border-emerald-300"><i class="fa-solid fa-hand-holding-heart"></i> Amal Sholeh</span>`
+      : `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-black bg-rose-100 text-rose-800 border border-rose-300"><i class="fa-solid fa-triangle-exclamation"></i> Amal Buruk</span>`;
+
+    return `
+      <tr class="hover:bg-slate-50/80 transition-colors border-b border-slate-100 text-xs">
+        <td class="p-3 text-center font-bold text-slate-400">${idx + 1}</td>
+        <td class="p-3 whitespace-nowrap text-slate-600 font-semibold">${r.tanggal}</td>
+        <td class="p-3">
+          <strong class="text-slate-900 block font-bold">${r.nama_murid || 'Santri'}</strong>
+          <span class="text-[11px] text-slate-500 font-medium">NIS: ${r.nis} • <span class="font-bold text-slate-700">${r.kelas}</span></span>
+        </td>
+        <td class="p-3 space-y-1">
+          <div>${badgeType}</div>
+          <span class="text-[11px] font-bold text-slate-700 block">${r.kategori}</span>
+        </td>
+        <td class="p-3 text-slate-700 leading-relaxed font-medium max-w-xs">
+          "${r.kejadian}"
+        </td>
+        <td class="p-3 text-slate-600 space-y-1 max-w-xs">
+          <p class="text-[11px]"><strong class="text-slate-700">Analisis:</strong> ${r.analisis}</p>
+          <p class="text-[11px] text-teal-800"><strong class="text-teal-900">Tindak Lanjut:</strong> ${r.tindak_lanjut}</p>
+          <span class="inline-block mt-0.5 px-2 py-0.5 rounded text-[10px] font-bold ${isSholeh ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-rose-50 text-rose-700 border border-rose-200'}">${r.status || 'Tercatat'}</span>
+        </td>
+        <td class="p-3 text-slate-600 text-[11px] whitespace-nowrap">
+          <i class="fa-solid fa-user-pen mr-1 text-slate-400"></i> ${r.observer || 'Pendidik'}
+        </td>
+        <td class="p-3 text-center">
+          <button type="button" onclick="deleteAnekdotRecord('${r.id}')" title="Hapus Catatan" class="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition cursor-pointer">
+            <i class="fa-solid fa-trash-can text-sm"></i>
+          </button>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+window.renderCatatAmalView = renderCatatAmalView;
+window.onCatatAmalClassChange = onCatatAmalClassChange;
+window.onCatatAmalTypeChange = onCatatAmalTypeChange;
+window.updateCatatAmalStats = updateCatatAmalStats;
+window.saveNewAnekdotRecord = saveNewAnekdotRecord;
+window.resetCatatAmalForm = resetCatatAmalForm;
+window.deleteAnekdotRecord = deleteAnekdotRecord;
+window.filterCatatAmalTable = filterCatatAmalTable;
+
 
 /**
  * ============================================================================

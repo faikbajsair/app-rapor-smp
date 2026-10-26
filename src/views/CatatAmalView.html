@@ -1,0 +1,307 @@
+<!-- View: Pencatatan Observasi Anekdot (A-Record) & Rekam Amal Siswa (Khusus Guru & Walas) -->
+<div id="view-catatan_amal" class="view-panel hidden space-y-6">
+
+  <!-- Header Banner -->
+  <div class="bg-gradient-to-r from-slate-900 via-emerald-950 to-slate-900 rounded-3xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden">
+    <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none"></div>
+    <div class="absolute top-0 right-1/4 w-40 h-40 bg-amber-400/10 rounded-full blur-xl pointer-events-none"></div>
+
+    <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+      <div class="space-y-3">
+        <div class="flex flex-wrap items-center gap-2.5">
+          <span class="px-3 py-1 rounded-full text-xs font-black bg-amber-500/90 text-white shadow-sm flex items-center gap-1.5 border border-amber-300/30">
+            <i class="fa-solid fa-pen-to-square"></i> Input A-Record & Amal Santri
+          </span>
+          <span class="px-3 py-1 rounded-full text-xs font-extrabold bg-emerald-500/30 text-emerald-200 border border-emerald-400/30 flex items-center gap-1.5">
+            <i class="fa-solid fa-chalkboard-user"></i> Portal Dewan Guru & Wali Kelas
+          </span>
+          <span class="px-3 py-1 rounded-full text-xs font-semibold bg-white/10 text-white/90 border border-white/15">
+            TP 2026/2027 • Semester 1
+          </span>
+        </div>
+
+        <div>
+          <h1 class="text-2xl sm:text-3xl font-black tracking-tight text-white flex items-center gap-3">
+            <span>Pencatatan Observasi Anekdot & Rekam Amal Siswa</span>
+          </h1>
+          <p class="text-xs sm:text-sm text-slate-300 font-medium max-w-2xl mt-1 leading-relaxed">
+            Catat dan pantau rekam jejak adab, inisiatif amal sholeh, serta evaluasi pembinaan karakter santri secara objektif, ilmiah, dan berlandaskan nilai tarbiyah islamiyah.
+          </p>
+        </div>
+
+        <!-- Active Teacher Info -->
+        <div class="inline-flex flex-wrap items-center gap-3 bg-white/10 backdrop-blur-md px-4 py-2 rounded-2xl border border-white/20 text-xs">
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-user-tie text-amber-300"></i>
+            <span class="text-slate-300">Observer / Pendidik:</span>
+            <strong id="catat-amal-current-teacher" class="text-white font-bold">Dewi Fitria Nugraheni, S.Pd., Gr.</strong>
+          </div>
+          <span class="text-white/30 hidden sm:inline">•</span>
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-shield-cat text-amber-300"></i>
+            <span class="text-slate-300">Peran:</span>
+            <strong id="catat-amal-current-role" class="text-amber-200 font-bold">Wali Kelas IX ABU BAKAR</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Action / Total Summary -->
+      <div class="bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/15 text-center min-w-[160px]">
+        <p class="text-[11px] font-extrabold uppercase text-slate-300 tracking-wider">Total Rekam Anekdot</p>
+        <h3 id="stat-teacher-total-records" class="text-2xl font-black text-amber-300 mt-0.5">0</h3>
+        <p class="text-[10px] text-emerald-300 font-medium mt-0.5">Catatan Tersimpan</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4 Quick Stat Cards for Teacher -->
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+    <div class="bg-white rounded-2xl p-5 border border-[#e2f3ea] shadow-sm flex items-center gap-4">
+      <div class="w-12 h-12 rounded-2xl bg-slate-100 text-slate-700 flex items-center justify-center font-black text-xl shrink-0">
+        <i class="fa-solid fa-clipboard-list"></i>
+      </div>
+      <div>
+        <p class="text-[11px] font-extrabold uppercase text-slate-400 tracking-wider">Total Catatan</p>
+        <h4 id="stat-catat-total" class="text-2xl font-black text-slate-900 mt-0.5">0</h4>
+        <p class="text-[10px] text-slate-500 font-bold">Semua Peristiwa</p>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-2xl p-5 border border-[#e2f3ea] shadow-sm flex items-center gap-4">
+      <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-[#00a66c] flex items-center justify-center font-black text-xl shrink-0">
+        <i class="fa-solid fa-hand-holding-heart"></i>
+      </div>
+      <div>
+        <p class="text-[11px] font-extrabold uppercase text-slate-400 tracking-wider">Amal Sholeh</p>
+        <h4 id="stat-catat-sholeh" class="text-2xl font-black text-emerald-700 mt-0.5">0</h4>
+        <p class="text-[10px] text-emerald-600 font-bold">Apresiasi Kebaikan</p>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-2xl p-5 border border-[#e2f3ea] shadow-sm flex items-center gap-4">
+      <div class="w-12 h-12 rounded-2xl bg-rose-100 text-rose-700 flex items-center justify-center font-black text-xl shrink-0">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+      </div>
+      <div>
+        <p class="text-[11px] font-extrabold uppercase text-slate-400 tracking-wider">Amal Buruk / Evaluasi</p>
+        <h4 id="stat-catat-buruk" class="text-2xl font-black text-rose-700 mt-0.5">0</h4>
+        <p class="text-[10px] text-rose-600 font-bold">Perlu Pembinaan</p>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-2xl p-5 border border-[#e2f3ea] shadow-sm flex items-center gap-4">
+      <div class="w-12 h-12 rounded-2xl bg-indigo-100 text-indigo-700 flex items-center justify-center font-black text-xl shrink-0">
+        <i class="fa-solid fa-user-graduate"></i>
+      </div>
+      <div>
+        <p class="text-[11px] font-extrabold uppercase text-slate-400 tracking-wider">Santri Terdata</p>
+        <h4 id="stat-catat-siswa" class="text-2xl font-black text-indigo-700 mt-0.5">0</h4>
+        <p class="text-[10px] text-indigo-600 font-bold">Terpantau Berkala</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Form Input Catatan Baru -->
+  <div class="bg-white rounded-3xl p-6 sm:p-8 border border-[#e2f3ea] shadow-sm space-y-6">
+    <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-lg shadow-sm">
+          <i class="fa-solid fa-file-circle-plus"></i>
+        </div>
+        <div>
+          <h2 class="text-base sm:text-lg font-black text-slate-900 tracking-tight">Formulir Catatan Observasi Anekdot Santri</h2>
+          <p class="text-xs text-slate-500">Pilih santri, tentukan jenis catatan (Amal Sholeh / Amal Buruk), lalu uraikan peristiwa dan rencana tindak lanjut.</p>
+        </div>
+      </div>
+      <button type="button" onclick="resetCatatAmalForm()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold rounded-xl transition cursor-pointer">
+        <i class="fa-solid fa-rotate-right mr-1"></i> Reset Form
+      </button>
+    </div>
+
+    <form id="form-catat-amal" onsubmit="event.preventDefault(); saveNewAnekdotRecord();" class="space-y-6">
+      
+      <!-- Row 1: Target Santri (Kelas & Siswa) -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1.5">
+            Kelas Santri <span class="text-rose-500">*</span>
+          </label>
+          <select id="catat-amal-kelas" onchange="onCatatAmalClassChange()" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-3.5 py-2.5 text-xs font-bold text-slate-800 focus:outline-none focus:border-[#00a66c] focus:bg-white transition">
+            <option value="IX ABU BAKAR">IX ABU BAKAR</option>
+            <option value="IX UMMU SALAMAH">IX UMMU SALAMAH</option>
+            <option value="VIII UMAR">VIII UMAR</option>
+            <option value="VIII KHODIJAH">VIII KHODIJAH</option>
+            <option value="VII UTSMAN">VII UTSMAN</option>
+            <option value="VII AISYAH">VII AISYAH</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1.5">
+            Nama Santri / Peserta Didik <span class="text-rose-500">*</span>
+          </label>
+          <select id="catat-amal-siswa" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-3.5 py-2.5 text-xs font-bold text-slate-800 focus:outline-none focus:border-[#00a66c] focus:bg-white transition">
+            <!-- Populated dynamically via JS -->
+          </select>
+        </div>
+      </div>
+
+      <!-- Row 2: Jenis Catatan (Amal Sholeh vs Amal Buruk) - Core Requirement -->
+      <div>
+        <label class="block text-xs font-bold text-slate-700 mb-2">
+          Jenis Catatan Perilaku <span class="text-rose-500">*</span>
+        </label>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <!-- Option 1: Amal Sholeh (Kebaikan) -->
+          <label for="radio-jenis-sholeh" class="catat-amal-type-card cursor-pointer block p-4 rounded-2xl border-2 border-emerald-500 bg-emerald-50/50 hover:bg-emerald-50 transition relative">
+            <div class="flex items-center gap-3">
+              <input type="radio" id="radio-jenis-sholeh" name="catat-amal-jenis" value="amal_sholeh" checked onchange="onCatatAmalTypeChange('amal_sholeh')" class="w-4 h-4 text-[#00a66c] focus:ring-[#00a66c]">
+              <div class="w-8 h-8 rounded-xl bg-emerald-100 text-[#00a66c] flex items-center justify-center font-bold text-sm">
+                <i class="fa-solid fa-hand-holding-heart"></i>
+              </div>
+              <div>
+                <strong class="text-xs font-black text-emerald-950 block">Catatan Amal Sholeh (Kebaikan)</strong>
+                <p class="text-[11px] text-emerald-800">Adab shalat, kejujuran, ketertiban, inisiatif tolong menolong, kerapian tugas.</p>
+              </div>
+            </div>
+          </label>
+
+          <!-- Option 2: Amal Buruk / Evaluasi & Pembinaan -->
+          <label for="radio-jenis-buruk" class="catat-amal-type-card cursor-pointer block p-4 rounded-2xl border-2 border-slate-200 bg-white hover:bg-rose-50/50 hover:border-rose-300 transition relative">
+            <div class="flex items-center gap-3">
+              <input type="radio" id="radio-jenis-buruk" name="catat-amal-jenis" value="amal_buruk" onchange="onCatatAmalTypeChange('amal_buruk')" class="w-4 h-4 text-rose-600 focus:ring-rose-500">
+              <div class="w-8 h-8 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center font-bold text-sm">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+              </div>
+              <div>
+                <strong class="text-xs font-black text-slate-800 block">Catatan Amal Buruk (Evaluasi & Pembinaan)</strong>
+                <p class="text-[11px] text-slate-500">Terlambat shalat, lupa bawa mushaf, kurang tertib halaqah, adab kurang sopan.</p>
+              </div>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Row 3: Kategori, Tanggal, dan Status -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1.5">
+            Kategori Observasi <span class="text-rose-500">*</span>
+          </label>
+          <select id="catat-amal-kategori" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-3.5 py-2.5 text-xs font-semibold text-slate-800 focus:outline-none focus:border-[#00a66c] focus:bg-white transition">
+            <!-- Dynamically populated based on chosen type -->
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1.5">
+            Tanggal Kejadian <span class="text-rose-500">*</span>
+          </label>
+          <input type="date" id="catat-amal-tanggal" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-3.5 py-2.5 text-xs font-semibold text-slate-800 focus:outline-none focus:border-[#00a66c] focus:bg-white transition">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1.5">
+            Status Tindak Lanjut <span class="text-rose-500">*</span>
+          </label>
+          <select id="catat-amal-status" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-3.5 py-2.5 text-xs font-semibold text-slate-800 focus:outline-none focus:border-[#00a66c] focus:bg-white transition">
+            <option value="Apresiasi Positif">Apresiasi Positif</option>
+            <option value="Terverifikasi">Terverifikasi</option>
+            <option value="Dalam Pembinaan">Dalam Pembinaan / Evaluasi</option>
+            <option value="Tuntas & Selesai">Tuntas & Selesai</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Row 4: Peristiwa Teramati (Anekdot) -->
+      <div>
+        <label class="block text-xs font-bold text-slate-700 mb-1.5">
+          Peristiwa Teramati (Catatan Anekdot Faktual) <span class="text-rose-500">*</span>
+        </label>
+        <textarea id="catat-amal-kejadian" rows="3" required placeholder="Tuliskan peristiwa nyata yang teramati secara objektif (kapan, di mana, dan apa yang ananda lakukan)..." class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3.5 text-xs text-slate-800 focus:outline-none focus:border-[#00a66c] focus:bg-white transition placeholder-slate-400"></textarea>
+      </div>
+
+      <!-- Row 5: Analisis Sikap & Tindak Lanjut Guru -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1.5">
+            Analisis Sikap & Nilai Karakter <span class="text-rose-500">*</span>
+          </label>
+          <textarea id="catat-amal-analisis" rows="3" required placeholder="Analisis potensi sikap, motivasi, atau akar penyebab perilaku..." class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3.5 text-xs text-slate-800 focus:outline-none focus:border-[#00a66c] focus:bg-white transition placeholder-slate-400"></textarea>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1.5">
+            Tindak Lanjut & Bentuk Pembinaan Guru <span class="text-rose-500">*</span>
+          </label>
+          <textarea id="catat-amal-tindak-lanjut" rows="3" required placeholder="Apresiasi yang diberikan, nasihat tarbiyah, atau arahan pembinaan berkala..." class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3.5 text-xs text-slate-800 focus:outline-none focus:border-[#00a66c] focus:bg-white transition placeholder-slate-400"></textarea>
+        </div>
+      </div>
+
+      <!-- Submit Action Row -->
+      <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+        <p class="text-[11px] text-slate-500 italic">
+          <i class="fa-solid fa-lock text-slate-400 mr-1"></i> Data catatan tersimpan aman dalam pangkalan data dan dapat diakses pada lembar portofolio resmi.
+        </p>
+        <button type="submit" id="btn-save-catat-amal" class="px-6 py-2.5 bg-[#00a66c] hover:bg-[#008f5d] text-white font-black text-xs rounded-2xl shadow-md shadow-[#00a66c]/20 transition flex items-center gap-2 cursor-pointer transform hover:-translate-y-0.5">
+          <i class="fa-solid fa-floppy-disk"></i>
+          <span>Simpan Catatan Observasi</span>
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Tabel Riwayat Catatan Observasi -->
+  <div class="bg-white rounded-3xl p-6 sm:p-8 border border-[#e2f3ea] shadow-sm space-y-5">
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-100 pb-4">
+      <div>
+        <h3 class="text-base font-extrabold text-slate-900 tracking-tight flex items-center gap-2">
+          <i class="fa-solid fa-list-check text-[#00a66c]"></i>
+          <span>Riwayat Catatan Anekdot & Amal Santri Tercatat</span>
+        </h3>
+        <p class="text-xs text-slate-500 mt-0.5">Daftar rekaman observasi perilaku dan amal santri yang telah diinput.</p>
+      </div>
+
+      <!-- Filter Controls for Table -->
+      <div class="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+        <select id="filter-table-catat-kelas" onchange="filterCatatAmalTable()" class="bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-xs font-bold text-slate-700">
+          <option value="ALL">Semua Kelas</option>
+          <option value="IX ABU BAKAR">IX ABU BAKAR</option>
+          <option value="IX UMMU SALAMAH">IX UMMU SALAMAH</option>
+          <option value="VIII UMAR">VIII UMAR</option>
+          <option value="VIII KHODIJAH">VIII KHODIJAH</option>
+          <option value="VII UTSMAN">VII UTSMAN</option>
+          <option value="VII AISYAH">VII AISYAH</option>
+        </select>
+
+        <select id="filter-table-catat-jenis" onchange="filterCatatAmalTable()" class="bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-xs font-bold text-slate-700">
+          <option value="ALL">Semua Jenis (Amal Sholeh & Buruk)</option>
+          <option value="amal_sholeh">🟢 Amal Sholeh (Kebaikan)</option>
+          <option value="amal_buruk">🔴 Amal Buruk (Evaluasi / Pembinaan)</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Responsive Table -->
+    <div class="overflow-x-auto border border-slate-200 rounded-2xl">
+      <table class="w-full text-left text-xs border-collapse">
+        <thead>
+          <tr class="bg-slate-100 text-slate-800 font-extrabold border-b border-slate-200">
+            <th class="p-3 w-10 text-center">No</th>
+            <th class="p-3 w-24">Tanggal</th>
+            <th class="p-3 w-40">Santri & Kelas</th>
+            <th class="p-3 w-32">Jenis & Kategori</th>
+            <th class="p-3">Peristiwa Teramati (Anekdot)</th>
+            <th class="p-3">Analisis & Tindak Lanjut</th>
+            <th class="p-3 w-28">Observer</th>
+            <th class="p-3 w-16 text-center">Aksi</th>
+          </tr>
+        </thead>
+        <tbody id="table-catat-amal-body" class="divide-y divide-slate-100">
+          <!-- Populated dynamically via JS -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>

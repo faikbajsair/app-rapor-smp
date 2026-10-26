@@ -398,6 +398,16 @@
         <span class="text-[10px] bg-rose-50 text-rose-600 px-2 py-0.5 rounded-full font-bold border border-rose-100">A-Record</span>
       </a>
 
+      <!-- Bimbingan Konseling (BK) -->
+      <a href="javascript:void(0)" onclick="switchView('konseling')" id="nav-item-konseling" 
+         class="sidebar-nav-link flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none">
+        <div class="flex items-center gap-3">
+          <i class="fa-solid fa-comments w-4 text-center text-sm text-teal-600"></i>
+          <span>Bimbingan Konseling</span>
+        </div>
+        <span class="text-[10px] bg-teal-50 text-teal-700 px-2 py-0.5 rounded-full font-bold border border-teal-100">BK</span>
+      </a>
+
 
       <!-- 2. Kategori Penilaian Utama (TP, Akademik & Checklist, Cek Deskripsi, Ahlaq, Diniyah) -->
       <div class="pt-3 px-3 py-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider menu-assessment-header menu-non-wali">Penilaian Kurikulum Merdeka</div>
@@ -450,6 +460,16 @@
           <span>Diniyah & Tahfidz</span>
         </div>
         <span class="text-[10px] bg-[#e8f8f2] text-[#00a66c] px-2 py-0.5 rounded-full font-bold" id="badge-count-diniyah">159</span>
+      </a>
+
+      <!-- Catat Anekdot & Amal Siswa (Khusus Guru, Wali Kelas & Admin) -->
+      <a href="javascript:void(0)" onclick="switchView('catatan_amal')" id="nav-item-catatan_amal" 
+         class="sidebar-nav-link menu-assessment-item menu-non-wali flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none">
+        <div class="flex items-center gap-3">
+          <i class="fa-solid fa-pen-to-square w-4 text-center text-sm text-amber-500"></i>
+          <span>Catat Anekdot & Amal</span>
+        </div>
+        <span class="text-[10px] bg-amber-50 text-amber-800 px-2 py-0.5 rounded-full font-bold border border-amber-200">A-Record</span>
       </a>
 
       <!-- 3. Rapor & Data Master -->
@@ -635,68 +655,7 @@
       </div>
     </div>
 
-    <!-- Parent Report Tabs & Quick Actions -->
-    <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-white p-3 sm:p-4 rounded-2xl border border-[#e2f3ea] shadow-sm">
-      <div class="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0">
-        <button type="button" onclick="filterWaliReportCards('all')" id="tab-wali-all" class="wali-report-tab px-3.5 py-2 rounded-xl text-xs font-black bg-[#00a66c] text-white shadow-sm transition flex items-center gap-2 whitespace-nowrap cursor-pointer">
-          <i class="fa-solid fa-layer-group"></i>
-          <span>Semua Laporan</span>
-        </button>
-        <button type="button" onclick="filterWaliReportCards('grafik')" id="tab-wali-grafik" class="wali-report-tab px-3.5 py-2 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition flex items-center gap-2 whitespace-nowrap cursor-pointer">
-          <i class="fa-solid fa-chart-column text-purple-600"></i>
-          <span>Resume Grafik Nilai</span>
-          <span class="ml-1 px-1.5 py-0.2 rounded-full text-[10px] font-black bg-purple-100 text-purple-800">16 Mapel</span>
-        </button>
-        <button type="button" onclick="filterWaliReportCards('konseling')" id="tab-wali-konseling" class="wali-report-tab px-3.5 py-2 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition flex items-center gap-2 whitespace-nowrap cursor-pointer">
-          <i class="fa-solid fa-comments text-teal-600"></i>
-          <span>Bimbingan Konseling</span>
-          <span id="tab-badge-bk" class="ml-1 px-1.5 py-0.2 rounded-full text-[10px] font-black bg-teal-100 text-teal-800">0</span>
-        </button>
-      </div>
-      <div class="flex items-center gap-2 self-end sm:self-auto">
-        <button type="button" onclick="openModalBkConsult()" class="px-3.5 py-2 text-xs font-bold text-white bg-teal-600 hover:bg-teal-700 rounded-xl shadow-sm transition flex items-center gap-1.5 cursor-pointer">
-          <i class="fa-solid fa-user-doctor"></i>
-          <span>Konsultasi BK</span>
-        </button>
-      </div>
-    </div>
 
-    <!-- Section 2: Laporan Bimbingan Konseling (BK) -->
-    <div id="section-wali-konseling" class="bg-white rounded-3xl p-5 sm:p-7 border border-[#e2f3ea] shadow-sm space-y-5">
-      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-slate-100 pb-4">
-        <div>
-          <div class="flex items-center gap-2.5">
-            <span class="w-9 h-9 rounded-2xl bg-teal-100 text-teal-700 flex items-center justify-center font-bold text-base shadow-sm">
-              <i class="fa-solid fa-comments"></i>
-            </span>
-            <div>
-              <div class="flex items-center gap-2">
-                <h3 class="text-base font-extrabold text-slate-900 tracking-tight">
-                  Laporan Bimbingan Konseling (BK Ananda)
-                </h3>
-                <span id="badge-bk-count" class="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-teal-100 text-teal-800 border border-teal-200">
-                  0 Sesi
-                </span>
-              </div>
-              <p class="text-xs text-slate-500 mt-0.5">
-                Hasil pendampingan konseling belajar, sosialisasi, perkembangan emosional, dan arahan kolaborasi untuk orang tua di rumah.
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="flex items-center gap-2">
-          <button type="button" onclick="openModalBkConsult()" class="px-3.5 py-1.5 bg-teal-50 hover:bg-teal-100 text-teal-800 border border-teal-200 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer">
-            <i class="fa-brands fa-whatsapp text-teal-600"></i>
-            <span>Jadwalkan Konsultasi</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- Container BK Cards List -->
-      <div id="wali-bk-list" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <!-- Rendered by JavaScript dynamically -->
-      </div>
-    </div>
 
     <!-- Section 3: Resume Grafik Capaian Nilai Ananda (Wali Murid) -->
     <div id="section-wali-grafik" class="bg-white rounded-3xl p-5 sm:p-7 border border-[#e2f3ea] shadow-sm space-y-6">
@@ -2115,6 +2074,557 @@
           </div>
         </div>
       </div>
+    </div>
+  </div>
+
+</div>
+
+
+        <!-- View 1e: Bimbingan & Konseling (BK) -->
+        <!-- View: Bimbingan & Konseling (BK) Khusus Portal Siswa & Wali Murid -->
+<div id="view-konseling" class="view-panel hidden space-y-6">
+
+  <!-- Header Banner Bimbingan Konseling -->
+  <div class="bg-gradient-to-r from-teal-800 via-emerald-800 to-teal-900 rounded-3xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden">
+    <!-- Geometric Background Highlights -->
+    <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-white/5 rounded-full blur-2xl pointer-events-none"></div>
+    <div class="absolute top-0 right-1/3 w-40 h-40 bg-teal-400/10 rounded-full blur-xl pointer-events-none"></div>
+
+    <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+      <div class="space-y-3">
+        <div class="flex flex-wrap items-center gap-2.5">
+          <span class="px-3 py-1 rounded-full text-xs font-black bg-teal-500/90 text-white shadow-sm flex items-center gap-1.5 border border-teal-300/30">
+            <i class="fa-solid fa-comments"></i> Bimbingan & Konseling (BK)
+          </span>
+          <span class="px-3 py-1 rounded-full text-xs font-extrabold bg-emerald-500/30 text-emerald-200 border border-emerald-400/30 flex items-center gap-1.5">
+            <i class="fa-solid fa-user-doctor"></i> Pendampingan Karakter
+          </span>
+          <span class="px-3 py-1 rounded-full text-xs font-semibold bg-white/10 text-white/90 border border-white/15">
+            TP 2026/2027 • Semester 1
+          </span>
+        </div>
+
+        <div>
+          <h1 class="text-2xl sm:text-3xl font-black tracking-tight text-white flex items-center gap-3">
+            <span>Bimbingan Konseling Ananda</span>
+          </h1>
+          <p class="text-xs sm:text-sm text-teal-100 font-medium max-w-2xl mt-1 leading-relaxed">
+            Layanan pendampingan holistik psikososial, strategi belajar, eksplorasi potensi diri, serta sinergi komunikasi antara guru BK, wali kelas, dan orang tua santri.
+          </p>
+        </div>
+
+        <!-- Student Identity Pill -->
+        <div class="inline-flex flex-wrap items-center gap-3 bg-white/10 backdrop-blur-md px-4 py-2 rounded-2xl border border-white/20 text-xs">
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-user-graduate text-teal-300"></i>
+            <span class="text-teal-100">Peserta Didik:</span>
+            <strong id="konseling-nama-murid" class="text-white font-bold">Abdillah Hafizh</strong>
+          </div>
+          <span class="text-white/30 hidden sm:inline">•</span>
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-id-card text-teal-300"></i>
+            <span class="text-teal-100">NIS:</span>
+            <strong id="konseling-nis-murid" class="text-white font-bold">242507001</strong>
+          </div>
+          <span class="text-white/30 hidden sm:inline">•</span>
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-chalkboard-user text-teal-300"></i>
+            <span class="text-teal-100">Kelas:</span>
+            <strong id="konseling-kelas-murid" class="text-teal-200 font-bold">IX ABU BAKAR</strong>
+          </div>
+          <span class="text-white/30 hidden md:inline">•</span>
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-user-nurse text-teal-300"></i>
+            <span class="text-teal-100">Guru BK:</span>
+            <strong class="text-white font-bold">Ustadzah Fatimah Azzahra, S.Psi.</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Button: Tombol Konsultasi BK -->
+      <div class="flex flex-wrap items-center gap-3 self-start md:self-center shrink-0">
+        <button type="button" id="btn-wali-bk-consult" onclick="openModalBkConsult()" class="px-5 py-3 rounded-2xl bg-white text-teal-900 hover:bg-teal-50 font-black text-xs sm:text-sm shadow-lg hover:shadow-xl transition-all flex items-center gap-2.5 cursor-pointer transform hover:-translate-y-0.5">
+          <i class="fa-solid fa-user-doctor text-teal-600 text-base"></i>
+          <span>Konsultasi BK</span>
+        </button>
+        <button type="button" id="btn-wali-bk-whatsapp" onclick="openModalBkConsult()" class="px-4 py-3 rounded-2xl bg-teal-700/80 hover:bg-teal-700 text-white font-bold text-xs shadow-md transition flex items-center gap-2 border border-teal-500/40 cursor-pointer">
+          <i class="fa-brands fa-whatsapp text-emerald-300 text-base"></i>
+          <span>Hubungi Konselor</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hero Card: Filosofi & Peran Bimbingan Konseling di SMP Al-Imam -->
+  <div class="bg-white rounded-3xl p-6 sm:p-8 border border-[#e2f3ea] shadow-sm relative overflow-hidden">
+    <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 pb-6 border-b border-slate-100">
+      <div class="flex items-start gap-4">
+        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-teal-500 to-emerald-600 text-white flex items-center justify-center font-black text-xl shadow-md shrink-0">
+          <i class="fa-solid fa-hand-holding-hand"></i>
+        </div>
+        <div>
+          <span class="text-[11px] font-black uppercase tracking-wider text-teal-600 block mb-1">Sahabat Tumbuh Kembang Santri</span>
+          <h2 class="text-lg sm:text-xl font-black text-slate-900 tracking-tight">
+            Peran Layanan Bimbingan & Konseling Islami
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-500 mt-1">
+            Bimbingan Konseling di SMP Al-Imam hadir sebagai sahabat pendengar yang amanah, mengedepankan pendekatan kasih sayang (*tarbiyah bil rahmah*), serta menjembatani kemitraan harmonis antara sekolah dan orang tua di rumah.
+          </p>
+        </div>
+      </div>
+
+      <div class="bg-gradient-to-r from-teal-50 to-emerald-50 border border-teal-200/80 rounded-2xl p-4 max-w-sm w-full lg:w-auto shrink-0">
+        <div class="flex items-center gap-2 text-teal-900 font-extrabold text-xs mb-1">
+          <i class="fa-solid fa-shield-halved text-teal-600"></i>
+          <span>Asas Kerahasiaan & Keterbukaan</span>
+        </div>
+        <p class="text-[11px] text-teal-800 leading-relaxed font-medium">
+          Setiap sesi konseling bersifat rahasia, profesional, dan bertujuan memberikan solusi terbaik bagi kenyamanan ananda belajar.
+        </p>
+      </div>
+    </div>
+
+    <!-- 3 Core BK Pillars -->
+    <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-5">
+      <div class="bg-[#f0fbf7]/60 rounded-2xl p-5 border border-[#a7f3d0] flex flex-col justify-between space-y-2">
+        <div class="space-y-1.5">
+          <div class="w-8 h-8 rounded-xl bg-teal-100 text-teal-700 flex items-center justify-center font-bold text-sm">
+            <i class="fa-solid fa-graduation-cap"></i>
+          </div>
+          <h3 class="font-extrabold text-xs text-slate-900">Bimbingan Belajar & Akademik</h3>
+          <p class="text-[11px] text-slate-600 leading-relaxed">
+            Membantu ananda mengatasi kesulitan pemahaman materi pelajaran, manajemen jadwal belajar malam, serta teknik konsentrasi.
+          </p>
+        </div>
+        <div class="text-[10px] text-teal-700 font-bold flex items-center gap-1.5 pt-2 border-t border-teal-200/60">
+          <i class="fa-solid fa-circle-check"></i> Optimalisasi Capaian Akademik
+        </div>
+      </div>
+
+      <div class="bg-indigo-50/60 rounded-2xl p-5 border border-indigo-200 flex flex-col justify-between space-y-2">
+        <div class="space-y-1.5">
+          <div class="w-8 h-8 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold text-sm">
+            <i class="fa-solid fa-compass"></i>
+          </div>
+          <h3 class="font-extrabold text-xs text-slate-900">Pengembangan Minat & Bakat</h3>
+          <p class="text-[11px] text-slate-600 leading-relaxed">
+            Mengenali potensi kecerdasan, rasa percaya diri saat tampil di depan umum, serta persiapan penjurusan jenjang lanjutan.
+          </p>
+        </div>
+        <div class="text-[10px] text-indigo-700 font-bold flex items-center gap-1.5 pt-2 border-t border-indigo-200">
+          <i class="fa-solid fa-circle-check"></i> Eksplorasi Potensi Diri
+        </div>
+      </div>
+
+      <div class="bg-amber-50/60 rounded-2xl p-5 border border-amber-200 flex flex-col justify-between space-y-2">
+        <div class="space-y-1.5">
+          <div class="w-8 h-8 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-sm">
+            <i class="fa-solid fa-people-roof"></i>
+          </div>
+          <h3 class="font-extrabold text-xs text-slate-900">Kolaborasi Rumah & Sekolah</h3>
+          <p class="text-[11px] text-slate-600 leading-relaxed">
+            Menyediakan rekomendasi praktis bagi orang tua dalam mendampingi kebiasaan ibadah, interaksi gawai, dan adab santri di rumah.
+          </p>
+        </div>
+        <div class="text-[10px] text-amber-700 font-bold flex items-center gap-1.5 pt-2 border-t border-amber-200">
+          <i class="fa-solid fa-circle-check"></i> Sinergi Tarbiyah Keluarga
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Statistik Ringkasan Sesi BK -->
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+    <div class="bg-white rounded-2xl p-5 border border-[#e2f3ea] shadow-sm flex items-center gap-4">
+      <div class="w-12 h-12 rounded-2xl bg-teal-100 text-teal-700 flex items-center justify-center font-black text-xl shrink-0">
+        <i class="fa-solid fa-comments"></i>
+      </div>
+      <div>
+        <p class="text-[11px] font-extrabold uppercase text-slate-400 tracking-wider">Total Sesi Bimbingan</p>
+        <h4 id="stat-bk-total" class="text-2xl font-black text-slate-900 mt-0.5">2 Sesi</h4>
+        <p class="text-[10px] text-teal-600 font-bold">Terjadwal & Tuntas</p>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-2xl p-5 border border-[#e2f3ea] shadow-sm flex items-center gap-4">
+      <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-[#00a66c] flex items-center justify-center font-black text-xl shrink-0">
+        <i class="fa-solid fa-book-open-reader"></i>
+      </div>
+      <div>
+        <p class="text-[11px] font-extrabold uppercase text-slate-400 tracking-wider">Bimbingan Belajar</p>
+        <h4 id="stat-bk-belajar" class="text-2xl font-black text-slate-900 mt-0.5">1 Sesi</h4>
+        <p class="text-[10px] text-[#00a66c] font-bold">Manajemen Waktu</p>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-2xl p-5 border border-[#e2f3ea] shadow-sm flex items-center gap-4">
+      <div class="w-12 h-12 rounded-2xl bg-indigo-100 text-indigo-600 flex items-center justify-center font-black text-xl shrink-0">
+        <i class="fa-solid fa-compass"></i>
+      </div>
+      <div>
+        <p class="text-[11px] font-extrabold uppercase text-slate-400 tracking-wider">Minat & Karakter</p>
+        <h4 id="stat-bk-karakter" class="text-2xl font-black text-slate-900 mt-0.5">1 Sesi</h4>
+        <p class="text-[10px] text-indigo-600 font-bold">Percaya Diri Santri</p>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-2xl p-5 border border-[#e2f3ea] shadow-sm flex items-center gap-4">
+      <div class="w-12 h-12 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center font-black text-xl shrink-0">
+        <i class="fa-solid fa-house-circle-check"></i>
+      </div>
+      <div>
+        <p class="text-[11px] font-extrabold uppercase text-slate-400 tracking-wider">Rekomendasi Rumah</p>
+        <h4 id="stat-bk-selesai" class="text-2xl font-black text-slate-900 mt-0.5">2 Panduan</h4>
+        <p class="text-[10px] text-amber-700 font-bold">Untuk Kolaborasi Ortu</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section Daftar Kartu Riwayat Bimbingan Konseling -->
+  <div class="bg-white rounded-3xl p-6 sm:p-8 border border-[#e2f3ea] shadow-sm space-y-6">
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-100 pb-5">
+      <div>
+        <div class="flex items-center gap-2.5">
+          <span class="w-9 h-9 rounded-2xl bg-teal-100 text-teal-700 flex items-center justify-center font-bold text-base shadow-sm">
+            <i class="fa-solid fa-clipboard-user"></i>
+          </span>
+          <div>
+            <div class="flex items-center gap-2">
+              <h3 class="text-base font-extrabold text-slate-900 tracking-tight">
+                Riwayat Sesi Bimbingan & Konseling Ananda
+              </h3>
+              <span id="badge-bk-count" class="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-teal-100 text-teal-800 border border-teal-200">
+                2 Sesi Bimbingan
+              </span>
+            </div>
+            <p class="text-xs text-slate-500 mt-0.5">
+              Dokumentasi hasil konseling berkala, komitmen tindakan mandiri santri, dan rekomendasi khusus untuk Bapak/Ibu di rumah.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button type="button" onclick="openModalBkConsult()" class="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-xl text-xs font-bold transition flex items-center gap-2 shadow-sm cursor-pointer">
+          <i class="fa-solid fa-calendar-plus"></i>
+          <span>Jadwalkan Konsultasi Baru</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Container Kartu Konseling: Menggunakan ID wali-bk-list -->
+    <div id="wali-bk-list" class="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <!-- Diisi dinamis oleh JavaScript -->
+    </div>
+  </div>
+
+</div>
+
+
+        <!-- View 1f: Pencatatan Observasi Anekdot & Amal Siswa (Khusus Guru & Walas) -->
+        <!-- View: Pencatatan Observasi Anekdot (A-Record) & Rekam Amal Siswa (Khusus Guru & Walas) -->
+<div id="view-catatan_amal" class="view-panel hidden space-y-6">
+
+  <!-- Header Banner -->
+  <div class="bg-gradient-to-r from-slate-900 via-emerald-950 to-slate-900 rounded-3xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden">
+    <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none"></div>
+    <div class="absolute top-0 right-1/4 w-40 h-40 bg-amber-400/10 rounded-full blur-xl pointer-events-none"></div>
+
+    <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+      <div class="space-y-3">
+        <div class="flex flex-wrap items-center gap-2.5">
+          <span class="px-3 py-1 rounded-full text-xs font-black bg-amber-500/90 text-white shadow-sm flex items-center gap-1.5 border border-amber-300/30">
+            <i class="fa-solid fa-pen-to-square"></i> Input A-Record & Amal Santri
+          </span>
+          <span class="px-3 py-1 rounded-full text-xs font-extrabold bg-emerald-500/30 text-emerald-200 border border-emerald-400/30 flex items-center gap-1.5">
+            <i class="fa-solid fa-chalkboard-user"></i> Portal Dewan Guru & Wali Kelas
+          </span>
+          <span class="px-3 py-1 rounded-full text-xs font-semibold bg-white/10 text-white/90 border border-white/15">
+            TP 2026/2027 • Semester 1
+          </span>
+        </div>
+
+        <div>
+          <h1 class="text-2xl sm:text-3xl font-black tracking-tight text-white flex items-center gap-3">
+            <span>Pencatatan Observasi Anekdot & Rekam Amal Siswa</span>
+          </h1>
+          <p class="text-xs sm:text-sm text-slate-300 font-medium max-w-2xl mt-1 leading-relaxed">
+            Catat dan pantau rekam jejak adab, inisiatif amal sholeh, serta evaluasi pembinaan karakter santri secara objektif, ilmiah, dan berlandaskan nilai tarbiyah islamiyah.
+          </p>
+        </div>
+
+        <!-- Active Teacher Info -->
+        <div class="inline-flex flex-wrap items-center gap-3 bg-white/10 backdrop-blur-md px-4 py-2 rounded-2xl border border-white/20 text-xs">
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-user-tie text-amber-300"></i>
+            <span class="text-slate-300">Observer / Pendidik:</span>
+            <strong id="catat-amal-current-teacher" class="text-white font-bold">Dewi Fitria Nugraheni, S.Pd., Gr.</strong>
+          </div>
+          <span class="text-white/30 hidden sm:inline">•</span>
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-shield-cat text-amber-300"></i>
+            <span class="text-slate-300">Peran:</span>
+            <strong id="catat-amal-current-role" class="text-amber-200 font-bold">Wali Kelas IX ABU BAKAR</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Action / Total Summary -->
+      <div class="bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/15 text-center min-w-[160px]">
+        <p class="text-[11px] font-extrabold uppercase text-slate-300 tracking-wider">Total Rekam Anekdot</p>
+        <h3 id="stat-teacher-total-records" class="text-2xl font-black text-amber-300 mt-0.5">0</h3>
+        <p class="text-[10px] text-emerald-300 font-medium mt-0.5">Catatan Tersimpan</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4 Quick Stat Cards for Teacher -->
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+    <div class="bg-white rounded-2xl p-5 border border-[#e2f3ea] shadow-sm flex items-center gap-4">
+      <div class="w-12 h-12 rounded-2xl bg-slate-100 text-slate-700 flex items-center justify-center font-black text-xl shrink-0">
+        <i class="fa-solid fa-clipboard-list"></i>
+      </div>
+      <div>
+        <p class="text-[11px] font-extrabold uppercase text-slate-400 tracking-wider">Total Catatan</p>
+        <h4 id="stat-catat-total" class="text-2xl font-black text-slate-900 mt-0.5">0</h4>
+        <p class="text-[10px] text-slate-500 font-bold">Semua Peristiwa</p>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-2xl p-5 border border-[#e2f3ea] shadow-sm flex items-center gap-4">
+      <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-[#00a66c] flex items-center justify-center font-black text-xl shrink-0">
+        <i class="fa-solid fa-hand-holding-heart"></i>
+      </div>
+      <div>
+        <p class="text-[11px] font-extrabold uppercase text-slate-400 tracking-wider">Amal Sholeh</p>
+        <h4 id="stat-catat-sholeh" class="text-2xl font-black text-emerald-700 mt-0.5">0</h4>
+        <p class="text-[10px] text-emerald-600 font-bold">Apresiasi Kebaikan</p>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-2xl p-5 border border-[#e2f3ea] shadow-sm flex items-center gap-4">
+      <div class="w-12 h-12 rounded-2xl bg-rose-100 text-rose-700 flex items-center justify-center font-black text-xl shrink-0">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+      </div>
+      <div>
+        <p class="text-[11px] font-extrabold uppercase text-slate-400 tracking-wider">Amal Buruk / Evaluasi</p>
+        <h4 id="stat-catat-buruk" class="text-2xl font-black text-rose-700 mt-0.5">0</h4>
+        <p class="text-[10px] text-rose-600 font-bold">Perlu Pembinaan</p>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-2xl p-5 border border-[#e2f3ea] shadow-sm flex items-center gap-4">
+      <div class="w-12 h-12 rounded-2xl bg-indigo-100 text-indigo-700 flex items-center justify-center font-black text-xl shrink-0">
+        <i class="fa-solid fa-user-graduate"></i>
+      </div>
+      <div>
+        <p class="text-[11px] font-extrabold uppercase text-slate-400 tracking-wider">Santri Terdata</p>
+        <h4 id="stat-catat-siswa" class="text-2xl font-black text-indigo-700 mt-0.5">0</h4>
+        <p class="text-[10px] text-indigo-600 font-bold">Terpantau Berkala</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Form Input Catatan Baru -->
+  <div class="bg-white rounded-3xl p-6 sm:p-8 border border-[#e2f3ea] shadow-sm space-y-6">
+    <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-lg shadow-sm">
+          <i class="fa-solid fa-file-circle-plus"></i>
+        </div>
+        <div>
+          <h2 class="text-base sm:text-lg font-black text-slate-900 tracking-tight">Formulir Catatan Observasi Anekdot Santri</h2>
+          <p class="text-xs text-slate-500">Pilih santri, tentukan jenis catatan (Amal Sholeh / Amal Buruk), lalu uraikan peristiwa dan rencana tindak lanjut.</p>
+        </div>
+      </div>
+      <button type="button" onclick="resetCatatAmalForm()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold rounded-xl transition cursor-pointer">
+        <i class="fa-solid fa-rotate-right mr-1"></i> Reset Form
+      </button>
+    </div>
+
+    <form id="form-catat-amal" onsubmit="event.preventDefault(); saveNewAnekdotRecord();" class="space-y-6">
+      
+      <!-- Row 1: Target Santri (Kelas & Siswa) -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1.5">
+            Kelas Santri <span class="text-rose-500">*</span>
+          </label>
+          <select id="catat-amal-kelas" onchange="onCatatAmalClassChange()" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-3.5 py-2.5 text-xs font-bold text-slate-800 focus:outline-none focus:border-[#00a66c] focus:bg-white transition">
+            <option value="IX ABU BAKAR">IX ABU BAKAR</option>
+            <option value="IX UMMU SALAMAH">IX UMMU SALAMAH</option>
+            <option value="VIII UMAR">VIII UMAR</option>
+            <option value="VIII KHODIJAH">VIII KHODIJAH</option>
+            <option value="VII UTSMAN">VII UTSMAN</option>
+            <option value="VII AISYAH">VII AISYAH</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1.5">
+            Nama Santri / Peserta Didik <span class="text-rose-500">*</span>
+          </label>
+          <select id="catat-amal-siswa" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-3.5 py-2.5 text-xs font-bold text-slate-800 focus:outline-none focus:border-[#00a66c] focus:bg-white transition">
+            <!-- Populated dynamically via JS -->
+          </select>
+        </div>
+      </div>
+
+      <!-- Row 2: Jenis Catatan (Amal Sholeh vs Amal Buruk) - Core Requirement -->
+      <div>
+        <label class="block text-xs font-bold text-slate-700 mb-2">
+          Jenis Catatan Perilaku <span class="text-rose-500">*</span>
+        </label>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <!-- Option 1: Amal Sholeh (Kebaikan) -->
+          <label for="radio-jenis-sholeh" class="catat-amal-type-card cursor-pointer block p-4 rounded-2xl border-2 border-emerald-500 bg-emerald-50/50 hover:bg-emerald-50 transition relative">
+            <div class="flex items-center gap-3">
+              <input type="radio" id="radio-jenis-sholeh" name="catat-amal-jenis" value="amal_sholeh" checked onchange="onCatatAmalTypeChange('amal_sholeh')" class="w-4 h-4 text-[#00a66c] focus:ring-[#00a66c]">
+              <div class="w-8 h-8 rounded-xl bg-emerald-100 text-[#00a66c] flex items-center justify-center font-bold text-sm">
+                <i class="fa-solid fa-hand-holding-heart"></i>
+              </div>
+              <div>
+                <strong class="text-xs font-black text-emerald-950 block">Catatan Amal Sholeh (Kebaikan)</strong>
+                <p class="text-[11px] text-emerald-800">Adab shalat, kejujuran, ketertiban, inisiatif tolong menolong, kerapian tugas.</p>
+              </div>
+            </div>
+          </label>
+
+          <!-- Option 2: Amal Buruk / Evaluasi & Pembinaan -->
+          <label for="radio-jenis-buruk" class="catat-amal-type-card cursor-pointer block p-4 rounded-2xl border-2 border-slate-200 bg-white hover:bg-rose-50/50 hover:border-rose-300 transition relative">
+            <div class="flex items-center gap-3">
+              <input type="radio" id="radio-jenis-buruk" name="catat-amal-jenis" value="amal_buruk" onchange="onCatatAmalTypeChange('amal_buruk')" class="w-4 h-4 text-rose-600 focus:ring-rose-500">
+              <div class="w-8 h-8 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center font-bold text-sm">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+              </div>
+              <div>
+                <strong class="text-xs font-black text-slate-800 block">Catatan Amal Buruk (Evaluasi & Pembinaan)</strong>
+                <p class="text-[11px] text-slate-500">Terlambat shalat, lupa bawa mushaf, kurang tertib halaqah, adab kurang sopan.</p>
+              </div>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Row 3: Kategori, Tanggal, dan Status -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1.5">
+            Kategori Observasi <span class="text-rose-500">*</span>
+          </label>
+          <select id="catat-amal-kategori" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-3.5 py-2.5 text-xs font-semibold text-slate-800 focus:outline-none focus:border-[#00a66c] focus:bg-white transition">
+            <!-- Dynamically populated based on chosen type -->
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1.5">
+            Tanggal Kejadian <span class="text-rose-500">*</span>
+          </label>
+          <input type="date" id="catat-amal-tanggal" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-3.5 py-2.5 text-xs font-semibold text-slate-800 focus:outline-none focus:border-[#00a66c] focus:bg-white transition">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1.5">
+            Status Tindak Lanjut <span class="text-rose-500">*</span>
+          </label>
+          <select id="catat-amal-status" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-3.5 py-2.5 text-xs font-semibold text-slate-800 focus:outline-none focus:border-[#00a66c] focus:bg-white transition">
+            <option value="Apresiasi Positif">Apresiasi Positif</option>
+            <option value="Terverifikasi">Terverifikasi</option>
+            <option value="Dalam Pembinaan">Dalam Pembinaan / Evaluasi</option>
+            <option value="Tuntas & Selesai">Tuntas & Selesai</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Row 4: Peristiwa Teramati (Anekdot) -->
+      <div>
+        <label class="block text-xs font-bold text-slate-700 mb-1.5">
+          Peristiwa Teramati (Catatan Anekdot Faktual) <span class="text-rose-500">*</span>
+        </label>
+        <textarea id="catat-amal-kejadian" rows="3" required placeholder="Tuliskan peristiwa nyata yang teramati secara objektif (kapan, di mana, dan apa yang ananda lakukan)..." class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3.5 text-xs text-slate-800 focus:outline-none focus:border-[#00a66c] focus:bg-white transition placeholder-slate-400"></textarea>
+      </div>
+
+      <!-- Row 5: Analisis Sikap & Tindak Lanjut Guru -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1.5">
+            Analisis Sikap & Nilai Karakter <span class="text-rose-500">*</span>
+          </label>
+          <textarea id="catat-amal-analisis" rows="3" required placeholder="Analisis potensi sikap, motivasi, atau akar penyebab perilaku..." class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3.5 text-xs text-slate-800 focus:outline-none focus:border-[#00a66c] focus:bg-white transition placeholder-slate-400"></textarea>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1.5">
+            Tindak Lanjut & Bentuk Pembinaan Guru <span class="text-rose-500">*</span>
+          </label>
+          <textarea id="catat-amal-tindak-lanjut" rows="3" required placeholder="Apresiasi yang diberikan, nasihat tarbiyah, atau arahan pembinaan berkala..." class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3.5 text-xs text-slate-800 focus:outline-none focus:border-[#00a66c] focus:bg-white transition placeholder-slate-400"></textarea>
+        </div>
+      </div>
+
+      <!-- Submit Action Row -->
+      <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+        <p class="text-[11px] text-slate-500 italic">
+          <i class="fa-solid fa-lock text-slate-400 mr-1"></i> Data catatan tersimpan aman dalam pangkalan data dan dapat diakses pada lembar portofolio resmi.
+        </p>
+        <button type="submit" id="btn-save-catat-amal" class="px-6 py-2.5 bg-[#00a66c] hover:bg-[#008f5d] text-white font-black text-xs rounded-2xl shadow-md shadow-[#00a66c]/20 transition flex items-center gap-2 cursor-pointer transform hover:-translate-y-0.5">
+          <i class="fa-solid fa-floppy-disk"></i>
+          <span>Simpan Catatan Observasi</span>
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Tabel Riwayat Catatan Observasi -->
+  <div class="bg-white rounded-3xl p-6 sm:p-8 border border-[#e2f3ea] shadow-sm space-y-5">
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-100 pb-4">
+      <div>
+        <h3 class="text-base font-extrabold text-slate-900 tracking-tight flex items-center gap-2">
+          <i class="fa-solid fa-list-check text-[#00a66c]"></i>
+          <span>Riwayat Catatan Anekdot & Amal Santri Tercatat</span>
+        </h3>
+        <p class="text-xs text-slate-500 mt-0.5">Daftar rekaman observasi perilaku dan amal santri yang telah diinput.</p>
+      </div>
+
+      <!-- Filter Controls for Table -->
+      <div class="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+        <select id="filter-table-catat-kelas" onchange="filterCatatAmalTable()" class="bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-xs font-bold text-slate-700">
+          <option value="ALL">Semua Kelas</option>
+          <option value="IX ABU BAKAR">IX ABU BAKAR</option>
+          <option value="IX UMMU SALAMAH">IX UMMU SALAMAH</option>
+          <option value="VIII UMAR">VIII UMAR</option>
+          <option value="VIII KHODIJAH">VIII KHODIJAH</option>
+          <option value="VII UTSMAN">VII UTSMAN</option>
+          <option value="VII AISYAH">VII AISYAH</option>
+        </select>
+
+        <select id="filter-table-catat-jenis" onchange="filterCatatAmalTable()" class="bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-xs font-bold text-slate-700">
+          <option value="ALL">Semua Jenis (Amal Sholeh & Buruk)</option>
+          <option value="amal_sholeh">🟢 Amal Sholeh (Kebaikan)</option>
+          <option value="amal_buruk">🔴 Amal Buruk (Evaluasi / Pembinaan)</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Responsive Table -->
+    <div class="overflow-x-auto border border-slate-200 rounded-2xl">
+      <table class="w-full text-left text-xs border-collapse">
+        <thead>
+          <tr class="bg-slate-100 text-slate-800 font-extrabold border-b border-slate-200">
+            <th class="p-3 w-10 text-center">No</th>
+            <th class="p-3 w-24">Tanggal</th>
+            <th class="p-3 w-40">Santri & Kelas</th>
+            <th class="p-3 w-32">Jenis & Kategori</th>
+            <th class="p-3">Peristiwa Teramati (Anekdot)</th>
+            <th class="p-3">Analisis & Tindak Lanjut</th>
+            <th class="p-3 w-28">Observer</th>
+            <th class="p-3 w-16 text-center">Aksi</th>
+          </tr>
+        </thead>
+        <tbody id="table-catat-amal-body" class="divide-y divide-slate-100">
+          <!-- Populated dynamically via JS -->
+        </tbody>
+      </table>
     </div>
   </div>
 
@@ -8355,7 +8865,24 @@ function buildDefaultAnekdotData() {
       analisis: 'Menunjukkan rasa tanggung jawab belajar yang tinggi dan kemampuan manajemen tugas yang prima.',
       tindak_lanjut: 'Karya resume dijadikan model referensi positif bagi rekan sekelas.',
       observer: 'Zam-zam Nasrullah, S.Pd.',
-      status: 'Apresiasi Positif'
+      status: 'Apresiasi Positif',
+      jenis: 'amal_sholeh'
+    },
+    {
+      id: 'ANK-242507001-4',
+      nis: '242507001',
+      nama_murid: 'ABDILLAH ZULQARNAIN ARRAZI',
+      kelas: 'IX ABU BAKAR',
+      semester: 'Tengah Semester 1',
+      tahun_ajaran: '2026/2027',
+      tanggal: '18 September 2026',
+      jenis: 'amal_buruk',
+      kategori: 'Kedisiplinan Waktu (Terlambat Hadir / Pelajaran)',
+      kejadian: 'Terlambat berwudhu dan masuk ke musholla 7 menit setelah iqamah berkumandang karena merapikan loker terburu-buru.',
+      analisis: 'Perlu peningkatan manajemen jeda waktu antara jam pelajaran dengan persiapan ibadah shalat berjamaah.',
+      tindak_lanjut: 'Diberikan tadzkirah pengingat oleh wali kelas saat evaluasi harian dan berkomitmen hadir di shaf sebelum iqamah.',
+      observer: 'Dewi Fitria Nugraheni, S.Pd., Gr.',
+      status: 'Dalam Pembinaan'
     },
     // Aezar El Khazindar Walidain (262707001 - VII UTSMAN)
     {
@@ -9090,7 +9617,7 @@ function switchView(viewName) {
 
   // Role Access Checks
   if (role === 'wali_murid') {
-    if (viewName === 'cms' || viewName === 'murid' || viewName === 'akademik' || viewName === 'tp' || viewName === 'deskripsi' || viewName === 'kepemimpinan' || viewName === 'diniyah') {
+    if (viewName === 'cms' || viewName === 'murid' || viewName === 'akademik' || viewName === 'tp' || viewName === 'deskripsi' || viewName === 'kepemimpinan' || viewName === 'diniyah' || viewName === 'catatan_amal') {
       showToast('Akses Wali Murid terbatas pada Rapor & Ringkasan Nilai.', 'info');
       viewName = 'rapor';
     }
@@ -9164,6 +9691,8 @@ function switchView(viewName) {
     case 'dashboard': loadDashboardStats(); break;
     case 'jadwal': initJadwalCalendar(); break;
     case 'amalsholeh': renderAmalSholehView(); break;
+    case 'konseling': renderKonselingView(); break;
+    case 'catatan_amal': renderCatatAmalView(); break;
     case 'tp':
     case 'tujuan_pembelajaran': loadTujuanPembelajaran(); renderTPTable(); break;
     case 'akademik': loadNilaiAkademik(); renderLegerGrid(); break;
@@ -10157,7 +10686,8 @@ function getAnekdotForStudent(nis, studentObj) {
       analisis: 'Memperlihatkan kedisiplinan beribadah yang istiqomah, adab islami yang luhur, dan keteladanan yang konsisten.',
       tindak_lanjut: 'Diberikan apresiasi oleh wali kelas saat evaluasi harian dan dimotivasi untuk mempertahankan kebiasaan baik.',
       observer: walas,
-      status: 'Apresiasi Positif'
+      status: 'Apresiasi Positif',
+      jenis: 'amal_sholeh'
     },
     {
       id: `ANK-${cleanNis}-2`,
@@ -10172,7 +10702,8 @@ function getAnekdotForStudent(nis, studentObj) {
       analisis: 'Keterampilan komunikasi sosial, empati, dan kepemimpinan suportif berkembang sangat baik.',
       tindak_lanjut: 'Dicatat dalam buku perkembangan kepemimpinan siswa sebagai poin kebaikan karakter.',
       observer: walas,
-      status: 'Terverifikasi'
+      status: 'Terverifikasi',
+      jenis: 'amal_sholeh'
     },
     {
       id: `ANK-${cleanNis}-3`,
@@ -10187,7 +10718,8 @@ function getAnekdotForStudent(nis, studentObj) {
       analisis: 'Rasa tanggung jawab belajar dan etos kerja mandiri ananda sangat membanggakan.',
       tindak_lanjut: 'Hasil portofolio dijadikan contoh kerapian penugasan di kelas.',
       observer: walas,
-      status: 'Apresiasi Positif'
+      status: 'Apresiasi Positif',
+      jenis: 'amal_sholeh'
     }
   ];
 }
@@ -10283,8 +10815,55 @@ function renderWaliAnekdotAndKonseling(childNis, childMurid) {
   // Render Catatan Amal Sholeh (A-Record) View & Cards
   renderAmalSholehView(cleanNis, childMurid);
 
+  // Render Bimbingan Konseling (BK) View & Cards
+  renderKonselingView(cleanNis, childMurid);
+}
 
-  // Render BK List
+/**
+ * ============================================================================
+ * LAYANAN BIMBINGAN & KONSELING (BK) KHUSUS PORTAL SISWA & WALI MURID
+ * ============================================================================
+ */
+function renderKonselingView(customNis, customMurid) {
+  const user = AppState.currentUser || {};
+  let childNis = customNis || user.nis || AppState.activePrintNis || '242507001';
+  let childMurid = customMurid || AppState.muridList.find(m => String(m.nis).trim() === String(childNis).trim()) || {
+    nis: childNis,
+    nama_murid: user.nama_lengkap || 'Ananda',
+    kelas: 'IX ABU BAKAR',
+    wali_kelas: 'Dewi Fitria Nugraheni, S.Pd., Gr.'
+  };
+
+  const cleanNis = String(childNis || childMurid.nis || '').trim();
+  const cName = childMurid.nama_murid || childMurid.nama_santri || user.nama_lengkap || 'Ananda';
+  const cKelas = childMurid.kelas || 'IX ABU BAKAR';
+
+  // Update Header Profile Identity
+  const elName = document.getElementById('konseling-nama-murid');
+  if (elName) elName.textContent = cName;
+  const elNis = document.getElementById('konseling-nis-murid');
+  if (elNis) elNis.textContent = cleanNis;
+  const elKelas = document.getElementById('konseling-kelas-murid');
+  if (elKelas) elKelas.textContent = cKelas;
+
+  // Retrieve Counseling Records
+  const bkRecords = getKonselingForStudent(cleanNis, childMurid);
+  const total = bkRecords.length;
+  const belajarCount = bkRecords.filter(r => /belajar|akademik|manajemen/i.test(r.bidang_bimbingan || '')).length;
+  const karakterCount = bkRecords.filter(r => /minat|bakat|karakter|emosi/i.test(r.bidang_bimbingan || '')).length;
+
+  const setT = (id, val) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = val;
+  };
+
+  setT('stat-bk-total', `${total} Sesi`);
+  setT('stat-bk-belajar', `${belajarCount} Sesi`);
+  setT('stat-bk-karakter', `${karakterCount} Sesi`);
+  setT('stat-bk-selesai', `${total} Panduan`);
+  setT('badge-bk-count', `${total} Sesi Bimbingan`);
+
+  // Render BK Cards List
   const bkContainer = document.getElementById('wali-bk-list');
   if (bkContainer) {
     if (bkRecords.length === 0) {
@@ -10297,7 +10876,7 @@ function renderWaliAnekdotAndKonseling(childNis, childMurid) {
     } else {
       bkContainer.innerHTML = bkRecords.map((item) => {
         return `
-          <div class="bg-slate-50/70 hover:bg-[#f0fbf7] rounded-3xl p-5 sm:p-6 border border-slate-200/90 hover:border-[#a7f3d0] transition-all duration-200 shadow-sm flex flex-col justify-between space-y-4">
+          <div class="bg-white hover:bg-[#f0fbf7]/80 rounded-3xl p-5 sm:p-6 border border-slate-200/90 hover:border-[#a7f3d0] transition-all duration-200 shadow-sm flex flex-col justify-between space-y-4">
             <div class="space-y-3">
               <div class="flex flex-wrap items-center justify-between gap-2">
                 <span class="px-3 py-1 rounded-full text-[10px] font-black bg-teal-100 text-teal-800 border border-teal-200 inline-flex items-center gap-1.5">
@@ -10315,17 +10894,17 @@ function renderWaliAnekdotAndKonseling(childNis, childMurid) {
                   ${item.uraian_konseling}
                 </p>
               </div>
-              <div class="bg-white p-3 rounded-2xl border border-slate-200/80 text-xs text-slate-700">
+              <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200/80 text-xs text-slate-700">
                 <p class="text-[11px] font-bold text-teal-800 uppercase tracking-wider mb-0.5">Rencana Aksi & Komitmen Ananda:</p>
                 <p class="text-[11px] text-slate-600 leading-snug">${item.rencana_tindak_lanjut}</p>
               </div>
               <!-- Highlighted Recommendation for Parents -->
-              <div class="bg-gradient-to-r from-emerald-50 to-teal-50/90 border border-emerald-200/80 rounded-2xl p-3.5 space-y-1">
-                <div class="flex items-center gap-1.5 text-xs font-black text-emerald-900">
-                  <i class="fa-solid fa-house-chimney-user text-emerald-600"></i>
+              <div class="bg-gradient-to-r from-teal-50 to-emerald-50 border border-teal-200/80 rounded-2xl p-3.5 space-y-1">
+                <div class="flex items-center gap-1.5 text-xs font-black text-teal-900">
+                  <i class="fa-solid fa-house-chimney-user text-teal-600"></i>
                   <span>Rekomendasi Kolaborasi Untuk Orang Tua di Rumah:</span>
                 </div>
-                <p class="text-xs text-emerald-800 leading-relaxed font-medium">
+                <p class="text-xs text-teal-800 leading-relaxed font-medium">
                   ${item.rekomendasi_orang_tua}
                 </p>
               </div>
@@ -10348,6 +10927,7 @@ function renderWaliAnekdotAndKonseling(childNis, childMurid) {
       }).join('');
     }
   }
+
 }
 
 /**
@@ -10429,43 +11009,46 @@ function renderAmalSholehView(customNis, customMurid, filterCat) {
       </p>
     </div>
   ` : displayedRecords.map((item) => {
-    let badgeColor = 'bg-rose-50 text-rose-800 border-rose-200';
-    let iconCat = 'fa-solid fa-hand-holding-heart text-rose-500';
+    const isBuruk = (item.jenis || '') === 'amal_buruk';
+    let badgeColor = isBuruk ? 'bg-rose-100 text-rose-900 border-rose-300' : 'bg-rose-50 text-rose-800 border-rose-200';
+    let iconCat = isBuruk ? 'fa-solid fa-triangle-exclamation text-rose-600' : 'fa-solid fa-hand-holding-heart text-rose-500';
     const kat = (item.kategori || '').toLowerCase();
-    if (kat.includes('adab') || kat.includes('shalat') || kat.includes('ibadah')) {
-      badgeColor = 'bg-emerald-50 text-emerald-800 border-emerald-200';
-      iconCat = 'fa-solid fa-mosque text-emerald-600';
-    } else if (kat.includes('inisiatif') || kat.includes('pemimpin') || kat.includes('kerja')) {
-      badgeColor = 'bg-indigo-50 text-indigo-800 border-indigo-200';
-      iconCat = 'fa-solid fa-award text-indigo-600';
-    } else if (kat.includes('sosial') || kat.includes('peduli')) {
-      badgeColor = 'bg-teal-50 text-teal-800 border-teal-200';
-      iconCat = 'fa-solid fa-hands-holding-child text-teal-600';
-    } else if (kat.includes('disiplin') || kat.includes('tanggung')) {
-      badgeColor = 'bg-amber-50 text-amber-800 border-amber-200';
-      iconCat = 'fa-solid fa-circle-check text-amber-600';
+    if (!isBuruk) {
+      if (kat.includes('adab') || kat.includes('shalat') || kat.includes('ibadah')) {
+        badgeColor = 'bg-emerald-50 text-emerald-800 border-emerald-200';
+        iconCat = 'fa-solid fa-mosque text-emerald-600';
+      } else if (kat.includes('inisiatif') || kat.includes('pemimpin') || kat.includes('kerja')) {
+        badgeColor = 'bg-indigo-50 text-indigo-800 border-indigo-200';
+        iconCat = 'fa-solid fa-award text-indigo-600';
+      } else if (kat.includes('sosial') || kat.includes('peduli')) {
+        badgeColor = 'bg-teal-50 text-teal-800 border-teal-200';
+        iconCat = 'fa-solid fa-hands-holding-child text-teal-600';
+      } else if (kat.includes('disiplin') || kat.includes('tanggung')) {
+        badgeColor = 'bg-amber-50 text-amber-800 border-amber-200';
+        iconCat = 'fa-solid fa-circle-check text-amber-600';
+      }
     }
 
     return `
-      <div class="bg-white hover:bg-[#f0fbf7]/70 rounded-3xl p-5 sm:p-6 border border-slate-200/90 hover:border-[#a7f3d0] transition-all duration-200 shadow-sm hover:shadow-md flex flex-col justify-between space-y-4">
+      <div class="bg-white hover:bg-[#f0fbf7]/70 rounded-3xl p-5 sm:p-6 border ${isBuruk ? 'border-rose-200/90 hover:border-rose-300' : 'border-slate-200/90 hover:border-[#a7f3d0]'} transition-all duration-200 shadow-sm hover:shadow-md flex flex-col justify-between space-y-4">
         <div class="space-y-3">
           <div class="flex items-center justify-between gap-2">
             <span class="px-3 py-1 rounded-full text-[10px] font-black border ${badgeColor} inline-flex items-center gap-1.5">
-              <i class="${iconCat}"></i> ${item.kategori || 'Amal Sholeh & Adab'}
+              <i class="${iconCat}"></i> ${item.kategori || (isBuruk ? 'Evaluasi Perilaku' : 'Amal Sholeh & Adab')}
             </span>
             <span class="text-[10px] text-slate-500 font-bold flex items-center gap-1">
-              <i class="fa-regular fa-calendar-check text-emerald-600"></i> ${item.tanggal}
+              <i class="fa-regular fa-calendar-check ${isBuruk ? 'text-rose-600' : 'text-emerald-600'}"></i> ${item.tanggal}
             </span>
           </div>
 
           <div>
             <div class="flex items-center gap-1.5 mb-1">
-              <span class="w-2 h-2 rounded-full bg-rose-500"></span>
-              <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">
-                Peristiwa Amal Sholeh & Catatan Anekdot:
+              <span class="w-2 h-2 rounded-full ${isBuruk ? 'bg-rose-500' : 'bg-emerald-500'}"></span>
+              <span class="text-[10px] font-extrabold uppercase tracking-wider ${isBuruk ? 'text-rose-600 font-black' : 'text-slate-400'}">
+                ${isBuruk ? 'Catatan Evaluasi / Pembinaan Karakter (Anekdot):' : 'Peristiwa Amal Sholeh & Catatan Anekdot:'}
               </span>
             </div>
-            <p class="text-xs sm:text-sm font-bold text-slate-800 leading-relaxed italic bg-slate-50 p-3 rounded-2xl border border-slate-100">
+            <p class="text-xs sm:text-sm font-bold text-slate-800 leading-relaxed italic bg-slate-50 p-3 rounded-2xl border ${isBuruk ? 'border-rose-100 bg-rose-50/20' : 'border-slate-100'}">
               "${item.kejadian}"
             </p>
           </div>
@@ -10476,10 +11059,10 @@ function renderAmalSholehView(customNis, customMurid, filterCat) {
             </p>
           </div>
 
-          <div class="bg-gradient-to-r from-emerald-50 to-teal-50 p-3 rounded-2xl border border-emerald-200/80 text-xs text-emerald-950 leading-snug">
+          <div class="${isBuruk ? 'bg-gradient-to-r from-rose-50 to-amber-50 border border-rose-200/80 text-rose-950' : 'bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200/80 text-emerald-950'} p-3 rounded-2xl text-xs leading-snug">
             <p class="flex items-start gap-1.5 font-medium">
-              <i class="fa-solid fa-circle-check text-emerald-600 mt-0.5 shrink-0"></i>
-              <span><strong>Tindak Lanjut & Apresiasi Guru:</strong> ${item.tindak_lanjut}</span>
+              <i class="fa-solid ${isBuruk ? 'fa-triangle-exclamation text-rose-600' : 'fa-circle-check text-emerald-600'} mt-0.5 shrink-0"></i>
+              <span><strong>${isBuruk ? 'Arahan Pembinaan Guru & Tindak Lanjut:' : 'Tindak Lanjut & Apresiasi Guru:'}</strong> ${item.tindak_lanjut}</span>
             </p>
           </div>
         </div>
@@ -10697,6 +11280,358 @@ window.openModalBkConsult = openModalBkConsult;
 window.closeModalBkConsult = closeModalBkConsult;
 window.submitParentBkConsultation = submitParentBkConsultation;
 window.contactBkWhatsApp = contactBkWhatsApp;
+window.renderKonselingView = renderKonselingView;
+
+/**
+ * ============================================================================
+ * CONTROLLER: PENCATATAN OBSERVASI ANEKDOT (A-RECORD) & REKAM AMAL SISWA
+ * (KHUSUS GURU MATA PELAJARAN, WALI KELAS, & ADMINISTRATOR)
+ * ============================================================================
+ */
+
+const ANEKDOT_CATEGORIES_MAP = {
+  amal_sholeh: [
+    'Adab & Shalat Berjamaah',
+    'Inisiatif & Kepemimpinan Kelompok',
+    'Kedisiplinan & Tanggung Jawab',
+    'Sosial & Kepedulian Sesama',
+    'Semangat Tahsin & Tahfizh',
+    'Kebersihan & Kerapian Diri'
+  ],
+  amal_buruk: [
+    'Kedisiplinan Waktu (Terlambat Hadir / Pelajaran)',
+    'Kelengkapan Belajar & Buku/Mushaf Tertinggal',
+    'Kerapian Seragam & Tata Tertib Madrasah',
+    'Adab Terhadap Guru / Teman (Kurang Sopan)',
+    'Kurang Tertib Saat Halaqah / Pembelajaran',
+    'Penggunaan Fasilitas / Gawai Tanpa Izin'
+  ]
+};
+
+function formatIndoDate(dateStr) {
+  if (!dateStr) return '';
+  const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+  const parts = dateStr.split('-');
+  if (parts.length === 3) {
+    const day = parseInt(parts[2], 10);
+    const month = months[parseInt(parts[1], 10) - 1] || parts[1];
+    const year = parts[0];
+    return `${day} ${month} ${year}`;
+  }
+  return dateStr;
+}
+
+function renderCatatAmalView() {
+  const user = AppState.currentUser || {};
+  if (user.role === 'wali_murid') {
+    showToast('Akses ditolak: Menu ini dikhususkan untuk Guru & Wali Kelas.', 'warning');
+    switchView('dashboard');
+    return;
+  }
+
+  // Update Teacher & Role Banner
+  const teacherEl = document.getElementById('catat-amal-current-teacher');
+  if (teacherEl) {
+    teacherEl.textContent = user.nama_lengkap || 'Dewi Fitria Nugraheni, S.Pd., Gr.';
+  }
+
+  const roleEl = document.getElementById('catat-amal-current-role');
+  if (roleEl) {
+    let roleText = 'Guru Mata Pelajaran';
+    if (user.role === 'admin') roleText = 'Administrator Madrasah';
+    else if (user.role === 'wali_kelas') roleText = `Wali Kelas ${user.kelas || 'IX ABU BAKAR'}`;
+    roleEl.textContent = roleText;
+  }
+
+  // Handle Class Selector according to teacher's assigned class
+  const kelasSelect = document.getElementById('catat-amal-kelas');
+  if (kelasSelect) {
+    if (user.role === 'wali_kelas' && user.kelas) {
+      kelasSelect.value = user.kelas;
+    } else if (!kelasSelect.value) {
+      kelasSelect.value = 'IX ABU BAKAR';
+    }
+  }
+
+  // Set default date if empty
+  const dateInput = document.getElementById('catat-amal-tanggal');
+  if (dateInput && !dateInput.value) {
+    const today = new Date().toISOString().split('T')[0];
+    dateInput.value = today;
+  }
+
+  // Populate student dropdown based on selected class
+  onCatatAmalClassChange();
+
+  // Set default type to amal_sholeh
+  onCatatAmalTypeChange('amal_sholeh');
+
+  // Update stats & table
+  updateCatatAmalStats();
+  filterCatatAmalTable();
+}
+
+function onCatatAmalClassChange() {
+  const kelasSelect = document.getElementById('catat-amal-kelas');
+  const siswaSelect = document.getElementById('catat-amal-siswa');
+  if (!kelasSelect || !siswaSelect) return;
+
+  const selectedClass = kelasSelect.value || 'IX ABU BAKAR';
+  const students = (AppState.muridList || []).filter(m => String(m.kelas).trim() === selectedClass);
+
+  if (students.length === 0) {
+    siswaSelect.innerHTML = `<option value="">-- Tidak ada data santri di kelas ini --</option>`;
+  } else {
+    siswaSelect.innerHTML = students.map(m => {
+      const name = m.nama_murid || m.nama_santri || 'Santri';
+      return `<option value="${m.nis}" data-nama="${name}">${name} (NIS: ${m.nis})</option>`;
+    }).join('');
+  }
+}
+
+function onCatatAmalTypeChange(type) {
+  const isSholeh = type === 'amal_sholeh';
+  const radioSholeh = document.getElementById('radio-jenis-sholeh');
+  const radioBuruk = document.getElementById('radio-jenis-buruk');
+
+  if (radioSholeh) radioSholeh.checked = isSholeh;
+  if (radioBuruk) radioBuruk.checked = !isSholeh;
+
+  const cardSholeh = radioSholeh?.closest('.catat-amal-type-card');
+  const cardBuruk = radioBuruk?.closest('.catat-amal-type-card');
+
+  if (cardSholeh && cardBuruk) {
+    if (isSholeh) {
+      cardSholeh.className = 'catat-amal-type-card cursor-pointer block p-4 rounded-2xl border-2 border-emerald-500 bg-emerald-50/50 transition relative shadow-sm';
+      cardBuruk.className = 'catat-amal-type-card cursor-pointer block p-4 rounded-2xl border-2 border-slate-200 bg-white hover:bg-rose-50/30 transition relative';
+    } else {
+      cardSholeh.className = 'catat-amal-type-card cursor-pointer block p-4 rounded-2xl border-2 border-slate-200 bg-white hover:bg-emerald-50/30 transition relative';
+      cardBuruk.className = 'catat-amal-type-card cursor-pointer block p-4 rounded-2xl border-2 border-rose-500 bg-rose-50/50 transition relative shadow-sm';
+    }
+  }
+
+  // Populate categories
+  const katSelect = document.getElementById('catat-amal-kategori');
+  if (katSelect) {
+    const list = ANEKDOT_CATEGORIES_MAP[type] || ANEKDOT_CATEGORIES_MAP.amal_sholeh;
+    katSelect.innerHTML = list.map(c => `<option value="${c}">${c}</option>`).join('');
+  }
+
+  // Set default status
+  const statusSelect = document.getElementById('catat-amal-status');
+  if (statusSelect) {
+    statusSelect.value = isSholeh ? 'Apresiasi Positif' : 'Dalam Pembinaan';
+  }
+}
+
+function updateCatatAmalStats() {
+  const records = AppState.anekdotList || [];
+  const total = records.length;
+  const sholehCount = records.filter(r => r.jenis === 'amal_sholeh' || !r.jenis).length;
+  const burukCount = records.filter(r => r.jenis === 'amal_buruk').length;
+  const uniqueStudents = new Set(records.map(r => String(r.nis).trim())).size;
+
+  const setT = (id, val) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = val;
+  };
+
+  setT('stat-teacher-total-records', total);
+  setT('stat-catat-total', total);
+  setT('stat-catat-sholeh', sholehCount);
+  setT('stat-catat-buruk', burukCount);
+  setT('stat-catat-siswa', uniqueStudents);
+}
+
+function saveNewAnekdotRecord() {
+  const user = AppState.currentUser || {};
+  const kelasEl = document.getElementById('catat-amal-kelas');
+  const siswaEl = document.getElementById('catat-amal-siswa');
+  const tglEl = document.getElementById('catat-amal-tanggal');
+  const katEl = document.getElementById('catat-amal-kategori');
+  const statusEl = document.getElementById('catat-amal-status');
+  const kejadianEl = document.getElementById('catat-amal-kejadian');
+  const analisisEl = document.getElementById('catat-amal-analisis');
+  const tindakEl = document.getElementById('catat-amal-tindak-lanjut');
+
+  const radioBuruk = document.getElementById('radio-jenis-buruk');
+  const jenis = (radioBuruk && radioBuruk.checked) ? 'amal_buruk' : 'amal_sholeh';
+
+  const nis = siswaEl ? siswaEl.value : '';
+  const selectedOpt = siswaEl?.options[siswaEl.selectedIndex];
+  const namaMurid = selectedOpt ? (selectedOpt.getAttribute('data-nama') || selectedOpt.text.split('(')[0].trim()) : 'Santri';
+  const kelas = kelasEl ? kelasEl.value : 'IX ABU BAKAR';
+  const tanggal = tglEl?.value ? formatIndoDate(tglEl.value) : formatIndoDate(new Date().toISOString().split('T')[0]);
+  const kategori = katEl ? katEl.value : 'Adab & Shalat Berjamaah';
+  const status = statusEl ? statusEl.value : (jenis === 'amal_sholeh' ? 'Apresiasi Positif' : 'Dalam Pembinaan');
+  const kejadian = kejadianEl?.value ? kejadianEl.value.trim() : '';
+  const analisis = analisisEl?.value ? analisisEl.value.trim() : '';
+  const tindakLanjut = tindakEl?.value ? tindakEl.value.trim() : '';
+
+  if (!nis) {
+    showToast('Pilih santri terlebih dahulu!', 'warning');
+    return;
+  }
+  if (!kejadian || !analisis || !tindakLanjut) {
+    showToast('Harap lengkapi semua kolom observasi (Peristiwa, Analisis, dan Tindak Lanjut)!', 'warning');
+    return;
+  }
+
+  const newRecord = {
+    id: `ANK-${nis}-${Date.now()}`,
+    nis: String(nis).trim(),
+    nama_murid: namaMurid,
+    kelas: kelas,
+    semester: 'Tengah Semester 1',
+    tahun_ajaran: '2026/2027',
+    tanggal: tanggal,
+    jenis: jenis,
+    kategori: kategori,
+    kejadian: kejadian,
+    analisis: analisis,
+    tindak_lanjut: tindakLanjut,
+    observer: user.nama_lengkap || 'Dewi Fitria Nugraheni, S.Pd., Gr.',
+    status: status
+  };
+
+  if (!Array.isArray(AppState.anekdotList)) {
+    AppState.anekdotList = [];
+  }
+
+  AppState.anekdotList.unshift(newRecord);
+  saveStateToLocal('anekdot');
+
+  showToast(`Catatan ${jenis === 'amal_sholeh' ? 'Amal Sholeh' : 'Amal Buruk / Evaluasi'} berhasil disimpan!`, 'success');
+
+  resetCatatAmalForm(false);
+  updateCatatAmalStats();
+  filterCatatAmalTable();
+}
+
+function resetCatatAmalForm(resetClass = true) {
+  if (resetClass) {
+    const kelasSelect = document.getElementById('catat-amal-kelas');
+    if (kelasSelect) {
+      const user = AppState.currentUser || {};
+      if (user.role === 'wali_kelas' && user.kelas) {
+        kelasSelect.value = user.kelas;
+      } else {
+        kelasSelect.value = 'IX ABU BAKAR';
+      }
+      onCatatAmalClassChange();
+    }
+  }
+
+  const dateInput = document.getElementById('catat-amal-tanggal');
+  if (dateInput) {
+    dateInput.value = new Date().toISOString().split('T')[0];
+  }
+
+  onCatatAmalTypeChange('amal_sholeh');
+
+  const kj = document.getElementById('catat-amal-kejadian');
+  if (kj) kj.value = '';
+  const an = document.getElementById('catat-amal-analisis');
+  if (an) an.value = '';
+  const tl = document.getElementById('catat-amal-tindak-lanjut');
+  if (tl) tl.value = '';
+}
+
+function deleteAnekdotRecord(id) {
+  if (typeof confirm === 'function' && !confirm('Apakah Anda yakin ingin menghapus catatan observasi anekdot ini?')) {
+    return;
+  }
+
+  const index = (AppState.anekdotList || []).findIndex(r => String(r.id) === String(id));
+  if (index !== -1) {
+    AppState.anekdotList.splice(index, 1);
+    saveStateToLocal('anekdot');
+    showToast('Catatan observasi berhasil dihapus.', 'info');
+    updateCatatAmalStats();
+    filterCatatAmalTable();
+  }
+}
+
+function filterCatatAmalTable() {
+  const tbody = document.getElementById('table-catat-amal-body');
+  if (!tbody) return;
+
+  const kelasFilter = document.getElementById('filter-table-catat-kelas')?.value || 'ALL';
+  const jenisFilter = document.getElementById('filter-table-catat-jenis')?.value || 'ALL';
+
+  let list = AppState.anekdotList || [];
+
+  if (kelasFilter !== 'ALL') {
+    list = list.filter(r => String(r.kelas).trim() === kelasFilter);
+  }
+
+  if (jenisFilter !== 'ALL') {
+    list = list.filter(r => {
+      const j = r.jenis || 'amal_sholeh';
+      return j === jenisFilter;
+    });
+  }
+
+  if (list.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="8" class="p-8 text-center text-slate-400">
+          <i class="fa-solid fa-clipboard-question text-3xl mb-2 text-slate-300 block"></i>
+          <p class="text-xs font-semibold text-slate-500">Tidak ada catatan anekdot yang cocok dengan filter yang dipilih.</p>
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
+  tbody.innerHTML = list.map((r, idx) => {
+    const isSholeh = (r.jenis || 'amal_sholeh') === 'amal_sholeh';
+    const badgeType = isSholeh
+      ? `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-black bg-emerald-100 text-emerald-800 border border-emerald-300"><i class="fa-solid fa-hand-holding-heart"></i> Amal Sholeh</span>`
+      : `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-black bg-rose-100 text-rose-800 border border-rose-300"><i class="fa-solid fa-triangle-exclamation"></i> Amal Buruk</span>`;
+
+    return `
+      <tr class="hover:bg-slate-50/80 transition-colors border-b border-slate-100 text-xs">
+        <td class="p-3 text-center font-bold text-slate-400">${idx + 1}</td>
+        <td class="p-3 whitespace-nowrap text-slate-600 font-semibold">${r.tanggal}</td>
+        <td class="p-3">
+          <strong class="text-slate-900 block font-bold">${r.nama_murid || 'Santri'}</strong>
+          <span class="text-[11px] text-slate-500 font-medium">NIS: ${r.nis} • <span class="font-bold text-slate-700">${r.kelas}</span></span>
+        </td>
+        <td class="p-3 space-y-1">
+          <div>${badgeType}</div>
+          <span class="text-[11px] font-bold text-slate-700 block">${r.kategori}</span>
+        </td>
+        <td class="p-3 text-slate-700 leading-relaxed font-medium max-w-xs">
+          "${r.kejadian}"
+        </td>
+        <td class="p-3 text-slate-600 space-y-1 max-w-xs">
+          <p class="text-[11px]"><strong class="text-slate-700">Analisis:</strong> ${r.analisis}</p>
+          <p class="text-[11px] text-teal-800"><strong class="text-teal-900">Tindak Lanjut:</strong> ${r.tindak_lanjut}</p>
+          <span class="inline-block mt-0.5 px-2 py-0.5 rounded text-[10px] font-bold ${isSholeh ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-rose-50 text-rose-700 border border-rose-200'}">${r.status || 'Tercatat'}</span>
+        </td>
+        <td class="p-3 text-slate-600 text-[11px] whitespace-nowrap">
+          <i class="fa-solid fa-user-pen mr-1 text-slate-400"></i> ${r.observer || 'Pendidik'}
+        </td>
+        <td class="p-3 text-center">
+          <button type="button" onclick="deleteAnekdotRecord('${r.id}')" title="Hapus Catatan" class="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition cursor-pointer">
+            <i class="fa-solid fa-trash-can text-sm"></i>
+          </button>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+window.renderCatatAmalView = renderCatatAmalView;
+window.onCatatAmalClassChange = onCatatAmalClassChange;
+window.onCatatAmalTypeChange = onCatatAmalTypeChange;
+window.updateCatatAmalStats = updateCatatAmalStats;
+window.saveNewAnekdotRecord = saveNewAnekdotRecord;
+window.resetCatatAmalForm = resetCatatAmalForm;
+window.deleteAnekdotRecord = deleteAnekdotRecord;
+window.filterCatatAmalTable = filterCatatAmalTable;
+
 
 /**
  * ============================================================================

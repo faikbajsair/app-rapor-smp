@@ -231,15 +231,53 @@ setTimeout(() => {
   if (!printModal.classList.contains('hidden')) throw new Error('Print modal should be hidden after closeModalAnekdotPrint!');
   console.log('✅ Official Printable Amal Sholeh / Anekdot Modal verified successfully');
 
-  // Verify BK remains intact in dashboard
+  // Verify Dashboard now clean from BK counseling section as requested
   win.switchView('dashboard');
+  if (doc.getElementById('section-wali-konseling')) {
+    throw new Error('section-wali-konseling should be removed from dashboard!');
+  }
+  console.log('✅ Dashboard successfully cleaned of Bimbingan Konseling section');
+
+  // Verify Sidebar menu for Bimbingan Konseling
+  const bkMenu = doc.getElementById('nav-item-konseling');
+  if (!bkMenu) throw new Error('nav-item-konseling not found in sidebar!');
+  if (bkMenu.classList.contains('menu-non-wali')) throw new Error('nav-item-konseling should not have menu-non-wali class!');
+  console.log('✅ Sidebar menu Bimbingan Konseling verified');
+
+  // Switch to Bimbingan Konseling View
+  win.switchView('konseling');
+  const konselingView = doc.getElementById('view-konseling');
+  if (!konselingView || konselingView.classList.contains('hidden')) {
+    throw new Error('view-konseling should be visible after switchView("konseling")!');
+  }
+
+  // Check BK cards list and count badge
   const bkList = doc.getElementById('wali-bk-list');
   if (!bkList || bkList.children.length < 2) {
     throw new Error(`Expected at least 2 BK counseling cards for Abdillah, got ${bkList ? bkList.children.length : 0}`);
   }
   const bkCountBadge = doc.getElementById('badge-bk-count')?.textContent.trim();
   if (!bkCountBadge.includes('2 Sesi')) throw new Error('BK count badge mismatch');
-  console.log('✅ BK Section remains intact and functioning on parent dashboard');
+  console.log('✅ Bimbingan Konseling cards rendered count:', bkList.children.length);
+
+  // Test Modal Konsultasi BK & Tombol Konsultasi BK
+  const btnConsult = doc.getElementById('btn-wali-bk-consult');
+  if (!btnConsult) throw new Error('Tombol Konsultasi BK (#btn-wali-bk-consult) missing in KonselingView!');
+  win.openModalBkConsult();
+  const consultModal = doc.getElementById('modal-wali-bk-consult');
+  if (!consultModal || consultModal.classList.contains('hidden')) throw new Error('modal-wali-bk-consult should be visible after openModalBkConsult!');
+  const childInfo = doc.getElementById('consult-child-info')?.value || '';
+  if (!childInfo.includes('ABDILLAH')) throw new Error(`Consult modal child info mismatch: ${childInfo}`);
+  win.closeModalBkConsult();
+  if (!consultModal.classList.contains('hidden')) throw new Error('modal-wali-bk-consult should be hidden after closeModalBkConsult!');
+  console.log('✅ Tombol Konsultasi BK & Modal Konsultasi BK verified successfully');
+
+  // Verify Wali Murid cannot access Guru Catat Amal view
+  win.switchView('catatan_amal');
+  if (win.AppState.currentView === 'catatan_amal') {
+    throw new Error('Wali Murid should not be able to access catatan_amal view!');
+  }
+  console.log('✅ Wali Murid correctly restricted from teacher catatan_amal menu');
 
 
   // TEST 9: WALI MURID UI CLEANUP (Tutorial button, Petunjuk Rapor in Header only, and Tarik/Batal Publish hidden)
@@ -357,6 +395,102 @@ setTimeout(() => {
     throw new Error('Input Cari Nama Siswa should be VISIBLE for Guru / Walas!');
   }
   console.log('✅ Input Cari Nama Siswa tampil normal untuk Guru / Walas');
+
+  // TEST 10: AKUN GURU - MENU KHUSUS PENCATATAN ANEKDOT (A-RECORD) & AMAL SHOLEH / BURUK
+  console.log('\n--- TEST 10: AKUN GURU - MENU KHUSUS CATAT ANEKDOT & AMAL SHOLEH / BURUK ---');
+  win.loginAsSpecificTeacher('dewi'); // Wali Kelas IX ABU BAKAR
+  console.log('Logged in user:', win.AppState.currentUser.nama_lengkap, '| Role:', win.AppState.currentUser.role);
+
+  // 1. Menu di sidebar harus ada dan bisa diakses guru
+  const navCatatAmal = doc.getElementById('nav-item-catatan_amal');
+  if (!navCatatAmal) throw new Error('nav-item-catatan_amal not found in sidebar!');
+  if (!navCatatAmal.classList.contains('menu-non-wali')) {
+    throw new Error('nav-item-catatan_amal must have menu-non-wali class!');
+  }
+  console.log('✅ Sidebar menu Catat Anekdot & Rekam Amal Santri verified for teacher');
+
+  // 2. Switch to catatan_amal view
+  win.switchView('catatan_amal');
+  const catatAmalView = doc.getElementById('view-catatan_amal');
+  if (!catatAmalView || catatAmalView.classList.contains('hidden')) {
+    throw new Error('view-catatan_amal should be visible after switchView("catatan_amal")!');
+  }
+
+  // 3. Verify teacher banner & class selection
+  const currentTeacherEl = doc.getElementById('catat-amal-current-teacher')?.textContent.trim();
+  if (!currentTeacherEl.includes('Dewi Fitria')) throw new Error(`Teacher banner mismatch: ${currentTeacherEl}`);
+
+  const siswaSelect = doc.getElementById('catat-amal-siswa');
+  if (!siswaSelect || siswaSelect.options.length === 0) {
+    throw new Error('Student dropdown should be populated with students!');
+  }
+  console.log('✅ Catat Amal View loaded with teacher identity & students count:', siswaSelect.options.length);
+
+  // 4. Input Catatan Amal Sholeh (Kebaikan)
+  win.onCatatAmalTypeChange('amal_sholeh');
+  doc.getElementById('catat-amal-siswa').value = '242507001'; // Abdillah
+  doc.getElementById('catat-amal-kategori').value = 'Semangat Tahsin & Tahfizh';
+  doc.getElementById('catat-amal-tanggal').value = '2026-10-25';
+  doc.getElementById('catat-amal-status').value = 'Apresiasi Positif';
+  doc.getElementById('catat-amal-kejadian').value = 'Murajaah hafalan Al-Baqarah 100 ayat dengan tajwid tartil dan menyimak rekan dengan khusyuk.';
+  doc.getElementById('catat-amal-analisis').value = 'Kecintaan terhadap Al-Quran dan motivasi beramal sholeh sangat menonjol.';
+  doc.getElementById('catat-amal-tindak-lanjut').value = 'Diberikan sertifikat hafiz teladan bulanan oleh tim tahfizh.';
+
+  const initialCount = win.AppState.anekdotList.length;
+  win.saveNewAnekdotRecord();
+
+  if (win.AppState.anekdotList.length !== initialCount + 1) {
+    throw new Error('AppState.anekdotList count should increase by 1 after saving Amal Sholeh!');
+  }
+  const savedSholeh = win.AppState.anekdotList[0];
+  if (savedSholeh.jenis !== 'amal_sholeh') throw new Error(`Expected jenis amal_sholeh, got: ${savedSholeh.jenis}`);
+  console.log('✅ Berhasil mencatat Amal Sholeh (Kebaikan) santri ke database');
+
+  // 5. Input Catatan Amal Buruk / Evaluasi & Pembinaan
+  win.onCatatAmalTypeChange('amal_buruk');
+  doc.getElementById('catat-amal-siswa').value = '242507001'; // Abdillah
+  doc.getElementById('catat-amal-kategori').value = 'Kelengkapan Belajar & Buku/Mushaf Tertinggal';
+  doc.getElementById('catat-amal-tanggal').value = '2026-10-26';
+  doc.getElementById('catat-amal-status').value = 'Dalam Pembinaan';
+  doc.getElementById('catat-amal-kejadian').value = 'Lupa membawa buku panduan Fikih Sunnah dan mushaf halaqah pada jam pelajaran ke-2.';
+  doc.getElementById('catat-amal-analisis').value = 'Kurang teliti dalam menyiapkan tas sekolah pada malam hari.';
+  doc.getElementById('catat-amal-tindak-lanjut').value = 'Diberikan pembinaan tarbiyah untuk menyiapkan checklist peralatan belajar sebelum tidur.';
+
+  win.saveNewAnekdotRecord();
+
+  if (win.AppState.anekdotList.length !== initialCount + 2) {
+    throw new Error('AppState.anekdotList count should increase by 2 after saving Amal Buruk!');
+  }
+  const savedBuruk = win.AppState.anekdotList[0];
+  if (savedBuruk.jenis !== 'amal_buruk') throw new Error(`Expected jenis amal_buruk, got: ${savedBuruk.jenis}`);
+  console.log('✅ Berhasil mencatat Amal Buruk (Evaluasi / Pembinaan) santri ke database');
+
+  // 6. Verify Table rendering and filtering
+  const tableBody = doc.getElementById('table-catat-amal-body');
+  if (!tableBody || tableBody.children.length === 0) {
+    throw new Error('Table body #table-catat-amal-body should contain rows!');
+  }
+  console.log('✅ Tabel riwayat catatan anekdot guru terisi:', tableBody.children.length, 'baris');
+
+  // Test filter by jenis amal_buruk
+  doc.getElementById('filter-table-catat-jenis').value = 'amal_buruk';
+  win.filterCatatAmalTable();
+  const filteredBurukRows = tableBody.querySelectorAll('tr');
+  console.log('Filtered Amal Buruk rows count:', filteredBurukRows.length);
+  if (filteredBurukRows.length < 2) throw new Error('Expected at least 2 rows for amal_buruk filter');
+
+  // Restore filter
+  doc.getElementById('filter-table-catat-jenis').value = 'ALL';
+  win.filterCatatAmalTable();
+
+  // Test delete record
+  const idToDelete = savedBuruk.id;
+  win.confirm = () => true;
+  win.deleteAnekdotRecord(idToDelete);
+  if (win.AppState.anekdotList.some(r => r.id === idToDelete)) {
+    throw new Error('Record should be removed after deleteAnekdotRecord!');
+  }
+  console.log('✅ Hapus catatan observasi anekdot berfungsi normal');
 
   console.log('\n🎉 ALL RBAC, WALI MURID, ANEKDOT & BK VERIFICATION TESTS PASSED 100% SUCCESSFULLY!');
 }, 500);

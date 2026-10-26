@@ -1,0 +1,238 @@
+<!-- View: Bimbingan & Konseling (BK) Khusus Portal Siswa & Wali Murid -->
+<div id="view-konseling" class="view-panel hidden space-y-6">
+
+  <!-- Header Banner Bimbingan Konseling -->
+  <div class="bg-gradient-to-r from-teal-800 via-emerald-800 to-teal-900 rounded-3xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden">
+    <!-- Geometric Background Highlights -->
+    <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-white/5 rounded-full blur-2xl pointer-events-none"></div>
+    <div class="absolute top-0 right-1/3 w-40 h-40 bg-teal-400/10 rounded-full blur-xl pointer-events-none"></div>
+
+    <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+      <div class="space-y-3">
+        <div class="flex flex-wrap items-center gap-2.5">
+          <span class="px-3 py-1 rounded-full text-xs font-black bg-teal-500/90 text-white shadow-sm flex items-center gap-1.5 border border-teal-300/30">
+            <i class="fa-solid fa-comments"></i> Bimbingan & Konseling (BK)
+          </span>
+          <span class="px-3 py-1 rounded-full text-xs font-extrabold bg-emerald-500/30 text-emerald-200 border border-emerald-400/30 flex items-center gap-1.5">
+            <i class="fa-solid fa-user-doctor"></i> Pendampingan Karakter
+          </span>
+          <span class="px-3 py-1 rounded-full text-xs font-semibold bg-white/10 text-white/90 border border-white/15">
+            TP 2026/2027 • Semester 1
+          </span>
+        </div>
+
+        <div>
+          <h1 class="text-2xl sm:text-3xl font-black tracking-tight text-white flex items-center gap-3">
+            <span>Bimbingan Konseling Ananda</span>
+          </h1>
+          <p class="text-xs sm:text-sm text-teal-100 font-medium max-w-2xl mt-1 leading-relaxed">
+            Layanan pendampingan holistik psikososial, strategi belajar, eksplorasi potensi diri, serta sinergi komunikasi antara guru BK, wali kelas, dan orang tua santri.
+          </p>
+        </div>
+
+        <!-- Student Identity Pill -->
+        <div class="inline-flex flex-wrap items-center gap-3 bg-white/10 backdrop-blur-md px-4 py-2 rounded-2xl border border-white/20 text-xs">
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-user-graduate text-teal-300"></i>
+            <span class="text-teal-100">Peserta Didik:</span>
+            <strong id="konseling-nama-murid" class="text-white font-bold">Abdillah Hafizh</strong>
+          </div>
+          <span class="text-white/30 hidden sm:inline">•</span>
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-id-card text-teal-300"></i>
+            <span class="text-teal-100">NIS:</span>
+            <strong id="konseling-nis-murid" class="text-white font-bold">242507001</strong>
+          </div>
+          <span class="text-white/30 hidden sm:inline">•</span>
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-chalkboard-user text-teal-300"></i>
+            <span class="text-teal-100">Kelas:</span>
+            <strong id="konseling-kelas-murid" class="text-teal-200 font-bold">IX ABU BAKAR</strong>
+          </div>
+          <span class="text-white/30 hidden md:inline">•</span>
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-user-nurse text-teal-300"></i>
+            <span class="text-teal-100">Guru BK:</span>
+            <strong class="text-white font-bold">Ustadzah Fatimah Azzahra, S.Psi.</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Button: Tombol Konsultasi BK -->
+      <div class="flex flex-wrap items-center gap-3 self-start md:self-center shrink-0">
+        <button type="button" id="btn-wali-bk-consult" onclick="openModalBkConsult()" class="px-5 py-3 rounded-2xl bg-white text-teal-900 hover:bg-teal-50 font-black text-xs sm:text-sm shadow-lg hover:shadow-xl transition-all flex items-center gap-2.5 cursor-pointer transform hover:-translate-y-0.5">
+          <i class="fa-solid fa-user-doctor text-teal-600 text-base"></i>
+          <span>Konsultasi BK</span>
+        </button>
+        <button type="button" id="btn-wali-bk-whatsapp" onclick="openModalBkConsult()" class="px-4 py-3 rounded-2xl bg-teal-700/80 hover:bg-teal-700 text-white font-bold text-xs shadow-md transition flex items-center gap-2 border border-teal-500/40 cursor-pointer">
+          <i class="fa-brands fa-whatsapp text-emerald-300 text-base"></i>
+          <span>Hubungi Konselor</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hero Card: Filosofi & Peran Bimbingan Konseling di SMP Al-Imam -->
+  <div class="bg-white rounded-3xl p-6 sm:p-8 border border-[#e2f3ea] shadow-sm relative overflow-hidden">
+    <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 pb-6 border-b border-slate-100">
+      <div class="flex items-start gap-4">
+        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-teal-500 to-emerald-600 text-white flex items-center justify-center font-black text-xl shadow-md shrink-0">
+          <i class="fa-solid fa-hand-holding-hand"></i>
+        </div>
+        <div>
+          <span class="text-[11px] font-black uppercase tracking-wider text-teal-600 block mb-1">Sahabat Tumbuh Kembang Santri</span>
+          <h2 class="text-lg sm:text-xl font-black text-slate-900 tracking-tight">
+            Peran Layanan Bimbingan & Konseling Islami
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-500 mt-1">
+            Bimbingan Konseling di SMP Al-Imam hadir sebagai sahabat pendengar yang amanah, mengedepankan pendekatan kasih sayang (*tarbiyah bil rahmah*), serta menjembatani kemitraan harmonis antara sekolah dan orang tua di rumah.
+          </p>
+        </div>
+      </div>
+
+      <div class="bg-gradient-to-r from-teal-50 to-emerald-50 border border-teal-200/80 rounded-2xl p-4 max-w-sm w-full lg:w-auto shrink-0">
+        <div class="flex items-center gap-2 text-teal-900 font-extrabold text-xs mb-1">
+          <i class="fa-solid fa-shield-halved text-teal-600"></i>
+          <span>Asas Kerahasiaan & Keterbukaan</span>
+        </div>
+        <p class="text-[11px] text-teal-800 leading-relaxed font-medium">
+          Setiap sesi konseling bersifat rahasia, profesional, dan bertujuan memberikan solusi terbaik bagi kenyamanan ananda belajar.
+        </p>
+      </div>
+    </div>
+
+    <!-- 3 Core BK Pillars -->
+    <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-5">
+      <div class="bg-[#f0fbf7]/60 rounded-2xl p-5 border border-[#a7f3d0] flex flex-col justify-between space-y-2">
+        <div class="space-y-1.5">
+          <div class="w-8 h-8 rounded-xl bg-teal-100 text-teal-700 flex items-center justify-center font-bold text-sm">
+            <i class="fa-solid fa-graduation-cap"></i>
+          </div>
+          <h3 class="font-extrabold text-xs text-slate-900">Bimbingan Belajar & Akademik</h3>
+          <p class="text-[11px] text-slate-600 leading-relaxed">
+            Membantu ananda mengatasi kesulitan pemahaman materi pelajaran, manajemen jadwal belajar malam, serta teknik konsentrasi.
+          </p>
+        </div>
+        <div class="text-[10px] text-teal-700 font-bold flex items-center gap-1.5 pt-2 border-t border-teal-200/60">
+          <i class="fa-solid fa-circle-check"></i> Optimalisasi Capaian Akademik
+        </div>
+      </div>
+
+      <div class="bg-indigo-50/60 rounded-2xl p-5 border border-indigo-200 flex flex-col justify-between space-y-2">
+        <div class="space-y-1.5">
+          <div class="w-8 h-8 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold text-sm">
+            <i class="fa-solid fa-compass"></i>
+          </div>
+          <h3 class="font-extrabold text-xs text-slate-900">Pengembangan Minat & Bakat</h3>
+          <p class="text-[11px] text-slate-600 leading-relaxed">
+            Mengenali potensi kecerdasan, rasa percaya diri saat tampil di depan umum, serta persiapan penjurusan jenjang lanjutan.
+          </p>
+        </div>
+        <div class="text-[10px] text-indigo-700 font-bold flex items-center gap-1.5 pt-2 border-t border-indigo-200">
+          <i class="fa-solid fa-circle-check"></i> Eksplorasi Potensi Diri
+        </div>
+      </div>
+
+      <div class="bg-amber-50/60 rounded-2xl p-5 border border-amber-200 flex flex-col justify-between space-y-2">
+        <div class="space-y-1.5">
+          <div class="w-8 h-8 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-sm">
+            <i class="fa-solid fa-people-roof"></i>
+          </div>
+          <h3 class="font-extrabold text-xs text-slate-900">Kolaborasi Rumah & Sekolah</h3>
+          <p class="text-[11px] text-slate-600 leading-relaxed">
+            Menyediakan rekomendasi praktis bagi orang tua dalam mendampingi kebiasaan ibadah, interaksi gawai, dan adab santri di rumah.
+          </p>
+        </div>
+        <div class="text-[10px] text-amber-700 font-bold flex items-center gap-1.5 pt-2 border-t border-amber-200">
+          <i class="fa-solid fa-circle-check"></i> Sinergi Tarbiyah Keluarga
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Statistik Ringkasan Sesi BK -->
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+    <div class="bg-white rounded-2xl p-5 border border-[#e2f3ea] shadow-sm flex items-center gap-4">
+      <div class="w-12 h-12 rounded-2xl bg-teal-100 text-teal-700 flex items-center justify-center font-black text-xl shrink-0">
+        <i class="fa-solid fa-comments"></i>
+      </div>
+      <div>
+        <p class="text-[11px] font-extrabold uppercase text-slate-400 tracking-wider">Total Sesi Bimbingan</p>
+        <h4 id="stat-bk-total" class="text-2xl font-black text-slate-900 mt-0.5">2 Sesi</h4>
+        <p class="text-[10px] text-teal-600 font-bold">Terjadwal & Tuntas</p>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-2xl p-5 border border-[#e2f3ea] shadow-sm flex items-center gap-4">
+      <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-[#00a66c] flex items-center justify-center font-black text-xl shrink-0">
+        <i class="fa-solid fa-book-open-reader"></i>
+      </div>
+      <div>
+        <p class="text-[11px] font-extrabold uppercase text-slate-400 tracking-wider">Bimbingan Belajar</p>
+        <h4 id="stat-bk-belajar" class="text-2xl font-black text-slate-900 mt-0.5">1 Sesi</h4>
+        <p class="text-[10px] text-[#00a66c] font-bold">Manajemen Waktu</p>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-2xl p-5 border border-[#e2f3ea] shadow-sm flex items-center gap-4">
+      <div class="w-12 h-12 rounded-2xl bg-indigo-100 text-indigo-600 flex items-center justify-center font-black text-xl shrink-0">
+        <i class="fa-solid fa-compass"></i>
+      </div>
+      <div>
+        <p class="text-[11px] font-extrabold uppercase text-slate-400 tracking-wider">Minat & Karakter</p>
+        <h4 id="stat-bk-karakter" class="text-2xl font-black text-slate-900 mt-0.5">1 Sesi</h4>
+        <p class="text-[10px] text-indigo-600 font-bold">Percaya Diri Santri</p>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-2xl p-5 border border-[#e2f3ea] shadow-sm flex items-center gap-4">
+      <div class="w-12 h-12 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center font-black text-xl shrink-0">
+        <i class="fa-solid fa-house-circle-check"></i>
+      </div>
+      <div>
+        <p class="text-[11px] font-extrabold uppercase text-slate-400 tracking-wider">Rekomendasi Rumah</p>
+        <h4 id="stat-bk-selesai" class="text-2xl font-black text-slate-900 mt-0.5">2 Panduan</h4>
+        <p class="text-[10px] text-amber-700 font-bold">Untuk Kolaborasi Ortu</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section Daftar Kartu Riwayat Bimbingan Konseling -->
+  <div class="bg-white rounded-3xl p-6 sm:p-8 border border-[#e2f3ea] shadow-sm space-y-6">
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-100 pb-5">
+      <div>
+        <div class="flex items-center gap-2.5">
+          <span class="w-9 h-9 rounded-2xl bg-teal-100 text-teal-700 flex items-center justify-center font-bold text-base shadow-sm">
+            <i class="fa-solid fa-clipboard-user"></i>
+          </span>
+          <div>
+            <div class="flex items-center gap-2">
+              <h3 class="text-base font-extrabold text-slate-900 tracking-tight">
+                Riwayat Sesi Bimbingan & Konseling Ananda
+              </h3>
+              <span id="badge-bk-count" class="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-teal-100 text-teal-800 border border-teal-200">
+                2 Sesi Bimbingan
+              </span>
+            </div>
+            <p class="text-xs text-slate-500 mt-0.5">
+              Dokumentasi hasil konseling berkala, komitmen tindakan mandiri santri, dan rekomendasi khusus untuk Bapak/Ibu di rumah.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button type="button" onclick="openModalBkConsult()" class="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-xl text-xs font-bold transition flex items-center gap-2 shadow-sm cursor-pointer">
+          <i class="fa-solid fa-calendar-plus"></i>
+          <span>Jadwalkan Konsultasi Baru</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Container Kartu Konseling: Menggunakan ID wali-bk-list -->
+    <div id="wali-bk-list" class="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <!-- Diisi dinamis oleh JavaScript -->
+    </div>
+  </div>
+
+</div>
