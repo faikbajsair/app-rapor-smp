@@ -2577,12 +2577,29 @@ function applyRoleUIPermissions(role) {
     }
   }
 
-  // Toggle non-wali elements (assessment, TP, student database, CMS, logs)
+  // Toggle non-wali elements (assessment, TP, student database, CMS, logs, tutorial)
   const nonWaliElements = document.querySelectorAll('.menu-non-wali');
   nonWaliElements.forEach(el => {
     if (isWali) el.classList.add('hidden');
     else el.classList.remove('hidden');
   });
+
+  // Tombol Tutorial di Header khusus Guru / Non-Wali
+  const navTutorial = document.getElementById('nav-btn-tutorial');
+  if (navTutorial) {
+    if (isWali) navTutorial.classList.add('hidden');
+    else navTutorial.classList.remove('hidden');
+  }
+
+  // Tombol Tarik / Batal Publish Rapor khusus Guru / Admin
+  const publishActions = document.getElementById('rapor-publish-admin-actions');
+  const btnPublish = document.getElementById('btn-toggle-publish-rapor');
+  if (isWali) {
+    if (publishActions) publishActions.classList.add('hidden');
+    if (btnPublish) btnPublish.classList.add('hidden');
+  } else {
+    if (publishActions) publishActions.classList.remove('hidden');
+  }
 
   // Toggle Dashboard view panels (Parent Portal vs Teacher/Admin Dashboard)
   const dashWaliView = document.getElementById('dashboard-wali-view');
@@ -9594,6 +9611,24 @@ function updatePublishUIState(isPublished, targetKelas, studentName) {
     } else {
       btn.className = 'px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-sm transition flex items-center gap-1.5 cursor-pointer';
       btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i><span>Publish Rapor Kelas Ini</span>';
+    }
+    if (isWali) {
+      btn.classList.add('hidden');
+    }
+  }
+
+  const adminActions = document.getElementById('rapor-publish-admin-actions');
+  if (adminActions) {
+    if (isWali) adminActions.classList.add('hidden');
+    else adminActions.classList.remove('hidden');
+  }
+
+  const controlBar = document.getElementById('rapor-publish-control-bar');
+  if (controlBar) {
+    if (isWali) {
+      controlBar.classList.add('hidden');
+    } else {
+      controlBar.classList.remove('hidden');
     }
   }
 

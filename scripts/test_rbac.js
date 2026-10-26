@@ -221,5 +221,69 @@ setTimeout(() => {
   if (!printModal.classList.contains('hidden')) throw new Error('Print modal should be hidden after closeModalAnekdotPrint!');
   console.log('✅ Official Printable Anekdot Modal verified successfully');
 
+  // TEST 9: WALI MURID UI CLEANUP (Tutorial button, Petunjuk Rapor in Header only, and Tarik/Batal Publish hidden)
+  console.log('\n--- TEST 9: WALI MURID UI CLEANUP & PERMISSIONS ---');
+  win.loginAsSpecificTeacher('walimurid', 'wali123');
+  
+  // 1. Tombol Tutorial harus hidden untuk wali murid
+  const navTutorialWali = doc.getElementById('nav-btn-tutorial');
+  if (navTutorialWali && !navTutorialWali.classList.contains('hidden')) {
+    throw new Error('Tombol Tutorial (#nav-btn-tutorial) should be hidden for Wali Murid!');
+  }
+  console.log('✅ Tombol Tutorial tersembunyi untuk Wali Murid');
+
+  // Login sebagai Guru: Tombol Tutorial harus tampil
+  win.loginAsSpecificTeacher('dewi');
+  const navTutorialTeacher = doc.getElementById('nav-btn-tutorial');
+  if (navTutorialTeacher && navTutorialTeacher.classList.contains('hidden')) {
+    throw new Error('Tombol Tutorial (#nav-btn-tutorial) should be visible for Guru / Walas!');
+  }
+  console.log('✅ Tombol Tutorial tampil untuk Guru / Walas');
+
+  // Kembali login sebagai Wali Murid
+  win.loginAsSpecificTeacher('walimurid', 'wali123');
+
+  // 2. Tombol Petunjuk Rapor harus ada di Header (#nav-btn-petunjuk-rapor) dan tidak ada di sidebar
+  const headerPetunjukBtn = doc.getElementById('nav-btn-petunjuk-rapor');
+  if (!headerPetunjukBtn) {
+    throw new Error('Tombol Petunjuk Rapor di Header (#nav-btn-petunjuk-rapor) must exist!');
+  }
+  if (headerPetunjukBtn.classList.contains('hidden')) {
+    throw new Error('Tombol Petunjuk Rapor di Header should be visible to Wali Murid!');
+  }
+  const sidebarPetunjuk = doc.getElementById('nav-item-petunjuk');
+  if (sidebarPetunjuk) {
+    throw new Error('Tombol Petunjuk di sidebar harus sudah dihapus agar hanya ada di Header!');
+  }
+  console.log('✅ Tombol Petunjuk Rapor tersedia di Header Navbar dan bersih dari sidebar/lokasi lain');
+
+  // 3. Tombol Tarik / Batal Publish Rapor harus tersembunyi bagi Wali Murid
+  win.switchView('rapor');
+  const btnPublish = doc.getElementById('btn-toggle-publish-rapor');
+  const adminPublishActions = doc.getElementById('rapor-publish-admin-actions');
+  const publishControlBar = doc.getElementById('rapor-publish-control-bar');
+  
+  // Test kondisi saat rapor SUDAH dipublish
+  win.updatePublishUIState(true, 'IX ABU BAKAR', 'ABDILLAH ZULQARNAIN');
+  if (btnPublish && !btnPublish.classList.contains('hidden')) {
+    throw new Error('Tombol Tarik / Batal Publish Rapor must be HIDDEN for Wali Murid when published!');
+  }
+  if (adminPublishActions && !adminPublishActions.classList.contains('hidden')) {
+    throw new Error('rapor-publish-admin-actions must be HIDDEN for Wali Murid when published!');
+  }
+  if (publishControlBar && !publishControlBar.classList.contains('hidden')) {
+    throw new Error('rapor-publish-control-bar should be HIDDEN for Wali Murid when published!');
+  }
+
+  // Test kondisi saat rapor DRAFT (Belum Dipublish)
+  win.updatePublishUIState(false, 'IX ABU BAKAR', 'ABDILLAH ZULQARNAIN');
+  if (btnPublish && !btnPublish.classList.contains('hidden')) {
+    throw new Error('Tombol Tarik / Batal Publish Rapor must be HIDDEN for Wali Murid when draft!');
+  }
+  if (adminPublishActions && !adminPublishActions.classList.contains('hidden')) {
+    throw new Error('rapor-publish-admin-actions must be HIDDEN for Wali Murid when draft!');
+  }
+  console.log('✅ Tombol Tarik / Batal Publish Rapor dan kontrol publish admin 100% tersembunyi dari Wali Murid');
+
   console.log('\n🎉 ALL RBAC, WALI MURID, ANEKDOT & BK VERIFICATION TESTS PASSED 100% SUCCESSFULLY!');
 }, 500);
