@@ -116,6 +116,11 @@
           <i class="fa-solid fa-layer-group"></i>
           <span>Semua Laporan</span>
         </button>
+        <button type="button" onclick="filterWaliReportCards('jadwal')" id="tab-wali-jadwal" class="wali-report-tab px-3.5 py-2 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition flex items-center gap-2 whitespace-nowrap cursor-pointer">
+          <i class="fa-regular fa-calendar-days text-emerald-600"></i>
+          <span>Jadwal Pelajaran</span>
+          <span id="tab-badge-jadwal" class="ml-1 px-1.5 py-0.2 rounded-full text-[10px] font-black bg-emerald-100 text-emerald-800">Mingguan</span>
+        </button>
         <button type="button" onclick="filterWaliReportCards('grafik')" id="tab-wali-grafik" class="wali-report-tab px-3.5 py-2 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition flex items-center gap-2 whitespace-nowrap cursor-pointer">
           <i class="fa-solid fa-chart-column text-purple-600"></i>
           <span>Resume Grafik Nilai</span>
@@ -133,15 +138,133 @@
         </button>
       </div>
       <div class="flex items-center gap-2 self-end sm:self-auto">
+        <button type="button" onclick="filterWaliReportCards('jadwal')" class="px-3.5 py-2 text-xs font-bold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 rounded-xl transition flex items-center gap-1.5 cursor-pointer">
+          <i class="fa-regular fa-calendar-check text-emerald-600"></i>
+          <span>Lihat Jadwal Hari Ini</span>
+        </button>
         <button type="button" onclick="openModalAnekdotPrint()" class="px-3.5 py-2 text-xs font-bold text-slate-700 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl transition flex items-center gap-1.5 cursor-pointer">
           <i class="fa-solid fa-print text-slate-500"></i>
-          <span>Cetak Lembar A-Record</span>
+          <span>Cetak A-Record</span>
         </button>
         <button type="button" onclick="openModalBkConsult()" class="px-3.5 py-2 text-xs font-bold text-white bg-teal-600 hover:bg-teal-700 rounded-xl shadow-sm transition flex items-center gap-1.5 cursor-pointer">
           <i class="fa-solid fa-user-doctor"></i>
-          <span>Konsultasi BK / Walas</span>
+          <span>Konsultasi BK</span>
         </button>
       </div>
+    </div>
+
+    <!-- Section 0: Jadwal Pelajaran & Capaian Kompetensi Siswa (Wali Murid) -->
+    <div id="section-wali-jadwal" class="bg-white rounded-3xl p-5 sm:p-7 border border-[#e2f3ea] shadow-sm space-y-6">
+      
+      <!-- Header Section Jadwal -->
+      <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 border-b border-slate-100 pb-5">
+        <div class="flex items-center gap-3">
+          <span class="w-11 h-11 rounded-2xl bg-emerald-100 text-[#00a66c] flex items-center justify-center font-bold text-xl shadow-sm border border-emerald-200 shrink-0">
+            <i class="fa-regular fa-calendar-days"></i>
+          </span>
+          <div>
+            <div class="flex flex-wrap items-center gap-2">
+              <h3 class="text-base sm:text-lg font-black text-slate-900 tracking-tight">
+                Jadwal Pelajaran & Capaian Nilai Ananda
+              </h3>
+              <span id="wali-jadwal-kelas-badge" class="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-emerald-100 text-emerald-800 border border-emerald-300">
+                Kelas VII AISYAH
+              </span>
+              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-700 border border-slate-200">
+                TP 2026/2027
+              </span>
+            </div>
+            <p class="text-xs text-slate-500 mt-1 flex flex-wrap items-center gap-2">
+              <span>Wali Kelas: <strong id="wali-jadwal-walas" class="text-slate-800 font-semibold">Tri Yuli Aryani, S.Pd., Gr.</strong></span>
+              <span class="text-slate-300">•</span>
+              <span class="text-emerald-700 font-medium"><i class="fa-solid fa-hand-pointer text-emerald-500 mr-1 animate-pulse"></i> Klik mata pelajaran untuk melihat nilai capaian ananda</span>
+            </p>
+          </div>
+        </div>
+
+        <!-- Seragam Hari Ini Quick Pill -->
+        <div class="flex items-center gap-2 self-stretch sm:self-auto bg-slate-50 p-2 sm:px-3 sm:py-2 rounded-2xl border border-slate-200/80">
+          <div class="w-8 h-8 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center text-sm shrink-0">
+            <i class="fa-solid fa-shirt"></i>
+          </div>
+          <div class="text-left text-xs">
+            <span class="text-[10px] uppercase font-extrabold text-slate-400 block leading-tight">Seragam Hari Ini:</span>
+            <strong id="wali-jadwal-seragam-hari-ini" class="text-slate-800 font-bold">Putih Biru (Senin)</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Day Filter Tabs & Info Seragam Bar -->
+      <div class="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 bg-gradient-to-r from-emerald-50/70 via-teal-50/50 to-slate-50 p-3 sm:p-3.5 rounded-2xl border border-emerald-100">
+        <!-- Day Selector Buttons -->
+        <div class="flex items-center gap-1.5 overflow-x-auto pb-1 md:pb-0" id="wali-jadwal-day-tabs">
+          <button type="button" onclick="filterJadwalHari('all')" id="btn-jadwal-all" class="jadwal-day-btn px-3 py-1.5 rounded-xl text-xs font-black bg-[#00a66c] text-white shadow-xs transition cursor-pointer whitespace-nowrap">
+            Semua Hari
+          </button>
+          <button type="button" onclick="filterJadwalHari('SENIN')" id="btn-jadwal-senin" class="jadwal-day-btn px-3 py-1.5 rounded-xl text-xs font-bold text-slate-700 hover:bg-white bg-white/70 border border-slate-200/60 transition cursor-pointer whitespace-nowrap">
+            Senin
+          </button>
+          <button type="button" onclick="filterJadwalHari('SELASA')" id="btn-jadwal-selasa" class="jadwal-day-btn px-3 py-1.5 rounded-xl text-xs font-bold text-slate-700 hover:bg-white bg-white/70 border border-slate-200/60 transition cursor-pointer whitespace-nowrap">
+            Selasa
+          </button>
+          <button type="button" onclick="filterJadwalHari('RABU')" id="btn-jadwal-rabu" class="jadwal-day-btn px-3 py-1.5 rounded-xl text-xs font-bold text-slate-700 hover:bg-white bg-white/70 border border-slate-200/60 transition cursor-pointer whitespace-nowrap">
+            Rabu
+          </button>
+          <button type="button" onclick="filterJadwalHari('KAMIS')" id="btn-jadwal-kamis" class="jadwal-day-btn px-3 py-1.5 rounded-xl text-xs font-bold text-slate-700 hover:bg-white bg-white/70 border border-slate-200/60 transition cursor-pointer whitespace-nowrap">
+            Kamis
+          </button>
+          <button type="button" onclick="filterJadwalHari('JUM\'AT')" id="btn-jadwal-jumat" class="jadwal-day-btn px-3 py-1.5 rounded-xl text-xs font-bold text-slate-700 hover:bg-white bg-white/70 border border-slate-200/60 transition cursor-pointer whitespace-nowrap">
+            Jum'at
+          </button>
+        </div>
+
+        <!-- Seragam Legend Quick Info -->
+        <div class="flex items-center gap-2 text-[11px] text-slate-600 font-medium">
+          <i class="fa-solid fa-clock-rotate-left text-emerald-600"></i>
+          <span>Jam Belajar: <strong>07.10 - 16.00 WIB</strong> (Full Day School)</span>
+        </div>
+      </div>
+
+      <!-- Interactive Helper Banner -->
+      <div class="bg-emerald-50/50 border border-emerald-200/80 rounded-2xl p-3.5 flex items-start gap-3">
+        <span class="w-6 h-6 rounded-lg bg-emerald-200 text-emerald-800 flex items-center justify-center text-xs shrink-0 mt-0.5">
+          <i class="fa-solid fa-lightbulb"></i>
+        </span>
+        <div class="text-xs text-emerald-950 leading-relaxed">
+          <strong>Panduan Interaktif:</strong> Jadwal di bawah ini tersinkronisasi langsung dengan kelas ananda di SMP Al-Imam. Klik pada slot <strong>Mata Pelajaran</strong> untuk melihat nilai angka rapor, ketuntasan terhadap KKM (75), predikat huruf (A/B/C/D), deskripsi capaian pembelajaran resmi, dan kontak guru pengampu.
+        </div>
+      </div>
+
+      <!-- Jadwal Days Container Grid -->
+      <div id="wali-jadwal-container" class="space-y-6">
+        <!-- Rendered dynamically by JavaScript -->
+      </div>
+
+      <!-- Jadwal Footer Legend -->
+      <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200/80 flex flex-wrap items-center justify-between gap-3 text-xs text-slate-600">
+        <div class="flex flex-wrap items-center gap-3">
+          <span class="font-bold text-slate-700">Kode Warna Jadwal:</span>
+          <span class="inline-flex items-center gap-1.5">
+            <span class="w-3 h-3 rounded-full bg-blue-500"></span> Mapel Umum / Akademik
+          </span>
+          <span class="inline-flex items-center gap-1.5">
+            <span class="w-3 h-3 rounded-full bg-emerald-500"></span> Diniyah / Al-Qur'an
+          </span>
+          <span class="inline-flex items-center gap-1.5">
+            <span class="w-3 h-3 rounded-full bg-purple-500"></span> Mulok & Prakarya
+          </span>
+          <span class="inline-flex items-center gap-1.5">
+            <span class="w-3 h-3 rounded-full bg-amber-500"></span> Ekstrakurikuler & Karakter
+          </span>
+          <span class="inline-flex items-center gap-1.5">
+            <span class="w-3 h-3 rounded-full bg-teal-500"></span> Ibadah, Qailullah & Isoma
+          </span>
+        </div>
+        <div class="text-[11px] text-slate-500">
+          * Khusus hari Jum'at, Sholat Jum'at & ISOMA berlangsung mulai 11.00/11.30 - 13.00 WIB
+        </div>
+      </div>
+
     </div>
 
     <!-- Section 1: Laporan Catatan Anekdot (A-Record) -->

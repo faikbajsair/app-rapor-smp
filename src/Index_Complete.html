@@ -634,6 +634,11 @@
           <i class="fa-solid fa-layer-group"></i>
           <span>Semua Laporan</span>
         </button>
+        <button type="button" onclick="filterWaliReportCards('jadwal')" id="tab-wali-jadwal" class="wali-report-tab px-3.5 py-2 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition flex items-center gap-2 whitespace-nowrap cursor-pointer">
+          <i class="fa-regular fa-calendar-days text-emerald-600"></i>
+          <span>Jadwal Pelajaran</span>
+          <span id="tab-badge-jadwal" class="ml-1 px-1.5 py-0.2 rounded-full text-[10px] font-black bg-emerald-100 text-emerald-800">Mingguan</span>
+        </button>
         <button type="button" onclick="filterWaliReportCards('grafik')" id="tab-wali-grafik" class="wali-report-tab px-3.5 py-2 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition flex items-center gap-2 whitespace-nowrap cursor-pointer">
           <i class="fa-solid fa-chart-column text-purple-600"></i>
           <span>Resume Grafik Nilai</span>
@@ -651,15 +656,133 @@
         </button>
       </div>
       <div class="flex items-center gap-2 self-end sm:self-auto">
+        <button type="button" onclick="filterWaliReportCards('jadwal')" class="px-3.5 py-2 text-xs font-bold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 rounded-xl transition flex items-center gap-1.5 cursor-pointer">
+          <i class="fa-regular fa-calendar-check text-emerald-600"></i>
+          <span>Lihat Jadwal Hari Ini</span>
+        </button>
         <button type="button" onclick="openModalAnekdotPrint()" class="px-3.5 py-2 text-xs font-bold text-slate-700 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl transition flex items-center gap-1.5 cursor-pointer">
           <i class="fa-solid fa-print text-slate-500"></i>
-          <span>Cetak Lembar A-Record</span>
+          <span>Cetak A-Record</span>
         </button>
         <button type="button" onclick="openModalBkConsult()" class="px-3.5 py-2 text-xs font-bold text-white bg-teal-600 hover:bg-teal-700 rounded-xl shadow-sm transition flex items-center gap-1.5 cursor-pointer">
           <i class="fa-solid fa-user-doctor"></i>
-          <span>Konsultasi BK / Walas</span>
+          <span>Konsultasi BK</span>
         </button>
       </div>
+    </div>
+
+    <!-- Section 0: Jadwal Pelajaran & Capaian Kompetensi Siswa (Wali Murid) -->
+    <div id="section-wali-jadwal" class="bg-white rounded-3xl p-5 sm:p-7 border border-[#e2f3ea] shadow-sm space-y-6">
+      
+      <!-- Header Section Jadwal -->
+      <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 border-b border-slate-100 pb-5">
+        <div class="flex items-center gap-3">
+          <span class="w-11 h-11 rounded-2xl bg-emerald-100 text-[#00a66c] flex items-center justify-center font-bold text-xl shadow-sm border border-emerald-200 shrink-0">
+            <i class="fa-regular fa-calendar-days"></i>
+          </span>
+          <div>
+            <div class="flex flex-wrap items-center gap-2">
+              <h3 class="text-base sm:text-lg font-black text-slate-900 tracking-tight">
+                Jadwal Pelajaran & Capaian Nilai Ananda
+              </h3>
+              <span id="wali-jadwal-kelas-badge" class="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-emerald-100 text-emerald-800 border border-emerald-300">
+                Kelas VII AISYAH
+              </span>
+              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-700 border border-slate-200">
+                TP 2026/2027
+              </span>
+            </div>
+            <p class="text-xs text-slate-500 mt-1 flex flex-wrap items-center gap-2">
+              <span>Wali Kelas: <strong id="wali-jadwal-walas" class="text-slate-800 font-semibold">Tri Yuli Aryani, S.Pd., Gr.</strong></span>
+              <span class="text-slate-300">•</span>
+              <span class="text-emerald-700 font-medium"><i class="fa-solid fa-hand-pointer text-emerald-500 mr-1 animate-pulse"></i> Klik mata pelajaran untuk melihat nilai capaian ananda</span>
+            </p>
+          </div>
+        </div>
+
+        <!-- Seragam Hari Ini Quick Pill -->
+        <div class="flex items-center gap-2 self-stretch sm:self-auto bg-slate-50 p-2 sm:px-3 sm:py-2 rounded-2xl border border-slate-200/80">
+          <div class="w-8 h-8 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center text-sm shrink-0">
+            <i class="fa-solid fa-shirt"></i>
+          </div>
+          <div class="text-left text-xs">
+            <span class="text-[10px] uppercase font-extrabold text-slate-400 block leading-tight">Seragam Hari Ini:</span>
+            <strong id="wali-jadwal-seragam-hari-ini" class="text-slate-800 font-bold">Putih Biru (Senin)</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Day Filter Tabs & Info Seragam Bar -->
+      <div class="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 bg-gradient-to-r from-emerald-50/70 via-teal-50/50 to-slate-50 p-3 sm:p-3.5 rounded-2xl border border-emerald-100">
+        <!-- Day Selector Buttons -->
+        <div class="flex items-center gap-1.5 overflow-x-auto pb-1 md:pb-0" id="wali-jadwal-day-tabs">
+          <button type="button" onclick="filterJadwalHari('all')" id="btn-jadwal-all" class="jadwal-day-btn px-3 py-1.5 rounded-xl text-xs font-black bg-[#00a66c] text-white shadow-xs transition cursor-pointer whitespace-nowrap">
+            Semua Hari
+          </button>
+          <button type="button" onclick="filterJadwalHari('SENIN')" id="btn-jadwal-senin" class="jadwal-day-btn px-3 py-1.5 rounded-xl text-xs font-bold text-slate-700 hover:bg-white bg-white/70 border border-slate-200/60 transition cursor-pointer whitespace-nowrap">
+            Senin
+          </button>
+          <button type="button" onclick="filterJadwalHari('SELASA')" id="btn-jadwal-selasa" class="jadwal-day-btn px-3 py-1.5 rounded-xl text-xs font-bold text-slate-700 hover:bg-white bg-white/70 border border-slate-200/60 transition cursor-pointer whitespace-nowrap">
+            Selasa
+          </button>
+          <button type="button" onclick="filterJadwalHari('RABU')" id="btn-jadwal-rabu" class="jadwal-day-btn px-3 py-1.5 rounded-xl text-xs font-bold text-slate-700 hover:bg-white bg-white/70 border border-slate-200/60 transition cursor-pointer whitespace-nowrap">
+            Rabu
+          </button>
+          <button type="button" onclick="filterJadwalHari('KAMIS')" id="btn-jadwal-kamis" class="jadwal-day-btn px-3 py-1.5 rounded-xl text-xs font-bold text-slate-700 hover:bg-white bg-white/70 border border-slate-200/60 transition cursor-pointer whitespace-nowrap">
+            Kamis
+          </button>
+          <button type="button" onclick="filterJadwalHari('JUM\'AT')" id="btn-jadwal-jumat" class="jadwal-day-btn px-3 py-1.5 rounded-xl text-xs font-bold text-slate-700 hover:bg-white bg-white/70 border border-slate-200/60 transition cursor-pointer whitespace-nowrap">
+            Jum'at
+          </button>
+        </div>
+
+        <!-- Seragam Legend Quick Info -->
+        <div class="flex items-center gap-2 text-[11px] text-slate-600 font-medium">
+          <i class="fa-solid fa-clock-rotate-left text-emerald-600"></i>
+          <span>Jam Belajar: <strong>07.10 - 16.00 WIB</strong> (Full Day School)</span>
+        </div>
+      </div>
+
+      <!-- Interactive Helper Banner -->
+      <div class="bg-emerald-50/50 border border-emerald-200/80 rounded-2xl p-3.5 flex items-start gap-3">
+        <span class="w-6 h-6 rounded-lg bg-emerald-200 text-emerald-800 flex items-center justify-center text-xs shrink-0 mt-0.5">
+          <i class="fa-solid fa-lightbulb"></i>
+        </span>
+        <div class="text-xs text-emerald-950 leading-relaxed">
+          <strong>Panduan Interaktif:</strong> Jadwal di bawah ini tersinkronisasi langsung dengan kelas ananda di SMP Al-Imam. Klik pada slot <strong>Mata Pelajaran</strong> untuk melihat nilai angka rapor, ketuntasan terhadap KKM (75), predikat huruf (A/B/C/D), deskripsi capaian pembelajaran resmi, dan kontak guru pengampu.
+        </div>
+      </div>
+
+      <!-- Jadwal Days Container Grid -->
+      <div id="wali-jadwal-container" class="space-y-6">
+        <!-- Rendered dynamically by JavaScript -->
+      </div>
+
+      <!-- Jadwal Footer Legend -->
+      <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200/80 flex flex-wrap items-center justify-between gap-3 text-xs text-slate-600">
+        <div class="flex flex-wrap items-center gap-3">
+          <span class="font-bold text-slate-700">Kode Warna Jadwal:</span>
+          <span class="inline-flex items-center gap-1.5">
+            <span class="w-3 h-3 rounded-full bg-blue-500"></span> Mapel Umum / Akademik
+          </span>
+          <span class="inline-flex items-center gap-1.5">
+            <span class="w-3 h-3 rounded-full bg-emerald-500"></span> Diniyah / Al-Qur'an
+          </span>
+          <span class="inline-flex items-center gap-1.5">
+            <span class="w-3 h-3 rounded-full bg-purple-500"></span> Mulok & Prakarya
+          </span>
+          <span class="inline-flex items-center gap-1.5">
+            <span class="w-3 h-3 rounded-full bg-amber-500"></span> Ekstrakurikuler & Karakter
+          </span>
+          <span class="inline-flex items-center gap-1.5">
+            <span class="w-3 h-3 rounded-full bg-teal-500"></span> Ibadah, Qailullah & Isoma
+          </span>
+        </div>
+        <div class="text-[11px] text-slate-500">
+          * Khusus hari Jum'at, Sholat Jum'at & ISOMA berlangsung mulai 11.00/11.30 - 13.00 WIB
+        </div>
+      </div>
+
     </div>
 
     <!-- Section 1: Laporan Catatan Anekdot (A-Record) -->
@@ -5283,6 +5406,202 @@
   <!-- Toast Container -->
   <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none max-w-sm w-full"></div>
 
+  <!-- Detail Capaian Nilai & Kompetensi Mapel dari Jadwal Modal -->
+  <!-- Modal Interaktif Detail Capaian Nilai & Kompetensi Mata Pelajaran (Klik Jadwal) -->
+<div id="modal-mapel-capaian" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-slate-900/60 backdrop-blur-sm hidden transition-opacity duration-200">
+  <div class="bg-white w-full max-w-2xl rounded-3xl shadow-2xl border border-slate-100 overflow-hidden flex flex-col max-h-[92vh] animate-in fade-in zoom-in-95 duration-200">
+    
+    <!-- Modal Header with Emerald Gradient -->
+    <div class="relative bg-gradient-to-r from-emerald-800 via-[#00a66c] to-teal-700 text-white p-5 sm:p-6 pb-6">
+      <div class="flex items-start justify-between gap-4">
+        <div class="flex items-center gap-3 sm:gap-4">
+          <div id="modal-mapel-icon-wrap" class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white/15 backdrop-blur-md border border-white/25 flex items-center justify-center text-2xl sm:text-3xl text-emerald-100 shadow-inner shrink-0">
+            <i id="modal-mapel-icon" class="fa-solid fa-book-open"></i>
+          </div>
+          <div>
+            <div class="flex flex-wrap items-center gap-2 mb-1">
+              <span id="modal-mapel-rumpun" class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-white/20 text-white border border-white/30 backdrop-blur-sm">
+                Mata Pelajaran Umum
+              </span>
+              <span id="modal-mapel-slot-badge" class="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-emerald-950/40 text-emerald-200 border border-emerald-400/30">
+                <i class="fa-regular fa-clock mr-1"></i> <span id="modal-mapel-waktu">07.30 - 08.30</span>
+              </span>
+            </div>
+            <h3 id="modal-mapel-title" class="text-lg sm:text-xl font-extrabold tracking-tight text-white leading-snug">
+              Matematika
+            </h3>
+            <p id="modal-mapel-subtitle" class="text-xs text-emerald-100/90 mt-0.5 flex items-center gap-2">
+              <span><i class="fa-solid fa-chalkboard-user mr-1 text-emerald-300"></i> Guru: <strong id="modal-mapel-guru" class="text-white">Tri Yuli Aryani, S.Pd., Gr.</strong></span>
+            </p>
+          </div>
+        </div>
+        <button type="button" onclick="closeMapelCapaianDetail()" class="w-9 h-9 rounded-full bg-white/15 hover:bg-white/25 border border-white/20 flex items-center justify-center text-white transition cursor-pointer shrink-0" title="Tutup Modal">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <!-- Schedule Context Sub-bar -->
+      <div class="mt-4 pt-3 border-t border-white/15 flex flex-wrap items-center justify-between text-[11px] text-emerald-100/90 gap-2">
+        <div class="flex items-center gap-3">
+          <span><i class="fa-regular fa-calendar-day mr-1 text-emerald-300"></i> <strong id="modal-mapel-hari" class="text-white">Senin</strong></span>
+          <span class="text-white/40">•</span>
+          <span><i class="fa-solid fa-shirt mr-1 text-emerald-300"></i> Seragam: <strong id="modal-mapel-seragam" class="text-white">Putih Biru</strong></span>
+        </div>
+        <div class="text-[10px] bg-white/10 px-2.5 py-0.5 rounded-full border border-white/15">
+          <i class="fa-solid fa-graduation-cap mr-1"></i> <span id="modal-mapel-kelas">Kelas IX ABU BAKAR</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Body (Scrollable) -->
+    <div class="p-5 sm:p-6 overflow-y-auto space-y-5 bg-slate-50/60" id="modal-mapel-body">
+      
+      <!-- Score & KKM Overview Card -->
+      <div id="modal-mapel-score-section" class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/80 shadow-sm space-y-4">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-extrabold uppercase tracking-wider text-slate-400">Ringkasan Skor & Kriteria Ketuntasan (KKM)</span>
+          <span id="modal-mapel-status-kkm" class="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-emerald-100 text-emerald-800 border border-emerald-300">
+            <i class="fa-solid fa-circle-check mr-1"></i> TUNTAS KKM
+          </span>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+          <!-- Nilai Akhir -->
+          <div class="bg-slate-50 p-3 rounded-xl border border-slate-200/70">
+            <span class="text-[10px] font-bold text-slate-400 uppercase block">Nilai Ananda</span>
+            <span id="modal-mapel-score" class="text-2xl sm:text-3xl font-black text-slate-900 font-mono">92</span>
+            <span class="text-[10px] text-slate-500 block">Skala 100</span>
+          </div>
+          <!-- Batas KKM -->
+          <div class="bg-slate-50 p-3 rounded-xl border border-slate-200/70">
+            <span class="text-[10px] font-bold text-slate-400 uppercase block">Batas KKM</span>
+            <span id="modal-mapel-kkm" class="text-2xl sm:text-3xl font-black text-slate-700 font-mono">75</span>
+            <span class="text-[10px] text-slate-500 block">Standar Kelulusan</span>
+          </div>
+          <!-- Selisih Delta -->
+          <div class="bg-emerald-50/70 p-3 rounded-xl border border-emerald-200/70">
+            <span class="text-[10px] font-bold text-emerald-700 uppercase block">Selisih KKM</span>
+            <span id="modal-mapel-delta" class="text-2xl sm:text-3xl font-black text-emerald-700 font-mono">+17</span>
+            <span class="text-[10px] text-emerald-800 font-bold block">Poin di Atas KKM</span>
+          </div>
+          <!-- Predikat Huruf -->
+          <div class="bg-purple-50/70 p-3 rounded-xl border border-purple-200/70">
+            <span class="text-[10px] font-bold text-purple-700 uppercase block">Predikat Capaian</span>
+            <span id="modal-mapel-predikat" class="text-2xl sm:text-3xl font-black text-purple-700">A</span>
+            <span id="modal-mapel-predikat-label" class="text-[10px] text-purple-800 font-bold block">Sangat Baik</span>
+          </div>
+        </div>
+
+        <!-- Visual Progress Bar -->
+        <div class="space-y-1.5 pt-1">
+          <div class="flex justify-between text-[11px] font-bold">
+            <span class="text-slate-500">Kemajuan Kompetensi Semester Berjalan</span>
+            <span id="modal-mapel-pct-label" class="text-emerald-700">92%</span>
+          </div>
+          <div class="w-full bg-slate-100 rounded-full h-3 overflow-hidden p-0.5 border border-slate-200 relative">
+            <!-- KKM Marker -->
+            <div class="absolute top-0 bottom-0 w-0.5 bg-rose-500 z-10" style="left: 75%;" title="Batas KKM (75)"></div>
+            <div id="modal-mapel-bar-fill" class="h-full bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full transition-all duration-500" style="width: 92%;"></div>
+          </div>
+          <div class="flex justify-between text-[10px] text-slate-400">
+            <span>0</span>
+            <span class="text-rose-500 font-bold"><i class="fa-solid fa-caret-up"></i> KKM 75</span>
+            <span>100</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Deskripsi Narasi Capaian Kompetensi Resmi Rapor -->
+      <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/80 shadow-sm space-y-3.5">
+        <div class="flex items-center gap-2">
+          <span class="w-7 h-7 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center text-xs font-bold">
+            <i class="fa-solid fa-award"></i>
+          </span>
+          <h4 class="font-extrabold text-xs sm:text-sm text-slate-900">
+            Capaian Kompetensi Ananda (Rapor Tengah Semester)
+          </h4>
+        </div>
+
+        <!-- Capaian Tertinggi / Optimal -->
+        <div class="bg-emerald-50/70 border border-emerald-200 rounded-xl p-3.5 space-y-1">
+          <div class="flex items-center gap-1.5 text-xs font-extrabold text-emerald-900">
+            <i class="fa-solid fa-circle-check text-emerald-600"></i>
+            <span>Capaian Optimal / Penguasaan Tertinggi:</span>
+          </div>
+          <p id="modal-mapel-capaian-optimal" class="text-xs text-slate-700 leading-relaxed font-medium">
+            Menunjukkan penguasaan materi yang sangat baik dalam memahami konsep dasar, pemecahan masalah analitis, dan keaktifan diskusi di kelas.
+          </p>
+        </div>
+
+        <!-- Perlu Peningkatan / Evaluasi Mandiri -->
+        <div class="bg-amber-50/70 border border-amber-200 rounded-xl p-3.5 space-y-1">
+          <div class="flex items-center gap-1.5 text-xs font-extrabold text-amber-900">
+            <i class="fa-solid fa-arrow-trend-up text-amber-600"></i>
+            <span>Area Perlu Pendampingan / Peningkatan:</span>
+          </div>
+          <p id="modal-mapel-capaian-peningkatan" class="text-xs text-slate-700 leading-relaxed font-medium">
+            Perlu terus dilatih dalam ketelitian pengerjaan soal hitungan kompleks serta konsistensi manajemen waktu belajar mandiri di rumah.
+          </p>
+        </div>
+      </div>
+
+      <!-- Tujuan Pembelajaran (TP) yang Dipelajari di Semester Berjalan -->
+      <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/80 shadow-sm space-y-3">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="w-7 h-7 rounded-xl bg-blue-100 text-blue-800 flex items-center justify-center text-xs font-bold">
+              <i class="fa-solid fa-list-check"></i>
+            </span>
+            <h4 class="font-extrabold text-xs sm:text-sm text-slate-900">
+              Tujuan Pembelajaran (TP) & Materi Kurikulum
+            </h4>
+          </div>
+          <span id="modal-mapel-tp-count" class="text-[10px] font-black bg-blue-50 text-blue-800 border border-blue-200 px-2 py-0.5 rounded-full">
+            3 TP Selesai
+          </span>
+        </div>
+
+        <ul id="modal-mapel-tp-list" class="space-y-2 text-xs">
+          <!-- Rendered dynamically by JavaScript -->
+        </ul>
+      </div>
+
+      <!-- Tips Pendampingan Wali Murid di Rumah -->
+      <div class="bg-gradient-to-r from-teal-50 to-emerald-50 rounded-2xl p-4 border border-teal-200/80 space-y-2">
+        <div class="flex items-center gap-2 text-teal-900 font-extrabold text-xs">
+          <i class="fa-solid fa-lightbulb text-teal-600"></i>
+          <span>Rekomendasi Pendampingan Wali Murid di Rumah:</span>
+        </div>
+        <p id="modal-mapel-saran-ortu" class="text-xs text-slate-700 leading-relaxed">
+          Berikan apresiasi atas usaha ananda dalam mata pelajaran ini. Dukung ananda dengan menyediakan suasana belajar yang kondusif setelah Shalat Maghrib dan periksa kembali buku catatan secara berkala.
+        </p>
+      </div>
+
+    </div>
+
+    <!-- Modal Footer Actions -->
+    <div class="p-4 sm:p-5 bg-white border-t border-slate-100 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+      <button type="button" onclick="closeMapelCapaianDetail()" class="py-2.5 px-4 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-100 text-xs font-bold transition flex items-center justify-center gap-2 cursor-pointer order-2 sm:order-1">
+        <i class="fa-solid fa-chevron-left"></i>
+        <span>Kembali ke Jadwal</span>
+      </button>
+
+      <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 order-1 sm:order-2">
+        <button type="button" id="modal-mapel-btn-wa" onclick="contactTeacherWhatsApp()" class="py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-md shadow-emerald-600/20 transition flex items-center justify-center gap-2 cursor-pointer">
+          <i class="fa-brands fa-whatsapp text-sm"></i>
+          <span>Tanya Guru Pengampu</span>
+        </button>
+        <button type="button" onclick="closeMapelCapaianDetail(); switchView('rapor');" class="py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition flex items-center justify-center gap-2 cursor-pointer">
+          <i class="fa-solid fa-file-invoice"></i>
+          <span>Buka Rapor Lengkap</span>
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
   <!-- Resume Grafik Capaian Nilai Siswa Modal -->
   <!-- Modal Resume & Analisis Grafik Capaian Nilai Siswa (SMP Al-Imam) -->
 <div id="modal-resume-chart-nilai" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-slate-950/80 backdrop-blur-md hidden">
@@ -9581,6 +9900,9 @@ function renderWaliAnekdotAndKonseling(childNis, childMurid) {
   // Render Resume Grafik Nilai Ananda for Parent Dashboard
   renderStudentResumeChart(cleanNis, 'wali');
 
+  // Render Jadwal Pelajaran Mingguan Ananda (Portal Wali Murid)
+  renderWaliJadwal(cleanNis, childMurid);
+
   // Render Anekdot List
   const anekdotContainer = document.getElementById('wali-anekdot-list');
   if (anekdotContainer) {
@@ -9718,15 +10040,17 @@ function renderWaliAnekdotAndKonseling(childNis, childMurid) {
 
 function filterWaliReportCards(type) {
   const tabAll = document.getElementById('tab-wali-all');
+  const tabJadwal = document.getElementById('tab-wali-jadwal');
   const tabGrafik = document.getElementById('tab-wali-grafik');
   const tabAnekdot = document.getElementById('tab-wali-anekdot');
   const tabKonseling = document.getElementById('tab-wali-konseling');
 
+  const secJadwal = document.getElementById('section-wali-jadwal');
   const secGrafik = document.getElementById('section-wali-grafik');
   const secAnekdot = document.getElementById('section-wali-anekdot');
   const secKonseling = document.getElementById('section-wali-konseling');
 
-  const tabs = [tabAll, tabGrafik, tabAnekdot, tabKonseling];
+  const tabs = [tabAll, tabJadwal, tabGrafik, tabAnekdot, tabKonseling];
   tabs.forEach(t => {
     if (!t) return;
     t.className = 'wali-report-tab px-3.5 py-2 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition flex items-center gap-2 whitespace-nowrap cursor-pointer';
@@ -9734,21 +10058,34 @@ function filterWaliReportCards(type) {
 
   if (type === 'all') {
     if (tabAll) tabAll.className = 'wali-report-tab px-3.5 py-2 rounded-xl text-xs font-black bg-[#00a66c] text-white shadow-sm transition flex items-center gap-2 whitespace-nowrap cursor-pointer';
+    secJadwal?.classList.remove('hidden');
     secGrafik?.classList.remove('hidden');
     secAnekdot?.classList.remove('hidden');
     secKonseling?.classList.remove('hidden');
+  } else if (type === 'jadwal') {
+    if (tabJadwal) tabJadwal.className = 'wali-report-tab px-3.5 py-2 rounded-xl text-xs font-black bg-[#00a66c] text-white shadow-sm transition flex items-center gap-2 whitespace-nowrap cursor-pointer';
+    secJadwal?.classList.remove('hidden');
+    secGrafik?.classList.add('hidden');
+    secAnekdot?.classList.add('hidden');
+    secKonseling?.classList.add('hidden');
+    if (secJadwal && typeof secJadwal.scrollIntoView === 'function') {
+      try { secJadwal.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); } catch (e) {}
+    }
   } else if (type === 'grafik') {
     if (tabGrafik) tabGrafik.className = 'wali-report-tab px-3.5 py-2 rounded-xl text-xs font-black bg-[#00a66c] text-white shadow-sm transition flex items-center gap-2 whitespace-nowrap cursor-pointer';
+    secJadwal?.classList.add('hidden');
     secGrafik?.classList.remove('hidden');
     secAnekdot?.classList.add('hidden');
     secKonseling?.classList.add('hidden');
   } else if (type === 'anekdot') {
     if (tabAnekdot) tabAnekdot.className = 'wali-report-tab px-3.5 py-2 rounded-xl text-xs font-black bg-[#00a66c] text-white shadow-sm transition flex items-center gap-2 whitespace-nowrap cursor-pointer';
+    secJadwal?.classList.add('hidden');
     secGrafik?.classList.add('hidden');
     secAnekdot?.classList.remove('hidden');
     secKonseling?.classList.add('hidden');
   } else if (type === 'konseling') {
     if (tabKonseling) tabKonseling.className = 'wali-report-tab px-3.5 py-2 rounded-xl text-xs font-black bg-[#00a66c] text-white shadow-sm transition flex items-center gap-2 whitespace-nowrap cursor-pointer';
+    secJadwal?.classList.add('hidden');
     secGrafik?.classList.add('hidden');
     secAnekdot?.classList.add('hidden');
     secKonseling?.classList.remove('hidden');
@@ -9893,6 +10230,1020 @@ window.openModalBkConsult = openModalBkConsult;
 window.closeModalBkConsult = closeModalBkConsult;
 window.submitParentBkConsultation = submitParentBkConsultation;
 window.contactBkWhatsApp = contactBkWhatsApp;
+
+/**
+ * ============================================================================
+ * JADWAL PELAJARAN RESMI 2026/2027 & CAPAIAN NILAI ANANDA (PORTAL WALI MURID)
+ * Sesuai Dokumen Spreadsheet Resmi SMP Al-Imam Islamic School (AI IS)
+ * ============================================================================
+ */
+
+const SERAGAM_JADWAL_MAP = {
+  'SENIN': { label: 'Putih Biru (Senin)', seragam: 'Putih biru', bg: 'bg-blue-50 text-blue-800 border-blue-200' },
+  'SELASA': { label: 'Batik Putih (Selasa)', seragam: 'Batik Putih', bg: 'bg-amber-50 text-amber-800 border-amber-200' },
+  'RABU': { label: 'Kotak-kotak Hijau (Rabu)', seragam: 'kotak-kotak hijau', bg: 'bg-emerald-50 text-emerald-800 border-emerald-200' },
+  'KAMIS': { label: 'Gamis / Koko (Kamis)', seragam: 'Gamis/koko', bg: 'bg-teal-50 text-teal-800 border-teal-200' },
+  'JUM\'AT': { label: 'Pramuka Lengkap (Jum\'at)', seragam: 'Pramuka', bg: 'bg-amber-100 text-amber-900 border-amber-300' }
+};
+
+const GURU_JADWAL_DEFAULTS = {
+  'AL-QUR\'AN': 'Team Al-Qur\'an Sesuai Level',
+  'MATEMATIKA': 'Tri Yuli Aryani, S.Pd., Gr.',
+  'IPA': 'Eli Umiyati, S.Pd., Gr.',
+  'IPS': 'Sumiati, S.Pd.',
+  'BAHASA INDONESIA': 'Dewi Fitria Nugraheni, S.Pd., Gr.',
+  'ENGLISH': 'Tri Nuryani, S.S., Gr.',
+  'PKN': 'Khalil Gibran, S.Pd.',
+  'INFORMATIKA': 'Aning Nurhayati, S.T., Gr.',
+  'TIK': 'Aning Nurhayati, S.T., Gr.',
+  'SBK': 'Aning Nurhayati, S.T., Gr.',
+  'PJOK': 'Guntur, S.Pd.',
+  'BASA SUNDA': 'Eli Umiyati, S.Pd., Gr.',
+  'BAHASA ARAB': 'Khalil Gibran, S.Pd.',
+  'AKIDAH': 'Nunung Lastika Adiansyah, S.Pd',
+  'AKHLAK': 'Zamzam, S.Pd.',
+  'HADIS': 'Zamzam, S.Pd.',
+  'FIKIH': 'Gr. Arif Rohman, M.Pd.',
+  'SKI': 'Asril Ardiansyah, S.H.',
+  'BK': 'Sumiati, S.Pd.',
+  'LITERASI': 'Wali Kelas',
+  'WUSHU': 'Team Ekstrakurikuler Wushu',
+  'MUHADOROH': 'Gibran, Asril & Zamzam',
+  'PRAMUKA': 'Team Pembina Pramuka'
+};
+
+const JADWAL_DATA_MAP = {
+  'VII AISYAH': {
+    rombel: 'VII AISYAH BINTI ABU BAKAR',
+    wali_kelas: 'Tri Yuli Aryani, S.Pd., Gr.',
+    days: {
+      'SENIN': [
+        { waktu: '07.10 - 07.30', mapel: 'Upacara Bendera', is_activity: true, type: 'upacara', icon: 'fa-solid fa-flag' },
+        { waktu: '07.30 - 08.30', mapel: 'IPA', jp: 2, guru: 'Eli Umiyati, S.Pd., Gr.' },
+        { waktu: '08.30 - 09.30', mapel: 'AL-QUR\'AN', jp: 2, guru: 'Team Al-Qur\'an' },
+        { waktu: '09.30 - 10.00', mapel: 'ISTIRAHAT PAGI', is_activity: true, type: 'istirahat', icon: 'fa-solid fa-mug-saucer' },
+        { waktu: '10.00 - 11.00', mapel: 'MATEMATIKA', jp: 2, guru: 'Tri Yuli Aryani, S.Pd., Gr.' },
+        { waktu: '11.00 - 12.00', mapel: 'BAHASA INDONESIA', jp: 2, guru: 'Dewi Fitria Nugraheni, S.Pd., Gr.' },
+        { waktu: '12.00 - 12.30', mapel: 'QAILULLAH (Tidur Siang Sunnah)', is_activity: true, type: 'qailullah', icon: 'fa-solid fa-bed' },
+        { waktu: '12.30 - 13.30', mapel: 'ISTIRAHAT, SHALAT DZUHUR & MAKAN SIANG', is_activity: true, type: 'isoma', icon: 'fa-solid fa-utensils' },
+        { waktu: '13.30 - 14.00', mapel: 'BASA SUNDA', jp: 1, guru: 'Eli Umiyati, S.Pd., Gr.' },
+        { waktu: '14.00 - 15.00', mapel: 'PKN', jp: 2, guru: 'Khalil Gibran, S.Pd.' },
+        { waktu: '15.00 - 16.00', mapel: 'Muraja\'ah, Shalat Asar Berjama\'ah & Pulang', is_activity: true, type: 'pulang', icon: 'fa-solid fa-mosque' }
+      ],
+      'SELASA': [
+        { waktu: '07.10 - 07.30', mapel: 'Shalat Dhuha & Dzikir Pagi', is_activity: true, type: 'ibadah', icon: 'fa-solid fa-mosque' },
+        { waktu: '07.30 - 08.30', mapel: 'PJOK', jp: 2, guru: 'Guntur, S.Pd.' },
+        { waktu: '08.30 - 09.30', mapel: 'AL-QUR\'AN', jp: 2, guru: 'Team Al-Qur\'an' },
+        { waktu: '09.30 - 10.00', mapel: 'ISTIRAHAT PAGI', is_activity: true, type: 'istirahat', icon: 'fa-solid fa-mug-saucer' },
+        { waktu: '10.00 - 11.00', mapel: 'HADIS', jp: 2, guru: 'Zamzam, S.Pd.' },
+        { waktu: '11.00 - 12.00', mapel: 'IPA', jp: 2, guru: 'Eli Umiyati, S.Pd., Gr.' },
+        { waktu: '12.00 - 12.30', mapel: 'QAILULLAH (Tidur Siang Sunnah)', is_activity: true, type: 'qailullah', icon: 'fa-solid fa-bed' },
+        { waktu: '12.30 - 13.30', mapel: 'ISTIRAHAT, SHALAT DZUHUR & MAKAN SIANG', is_activity: true, type: 'isoma', icon: 'fa-solid fa-utensils' },
+        { waktu: '13.30 - 14.30', mapel: 'BAHASA ARAB', jp: 2, guru: 'Khalil Gibran, S.Pd.' },
+        { waktu: '14.30 - 15.00', mapel: 'BK', jp: 1, guru: 'Sumiati, S.Pd.' },
+        { waktu: '15.00 - 16.00', mapel: 'Muraja\'ah, Shalat Asar Berjama\'ah & Pulang', is_activity: true, type: 'pulang', icon: 'fa-solid fa-mosque' }
+      ],
+      'RABU': [
+        { waktu: '07.10 - 07.30', mapel: 'Shalat Dhuha & Dzikir Pagi', is_activity: true, type: 'ibadah', icon: 'fa-solid fa-mosque' },
+        { waktu: '07.30 - 08.30', mapel: 'WUSHU', jp: 2, guru: 'Team Ekstrakurikuler Wushu' },
+        { waktu: '08.30 - 09.30', mapel: 'AL-QUR\'AN', jp: 2, guru: 'Team Al-Qur\'an' },
+        { waktu: '09.30 - 10.00', mapel: 'ISTIRAHAT PAGI', is_activity: true, type: 'istirahat', icon: 'fa-solid fa-mug-saucer' },
+        { waktu: '10.00 - 11.00', mapel: 'ENGLISH', jp: 2, guru: 'Tri Nuryani, S.S., Gr.' },
+        { waktu: '11.00 - 12.00', mapel: 'AKHLAK', jp: 2, guru: 'Zamzam, S.Pd.' },
+        { waktu: '12.00 - 12.30', mapel: 'QAILULLAH (Tidur Siang Sunnah)', is_activity: true, type: 'qailullah', icon: 'fa-solid fa-bed' },
+        { waktu: '12.30 - 13.30', mapel: 'ISTIRAHAT, SHALAT DZUHUR & MAKAN SIANG', is_activity: true, type: 'isoma', icon: 'fa-solid fa-utensils' },
+        { waktu: '13.30 - 14.00', mapel: 'LITERASI', jp: 1, guru: 'Tri Yuli Aryani, S.Pd., Gr.' },
+        { waktu: '14.00 - 15.00', mapel: 'SKI', jp: 2, guru: 'Asril Ardiansyah, S.H.' },
+        { waktu: '15.00 - 16.00', mapel: 'Muraja\'ah, Shalat Asar Berjama\'ah & Pulang', is_activity: true, type: 'pulang', icon: 'fa-solid fa-mosque' }
+      ],
+      'KAMIS': [
+        { waktu: '07.10 - 07.30', mapel: 'Shalat Dhuha & Dzikir Pagi', is_activity: true, type: 'ibadah', icon: 'fa-solid fa-mosque' },
+        { waktu: '07.30 - 08.30', mapel: 'MATEMATIKA', jp: 2, guru: 'Tri Yuli Aryani, S.Pd., Gr.' },
+        { waktu: '08.30 - 09.30', mapel: 'AL-QUR\'AN', jp: 2, guru: 'Team Al-Qur\'an' },
+        { waktu: '09.30 - 10.00', mapel: 'ISTIRAHAT PAGI', is_activity: true, type: 'istirahat', icon: 'fa-solid fa-mug-saucer' },
+        { waktu: '10.00 - 11.00', mapel: 'IPS', jp: 2, guru: 'Sumiati, S.Pd.' },
+        { waktu: '11.00 - 12.00', mapel: 'FIKIH', jp: 2, guru: 'Gr. Arif Rohman, M.Pd.' },
+        { waktu: '12.00 - 12.30', mapel: 'QAILULLAH (Tidur Siang Sunnah)', is_activity: true, type: 'qailullah', icon: 'fa-solid fa-bed' },
+        { waktu: '12.30 - 13.30', mapel: 'ISTIRAHAT, SHALAT DZUHUR & MAKAN SIANG', is_activity: true, type: 'isoma', icon: 'fa-solid fa-utensils' },
+        { waktu: '13.30 - 14.00', mapel: 'BAHASA INDONESIA', jp: 1, guru: 'Dewi Fitria Nugraheni, S.Pd., Gr.' },
+        { waktu: '14.00 - 15.00', mapel: 'ENGLISH', jp: 2, guru: 'Tri Nuryani, S.S., Gr.' },
+        { waktu: '15.00 - 16.00', mapel: 'Muraja\'ah, Shalat Asar Berjama\'ah & Pulang', is_activity: true, type: 'pulang', icon: 'fa-solid fa-mosque' }
+      ],
+      'JUM\'AT': [
+        { waktu: '07.10 - 07.30', mapel: 'Shalat Dhuha & Dzikir Pagi', is_activity: true, type: 'ibadah', icon: 'fa-solid fa-mosque' },
+        { waktu: '07.30 - 08.30', mapel: 'MUHADOROH', jp: 2, guru: 'Gibran, Asril & Zamzam' },
+        { waktu: '08.30 - 09.30', mapel: 'AL-QUR\'AN', jp: 2, guru: 'Team Al-Qur\'an' },
+        { waktu: '09.30 - 10.00', mapel: 'ISTIRAHAT PAGI', is_activity: true, type: 'istirahat', icon: 'fa-solid fa-mug-saucer' },
+        { waktu: '10.00 - 11.00', mapel: 'INFORMATIKA', jp: 2, guru: 'Aning Nurhayati, S.T., Gr.' },
+        { waktu: '11.00 - 11.30', mapel: 'SBK', jp: 1, guru: 'Aning Nurhayati, S.T., Gr.' },
+        { waktu: '11.30 - 13.00', mapel: 'ISOMA & SHALAT JUM\'AT BERJAMA\'AH', is_activity: true, type: 'isoma_jumat', icon: 'fa-solid fa-mosque' },
+        { waktu: '13.00 - 14.00', mapel: 'AKIDAH', jp: 2, guru: 'Nunung Lastika Adiansyah, S.Pd' },
+        { waktu: '14.00 - 15.00', mapel: 'PRAMUKA', jp: 2, guru: 'Team Pembina Pramuka' },
+        { waktu: '15.00 - 16.00', mapel: 'Muraja\'ah, Shalat Asar Berjama\'ah & Pulang', is_activity: true, type: 'pulang', icon: 'fa-solid fa-mosque' }
+      ]
+    }
+  },
+  'VII UTSMAN': {
+    rombel: 'VII UTSMAN BIN AFFAN',
+    wali_kelas: 'Eli Umiyati, S.Pd., Gr.',
+    days: {
+      'SENIN': [
+        { waktu: '07.10 - 07.30', mapel: 'Upacara Bendera', is_activity: true, type: 'upacara', icon: 'fa-solid fa-flag' },
+        { waktu: '07.30 - 08.30', mapel: 'AL-QUR\'AN', jp: 2, guru: 'Team Al-Qur\'an' },
+        { waktu: '08.30 - 09.30', mapel: 'MATEMATIKA', jp: 2, guru: 'Tri Yuli Aryani, S.Pd., Gr.' },
+        { waktu: '09.30 - 10.00', mapel: 'ISTIRAHAT PAGI', is_activity: true, type: 'istirahat', icon: 'fa-solid fa-mug-saucer' },
+        { waktu: '10.00 - 11.00', mapel: 'INFORMATIKA', jp: 2, guru: 'Aning Nurhayati, S.T., Gr.' },
+        { waktu: '11.00 - 11.30', mapel: 'SBK', jp: 1, guru: 'Aning Nurhayati, S.T., Gr.' },
+        { waktu: '11.30 - 12.00', mapel: 'BAHASA ARAB', jp: 1, guru: 'Khalil Gibran, S.Pd.' },
+        { waktu: '12.00 - 12.30', mapel: 'QAILULLAH (Tidur Siang Sunnah)', is_activity: true, type: 'qailullah', icon: 'fa-solid fa-bed' },
+        { waktu: '12.30 - 13.30', mapel: 'ISTIRAHAT, SHALAT DZUHUR & MAKAN SIANG', is_activity: true, type: 'isoma', icon: 'fa-solid fa-utensils' },
+        { waktu: '13.30 - 14.00', mapel: 'BAHASA ARAB', jp: 1, guru: 'Khalil Gibran, S.Pd.' },
+        { waktu: '14.00 - 15.00', mapel: 'IPS', jp: 2, guru: 'Sumiati, S.Pd.' },
+        { waktu: '15.00 - 16.00', mapel: 'Muraja\'ah, Shalat Asar Berjama\'ah & Pulang', is_activity: true, type: 'pulang', icon: 'fa-solid fa-mosque' }
+      ],
+      'SELASA': [
+        { waktu: '07.10 - 07.30', mapel: 'Shalat Dhuha & Dzikir Pagi', is_activity: true, type: 'ibadah', icon: 'fa-solid fa-mosque' },
+        { waktu: '07.30 - 08.30', mapel: 'AL-QUR\'AN', jp: 2, guru: 'Team Al-Qur\'an' },
+        { waktu: '08.30 - 09.30', mapel: 'IPA', jp: 2, guru: 'Eli Umiyati, S.Pd., Gr.' },
+        { waktu: '09.30 - 10.00', mapel: 'ISTIRAHAT PAGI', is_activity: true, type: 'istirahat', icon: 'fa-solid fa-mug-saucer' },
+        { waktu: '10.00 - 11.00', mapel: 'AKIDAH', jp: 2, guru: 'Nunung Lastika Adiansyah, S.Pd' },
+        { waktu: '11.00 - 12.00', mapel: 'HADIS', jp: 2, guru: 'Zamzam, S.Pd.' },
+        { waktu: '12.00 - 12.30', mapel: 'QAILULLAH (Tidur Siang Sunnah)', is_activity: true, type: 'qailullah', icon: 'fa-solid fa-bed' },
+        { waktu: '12.30 - 13.30', mapel: 'ISTIRAHAT, SHALAT DZUHUR & MAKAN SIANG', is_activity: true, type: 'isoma', icon: 'fa-solid fa-utensils' },
+        { waktu: '13.30 - 14.30', mapel: 'FIKIH', jp: 2, guru: 'Gr. Arif Rohman, M.Pd.' },
+        { waktu: '14.30 - 15.00', mapel: 'BAHASA INDONESIA', jp: 1, guru: 'Dewi Fitria Nugraheni, S.Pd., Gr.' },
+        { waktu: '15.00 - 16.00', mapel: 'Muraja\'ah, Shalat Asar Berjama\'ah & Pulang', is_activity: true, type: 'pulang', icon: 'fa-solid fa-mosque' }
+      ],
+      'RABU': [
+        { waktu: '07.10 - 07.30', mapel: 'Shalat Dhuha & Dzikir Pagi', is_activity: true, type: 'ibadah', icon: 'fa-solid fa-mosque' },
+        { waktu: '07.30 - 08.30', mapel: 'AL-QUR\'AN', jp: 2, guru: 'Team Al-Qur\'an' },
+        { waktu: '08.30 - 09.30', mapel: 'WUSHU', jp: 2, guru: 'Team Ekstrakurikuler Wushu' },
+        { waktu: '09.30 - 10.00', mapel: 'ISTIRAHAT PAGI', is_activity: true, type: 'istirahat', icon: 'fa-solid fa-mug-saucer' },
+        { waktu: '10.00 - 11.00', mapel: 'PKN', jp: 2, guru: 'Khalil Gibran, S.Pd.' },
+        { waktu: '11.00 - 12.00', mapel: 'SKI', jp: 2, guru: 'Asril Ardiansyah, S.H.' },
+        { waktu: '12.00 - 12.30', mapel: 'QAILULLAH (Tidur Siang Sunnah)', is_activity: true, type: 'qailullah', icon: 'fa-solid fa-bed' },
+        { waktu: '12.30 - 13.30', mapel: 'ISTIRAHAT, SHALAT DZUHUR & MAKAN SIANG', is_activity: true, type: 'isoma', icon: 'fa-solid fa-utensils' },
+        { waktu: '13.30 - 14.30', mapel: 'ENGLISH', jp: 2, guru: 'Tri Nuryani, S.S., Gr.' },
+        { waktu: '14.30 - 15.00', mapel: 'LITERASI', jp: 1, guru: 'Eli Umiyati, S.Pd., Gr.' },
+        { waktu: '15.00 - 16.00', mapel: 'Muraja\'ah, Shalat Asar Berjama\'ah & Pulang', is_activity: true, type: 'pulang', icon: 'fa-solid fa-mosque' }
+      ],
+      'KAMIS': [
+        { waktu: '07.10 - 07.30', mapel: 'Shalat Dhuha & Dzikir Pagi', is_activity: true, type: 'ibadah', icon: 'fa-solid fa-mosque' },
+        { waktu: '07.30 - 08.30', mapel: 'AL-QUR\'AN', jp: 2, guru: 'Team Al-Qur\'an' },
+        { waktu: '08.30 - 09.30', mapel: 'PJOK', jp: 2, guru: 'Guntur, S.Pd.' },
+        { waktu: '09.30 - 10.00', mapel: 'ISTIRAHAT PAGI', is_activity: true, type: 'istirahat', icon: 'fa-solid fa-mug-saucer' },
+        { waktu: '10.00 - 11.00', mapel: 'BAHASA INDONESIA', jp: 2, guru: 'Dewi Fitria Nugraheni, S.Pd., Gr.' },
+        { waktu: '11.00 - 12.00', mapel: 'IPA', jp: 2, guru: 'Eli Umiyati, S.Pd., Gr.' },
+        { waktu: '12.00 - 12.30', mapel: 'QAILULLAH (Tidur Siang Sunnah)', is_activity: true, type: 'qailullah', icon: 'fa-solid fa-bed' },
+        { waktu: '12.30 - 13.30', mapel: 'ISTIRAHAT, SHALAT DZUHUR & MAKAN SIANG', is_activity: true, type: 'isoma', icon: 'fa-solid fa-utensils' },
+        { waktu: '13.30 - 14.00', mapel: 'BASA SUNDA', jp: 1, guru: 'Eli Umiyati, S.Pd., Gr.' },
+        { waktu: '14.00 - 15.00', mapel: 'AKHLAK', jp: 2, guru: 'Zamzam, S.Pd.' },
+        { waktu: '15.00 - 16.00', mapel: 'Muraja\'ah, Shalat Asar Berjama\'ah & Pulang', is_activity: true, type: 'pulang', icon: 'fa-solid fa-mosque' }
+      ],
+      'JUM\'AT': [
+        { waktu: '07.10 - 07.30', mapel: 'Shalat Dhuha & Dzikir Pagi', is_activity: true, type: 'ibadah', icon: 'fa-solid fa-mosque' },
+        { waktu: '07.30 - 08.30', mapel: 'AL-QUR\'AN', jp: 2, guru: 'Team Al-Qur\'an' },
+        { waktu: '08.30 - 09.30', mapel: 'MUHADOROH', jp: 2, guru: 'Gibran, Asril & Zamzam' },
+        { waktu: '09.30 - 10.00', mapel: 'ISTIRAHAT PAGI', is_activity: true, type: 'istirahat', icon: 'fa-solid fa-mug-saucer' },
+        { waktu: '10.00 - 11.00', mapel: 'ENGLISH', jp: 2, guru: 'Tri Nuryani, S.S., Gr.' },
+        { waktu: '11.00 - 11.30', mapel: 'BK', jp: 1, guru: 'Sumiati, S.Pd.' },
+        { waktu: '11.30 - 13.00', mapel: 'ISOMA & SHALAT JUM\'AT BERJAMA\'AH', is_activity: true, type: 'isoma_jumat', icon: 'fa-solid fa-mosque' },
+        { waktu: '13.00 - 14.00', mapel: 'MATEMATIKA', jp: 2, guru: 'Tri Yuli Aryani, S.Pd., Gr.' },
+        { waktu: '14.00 - 15.00', mapel: 'PRAMUKA', jp: 2, guru: 'Team Pembina Pramuka' },
+        { waktu: '15.00 - 16.00', mapel: 'Muraja\'ah, Shalat Asar Berjama\'ah & Pulang', is_activity: true, type: 'pulang', icon: 'fa-solid fa-mosque' }
+      ]
+    }
+  },
+  'VIII KHODIJAH': {
+    rombel: 'VIII KHODIJAH BINTI KHWAILID',
+    wali_kelas: 'Tri Nuryani, S.Pd., Gr.',
+    days: {
+      'SENIN': [
+        { waktu: '07.10 - 07.30', mapel: 'Upacara Bendera', is_activity: true, type: 'upacara', icon: 'fa-solid fa-flag' },
+        { waktu: '07.30 - 08.30', mapel: 'PJOK', jp: 2, guru: 'Guntur, S.Pd.' },
+        { waktu: '08.30 - 09.30', mapel: 'AL-QUR\'AN', jp: 2, guru: 'Team Al-Qur\'an' },
+        { waktu: '09.30 - 10.00', mapel: 'ISTIRAHAT PAGI', is_activity: true, type: 'istirahat', icon: 'fa-solid fa-mug-saucer' },
+        { waktu: '10.00 - 11.00', mapel: 'HADIS', jp: 2, guru: 'Zamzam, S.Pd.' },
+        { waktu: '11.00 - 12.00', mapel: 'ENGLISH', jp: 2, guru: 'Tri Nuryani, S.S., Gr.' },
+        { waktu: '12.00 - 12.30', mapel: 'QAILULLAH (Tidur Siang Sunnah)', is_activity: true, type: 'qailullah', icon: 'fa-solid fa-bed' },
+        { waktu: '12.30 - 13.30', mapel: 'ISTIRAHAT, SHALAT DZUHUR & MAKAN SIANG', is_activity: true, type: 'isoma', icon: 'fa-solid fa-utensils' },
+        { waktu: '13.30 - 14.30', mapel: 'MATEMATIKA', jp: 2, guru: 'Tri Yuli Aryani, S.Pd., Gr.' },
+        { waktu: '14.30 - 15.00', mapel: 'LITERASI', jp: 1, guru: 'Tri Nuryani, S.S., Gr.' },
+        { waktu: '15.00 - 16.00', mapel: 'Muraja\'ah, Shalat Asar Berjama\'ah & Pulang', is_activity: true, type: 'pulang', icon: 'fa-solid fa-mosque' }
+      ],
+      'SELASA': [
+        { waktu: '07.10 - 07.30', mapel: 'Shalat Dhuha & Dzikir Pagi', is_activity: true, type: 'ibadah', icon: 'fa-solid fa-mosque' },
+        { waktu: '07.30 - 08.30', mapel: 'IPA', jp: 2, guru: 'Eli Umiyati, S.Pd., Gr.' },
+        { waktu: '08.30 - 09.30', mapel: 'AL-QUR\'AN', jp: 2, guru: 'Team Al-Qur\'an' },
+        { waktu: '09.30 - 10.00', mapel: 'ISTIRAHAT PAGI', is_activity: true, type: 'istirahat', icon: 'fa-solid fa-mug-saucer' },
+        { waktu: '10.00 - 11.00', mapel: 'IPS', jp: 2, guru: 'Sumiati, S.Pd.' },
+        { waktu: '11.00 - 12.00', mapel: 'ENGLISH', jp: 2, guru: 'Tri Nuryani, S.S., Gr.' },
+        { waktu: '12.00 - 12.30', mapel: 'QAILULLAH (Tidur Siang Sunnah)', is_activity: true, type: 'qailullah', icon: 'fa-solid fa-bed' },
+        { waktu: '12.30 - 13.30', mapel: 'ISTIRAHAT, SHALAT DZUHUR & MAKAN SIANG', is_activity: true, type: 'isoma', icon: 'fa-solid fa-utensils' },
+        { waktu: '13.30 - 14.00', mapel: 'BAHASA INDONESIA', jp: 1, guru: 'Dewi Fitria Nugraheni, S.Pd., Gr.' },
+        { waktu: '14.00 - 15.00', mapel: 'SKI', jp: 2, guru: 'Asril Ardiansyah, S.H.' },
+        { waktu: '15.00 - 16.00', mapel: 'Muraja\'ah, Shalat Asar Berjama\'ah & Pulang', is_activity: true, type: 'pulang', icon: 'fa-solid fa-mosque' }
+      ],
+      'RABU': [
+        { waktu: '07.10 - 07.30', mapel: 'Shalat Dhuha & Dzikir Pagi', is_activity: true, type: 'ibadah', icon: 'fa-solid fa-mosque' },
+        { waktu: '07.30 - 08.30', mapel: 'WUSHU', jp: 2, guru: 'Team Ekstrakurikuler Wushu' },
+        { waktu: '08.30 - 09.30', mapel: 'AL-QUR\'AN', jp: 2, guru: 'Team Al-Qur\'an' },
+        { waktu: '09.30 - 10.00', mapel: 'ISTIRAHAT PAGI', is_activity: true, type: 'istirahat', icon: 'fa-solid fa-mug-saucer' },
+        { waktu: '10.00 - 11.00', mapel: 'AKIDAH', jp: 2, guru: 'Nunung Lastika Adiansyah, S.Pd' },
+        { waktu: '11.00 - 12.00', mapel: 'MATEMATIKA', jp: 2, guru: 'Tri Yuli Aryani, S.Pd., Gr.' },
+        { waktu: '12.00 - 12.30', mapel: 'QAILULLAH (Tidur Siang Sunnah)', is_activity: true, type: 'qailullah', icon: 'fa-solid fa-bed' },
+        { waktu: '12.30 - 13.30', mapel: 'ISTIRAHAT, SHALAT DZUHUR & MAKAN SIANG', is_activity: true, type: 'isoma', icon: 'fa-solid fa-utensils' },
+        { waktu: '13.30 - 14.00', mapel: 'BK', jp: 1, guru: 'Sumiati, S.Pd.' },
+        { waktu: '14.00 - 15.00', mapel: 'AKHLAK', jp: 2, guru: 'Zamzam, S.Pd.' },
+        { waktu: '15.00 - 16.00', mapel: 'Muraja\'ah, Shalat Asar Berjama\'ah & Pulang', is_activity: true, type: 'pulang', icon: 'fa-solid fa-mosque' }
+      ],
+      'KAMIS': [
+        { waktu: '07.10 - 07.30', mapel: 'Shalat Dhuha & Dzikir Pagi', is_activity: true, type: 'ibadah', icon: 'fa-solid fa-mosque' },
+        { waktu: '07.30 - 08.30', mapel: 'PKN', jp: 2, guru: 'Khalil Gibran, S.Pd.' },
+        { waktu: '08.30 - 09.30', mapel: 'AL-QUR\'AN', jp: 2, guru: 'Team Al-Qur\'an' },
+        { waktu: '09.30 - 10.00', mapel: 'ISTIRAHAT PAGI', is_activity: true, type: 'istirahat', icon: 'fa-solid fa-mug-saucer' },
+        { waktu: '10.00 - 11.00', mapel: 'TIK', jp: 2, guru: 'Aning Nurhayati, S.T., Gr.' },
+        { waktu: '11.00 - 11.30', mapel: 'SBK', jp: 1, guru: 'Aning Nurhayati, S.T., Gr.' },
+        { waktu: '11.30 - 12.00', mapel: 'BAHASA ARAB', jp: 1, guru: 'Khalil Gibran, S.Pd.' },
+        { waktu: '12.00 - 12.30', mapel: 'QAILULLAH (Tidur Siang Sunnah)', is_activity: true, type: 'qailullah', icon: 'fa-solid fa-bed' },
+        { waktu: '12.30 - 13.30', mapel: 'ISTIRAHAT, SHALAT DZUHUR & MAKAN SIANG', is_activity: true, type: 'isoma', icon: 'fa-solid fa-utensils' },
+        { waktu: '13.30 - 14.00', mapel: 'BAHASA ARAB', jp: 1, guru: 'Khalil Gibran, S.Pd.' },
+        { waktu: '14.00 - 15.00', mapel: 'FIKIH', jp: 2, guru: 'Gr. Arif Rohman, M.Pd.' },
+        { waktu: '15.00 - 16.00', mapel: 'Muraja\'ah, Shalat Asar Berjama\'ah & Pulang', is_activity: true, type: 'pulang', icon: 'fa-solid fa-mosque' }
+      ],
+      'JUM\'AT': [
+        { waktu: '07.10 - 07.30', mapel: 'Shalat Dhuha & Dzikir Pagi', is_activity: true, type: 'ibadah', icon: 'fa-solid fa-mosque' },
+        { waktu: '07.30 - 08.30', mapel: 'MUHADOROH', jp: 2, guru: 'Gibran, Asril & Zamzam' },
+        { waktu: '08.30 - 09.30', mapel: 'AL-QUR\'AN', jp: 2, guru: 'Team Al-Qur\'an' },
+        { waktu: '09.30 - 10.00', mapel: 'ISTIRAHAT PAGI', is_activity: true, type: 'istirahat', icon: 'fa-solid fa-mug-saucer' },
+        { waktu: '10.00 - 11.00', mapel: 'BAHASA INDONESIA', jp: 2, guru: 'Dewi Fitria Nugraheni, S.Pd., Gr.' },
+        { waktu: '11.00 - 11.30', mapel: 'IPA', jp: 1, guru: 'Eli Umiyati, S.Pd., Gr.' },
+        { waktu: '11.30 - 13.00', mapel: 'ISOMA & SHALAT JUM\'AT BERJAMA\'AH', is_activity: true, type: 'isoma_jumat', icon: 'fa-solid fa-mosque' },
+        { waktu: '13.00 - 13.30', mapel: 'IPA', jp: 1, guru: 'Eli Umiyati, S.Pd., Gr.' },
+        { waktu: '13.30 - 14.00', mapel: 'BASA SUNDA', jp: 1, guru: 'Eli Umiyati, S.Pd., Gr.' },
+        { waktu: '14.00 - 15.00', mapel: 'PRAMUKA', jp: 2, guru: 'Team Pembina Pramuka' },
+        { waktu: '15.00 - 16.00', mapel: 'Muraja\'ah, Shalat Asar Berjama\'ah & Pulang', is_activity: true, type: 'pulang', icon: 'fa-solid fa-mosque' }
+      ]
+    }
+  },
+  'VIII UMAR': {
+    rombel: 'VIII UMAR BIN KHOTTOB',
+    wali_kelas: 'Aning Nurhayati S.Pd., Gr.',
+    days: {
+      'SENIN': [
+        { waktu: '07.10 - 07.30', mapel: 'Upacara Bendera', is_activity: true, type: 'upacara', icon: 'fa-solid fa-flag' },
+        { waktu: '07.30 - 08.30', mapel: 'AL-QUR\'AN', jp: 2, guru: 'Team Al-Qur\'an' },
+        { waktu: '08.30 - 09.30', mapel: 'PJOK', jp: 2, guru: 'Guntur, S.Pd.' },
+        { waktu: '09.30 - 10.00', mapel: 'ISTIRAHAT PAGI', is_activity: true, type: 'istirahat', icon: 'fa-solid fa-mug-saucer' },
+        { waktu: '10.00 - 11.00', mapel: 'IPA', jp: 2, guru: 'Eli Umiyati, S.Pd., Gr.' },
+        { waktu: '11.00 - 12.00', mapel: 'HADIS', jp: 2, guru: 'Zamzam, S.Pd.' },
+        { waktu: '12.00 - 12.30', mapel: 'QAILULLAH (Tidur Siang Sunnah)', is_activity: true, type: 'qailullah', icon: 'fa-solid fa-bed' },
+        { waktu: '12.30 - 13.30', mapel: 'ISTIRAHAT, SHALAT DZUHUR & MAKAN SIANG', is_activity: true, type: 'isoma', icon: 'fa-solid fa-utensils' },
+        { waktu: '13.30 - 14.30', mapel: 'ENGLISH', jp: 2, guru: 'Tri Nuryani, S.S., Gr.' },
+        { waktu: '14.30 - 15.00', mapel: 'BAHASA INDONESIA', jp: 1, guru: 'Dewi Fitria Nugraheni, S.Pd., Gr.' },
+        { waktu: '15.00 - 16.00', mapel: 'Muraja\'ah, Shalat Asar Berjama\'ah & Pulang', is_activity: true, type: 'pulang', icon: 'fa-solid fa-mosque' }
+      ],
+      'SELASA': [
+        { waktu: '07.10 - 07.30', mapel: 'Shalat Dhuha & Dzikir Pagi', is_activity: true, type: 'ibadah', icon: 'fa-solid fa-mosque' },
+        { waktu: '07.30 - 08.30', mapel: 'AL-QUR\'AN', jp: 2, guru: 'Team Al-Qur\'an' },
+        { waktu: '08.30 - 09.30', mapel: 'AKIDAH', jp: 2, guru: 'Nunung Lastika Adiansyah, S.Pd' },
+        { waktu: '09.30 - 10.00', mapel: 'ISTIRAHAT PAGI', is_activity: true, type: 'istirahat', icon: 'fa-solid fa-mug-saucer' },
+        { waktu: '10.00 - 11.00', mapel: 'SKI', jp: 2, guru: 'Asril Ardiansyah, S.H.' },
+        { waktu: '11.00 - 12.00', mapel: 'BAHASA INDONESIA', jp: 2, guru: 'Dewi Fitria Nugraheni, S.Pd., Gr.' },
+        { waktu: '12.00 - 12.30', mapel: 'QAILULLAH (Tidur Siang Sunnah)', is_activity: true, type: 'qailullah', icon: 'fa-solid fa-bed' },
+        { waktu: '12.30 - 13.30', mapel: 'ISTIRAHAT, SHALAT DZUHUR & MAKAN SIANG', is_activity: true, type: 'isoma', icon: 'fa-solid fa-utensils' },
+        { waktu: '13.30 - 14.30', mapel: 'MATEMATIKA', jp: 2, guru: 'Tri Yuli Aryani, S.Pd., Gr.' },
+        { waktu: '14.30 - 15.00', mapel: 'LITERASI', jp: 1, guru: 'Aning Nurhayati S.Pd., Gr.' },
+        { waktu: '15.00 - 16.00', mapel: 'Muraja\'ah, Shalat Asar Berjama\'ah & Pulang', is_activity: true, type: 'pulang', icon: 'fa-solid fa-mosque' }
+      ],
+      'RABU': [
+        { waktu: '07.10 - 07.30', mapel: 'Shalat Dhuha & Dzikir Pagi', is_activity: true, type: 'ibadah', icon: 'fa-solid fa-mosque' },
+        { waktu: '07.30 - 08.30', mapel: 'AL-QUR\'AN', jp: 2, guru: 'Team Al-Qur\'an' },
+        { waktu: '08.30 - 09.30', mapel: 'WUSHU', jp: 2, guru: 'Team Ekstrakurikuler Wushu' },
+        { waktu: '09.30 - 10.00', mapel: 'ISTIRAHAT PAGI', is_activity: true, type: 'istirahat', icon: 'fa-solid fa-mug-saucer' },
+        { waktu: '10.00 - 11.00', mapel: 'MATEMATIKA', jp: 2, guru: 'Tri Yuli Aryani, S.Pd., Gr.' },
+        { waktu: '11.00 - 12.00', mapel: 'PKN', jp: 2, guru: 'Khalil Gibran, S.Pd.' },
+        { waktu: '12.00 - 12.30', mapel: 'QAILULLAH (Tidur Siang Sunnah)', is_activity: true, type: 'qailullah', icon: 'fa-solid fa-bed' },
+        { waktu: '12.30 - 13.30', mapel: 'ISTIRAHAT, SHALAT DZUHUR & MAKAN SIANG', is_activity: true, type: 'isoma', icon: 'fa-solid fa-utensils' },
+        { waktu: '13.30 - 14.30', mapel: 'INFORMATIKA', jp: 2, guru: 'Aning Nurhayati, S.T., Gr.' },
+        { waktu: '14.30 - 15.00', mapel: 'SBK', jp: 1, guru: 'Aning Nurhayati, S.T., Gr.' },
+        { waktu: '15.00 - 16.00', mapel: 'Muraja\'ah, Shalat Asar Berjama\'ah & Pulang', is_activity: true, type: 'pulang', icon: 'fa-solid fa-mosque' }
+      ],
+      'KAMIS': [
+        { waktu: '07.10 - 07.30', mapel: 'Shalat Dhuha & Dzikir Pagi', is_activity: true, type: 'ibadah', icon: 'fa-solid fa-mosque' },
+        { waktu: '07.30 - 08.30', mapel: 'AL-QUR\'AN', jp: 2, guru: 'Team Al-Qur\'an' },
+        { waktu: '08.30 - 09.30', mapel: 'BAHASA ARAB', jp: 2, guru: 'Khalil Gibran, S.Pd.' },
+        { waktu: '09.30 - 10.00', mapel: 'ISTIRAHAT PAGI', is_activity: true, type: 'istirahat', icon: 'fa-solid fa-mug-saucer' },
+        { waktu: '10.00 - 11.00', mapel: 'ENGLISH', jp: 2, guru: 'Tri Nuryani, S.S., Gr.' },
+        { waktu: '11.00 - 12.00', mapel: 'IPS', jp: 2, guru: 'Sumiati, S.Pd.' },
+        { waktu: '12.00 - 12.30', mapel: 'QAILULLAH (Tidur Siang Sunnah)', is_activity: true, type: 'qailullah', icon: 'fa-solid fa-bed' },
+        { waktu: '12.30 - 13.30', mapel: 'ISTIRAHAT, SHALAT DZUHUR & MAKAN SIANG', is_activity: true, type: 'isoma', icon: 'fa-solid fa-utensils' },
+        { waktu: '13.30 - 14.30', mapel: 'IPA', jp: 2, guru: 'Eli Umiyati, S.Pd., Gr.' },
+        { waktu: '14.30 - 15.00', mapel: 'BK', jp: 1, guru: 'Sumiati, S.Pd.' },
+        { waktu: '15.00 - 16.00', mapel: 'Muraja\'ah, Shalat Asar Berjama\'ah & Pulang', is_activity: true, type: 'pulang', icon: 'fa-solid fa-mosque' }
+      ],
+      'JUM\'AT': [
+        { waktu: '07.10 - 07.30', mapel: 'Shalat Dhuha & Dzikir Pagi', is_activity: true, type: 'ibadah', icon: 'fa-solid fa-mosque' },
+        { waktu: '07.30 - 08.30', mapel: 'AL-QUR\'AN', jp: 2, guru: 'Team Al-Qur\'an' },
+        { waktu: '08.30 - 09.30', mapel: 'MUHADOROH', jp: 2, guru: 'Gibran, Asril & Zamzam' },
+        { waktu: '09.30 - 10.00', mapel: 'ISTIRAHAT PAGI', is_activity: true, type: 'istirahat', icon: 'fa-solid fa-mug-saucer' },
+        { waktu: '10.00 - 10.30', mapel: 'BASA SUNDA', jp: 1, guru: 'Eli Umiyati, S.Pd., Gr.' },
+        { waktu: '10.30 - 11.30', mapel: 'FIKIH', jp: 2, guru: 'Gr. Arif Rohman, M.Pd.' },
+        { waktu: '11.30 - 13.00', mapel: 'ISOMA & SHALAT JUM\'AT BERJAMA\'AH', is_activity: true, type: 'isoma_jumat', icon: 'fa-solid fa-mosque' },
+        { waktu: '13.00 - 14.00', mapel: 'AKHLAK', jp: 2, guru: 'Zamzam, S.Pd.' },
+        { waktu: '14.00 - 15.00', mapel: 'PRAMUKA', jp: 2, guru: 'Team Pembina Pramuka' },
+        { waktu: '15.00 - 16.00', mapel: 'Muraja\'ah, Shalat Asar Berjama\'ah & Pulang', is_activity: true, type: 'pulang', icon: 'fa-solid fa-mosque' }
+      ]
+    }
+  },
+  'IX UMMU SALAMAH': {
+    rombel: 'IX UMMU SALAMAH',
+    wali_kelas: 'Sumiati, S.Pd., Gr.',
+    days: {
+      'SENIN': [
+        { waktu: '07.10 - 07.30', mapel: 'Upacara Bendera', is_activity: true, type: 'upacara', icon: 'fa-solid fa-flag' },
+        { waktu: '07.30 - 08.30', mapel: 'SKI', jp: 2, guru: 'Asril Ardiansyah, S.H.' },
+        { waktu: '08.30 - 09.30', mapel: 'FIKIH', jp: 2, guru: 'Gr. Arif Rohman, M.Pd.' },
+        { waktu: '09.30 - 10.00', mapel: 'ISTIRAHAT PAGI', is_activity: true, type: 'istirahat', icon: 'fa-solid fa-mug-saucer' },
+        { waktu: '10.00 - 11.00', mapel: 'AKIDAH', jp: 2, guru: 'Nunung Lastika Adiansyah, S.Pd' },
+        { waktu: '11.00 - 11.30', mapel: 'QAILULLAH (Tidur Siang Sunnah)', is_activity: true, type: 'qailullah', icon: 'fa-solid fa-bed' },
+        { waktu: '11.30 - 12.30', mapel: 'AL-QUR\'AN', jp: 2, guru: 'Team Al-Qur\'an' },
+        { waktu: '12.30 - 13.30', mapel: 'ISTIRAHAT, SHALAT DZUHUR & MAKAN SIANG', is_activity: true, type: 'isoma', icon: 'fa-solid fa-utensils' },
+        { waktu: '13.30 - 14.30', mapel: 'INFORMATIKA', jp: 2, guru: 'Aning Nurhayati, S.T., Gr.' },
+        { waktu: '14.30 - 15.00', mapel: 'SBK', jp: 1, guru: 'Aning Nurhayati, S.T., Gr.' },
+        { waktu: '15.00 - 16.00', mapel: 'Muraja\'ah, Shalat Asar Berjama\'ah & Pulang', is_activity: true, type: 'pulang', icon: 'fa-solid fa-mosque' }
+      ],
+      'SELASA': [
+        { waktu: '07.10 - 07.30', mapel: 'Shalat Dhuha & Dzikir Pagi', is_activity: true, type: 'ibadah', icon: 'fa-solid fa-mosque' },
+        { waktu: '07.30 - 08.30', mapel: 'ENGLISH', jp: 2, guru: 'Tri Nuryani, S.S., Gr.' },
+        { waktu: '08.30 - 09.30', mapel: 'BAHASA INDONESIA', jp: 2, guru: 'Dewi Fitria Nugraheni, S.Pd., Gr.' },
+        { waktu: '09.30 - 10.00', mapel: 'ISTIRAHAT PAGI', is_activity: true, type: 'istirahat', icon: 'fa-solid fa-mug-saucer' },
+        { waktu: '10.00 - 11.00', mapel: 'MATEMATIKA', jp: 2, guru: 'Tri Yuli Aryani, S.Pd., Gr.' },
+        { waktu: '11.00 - 11.30', mapel: 'QAILULLAH (Tidur Siang Sunnah)', is_activity: true, type: 'qailullah', icon: 'fa-solid fa-bed' },
+        { waktu: '11.30 - 12.30', mapel: 'AL-QUR\'AN', jp: 2, guru: 'Team Al-Qur\'an' },
+        { waktu: '12.30 - 13.30', mapel: 'ISTIRAHAT, SHALAT DZUHUR & MAKAN SIANG', is_activity: true, type: 'isoma', icon: 'fa-solid fa-utensils' },
+        { waktu: '13.30 - 14.00', mapel: 'BASA SUNDA', jp: 1, guru: 'Eli Umiyati, S.Pd., Gr.' },
+        { waktu: '14.00 - 15.00', mapel: 'AKHLAK', jp: 2, guru: 'Zamzam, S.Pd.' },
+        { waktu: '15.00 - 16.00', mapel: 'Muraja\'ah, Shalat Asar Berjama\'ah & Pulang', is_activity: true, type: 'pulang', icon: 'fa-solid fa-mosque' }
+      ],
+      'RABU': [
+        { waktu: '07.10 - 07.30', mapel: 'Shalat Dhuha & Dzikir Pagi', is_activity: true, type: 'ibadah', icon: 'fa-solid fa-mosque' },
+        { waktu: '07.30 - 08.30', mapel: 'WUSHU', jp: 2, guru: 'Team Ekstrakurikuler Wushu' },
+        { waktu: '08.30 - 09.30', mapel: 'IPA', jp: 2, guru: 'Eli Umiyati, S.Pd., Gr.' },
+        { waktu: '09.30 - 10.00', mapel: 'ISTIRAHAT PAGI', is_activity: true, type: 'istirahat', icon: 'fa-solid fa-mug-saucer' },
+        { waktu: '10.00 - 11.00', mapel: 'HADIS', jp: 2, guru: 'Zamzam, S.Pd.' },
+        { waktu: '11.00 - 11.30', mapel: 'QAILULLAH (Tidur Siang Sunnah)', is_activity: true, type: 'qailullah', icon: 'fa-solid fa-bed' },
+        { waktu: '11.30 - 12.30', mapel: 'AL-QUR\'AN', jp: 2, guru: 'Team Al-Qur\'an' },
+        { waktu: '12.30 - 13.30', mapel: 'ISTIRAHAT, SHALAT DZUHUR & MAKAN SIANG', is_activity: true, type: 'isoma', icon: 'fa-solid fa-utensils' },
+        { waktu: '13.30 - 14.00', mapel: 'BAHASA INDONESIA', jp: 1, guru: 'Dewi Fitria Nugraheni, S.Pd., Gr.' },
+        { waktu: '14.00 - 15.00', mapel: 'IPS', jp: 2, guru: 'Sumiati, S.Pd.' },
+        { waktu: '15.00 - 16.00', mapel: 'Muraja\'ah, Shalat Asar Berjama\'ah & Pulang', is_activity: true, type: 'pulang', icon: 'fa-solid fa-mosque' }
+      ],
+      'KAMIS': [
+        { waktu: '07.10 - 07.30', mapel: 'Shalat Dhuha & Dzikir Pagi', is_activity: true, type: 'ibadah', icon: 'fa-solid fa-mosque' },
+        { waktu: '07.30 - 08.30', mapel: 'PJOK', jp: 2, guru: 'Guntur, S.Pd.' },
+        { waktu: '08.30 - 09.30', mapel: 'ENGLISH', jp: 2, guru: 'Tri Nuryani, S.S., Gr.' },
+        { waktu: '09.30 - 10.00', mapel: 'ISTIRAHAT PAGI', is_activity: true, type: 'istirahat', icon: 'fa-solid fa-mug-saucer' },
+        { waktu: '10.00 - 11.00', mapel: 'IPA', jp: 2, guru: 'Eli Umiyati, S.Pd., Gr.' },
+        { waktu: '11.00 - 11.30', mapel: 'QAILULLAH (Tidur Siang Sunnah)', is_activity: true, type: 'qailullah', icon: 'fa-solid fa-bed' },
+        { waktu: '11.30 - 12.30', mapel: 'AL-QUR\'AN', jp: 2, guru: 'Team Al-Qur\'an' },
+        { waktu: '12.30 - 13.30', mapel: 'ISTIRAHAT, SHALAT DZUHUR & MAKAN SIANG', is_activity: true, type: 'isoma', icon: 'fa-solid fa-utensils' },
+        { waktu: '13.30 - 14.00', mapel: 'LITERASI', jp: 1, guru: 'Sumiati, S.Pd., Gr.' },
+        { waktu: '14.00 - 15.00', mapel: 'BAHASA ARAB', jp: 2, guru: 'Khalil Gibran, S.Pd.' },
+        { waktu: '15.00 - 16.00', mapel: 'Muraja\'ah, Shalat Asar Berjama\'ah & Pulang', is_activity: true, type: 'pulang', icon: 'fa-solid fa-mosque' }
+      ],
+      'JUM\'AT': [
+        { waktu: '07.10 - 07.30', mapel: 'Shalat Dhuha & Dzikir Pagi', is_activity: true, type: 'ibadah', icon: 'fa-solid fa-mosque' },
+        { waktu: '07.30 - 08.30', mapel: 'MUHADOROH', jp: 2, guru: 'Gibran, Asril & Zamzam' },
+        { waktu: '08.30 - 09.30', mapel: 'PKN', jp: 2, guru: 'Khalil Gibran, S.Pd.' },
+        { waktu: '09.30 - 10.00', mapel: 'ISTIRAHAT PAGI', is_activity: true, type: 'istirahat', icon: 'fa-solid fa-mug-saucer' },
+        { waktu: '10.00 - 10.30', mapel: 'BK', jp: 1, guru: 'Sumiati, S.Pd.' },
+        { waktu: '10.30 - 11.30', mapel: 'MATEMATIKA', jp: 2, guru: 'Tri Yuli Aryani, S.Pd., Gr.' },
+        { waktu: '11.30 - 13.00', mapel: 'ISOMA & SHALAT JUM\'AT BERJAMA\'AH', is_activity: true, type: 'isoma_jumat', icon: 'fa-solid fa-mosque' },
+        { waktu: '13.00 - 14.00', mapel: 'AL-QUR\'AN', jp: 2, guru: 'Team Al-Qur\'an' },
+        { waktu: '14.00 - 15.00', mapel: 'PRAMUKA', jp: 2, guru: 'Team Pembina Pramuka' },
+        { waktu: '15.00 - 16.00', mapel: 'Muraja\'ah, Shalat Asar Berjama\'ah & Pulang', is_activity: true, type: 'pulang', icon: 'fa-solid fa-mosque' }
+      ]
+    }
+  },
+  'IX ABU BAKAR': {
+    rombel: 'IX ABU BAKR SHIDDIQ',
+    wali_kelas: 'Dewi Fitria Nugraheni, S.Pd., Gr.',
+    days: {
+      'SENIN': [
+        { waktu: '07.10 - 07.30', mapel: 'Upacara Bendera', is_activity: true, type: 'upacara', icon: 'fa-solid fa-flag' },
+        { waktu: '07.30 - 08.30', mapel: 'MATEMATIKA', jp: 2, guru: 'Tri Yuli Aryani, S.Pd., Gr.' },
+        { waktu: '08.30 - 09.30', mapel: 'IPA', jp: 2, guru: 'Eli Umiyati, S.Pd., Gr.' },
+        { waktu: '09.30 - 10.00', mapel: 'ISTIRAHAT PAGI', is_activity: true, type: 'istirahat', icon: 'fa-solid fa-mug-saucer' },
+        { waktu: '10.00 - 11.00', mapel: 'BAHASA INDONESIA', jp: 2, guru: 'Dewi Fitria Nugraheni, S.Pd., Gr.' },
+        { waktu: '11.00 - 12.00', mapel: 'ENGLISH', jp: 2, guru: 'Tri Nuryani, S.S., Gr.' },
+        { waktu: '12.00 - 12.30', mapel: 'QAILULLAH (Tidur Siang Sunnah)', is_activity: true, type: 'qailullah', icon: 'fa-solid fa-bed' },
+        { waktu: '12.30 - 13.30', mapel: 'ISTIRAHAT, SHALAT DZUHUR & MAKAN SIANG', is_activity: true, type: 'isoma', icon: 'fa-solid fa-utensils' },
+        { waktu: '13.30 - 14.30', mapel: 'AL-QUR\'AN', jp: 2, guru: 'Team Al-Qur\'an' },
+        { waktu: '14.30 - 15.00', mapel: 'LITERASI', jp: 1, guru: 'Dewi Fitria Nugraheni, S.Pd., Gr.' },
+        { waktu: '15.00 - 16.00', mapel: 'Muraja\'ah, Shalat Asar Berjama\'ah & Pulang', is_activity: true, type: 'pulang', icon: 'fa-solid fa-mosque' }
+      ],
+      'SELASA': [
+        { waktu: '07.10 - 07.30', mapel: 'Shalat Dhuha & Dzikir Pagi', is_activity: true, type: 'ibadah', icon: 'fa-solid fa-mosque' },
+        { waktu: '07.30 - 08.30', mapel: 'PJOK', jp: 2, guru: 'Guntur, S.Pd.' },
+        { waktu: '08.30 - 09.30', mapel: 'AL-QUR\'AN', jp: 2, guru: 'Team Al-Qur\'an' },
+        { waktu: '09.30 - 10.00', mapel: 'ISTIRAHAT PAGI', is_activity: true, type: 'istirahat', icon: 'fa-solid fa-mug-saucer' },
+        { waktu: '10.00 - 11.00', mapel: 'AKIDAH', jp: 2, guru: 'Nunung Lastika Adiansyah, S.Pd' },
+        { waktu: '11.00 - 12.00', mapel: 'FIKIH', jp: 2, guru: 'Gr. Arif Rohman, M.Pd.' },
+        { waktu: '12.00 - 12.30', mapel: 'QAILULLAH (Tidur Siang Sunnah)', is_activity: true, type: 'qailullah', icon: 'fa-solid fa-bed' },
+        { waktu: '12.30 - 13.30', mapel: 'ISTIRAHAT, SHALAT DZUHUR & MAKAN SIANG', is_activity: true, type: 'isoma', icon: 'fa-solid fa-utensils' },
+        { waktu: '13.30 - 14.30', mapel: 'HADIS', jp: 2, guru: 'Zamzam, S.Pd.' },
+        { waktu: '14.30 - 15.00', mapel: 'BK', jp: 1, guru: 'Sumiati, S.Pd.' },
+        { waktu: '15.00 - 16.00', mapel: 'Muraja\'ah, Shalat Asar Berjama\'ah & Pulang', is_activity: true, type: 'pulang', icon: 'fa-solid fa-mosque' }
+      ],
+      'RABU': [
+        { waktu: '07.10 - 07.30', mapel: 'Shalat Dhuha & Dzikir Pagi', is_activity: true, type: 'ibadah', icon: 'fa-solid fa-mosque' },
+        { waktu: '07.30 - 08.30', mapel: 'WUSHU', jp: 2, guru: 'Team Ekstrakurikuler Wushu' },
+        { waktu: '08.30 - 09.30', mapel: 'PKN', jp: 2, guru: 'Khalil Gibran, S.Pd.' },
+        { waktu: '09.30 - 10.00', mapel: 'ISTIRAHAT PAGI', is_activity: true, type: 'istirahat', icon: 'fa-solid fa-mug-saucer' },
+        { waktu: '10.00 - 11.00', mapel: 'SKI', jp: 2, guru: 'Asril Ardiansyah, S.H.' },
+        { waktu: '11.00 - 12.00', mapel: 'AKHLAK', jp: 2, guru: 'Zamzam, S.Pd.' },
+        { waktu: '12.00 - 12.30', mapel: 'QAILULLAH (Tidur Siang Sunnah)', is_activity: true, type: 'qailullah', icon: 'fa-solid fa-bed' },
+        { waktu: '12.30 - 13.30', mapel: 'ISTIRAHAT, SHALAT DZUHUR & MAKAN SIANG', is_activity: true, type: 'isoma', icon: 'fa-solid fa-utensils' },
+        { waktu: '13.30 - 14.30', mapel: 'INFORMATIKA', jp: 2, guru: 'Aning Nurhayati, S.T., Gr.' },
+        { waktu: '14.30 - 15.00', mapel: 'SBK', jp: 1, guru: 'Aning Nurhayati, S.T., Gr.' },
+        { waktu: '15.00 - 16.00', mapel: 'Muraja\'ah, Shalat Asar Berjama\'ah & Pulang', is_activity: true, type: 'pulang', icon: 'fa-solid fa-mosque' }
+      ],
+      'KAMIS': [
+        { waktu: '07.10 - 07.30', mapel: 'Shalat Dhuha & Dzikir Pagi', is_activity: true, type: 'ibadah', icon: 'fa-solid fa-mosque' },
+        { waktu: '07.30 - 08.30', mapel: 'MATEMATIKA', jp: 2, guru: 'Tri Yuli Aryani, S.Pd., Gr.' },
+        { waktu: '08.30 - 09.30', mapel: 'IPA', jp: 2, guru: 'Eli Umiyati, S.Pd., Gr.' },
+        { waktu: '09.30 - 10.00', mapel: 'ISTIRAHAT PAGI', is_activity: true, type: 'istirahat', icon: 'fa-solid fa-mug-saucer' },
+        { waktu: '10.00 - 11.00', mapel: 'IPS', jp: 2, guru: 'Sumiati, S.Pd.' },
+        { waktu: '11.00 - 12.00', mapel: 'ENGLISH', jp: 2, guru: 'Tri Nuryani, S.S., Gr.' },
+        { waktu: '12.00 - 12.30', mapel: 'QAILULLAH (Tidur Siang Sunnah)', is_activity: true, type: 'qailullah', icon: 'fa-solid fa-bed' },
+        { waktu: '12.30 - 13.30', mapel: 'ISTIRAHAT, SHALAT DZUHUR & MAKAN SIANG', is_activity: true, type: 'isoma', icon: 'fa-solid fa-utensils' },
+        { waktu: '13.30 - 14.30', mapel: 'BAHASA ARAB', jp: 2, guru: 'Khalil Gibran, S.Pd.' },
+        { waktu: '14.30 - 15.00', mapel: 'BASA SUNDA', jp: 1, guru: 'Eli Umiyati, S.Pd., Gr.' },
+        { waktu: '15.00 - 16.00', mapel: 'Muraja\'ah, Shalat Asar Berjama\'ah & Pulang', is_activity: true, type: 'pulang', icon: 'fa-solid fa-mosque' }
+      ],
+      'JUM\'AT': [
+        { waktu: '07.10 - 07.30', mapel: 'Shalat Dhuha & Dzikir Pagi', is_activity: true, type: 'ibadah', icon: 'fa-solid fa-mosque' },
+        { waktu: '07.30 - 08.30', mapel: 'MUHADOROH', jp: 2, guru: 'Gibran, Asril & Zamzam' },
+        { waktu: '08.30 - 09.30', mapel: 'AL-QUR\'AN', jp: 2, guru: 'Team Al-Qur\'an' },
+        { waktu: '09.30 - 10.00', mapel: 'ISTIRAHAT PAGI', is_activity: true, type: 'istirahat', icon: 'fa-solid fa-mug-saucer' },
+        { waktu: '10.00 - 11.00', mapel: 'BAHASA INDONESIA', jp: 2, guru: 'Dewi Fitria Nugraheni, S.Pd., Gr.' },
+        { waktu: '11.00 - 11.30', mapel: 'AL-QUR\'AN', jp: 1, guru: 'Team Al-Qur\'an' },
+        { waktu: '11.30 - 13.00', mapel: 'ISOMA & SHALAT JUM\'AT BERJAMA\'AH', is_activity: true, type: 'isoma_jumat', icon: 'fa-solid fa-mosque' },
+        { waktu: '13.00 - 14.00', mapel: 'FIKIH', jp: 2, guru: 'Gr. Arif Rohman, M.Pd.' },
+        { waktu: '14.00 - 15.00', mapel: 'PRAMUKA', jp: 2, guru: 'Team Pembina Pramuka' },
+        { waktu: '15.00 - 16.00', mapel: 'Muraja\'ah, Shalat Asar Berjama\'ah & Pulang', is_activity: true, type: 'pulang', icon: 'fa-solid fa-mosque' }
+      ]
+    }
+  }
+};
+
+let activeJadwalFilterDay = 'all';
+let currentActiveSubjectModalData = null;
+
+function normalizeJadwalClass(cls) {
+  const c = String(cls || '').toUpperCase().trim();
+  if (c.includes('AISYAH')) return 'VII AISYAH';
+  if (c.includes('UTSMAN') || c.includes('UTHMAN')) return 'VII UTSMAN';
+  if (c.includes('KHODIJAH') || c.includes('KHADIJAH')) return 'VIII KHODIJAH';
+  if (c.includes('UMAR')) return 'VIII UMAR';
+  if (c.includes('UMMU') || c.includes('SALAMAH')) return 'IX UMMU SALAMAH';
+  if (c.includes('ABU') || c.includes('BAKAR') || c.includes('BAKR')) return 'IX ABU BAKAR';
+  return 'VII AISYAH';
+}
+
+function mapJadwalSubjectToRapor(rawName) {
+  const norm = String(rawName || '').trim().toUpperCase();
+  if (norm.includes('MATEMATIKA') || norm === 'MTK') {
+    return { id: 'Matematika', name: 'Matematika', rumpun: 'Umum', icon: 'fa-solid fa-calculator', color: 'blue' };
+  }
+  if (norm === 'IPA' || norm.includes('ILMU PENGETAHUAN ALAM')) {
+    return { id: 'Ilmu Pengetahuan Alam', name: 'Ilmu Pengetahuan Alam', rumpun: 'Umum', icon: 'fa-solid fa-flask-vial', color: 'blue' };
+  }
+  if (norm === 'IPS' || norm.includes('ILMU PENGETAHUAN SOSIAL')) {
+    return { id: 'Ilmu Pengetahuan Sosial', name: 'Ilmu Pengetahuan Sosial', rumpun: 'Umum', icon: 'fa-solid fa-earth-americas', color: 'blue' };
+  }
+  if (norm.includes('INDONESIA')) {
+    return { id: 'Bahasa Indonesia', name: 'Bahasa Indonesia', rumpun: 'Umum', icon: 'fa-solid fa-book', color: 'blue' };
+  }
+  if (norm.includes('ENGLISH') || norm.includes('INGGRIS')) {
+    return { id: 'Bahasa Inggris', name: 'Bahasa Inggris', rumpun: 'Umum', icon: 'fa-solid fa-language', color: 'blue' };
+  }
+  if (norm === 'PKN' || norm.includes('PANCASILA')) {
+    return { id: 'Pendidikan Pancasila', name: 'Pendidikan Pancasila', rumpun: 'Umum', icon: 'fa-solid fa-landmark', color: 'blue' };
+  }
+  if (norm.includes('INFORMATIKA') || norm === 'TIK') {
+    return { id: 'Informatika', name: 'Informatika', rumpun: 'Umum', icon: 'fa-solid fa-laptop-code', color: 'blue' };
+  }
+  if (norm === 'SBK' || norm.includes('PRAKARYA')) {
+    return { id: 'Prakarya', name: 'Prakarya & Seni Budaya', rumpun: 'Mulok', icon: 'fa-solid fa-palette', color: 'purple' };
+  }
+  if (norm === 'PJOK' || norm.includes('OLAHRAGA')) {
+    return { id: 'Pendidikan Jasmani, Olahraga, dan Kesehatan', name: 'Pendidikan Jasmani, Olahraga, dan Kesehatan', rumpun: 'Umum', icon: 'fa-solid fa-person-running', color: 'blue' };
+  }
+  if (norm.includes('SUNDA')) {
+    return { id: 'Bahasa Sunda', name: 'Bahasa Sunda', rumpun: 'Mulok', icon: 'fa-solid fa-comment-dots', color: 'purple' };
+  }
+  if (norm.includes('ARAB')) {
+    return { id: 'Bahasa Arab', name: 'Bahasa Arab', rumpun: 'Mulok', icon: 'fa-solid fa-feather-pointed', color: 'purple' };
+  }
+  if (norm.includes('AKIDAH')) {
+    return { id: 'Akidah', name: 'Akidah', rumpun: 'Agama', icon: 'fa-solid fa-shield-halved', color: 'emerald' };
+  }
+  if (norm.includes('AKHLAK')) {
+    return { id: 'Akhlak', name: 'Akhlak', rumpun: 'Agama', icon: 'fa-solid fa-heart', color: 'emerald' };
+  }
+  if (norm.includes('FIKIH')) {
+    return { id: 'Fikih', name: 'Fikih', rumpun: 'Agama', icon: 'fa-solid fa-hands-praying', color: 'emerald' };
+  }
+  if (norm.includes('HADIS') || norm.includes('HADIST')) {
+    return { id: 'Hadits', name: 'Hadits', rumpun: 'Agama', icon: 'fa-solid fa-scroll', color: 'emerald' };
+  }
+  if (norm.includes('SKI')) {
+    return { id: 'SKI', name: 'Sejarah Kebudayaan Islam (SKI)', rumpun: 'Agama', icon: 'fa-solid fa-monument', color: 'emerald' };
+  }
+  if (norm.includes("QUR'AN") || norm.includes('QURAN') || norm.includes('TAHFIDZ')) {
+    return { id: 'Al-Qur\'an', name: 'Al-Qur\'an & Tahfidz', rumpun: 'Diniyah', icon: 'fa-solid fa-quran', color: 'emerald' };
+  }
+  if (norm === 'BK' || norm.includes('KONSELING')) {
+    return { id: 'BK', name: 'Bimbingan Konseling (BK)', rumpun: 'Karakter', icon: 'fa-solid fa-user-doctor', color: 'teal' };
+  }
+  if (norm.includes('LITERASI')) {
+    return { id: 'Literasi', name: 'Program Literasi Mandiri', rumpun: 'Karakter', icon: 'fa-solid fa-book-reader', color: 'teal' };
+  }
+  if (norm.includes('WUSHU')) {
+    return { id: 'Wushu', name: 'Ekstrakurikuler Wushu', rumpun: 'Ekstrakurikuler', icon: 'fa-solid fa-shield-cat', color: 'amber' };
+  }
+  if (norm.includes('MUHADOROH')) {
+    return { id: 'Muhadoroh', name: 'Muhadoroh / Khitobah (Public Speaking)', rumpun: 'Karakter', icon: 'fa-solid fa-microphone', color: 'teal' };
+  }
+  if (norm.includes('PRAMUKA')) {
+    return { id: 'Pramuka', name: 'Kepanduan Pramuka Al-Imam', rumpun: 'Ekstrakurikuler', icon: 'fa-solid fa-compass', color: 'amber' };
+  }
+  return { id: rawName, name: rawName, rumpun: 'Umum', icon: 'fa-solid fa-book', color: 'blue' };
+}
+
+function renderWaliJadwal(childNis, childMurid) {
+  const container = document.getElementById('wali-jadwal-container');
+  if (!container) return;
+
+  if (!childMurid) {
+    const user = AppState.currentUser || {};
+    const nis = childNis || user.nis || AppState.activePrintNis || '242507001';
+    childMurid = AppState.muridList.find(m => String(m.nis).trim() === String(nis).trim()) || {
+      nis: nis,
+      nama_murid: user.nama_lengkap || 'Ananda',
+      kelas: 'VII AISYAH',
+      wali_kelas: 'Tri Yuli Aryani, S.Pd., Gr.'
+    };
+  }
+
+  const rawKelas = childMurid.kelas || 'VII AISYAH';
+  const normKey = normalizeJadwalClass(rawKelas);
+  const classSchedule = JADWAL_DATA_MAP[normKey] || JADWAL_DATA_MAP['VII AISYAH'];
+  const walasName = formatWaliKelasTitleCase(childMurid.wali_kelas || classSchedule.wali_kelas || WALI_KELAS_MAP[rawKelas] || 'Tri Yuli Aryani, S.Pd., Gr.');
+
+  // Set Header badges
+  const badgeKelas = document.getElementById('wali-jadwal-kelas-badge');
+  if (badgeKelas) {
+    badgeKelas.textContent = classSchedule.rombel || rawKelas;
+    badgeKelas.innerText = classSchedule.rombel || rawKelas;
+  }
+  const walasEl = document.getElementById('wali-jadwal-walas');
+  if (walasEl) {
+    walasEl.textContent = walasName;
+    walasEl.innerText = walasName;
+  }
+
+  // Tentukan hari ini untuk seragam hari ini
+  const dayNamesIndo = ['MINGGU', 'SENIN', 'SELASA', 'RABU', 'KAMIS', 'JUM\'AT', 'SABTU'];
+  const todayIdx = new Date().getDay();
+  let todayDay = dayNamesIndo[todayIdx];
+  if (todayDay === 'MINGGU' || todayDay === 'SABTU') todayDay = 'SENIN';
+
+  const seragamToday = SERAGAM_JADWAL_MAP[todayDay] || SERAGAM_JADWAL_MAP['SENIN'];
+  const seragamEl = document.getElementById('wali-jadwal-seragam-hari-ini');
+  if (seragamEl) {
+    seragamEl.textContent = `${seragamToday.seragam} (${todayDay})`;
+    seragamEl.innerText = `${seragamToday.seragam} (${todayDay})`;
+  }
+
+  // Ambil grade data ananda
+  const studentGrades = getStudentGradeData(childMurid.nis || childNis);
+
+  const daysOrder = ['SENIN', 'SELASA', 'RABU', 'KAMIS', 'JUM\'AT'];
+  const visibleDays = (activeJadwalFilterDay === 'all') ? daysOrder : [activeJadwalFilterDay];
+
+  container.innerHTML = visibleDays.map(day => {
+    const slots = classSchedule.days[day] || [];
+    const seragamInfo = SERAGAM_JADWAL_MAP[day] || { seragam: '-', bg: 'bg-slate-100 text-slate-700' };
+    const isToday = (day === todayDay);
+
+    return `
+      <div class="bg-white rounded-3xl border ${isToday ? 'border-[#00a66c] shadow-md ring-2 ring-[#00a66c]/20' : 'border-[#e2f3ea] shadow-sm'} overflow-hidden transition-all duration-200">
+        
+        <!-- Day Card Header -->
+        <div class="p-4 sm:p-5 ${isToday ? 'bg-gradient-to-r from-emerald-50 via-teal-50 to-white' : 'bg-slate-50/70'} border-b border-slate-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+          <div class="flex items-center gap-3">
+            <span class="w-10 h-10 rounded-2xl ${isToday ? 'bg-[#00a66c] text-white shadow-sm' : 'bg-slate-200 text-slate-700'} flex items-center justify-center font-black text-sm">
+              ${day.substring(0, 3)}
+            </span>
+            <div>
+              <div class="flex items-center gap-2">
+                <h4 class="font-extrabold text-base text-slate-900 tracking-tight">${day}</h4>
+                ${isToday ? '<span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-emerald-600 text-white uppercase tracking-wider animate-pulse">Hari Ini</span>' : ''}
+              </div>
+              <p class="text-xs text-slate-500">SMP Al-Imam Islamic School • Jam Belajar 07.10 - 16.00 WIB</p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <span class="px-3 py-1 rounded-full text-xs font-bold border ${seragamInfo.bg} flex items-center gap-1.5 shadow-2xs">
+              <i class="fa-solid fa-shirt"></i>
+              <span>Seragam: <strong>${seragamInfo.seragam}</strong></span>
+            </span>
+          </div>
+        </div>
+
+        <!-- Time Slots Grid -->
+        <div class="p-4 sm:p-5 divide-y divide-slate-100/90">
+          ${slots.map((slot, sIdx) => {
+            if (slot.is_activity) {
+              let actBg = 'bg-teal-50/70 border-teal-200/80 text-teal-900';
+              let actIcon = slot.icon || 'fa-solid fa-mosque';
+              if (slot.type === 'istirahat') {
+                actBg = 'bg-amber-50/60 border-amber-200/70 text-amber-900';
+                actIcon = 'fa-solid fa-mug-saucer text-amber-600';
+              } else if (slot.type === 'qailullah') {
+                actBg = 'bg-indigo-50/60 border-indigo-200/70 text-indigo-900';
+                actIcon = 'fa-solid fa-bed text-indigo-600';
+              } else if (slot.type === 'isoma' || slot.type === 'isoma_jumat') {
+                actBg = 'bg-emerald-50/80 border-emerald-200/80 text-emerald-950';
+                actIcon = 'fa-solid fa-utensils text-emerald-600';
+              }
+
+              return `
+                <div class="py-2.5 px-3 rounded-2xl ${actBg} border my-1 flex items-center justify-between gap-3 text-xs">
+                  <div class="flex items-center gap-2.5 font-bold">
+                    <span class="w-7 h-7 rounded-xl bg-white/80 flex items-center justify-center text-xs shadow-2xs">
+                      <i class="${actIcon}"></i>
+                    </span>
+                    <span class="tracking-wide">${slot.mapel}</span>
+                  </div>
+                  <span class="font-mono text-[11px] font-bold opacity-80 whitespace-nowrap">
+                    <i class="fa-regular fa-clock mr-1"></i>${slot.waktu}
+                  </span>
+                </div>
+              `;
+            }
+
+            // Subject Row (Interactive clickable card)
+            const mapelMeta = mapJadwalSubjectToRapor(slot.mapel);
+            const teacherName = slot.guru || GURU_JADWAL_DEFAULTS[slot.mapel] || 'Guru Pengampu';
+
+            // Find matching grade item
+            let scoreChip = '';
+            if (studentGrades && studentGrades.items) {
+              const matchedGrade = studentGrades.items.find(g => 
+                g.id === mapelMeta.id || 
+                g.name === mapelMeta.id || 
+                g.name === mapelMeta.name || 
+                g.abbr === slot.mapel
+              );
+              if (matchedGrade) {
+                const isTuntas = matchedGrade.score >= 75;
+                scoreChip = `
+                  <div class="flex items-center gap-1.5 shrink-0">
+                    <span class="px-2.5 py-1 rounded-xl text-xs font-mono font-black ${isTuntas ? 'bg-emerald-100 text-emerald-800 border border-emerald-200' : 'bg-rose-100 text-rose-800 border border-rose-200'}">
+                      ${matchedGrade.score} (${matchedGrade.predikat})
+                    </span>
+                    <span class="hidden sm:inline-block px-2 py-0.5 rounded-lg text-[10px] font-extrabold ${isTuntas ? 'bg-emerald-50 text-emerald-700' : 'bg-rose-50 text-rose-700'}">
+                      ${isTuntas ? '✓ Tuntas' : 'Perlu Bimbingan'}
+                    </span>
+                  </div>
+                `;
+              } else if (slot.mapel.includes('QUR\'AN')) {
+                scoreChip = `
+                  <div class="flex items-center gap-1.5 shrink-0">
+                    <span class="px-2.5 py-1 rounded-xl text-xs font-mono font-black bg-emerald-100 text-emerald-800 border border-emerald-200">
+                      92 (A)
+                    </span>
+                    <span class="hidden sm:inline-block px-2 py-0.5 rounded-lg text-[10px] font-extrabold bg-emerald-50 text-emerald-700">
+                      ✓ Tahfidz
+                    </span>
+                  </div>
+                `;
+              } else if (slot.mapel.includes('WUSHU') || slot.mapel.includes('PRAMUKA')) {
+                scoreChip = `
+                  <div class="flex items-center gap-1.5 shrink-0">
+                    <span class="px-2.5 py-1 rounded-xl text-xs font-black bg-amber-100 text-amber-800 border border-amber-200">
+                      A (Aktif)
+                    </span>
+                  </div>
+                `;
+              }
+            }
+
+            return `
+              <div onclick="openMapelCapaianDetail('${encodeURIComponent(mapelMeta.id)}', '${encodeURIComponent(day)}', '${encodeURIComponent(slot.waktu)}', '${encodeURIComponent(teacherName)}', '${encodeURIComponent(slot.mapel)}')"
+                   class="group py-3 px-3 sm:px-4 rounded-2xl hover:bg-[#edf9f3] transition-all duration-150 cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-3 border border-transparent hover:border-[#a7f3d0] hover:shadow-xs">
+                
+                <div class="flex items-start sm:items-center gap-3">
+                  <div class="w-10 h-10 rounded-2xl bg-white border border-slate-200 group-hover:border-[#00a66c] group-hover:bg-[#00a66c] text-slate-700 group-hover:text-white flex items-center justify-center text-sm shadow-2xs transition-all duration-150 shrink-0 mt-0.5 sm:mt-0">
+                    <i class="${mapelMeta.icon}"></i>
+                  </div>
+                  <div>
+                    <div class="flex flex-wrap items-center gap-2">
+                      <h5 class="font-black text-sm text-slate-900 group-hover:text-emerald-900 transition-colors">
+                        ${slot.mapel}
+                      </h5>
+                      <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-600 border border-slate-200">
+                        ${slot.jp ? `${slot.jp} JP` : '1 JP'}
+                      </span>
+                      <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">
+                        • ${mapelMeta.rumpun}
+                      </span>
+                    </div>
+                    <p class="text-xs text-slate-500 mt-0.5 flex items-center gap-1.5">
+                      <i class="fa-solid fa-chalkboard-user text-slate-400 group-hover:text-[#00a66c] transition-colors"></i>
+                      <span>Guru: <strong>${teacherName}</strong></span>
+                    </p>
+                  </div>
+                </div>
+
+                <div class="flex items-center justify-between sm:justify-end gap-3 self-stretch sm:self-auto pt-1 sm:pt-0 border-t sm:border-0 border-slate-100">
+                  <div class="flex items-center gap-2">
+                    <span class="font-mono text-xs font-semibold text-slate-500 bg-slate-50 px-2 py-1 rounded-lg border border-slate-200/80">
+                      <i class="fa-regular fa-clock mr-1 text-slate-400"></i>${slot.waktu}
+                    </span>
+                    ${scoreChip}
+                  </div>
+                  <div class="w-8 h-8 rounded-full bg-slate-100 group-hover:bg-emerald-600 text-slate-400 group-hover:text-white flex items-center justify-center text-xs transition-colors shadow-2xs shrink-0" title="Klik untuk lihat capaian nilai">
+                    <i class="fa-solid fa-arrow-right"></i>
+                  </div>
+                </div>
+
+              </div>
+            `;
+          }).join('')}
+        </div>
+
+      </div>
+    `;
+  }).join('');
+}
+
+function filterJadwalHari(dayName) {
+  activeJadwalFilterDay = dayName;
+
+  const btnAll = document.getElementById('btn-jadwal-all');
+  const btnSenin = document.getElementById('btn-jadwal-senin');
+  const btnSelasa = document.getElementById('btn-jadwal-selasa');
+  const btnRabu = document.getElementById('btn-jadwal-rabu');
+  const btnKamis = document.getElementById('btn-jadwal-kamis');
+  const btnJumat = document.getElementById('btn-jadwal-jumat');
+
+  const btns = [
+    { name: 'all', el: btnAll },
+    { name: 'SENIN', el: btnSenin },
+    { name: 'SELASA', el: btnSelasa },
+    { name: 'RABU', el: btnRabu },
+    { name: 'KAMIS', el: btnKamis },
+    { name: 'JUM\'AT', el: btnJumat }
+  ];
+
+  btns.forEach(b => {
+    if (!b.el) return;
+    if (b.name === dayName) {
+      b.el.className = 'jadwal-day-btn px-3 py-1.5 rounded-xl text-xs font-black bg-[#00a66c] text-white shadow-xs transition cursor-pointer whitespace-nowrap';
+    } else {
+      b.el.className = 'jadwal-day-btn px-3 py-1.5 rounded-xl text-xs font-bold text-slate-700 hover:bg-white bg-white/70 border border-slate-200/60 transition cursor-pointer whitespace-nowrap';
+    }
+  });
+
+  const user = AppState.currentUser || {};
+  const childNis = user.nis || AppState.activePrintNis || '242507001';
+  const childMurid = AppState.muridList.find(m => String(m.nis).trim() === String(childNis).trim());
+  renderWaliJadwal(childNis, childMurid);
+}
+
+function openMapelCapaianDetail(encodedSubject, encodedDay, encodedTime, encodedTeacher, encodedCustomLabel) {
+  const subjectId = decodeURIComponent(encodedSubject || 'Matematika');
+  const dayName = decodeURIComponent(encodedDay || 'SENIN');
+  const timeSlot = decodeURIComponent(encodedTime || '07.30 - 08.30');
+  const teacherName = decodeURIComponent(encodedTeacher || 'Guru Pengampu');
+  const customLabel = decodeURIComponent(encodedCustomLabel || subjectId);
+
+  const user = AppState.currentUser || {};
+  const childNis = user.nis || AppState.activePrintNis || '242507001';
+  const childMurid = AppState.muridList.find(m => String(m.nis).trim() === String(childNis).trim()) || {
+    nis: childNis,
+    nama_murid: user.nama_lengkap || 'Ananda',
+    kelas: 'VII AISYAH'
+  };
+
+  const studentGrades = getStudentGradeData(childNis);
+  const mapelMeta = mapJadwalSubjectToRapor(subjectId);
+  const seragamInfo = SERAGAM_JADWAL_MAP[dayName] || { seragam: 'Putih biru' };
+
+  // Cari nilai ananda
+  let gradeItem = null;
+  if (studentGrades && studentGrades.items) {
+    gradeItem = studentGrades.items.find(g => 
+      g.id === mapelMeta.id || 
+      g.name === mapelMeta.id || 
+      g.name === mapelMeta.name || 
+      g.abbr === customLabel
+    );
+  }
+
+  let score = 85;
+  let kkm = 75;
+  let predikat = 'B';
+  let predikatLabel = 'Baik';
+
+  if (gradeItem) {
+    score = Number(gradeItem.score);
+    kkm = Number(gradeItem.kkm || 75);
+    predikat = gradeItem.predikat || 'B';
+    const meta = getGradePredikatMeta(score);
+    predikatLabel = meta.label || 'Baik';
+  } else if (subjectId.includes("QUR'AN") || customLabel.includes("QUR'AN")) {
+    score = 92;
+    predikat = 'A';
+    predikatLabel = 'Sangat Baik (Mumtaz)';
+  } else if (subjectId.includes("Wushu") || subjectId.includes("Pramuka")) {
+    score = 88;
+    predikat = 'A';
+    predikatLabel = 'Sangat Aktif & Disiplin';
+  } else if (subjectId.includes("BK")) {
+    score = 90;
+    predikat = 'A';
+    predikatLabel = 'Sikap & Adab Terpuji';
+  }
+
+  const delta = score - kkm;
+  const isTuntas = score >= kkm;
+
+  // Isi modal
+  const setText = (id, val) => {
+    const el = document.getElementById(id);
+    if (el) { el.textContent = val; el.innerText = val; }
+  };
+
+  setText('modal-mapel-title', mapelMeta.name || customLabel);
+  setText('modal-mapel-guru', teacherName);
+  setText('modal-mapel-waktu', timeSlot);
+  setText('modal-mapel-hari', dayName);
+  setText('modal-mapel-seragam', seragamInfo.seragam);
+  setText('modal-mapel-kelas', `Kelas ${childMurid.kelas || 'VII AISYAH'}`);
+  setText('modal-mapel-rumpun', `Rumpun ${mapelMeta.rumpun}`);
+
+  setText('modal-mapel-score', String(score));
+  setText('modal-mapel-kkm', String(kkm));
+  setText('modal-mapel-delta', delta >= 0 ? `+${delta}` : `${delta}`);
+  setText('modal-mapel-predikat', predikat);
+  setText('modal-mapel-predikat-label', predikatLabel);
+  setText('modal-mapel-pct-label', `${Math.min(score, 100)}%`);
+
+  const statusKkmEl = document.getElementById('modal-mapel-status-kkm');
+  if (statusKkmEl) {
+    if (isTuntas) {
+      statusKkmEl.className = 'px-2.5 py-0.5 rounded-full text-[10px] font-black bg-emerald-100 text-emerald-800 border border-emerald-300';
+      statusKkmEl.innerHTML = '<i class="fa-solid fa-circle-check mr-1"></i> TUNTAS KKM (75)';
+    } else {
+      statusKkmEl.className = 'px-2.5 py-0.5 rounded-full text-[10px] font-black bg-rose-100 text-rose-800 border border-rose-300';
+      statusKkmEl.innerHTML = '<i class="fa-solid fa-triangle-exclamation mr-1"></i> PERLU PERBAIKAN';
+    }
+  }
+
+  const barFill = document.getElementById('modal-mapel-bar-fill');
+  if (barFill) {
+    barFill.style.width = `${Math.min(Math.max(score, 5), 100)}%`;
+    if (isTuntas) {
+      barFill.className = 'h-full bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full transition-all duration-500';
+    } else {
+      barFill.className = 'h-full bg-gradient-to-r from-rose-500 to-amber-500 rounded-full transition-all duration-500';
+    }
+  }
+
+  // Set narasi capaian kompetensi resmi
+  const allTps = (AppState.tpList && AppState.tpList.length > 0) ? AppState.tpList : DEFAULT_TP_BANK_16;
+  const mapelTps = allTps.filter(t => t.mata_pelajaran === mapelMeta.id || t.mata_pelajaran === mapelMeta.name);
+
+  let optDeskripsi = `Menunjukkan pemahaman yang sangat baik dalam materi ${mapelMeta.name}, aktif mengajukan pertanyaan relevan, dan tekun menyelesaikan lembar kerja dengan cermat.`;
+  let penDeskripsi = `Perlu penguatan pada latihan soal bertingkat mandiri serta konsistensi mereview kembali materi pelajaran di rumah setelah Shalat Maghrib.`;
+
+  if (mapelTps.length > 0) {
+    const optTp = mapelTps[0];
+    optDeskripsi = `Menunjukkan penguasaan yang sangat optimal dalam ${optTp.deskripsi_tp || optTp.ringkasan_tp}. Ananda mampu mengaplikasikan konsep dengan penalaran terstruktur.`;
+    if (mapelTps.length > 1) {
+      const penTp = mapelTps[1];
+      penDeskripsi = `Perlu bimbingan dan pendampingan bertahap dalam ${penTp.deskripsi_tp || penTp.ringkasan_tp} guna memperdalam penguasaan materi secara menyeluruh.`;
+    }
+  }
+
+  setText('modal-mapel-capaian-optimal', optDeskripsi);
+  setText('modal-mapel-capaian-peningkatan', penDeskripsi);
+
+  // Render TP List
+  const tpListEl = document.getElementById('modal-mapel-tp-list');
+  const tpCountEl = document.getElementById('modal-mapel-tp-count');
+  if (tpListEl) {
+    if (mapelTps.length > 0) {
+      tpCountEl.textContent = `${mapelTps.length} TP Terdata`;
+      tpListEl.innerHTML = mapelTps.map((tp, idx) => `
+        <li class="bg-slate-50 p-2.5 rounded-xl border border-slate-200/70 flex items-start gap-2.5">
+          <span class="w-5 h-5 rounded-md bg-emerald-100 text-emerald-800 font-bold flex items-center justify-center text-[10px] shrink-0 mt-0.5">
+            ${idx + 1}
+          </span>
+          <div class="space-y-0.5">
+            <strong class="text-slate-800 block">${tp.kode_tp || `TP-${idx + 1}`}: ${tp.ringkasan_tp || tp.deskripsi_tp}</strong>
+            <p class="text-[11px] text-slate-500 leading-relaxed">${tp.deskripsi_tp || ''}</p>
+          </div>
+        </li>
+      `).join('');
+    } else {
+      tpCountEl.textContent = '3 Materi Kurikulum';
+      tpListEl.innerHTML = `
+        <li class="bg-slate-50 p-2.5 rounded-xl border border-slate-200/70 flex items-start gap-2.5">
+          <span class="w-5 h-5 rounded-md bg-emerald-100 text-emerald-800 font-bold flex items-center justify-center text-[10px] shrink-0 mt-0.5">1</span>
+          <div>
+            <strong class="text-slate-800 block">Pemahaman Konsep & Teori Dasar Semester 1</strong>
+            <p class="text-[11px] text-slate-500">Mempelajari dan menguasai prinsip-prinsip utama materi kurikulum pembelajaran.</p>
+          </div>
+        </li>
+        <li class="bg-slate-50 p-2.5 rounded-xl border border-slate-200/70 flex items-start gap-2.5">
+          <span class="w-5 h-5 rounded-md bg-emerald-100 text-emerald-800 font-bold flex items-center justify-center text-[10px] shrink-0 mt-0.5">2</span>
+          <div>
+            <strong class="text-slate-800 block">Penerapan Praktik, Analisis & Diskusi Terarah</strong>
+            <p class="text-[11px] text-slate-500">Mampu menyelesaikan soal aplikasi dan memaparkan gagasan secara santun.</p>
+          </div>
+        </li>
+      `;
+    }
+  }
+
+  // Rekomendasi ortu
+  const saranEl = document.getElementById('modal-mapel-saran-ortu');
+  if (saranEl) {
+    saranEl.textContent = `Apresiasi capaian ananda pada mata pelajaran ${mapelMeta.name}. Dampingi belajar di rumah secara santun, fasilitasi waktu istirahat yang cukup, dan jadwalkan sesi tanya jawab ringan bersama ananda mengenai materi ${mapelMeta.name}.`;
+  }
+
+  currentActiveSubjectModalData = {
+    subjectId: mapelMeta.name || customLabel,
+    teacherName: teacherName,
+    childName: childMurid.nama_murid || 'Ananda',
+    childClass: childMurid.kelas || 'VII AISYAH',
+    score: score,
+    dayName: dayName
+  };
+
+  const modal = document.getElementById('modal-mapel-capaian');
+  if (modal) {
+    modal.classList.remove('hidden');
+    document.body.classList.add('overflow-hidden');
+  }
+}
+
+function closeMapelCapaianDetail() {
+  const modal = document.getElementById('modal-mapel-capaian');
+  if (modal) {
+    modal.classList.add('hidden');
+    document.body.classList.remove('overflow-hidden');
+  }
+}
+
+function contactTeacherWhatsApp() {
+  const data = currentActiveSubjectModalData || {};
+  const user = AppState.currentUser || {};
+  const parentName = user.nama_lengkap || 'Wali Murid';
+  const teacher = data.teacherName || 'Guru Pengampu';
+  const subject = data.subjectId || 'Mata Pelajaran';
+  const child = data.childName || 'Ananda';
+  const kelas = data.childClass || 'SMP Al-Imam';
+
+  const waText = `Assalamu'alaikum Warahmatullahi Wabarakatuh.\n\n` +
+    `Yth. Ustadz/Ustadzah *${teacher}* (Guru Pengampu *${subject}* SMP Al-Imam Islamic School).\n\n` +
+    `Saya: *${parentName}*, orang tua/wali dari ananda *${child}* (Kelas *${kelas}*).\n` +
+    `Alhamdulillah saya memantau jadwal pelajaran dan ringkasan capaian ananda di portal e-Rapor.\n` +
+    `Ingin bersilaturahmi dan memohon arahan terkait perkembangan belajar ananda pada mata pelajaran *${subject}*.\n\n` +
+    `Jazaakumullahu khairan katsiran atas bimbingan Ustadz/Ustadzah kepada ananda di sekolah.`;
+
+  const waUrl = `https://wa.me/?text=${encodeURIComponent(waText)}`;
+  if (typeof window !== 'undefined' && window.open) {
+    window.open(waUrl, '_blank');
+  }
+}
+
+window.JADWAL_DATA_MAP = JADWAL_DATA_MAP;
+window.SERAGAM_JADWAL_MAP = SERAGAM_JADWAL_MAP;
+window.renderWaliJadwal = renderWaliJadwal;
+window.filterJadwalHari = filterJadwalHari;
+window.openMapelCapaianDetail = openMapelCapaianDetail;
+window.closeMapelCapaianDetail = closeMapelCapaianDetail;
+window.contactTeacherWhatsApp = contactTeacherWhatsApp;
+window.mapJadwalSubjectToRapor = mapJadwalSubjectToRapor;
 
 // Petunjuk Penggunaan & Cara Membaca Rapor Modal Controller
 function openModalPetunjukRapor(defaultTab = 'baca_rapor') {

@@ -1,0 +1,193 @@
+<!-- Modal Interaktif Detail Capaian Nilai & Kompetensi Mata Pelajaran (Klik Jadwal) -->
+<div id="modal-mapel-capaian" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-slate-900/60 backdrop-blur-sm hidden transition-opacity duration-200">
+  <div class="bg-white w-full max-w-2xl rounded-3xl shadow-2xl border border-slate-100 overflow-hidden flex flex-col max-h-[92vh] animate-in fade-in zoom-in-95 duration-200">
+    
+    <!-- Modal Header with Emerald Gradient -->
+    <div class="relative bg-gradient-to-r from-emerald-800 via-[#00a66c] to-teal-700 text-white p-5 sm:p-6 pb-6">
+      <div class="flex items-start justify-between gap-4">
+        <div class="flex items-center gap-3 sm:gap-4">
+          <div id="modal-mapel-icon-wrap" class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white/15 backdrop-blur-md border border-white/25 flex items-center justify-center text-2xl sm:text-3xl text-emerald-100 shadow-inner shrink-0">
+            <i id="modal-mapel-icon" class="fa-solid fa-book-open"></i>
+          </div>
+          <div>
+            <div class="flex flex-wrap items-center gap-2 mb-1">
+              <span id="modal-mapel-rumpun" class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-white/20 text-white border border-white/30 backdrop-blur-sm">
+                Mata Pelajaran Umum
+              </span>
+              <span id="modal-mapel-slot-badge" class="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-emerald-950/40 text-emerald-200 border border-emerald-400/30">
+                <i class="fa-regular fa-clock mr-1"></i> <span id="modal-mapel-waktu">07.30 - 08.30</span>
+              </span>
+            </div>
+            <h3 id="modal-mapel-title" class="text-lg sm:text-xl font-extrabold tracking-tight text-white leading-snug">
+              Matematika
+            </h3>
+            <p id="modal-mapel-subtitle" class="text-xs text-emerald-100/90 mt-0.5 flex items-center gap-2">
+              <span><i class="fa-solid fa-chalkboard-user mr-1 text-emerald-300"></i> Guru: <strong id="modal-mapel-guru" class="text-white">Tri Yuli Aryani, S.Pd., Gr.</strong></span>
+            </p>
+          </div>
+        </div>
+        <button type="button" onclick="closeMapelCapaianDetail()" class="w-9 h-9 rounded-full bg-white/15 hover:bg-white/25 border border-white/20 flex items-center justify-center text-white transition cursor-pointer shrink-0" title="Tutup Modal">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <!-- Schedule Context Sub-bar -->
+      <div class="mt-4 pt-3 border-t border-white/15 flex flex-wrap items-center justify-between text-[11px] text-emerald-100/90 gap-2">
+        <div class="flex items-center gap-3">
+          <span><i class="fa-regular fa-calendar-day mr-1 text-emerald-300"></i> <strong id="modal-mapel-hari" class="text-white">Senin</strong></span>
+          <span class="text-white/40">•</span>
+          <span><i class="fa-solid fa-shirt mr-1 text-emerald-300"></i> Seragam: <strong id="modal-mapel-seragam" class="text-white">Putih Biru</strong></span>
+        </div>
+        <div class="text-[10px] bg-white/10 px-2.5 py-0.5 rounded-full border border-white/15">
+          <i class="fa-solid fa-graduation-cap mr-1"></i> <span id="modal-mapel-kelas">Kelas IX ABU BAKAR</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Body (Scrollable) -->
+    <div class="p-5 sm:p-6 overflow-y-auto space-y-5 bg-slate-50/60" id="modal-mapel-body">
+      
+      <!-- Score & KKM Overview Card -->
+      <div id="modal-mapel-score-section" class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/80 shadow-sm space-y-4">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-extrabold uppercase tracking-wider text-slate-400">Ringkasan Skor & Kriteria Ketuntasan (KKM)</span>
+          <span id="modal-mapel-status-kkm" class="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-emerald-100 text-emerald-800 border border-emerald-300">
+            <i class="fa-solid fa-circle-check mr-1"></i> TUNTAS KKM
+          </span>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+          <!-- Nilai Akhir -->
+          <div class="bg-slate-50 p-3 rounded-xl border border-slate-200/70">
+            <span class="text-[10px] font-bold text-slate-400 uppercase block">Nilai Ananda</span>
+            <span id="modal-mapel-score" class="text-2xl sm:text-3xl font-black text-slate-900 font-mono">92</span>
+            <span class="text-[10px] text-slate-500 block">Skala 100</span>
+          </div>
+          <!-- Batas KKM -->
+          <div class="bg-slate-50 p-3 rounded-xl border border-slate-200/70">
+            <span class="text-[10px] font-bold text-slate-400 uppercase block">Batas KKM</span>
+            <span id="modal-mapel-kkm" class="text-2xl sm:text-3xl font-black text-slate-700 font-mono">75</span>
+            <span class="text-[10px] text-slate-500 block">Standar Kelulusan</span>
+          </div>
+          <!-- Selisih Delta -->
+          <div class="bg-emerald-50/70 p-3 rounded-xl border border-emerald-200/70">
+            <span class="text-[10px] font-bold text-emerald-700 uppercase block">Selisih KKM</span>
+            <span id="modal-mapel-delta" class="text-2xl sm:text-3xl font-black text-emerald-700 font-mono">+17</span>
+            <span class="text-[10px] text-emerald-800 font-bold block">Poin di Atas KKM</span>
+          </div>
+          <!-- Predikat Huruf -->
+          <div class="bg-purple-50/70 p-3 rounded-xl border border-purple-200/70">
+            <span class="text-[10px] font-bold text-purple-700 uppercase block">Predikat Capaian</span>
+            <span id="modal-mapel-predikat" class="text-2xl sm:text-3xl font-black text-purple-700">A</span>
+            <span id="modal-mapel-predikat-label" class="text-[10px] text-purple-800 font-bold block">Sangat Baik</span>
+          </div>
+        </div>
+
+        <!-- Visual Progress Bar -->
+        <div class="space-y-1.5 pt-1">
+          <div class="flex justify-between text-[11px] font-bold">
+            <span class="text-slate-500">Kemajuan Kompetensi Semester Berjalan</span>
+            <span id="modal-mapel-pct-label" class="text-emerald-700">92%</span>
+          </div>
+          <div class="w-full bg-slate-100 rounded-full h-3 overflow-hidden p-0.5 border border-slate-200 relative">
+            <!-- KKM Marker -->
+            <div class="absolute top-0 bottom-0 w-0.5 bg-rose-500 z-10" style="left: 75%;" title="Batas KKM (75)"></div>
+            <div id="modal-mapel-bar-fill" class="h-full bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full transition-all duration-500" style="width: 92%;"></div>
+          </div>
+          <div class="flex justify-between text-[10px] text-slate-400">
+            <span>0</span>
+            <span class="text-rose-500 font-bold"><i class="fa-solid fa-caret-up"></i> KKM 75</span>
+            <span>100</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Deskripsi Narasi Capaian Kompetensi Resmi Rapor -->
+      <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/80 shadow-sm space-y-3.5">
+        <div class="flex items-center gap-2">
+          <span class="w-7 h-7 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center text-xs font-bold">
+            <i class="fa-solid fa-award"></i>
+          </span>
+          <h4 class="font-extrabold text-xs sm:text-sm text-slate-900">
+            Capaian Kompetensi Ananda (Rapor Tengah Semester)
+          </h4>
+        </div>
+
+        <!-- Capaian Tertinggi / Optimal -->
+        <div class="bg-emerald-50/70 border border-emerald-200 rounded-xl p-3.5 space-y-1">
+          <div class="flex items-center gap-1.5 text-xs font-extrabold text-emerald-900">
+            <i class="fa-solid fa-circle-check text-emerald-600"></i>
+            <span>Capaian Optimal / Penguasaan Tertinggi:</span>
+          </div>
+          <p id="modal-mapel-capaian-optimal" class="text-xs text-slate-700 leading-relaxed font-medium">
+            Menunjukkan penguasaan materi yang sangat baik dalam memahami konsep dasar, pemecahan masalah analitis, dan keaktifan diskusi di kelas.
+          </p>
+        </div>
+
+        <!-- Perlu Peningkatan / Evaluasi Mandiri -->
+        <div class="bg-amber-50/70 border border-amber-200 rounded-xl p-3.5 space-y-1">
+          <div class="flex items-center gap-1.5 text-xs font-extrabold text-amber-900">
+            <i class="fa-solid fa-arrow-trend-up text-amber-600"></i>
+            <span>Area Perlu Pendampingan / Peningkatan:</span>
+          </div>
+          <p id="modal-mapel-capaian-peningkatan" class="text-xs text-slate-700 leading-relaxed font-medium">
+            Perlu terus dilatih dalam ketelitian pengerjaan soal hitungan kompleks serta konsistensi manajemen waktu belajar mandiri di rumah.
+          </p>
+        </div>
+      </div>
+
+      <!-- Tujuan Pembelajaran (TP) yang Dipelajari di Semester Berjalan -->
+      <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/80 shadow-sm space-y-3">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="w-7 h-7 rounded-xl bg-blue-100 text-blue-800 flex items-center justify-center text-xs font-bold">
+              <i class="fa-solid fa-list-check"></i>
+            </span>
+            <h4 class="font-extrabold text-xs sm:text-sm text-slate-900">
+              Tujuan Pembelajaran (TP) & Materi Kurikulum
+            </h4>
+          </div>
+          <span id="modal-mapel-tp-count" class="text-[10px] font-black bg-blue-50 text-blue-800 border border-blue-200 px-2 py-0.5 rounded-full">
+            3 TP Selesai
+          </span>
+        </div>
+
+        <ul id="modal-mapel-tp-list" class="space-y-2 text-xs">
+          <!-- Rendered dynamically by JavaScript -->
+        </ul>
+      </div>
+
+      <!-- Tips Pendampingan Wali Murid di Rumah -->
+      <div class="bg-gradient-to-r from-teal-50 to-emerald-50 rounded-2xl p-4 border border-teal-200/80 space-y-2">
+        <div class="flex items-center gap-2 text-teal-900 font-extrabold text-xs">
+          <i class="fa-solid fa-lightbulb text-teal-600"></i>
+          <span>Rekomendasi Pendampingan Wali Murid di Rumah:</span>
+        </div>
+        <p id="modal-mapel-saran-ortu" class="text-xs text-slate-700 leading-relaxed">
+          Berikan apresiasi atas usaha ananda dalam mata pelajaran ini. Dukung ananda dengan menyediakan suasana belajar yang kondusif setelah Shalat Maghrib dan periksa kembali buku catatan secara berkala.
+        </p>
+      </div>
+
+    </div>
+
+    <!-- Modal Footer Actions -->
+    <div class="p-4 sm:p-5 bg-white border-t border-slate-100 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+      <button type="button" onclick="closeMapelCapaianDetail()" class="py-2.5 px-4 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-100 text-xs font-bold transition flex items-center justify-center gap-2 cursor-pointer order-2 sm:order-1">
+        <i class="fa-solid fa-chevron-left"></i>
+        <span>Kembali ke Jadwal</span>
+      </button>
+
+      <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 order-1 sm:order-2">
+        <button type="button" id="modal-mapel-btn-wa" onclick="contactTeacherWhatsApp()" class="py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-md shadow-emerald-600/20 transition flex items-center justify-center gap-2 cursor-pointer">
+          <i class="fa-brands fa-whatsapp text-sm"></i>
+          <span>Tanya Guru Pengampu</span>
+        </button>
+        <button type="button" onclick="closeMapelCapaianDetail(); switchView('rapor');" class="py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition flex items-center justify-center gap-2 cursor-pointer">
+          <i class="fa-solid fa-file-invoice"></i>
+          <span>Buka Rapor Lengkap</span>
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
