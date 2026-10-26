@@ -278,9 +278,9 @@
       <!-- Center / Right: Academic Badge & User Quick Controls -->
       <div class="flex items-center space-x-2 sm:space-x-3">
         
-        <!-- Active Period Pill (Clickable to switch / add academic year) -->
-        <button onclick="openAcademicYearModal()" title="Klik untuk mengganti atau menambah Tahun Ajaran Baru"
-                class="hidden md:flex items-center gap-1.5 bg-emerald-50/80 hover:bg-emerald-100 border border-emerald-200/80 hover:border-emerald-300 px-3 py-1.5 rounded-full text-xs font-medium text-slate-700 hover:text-emerald-900 transition shadow-sm group">
+        <!-- Active Period Pill (Clickable to switch / add academic year - Khusus Guru / Admin) -->
+        <button id="nav-btn-academic-year" onclick="openAcademicYearModal()" title="Klik untuk mengganti atau menambah Tahun Ajaran Baru"
+                class="menu-non-wali hidden md:flex items-center gap-1.5 bg-emerald-50/80 hover:bg-emerald-100 border border-emerald-200/80 hover:border-emerald-300 px-3 py-1.5 rounded-full text-xs font-medium text-slate-700 hover:text-emerald-900 transition shadow-sm group">
           <i class="fa-regular fa-calendar-check text-[#00a66c] group-hover:scale-110 transition-transform"></i>
           <span>T.A. <strong id="nav-academic-year" class="text-emerald-900 font-bold">2026/2027</strong></span>
           <span class="text-emerald-200">|</span>
@@ -9649,6 +9649,18 @@ function applyRoleUIPermissions(role) {
   if (navTutorial) {
     if (isWali) navTutorial.classList.add('hidden');
     else navTutorial.classList.remove('hidden');
+  }
+
+  // Tombol Kelola Periode T.A. & Semester di Header khusus Guru / Admin (Wali murid tidak mengelola T.A.)
+  const navAcademicYear = document.getElementById('nav-btn-academic-year');
+  if (navAcademicYear) {
+    if (isWali) {
+      navAcademicYear.classList.add('hidden');
+      navAcademicYear.classList.remove('md:flex');
+    } else {
+      navAcademicYear.classList.remove('hidden');
+      navAcademicYear.classList.add('md:flex');
+    }
   }
 
   // Tombol Tarik / Batal Publish Rapor khusus Guru / Admin

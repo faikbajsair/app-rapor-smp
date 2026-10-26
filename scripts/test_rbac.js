@@ -232,13 +232,24 @@ setTimeout(() => {
   }
   console.log('✅ Tombol Tutorial tersembunyi untuk Wali Murid');
 
-  // Login sebagai Guru: Tombol Tutorial harus tampil
+  // 1b. Tombol Pemilih Periode T.A. & Semester (nav-btn-academic-year) harus hidden untuk wali murid
+  const navYearWali = doc.getElementById('nav-btn-academic-year');
+  if (navYearWali && !navYearWali.classList.contains('hidden')) {
+    throw new Error('Tombol Periode T.A. & Semester (#nav-btn-academic-year) should be hidden for Wali Murid!');
+  }
+  console.log('✅ Tombol Periode T.A. & Semester tersembunyi untuk Wali Murid');
+
+  // Login sebagai Guru: Tombol Tutorial dan T.A. harus tampil
   win.loginAsSpecificTeacher('dewi');
   const navTutorialTeacher = doc.getElementById('nav-btn-tutorial');
   if (navTutorialTeacher && navTutorialTeacher.classList.contains('hidden')) {
     throw new Error('Tombol Tutorial (#nav-btn-tutorial) should be visible for Guru / Walas!');
   }
-  console.log('✅ Tombol Tutorial tampil untuk Guru / Walas');
+  const navYearTeacher = doc.getElementById('nav-btn-academic-year');
+  if (navYearTeacher && navYearTeacher.classList.contains('hidden')) {
+    throw new Error('Tombol Periode T.A. (#nav-btn-academic-year) should be visible for Guru / Walas!');
+  }
+  console.log('✅ Tombol Tutorial dan T.A. tampil untuk Guru / Walas');
 
   // Kembali login sebagai Wali Murid
   win.loginAsSpecificTeacher('walimurid', 'wali123');

@@ -2591,6 +2591,18 @@ function applyRoleUIPermissions(role) {
     else navTutorial.classList.remove('hidden');
   }
 
+  // Tombol Kelola Periode T.A. & Semester di Header khusus Guru / Admin (Wali murid tidak mengelola T.A.)
+  const navAcademicYear = document.getElementById('nav-btn-academic-year');
+  if (navAcademicYear) {
+    if (isWali) {
+      navAcademicYear.classList.add('hidden');
+      navAcademicYear.classList.remove('md:flex');
+    } else {
+      navAcademicYear.classList.remove('hidden');
+      navAcademicYear.classList.add('md:flex');
+    }
+  }
+
   // Tombol Tarik / Batal Publish Rapor khusus Guru / Admin
   const publishActions = document.getElementById('rapor-publish-admin-actions');
   const btnPublish = document.getElementById('btn-toggle-publish-rapor');
