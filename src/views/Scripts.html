@@ -1793,6 +1793,7 @@ function switchView(viewName) {
   switch (viewName) {
     case 'dashboard': loadDashboardStats(); break;
     case 'jadwal': initJadwalCalendar(); break;
+    case 'amalsholeh': renderAmalSholehView(); break;
     case 'tp':
     case 'tujuan_pembelajaran': loadTujuanPembelajaran(); renderTPTable(); break;
     case 'akademik': loadNilaiAkademik(); renderLegerGrid(); break;
@@ -2909,74 +2910,9 @@ function renderWaliAnekdotAndKonseling(childNis, childMurid) {
   // Render Jadwal Pelajaran Mingguan Ananda (Portal Wali Murid)
   renderWaliJadwal(cleanNis, childMurid);
 
-  // Render Anekdot List
-  const anekdotContainer = document.getElementById('wali-anekdot-list');
-  if (anekdotContainer) {
-    if (anekdotRecords.length === 0) {
-      anekdotContainer.innerHTML = `
-        <div class="col-span-full py-8 text-center bg-slate-50 border border-dashed border-slate-200 rounded-3xl space-y-2">
-          <i class="fa-solid fa-clipboard-question text-3xl text-slate-300"></i>
-          <p class="text-xs text-slate-500 font-medium">Belum ada catatan observasi anekdot untuk semester ini.</p>
-        </div>
-      `;
-    } else {
-      anekdotContainer.innerHTML = anekdotRecords.map((item) => {
-        let badgeColor = 'bg-amber-50 text-amber-800 border-amber-200';
-        let iconCat = 'fa-solid fa-star text-amber-500';
-        const kat = (item.kategori || '').toLowerCase();
-        if (kat.includes('adab') || kat.includes('shalat') || kat.includes('ibadah')) {
-          badgeColor = 'bg-emerald-50 text-emerald-800 border-emerald-200';
-          iconCat = 'fa-solid fa-mosque text-emerald-600';
-        } else if (kat.includes('inisiatif') || kat.includes('pemimpin') || kat.includes('kerja')) {
-          badgeColor = 'bg-indigo-50 text-indigo-800 border-indigo-200';
-          iconCat = 'fa-solid fa-award text-indigo-600';
-        } else if (kat.includes('sosial') || kat.includes('peduli')) {
-          badgeColor = 'bg-teal-50 text-teal-800 border-teal-200';
-          iconCat = 'fa-solid fa-hands-holding-child text-teal-600';
-        }
+  // Render Catatan Amal Sholeh (A-Record) View & Cards
+  renderAmalSholehView(cleanNis, childMurid);
 
-        return `
-          <div class="bg-slate-50/70 hover:bg-[#edf9f3] rounded-2xl p-4 sm:p-5 border border-slate-200/90 hover:border-[#a7f3d0] transition-all duration-200 shadow-sm flex flex-col justify-between space-y-3.5">
-            <div class="space-y-2">
-              <div class="flex items-center justify-between gap-2">
-                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black border ${badgeColor} inline-flex items-center gap-1.5">
-                  <i class="${iconCat}"></i> ${item.kategori || 'Observasi Karakter'}
-                </span>
-                <span class="text-[10px] text-slate-500 font-bold flex items-center gap-1">
-                  <i class="fa-regular fa-calendar text-slate-400"></i> ${item.tanggal}
-                </span>
-              </div>
-              <div>
-                <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 block mb-0.5">Peristiwa Teramati (Catatan Anekdot):</span>
-                <p class="text-xs font-bold text-slate-800 leading-relaxed">
-                  "${item.kejadian}"
-                </p>
-              </div>
-              <div class="bg-white/90 p-2.5 rounded-xl border border-slate-200/60 text-[11px] space-y-1">
-                <p class="text-slate-600">
-                  <strong class="text-slate-700">Analisis Sikap:</strong> ${item.analisis}
-                </p>
-              </div>
-              <div class="bg-emerald-50/90 p-2.5 rounded-xl border border-emerald-200/70 text-[11px] text-emerald-900 leading-snug">
-                <p class="flex items-start gap-1.5">
-                  <i class="fa-solid fa-circle-check text-emerald-600 mt-0.5 shrink-0"></i>
-                  <span><strong>Tindak Lanjut Guru:</strong> ${item.tindak_lanjut}</span>
-                </p>
-              </div>
-            </div>
-            <div class="pt-2 border-t border-slate-200/70 flex items-center justify-between text-[10px] text-slate-500">
-              <span class="truncate" title="${item.observer}">
-                <i class="fa-solid fa-user-pen mr-1 text-slate-400"></i> ${item.observer}
-              </span>
-              <span class="px-2 py-0.5 rounded-md font-bold bg-white border border-slate-200 text-slate-600">
-                ${item.status || 'Terverifikasi'}
-              </span>
-            </div>
-          </div>
-        `;
-      }).join('');
-    }
-  }
 
   // Render BK List
   const bkContainer = document.getElementById('wali-bk-list');
@@ -3044,22 +2980,194 @@ function renderWaliAnekdotAndKonseling(childNis, childMurid) {
   }
 }
 
+/**
+ * ============================================================================
+ * CATATAN AMAL SHOLEH & REKAM OBSERVASI ANEKDOT (A-RECORD)
+ * ============================================================================
+ */
+let currentAmalSholehFilter = 'all';
+
+function renderAmalSholehView(customNis, customMurid, filterCat) {
+  if (filterCat !== undefined && filterCat !== null) {
+    currentAmalSholehFilter = filterCat;
+  }
+  const activeFilter = currentAmalSholehFilter || 'all';
+
+  const user = AppState.currentUser || {};
+  let childNis = customNis || user.nis || AppState.activePrintNis || '242507001';
+  let childMurid = customMurid || AppState.muridList.find(m => String(m.nis).trim() === String(childNis).trim()) || {
+    nis: childNis,
+    nama_murid: user.nama_lengkap || 'Ananda',
+    kelas: 'IX ABU BAKAR',
+    wali_kelas: 'Dewi Fitria Nugraheni, S.Pd., Gr.'
+  };
+
+  const cleanNis = String(childNis || childMurid.nis || '').trim();
+  const cName = childMurid.nama_murid || childMurid.nama_santri || user.nama_lengkap || 'Ananda';
+  const cKelas = childMurid.kelas || 'IX ABU BAKAR';
+  const cWalas = formatWaliKelasTitleCase(childMurid.wali_kelas || WALI_KELAS_MAP[cKelas] || 'Dewi Fitria Nugraheni, S.Pd., Gr.');
+
+  // Update Header Profile Info
+  const elName = document.getElementById('amalsholeh-nama-murid');
+  if (elName) elName.textContent = cName;
+  const elNis = document.getElementById('amalsholeh-nis-murid');
+  if (elNis) elNis.textContent = cleanNis;
+  const elKelas = document.getElementById('amalsholeh-kelas-murid');
+  if (elKelas) elKelas.textContent = cKelas;
+  const elWalas = document.getElementById('amalsholeh-walas-murid');
+  if (elWalas) elWalas.textContent = cWalas;
+
+  // Retrieve Anecdotal & Amal Sholeh Records
+  const allRecords = getAnekdotForStudent(cleanNis, childMurid);
+
+  // Compute 4 Pillar Statistics
+  const totalCount = allRecords.length;
+  const adabCount = allRecords.filter(r => /adab|shalat|ibadah|masjid/i.test(r.kategori || '')).length;
+  const inisiatifCount = allRecords.filter(r => /inisiatif|pemimpin|kerja|sosial|peduli|bantu/i.test(r.kategori || '')).length;
+  const disiplinCount = allRecords.filter(r => /disiplin|tanggung|tugas|waktu|portofolio/i.test(r.kategori || '')).length;
+
+  const setEl = (id, val) => {
+    const el = document.getElementById(id);
+    if (el) { el.textContent = val; el.innerText = val; }
+  };
+
+  setEl('stat-amalsholeh-total', `${totalCount} Catatan`);
+  setEl('stat-amalsholeh-adab', `${adabCount} Rekam`);
+  setEl('stat-amalsholeh-inisiatif', `${inisiatifCount} Rekam`);
+  setEl('stat-amalsholeh-disiplin', `${disiplinCount} Rekam`);
+  setEl('badge-amalsholeh-count', `${totalCount} Catatan Kebaikan`);
+  setEl('badge-anekdot-count', `${totalCount} Catatan`);
+
+  // Filter according to active category
+  let displayedRecords = allRecords;
+  if (activeFilter === 'adab') {
+    displayedRecords = allRecords.filter(r => /adab|shalat|ibadah|masjid/i.test(r.kategori || ''));
+  } else if (activeFilter === 'inisiatif') {
+    displayedRecords = allRecords.filter(r => /inisiatif|pemimpin|kerja|sosial|peduli|bantu/i.test(r.kategori || ''));
+  } else if (activeFilter === 'disiplin') {
+    displayedRecords = allRecords.filter(r => /disiplin|tanggung|tugas|waktu|portofolio/i.test(r.kategori || ''));
+  }
+
+  // Generate cards HTML
+  const cardsHtml = displayedRecords.length === 0 ? `
+    <div class="col-span-full py-12 text-center bg-slate-50 border border-dashed border-slate-200 rounded-3xl space-y-3">
+      <div class="w-12 h-12 rounded-2xl bg-rose-50 text-rose-500 mx-auto flex items-center justify-center text-xl">
+        <i class="fa-solid fa-heart-circle-check"></i>
+      </div>
+      <p class="text-xs text-slate-500 font-medium max-w-md mx-auto">
+        Belum ada catatan amal sholeh pada kategori ini untuk ananda. Kebaikan ananda senantiasa dipantau dan diapresiasi secara berkala.
+      </p>
+    </div>
+  ` : displayedRecords.map((item) => {
+    let badgeColor = 'bg-rose-50 text-rose-800 border-rose-200';
+    let iconCat = 'fa-solid fa-hand-holding-heart text-rose-500';
+    const kat = (item.kategori || '').toLowerCase();
+    if (kat.includes('adab') || kat.includes('shalat') || kat.includes('ibadah')) {
+      badgeColor = 'bg-emerald-50 text-emerald-800 border-emerald-200';
+      iconCat = 'fa-solid fa-mosque text-emerald-600';
+    } else if (kat.includes('inisiatif') || kat.includes('pemimpin') || kat.includes('kerja')) {
+      badgeColor = 'bg-indigo-50 text-indigo-800 border-indigo-200';
+      iconCat = 'fa-solid fa-award text-indigo-600';
+    } else if (kat.includes('sosial') || kat.includes('peduli')) {
+      badgeColor = 'bg-teal-50 text-teal-800 border-teal-200';
+      iconCat = 'fa-solid fa-hands-holding-child text-teal-600';
+    } else if (kat.includes('disiplin') || kat.includes('tanggung')) {
+      badgeColor = 'bg-amber-50 text-amber-800 border-amber-200';
+      iconCat = 'fa-solid fa-circle-check text-amber-600';
+    }
+
+    return `
+      <div class="bg-white hover:bg-[#f0fbf7]/70 rounded-3xl p-5 sm:p-6 border border-slate-200/90 hover:border-[#a7f3d0] transition-all duration-200 shadow-sm hover:shadow-md flex flex-col justify-between space-y-4">
+        <div class="space-y-3">
+          <div class="flex items-center justify-between gap-2">
+            <span class="px-3 py-1 rounded-full text-[10px] font-black border ${badgeColor} inline-flex items-center gap-1.5">
+              <i class="${iconCat}"></i> ${item.kategori || 'Amal Sholeh & Adab'}
+            </span>
+            <span class="text-[10px] text-slate-500 font-bold flex items-center gap-1">
+              <i class="fa-regular fa-calendar-check text-emerald-600"></i> ${item.tanggal}
+            </span>
+          </div>
+
+          <div>
+            <div class="flex items-center gap-1.5 mb-1">
+              <span class="w-2 h-2 rounded-full bg-rose-500"></span>
+              <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">
+                Peristiwa Amal Sholeh & Catatan Anekdot:
+              </span>
+            </div>
+            <p class="text-xs sm:text-sm font-bold text-slate-800 leading-relaxed italic bg-slate-50 p-3 rounded-2xl border border-slate-100">
+              "${item.kejadian}"
+            </p>
+          </div>
+
+          <div class="bg-white p-3 rounded-2xl border border-slate-200/70 text-xs space-y-1">
+            <p class="text-slate-600">
+              <strong class="text-slate-700">Analisis Perkembangan Sikap:</strong> ${item.analisis}
+            </p>
+          </div>
+
+          <div class="bg-gradient-to-r from-emerald-50 to-teal-50 p-3 rounded-2xl border border-emerald-200/80 text-xs text-emerald-950 leading-snug">
+            <p class="flex items-start gap-1.5 font-medium">
+              <i class="fa-solid fa-circle-check text-emerald-600 mt-0.5 shrink-0"></i>
+              <span><strong>Tindak Lanjut & Apresiasi Guru:</strong> ${item.tindak_lanjut}</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+          <span class="truncate" title="${item.observer}">
+            <i class="fa-solid fa-user-pen mr-1 text-slate-400"></i> Observer: <strong class="text-slate-700">${item.observer}</strong>
+          </span>
+          <span class="px-2.5 py-0.5 rounded-full font-bold bg-emerald-50 border border-emerald-200 text-emerald-800 text-[10px] flex items-center gap-1">
+            <i class="fa-solid fa-certificate text-emerald-600"></i> ${item.status || 'Apresiasi Positif'}
+          </span>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  const container = document.getElementById('amalsholeh-cards-container');
+  if (container) container.innerHTML = cardsHtml;
+
+  // Also maintain alias container for backward compatibility with tests
+  const aliasContainer = document.getElementById('wali-anekdot-list');
+  if (aliasContainer) aliasContainer.innerHTML = cardsHtml;
+}
+
+function filterAmalSholehCategory(category) {
+  currentAmalSholehFilter = category || 'all';
+  const tabs = ['all', 'adab', 'inisiatif', 'disiplin'];
+  tabs.forEach(cat => {
+    const btn = document.getElementById(`tab-amalsholeh-${cat}`);
+    if (!btn) return;
+    if (cat === category) {
+      btn.className = 'amalsholeh-tab-btn px-3.5 py-2 rounded-xl text-xs font-black bg-[#00a66c] text-white shadow-sm transition flex items-center gap-1.5 whitespace-nowrap cursor-pointer';
+    } else {
+      btn.className = 'amalsholeh-tab-btn px-3.5 py-2 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition flex items-center gap-1.5 whitespace-nowrap cursor-pointer';
+    }
+  });
+
+  renderAmalSholehView(null, null, category);
+}
+
 function filterWaliReportCards(type) {
   if (type === 'jadwal') {
     switchView('jadwal');
     return;
   }
+  if (type === 'anekdot') {
+    switchView('amalsholeh');
+    return;
+  }
 
   const tabAll = document.getElementById('tab-wali-all');
   const tabGrafik = document.getElementById('tab-wali-grafik');
-  const tabAnekdot = document.getElementById('tab-wali-anekdot');
   const tabKonseling = document.getElementById('tab-wali-konseling');
 
   const secGrafik = document.getElementById('section-wali-grafik');
-  const secAnekdot = document.getElementById('section-wali-anekdot');
   const secKonseling = document.getElementById('section-wali-konseling');
 
-  const tabs = [tabAll, tabGrafik, tabAnekdot, tabKonseling];
+  const tabs = [tabAll, tabGrafik, tabKonseling];
   tabs.forEach(t => {
     if (!t) return;
     t.className = 'wali-report-tab px-3.5 py-2 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition flex items-center gap-2 whitespace-nowrap cursor-pointer';
@@ -3068,25 +3176,18 @@ function filterWaliReportCards(type) {
   if (type === 'all') {
     if (tabAll) tabAll.className = 'wali-report-tab px-3.5 py-2 rounded-xl text-xs font-black bg-[#00a66c] text-white shadow-sm transition flex items-center gap-2 whitespace-nowrap cursor-pointer';
     secGrafik?.classList.remove('hidden');
-    secAnekdot?.classList.remove('hidden');
     secKonseling?.classList.remove('hidden');
   } else if (type === 'grafik') {
     if (tabGrafik) tabGrafik.className = 'wali-report-tab px-3.5 py-2 rounded-xl text-xs font-black bg-[#00a66c] text-white shadow-sm transition flex items-center gap-2 whitespace-nowrap cursor-pointer';
     secGrafik?.classList.remove('hidden');
-    secAnekdot?.classList.add('hidden');
-    secKonseling?.classList.add('hidden');
-  } else if (type === 'anekdot') {
-    if (tabAnekdot) tabAnekdot.className = 'wali-report-tab px-3.5 py-2 rounded-xl text-xs font-black bg-[#00a66c] text-white shadow-sm transition flex items-center gap-2 whitespace-nowrap cursor-pointer';
-    secGrafik?.classList.add('hidden');
-    secAnekdot?.classList.remove('hidden');
     secKonseling?.classList.add('hidden');
   } else if (type === 'konseling') {
     if (tabKonseling) tabKonseling.className = 'wali-report-tab px-3.5 py-2 rounded-xl text-xs font-black bg-[#00a66c] text-white shadow-sm transition flex items-center gap-2 whitespace-nowrap cursor-pointer';
     secGrafik?.classList.add('hidden');
-    secAnekdot?.classList.add('hidden');
     secKonseling?.classList.remove('hidden');
   }
 }
+
 
 function openModalAnekdotPrint() {
   const user = AppState.currentUser || {};
@@ -11233,6 +11334,8 @@ window.copySingleWaliCreds = copySingleWaliCreds;
 window.copyWaliBroadcastTemplate = copyWaliBroadcastTemplate;
 window.generateAllWaliAccounts = generateAllWaliAccounts;
 window.onCmsUserNisChange = onCmsUserNisChange;
+window.renderAmalSholehView = renderAmalSholehView;
+window.filterAmalSholehCategory = filterAmalSholehCategory;
 
 // 19. APP STARTUP INITIALIZATION
 window.addEventListener('DOMContentLoaded', () => {

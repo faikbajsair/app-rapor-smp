@@ -92,7 +92,7 @@ setTimeout(() => {
   // Filter tab to 'grafik'
   win.filterWaliReportCards('grafik');
   if (doc.getElementById('section-wali-grafik').classList.contains('hidden')) throw new Error('section-wali-grafik should be visible on grafik tab');
-  if (!doc.getElementById('section-wali-anekdot').classList.contains('hidden')) throw new Error('section-wali-anekdot should be hidden on grafik tab');
+  if (doc.getElementById('section-wali-anekdot') && !doc.getElementById('section-wali-anekdot').classList.contains('hidden')) throw new Error('section-wali-anekdot should be hidden on grafik tab');
   console.log('✅ Wali Murid Embedded Resume Chart verified\n');
 
   // TEST 5: Teacher / Admin Dashboard Chart Section & Class Restriction

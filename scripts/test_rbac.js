@@ -165,8 +165,8 @@ setTimeout(() => {
   }
   console.log('✅ Aezar parent successfully isolated to Aezar El Khazindar Walidain');
 
-  // TEST 8: WALI MURID DASHBOARD - ANEKDOT (A-RECORD) & BIMBINGAN KONSELING (BK)
-  console.log('\n--- TEST 8: WALI MURID DASHBOARD - ANEKDOT (A-RECORD) & BIMBINGAN KONSELING (BK) ---');
+  // TEST 8: WALI MURID - CATATAN AMAL SHOLEH (A-RECORD) & BIMBINGAN KONSELING (BK)
+  console.log('\n--- TEST 8: WALI MURID - CATATAN AMAL SHOLEH (A-RECORD) & BIMBINGAN KONSELING (BK) ---');
   win.loginAsSpecificTeacher('walimurid', 'wali123');
   win.switchView('dashboard');
   
@@ -175,42 +175,52 @@ setTimeout(() => {
     throw new Error('dashboard-wali-view should be visible for Wali Murid!');
   }
   
-  const anekdotList = doc.getElementById('wali-anekdot-list');
-  const bkList = doc.getElementById('wali-bk-list');
-  if (!anekdotList || !bkList) throw new Error('Anekdot or BK container not found!');
-  
-  console.log('Anekdot cards count:', anekdotList.children.length);
-  if (anekdotList.children.length < 3) {
-    throw new Error(`Expected at least 3 Anecdotal record cards for Abdillah, got ${anekdotList.children.length}`);
+  // Verify Dashboard now clean from anekdot section & tab
+  if (doc.getElementById('section-wali-anekdot')) {
+    throw new Error('section-wali-anekdot should be removed from dashboard!');
   }
-  
-  console.log('BK cards count:', bkList.children.length);
-  if (bkList.children.length < 2) {
-    throw new Error(`Expected at least 2 BK counseling cards for Abdillah, got ${bkList.children.length}`);
+  if (doc.getElementById('tab-wali-anekdot')) {
+    throw new Error('tab-wali-anekdot should be removed from dashboard!');
+  }
+  console.log('✅ Dashboard successfully cleaned of Catatan Anekdot section and tab');
+
+  // Verify Sidebar menu for Catatan Amal Sholeh
+  const amalSholehMenu = doc.getElementById('nav-item-amalsholeh');
+  if (!amalSholehMenu) throw new Error('nav-item-amalsholeh not found in sidebar!');
+  if (amalSholehMenu.classList.contains('menu-non-wali')) throw new Error('nav-item-amalsholeh should not have menu-non-wali class!');
+  console.log('✅ Sidebar menu Catatan Amal Sholeh (A-Record) verified');
+
+  // Switch to Amal Sholeh View
+  win.switchView('amalsholeh');
+  const amalSholehView = doc.getElementById('view-amalsholeh');
+  if (!amalSholehView || amalSholehView.classList.contains('hidden')) {
+    throw new Error('view-amalsholeh should be visible after switchView("amalsholeh")!');
   }
 
-  const anekdotCountBadge = doc.getElementById('badge-anekdot-count')?.textContent.trim();
-  const bkCountBadge = doc.getElementById('badge-bk-count')?.textContent.trim();
-  console.log('Badges:', { anekdotCountBadge, bkCountBadge });
-  if (!anekdotCountBadge.includes('3 Catatan')) throw new Error('Anekdot count badge mismatch');
-  if (!bkCountBadge.includes('2 Sesi')) throw new Error('BK count badge mismatch');
-
-  // Test Filter Switcher
-  win.filterWaliReportCards('anekdot');
-  if (doc.getElementById('section-wali-anekdot').classList.contains('hidden')) throw new Error('Anekdot section should be visible in anekdot filter!');
-  if (!doc.getElementById('section-wali-konseling').classList.contains('hidden')) throw new Error('BK section should be hidden in anekdot filter!');
-
-  win.filterWaliReportCards('konseling');
-  if (!doc.getElementById('section-wali-anekdot').classList.contains('hidden')) throw new Error('Anekdot section should be hidden in konseling filter!');
-  if (doc.getElementById('section-wali-konseling').classList.contains('hidden')) throw new Error('BK section should be visible in konseling filter!');
-
-  win.filterWaliReportCards('all');
-  if (doc.getElementById('section-wali-anekdot').classList.contains('hidden') || doc.getElementById('section-wali-konseling').classList.contains('hidden')) {
-    throw new Error('Both sections should be visible in all filter!');
+  // Check Philosophy explanation card and content
+  const heroCard = amalSholehView.textContent;
+  if (!heroCard.includes('Apa Itu Catatan Amal Sholeh')) throw new Error('Explanatory heading missing in Amal Sholeh View');
+  if (!heroCard.includes('Bukan Hanya Catatan Keburukan') && !heroCard.includes('bukanlah lembar pelanggaran')) {
+    throw new Error('Clarification that this is not only bad records is missing');
   }
-  console.log('✅ Filter tabs between All, Anekdot, and BK working seamlessly');
+  console.log('✅ Rich Islamic Educational Philosophy regarding Catatan Amal Sholeh verified');
 
-  // Test Printable Modal
+  // Verify cards and stats
+  const cardsContainer = doc.getElementById('amalsholeh-cards-container');
+  if (!cardsContainer || cardsContainer.children.length < 3) {
+    throw new Error(`Expected at least 3 Amal Sholeh / A-Record cards, got ${cardsContainer ? cardsContainer.children.length : 0}`);
+  }
+  console.log('✅ Amal Sholeh cards rendered count:', cardsContainer.children.length);
+
+  // Verify categories filter
+  win.filterAmalSholehCategory('adab');
+  console.log('Filtered adab count:', cardsContainer.children.length);
+  if (cardsContainer.children.length !== 1) throw new Error('Filter adab should show 1 card');
+
+  win.filterAmalSholehCategory('all');
+  if (cardsContainer.children.length < 3) throw new Error('Filter all should restore 3 cards');
+
+  // Test Printable Modal from Amal Sholeh View
   win.openModalAnekdotPrint();
   const printModal = doc.getElementById('modal-wali-anekdot-print');
   if (!printModal || printModal.classList.contains('hidden')) throw new Error('Print modal should be visible after openModalAnekdotPrint!');
@@ -219,7 +229,18 @@ setTimeout(() => {
   if (!printName.includes('ABDILLAH')) throw new Error(`Print modal student name mismatch: ${printName}`);
   win.closeModalAnekdotPrint();
   if (!printModal.classList.contains('hidden')) throw new Error('Print modal should be hidden after closeModalAnekdotPrint!');
-  console.log('✅ Official Printable Anekdot Modal verified successfully');
+  console.log('✅ Official Printable Amal Sholeh / Anekdot Modal verified successfully');
+
+  // Verify BK remains intact in dashboard
+  win.switchView('dashboard');
+  const bkList = doc.getElementById('wali-bk-list');
+  if (!bkList || bkList.children.length < 2) {
+    throw new Error(`Expected at least 2 BK counseling cards for Abdillah, got ${bkList ? bkList.children.length : 0}`);
+  }
+  const bkCountBadge = doc.getElementById('badge-bk-count')?.textContent.trim();
+  if (!bkCountBadge.includes('2 Sesi')) throw new Error('BK count badge mismatch');
+  console.log('✅ BK Section remains intact and functioning on parent dashboard');
+
 
   // TEST 9: WALI MURID UI CLEANUP (Tutorial button, Petunjuk Rapor in Header only, and Tarik/Batal Publish hidden)
   console.log('\n--- TEST 9: WALI MURID UI CLEANUP & PERMISSIONS ---');
