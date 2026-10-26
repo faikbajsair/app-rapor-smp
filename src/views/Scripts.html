@@ -2626,12 +2626,18 @@ function applyRoleUIPermissions(role) {
     if (publishActions) publishActions.classList.remove('hidden');
   }
 
-  // Hapus menu Petunjuk & Cara Baca di sidebar secara aktif (hanya ada di Header)
+  // Hapus menu Petunjuk & Cara Baca di sidebar dan banner secara aktif (hanya ada di Header)
   const oldPetunjukSidebar = document.getElementById('nav-item-petunjuk');
   if (oldPetunjukSidebar) oldPetunjukSidebar.remove();
   document.querySelectorAll('.sidebar-nav-link').forEach(link => {
     if (link.textContent.includes('Petunjuk & Cara Baca') || (link.textContent.includes('Petunjuk') && link.textContent.includes('Panduan'))) {
       link.remove();
+    }
+  });
+  document.querySelectorAll('button').forEach(btn => {
+    const txt = btn.textContent.trim();
+    if (txt.includes('Petunjuk Membaca Rapor') || (txt.includes('Petunjuk Rapor') && btn.id !== 'nav-btn-petunjuk-rapor')) {
+      btn.remove();
     }
   });
 
@@ -10730,6 +10736,14 @@ window.onCmsUserNisChange = onCmsUserNisChange;
 window.addEventListener('DOMContentLoaded', () => {
   // Load persistent cache from LocalStorage first so user edits are immediately restored
   loadStateFromLocal();
+
+  // Bersihkan sisa tombol petunjuk duplikat agar hanya ada di Header
+  document.querySelectorAll('button').forEach(btn => {
+    const txt = btn.textContent.trim();
+    if (txt.includes('Petunjuk Membaca Rapor') || (txt.includes('Petunjuk Rapor') && btn.id !== 'nav-btn-petunjuk-rapor')) {
+      btn.remove();
+    }
+  });
 
   document.getElementById('btn-toggle-sidebar')?.addEventListener('click', toggleSidebar);
   document.getElementById('btn-close-sidebar')?.addEventListener('click', toggleSidebar);
