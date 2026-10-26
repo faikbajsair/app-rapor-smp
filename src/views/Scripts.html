@@ -2516,7 +2516,7 @@ function applyRoleUIPermissions(role) {
       if (badgeIcon) badgeIcon.className = 'fa-solid fa-lock text-blue-600 text-xs';
     } else if (isWali) {
       badgeEl.innerText = 'Wali Murid';
-      if (badgeContainer) badgeContainer.className = 'flex items-center gap-1.5 px-3 py-1.5 bg-amber-50 border border-amber-200 rounded-xl text-xs font-bold text-amber-900 shadow-sm select-none';
+      if (badgeContainer) badgeContainer.className = 'menu-non-wali hidden items-center gap-1.5 px-3 py-1.5 bg-amber-50 border border-amber-200 rounded-xl text-xs font-bold text-amber-900 shadow-sm select-none';
       if (badgeIcon) badgeIcon.className = 'fa-solid fa-user text-amber-600 text-xs';
     }
   }
@@ -2601,6 +2601,19 @@ function applyRoleUIPermissions(role) {
       navAcademicYear.classList.remove('hidden');
       navAcademicYear.classList.add('md:flex');
     }
+  }
+
+  // Tombol Cepat Cetak Rapor di Header khusus Guru / Admin (Wali murid buka dari kartu rapor ananda)
+  const navQuickPrint = document.getElementById('nav-btn-quick-print');
+  if (navQuickPrint) {
+    if (isWali) navQuickPrint.classList.add('hidden');
+    else navQuickPrint.classList.remove('hidden');
+  }
+
+  // Badge Peran di Header khusus Guru / Walas / Admin (disembunyikan untuk Wali Murid karena sudah ada nama & profil ananda)
+  if (badgeContainer) {
+    if (isWali) badgeContainer.classList.add('hidden');
+    else badgeContainer.classList.remove('hidden');
   }
 
   // Tombol Tarik / Batal Publish Rapor khusus Guru / Admin

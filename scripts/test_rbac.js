@@ -239,7 +239,18 @@ setTimeout(() => {
   }
   console.log('✅ Tombol Periode T.A. & Semester tersembunyi untuk Wali Murid');
 
-  // Login sebagai Guru: Tombol Tutorial dan T.A. harus tampil
+  // 1c. Tombol Cetak Rapor di Header (#nav-btn-quick-print) dan Badge Wali Murid (#nav-role-badge-container) harus hidden untuk wali murid
+  const navQuickPrintWali = doc.getElementById('nav-btn-quick-print');
+  if (navQuickPrintWali && !navQuickPrintWali.classList.contains('hidden')) {
+    throw new Error('Tombol Cetak Rapor Header (#nav-btn-quick-print) should be hidden for Wali Murid!');
+  }
+  const navRoleBadgeWali = doc.getElementById('nav-role-badge-container');
+  if (navRoleBadgeWali && !navRoleBadgeWali.classList.contains('hidden')) {
+    throw new Error('Badge Peran (#nav-role-badge-container) should be hidden for Wali Murid!');
+  }
+  console.log('✅ Tombol Cetak Rapor Header dan Badge Peran tersembunyi untuk Wali Murid');
+
+  // Login sebagai Guru: Tombol Tutorial, T.A., Cetak Rapor, dan Badge Walas harus tampil
   win.loginAsSpecificTeacher('dewi');
   const navTutorialTeacher = doc.getElementById('nav-btn-tutorial');
   if (navTutorialTeacher && navTutorialTeacher.classList.contains('hidden')) {
@@ -249,7 +260,15 @@ setTimeout(() => {
   if (navYearTeacher && navYearTeacher.classList.contains('hidden')) {
     throw new Error('Tombol Periode T.A. (#nav-btn-academic-year) should be visible for Guru / Walas!');
   }
-  console.log('✅ Tombol Tutorial dan T.A. tampil untuk Guru / Walas');
+  const navQuickPrintTeacher = doc.getElementById('nav-btn-quick-print');
+  if (navQuickPrintTeacher && navQuickPrintTeacher.classList.contains('hidden')) {
+    throw new Error('Tombol Cetak Rapor Header (#nav-btn-quick-print) should be visible for Guru / Walas!');
+  }
+  const navRoleBadgeTeacher = doc.getElementById('nav-role-badge-container');
+  if (navRoleBadgeTeacher && navRoleBadgeTeacher.classList.contains('hidden')) {
+    throw new Error('Badge Peran (#nav-role-badge-container) should be visible for Guru / Walas!');
+  }
+  console.log('✅ Tombol Tutorial, T.A., Cetak Rapor Header, dan Badge Peran tampil untuk Guru / Walas');
 
   // Kembali login sebagai Wali Murid
   win.loginAsSpecificTeacher('walimurid', 'wali123');

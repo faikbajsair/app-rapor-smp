@@ -47,16 +47,16 @@
           <span class="hidden sm:inline">Tutorial</span>
         </button>
 
-        <!-- Quick Cetak Rapor Button -->
-        <button onclick="openQuickPrintModal()" class="inline-flex items-center gap-2 px-3.5 py-1.5 bg-[#00a66c] hover:bg-[#008f5d] text-white rounded-xl text-xs font-bold shadow-sm shadow-[#00a66c]/20 transition-all">
+        <!-- Quick Cetak Rapor Button (Khusus Guru / Admin di Header) -->
+        <button id="nav-btn-quick-print" onclick="openQuickPrintModal()" class="menu-non-wali inline-flex items-center gap-2 px-3.5 py-1.5 bg-[#00a66c] hover:bg-[#008f5d] text-white rounded-xl text-xs font-bold shadow-sm shadow-[#00a66c]/20 transition-all">
           <i class="fa-solid fa-print"></i>
           <span class="hidden sm:inline">Cetak Rapor</span>
         </button>
 
         <!-- Active User Profile & Secure Logout (Strictly Private Account, No Switcher) -->
         <div class="flex items-center space-x-2.5">
-          <!-- Active Role / Class / Mapel Badge (Locked, Non-interactive) -->
-          <div id="nav-role-badge-container" class="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 border border-emerald-200/80 rounded-xl text-xs font-bold text-emerald-900 shadow-sm select-none">
+          <!-- Active Role / Class / Mapel Badge (Locked, Non-interactive, Khusus Guru / Walas / Admin) -->
+          <div id="nav-role-badge-container" class="menu-non-wali flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 border border-emerald-200/80 rounded-xl text-xs font-bold text-emerald-900 shadow-sm select-none">
             <i id="nav-role-badge-icon" class="fa-solid fa-lock text-emerald-600 text-xs"></i>
             <span id="nav-user-role-badge">Wali Kelas</span>
           </div>
