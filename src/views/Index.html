@@ -250,6 +250,69 @@
         padding: 2px 4px !important;
         font-size: 7pt !important;
       }
+
+      /* Dedicated Print Layout for Resume Nilai Modal */
+      body.printing-resume-modal {
+        background: #ffffff !important;
+        font-size: 8.5pt !important;
+      }
+      body.printing-resume-modal nav,
+      body.printing-resume-modal aside,
+      body.printing-resume-modal header,
+      body.printing-resume-modal footer,
+      body.printing-resume-modal main,
+      body.printing-resume-modal #sidebar-nav,
+      body.printing-resume-modal #sidebar-backdrop,
+      body.printing-resume-modal .no-print,
+      body.printing-resume-modal [class*="no-print"] {
+        display: none !important;
+      }
+      body.printing-resume-modal #modal-resume-chart-nilai {
+        display: block !important;
+        position: static !important;
+        inset: auto !important;
+        background: transparent !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        height: auto !important;
+        overflow: visible !important;
+        backdrop-filter: none !important;
+        box-shadow: none !important;
+        border: none !important;
+      }
+      body.printing-resume-modal #modal-resume-chart-nilai > div {
+        max-width: 100% !important;
+        max-height: none !important;
+        height: auto !important;
+        border: 1px solid #cbd5e1 !important;
+        box-shadow: none !important;
+        border-radius: 12px !important;
+        overflow: visible !important;
+      }
+      body.printing-resume-modal #modal-resume-chart-nilai #resume-chart-modal-body {
+        max-height: none !important;
+        overflow: visible !important;
+        padding: 12px 16px !important;
+      }
+      body.printing-resume-modal #modal-resume-chart-nilai button,
+      body.printing-resume-modal #modal-resume-chart-nilai .tab-resume-btn,
+      body.printing-resume-modal #modal-resume-chart-nilai #resume-chart-student-selector-box {
+        display: none !important;
+      }
+      body.printing-resume-modal #modal-resume-chart-nilai .resume-chart-pane:not(.hidden) {
+        display: block !important;
+      }
+      body.printing-resume-modal #modal-resume-chart-nilai table {
+        page-break-inside: avoid !important;
+        border: 1px solid #cbd5e1 !important;
+      }
+      body.printing-resume-modal #modal-resume-chart-nilai table th,
+      body.printing-resume-modal #modal-resume-chart-nilai table td {
+        border: 1px solid #e2e8f0 !important;
+        padding: 4px 6px !important;
+      }
     }
   </style>
 </head>
