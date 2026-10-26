@@ -2626,6 +2626,15 @@ function applyRoleUIPermissions(role) {
     if (publishActions) publishActions.classList.remove('hidden');
   }
 
+  // Hapus menu Petunjuk & Cara Baca di sidebar secara aktif (hanya ada di Header)
+  const oldPetunjukSidebar = document.getElementById('nav-item-petunjuk');
+  if (oldPetunjukSidebar) oldPetunjukSidebar.remove();
+  document.querySelectorAll('.sidebar-nav-link').forEach(link => {
+    if (link.textContent.includes('Petunjuk & Cara Baca') || (link.textContent.includes('Petunjuk') && link.textContent.includes('Panduan'))) {
+      link.remove();
+    }
+  });
+
   // Toggle Dashboard view panels (Parent Portal vs Teacher/Admin Dashboard)
   const dashWaliView = document.getElementById('dashboard-wali-view');
   const dashAdminView = document.getElementById('dashboard-admin-view');

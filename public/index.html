@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
   <title>Rapor Tengah Semester SMP Al-Imam (AI IS) - Sistem Penilaian Holistik</title>
   
+  <!-- Anti-cache headers to ensure client browsers always get latest release -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
 
@@ -9685,6 +9690,15 @@ function applyRoleUIPermissions(role) {
   } else {
     if (publishActions) publishActions.classList.remove('hidden');
   }
+
+  // Hapus menu Petunjuk & Cara Baca di sidebar secara aktif (hanya ada di Header)
+  const oldPetunjukSidebar = document.getElementById('nav-item-petunjuk');
+  if (oldPetunjukSidebar) oldPetunjukSidebar.remove();
+  document.querySelectorAll('.sidebar-nav-link').forEach(link => {
+    if (link.textContent.includes('Petunjuk & Cara Baca') || (link.textContent.includes('Petunjuk') && link.textContent.includes('Panduan'))) {
+      link.remove();
+    }
+  });
 
   // Toggle Dashboard view panels (Parent Portal vs Teacher/Admin Dashboard)
   const dashWaliView = document.getElementById('dashboard-wali-view');
