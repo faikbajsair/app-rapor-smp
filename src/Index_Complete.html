@@ -10362,6 +10362,20 @@ function setSimulatedRole(role) {
 
 function checkAuthOnStartup() {
   try {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('logout') === '1') {
+      localStorage.removeItem('aiis_user_session');
+      AppState.currentUser = null;
+      AppState.isLoggedIn = false;
+      openLoginModal(true);
+      return false;
+    }
+    const targetUser = urlParams.get('user');
+    if (targetUser) {
+      loginAsSpecificTeacher(targetUser, targetUser.startsWith('wali') ? 'wali123' : 'al-imam2026');
+      return true;
+    }
+
     const saved = localStorage.getItem('aiis_user_session');
     if (saved) {
       const user = JSON.parse(saved);
