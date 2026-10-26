@@ -378,6 +378,16 @@
         <span>Dashboard</span>
       </a>
 
+      <!-- Jadwal Pelajaran (Kalender) -->
+      <a href="javascript:void(0)" onclick="switchView('jadwal')" id="nav-item-jadwal" 
+         class="sidebar-nav-link flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none">
+        <div class="flex items-center gap-3">
+          <i class="fa-regular fa-calendar-days w-4 text-center text-sm"></i>
+          <span>Jadwal Pelajaran</span>
+        </div>
+        <span class="text-[10px] bg-emerald-50 text-[#00a66c] px-2 py-0.5 rounded-full font-bold border border-emerald-100">Kalender</span>
+      </a>
+
 
       <!-- 2. Kategori Penilaian Utama (TP, Akademik & Checklist, Cek Deskripsi, Ahlaq, Diniyah) -->
       <div class="pt-3 px-3 py-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider menu-assessment-header menu-non-wali">Penilaian Kurikulum Merdeka</div>
@@ -622,11 +632,6 @@
           <i class="fa-solid fa-layer-group"></i>
           <span>Semua Laporan</span>
         </button>
-        <button type="button" onclick="filterWaliReportCards('jadwal')" id="tab-wali-jadwal" class="wali-report-tab px-3.5 py-2 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition flex items-center gap-2 whitespace-nowrap cursor-pointer">
-          <i class="fa-regular fa-calendar-days text-emerald-600"></i>
-          <span>Jadwal Pelajaran</span>
-          <span id="tab-badge-jadwal" class="ml-1 px-1.5 py-0.2 rounded-full text-[10px] font-black bg-emerald-100 text-emerald-800">Mingguan</span>
-        </button>
         <button type="button" onclick="filterWaliReportCards('grafik')" id="tab-wali-grafik" class="wali-report-tab px-3.5 py-2 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition flex items-center gap-2 whitespace-nowrap cursor-pointer">
           <i class="fa-solid fa-chart-column text-purple-600"></i>
           <span>Resume Grafik Nilai</span>
@@ -644,10 +649,6 @@
         </button>
       </div>
       <div class="flex items-center gap-2 self-end sm:self-auto">
-        <button type="button" onclick="filterWaliReportCards('jadwal')" class="px-3.5 py-2 text-xs font-bold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 rounded-xl transition flex items-center gap-1.5 cursor-pointer">
-          <i class="fa-regular fa-calendar-check text-emerald-600"></i>
-          <span>Lihat Jadwal Hari Ini</span>
-        </button>
         <button type="button" onclick="openModalAnekdotPrint()" class="px-3.5 py-2 text-xs font-bold text-slate-700 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl transition flex items-center gap-1.5 cursor-pointer">
           <i class="fa-solid fa-print text-slate-500"></i>
           <span>Cetak A-Record</span>
@@ -657,120 +658,6 @@
           <span>Konsultasi BK</span>
         </button>
       </div>
-    </div>
-
-    <!-- Section 0: Jadwal Pelajaran & Capaian Kompetensi Siswa (Wali Murid) -->
-    <div id="section-wali-jadwal" class="bg-white rounded-3xl p-5 sm:p-7 border border-[#e2f3ea] shadow-sm space-y-6">
-      
-      <!-- Header Section Jadwal -->
-      <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 border-b border-slate-100 pb-5">
-        <div class="flex items-center gap-3">
-          <span class="w-11 h-11 rounded-2xl bg-emerald-100 text-[#00a66c] flex items-center justify-center font-bold text-xl shadow-sm border border-emerald-200 shrink-0">
-            <i class="fa-regular fa-calendar-days"></i>
-          </span>
-          <div>
-            <div class="flex flex-wrap items-center gap-2">
-              <h3 class="text-base sm:text-lg font-black text-slate-900 tracking-tight">
-                Jadwal Pelajaran & Capaian Nilai Ananda
-              </h3>
-              <span id="wali-jadwal-kelas-badge" class="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-emerald-100 text-emerald-800 border border-emerald-300">
-                Kelas VII AISYAH
-              </span>
-              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-700 border border-slate-200">
-                TP 2026/2027
-              </span>
-            </div>
-            <p class="text-xs text-slate-500 mt-1 flex flex-wrap items-center gap-2">
-              <span>Wali Kelas: <strong id="wali-jadwal-walas" class="text-slate-800 font-semibold">Tri Yuli Aryani, S.Pd., Gr.</strong></span>
-              <span class="text-slate-300">•</span>
-              <span class="text-emerald-700 font-medium"><i class="fa-solid fa-hand-pointer text-emerald-500 mr-1 animate-pulse"></i> Klik mata pelajaran untuk melihat nilai capaian ananda</span>
-            </p>
-          </div>
-        </div>
-
-        <!-- Seragam Hari Ini Quick Pill -->
-        <div class="flex items-center gap-2 self-stretch sm:self-auto bg-slate-50 p-2 sm:px-3 sm:py-2 rounded-2xl border border-slate-200/80">
-          <div class="w-8 h-8 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center text-sm shrink-0">
-            <i class="fa-solid fa-shirt"></i>
-          </div>
-          <div class="text-left text-xs">
-            <span class="text-[10px] uppercase font-extrabold text-slate-400 block leading-tight">Seragam Hari Ini:</span>
-            <strong id="wali-jadwal-seragam-hari-ini" class="text-slate-800 font-bold">Putih Biru (Senin)</strong>
-          </div>
-        </div>
-      </div>
-
-      <!-- Quick Day Filter Tabs & Info Seragam Bar -->
-      <div class="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 bg-gradient-to-r from-emerald-50/70 via-teal-50/50 to-slate-50 p-3 sm:p-3.5 rounded-2xl border border-emerald-100">
-        <!-- Day Selector Buttons -->
-        <div class="flex items-center gap-1.5 overflow-x-auto pb-1 md:pb-0" id="wali-jadwal-day-tabs">
-          <button type="button" onclick="filterJadwalHari('all')" id="btn-jadwal-all" class="jadwal-day-btn px-3 py-1.5 rounded-xl text-xs font-black bg-[#00a66c] text-white shadow-xs transition cursor-pointer whitespace-nowrap">
-            Semua Hari
-          </button>
-          <button type="button" onclick="filterJadwalHari('SENIN')" id="btn-jadwal-senin" class="jadwal-day-btn px-3 py-1.5 rounded-xl text-xs font-bold text-slate-700 hover:bg-white bg-white/70 border border-slate-200/60 transition cursor-pointer whitespace-nowrap">
-            Senin
-          </button>
-          <button type="button" onclick="filterJadwalHari('SELASA')" id="btn-jadwal-selasa" class="jadwal-day-btn px-3 py-1.5 rounded-xl text-xs font-bold text-slate-700 hover:bg-white bg-white/70 border border-slate-200/60 transition cursor-pointer whitespace-nowrap">
-            Selasa
-          </button>
-          <button type="button" onclick="filterJadwalHari('RABU')" id="btn-jadwal-rabu" class="jadwal-day-btn px-3 py-1.5 rounded-xl text-xs font-bold text-slate-700 hover:bg-white bg-white/70 border border-slate-200/60 transition cursor-pointer whitespace-nowrap">
-            Rabu
-          </button>
-          <button type="button" onclick="filterJadwalHari('KAMIS')" id="btn-jadwal-kamis" class="jadwal-day-btn px-3 py-1.5 rounded-xl text-xs font-bold text-slate-700 hover:bg-white bg-white/70 border border-slate-200/60 transition cursor-pointer whitespace-nowrap">
-            Kamis
-          </button>
-          <button type="button" onclick="filterJadwalHari('JUM\'AT')" id="btn-jadwal-jumat" class="jadwal-day-btn px-3 py-1.5 rounded-xl text-xs font-bold text-slate-700 hover:bg-white bg-white/70 border border-slate-200/60 transition cursor-pointer whitespace-nowrap">
-            Jum'at
-          </button>
-        </div>
-
-        <!-- Seragam Legend Quick Info -->
-        <div class="flex items-center gap-2 text-[11px] text-slate-600 font-medium">
-          <i class="fa-solid fa-clock-rotate-left text-emerald-600"></i>
-          <span>Jam Belajar: <strong>07.10 - 16.00 WIB</strong> (Full Day School)</span>
-        </div>
-      </div>
-
-      <!-- Interactive Helper Banner -->
-      <div class="bg-emerald-50/50 border border-emerald-200/80 rounded-2xl p-3.5 flex items-start gap-3">
-        <span class="w-6 h-6 rounded-lg bg-emerald-200 text-emerald-800 flex items-center justify-center text-xs shrink-0 mt-0.5">
-          <i class="fa-solid fa-lightbulb"></i>
-        </span>
-        <div class="text-xs text-emerald-950 leading-relaxed">
-          <strong>Panduan Interaktif:</strong> Jadwal di bawah ini tersinkronisasi langsung dengan kelas ananda di SMP Al-Imam. Klik pada slot <strong>Mata Pelajaran</strong> untuk melihat nilai angka rapor, ketuntasan terhadap KKM (75), predikat huruf (A/B/C/D), deskripsi capaian pembelajaran resmi, dan kontak guru pengampu.
-        </div>
-      </div>
-
-      <!-- Jadwal Days Container Grid -->
-      <div id="wali-jadwal-container" class="space-y-6">
-        <!-- Rendered dynamically by JavaScript -->
-      </div>
-
-      <!-- Jadwal Footer Legend -->
-      <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200/80 flex flex-wrap items-center justify-between gap-3 text-xs text-slate-600">
-        <div class="flex flex-wrap items-center gap-3">
-          <span class="font-bold text-slate-700">Kode Warna Jadwal:</span>
-          <span class="inline-flex items-center gap-1.5">
-            <span class="w-3 h-3 rounded-full bg-blue-500"></span> Mapel Umum / Akademik
-          </span>
-          <span class="inline-flex items-center gap-1.5">
-            <span class="w-3 h-3 rounded-full bg-emerald-500"></span> Diniyah / Al-Qur'an
-          </span>
-          <span class="inline-flex items-center gap-1.5">
-            <span class="w-3 h-3 rounded-full bg-purple-500"></span> Mulok & Prakarya
-          </span>
-          <span class="inline-flex items-center gap-1.5">
-            <span class="w-3 h-3 rounded-full bg-amber-500"></span> Ekstrakurikuler & Karakter
-          </span>
-          <span class="inline-flex items-center gap-1.5">
-            <span class="w-3 h-3 rounded-full bg-teal-500"></span> Ibadah, Qailullah & Isoma
-          </span>
-        </div>
-        <div class="text-[11px] text-slate-500">
-          * Khusus hari Jum'at, Sholat Jum'at & ISOMA berlangsung mulai 11.00/11.30 - 13.00 WIB
-        </div>
-      </div>
-
     </div>
 
     <!-- Section 1: Laporan Catatan Anekdot (A-Record) -->
@@ -1811,6 +1698,197 @@
         </button>
       </div>
     </div>
+  </div>
+
+</div>
+
+
+        <!-- View 1c: Jadwal Pelajaran (Kalender Interaktif) -->
+        <!-- View: Jadwal Pelajaran (Kalender Interaktif & Detail Harian) -->
+<div id="view-jadwal" class="view-panel hidden space-y-6">
+
+  <!-- Header Banner -->
+  <div class="relative overflow-hidden bg-gradient-to-br from-emerald-800 via-teal-800 to-slate-900 rounded-3xl p-6 sm:p-8 text-white shadow-lg border border-emerald-700/40">
+    <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute -left-10 -top-10 w-64 h-64 bg-teal-400/10 rounded-full blur-3xl pointer-events-none"></div>
+
+    <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+      <div class="space-y-2">
+        <div class="flex items-center gap-2">
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-black bg-emerald-400/20 text-emerald-200 border border-emerald-400/30 backdrop-blur-sm">
+            <i class="fa-regular fa-calendar-check text-xs"></i>
+            Kalender Pembelajaran & Seragam
+          </span>
+          <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-white/10 text-emerald-100 border border-white/10">
+            TP 2026/2027 (Semester Ganjil)
+          </span>
+        </div>
+        <h1 class="text-2xl sm:text-3xl font-black tracking-tight text-white flex items-center gap-3">
+          <span>Jadwal Pelajaran</span>
+        </h1>
+        <p class="text-xs sm:text-sm text-emerald-100/80 max-w-2xl leading-relaxed">
+          Pilih tanggal pada kalender untuk melihat jam belajar harian, seragam sekolah, guru pengampu, serta klik mata pelajaran untuk memantau capaian nilai ananda.
+        </p>
+      </div>
+
+      <!-- Quick Info / Badges on right -->
+      <div class="flex flex-col sm:flex-row md:flex-col lg:flex-row items-stretch sm:items-center gap-3">
+        <!-- Class Selector / Badge -->
+        <div class="bg-white/10 backdrop-blur-md border border-white/15 rounded-2xl p-3 flex items-center gap-3 min-w-[210px]">
+          <div class="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-400/30 flex items-center justify-center text-emerald-300 text-lg shrink-0">
+            <i class="fa-solid fa-chalkboard-user"></i>
+          </div>
+          <div class="flex-1 min-w-0">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-200/70 block leading-tight">Kelas / Rombel:</span>
+            <!-- Locked text for Wali Murid -->
+            <span id="jadwal-kelas-label" class="text-xs font-black text-white truncate block">Kelas VII AISYAH</span>
+            <!-- Dropdown for Teachers & Admin -->
+            <select id="jadwal-kelas-select" onchange="onJadwalClassChange(this.value)" class="hidden mt-1 text-xs font-bold text-slate-800 bg-white rounded-lg px-2 py-1 w-full border border-slate-300 focus:outline-emerald-500 cursor-pointer">
+              <option value="VII AISYAH">VII AISYAH (Putri)</option>
+              <option value="VII UTSMAN">VII UTSMAN (Putra)</option>
+              <option value="VIII KHODIJAH">VIII KHODIJAH (Putri)</option>
+              <option value="VIII UMAR">VIII UMAR (Putra)</option>
+              <option value="IX UMMU SALAMAH">IX UMMU SALAMAH (Putri)</option>
+              <option value="IX ABU BAKAR">IX ABU BAKAR (Putra)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Seragam Hari Ini Pill -->
+        <div class="bg-white/10 backdrop-blur-md border border-white/15 rounded-2xl p-3 flex items-center gap-3 min-w-[200px]">
+          <div class="w-10 h-10 rounded-xl bg-amber-400/20 border border-amber-300/30 flex items-center justify-center text-amber-300 text-lg shrink-0">
+            <i class="fa-solid fa-shirt"></i>
+          </div>
+          <div>
+            <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-200/70 block leading-tight">Seragam Hari Ini:</span>
+            <strong id="jadwal-seragam-hari-ini" class="text-xs font-black text-amber-300 block">Putih Biru (Senin)</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Grid: Calendar on Left / Top, Daily Schedule on Right / Bottom -->
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+    
+    <!-- Left Column: Interactive Month Calendar -->
+    <div class="lg:col-span-7 bg-white rounded-3xl border border-[#e2f3ea] shadow-sm p-5 sm:p-6 space-y-5">
+      
+      <!-- Calendar Navigation Bar -->
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pb-3 border-b border-slate-100">
+        <div class="flex items-center gap-3">
+          <button type="button" onclick="changeCalendarMonth(-1)" id="btn-prev-month" class="w-9 h-9 rounded-xl border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50 text-slate-600 hover:text-emerald-700 flex items-center justify-center transition cursor-pointer shadow-2xs" title="Bulan Sebelumnya">
+            <i class="fa-solid fa-chevron-left text-xs"></i>
+          </button>
+          
+          <h2 id="calendar-month-year-label" class="text-base sm:text-lg font-black text-slate-800 tracking-tight min-w-[170px] text-center select-none">
+            Oktober 2026
+          </h2>
+
+          <button type="button" onclick="changeCalendarMonth(1)" id="btn-next-month" class="w-9 h-9 rounded-xl border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50 text-slate-600 hover:text-emerald-700 flex items-center justify-center transition cursor-pointer shadow-2xs" title="Bulan Berikutnya">
+            <i class="fa-solid fa-chevron-right text-xs"></i>
+          </button>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <button type="button" onclick="goToCalendarToday()" id="btn-calendar-today" class="px-3.5 py-1.5 rounded-xl border border-emerald-300 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shadow-2xs">
+            <i class="fa-regular fa-calendar-check text-xs"></i>
+            <span>Hari Ini</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Helper info: Click date to view schedule -->
+      <div class="flex items-center justify-between px-1 text-xs text-slate-500">
+        <span class="flex items-center gap-1.5">
+          <i class="fa-solid fa-hand-pointer text-emerald-600 animate-pulse"></i>
+          <span>Klik tanggal untuk melihat jadwal pelajaran hari tersebut:</span>
+        </span>
+        <span class="hidden sm:inline-flex items-center gap-1 text-[11px] text-slate-400">
+          <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Hari Sekolah (Sen-Jum)
+        </span>
+      </div>
+
+      <!-- Calendar Days Header (Senin - Ahad) -->
+      <div class="grid grid-cols-7 gap-1 sm:gap-2 text-center text-xs font-black select-none">
+        <div class="py-2 rounded-xl bg-slate-50 text-slate-700 border border-slate-100">Sen</div>
+        <div class="py-2 rounded-xl bg-slate-50 text-slate-700 border border-slate-100">Sel</div>
+        <div class="py-2 rounded-xl bg-slate-50 text-slate-700 border border-slate-100">Rab</div>
+        <div class="py-2 rounded-xl bg-slate-50 text-slate-700 border border-slate-100">Kam</div>
+        <div class="py-2 rounded-xl bg-slate-50 text-slate-700 border border-slate-100">Jum</div>
+        <div class="py-2 rounded-xl bg-rose-50 text-rose-600 border border-rose-100">Sab</div>
+        <div class="py-2 rounded-xl bg-rose-50 text-rose-600 border border-rose-100">Ahd</div>
+      </div>
+
+      <!-- Calendar Days Grid (Rendered dynamically via JavaScript) -->
+      <div id="calendar-days-grid" class="grid grid-cols-7 gap-1 sm:gap-2 select-none">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <!-- Calendar Seragam & Legend Pills -->
+      <div class="pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-500">
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="font-bold text-slate-700">Seragam Harian:</span>
+          <span class="px-2 py-0.5 rounded-lg bg-blue-50 text-blue-700 border border-blue-200/80 font-medium">Sen: Putih Biru</span>
+          <span class="px-2 py-0.5 rounded-lg bg-amber-50 text-amber-700 border border-amber-200/80 font-medium">Sel: Batik Putih</span>
+          <span class="px-2 py-0.5 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200/80 font-medium">Rab: Kotak Hijau</span>
+          <span class="px-2 py-0.5 rounded-lg bg-teal-50 text-teal-700 border border-teal-200/80 font-medium">Kam: Gamis/Koko</span>
+          <span class="px-2 py-0.5 rounded-lg bg-amber-100 text-amber-900 border border-amber-300 font-medium">Jum: Pramuka</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Right Column: Detail Jadwal Pelajaran Hari Terpilih ("Tampilan seperti saat ini") -->
+    <div class="lg:col-span-5 bg-white rounded-3xl border border-[#e2f3ea] shadow-sm p-5 sm:p-6 space-y-4">
+      
+      <!-- Selected Day Detail Header -->
+      <div id="jadwal-selected-day-header" class="p-4 rounded-2xl bg-gradient-to-r from-emerald-50 via-teal-50 to-white border border-emerald-200/80 space-y-2">
+        <div class="flex items-center justify-between">
+          <span id="selected-day-badge" class="px-3 py-1 rounded-full text-xs font-black bg-[#00a66c] text-white shadow-2xs tracking-wide">
+            SENIN
+          </span>
+          <span id="selected-day-uniform-pill" class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-blue-100 text-blue-800 border border-blue-200">
+            <i class="fa-solid fa-shirt mr-1"></i> Putih Biru
+          </span>
+        </div>
+        <h3 id="selected-date-title" class="text-base sm:text-lg font-black text-slate-900 tracking-tight">
+          Senin, 26 Oktober 2026
+        </h3>
+        <p class="text-xs text-slate-600 flex items-center gap-1.5">
+          <i class="fa-solid fa-clock text-emerald-600"></i>
+          <span>Waktu Belajar: <strong>07.10 - 16.00 WIB</strong> (Full Day School)</span>
+        </p>
+      </div>
+
+      <!-- Interactive Helper Banner -->
+      <div class="bg-emerald-50/60 border border-emerald-200/80 rounded-2xl p-3 flex items-start gap-2.5 text-xs text-emerald-950 leading-relaxed">
+        <span class="w-5 h-5 rounded-lg bg-emerald-200 text-emerald-800 flex items-center justify-center text-[10px] shrink-0 mt-0.5">
+          <i class="fa-solid fa-hand-pointer"></i>
+        </span>
+        <div>
+          Klik kartu <strong>Mata Pelajaran</strong> untuk melihat nilai angka rapor, ketuntasan KKM, deskripsi capaian resmi, dan konsultasi guru.
+        </div>
+      </div>
+
+      <!-- Time Slots Container for Selected Day -->
+      <div id="jadwal-slots-container" class="space-y-2.5 max-h-[600px] overflow-y-auto pr-1">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <!-- Footer Legend -->
+      <div class="pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2 text-[10px] text-slate-500">
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span> Akademik
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Diniyah
+          <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Ekskul
+          <span class="w-2.5 h-2.5 rounded-full bg-teal-500"></span> Ibadah
+        </div>
+        <span>* Jum'at: Sholat Jum'at & ISOMA 11.00 - 13.00</span>
+      </div>
+
+    </div>
+
   </div>
 
 </div>
@@ -8857,6 +8935,7 @@ function switchView(viewName) {
   // Auto-fetch data on view activation
   switch (viewName) {
     case 'dashboard': loadDashboardStats(); break;
+    case 'jadwal': initJadwalCalendar(); break;
     case 'tp':
     case 'tujuan_pembelajaran': loadTujuanPembelajaran(); renderTPTable(); break;
     case 'akademik': loadNilaiAkademik(); renderLegerGrid(); break;
@@ -9642,6 +9721,29 @@ function applyRoleUIPermissions(role) {
     }
   }
 
+  // Jadwal Pelajaran Nav Link (Accessible to all roles)
+  const jadwalNav = document.getElementById('nav-item-jadwal');
+  if (jadwalNav) jadwalNav.classList.remove('hidden');
+
+  // Jadwal View Class Controls
+  const jadwalKelasLabel = document.getElementById('jadwal-kelas-label');
+  const jadwalKelasSelect = document.getElementById('jadwal-kelas-select');
+  if (isWali) {
+    if (jadwalKelasLabel) {
+      jadwalKelasLabel.classList.remove('hidden');
+      jadwalKelasLabel.textContent = `Kelas ${childMurid.kelas || 'VII AISYAH'}`;
+    }
+    if (jadwalKelasSelect) jadwalKelasSelect.classList.add('hidden');
+  } else {
+    if (jadwalKelasLabel) jadwalKelasLabel.classList.add('hidden');
+    if (jadwalKelasSelect) {
+      jadwalKelasSelect.classList.remove('hidden');
+      if (isWalas && assignedClass) {
+        jadwalKelasSelect.value = assignedClass;
+      }
+    }
+  }
+
   // Toggle non-wali elements (assessment, TP, student database, CMS, logs, tutorial)
   const nonWaliElements = document.querySelectorAll('.menu-non-wali');
   nonWaliElements.forEach(el => {
@@ -10086,18 +10188,21 @@ function renderWaliAnekdotAndKonseling(childNis, childMurid) {
 }
 
 function filterWaliReportCards(type) {
+  if (type === 'jadwal') {
+    switchView('jadwal');
+    return;
+  }
+
   const tabAll = document.getElementById('tab-wali-all');
-  const tabJadwal = document.getElementById('tab-wali-jadwal');
   const tabGrafik = document.getElementById('tab-wali-grafik');
   const tabAnekdot = document.getElementById('tab-wali-anekdot');
   const tabKonseling = document.getElementById('tab-wali-konseling');
 
-  const secJadwal = document.getElementById('section-wali-jadwal');
   const secGrafik = document.getElementById('section-wali-grafik');
   const secAnekdot = document.getElementById('section-wali-anekdot');
   const secKonseling = document.getElementById('section-wali-konseling');
 
-  const tabs = [tabAll, tabJadwal, tabGrafik, tabAnekdot, tabKonseling];
+  const tabs = [tabAll, tabGrafik, tabAnekdot, tabKonseling];
   tabs.forEach(t => {
     if (!t) return;
     t.className = 'wali-report-tab px-3.5 py-2 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition flex items-center gap-2 whitespace-nowrap cursor-pointer';
@@ -10105,34 +10210,21 @@ function filterWaliReportCards(type) {
 
   if (type === 'all') {
     if (tabAll) tabAll.className = 'wali-report-tab px-3.5 py-2 rounded-xl text-xs font-black bg-[#00a66c] text-white shadow-sm transition flex items-center gap-2 whitespace-nowrap cursor-pointer';
-    secJadwal?.classList.remove('hidden');
     secGrafik?.classList.remove('hidden');
     secAnekdot?.classList.remove('hidden');
     secKonseling?.classList.remove('hidden');
-  } else if (type === 'jadwal') {
-    if (tabJadwal) tabJadwal.className = 'wali-report-tab px-3.5 py-2 rounded-xl text-xs font-black bg-[#00a66c] text-white shadow-sm transition flex items-center gap-2 whitespace-nowrap cursor-pointer';
-    secJadwal?.classList.remove('hidden');
-    secGrafik?.classList.add('hidden');
-    secAnekdot?.classList.add('hidden');
-    secKonseling?.classList.add('hidden');
-    if (secJadwal && typeof secJadwal.scrollIntoView === 'function') {
-      try { secJadwal.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); } catch (e) {}
-    }
   } else if (type === 'grafik') {
     if (tabGrafik) tabGrafik.className = 'wali-report-tab px-3.5 py-2 rounded-xl text-xs font-black bg-[#00a66c] text-white shadow-sm transition flex items-center gap-2 whitespace-nowrap cursor-pointer';
-    secJadwal?.classList.add('hidden');
     secGrafik?.classList.remove('hidden');
     secAnekdot?.classList.add('hidden');
     secKonseling?.classList.add('hidden');
   } else if (type === 'anekdot') {
     if (tabAnekdot) tabAnekdot.className = 'wali-report-tab px-3.5 py-2 rounded-xl text-xs font-black bg-[#00a66c] text-white shadow-sm transition flex items-center gap-2 whitespace-nowrap cursor-pointer';
-    secJadwal?.classList.add('hidden');
     secGrafik?.classList.add('hidden');
     secAnekdot?.classList.remove('hidden');
     secKonseling?.classList.add('hidden');
   } else if (type === 'konseling') {
     if (tabKonseling) tabKonseling.className = 'wali-report-tab px-3.5 py-2 rounded-xl text-xs font-black bg-[#00a66c] text-white shadow-sm transition flex items-center gap-2 whitespace-nowrap cursor-pointer';
-    secJadwal?.classList.add('hidden');
     secGrafik?.classList.add('hidden');
     secAnekdot?.classList.add('hidden');
     secKonseling?.classList.remove('hidden');
@@ -10830,7 +10922,486 @@ function mapJadwalSubjectToRapor(rawName) {
   return { id: rawName, name: rawName, rumpun: 'Umum', icon: 'fa-solid fa-book', color: 'blue' };
 }
 
+// ============================================================================
+// KALENDER & JADWAL PELAJARAN INTERAKTIF (PORTAL WALI MURID & GURU)
+// ============================================================================
+
+const JADWAL_CALENDAR_STATE = {
+  currentYear: new Date().getFullYear(),
+  currentMonth: new Date().getMonth(), // 0 - 11
+  selectedDate: new Date(),
+  activeRombel: 'VII AISYAH'
+};
+
+const INDO_MONTH_NAMES = [
+  'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+  'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+];
+
+const INDO_DAY_NAMES = [
+  'Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jum\'at', 'Sabtu'
+];
+
+const INDO_DAY_KEYS = [
+  'MINGGU', 'SENIN', 'SELASA', 'RABU', 'KAMIS', 'JUM\'AT', 'SABTU'
+];
+
+function initJadwalCalendar() {
+  const user = AppState.currentUser || {};
+  const isWali = (user.role === 'wali_murid');
+
+  // Determine active student & rombel
+  if (isWali) {
+    const childNis = user.nis || AppState.activePrintNis || '242507001';
+    const childMurid = AppState.muridList.find(m => String(m.nis).trim() === String(childNis).trim()) || {
+      nis: childNis,
+      nama_murid: user.nama_lengkap || 'Ananda',
+      kelas: 'VII AISYAH',
+      wali_kelas: 'Tri Yuli Aryani, S.Pd., Gr.'
+    };
+    JADWAL_CALENDAR_STATE.activeRombel = normalizeJadwalClass(childMurid.kelas || 'VII AISYAH');
+    
+    // UI Label
+    const labelEl = document.getElementById('jadwal-kelas-label');
+    if (labelEl) {
+      labelEl.classList.remove('hidden');
+      labelEl.textContent = `Kelas ${childMurid.kelas || JADWAL_CALENDAR_STATE.activeRombel}`;
+    }
+    const selectEl = document.getElementById('jadwal-kelas-select');
+    if (selectEl) selectEl.classList.add('hidden');
+  } else {
+    // Guru / Walas / Admin
+    const assignedClass = getUserAssignedClass();
+    if (assignedClass && JADWAL_DATA_MAP[assignedClass]) {
+      JADWAL_CALENDAR_STATE.activeRombel = assignedClass;
+    }
+    const labelEl = document.getElementById('jadwal-kelas-label');
+    if (labelEl) labelEl.classList.add('hidden');
+    
+    const selectEl = document.getElementById('jadwal-kelas-select');
+    if (selectEl) {
+      selectEl.classList.remove('hidden');
+      selectEl.value = JADWAL_CALENDAR_STATE.activeRombel;
+    }
+  }
+
+  // Update Seragam Hari Ini in Header Banner
+  const todayIdx = new Date().getDay();
+  let todayDayKey = INDO_DAY_KEYS[todayIdx];
+  if (todayDayKey === 'MINGGU' || todayDayKey === 'SABTU') todayDayKey = 'SENIN';
+  const seragamToday = SERAGAM_JADWAL_MAP[todayDayKey] || SERAGAM_JADWAL_MAP['SENIN'];
+  const headerSeragamEl = document.getElementById('jadwal-seragam-hari-ini');
+  if (headerSeragamEl) {
+    headerSeragamEl.textContent = `${seragamToday.seragam} (${todayDayKey})`;
+  }
+
+  // Render the calendar grid and selected day schedule
+  renderJadwalCalendar();
+}
+
+function renderJadwalCalendar() {
+  const gridEl = document.getElementById('calendar-days-grid');
+  const monthYearLabel = document.getElementById('calendar-month-year-label');
+  if (!gridEl) return;
+
+  const year = JADWAL_CALENDAR_STATE.currentYear;
+  const month = JADWAL_CALENDAR_STATE.currentMonth;
+  const today = new Date();
+  const selected = JADWAL_CALENDAR_STATE.selectedDate;
+
+  if (monthYearLabel) {
+    monthYearLabel.textContent = `${INDO_MONTH_NAMES[month]} ${year}`;
+  }
+
+  // First day of month (0 = Sun, 1 = Mon, ... 6 = Sat)
+  const firstDay = new Date(year, month, 1).getDay();
+  // Adjust so Monday is 0, Sunday is 6
+  const startOffset = (firstDay === 0) ? 6 : (firstDay - 1);
+
+  // Total days in current month
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  // Total days in previous month
+  const daysInPrevMonth = new Date(year, month, 0).getDate();
+
+  let html = '';
+
+  // 1. Previous month padding days
+  for (let i = startOffset - 1; i >= 0; i--) {
+    const prevDayNum = daysInPrevMonth - i;
+    const prevDate = new Date(year, month - 1, prevDayNum);
+    const dayOfWeek = prevDate.getDay();
+
+    html += `
+      <div class="min-h-[58px] sm:min-h-[72px] p-1.5 sm:p-2 rounded-2xl border border-dashed border-slate-200/50 bg-slate-50/40 opacity-40 flex flex-col justify-between cursor-not-allowed">
+        <span class="text-xs font-semibold text-slate-400">${prevDayNum}</span>
+      </div>
+    `;
+  }
+
+  // 2. Current month days
+  for (let day = 1; day <= daysInMonth; day++) {
+    const curDate = new Date(year, month, day);
+    const dayOfWeek = curDate.getDay(); // 0: Sun, 1: Mon, ... 6: Sat
+    const isWeekend = (dayOfWeek === 0 || dayOfWeek === 6);
+    const dayKey = INDO_DAY_KEYS[dayOfWeek];
+
+    const isToday = (
+      today.getFullYear() === year &&
+      today.getMonth() === month &&
+      today.getDate() === day
+    );
+
+    const isSelected = (
+      selected.getFullYear() === year &&
+      selected.getMonth() === month &&
+      selected.getDate() === day
+    );
+
+    // Uniform indicator for school days
+    let badgeContent = '';
+    if (!isWeekend) {
+      const uniform = SERAGAM_JADWAL_MAP[dayKey];
+      let dotColor = 'bg-blue-500';
+      if (dayKey === 'SELASA') dotColor = 'bg-amber-500';
+      if (dayKey === 'RABU') dotColor = 'bg-emerald-500';
+      if (dayKey === 'KAMIS') dotColor = 'bg-teal-500';
+      if (dayKey === 'JUM\'AT') dotColor = 'bg-amber-600';
+
+      badgeContent = `
+        <div class="mt-1 flex items-center gap-1 overflow-hidden">
+          <span class="w-2 h-2 rounded-full ${dotColor} shrink-0"></span>
+          <span class="hidden md:inline-block text-[10px] truncate ${isSelected ? 'text-white/90' : 'text-slate-600'} font-semibold">
+            ${uniform ? uniform.seragam.split(' ')[0] : 'Aktif'}
+          </span>
+        </div>
+      `;
+    } else {
+      badgeContent = `
+        <div class="mt-1 flex items-center gap-1">
+          <span class="hidden md:inline-block text-[10px] ${isSelected ? 'text-white/90' : 'text-rose-500'} font-bold opacity-80">Libur</span>
+        </div>
+      `;
+    }
+
+    // Styles for cell
+    let cellClasses = 'min-h-[58px] sm:min-h-[72px] p-1.5 sm:p-2.5 rounded-2xl border transition-all duration-150 flex flex-col justify-between cursor-pointer relative ';
+    
+    if (isSelected) {
+      cellClasses += 'bg-[#00a66c] text-white border-[#00a66c] shadow-md ring-2 ring-[#00a66c]/30 z-10 scale-[1.02]';
+    } else if (isToday) {
+      cellClasses += 'bg-emerald-50/70 border-[#00a66c] text-emerald-950 font-bold hover:bg-emerald-100/70 shadow-2xs';
+    } else if (isWeekend) {
+      cellClasses += 'bg-rose-50/40 border-rose-100/70 text-rose-600 hover:bg-rose-50/80';
+    } else {
+      cellClasses += 'bg-white border-slate-200/80 text-slate-800 hover:bg-slate-50 hover:border-emerald-300 hover:shadow-2xs';
+    }
+
+    html += `
+      <div onclick="selectCalendarDate(${year}, ${month}, ${day})"
+           id="cal-cell-${year}-${month}-${day}"
+           class="${cellClasses}"
+           title="${INDO_DAY_NAMES[dayOfWeek]}, ${day} ${INDO_MONTH_NAMES[month]} ${year}">
+        
+        <div class="flex items-center justify-between">
+          <span class="text-xs sm:text-sm font-black ${isSelected ? 'text-white' : ''}">
+            ${day}
+          </span>
+          ${isToday && !isSelected ? `
+            <span class="px-1.5 py-0.2 rounded-md text-[9px] font-black bg-[#00a66c] text-white">
+              Hari ini
+            </span>
+          ` : ''}
+        </div>
+
+        ${badgeContent}
+      </div>
+    `;
+  }
+
+  // 3. Next month padding days to complete grid
+  const totalRendered = startOffset + daysInMonth;
+  const remainingCells = (7 - (totalRendered % 7)) % 7;
+  for (let nextDay = 1; nextDay <= remainingCells; nextDay++) {
+    html += `
+      <div class="min-h-[58px] sm:min-h-[72px] p-1.5 sm:p-2 rounded-2xl border border-dashed border-slate-200/50 bg-slate-50/40 opacity-40 flex flex-col justify-between cursor-not-allowed">
+        <span class="text-xs font-semibold text-slate-400">${nextDay}</span>
+      </div>
+    `;
+  }
+
+  gridEl.innerHTML = html;
+
+  // Render the selected day schedule on the right side
+  renderCalendarSelectedDaySchedule();
+}
+
+function changeCalendarMonth(delta) {
+  let m = JADWAL_CALENDAR_STATE.currentMonth + delta;
+  let y = JADWAL_CALENDAR_STATE.currentYear;
+
+  if (m < 0) {
+    m = 11;
+    y--;
+  } else if (m > 11) {
+    m = 0;
+    y++;
+  }
+
+  JADWAL_CALENDAR_STATE.currentMonth = m;
+  JADWAL_CALENDAR_STATE.currentYear = y;
+
+  const daysInNewMonth = new Date(y, m + 1, 0).getDate();
+  const currentSelectedDay = Math.min(JADWAL_CALENDAR_STATE.selectedDate.getDate(), daysInNewMonth);
+  JADWAL_CALENDAR_STATE.selectedDate = new Date(y, m, currentSelectedDay);
+
+  renderJadwalCalendar();
+}
+
+function goToCalendarToday() {
+  const today = new Date();
+  JADWAL_CALENDAR_STATE.currentYear = today.getFullYear();
+  JADWAL_CALENDAR_STATE.currentMonth = today.getMonth();
+  JADWAL_CALENDAR_STATE.selectedDate = today;
+
+  renderJadwalCalendar();
+}
+
+function selectCalendarDate(year, month, day) {
+  JADWAL_CALENDAR_STATE.currentYear = year;
+  JADWAL_CALENDAR_STATE.currentMonth = month;
+  JADWAL_CALENDAR_STATE.selectedDate = new Date(year, month, day);
+
+  renderJadwalCalendar();
+}
+
+function selectCalendarWeekday(dayKey) {
+  const sel = JADWAL_CALENDAR_STATE.selectedDate;
+  const currentDayOfWeek = sel.getDay(); // 0-6
+  const targetIdx = INDO_DAY_KEYS.indexOf(dayKey);
+  if (targetIdx !== -1) {
+    const diff = targetIdx - currentDayOfWeek;
+    const newDate = new Date(sel);
+    newDate.setDate(sel.getDate() + diff);
+    JADWAL_CALENDAR_STATE.currentYear = newDate.getFullYear();
+    JADWAL_CALENDAR_STATE.currentMonth = newDate.getMonth();
+    JADWAL_CALENDAR_STATE.selectedDate = newDate;
+    renderJadwalCalendar();
+  }
+}
+
+function onJadwalClassChange(newClass) {
+  JADWAL_CALENDAR_STATE.activeRombel = normalizeJadwalClass(newClass);
+  renderCalendarSelectedDaySchedule();
+}
+
+function renderCalendarSelectedDaySchedule() {
+  const selDate = JADWAL_CALENDAR_STATE.selectedDate;
+  const dayOfWeek = selDate.getDay(); // 0: Sun, 1: Mon, ... 6: Sat
+  const dayNameIndo = INDO_DAY_NAMES[dayOfWeek];
+  const dayKey = INDO_DAY_KEYS[dayOfWeek];
+  const isWeekend = (dayOfWeek === 0 || dayOfWeek === 6);
+
+  const dayBadge = document.getElementById('selected-day-badge');
+  const uniformPill = document.getElementById('selected-day-uniform-pill');
+  const dateTitle = document.getElementById('selected-date-title');
+  const slotsContainer = document.getElementById('jadwal-slots-container');
+
+  if (dateTitle) {
+    dateTitle.textContent = `${dayNameIndo}, ${selDate.getDate()} ${INDO_MONTH_NAMES[selDate.getMonth()]} ${selDate.getFullYear()}`;
+  }
+
+  if (dayBadge) {
+    dayBadge.textContent = dayKey;
+  }
+
+  // Handle Weekend
+  if (isWeekend) {
+    if (uniformPill) {
+      uniformPill.className = 'px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-rose-100 text-rose-800 border border-rose-200';
+      uniformPill.innerHTML = '<i class="fa-solid fa-mug-saucer mr-1"></i> Libur Akhir Pekan';
+    }
+
+    if (slotsContainer) {
+      slotsContainer.innerHTML = `
+        <div class="py-10 px-4 text-center bg-slate-50/80 rounded-2xl border border-dashed border-slate-200 space-y-3">
+          <div class="w-14 h-14 mx-auto rounded-3xl bg-amber-100 text-amber-600 flex items-center justify-center text-2xl shadow-sm">
+            <i class="fa-regular fa-sun"></i>
+          </div>
+          <div class="space-y-1">
+            <h4 class="font-extrabold text-slate-900 text-sm">Hari Libur Akhir Pekan</h4>
+            <p class="text-xs text-slate-500 max-w-xs mx-auto leading-relaxed">
+              Tidak ada kegiatan tatap muka di sekolah pada hari ${dayNameIndo}. Waktu berkualitas bersama ananda dan muraja'ah mandiri di rumah.
+            </p>
+          </div>
+          <button type="button" onclick="selectCalendarWeekday('SENIN')" class="mt-2 px-4 py-2 bg-[#00a66c] hover:bg-[#008f5d] text-white rounded-xl text-xs font-bold transition shadow-xs cursor-pointer inline-flex items-center gap-1.5">
+            <i class="fa-solid fa-arrow-left"></i>
+            <span>Lihat Jadwal Hari Senin</span>
+          </button>
+        </div>
+      `;
+    }
+    return;
+  }
+
+  // Weekday (School Day)
+  const uniformInfo = SERAGAM_JADWAL_MAP[dayKey] || { seragam: 'Bebas Rapi', bg: 'bg-slate-100 text-slate-700' };
+  if (uniformPill) {
+    uniformPill.className = `px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${uniformInfo.bg}`;
+    uniformPill.innerHTML = `<i class="fa-solid fa-shirt mr-1"></i> ${uniformInfo.seragam}`;
+  }
+
+  // Get active schedule for selected rombel
+  const rombelKey = normalizeJadwalClass(JADWAL_CALENDAR_STATE.activeRombel || 'VII AISYAH');
+  const classSchedule = JADWAL_DATA_MAP[rombelKey] || JADWAL_DATA_MAP['VII AISYAH'];
+  const slots = (classSchedule.days && classSchedule.days[dayKey]) ? classSchedule.days[dayKey] : [];
+
+  // Determine active student NIS for grade display
+  const user = AppState.currentUser || {};
+  const isWali = (user.role === 'wali_murid');
+  const childNis = isWali ? (user.nis || AppState.activePrintNis || '242507001') : (AppState.activePrintNis || (AppState.muridList[0] ? AppState.muridList[0].nis : '242507001'));
+  const studentGrades = getStudentGradeData(childNis);
+
+  if (slotsContainer) {
+    if (slots.length === 0) {
+      slotsContainer.innerHTML = `
+        <div class="py-8 text-center bg-slate-50 rounded-2xl border border-dashed border-slate-200">
+          <p class="text-xs text-slate-500 font-semibold">Tidak ada jadwal tercatat untuk hari ${dayNameIndo}.</p>
+        </div>
+      `;
+      return;
+    }
+
+    slotsContainer.innerHTML = slots.map((slot, sIdx) => {
+      // Activity or Break Row
+      if (slot.is_activity) {
+        let actBg = 'bg-teal-50/70 border-teal-200/80 text-teal-950';
+        let actIcon = slot.icon || 'fa-solid fa-mosque';
+        if (slot.type === 'istirahat') {
+          actBg = 'bg-amber-50/60 border-amber-200/70 text-amber-950';
+          actIcon = 'fa-solid fa-mug-saucer text-amber-600';
+        } else if (slot.type === 'qailullah') {
+          actBg = 'bg-indigo-50/60 border-indigo-200/70 text-indigo-950';
+          actIcon = 'fa-solid fa-bed text-indigo-600';
+        } else if (slot.type === 'isoma' || slot.type === 'isoma_jumat') {
+          actBg = 'bg-emerald-50/80 border-emerald-200/80 text-emerald-950';
+          actIcon = 'fa-solid fa-utensils text-emerald-600';
+        } else if (slot.type === 'upacara') {
+          actBg = 'bg-rose-50/60 border-rose-200/70 text-rose-950';
+          actIcon = 'fa-solid fa-flag text-rose-600';
+        }
+
+        return `
+          <div class="py-2.5 px-3 rounded-2xl ${actBg} border flex items-center justify-between gap-3 text-xs">
+            <div class="flex items-center gap-2.5 font-bold">
+              <span class="w-7 h-7 rounded-xl bg-white/80 flex items-center justify-center text-xs shadow-2xs">
+                <i class="${actIcon}"></i>
+              </span>
+              <span class="tracking-wide">${slot.mapel}</span>
+            </div>
+            <span class="font-mono text-[11px] font-bold opacity-80 whitespace-nowrap">
+              <i class="fa-regular fa-clock mr-1"></i>${slot.waktu}
+            </span>
+          </div>
+        `;
+      }
+
+      // Mata Pelajaran Row (Interactive Card)
+      const mapelMeta = mapJadwalSubjectToRapor(slot.mapel);
+      const teacherName = slot.guru || GURU_JADWAL_DEFAULTS[slot.mapel] || 'Guru Pengampu';
+
+      // Find matching grade item for student
+      let scoreChip = '';
+      if (studentGrades && studentGrades.items) {
+        const matchedGrade = studentGrades.items.find(g => 
+          g.id === mapelMeta.id || 
+          g.name === mapelMeta.id || 
+          g.name === mapelMeta.name || 
+          g.abbr === slot.mapel
+        );
+        if (matchedGrade) {
+          const isTuntas = matchedGrade.score >= 75;
+          scoreChip = `
+            <div class="flex items-center gap-1.5 shrink-0">
+              <span class="px-2 py-0.5 rounded-lg text-xs font-mono font-black ${isTuntas ? 'bg-emerald-100 text-emerald-800 border border-emerald-200' : 'bg-rose-100 text-rose-800 border border-rose-200'}">
+                ${matchedGrade.score} (${matchedGrade.predikat})
+              </span>
+              <span class="hidden sm:inline-block px-1.5 py-0.5 rounded-md text-[10px] font-extrabold ${isTuntas ? 'bg-emerald-50 text-emerald-700' : 'bg-rose-50 text-rose-700'}">
+                ${isTuntas ? '✓ Tuntas' : 'Perlu Bimbingan'}
+              </span>
+            </div>
+          `;
+        } else if (slot.mapel.includes('QUR\'AN')) {
+          scoreChip = `
+            <div class="flex items-center gap-1.5 shrink-0">
+              <span class="px-2 py-0.5 rounded-lg text-xs font-mono font-black bg-emerald-100 text-emerald-800 border border-emerald-200">
+                92 (A)
+              </span>
+              <span class="hidden sm:inline-block px-1.5 py-0.5 rounded-md text-[10px] font-extrabold bg-emerald-50 text-emerald-700">
+                ✓ Tahfidz
+              </span>
+            </div>
+          `;
+        } else if (slot.mapel.includes('WUSHU') || slot.mapel.includes('PRAMUKA')) {
+          scoreChip = `
+            <div class="flex items-center gap-1.5 shrink-0">
+              <span class="px-2 py-0.5 rounded-lg text-xs font-black bg-amber-100 text-amber-800 border border-amber-200">
+                A (Aktif)
+              </span>
+            </div>
+          `;
+        }
+      }
+
+      return `
+        <div onclick="openMapelCapaianDetail('${encodeURIComponent(mapelMeta.id)}', '${encodeURIComponent(dayKey)}', '${encodeURIComponent(slot.waktu)}', '${encodeURIComponent(teacherName)}', '${encodeURIComponent(slot.mapel)}')"
+             class="group py-2.5 px-3 sm:px-3.5 rounded-2xl bg-white hover:bg-[#edf9f3] transition-all duration-150 cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 border border-slate-200/90 hover:border-[#a7f3d0] hover:shadow-xs">
+          
+          <div class="flex items-start sm:items-center gap-2.5 min-w-0">
+            <div class="w-9 h-9 rounded-xl bg-slate-50 border border-slate-200 group-hover:border-[#00a66c] group-hover:bg-[#00a66c] text-slate-700 group-hover:text-white flex items-center justify-center text-xs shadow-2xs transition-all duration-150 shrink-0 mt-0.5 sm:mt-0">
+              <i class="${mapelMeta.icon}"></i>
+            </div>
+            <div class="min-w-0">
+              <div class="flex flex-wrap items-center gap-1.5">
+                <h5 class="font-extrabold text-xs sm:text-sm text-slate-900 group-hover:text-emerald-900 transition-colors truncate">
+                  ${slot.mapel}
+                </h5>
+                <span class="px-1.5 py-0.2 rounded-md text-[9px] font-bold bg-slate-100 text-slate-600 border border-slate-200">
+                  ${slot.jp ? `${slot.jp} JP` : '1 JP'}
+                </span>
+                <span class="text-[9px] font-extrabold uppercase tracking-wider text-slate-400">
+                  • ${mapelMeta.rumpun}
+                </span>
+              </div>
+              <p class="text-[11px] text-slate-500 mt-0.5 flex items-center gap-1 truncate">
+                <i class="fa-solid fa-chalkboard-user text-slate-400 group-hover:text-[#00a66c] transition-colors text-[10px]"></i>
+                <span class="truncate">Guru: <strong>${teacherName}</strong></span>
+              </p>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between sm:justify-end gap-2 shrink-0 pt-1 sm:pt-0 border-t sm:border-0 border-slate-100">
+            <div class="flex items-center gap-1.5">
+              <span class="font-mono text-[11px] font-semibold text-slate-500 bg-slate-50 px-2 py-0.5 rounded-md border border-slate-200/80">
+                <i class="fa-regular fa-clock mr-1 text-slate-400"></i>${slot.waktu}
+              </span>
+              ${scoreChip}
+            </div>
+            <div class="w-7 h-7 rounded-full bg-slate-100 group-hover:bg-emerald-600 text-slate-400 group-hover:text-white flex items-center justify-center text-[10px] transition-colors shadow-2xs shrink-0" title="Klik untuk lihat capaian nilai">
+              <i class="fa-solid fa-arrow-right"></i>
+            </div>
+          </div>
+
+        </div>
+      `;
+    }).join('');
+  }
+}
+
 function renderWaliJadwal(childNis, childMurid) {
+  // Sync dedicated calendar view if present
+  if (document.getElementById('view-jadwal')) {
+    initJadwalCalendar();
+  }
   const container = document.getElementById('wali-jadwal-container');
   if (!container) return;
 
@@ -11285,6 +11856,15 @@ function contactTeacherWhatsApp() {
 
 window.JADWAL_DATA_MAP = JADWAL_DATA_MAP;
 window.SERAGAM_JADWAL_MAP = SERAGAM_JADWAL_MAP;
+window.JADWAL_CALENDAR_STATE = JADWAL_CALENDAR_STATE;
+window.initJadwalCalendar = initJadwalCalendar;
+window.renderJadwalCalendar = renderJadwalCalendar;
+window.changeCalendarMonth = changeCalendarMonth;
+window.goToCalendarToday = goToCalendarToday;
+window.selectCalendarDate = selectCalendarDate;
+window.selectCalendarWeekday = selectCalendarWeekday;
+window.onJadwalClassChange = onJadwalClassChange;
+window.renderCalendarSelectedDaySchedule = renderCalendarSelectedDaySchedule;
 window.renderWaliJadwal = renderWaliJadwal;
 window.filterJadwalHari = filterJadwalHari;
 window.openMapelCapaianDetail = openMapelCapaianDetail;

@@ -1,0 +1,188 @@
+<!-- View: Jadwal Pelajaran (Kalender Interaktif & Detail Harian) -->
+<div id="view-jadwal" class="view-panel hidden space-y-6">
+
+  <!-- Header Banner -->
+  <div class="relative overflow-hidden bg-gradient-to-br from-emerald-800 via-teal-800 to-slate-900 rounded-3xl p-6 sm:p-8 text-white shadow-lg border border-emerald-700/40">
+    <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute -left-10 -top-10 w-64 h-64 bg-teal-400/10 rounded-full blur-3xl pointer-events-none"></div>
+
+    <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+      <div class="space-y-2">
+        <div class="flex items-center gap-2">
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-black bg-emerald-400/20 text-emerald-200 border border-emerald-400/30 backdrop-blur-sm">
+            <i class="fa-regular fa-calendar-check text-xs"></i>
+            Kalender Pembelajaran & Seragam
+          </span>
+          <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-white/10 text-emerald-100 border border-white/10">
+            TP 2026/2027 (Semester Ganjil)
+          </span>
+        </div>
+        <h1 class="text-2xl sm:text-3xl font-black tracking-tight text-white flex items-center gap-3">
+          <span>Jadwal Pelajaran</span>
+        </h1>
+        <p class="text-xs sm:text-sm text-emerald-100/80 max-w-2xl leading-relaxed">
+          Pilih tanggal pada kalender untuk melihat jam belajar harian, seragam sekolah, guru pengampu, serta klik mata pelajaran untuk memantau capaian nilai ananda.
+        </p>
+      </div>
+
+      <!-- Quick Info / Badges on right -->
+      <div class="flex flex-col sm:flex-row md:flex-col lg:flex-row items-stretch sm:items-center gap-3">
+        <!-- Class Selector / Badge -->
+        <div class="bg-white/10 backdrop-blur-md border border-white/15 rounded-2xl p-3 flex items-center gap-3 min-w-[210px]">
+          <div class="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-400/30 flex items-center justify-center text-emerald-300 text-lg shrink-0">
+            <i class="fa-solid fa-chalkboard-user"></i>
+          </div>
+          <div class="flex-1 min-w-0">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-200/70 block leading-tight">Kelas / Rombel:</span>
+            <!-- Locked text for Wali Murid -->
+            <span id="jadwal-kelas-label" class="text-xs font-black text-white truncate block">Kelas VII AISYAH</span>
+            <!-- Dropdown for Teachers & Admin -->
+            <select id="jadwal-kelas-select" onchange="onJadwalClassChange(this.value)" class="hidden mt-1 text-xs font-bold text-slate-800 bg-white rounded-lg px-2 py-1 w-full border border-slate-300 focus:outline-emerald-500 cursor-pointer">
+              <option value="VII AISYAH">VII AISYAH (Putri)</option>
+              <option value="VII UTSMAN">VII UTSMAN (Putra)</option>
+              <option value="VIII KHODIJAH">VIII KHODIJAH (Putri)</option>
+              <option value="VIII UMAR">VIII UMAR (Putra)</option>
+              <option value="IX UMMU SALAMAH">IX UMMU SALAMAH (Putri)</option>
+              <option value="IX ABU BAKAR">IX ABU BAKAR (Putra)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Seragam Hari Ini Pill -->
+        <div class="bg-white/10 backdrop-blur-md border border-white/15 rounded-2xl p-3 flex items-center gap-3 min-w-[200px]">
+          <div class="w-10 h-10 rounded-xl bg-amber-400/20 border border-amber-300/30 flex items-center justify-center text-amber-300 text-lg shrink-0">
+            <i class="fa-solid fa-shirt"></i>
+          </div>
+          <div>
+            <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-200/70 block leading-tight">Seragam Hari Ini:</span>
+            <strong id="jadwal-seragam-hari-ini" class="text-xs font-black text-amber-300 block">Putih Biru (Senin)</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Grid: Calendar on Left / Top, Daily Schedule on Right / Bottom -->
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+    
+    <!-- Left Column: Interactive Month Calendar -->
+    <div class="lg:col-span-7 bg-white rounded-3xl border border-[#e2f3ea] shadow-sm p-5 sm:p-6 space-y-5">
+      
+      <!-- Calendar Navigation Bar -->
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pb-3 border-b border-slate-100">
+        <div class="flex items-center gap-3">
+          <button type="button" onclick="changeCalendarMonth(-1)" id="btn-prev-month" class="w-9 h-9 rounded-xl border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50 text-slate-600 hover:text-emerald-700 flex items-center justify-center transition cursor-pointer shadow-2xs" title="Bulan Sebelumnya">
+            <i class="fa-solid fa-chevron-left text-xs"></i>
+          </button>
+          
+          <h2 id="calendar-month-year-label" class="text-base sm:text-lg font-black text-slate-800 tracking-tight min-w-[170px] text-center select-none">
+            Oktober 2026
+          </h2>
+
+          <button type="button" onclick="changeCalendarMonth(1)" id="btn-next-month" class="w-9 h-9 rounded-xl border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50 text-slate-600 hover:text-emerald-700 flex items-center justify-center transition cursor-pointer shadow-2xs" title="Bulan Berikutnya">
+            <i class="fa-solid fa-chevron-right text-xs"></i>
+          </button>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <button type="button" onclick="goToCalendarToday()" id="btn-calendar-today" class="px-3.5 py-1.5 rounded-xl border border-emerald-300 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shadow-2xs">
+            <i class="fa-regular fa-calendar-check text-xs"></i>
+            <span>Hari Ini</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Helper info: Click date to view schedule -->
+      <div class="flex items-center justify-between px-1 text-xs text-slate-500">
+        <span class="flex items-center gap-1.5">
+          <i class="fa-solid fa-hand-pointer text-emerald-600 animate-pulse"></i>
+          <span>Klik tanggal untuk melihat jadwal pelajaran hari tersebut:</span>
+        </span>
+        <span class="hidden sm:inline-flex items-center gap-1 text-[11px] text-slate-400">
+          <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Hari Sekolah (Sen-Jum)
+        </span>
+      </div>
+
+      <!-- Calendar Days Header (Senin - Ahad) -->
+      <div class="grid grid-cols-7 gap-1 sm:gap-2 text-center text-xs font-black select-none">
+        <div class="py-2 rounded-xl bg-slate-50 text-slate-700 border border-slate-100">Sen</div>
+        <div class="py-2 rounded-xl bg-slate-50 text-slate-700 border border-slate-100">Sel</div>
+        <div class="py-2 rounded-xl bg-slate-50 text-slate-700 border border-slate-100">Rab</div>
+        <div class="py-2 rounded-xl bg-slate-50 text-slate-700 border border-slate-100">Kam</div>
+        <div class="py-2 rounded-xl bg-slate-50 text-slate-700 border border-slate-100">Jum</div>
+        <div class="py-2 rounded-xl bg-rose-50 text-rose-600 border border-rose-100">Sab</div>
+        <div class="py-2 rounded-xl bg-rose-50 text-rose-600 border border-rose-100">Ahd</div>
+      </div>
+
+      <!-- Calendar Days Grid (Rendered dynamically via JavaScript) -->
+      <div id="calendar-days-grid" class="grid grid-cols-7 gap-1 sm:gap-2 select-none">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <!-- Calendar Seragam & Legend Pills -->
+      <div class="pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-500">
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="font-bold text-slate-700">Seragam Harian:</span>
+          <span class="px-2 py-0.5 rounded-lg bg-blue-50 text-blue-700 border border-blue-200/80 font-medium">Sen: Putih Biru</span>
+          <span class="px-2 py-0.5 rounded-lg bg-amber-50 text-amber-700 border border-amber-200/80 font-medium">Sel: Batik Putih</span>
+          <span class="px-2 py-0.5 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200/80 font-medium">Rab: Kotak Hijau</span>
+          <span class="px-2 py-0.5 rounded-lg bg-teal-50 text-teal-700 border border-teal-200/80 font-medium">Kam: Gamis/Koko</span>
+          <span class="px-2 py-0.5 rounded-lg bg-amber-100 text-amber-900 border border-amber-300 font-medium">Jum: Pramuka</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Right Column: Detail Jadwal Pelajaran Hari Terpilih ("Tampilan seperti saat ini") -->
+    <div class="lg:col-span-5 bg-white rounded-3xl border border-[#e2f3ea] shadow-sm p-5 sm:p-6 space-y-4">
+      
+      <!-- Selected Day Detail Header -->
+      <div id="jadwal-selected-day-header" class="p-4 rounded-2xl bg-gradient-to-r from-emerald-50 via-teal-50 to-white border border-emerald-200/80 space-y-2">
+        <div class="flex items-center justify-between">
+          <span id="selected-day-badge" class="px-3 py-1 rounded-full text-xs font-black bg-[#00a66c] text-white shadow-2xs tracking-wide">
+            SENIN
+          </span>
+          <span id="selected-day-uniform-pill" class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-blue-100 text-blue-800 border border-blue-200">
+            <i class="fa-solid fa-shirt mr-1"></i> Putih Biru
+          </span>
+        </div>
+        <h3 id="selected-date-title" class="text-base sm:text-lg font-black text-slate-900 tracking-tight">
+          Senin, 26 Oktober 2026
+        </h3>
+        <p class="text-xs text-slate-600 flex items-center gap-1.5">
+          <i class="fa-solid fa-clock text-emerald-600"></i>
+          <span>Waktu Belajar: <strong>07.10 - 16.00 WIB</strong> (Full Day School)</span>
+        </p>
+      </div>
+
+      <!-- Interactive Helper Banner -->
+      <div class="bg-emerald-50/60 border border-emerald-200/80 rounded-2xl p-3 flex items-start gap-2.5 text-xs text-emerald-950 leading-relaxed">
+        <span class="w-5 h-5 rounded-lg bg-emerald-200 text-emerald-800 flex items-center justify-center text-[10px] shrink-0 mt-0.5">
+          <i class="fa-solid fa-hand-pointer"></i>
+        </span>
+        <div>
+          Klik kartu <strong>Mata Pelajaran</strong> untuk melihat nilai angka rapor, ketuntasan KKM, deskripsi capaian resmi, dan konsultasi guru.
+        </div>
+      </div>
+
+      <!-- Time Slots Container for Selected Day -->
+      <div id="jadwal-slots-container" class="space-y-2.5 max-h-[600px] overflow-y-auto pr-1">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <!-- Footer Legend -->
+      <div class="pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2 text-[10px] text-slate-500">
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span> Akademik
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Diniyah
+          <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Ekskul
+          <span class="w-2.5 h-2.5 rounded-full bg-teal-500"></span> Ibadah
+        </div>
+        <span>* Jum'at: Sholat Jum'at & ISOMA 11.00 - 13.00</span>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
