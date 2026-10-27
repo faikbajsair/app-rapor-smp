@@ -384,6 +384,7 @@
         break-inside: avoid !important;
         border: 1px solid #cbd5e1 !important;
         width: 100% !important;
+        table-layout: auto !important;
       }
       body.printing-resume-all #modal-resume-chart-nilai table th,
       body.printing-resume-all #modal-resume-chart-nilai table td,
@@ -392,6 +393,11 @@
         border: 1px solid #e2e8f0 !important;
         padding: 3px 5px !important;
         font-size: 7.5pt !important;
+        white-space: nowrap !important;
+      }
+      body.printing-resume-all #modal-resume-chart-nilai table td span,
+      body.printing-resume-active #modal-resume-chart-nilai table td span {
+        white-space: nowrap !important;
       }
     }
   </style>

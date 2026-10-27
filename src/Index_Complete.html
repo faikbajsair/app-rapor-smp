@@ -384,6 +384,7 @@
         break-inside: avoid !important;
         border: 1px solid #cbd5e1 !important;
         width: 100% !important;
+        table-layout: auto !important;
       }
       body.printing-resume-all #modal-resume-chart-nilai table th,
       body.printing-resume-all #modal-resume-chart-nilai table td,
@@ -392,6 +393,11 @@
         border: 1px solid #e2e8f0 !important;
         padding: 3px 5px !important;
         font-size: 7.5pt !important;
+        white-space: nowrap !important;
+      }
+      body.printing-resume-all #modal-resume-chart-nilai table td span,
+      body.printing-resume-active #modal-resume-chart-nilai table td span {
+        white-space: nowrap !important;
       }
     }
   </style>
@@ -6562,7 +6568,7 @@
               <h3 class="text-base sm:text-lg font-black text-white leading-tight" id="resume-chart-student-name">
                 Resume Grafik Nilai Siswa
               </h3>
-              <span id="resume-chart-badge-tuntas" class="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-emerald-400/25 text-emerald-200 border border-emerald-400/30">
+              <span id="resume-chart-badge-tuntas" class="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-emerald-400/25 text-emerald-200 border border-emerald-400/30 whitespace-nowrap" style="white-space: nowrap !important;">
                 100% TUNTAS KKM
               </span>
             </div>
@@ -6834,14 +6840,14 @@
             <table class="w-full text-left border-collapse text-xs">
               <thead>
                 <tr class="bg-slate-100/80 text-slate-600 font-black text-[10px] uppercase border-b border-slate-200">
-                  <th class="py-2.5 px-3 text-center w-10">No</th>
-                  <th class="py-2.5 px-3">Mata Pelajaran</th>
-                  <th class="py-2.5 px-3">Rumpun</th>
-                  <th class="py-2.5 px-3 text-center w-16">KKM</th>
-                  <th class="py-2.5 px-3 text-center w-20">Nilai Siswa</th>
-                  <th class="py-2.5 px-3 text-center w-24">Selisih KKM</th>
-                  <th class="py-2.5 px-3 text-center w-16">Predikat</th>
-                  <th class="py-2.5 px-3 text-center w-24">Status</th>
+                  <th class="py-2.5 px-3 text-center w-10 whitespace-nowrap" style="white-space: nowrap !important;">No</th>
+                  <th class="py-2.5 px-3 whitespace-nowrap" style="white-space: nowrap !important;">Mata Pelajaran</th>
+                  <th class="py-2.5 px-3 whitespace-nowrap" style="white-space: nowrap !important;">Rumpun</th>
+                  <th class="py-2.5 px-3 text-center w-16 whitespace-nowrap" style="white-space: nowrap !important;">KKM</th>
+                  <th class="py-2.5 px-3 text-center w-20 whitespace-nowrap" style="white-space: nowrap !important;">Nilai Siswa</th>
+                  <th class="py-2.5 px-3 text-center w-24 whitespace-nowrap" style="white-space: nowrap !important;">Selisih KKM</th>
+                  <th class="py-2.5 px-3 text-center w-16 whitespace-nowrap" style="white-space: nowrap !important;">Predikat</th>
+                  <th class="py-2.5 px-3 text-center min-w-[120px] whitespace-nowrap" style="white-space: nowrap !important;">Status</th>
                 </tr>
               </thead>
               <tbody id="resume-table-tbody" class="divide-y divide-slate-100 font-medium">
@@ -13851,25 +13857,25 @@ function renderGradeTable(tbodyId, gradeData) {
     const deltaStr = delta >= 0 ? `+${delta}` : `${delta}`;
     const deltaCls = delta >= 0 ? 'text-emerald-700 bg-emerald-50 border-emerald-200' : 'text-rose-700 bg-rose-50 border-rose-200';
     const statusCls = item.score >= 75 ? 'bg-emerald-100 text-emerald-800 border-emerald-300' : 'bg-rose-100 text-rose-800 border-rose-300';
-    const statusTxt = item.score >= 75 ? 'TUNTAS KKM' : 'PERLU REMEDIAL';
+    const statusTxt = item.score >= 75 ? 'TUNTAS&nbsp;KKM' : 'PERLU&nbsp;REMEDIAL';
 
     return `
       <tr class="hover:bg-slate-50 transition">
-        <td class="py-2.5 px-3 text-center text-slate-500 font-mono whitespace-nowrap">${idx + 1}</td>
-        <td class="py-2.5 px-3 font-bold text-slate-900 whitespace-nowrap">${item.name}</td>
-        <td class="py-2.5 px-3 whitespace-nowrap">
-          <span class="px-2 py-0.5 rounded text-[10px] font-extrabold whitespace-nowrap inline-block ${item.rumpunBadge}">${item.rumpun}</span>
+        <td class="py-2.5 px-3 text-center text-slate-500 font-mono whitespace-nowrap" style="white-space: nowrap !important;">${idx + 1}</td>
+        <td class="py-2.5 px-3 font-bold text-slate-900 whitespace-nowrap" style="white-space: nowrap !important;">${item.name}</td>
+        <td class="py-2.5 px-3 whitespace-nowrap" style="white-space: nowrap !important;">
+          <span class="px-2 py-0.5 rounded text-[10px] font-extrabold whitespace-nowrap inline-block ${item.rumpunBadge}" style="white-space: nowrap !important;">${item.rumpun}</span>
         </td>
-        <td class="py-2.5 px-3 text-center font-mono font-bold text-slate-600 whitespace-nowrap">75</td>
-        <td class="py-2.5 px-3 text-center font-mono font-black text-slate-950 text-sm whitespace-nowrap">${item.score}</td>
-        <td class="py-2.5 px-3 text-center font-mono font-bold whitespace-nowrap">
-          <span class="px-2.5 py-0.5 rounded border text-[11px] whitespace-nowrap inline-block ${deltaCls}">${deltaStr} poin</span>
+        <td class="py-2.5 px-3 text-center font-mono font-bold text-slate-600 whitespace-nowrap" style="white-space: nowrap !important;">75</td>
+        <td class="py-2.5 px-3 text-center font-mono font-black text-slate-950 text-sm whitespace-nowrap" style="white-space: nowrap !important;">${item.score}</td>
+        <td class="py-2.5 px-3 text-center font-mono font-bold whitespace-nowrap" style="white-space: nowrap !important;">
+          <span class="px-2.5 py-0.5 rounded border text-[11px] whitespace-nowrap inline-block ${deltaCls}" style="white-space: nowrap !important;">${deltaStr}&nbsp;poin</span>
         </td>
-        <td class="py-2.5 px-3 text-center whitespace-nowrap">
-          <span class="px-2.5 py-0.5 rounded font-black text-[10px] whitespace-nowrap inline-block ${item.predikatBadge}">${item.predikat}</span>
+        <td class="py-2.5 px-3 text-center whitespace-nowrap" style="white-space: nowrap !important;">
+          <span class="px-2.5 py-0.5 rounded font-black text-[10px] whitespace-nowrap inline-block ${item.predikatBadge}" style="white-space: nowrap !important;">${item.predikat}</span>
         </td>
-        <td class="py-2.5 px-3 text-center whitespace-nowrap">
-          <span class="px-2.5 py-1 rounded-full text-[9px] font-black border whitespace-nowrap inline-block shadow-2xs tracking-wide ${statusCls}">${statusTxt}</span>
+        <td class="py-2.5 px-3 text-center whitespace-nowrap" style="white-space: nowrap !important;">
+          <span class="px-3 py-1 rounded-full text-[9px] font-extrabold border whitespace-nowrap inline-flex items-center justify-center tracking-wider ${statusCls}" style="white-space: nowrap !important; display: inline-flex !important;">${statusTxt}</span>
         </td>
       </tr>
     `;
