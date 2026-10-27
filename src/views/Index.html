@@ -95,6 +95,42 @@
     .view-panel {
       transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     }
+
+    /* Sidebar Navigation Link Styling - Prevent Text Stacking & Clean Active State */
+    .sidebar-nav-link {
+      white-space: nowrap !important;
+    }
+    .sidebar-nav-link > div {
+      min-width: 0 !important;
+    }
+    .sidebar-nav-link span {
+      white-space: nowrap !important;
+    }
+    .sidebar-nav-link .nav-badge {
+      white-space: nowrap !important;
+      flex-shrink: 0 !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      line-height: 1 !important;
+    }
+    .sidebar-nav-link.bg-\[\#00a66c\],
+    .sidebar-nav-link.active-nav {
+      background-color: #00a66c !important;
+      color: #ffffff !important;
+    }
+    .sidebar-nav-link.bg-\[\#00a66c\] i,
+    .sidebar-nav-link.active-nav i {
+      color: #ffffff !important;
+    }
+    .sidebar-nav-link.bg-\[\#00a66c\] .nav-badge,
+    .sidebar-nav-link.active-nav .nav-badge {
+      background-color: rgba(255, 255, 255, 0.22) !important;
+      color: #ffffff !important;
+      border-color: rgba(255, 255, 255, 0.35) !important;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+    }
     
     /* Print Optimization for Report Card (Format A4) & Leger */
     @media print {

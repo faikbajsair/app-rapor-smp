@@ -1,17 +1,17 @@
 <!-- Main Application Sidebar -->
-<aside id="app-sidebar" class="no-print fixed inset-y-0 left-0 z-20 w-64 bg-white text-slate-700 m-3 sm:m-4 rounded-3xl border border-[#e2f3ea] shadow-sm transform -translate-x-full lg:translate-x-0 lg:static lg:inset-auto transition-transform duration-200 ease-in-out flex flex-col justify-between">
+<aside id="app-sidebar" class="no-print fixed inset-y-0 left-0 z-20 w-72 sm:w-72 lg:w-72 flex-shrink-0 bg-white text-slate-700 m-3 sm:m-4 rounded-3xl border border-[#e2f3ea] shadow-sm transform -translate-x-full lg:translate-x-0 lg:static lg:inset-auto transition-transform duration-200 ease-in-out flex flex-col justify-between">
   
-  <div class="p-4 sm:p-5 flex-1 overflow-y-auto">
+  <div class="p-3.5 sm:p-4 flex-1 overflow-y-auto">
     <!-- Brand / School Header in Sidebar (as in screenshot) -->
     <div class="flex items-center gap-3 pb-4 mb-4 border-b border-[#e2f3ea]">
       <div class="w-10 h-10 rounded-2xl bg-[#e8f8f2] border border-[#a7f3d0] flex items-center justify-center text-[#00a66c] font-black text-sm shadow-sm flex-shrink-0">
         <i class="fa-solid fa-graduation-cap text-lg"></i>
       </div>
-      <div class="overflow-hidden">
-        <h2 class="text-xs font-extrabold text-slate-900 uppercase tracking-tight truncate leading-tight">SMP AL-IMAM</h2>
-        <p class="text-[10px] font-bold text-[#00a66c] mt-0.5">TP 2026/2027 (Aktif)</p>
+      <div class="overflow-hidden min-w-0">
+        <h2 class="text-xs font-extrabold text-slate-900 uppercase tracking-tight truncate leading-tight whitespace-nowrap">SMP AL-IMAM</h2>
+        <p class="text-[10px] font-bold text-[#00a66c] mt-0.5 whitespace-nowrap">TP 2026/2027 (Aktif)</p>
       </div>
-      <button id="btn-close-sidebar" onclick="toggleSidebar()" class="ml-auto p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 lg:hidden cursor-pointer" title="Tutup Menu">
+      <button id="btn-close-sidebar" onclick="toggleSidebar()" class="ml-auto p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 lg:hidden cursor-pointer flex-shrink-0" title="Tutup Menu">
         <i class="fa-solid fa-xmark text-base"></i>
       </button>
     </div>
@@ -20,147 +20,147 @@
     <nav class="space-y-1.5" id="sidebar-nav-list">
       
       <!-- 1. Menu Utama -->
-      <div class="px-3 py-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider">Menu Utama</div>
+      <div class="px-3 py-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider whitespace-nowrap">Menu Utama</div>
       <a href="javascript:void(0)" onclick="switchView('dashboard')" id="nav-item-dashboard" 
-         class="sidebar-nav-link flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-bold text-white bg-[#00a66c] shadow-md shadow-[#00a66c]/20 transition-all cursor-pointer select-none">
-        <i class="fa-solid fa-table-cells-large w-4 text-center text-sm"></i>
-        <span>Dashboard</span>
+         class="sidebar-nav-link active-nav flex items-center gap-2.5 px-3 py-2.5 rounded-2xl text-xs font-bold text-white bg-[#00a66c] shadow-md shadow-[#00a66c]/20 transition-all cursor-pointer select-none whitespace-nowrap">
+        <i class="fa-solid fa-table-cells-large w-4 text-center text-sm flex-shrink-0"></i>
+        <span class="truncate">Dashboard</span>
       </a>
 
       <!-- Jadwal Pelajaran (Kalender) -->
       <a href="javascript:void(0)" onclick="switchView('jadwal')" id="nav-item-jadwal" 
-         class="sidebar-nav-link flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none">
-        <div class="flex items-center gap-3">
-          <i class="fa-regular fa-calendar-days w-4 text-center text-sm"></i>
-          <span>Jadwal Pelajaran</span>
+         class="sidebar-nav-link flex items-center justify-between gap-2 px-3 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none whitespace-nowrap">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <i class="fa-regular fa-calendar-days w-4 text-center text-sm flex-shrink-0"></i>
+          <span class="truncate">Jadwal Pelajaran</span>
         </div>
-        <span class="text-[10px] bg-emerald-50 text-[#00a66c] px-2 py-0.5 rounded-full font-bold border border-emerald-100">Kalender</span>
+        <span class="nav-badge text-[10px] bg-emerald-50 text-[#00a66c] px-2 py-0.5 rounded-full font-bold border border-emerald-100 flex-shrink-0 whitespace-nowrap leading-none">Kalender</span>
       </a>
 
       <!-- Catatan Amal Sholeh (A-Record) -->
       <a href="javascript:void(0)" onclick="switchView('amalsholeh')" id="nav-item-amalsholeh" 
-         class="sidebar-nav-link flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none">
-        <div class="flex items-center gap-3">
-          <i class="fa-solid fa-hand-holding-heart w-4 text-center text-sm text-rose-500"></i>
-          <span>Catatan Amal Sholeh</span>
+         class="sidebar-nav-link flex items-center justify-between gap-2 px-3 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none whitespace-nowrap">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <i class="fa-solid fa-hand-holding-heart w-4 text-center text-sm text-rose-500 flex-shrink-0"></i>
+          <span class="truncate">Catatan Amal Sholeh</span>
         </div>
-        <span class="text-[10px] bg-rose-50 text-rose-600 px-2 py-0.5 rounded-full font-bold border border-rose-100">A-Record</span>
+        <span class="nav-badge text-[10px] bg-rose-50 text-rose-600 px-2 py-0.5 rounded-full font-bold border border-rose-100 flex-shrink-0 whitespace-nowrap leading-none">A-Record</span>
       </a>
 
       <!-- Bimbingan Konseling (BK) -->
       <a href="javascript:void(0)" onclick="switchView('konseling')" id="nav-item-konseling" 
-         class="sidebar-nav-link flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none">
-        <div class="flex items-center gap-3">
-          <i class="fa-solid fa-comments w-4 text-center text-sm text-teal-600"></i>
-          <span>Bimbingan Konseling</span>
+         class="sidebar-nav-link flex items-center justify-between gap-2 px-3 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none whitespace-nowrap">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <i class="fa-solid fa-comments w-4 text-center text-sm text-teal-600 flex-shrink-0"></i>
+          <span class="truncate">Bimbingan Konseling</span>
         </div>
-        <span class="text-[10px] bg-teal-50 text-teal-700 px-2 py-0.5 rounded-full font-bold border border-teal-100">BK</span>
+        <span class="nav-badge text-[10px] bg-teal-50 text-teal-700 px-2 py-0.5 rounded-full font-bold border border-teal-100 flex-shrink-0 whitespace-nowrap leading-none">BK</span>
       </a>
 
 
       <!-- 2. Kategori Penilaian Utama (TP, Akademik & Checklist, Cek Deskripsi, Ahlaq, Diniyah) -->
-      <div class="pt-3 px-3 py-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider menu-assessment-header menu-non-wali">Penilaian Kurikulum Merdeka</div>
+      <div class="pt-3 px-3 py-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider menu-assessment-header menu-non-wali whitespace-nowrap">Penilaian Kurikulum Merdeka</div>
       
       <!-- Tujuan Pembelajaran (TP) -->
       <a href="javascript:void(0)" onclick="switchView('tp')" id="nav-item-tp" 
-         class="sidebar-nav-link menu-assessment-item menu-non-wali flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none">
-        <div class="flex items-center gap-3">
-          <i class="fa-solid fa-bullseye w-4 text-center text-sm"></i>
-          <span>Tujuan Pembelajaran (TP)</span>
+         class="sidebar-nav-link menu-assessment-item menu-non-wali flex items-center justify-between gap-2 px-3 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none whitespace-nowrap">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <i class="fa-solid fa-bullseye w-4 text-center text-sm flex-shrink-0"></i>
+          <span class="truncate">Tujuan Pembelajaran (TP)</span>
         </div>
-        <span class="text-[10px] bg-[#e8f8f2] text-[#00a66c] px-2 py-0.5 rounded-full font-bold" id="badge-count-tp">64 TP</span>
+        <span class="nav-badge text-[10px] bg-[#e8f8f2] text-[#00a66c] px-2 py-0.5 rounded-full font-bold flex-shrink-0 whitespace-nowrap leading-none" id="badge-count-tp">64 TP</span>
       </a>
 
       <!-- Nilai Akademik & Checklist TP -->
       <a href="javascript:void(0)" onclick="switchView('akademik')" id="nav-item-akademik" 
-         class="sidebar-nav-link menu-assessment-item menu-non-wali flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none">
-        <div class="flex items-center gap-3">
-          <i class="fa-solid fa-book-open w-4 text-center text-sm"></i>
-          <span>Input Nilai & Checklist TP</span>
+         class="sidebar-nav-link menu-assessment-item menu-non-wali flex items-center justify-between gap-2 px-3 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none whitespace-nowrap">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <i class="fa-solid fa-book-open w-4 text-center text-sm flex-shrink-0"></i>
+          <span class="truncate">Input Nilai & Checklist TP</span>
         </div>
-        <span class="text-[10px] bg-[#e8f8f2] text-[#00a66c] px-2 py-0.5 rounded-full font-bold" id="badge-count-akademik">1,376</span>
+        <span class="nav-badge text-[10px] bg-[#e8f8f2] text-[#00a66c] px-2 py-0.5 rounded-full font-bold flex-shrink-0 whitespace-nowrap leading-none" id="badge-count-akademik">1,376</span>
       </a>
 
       <!-- Cek Deskripsi Rapor -->
       <a href="javascript:void(0)" onclick="switchView('deskripsi')" id="nav-item-deskripsi" 
-         class="sidebar-nav-link menu-assessment-item menu-non-wali flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none">
-        <div class="flex items-center gap-3">
-          <i class="fa-solid fa-file-circle-check w-4 text-center text-sm"></i>
-          <span>Cek Deskripsi Rapor</span>
+         class="sidebar-nav-link menu-assessment-item menu-non-wali flex items-center justify-between gap-2 px-3 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none whitespace-nowrap">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <i class="fa-solid fa-file-circle-check w-4 text-center text-sm flex-shrink-0"></i>
+          <span class="truncate">Cek Deskripsi Rapor</span>
         </div>
-        <span class="text-[10px] bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full font-bold">Auto</span>
+        <span class="nav-badge text-[10px] bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full font-bold flex-shrink-0 whitespace-nowrap leading-none">Auto</span>
       </a>
 
       <!-- Ahlaq & Kepribadian (Khusus Wali Kelas & Admin) -->
       <a href="javascript:void(0)" onclick="switchView('kepemimpinan')" id="nav-item-kepemimpinan" 
-         class="sidebar-nav-link menu-assessment-item menu-non-wali menu-walas-admin-only flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none">
-        <div class="flex items-center gap-3">
-          <i class="fa-solid fa-heart-pulse w-4 text-center text-sm"></i>
-          <span>Ahlaq & Kepribadian</span>
+         class="sidebar-nav-link menu-assessment-item menu-non-wali menu-walas-admin-only flex items-center justify-between gap-2 px-3 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none whitespace-nowrap">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <i class="fa-solid fa-heart-pulse w-4 text-center text-sm flex-shrink-0"></i>
+          <span class="truncate">Ahlaq & Kepribadian</span>
         </div>
-        <span class="text-[10px] bg-[#e8f8f2] text-[#00a66c] px-2 py-0.5 rounded-full font-bold" id="badge-count-kepemimpinan">159</span>
+        <span class="nav-badge text-[10px] bg-[#e8f8f2] text-[#00a66c] px-2 py-0.5 rounded-full font-bold flex-shrink-0 whitespace-nowrap leading-none" id="badge-count-kepemimpinan">159</span>
       </a>
 
       <!-- Diniyah (Khusus Wali Kelas & Admin) -->
       <a href="javascript:void(0)" onclick="switchView('diniyah')" id="nav-item-diniyah" 
-         class="sidebar-nav-link menu-assessment-item menu-non-wali menu-walas-admin-only flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none">
-        <div class="flex items-center gap-3">
-          <i class="fa-solid fa-quran w-4 text-center text-sm"></i>
-          <span>Diniyah & Tahfidz</span>
+         class="sidebar-nav-link menu-assessment-item menu-non-wali menu-walas-admin-only flex items-center justify-between gap-2 px-3 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none whitespace-nowrap">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <i class="fa-solid fa-quran w-4 text-center text-sm flex-shrink-0"></i>
+          <span class="truncate">Diniyah & Tahfidz</span>
         </div>
-        <span class="text-[10px] bg-[#e8f8f2] text-[#00a66c] px-2 py-0.5 rounded-full font-bold" id="badge-count-diniyah">159</span>
+        <span class="nav-badge text-[10px] bg-[#e8f8f2] text-[#00a66c] px-2 py-0.5 rounded-full font-bold flex-shrink-0 whitespace-nowrap leading-none" id="badge-count-diniyah">159</span>
       </a>
 
       <!-- Catat Anekdot & Amal Siswa (Khusus Guru, Wali Kelas & Admin) -->
       <a href="javascript:void(0)" onclick="switchView('catatan_amal')" id="nav-item-catatan_amal" 
-         class="sidebar-nav-link menu-assessment-item menu-non-wali flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none">
-        <div class="flex items-center gap-3">
-          <i class="fa-solid fa-pen-to-square w-4 text-center text-sm text-amber-500"></i>
-          <span>Catat Anekdot & Amal</span>
+         class="sidebar-nav-link menu-assessment-item menu-non-wali flex items-center justify-between gap-2 px-3 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none whitespace-nowrap">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <i class="fa-solid fa-pen-to-square w-4 text-center text-sm text-amber-500 flex-shrink-0"></i>
+          <span class="truncate">Catat Anekdot & Amal</span>
         </div>
-        <span class="text-[10px] bg-amber-50 text-amber-800 px-2 py-0.5 rounded-full font-bold border border-amber-200">A-Record</span>
+        <span class="nav-badge text-[10px] bg-amber-50 text-amber-800 px-2 py-0.5 rounded-full font-bold border border-amber-200 flex-shrink-0 whitespace-nowrap leading-none">A-Record</span>
       </a>
 
       <!-- 3. Rapor & Data Master -->
-      <div class="pt-3 px-3 py-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider">Output & Master</div>
+      <div class="pt-3 px-3 py-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider whitespace-nowrap">Output & Master</div>
       
       <!-- Buku Leger Nilai Lengkap -->
       <a href="javascript:void(0)" onclick="switchView('leger')" id="nav-item-leger" 
-         class="sidebar-nav-link menu-non-wali flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none">
-        <i class="fa-solid fa-table-list w-4 text-center text-sm"></i>
-        <span>Buku Leger 16 Mapel</span>
+         class="sidebar-nav-link menu-non-wali flex items-center gap-2.5 px-3 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none whitespace-nowrap">
+        <i class="fa-solid fa-table-list w-4 text-center text-sm flex-shrink-0"></i>
+        <span class="truncate">Buku Leger 16 Mapel</span>
       </a>
 
       <!-- Cetak Rapor (Khusus Wali Kelas & Admin) -->
       <a href="javascript:void(0)" onclick="switchView('rapor')" id="nav-item-rapor" 
-         class="sidebar-nav-link menu-walas-admin-only flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none">
-        <i class="fa-solid fa-file-invoice w-4 text-center text-sm"></i>
-        <span id="nav-label-rapor">Cetak Lembar Rapor</span>
+         class="sidebar-nav-link menu-walas-admin-only flex items-center gap-2.5 px-3 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none whitespace-nowrap">
+        <i class="fa-solid fa-file-invoice w-4 text-center text-sm flex-shrink-0"></i>
+        <span id="nav-label-rapor" class="truncate">Cetak Lembar Rapor</span>
       </a>
 
       <!-- Data Murid (Khusus Wali Kelas & Admin) -->
       <a href="javascript:void(0)" onclick="switchView('murid')" id="nav-item-murid" 
-         class="sidebar-nav-link menu-murid-management menu-non-wali menu-walas-admin-only flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none">
-        <i class="fa-solid fa-users-gear w-4 text-center text-sm"></i>
-        <span>Data Siswa & Ekskul</span>
+         class="sidebar-nav-link menu-murid-management menu-non-wali menu-walas-admin-only flex items-center gap-2.5 px-3 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none whitespace-nowrap">
+        <i class="fa-solid fa-users-gear w-4 text-center text-sm flex-shrink-0"></i>
+        <span class="truncate">Data Siswa & Ekskul</span>
       </a>
 
       <!-- 4. Konfigurasi CMS & Audit Log -->
-      <div class="pt-3 px-3 py-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider menu-admin-only menu-non-wali">Sistem & CMS</div>
+      <div class="pt-3 px-3 py-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider menu-admin-only menu-non-wali whitespace-nowrap">Sistem & CMS</div>
       
       <a href="javascript:void(0)" onclick="switchView('cms')" id="nav-item-cms" 
-         class="sidebar-nav-link menu-admin-only menu-non-wali flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none">
-        <i class="fa-solid fa-sliders w-4 text-center text-sm"></i>
-        <span>Pengaturan CMS & SaaS</span>
+         class="sidebar-nav-link menu-admin-only menu-non-wali flex items-center gap-2.5 px-3 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none whitespace-nowrap">
+        <i class="fa-solid fa-sliders w-4 text-center text-sm flex-shrink-0"></i>
+        <span class="truncate">Pengaturan CMS & SaaS</span>
       </a>
 
       <a href="javascript:void(0)" onclick="switchView('logs')" id="nav-item-logs" 
-         class="sidebar-nav-link menu-non-wali flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none">
-        <div class="flex items-center gap-3">
-          <i class="fa-solid fa-clock-rotate-left w-4 text-center text-sm"></i>
-          <span>Log Aktivitas Akun</span>
+         class="sidebar-nav-link menu-non-wali flex items-center justify-between gap-2 px-3 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none whitespace-nowrap">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <i class="fa-solid fa-clock-rotate-left w-4 text-center text-sm flex-shrink-0"></i>
+          <span class="truncate">Log Aktivitas Akun</span>
         </div>
-        <span class="text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full font-bold" id="badge-count-logs">Live</span>
+        <span class="nav-badge text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full font-bold flex-shrink-0 whitespace-nowrap leading-none" id="badge-count-logs">Live</span>
       </a>
 
     </nav>
@@ -169,22 +169,22 @@
   <!-- Sidebar Footer -->
   <div class="p-3.5 bg-slate-50/90 border-t border-[#e2f3ea] rounded-b-3xl text-[11px] space-y-2">
     <div class="flex items-center justify-between px-1">
-      <span class="text-slate-400 font-semibold">Status Akun:</span>
-      <span class="inline-flex items-center gap-1.5 text-[#00a66c] font-bold" id="sidebar-role-indicator">
+      <span class="text-slate-400 font-semibold whitespace-nowrap">Status Akun:</span>
+      <span class="inline-flex items-center gap-1.5 text-[#00a66c] font-bold whitespace-nowrap" id="sidebar-role-indicator">
         <span class="w-2 h-2 rounded-full bg-[#00a66c] animate-pulse"></span>
         Admin Utama
       </span>
     </div>
     
     <div>
-      <button onclick="logoutUser()" class="w-full py-2 px-2 bg-white hover:bg-rose-50 text-slate-700 hover:text-rose-600 rounded-xl text-center text-xs font-bold flex items-center justify-center gap-2 border border-[#e2f3ea] hover:border-rose-200 shadow-sm transition cursor-pointer">
+      <button onclick="logoutUser()" class="w-full py-2 px-2 bg-white hover:bg-rose-50 text-slate-700 hover:text-rose-600 rounded-xl text-center text-xs font-bold flex items-center justify-center gap-2 border border-[#e2f3ea] hover:border-rose-200 shadow-sm transition cursor-pointer whitespace-nowrap">
         <i class="fa-solid fa-power-off text-xs text-rose-500"></i>
         <span>Keluar dari Akun (Logout)</span>
       </button>
     </div>
 
     <div class="pt-1 text-center">
-      <button type="button" onclick="triggerInitDb()" class="text-[10px] text-slate-400 hover:text-slate-600 inline-flex items-center gap-1 transition">
+      <button type="button" onclick="triggerInitDb()" class="text-[10px] text-slate-400 hover:text-slate-600 inline-flex items-center gap-1 transition whitespace-nowrap">
         <i class="fa-solid fa-database text-[8px]"></i>
         <span>Sinkron / Reset Database</span>
       </button>

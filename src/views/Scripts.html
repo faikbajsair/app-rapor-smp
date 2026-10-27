@@ -1767,10 +1767,10 @@ function switchView(viewName) {
     document.querySelectorAll('.view-panel').forEach(panel => panel.classList.add('hidden'));
     document.getElementById('view-akademik')?.classList.remove('hidden');
     document.querySelectorAll('.sidebar-nav-link').forEach(link => {
-      link.classList.remove('bg-[#00a66c]', 'text-white', 'shadow-md', 'shadow-[#00a66c]/20', 'font-bold');
+      link.classList.remove('bg-[#00a66c]', 'text-white', 'shadow-md', 'shadow-[#00a66c]/20', 'font-bold', 'active-nav');
       link.classList.add('text-slate-600', 'font-medium');
     });
-    document.getElementById('nav-item-deskripsi')?.classList.add('bg-[#00a66c]', 'text-white', 'shadow-md', 'shadow-[#00a66c]/20', 'font-bold');
+    document.getElementById('nav-item-deskripsi')?.classList.add('bg-[#00a66c]', 'text-white', 'shadow-md', 'shadow-[#00a66c]/20', 'font-bold', 'active-nav');
     switchAkademikInputMode('deskripsi');
     return;
   }
@@ -1789,13 +1789,13 @@ function switchView(viewName) {
 
   // Update Sidebar Active Class
   document.querySelectorAll('.sidebar-nav-link').forEach(link => {
-    link.classList.remove('bg-[#00a66c]', 'text-white', 'shadow-md', 'shadow-[#00a66c]/20', 'font-bold');
+    link.classList.remove('bg-[#00a66c]', 'text-white', 'shadow-md', 'shadow-[#00a66c]/20', 'font-bold', 'active-nav');
     link.classList.add('text-slate-600', 'font-medium');
   });
   const activeLink = document.getElementById('nav-item-' + viewName);
   if (activeLink) {
     activeLink.classList.remove('text-slate-600', 'font-medium');
-    activeLink.classList.add('bg-[#00a66c]', 'text-white', 'shadow-md', 'shadow-[#00a66c]/20', 'font-bold');
+    activeLink.classList.add('bg-[#00a66c]', 'text-white', 'shadow-md', 'shadow-[#00a66c]/20', 'font-bold', 'active-nav');
   }
 
   // Close mobile sidebar if opened
