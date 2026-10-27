@@ -899,7 +899,7 @@
 
         <div class="relative h-64 sm:h-72 w-full overflow-hidden" id="container-chart-bar-wali">
           <canvas id="canvas-chart-bar-wali" class="w-full h-full"></canvas>
-          <div id="fallback-chart-bar-wali" class="hidden h-full flex items-end gap-1.5 pt-6 pb-6 px-2 overflow-x-auto w-full"></div>
+          <div id="fallback-chart-bar-wali" class="hidden absolute inset-0 h-full w-full flex items-end gap-1.5 pt-6 pb-6 px-2 overflow-x-auto bg-slate-50/80" style="display: none;"></div>
         </div>
       </div>
     </div>
@@ -1339,9 +1339,9 @@
           </div>
         </div>
 
-        <div class="relative h-64 sm:h-72 w-full" id="container-chart-bar-admin">
+        <div class="relative h-64 sm:h-72 w-full overflow-hidden" id="container-chart-bar-admin">
           <canvas id="canvas-chart-bar-admin" class="w-full h-full"></canvas>
-          <div id="fallback-chart-bar-admin" class="hidden h-full flex items-end gap-1.5 pt-6 pb-6 px-2 overflow-x-auto"></div>
+          <div id="fallback-chart-bar-admin" class="hidden absolute inset-0 h-full w-full flex items-end gap-1.5 pt-6 pb-6 px-2 overflow-x-auto bg-slate-50" style="display: none;"></div>
         </div>
       </div>
     </div>
@@ -6716,7 +6716,7 @@
           <div class="relative h-72 sm:h-80 w-full overflow-hidden" id="container-chart-bar-modal">
             <canvas id="canvas-chart-bar-modal" class="w-full h-full"></canvas>
             <!-- High-Fidelity SVG Fallback Container (used if Chart.js is not active) -->
-            <div id="fallback-chart-bar-modal" class="hidden h-full flex items-end gap-1.5 sm:gap-2 pt-6 pb-8 px-2 overflow-x-auto w-full"></div>
+            <div id="fallback-chart-bar-modal" class="hidden absolute inset-0 h-full w-full flex items-end gap-1.5 sm:gap-2 pt-6 pb-8 px-2 overflow-x-auto bg-slate-50" style="display: none;"></div>
           </div>
         </div>
       </div>
@@ -6747,7 +6747,7 @@
           <!-- Radar Canvas Container -->
           <div class="relative h-80 sm:h-96 w-full flex items-center justify-center overflow-hidden" id="container-chart-radar-modal">
             <canvas id="canvas-chart-radar-modal" class="max-h-full max-w-full"></canvas>
-            <div id="fallback-chart-radar-modal" class="hidden text-center text-slate-400 p-8 w-full"></div>
+            <div id="fallback-chart-radar-modal" class="hidden absolute inset-0 text-center text-slate-400 p-8 w-full h-full flex items-center justify-center bg-slate-50" style="display: none;"></div>
           </div>
         </div>
       </div>
@@ -10031,6 +10031,11 @@ function getUserAssignedClass(user = AppState.currentUser) {
 function isUserGuruMapel(user = AppState.currentUser) {
   if (!user || isUserAdmin(user)) return false;
   return !isUserWaliKelas(user) && user.role !== 'wali_murid';
+}
+
+function isUserWaliMurid(user = AppState.currentUser) {
+  if (!user) return false;
+  return String(user.role || '').toLowerCase() === 'wali_murid';
 }
 
 function getUserAssignedMapels(user = AppState.currentUser) {
@@ -13702,10 +13707,12 @@ function renderGradeBarChart(canvasId, fallbackId, gradeData, isClassAvg = false
   if (fallback) {
     if (chartRendered) {
       fallback.classList.add('hidden');
+      fallback.style.display = 'none';
       fallback.innerHTML = '';
       if (canvas) canvas.style.display = 'block';
     } else {
       fallback.classList.remove('hidden');
+      fallback.style.display = 'flex';
       if (canvas) canvas.style.display = 'none';
       fallback.innerHTML = `
         <div class="w-full h-full flex flex-col justify-end relative pt-6 pb-2">
@@ -13794,10 +13801,12 @@ function renderGradeRadarChart(canvasId, fallbackId, gradeData) {
   if (fallback) {
     if (chartRendered) {
       fallback.classList.add('hidden');
+      fallback.style.display = 'none';
       fallback.innerHTML = '';
       if (canvas) canvas.style.display = 'block';
     } else {
       fallback.classList.remove('hidden');
+      fallback.style.display = 'block';
       if (canvas) canvas.style.display = 'none';
       fallback.innerHTML = `
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-left w-full">
@@ -14133,10 +14142,23 @@ if (typeof window !== 'undefined') {
       window._prevResumeTabBeforePrint = null;
     }
   });
+
+  window.addEventListener('load', () => {
+    if (typeof Chart !== 'undefined') {
+      const user = AppState.currentUser || {};
+      if (user.role === 'wali_murid') {
+        const cleanNis = String(user.nis || '242507001').trim();
+        renderStudentResumeChart(cleanNis, 'wali');
+      } else if (!isUserWaliMurid()) {
+        initAdminChartSection();
+      }
+    }
+  });
 }
 
 // Admin Chart Section Controller
 function initAdminChartSection() {
+  if (isUserWaliMurid && isUserWaliMurid()) return;
   const kelasSelect = document.getElementById('admin-chart-kelas-select');
   if (!kelasSelect) return;
 
