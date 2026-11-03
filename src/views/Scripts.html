@@ -1798,6 +1798,22 @@ function switchView(viewName) {
     activeLink.classList.add('bg-[#00a66c]', 'text-white', 'shadow-md', 'shadow-[#00a66c]/20', 'font-bold', 'active-nav');
   }
 
+  // Update Mobile Bottom Dock Active State
+  document.querySelectorAll('.mobile-dock-btn').forEach(btn => {
+    btn.classList.remove('active-dock', 'text-[#00a66c]', 'font-bold');
+    btn.classList.add('text-slate-500');
+  });
+  const mobStaffBtn = document.getElementById('mob-nav-' + viewName);
+  if (mobStaffBtn) {
+    mobStaffBtn.classList.add('active-dock', 'text-[#00a66c]', 'font-bold');
+    mobStaffBtn.classList.remove('text-slate-500');
+  }
+  const mobWaliBtn = document.getElementById('mob-wali-' + viewName);
+  if (mobWaliBtn) {
+    mobWaliBtn.classList.add('active-dock', 'text-[#00a66c]', 'font-bold');
+    mobWaliBtn.classList.remove('text-slate-500');
+  }
+
   // Close mobile sidebar if opened
   const sidebar = document.getElementById('app-sidebar');
   const backdrop = document.getElementById('sidebar-backdrop');
@@ -2725,12 +2741,30 @@ function applyRoleUIPermissions(role) {
   // Toggle Dashboard view panels (Parent Portal vs Teacher/Admin Dashboard)
   const dashWaliView = document.getElementById('dashboard-wali-view');
   const dashAdminView = document.getElementById('dashboard-admin-view');
+  const mobDockStaff = document.getElementById('mobile-dock-staff');
+  const mobDockWali = document.getElementById('mobile-dock-wali');
   if (isWali) {
     dashWaliView?.classList.remove('hidden');
     dashAdminView?.classList.add('hidden');
+    if (mobDockStaff) { mobDockStaff.classList.add('hidden'); mobDockStaff.classList.remove('grid'); }
+    if (mobDockWali) { mobDockWali.classList.remove('hidden'); mobDockWali.classList.add('grid'); }
   } else {
     dashWaliView?.classList.add('hidden');
     dashAdminView?.classList.remove('hidden');
+    if (mobDockWali) { mobDockWali.classList.add('hidden'); mobDockWali.classList.remove('grid'); }
+    if (mobDockStaff) { mobDockStaff.classList.remove('hidden'); mobDockStaff.classList.add('grid'); }
+
+    // Update Educator Command Center Hero Greeting & Role Pill
+    const teacherGreeting = document.getElementById('teacher-hero-greeting');
+    const teacherRolePill = document.getElementById('teacher-hero-role-pill');
+    if (teacherGreeting) {
+      teacherGreeting.innerText = `Ahlan wa Sahlan, ${user.nama_lengkap || 'Ustadz / Ustadzah'}`;
+    }
+    if (teacherRolePill) {
+      if (isAdmin) teacherRolePill.innerText = (user.username === 'arifrohman' ? 'Kepala Sekolah • Akses Penuh' : 'Super Admin • Akses Penuh');
+      else if (isWalas) teacherRolePill.innerText = `Wali Kelas ${assignedClass} • ${user.mapel || 'Pendidik'}`;
+      else teacherRolePill.innerText = `Guru Mapel: ${user.mapel || (assignedMapels.join(', ') || 'Pendidik')}`;
+    }
   }
 
   // Apply Class & Mapel Restrictions to all select elements
@@ -2965,6 +2999,11 @@ function renderWaliAnekdotAndKonseling(childNis, childMurid) {
 
   // Render Resume Grafik Nilai Ananda for Parent Dashboard
   renderStudentResumeChart(cleanNis, 'wali');
+
+  // Render Interactive 16 Mapel Cards Explorer for Parent Dashboard
+  if (typeof renderWaliInteractiveMapelCards === 'function') {
+    renderWaliInteractiveMapelCards();
+  }
 
   // Render Jadwal Pelajaran Mingguan Ananda (Portal Wali Murid)
   renderWaliJadwal(cleanNis, childMurid);
@@ -7358,12 +7397,16 @@ function renderLegerGrid() {
     <tr class="hover:bg-blue-50/40 transition leger-row" data-nis="${s.nis}">
       <td class="px-2 py-2 text-center font-mono text-slate-500 border-r border-slate-200">${s.no_urut || (idx + 1)}</td>
       <td class="px-3 py-2 font-mono font-bold text-slate-700 border-r border-slate-200">${s.nisn || s.nis}</td>
-      <td class="px-3 py-2 font-bold text-slate-900 border-r border-slate-200">${s.nama_murid || s.nama_santri}</td>
+      <td class="px-3 py-2 font-bold text-slate-900 border-r border-slate-200 sticky left-0 bg-white/95 z-10">${s.nama_murid || s.nama_santri}</td>
       <td class="px-2 py-2 text-center font-bold text-amber-900 bg-amber-50/40 border-r border-slate-200">${kkm}</td>
       <td class="px-2 py-2 text-center border-r border-slate-200 bg-emerald-50/50">
-        <input type="number" min="0" max="100" value="${utsVal}" 
-               oninput="onLegerScoreInput(this)" onkeydown="onLegerScoreKeydown(event, this)"
-               class="leger-input-uts w-16 text-center font-black text-sm bg-white border border-emerald-300 rounded-lg p-1 text-emerald-950 focus:ring-2 focus:ring-[#00a66c] shadow-xs" placeholder="-" />
+        <div class="inline-flex items-center gap-0.5">
+          <button type="button" onclick="setStudentQuickScore('${s.nis}', '-1')" class="w-5 h-7 rounded bg-white hover:bg-slate-100 border border-slate-200 text-slate-500 text-[10px] font-bold flex items-center justify-center cursor-pointer" title="Kurangi 1 poin">-</button>
+          <input type="number" min="0" max="100" value="${utsVal}" 
+                 oninput="onLegerScoreInput(this)" onkeydown="onLegerScoreKeydown(event, this)"
+                 class="leger-input-uts w-14 text-center font-black text-sm bg-white border border-emerald-300 rounded-lg p-1 text-emerald-950 focus:ring-2 focus:ring-[#00a66c] shadow-xs" placeholder="-" />
+          <button type="button" onclick="setStudentQuickScore('${s.nis}', '+1')" class="w-5 h-7 rounded bg-white hover:bg-emerald-100 border border-slate-200 text-emerald-700 text-[10px] font-bold flex items-center justify-center cursor-pointer" title="Tambah 1 poin">+</button>
+        </div>
       </td>
       <td class="px-2 py-2 text-center border-r border-slate-200">
         <span class="leger-badge-predikat px-2 py-0.5 rounded-full text-xs font-black ${predBadgeCls}">${predikat}</span>
@@ -7379,11 +7422,18 @@ function renderLegerGrid() {
         </div>
       </td>
       <td class="px-3 py-2">
-        <textarea rows="2" class="leger-input-capaian w-full text-xs bg-slate-50/80 border border-slate-200 rounded-lg p-2 text-slate-800 focus:ring-2 focus:ring-[#00a66c] focus:bg-white leading-snug" placeholder="Deskripsi capaian rapor otomatis berdasarkan checklist TP...">${capaian}</textarea>
+        <textarea rows="2" oninput="onTableCapaianInput('${s.nis}', this.value)" class="leger-input-capaian w-full text-xs bg-slate-50/80 border border-slate-200 rounded-lg p-2 text-slate-800 focus:ring-2 focus:ring-[#00a66c] focus:bg-white leading-snug" placeholder="Deskripsi capaian rapor otomatis berdasarkan checklist TP...">${capaian}</textarea>
       </td>
     </tr>
     `;
   }).join('');
+
+  if (typeof renderLegerCardsMode === 'function') {
+    renderLegerCardsMode(students, mapel, kkm, activeTps);
+  }
+  if (typeof updateLegerProgressIndicator === 'function') {
+    updateLegerProgressIndicator();
+  }
 
   filterLegerGridStudents();
 }
@@ -7441,6 +7491,11 @@ function toggleRowTpCheck(nis, tpId, type) {
 
   // Regenerate narrative sentence
   recalcRowCapaian(row);
+
+  // Sync mobile card if rendered
+  if (typeof syncRowToMobileCard === 'function') {
+    syncRowToMobileCard(nis);
+  }
 }
 
 function recalcRowCapaian(row) {
@@ -7455,6 +7510,10 @@ function recalcRowCapaian(row) {
   const narasi = generateDeskripsiCapaian(mapel, score, optIds, penIds);
   const textarea = row.querySelector('.leger-input-capaian');
   if (textarea) textarea.value = narasi;
+  const nis = row.getAttribute('data-nis');
+  if (nis && typeof syncRowToMobileCard === 'function') {
+    syncRowToMobileCard(nis);
+  }
 }
 
 function autoRecommendAllLegerTP() {
@@ -7536,6 +7595,16 @@ function filterLegerGridStudents() {
     }
     const text = tr.innerText.toLowerCase();
     tr.style.display = text.includes(query) ? '' : 'none';
+  });
+
+  const cards = document.querySelectorAll('#leger-akademik-cards-container .leger-mobile-card');
+  cards.forEach(card => {
+    if (!query) {
+      card.style.display = '';
+      return;
+    }
+    const text = card.innerText.toLowerCase();
+    card.style.display = text.includes(query) ? '' : 'none';
   });
 }
 
@@ -11940,6 +12009,493 @@ window.onCmsUserNisChange = onCmsUserNisChange;
 window.renderAmalSholehView = renderAmalSholehView;
 window.filterAmalSholehCategory = filterAmalSholehCategory;
 
+// ============================================================================
+// 18C. INTERACTIVE MOBILE & DESKTOP UI/UX ENHANCEMENTS (COMMAND CENTER, CARDS)
+// ============================================================================
+
+let currentWaliMapelFilter = 'all';
+let currentLegerLayoutMode = (typeof window !== 'undefined' && window.innerWidth < 768) ? 'cards' : 'table';
+
+function filterWaliMapelCards(filterGroup) {
+  currentWaliMapelFilter = filterGroup || 'all';
+  ['all', 'agama', 'umum', 'mulok'].forEach(grp => {
+    const btn = document.getElementById(`btn-wali-mapel-${grp}`);
+    if (!btn) return;
+    if (grp === currentWaliMapelFilter) {
+      btn.className = 'wali-mapel-filter-btn px-3 py-1.5 rounded-xl text-[11px] font-black bg-[#00a66c] text-white shadow-xs transition cursor-pointer';
+    } else {
+      btn.className = 'wali-mapel-filter-btn px-3 py-1.5 rounded-xl text-[11px] font-bold text-slate-600 hover:bg-white transition cursor-pointer';
+    }
+  });
+  renderWaliInteractiveMapelCards(currentWaliMapelFilter);
+}
+
+function renderWaliInteractiveMapelCards(filterGroup) {
+  const activeGrp = filterGroup || currentWaliMapelFilter || 'all';
+  const grid = document.getElementById('wali-mapel-cards-grid');
+  if (!grid) return;
+
+  const user = AppState.currentUser || {};
+  const childNis = user.nis || AppState.activePrintNis || '242507001';
+  const gradeData = getStudentGradeData(childNis);
+  if (!gradeData || !gradeData.items) return;
+
+  let items = gradeData.items;
+  if (activeGrp === 'agama') items = items.filter(i => i.rumpun === 'Agama');
+  else if (activeGrp === 'umum') items = items.filter(i => i.rumpun === 'Umum');
+  else if (activeGrp === 'mulok') items = items.filter(i => i.rumpun === 'Mulok');
+
+  grid.innerHTML = items.map(item => {
+    const existingAk = (AppState.akademikList || []).find(a =>
+      String(a.nis).trim() === String(childNis).trim() &&
+      (a.mata_pelajaran === item.name || a.mata_pelajaran === item.id)
+    );
+    const narasi = existingAk?.capaian_kompetensi || existingAk?.catatan_guru || generateDeskripsiCapaian(item.name, item.score, existingAk?.tp_optimal, existingAk?.tp_peningkatan);
+    const pct = Math.min(100, Math.max(20, item.score));
+    const barColor = item.score >= 90 ? 'from-emerald-500 to-teal-500' : (item.score >= 80 ? 'from-teal-500 to-cyan-500' : (item.score >= 75 ? 'from-amber-500 to-orange-500' : 'from-rose-500 to-red-500'));
+    const teacherName = (typeof GURU_JADWAL_DEFAULTS !== 'undefined' && (GURU_JADWAL_DEFAULTS[item.abbr?.toUpperCase()] || GURU_JADWAL_DEFAULTS[item.name?.toUpperCase()])) || 'Guru Mapel SMP AI IS';
+
+    return `
+      <div onclick="openMapelCapaianDetail('${encodeURIComponent(item.name)}', 'SENIN', '07.30 - 08.50', '${encodeURIComponent(teacherName)}', '${encodeURIComponent(item.name)}')"
+           class="group bg-slate-50/70 hover:bg-[#f0fbf7] border border-slate-200/90 hover:border-[#00a66c]/50 rounded-2xl p-4 transition-all duration-200 cursor-pointer shadow-2xs hover:shadow-md flex flex-col justify-between gap-3">
+        <div class="space-y-2.5">
+          <div class="flex items-start justify-between gap-2">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <span class="w-7 h-7 rounded-xl bg-white border border-slate-200 group-hover:bg-[#00a66c] group-hover:text-white group-hover:border-[#00a66c] text-slate-700 font-mono font-black text-xs flex items-center justify-center shrink-0 transition-colors shadow-2xs">
+                ${item.no}
+              </span>
+              <div class="min-w-0">
+                <h5 class="font-extrabold text-xs sm:text-sm text-slate-900 group-hover:text-emerald-950 truncate">${item.name}</h5>
+                <span class="inline-block px-2 py-0.2 rounded-md text-[9px] font-bold ${item.rumpunBadge}">${item.rumpun} • KKM ${item.kkm}</span>
+              </div>
+            </div>
+            <div class="text-right shrink-0">
+              <div class="flex items-center gap-1.5">
+                <span class="text-lg font-black font-mono text-slate-950">${item.score}</span>
+                <span class="px-2 py-0.5 rounded-lg text-[10px] font-black ${item.predikatBadge}">${item.predikat}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Progress Bar vs KKM -->
+          <div class="w-full h-1.5 bg-slate-200/80 rounded-full overflow-hidden">
+            <div class="h-full bg-gradient-to-r ${barColor} rounded-full transition-all duration-500" style="width: ${pct}%"></div>
+          </div>
+
+          <p class="text-[11px] text-slate-600 leading-relaxed line-clamp-2">
+            ${narasi}
+          </p>
+        </div>
+
+        <div class="pt-2 border-t border-slate-200/60 flex items-center justify-between text-[10px] font-bold text-[#00a66c]">
+          <span class="text-slate-500 font-medium truncate max-w-[180px]"><i class="fa-solid fa-chalkboard-user mr-1 text-slate-400"></i>${teacherName}</span>
+          <span class="inline-flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">Detail TP <i class="fa-solid fa-chevron-right text-[9px]"></i></span>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function toggleDashboardStepsGuide() {
+  const body = document.getElementById('dashboard-steps-guide-body');
+  const label = document.getElementById('label-toggle-steps-guide');
+  const icon = document.getElementById('icon-toggle-steps-guide');
+  if (!body) return;
+  const isHidden = body.classList.contains('hidden');
+  if (isHidden) {
+    body.classList.remove('hidden');
+    if (label) label.innerText = 'Sembunyikan Alur';
+    if (icon) icon.className = 'fa-solid fa-chevron-up text-[10px] transition-transform duration-200';
+  } else {
+    body.classList.add('hidden');
+    if (label) label.innerText = 'Tampilkan 5 Langkah';
+    if (icon) icon.className = 'fa-solid fa-chevron-down text-[10px] transition-transform duration-200';
+  }
+}
+
+function quickFilterDashboardByClass(kelasName) {
+  const user = AppState.currentUser || {};
+  if (isUserWaliKelas(user)) {
+    const assigned = getUserAssignedClass(user);
+    if (assigned) kelasName = assigned;
+  }
+  switchView('murid');
+  const filterSelect = document.getElementById('filter-murid-kelas');
+  if (filterSelect && kelasName) {
+    filterSelect.value = kelasName === 'Semua' ? 'Semua' : kelasName;
+    filterTableMuridLocal();
+  }
+}
+
+function switchLegerLayoutMode(mode) {
+  currentLegerLayoutMode = mode === 'cards' ? 'cards' : 'table';
+  const tblContainer = document.getElementById('leger-table-mode-container');
+  const cardsContainer = document.getElementById('leger-cards-mode-container');
+  const btnTbl = document.getElementById('btn-leger-layout-table');
+  const btnCards = document.getElementById('btn-leger-layout-cards');
+
+  if (currentLegerLayoutMode === 'cards') {
+    tblContainer?.classList.add('hidden');
+    cardsContainer?.classList.remove('hidden');
+    if (btnCards) btnCards.className = 'px-2.5 py-1.5 rounded-lg text-[11px] font-extrabold transition flex items-center gap-1.5 bg-white text-[#00a66c] shadow-xs cursor-pointer';
+    if (btnTbl) btnTbl.className = 'px-2.5 py-1.5 rounded-lg text-[11px] font-bold text-slate-600 hover:text-slate-900 transition flex items-center gap-1.5 cursor-pointer';
+  } else {
+    cardsContainer?.classList.add('hidden');
+    tblContainer?.classList.remove('hidden');
+    if (btnTbl) btnTbl.className = 'px-2.5 py-1.5 rounded-lg text-[11px] font-extrabold transition flex items-center gap-1.5 bg-white text-[#00a66c] shadow-xs cursor-pointer';
+    if (btnCards) btnCards.className = 'px-2.5 py-1.5 rounded-lg text-[11px] font-bold text-slate-600 hover:text-slate-900 transition flex items-center gap-1.5 cursor-pointer';
+  }
+}
+
+function renderLegerCardsMode(students, mapel, kkm, activeTps) {
+  const container = document.getElementById('leger-akademik-cards-container');
+  if (!container) return;
+
+  if (!students || students.length === 0) {
+    container.innerHTML = `<div class="col-span-full p-8 text-center text-slate-400 bg-slate-50 rounded-2xl border border-dashed border-slate-200">Tidak ada data siswa pada kelas ini.</div>`;
+    return;
+  }
+
+  container.innerHTML = students.map((s, idx) => {
+    const row = document.querySelector(`.leger-row[data-nis="${s.nis}"]`);
+    const scoreVal = row ? (row.querySelector('.leger-input-uts')?.value || '') : '';
+    const predikat = (scoreVal !== '' && !isNaN(scoreVal)) ? getPredikatFromScore(Number(scoreVal)) : '-';
+    const predBadgeCls = (scoreVal !== '' && !isNaN(scoreVal)) ? `badge-predikat-${predikat}` : 'bg-slate-100 text-slate-500';
+    const capaianVal = row ? (row.querySelector('.leger-input-capaian')?.value || '') : '';
+
+    const optIds = row ? Array.from(row.querySelectorAll('.tp-chip-opt[data-checked="true"]')).map(el => el.getAttribute('data-tp-id')) : [];
+    const penIds = row ? Array.from(row.querySelectorAll('.tp-chip-pen[data-checked="true"]')).map(el => el.getAttribute('data-tp-id')) : [];
+
+    const optChips = activeTps.map(tp => {
+      const isChecked = optIds.includes(tp.id);
+      const cls = isChecked
+        ? 'bg-emerald-600 text-white border-emerald-700 shadow-xs'
+        : 'bg-white text-slate-600 border-slate-200 hover:bg-emerald-50';
+      return `<button type="button" onclick="toggleRowTpCheck('${s.nis}', '${tp.id}', 'optimal')" class="card-tp-opt px-2.5 py-1 rounded-lg text-[10px] font-bold border transition flex items-center gap-1 cursor-pointer ${cls}" data-tp-id="${tp.id}"><i class="fa-solid ${isChecked ? 'fa-check' : 'fa-plus'} text-[9px]"></i><span>${tp.kode_tp || 'TP'}</span></button>`;
+    }).join('');
+
+    const penChips = activeTps.map(tp => {
+      const isChecked = penIds.includes(tp.id);
+      const cls = isChecked
+        ? 'bg-rose-600 text-white border-rose-700 shadow-xs'
+        : 'bg-white text-slate-600 border-slate-200 hover:bg-rose-50';
+      return `<button type="button" onclick="toggleRowTpCheck('${s.nis}', '${tp.id}', 'peningkatan')" class="card-tp-pen px-2.5 py-1 rounded-lg text-[10px] font-bold border transition flex items-center gap-1 cursor-pointer ${cls}" data-tp-id="${tp.id}"><i class="fa-solid ${isChecked ? 'fa-triangle-exclamation' : 'fa-plus'} text-[9px]"></i><span>${tp.kode_tp || 'TP'}</span></button>`;
+    }).join('');
+
+    return `
+      <div class="leger-mobile-card bg-white rounded-2xl border border-slate-200/90 p-4 shadow-xs hover:shadow-md transition space-y-3" data-nis="${s.nis}">
+        <!-- Student Header & Score Box -->
+        <div class="flex items-start justify-between gap-2 pb-2.5 border-b border-slate-100">
+          <div class="flex items-center gap-2.5 min-w-0">
+            <span class="w-7 h-7 rounded-xl bg-emerald-50 text-[#00a66c] font-mono font-black text-xs flex items-center justify-center border border-emerald-200 shrink-0">
+              ${s.no_urut || (idx + 1)}
+            </span>
+            <div class="min-w-0">
+              <h4 class="font-extrabold text-xs sm:text-sm text-slate-900 truncate">${s.nama_murid || s.nama_santri}</h4>
+              <p class="text-[10px] font-mono text-slate-400">NISN: ${s.nisn || s.nis} • KKM ${kkm}</p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-1.5 shrink-0">
+            <span class="card-badge-predikat px-2.5 py-1 rounded-full text-xs font-black ${predBadgeCls}">${predikat}</span>
+          </div>
+        </div>
+
+        <!-- Score Input + Quick Tap Presets -->
+        <div class="bg-slate-50/90 p-2.5 rounded-xl border border-slate-200/70 space-y-2">
+          <div class="flex items-center justify-between gap-2">
+            <span class="text-[10px] font-extrabold text-slate-600 uppercase tracking-wider">Nilai Angka Rapor:</span>
+            <div class="flex items-center gap-1">
+              <button type="button" onclick="setStudentQuickScore('${s.nis}', '-1')" class="w-8 h-8 rounded-lg bg-white hover:bg-rose-50 text-slate-700 border border-slate-300 font-black text-xs flex items-center justify-center cursor-pointer shadow-2xs">-1</button>
+              <input type="number" min="0" max="100" value="${scoreVal}"
+                     oninput="onCardScoreInput('${s.nis}', this.value)"
+                     class="card-input-uts w-16 h-8 text-center font-black text-sm bg-white border-2 border-[#00a66c] rounded-lg text-emerald-950 focus:ring-2 focus:ring-[#00a66c]" placeholder="-" />
+              <button type="button" onclick="setStudentQuickScore('${s.nis}', '+1')" class="w-8 h-8 rounded-lg bg-white hover:bg-emerald-50 text-emerald-700 border border-slate-300 font-black text-xs flex items-center justify-center cursor-pointer shadow-2xs">+1</button>
+            </div>
+          </div>
+          <div class="flex items-center justify-between gap-1 pt-1">
+            <span class="text-[9px] font-bold text-slate-400 uppercase">Tap Cepat:</span>
+            <div class="flex flex-wrap items-center gap-1">
+              ${[75, 80, 85, 90, 95].map(v => `
+                <button type="button" onclick="setStudentQuickScore('${s.nis}', ${v})" class="px-2 py-0.5 rounded-md bg-white hover:bg-emerald-600 hover:text-white text-slate-700 border border-slate-200 font-mono font-bold text-[10px] transition cursor-pointer">${v}</button>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+
+        <!-- TP Checklists -->
+        <div class="grid grid-cols-2 gap-2">
+          <div class="p-2 rounded-xl bg-emerald-50/50 border border-emerald-200/70 space-y-1.5">
+            <span class="text-[9px] font-extrabold text-emerald-800 uppercase block"><i class="fa-solid fa-circle-check text-emerald-600 mr-1"></i>1. TP Optimal</span>
+            <div class="card-opt-chips flex flex-wrap gap-1">${optChips}</div>
+          </div>
+          <div class="p-2 rounded-xl bg-rose-50/50 border border-rose-200/70 space-y-1.5">
+            <span class="text-[9px] font-extrabold text-rose-800 uppercase block"><i class="fa-solid fa-triangle-exclamation text-rose-600 mr-1"></i>2. Perlu Bimbingan</span>
+            <div class="card-pen-chips flex flex-wrap gap-1">${penChips}</div>
+          </div>
+        </div>
+
+        <!-- Auto-Generated Narrative -->
+        <div>
+          <textarea rows="2" oninput="onCardCapaianInput('${s.nis}', this.value)"
+                    class="card-input-capaian w-full text-[11px] bg-slate-50 border border-slate-200 rounded-xl p-2 text-slate-700 focus:bg-white focus:ring-2 focus:ring-[#00a66c] leading-snug"
+                    placeholder="Deskripsi capaian kompetensi otomatis...">${capaianVal}</textarea>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function syncRowToMobileCard(nis) {
+  const row = document.querySelector(`.leger-row[data-nis="${nis}"]`);
+  const card = document.querySelector(`.leger-mobile-card[data-nis="${nis}"]`);
+  if (!row || !card) return;
+
+  const scoreVal = row.querySelector('.leger-input-uts')?.value || '';
+  const cardInput = card.querySelector('.card-input-uts');
+  if (cardInput && cardInput.value !== scoreVal) {
+    cardInput.value = scoreVal;
+  }
+
+  const predBadge = row.querySelector('.leger-badge-predikat');
+  const cardBadge = card.querySelector('.card-badge-predikat');
+  if (predBadge && cardBadge) {
+    cardBadge.innerText = predBadge.innerText;
+    const pred = predBadge.innerText.trim();
+    cardBadge.className = `card-badge-predikat px-2.5 py-1 rounded-full text-xs font-black ${pred !== '-' ? ('badge-predikat-' + pred) : 'bg-slate-100 text-slate-500'}`;
+  }
+
+  const capaianVal = row.querySelector('.leger-input-capaian')?.value || '';
+  const cardCapaian = card.querySelector('.card-input-capaian');
+  if (cardCapaian && cardCapaian.value !== capaianVal) {
+    cardCapaian.value = capaianVal;
+  }
+
+  // Sync TP chips
+  row.querySelectorAll('.tp-chip-opt').forEach(rowBtn => {
+    const tpId = rowBtn.getAttribute('data-tp-id');
+    const isChecked = rowBtn.getAttribute('data-checked') === 'true';
+    const cBtn = card.querySelector(`.card-tp-opt[data-tp-id="${tpId}"]`);
+    if (cBtn) {
+      cBtn.className = `card-tp-opt px-2.5 py-1 rounded-lg text-[10px] font-bold border transition flex items-center gap-1 cursor-pointer ${isChecked ? 'bg-emerald-600 text-white border-emerald-700 shadow-xs' : 'bg-white text-slate-600 border-slate-200 hover:bg-emerald-50'}`;
+      const icon = cBtn.querySelector('i');
+      if (icon) icon.className = `fa-solid ${isChecked ? 'fa-check' : 'fa-plus'} text-[9px]`;
+    }
+  });
+
+  row.querySelectorAll('.tp-chip-pen').forEach(rowBtn => {
+    const tpId = rowBtn.getAttribute('data-tp-id');
+    const isChecked = rowBtn.getAttribute('data-checked') === 'true';
+    const cBtn = card.querySelector(`.card-tp-pen[data-tp-id="${tpId}"]`);
+    if (cBtn) {
+      cBtn.className = `card-tp-pen px-2.5 py-1 rounded-lg text-[10px] font-bold border transition flex items-center gap-1 cursor-pointer ${isChecked ? 'bg-rose-600 text-white border-rose-700 shadow-xs' : 'bg-white text-slate-600 border-slate-200 hover:bg-rose-50'}`;
+      const icon = cBtn.querySelector('i');
+      if (icon) icon.className = `fa-solid ${isChecked ? 'fa-triangle-exclamation' : 'fa-plus'} text-[9px]`;
+    }
+  });
+
+  updateLegerProgressIndicator();
+}
+
+function onCardScoreInput(nis, val) {
+  const row = document.querySelector(`.leger-row[data-nis="${nis}"]`);
+  if (!row) return;
+  const input = row.querySelector('.leger-input-uts');
+  if (input) {
+    input.value = val;
+    onLegerScoreInput(input);
+    syncRowToMobileCard(nis);
+  }
+}
+
+function onCardCapaianInput(nis, val) {
+  const row = document.querySelector(`.leger-row[data-nis="${nis}"]`);
+  if (!row) return;
+  const textarea = row.querySelector('.leger-input-capaian');
+  if (textarea) textarea.value = val;
+}
+
+function onTableCapaianInput(nis, val) {
+  const card = document.querySelector(`.leger-mobile-card[data-nis="${nis}"]`);
+  if (!card) return;
+  const textarea = card.querySelector('.card-input-capaian');
+  if (textarea) textarea.value = val;
+}
+
+function setStudentQuickScore(nis, scoreOrDelta) {
+  const row = document.querySelector(`.leger-row[data-nis="${nis}"]`);
+  if (!row) return;
+  const input = row.querySelector('.leger-input-uts');
+  if (!input) return;
+
+  let current = (input.value !== '' && !isNaN(input.value)) ? Number(input.value) : 80;
+  let nextVal = current;
+  if (scoreOrDelta === '+1') nextVal = Math.min(100, current + 1);
+  else if (scoreOrDelta === '-1') nextVal = Math.max(0, current - 1);
+  else nextVal = Number(scoreOrDelta);
+
+  input.value = nextVal;
+  onLegerScoreInput(input);
+  syncRowToMobileCard(nis);
+}
+
+function fillEmptyLegerScores(scoreVal) {
+  const rows = document.querySelectorAll('.leger-row');
+  let filled = 0;
+  rows.forEach(row => {
+    const input = row.querySelector('.leger-input-uts');
+    if (input && (input.value === '' || input.value === null)) {
+      input.value = scoreVal;
+      onLegerScoreInput(input);
+      const nis = row.getAttribute('data-nis');
+      if (nis) syncRowToMobileCard(nis);
+      filled++;
+    }
+  });
+  if (filled > 0) {
+    showToast(`Berhasil mengisi nilai ${scoreVal} untuk ${filled} siswa yang masih kosong!`, 'success');
+  } else {
+    showToast('Seluruh siswa pada kelas ini sudah memiliki nilai angka.', 'info');
+  }
+  updateLegerProgressIndicator();
+}
+
+function updateLegerProgressIndicator() {
+  const pill = document.getElementById('leger-input-progress-pill');
+  if (!pill) return;
+  const rows = document.querySelectorAll('.leger-row');
+  const total = rows.length;
+  let filled = 0;
+  rows.forEach(r => {
+    const val = r.querySelector('.leger-input-uts')?.value;
+    if (val !== undefined && val !== null && String(val).trim() !== '') filled++;
+  });
+  pill.innerHTML = `<i class="fa-solid fa-circle-check text-[10px]"></i> ${filled} / ${total} Siswa Terisi (Auto-Save)`;
+}
+
+function prevNextRaporStudent(delta) {
+  const select = document.getElementById('rapor-murid-select');
+  if (!select || select.options.length === 0) return;
+  const nextIdx = select.selectedIndex + delta;
+  if (nextIdx >= 0 && nextIdx < select.options.length) {
+    select.selectedIndex = nextIdx;
+    loadMuridReportForPrint(select.value);
+  } else {
+    showToast(delta > 0 ? 'Sudah berada di siswa urutan terakhir.' : 'Sudah berada di siswa urutan pertama.', 'info');
+  }
+}
+
+// Quick Command & Search Modal (Ctrl+K / Mobile Floating Action Button)
+function openQuickCommandModal() {
+  const modal = document.getElementById('modal-quick-command');
+  if (!modal) return;
+  modal.classList.remove('hidden');
+  const input = document.getElementById('quick-command-search-input');
+  if (input) {
+    input.value = '';
+    setTimeout(() => input.focus(), 60);
+  }
+  filterQuickCommandItems('');
+}
+
+function closeQuickCommandModal() {
+  const modal = document.getElementById('modal-quick-command');
+  if (modal) modal.classList.add('hidden');
+}
+
+function filterQuickCommandItems(query) {
+  const q = (query || '').toLowerCase().trim();
+  const container = document.getElementById('quick-command-student-results');
+  if (!container) return;
+
+  const isWali = (AppState.currentUser && AppState.currentUser.role === 'wali_murid');
+  const isWalas = isUserWaliKelas();
+  const assignedClass = getUserAssignedClass();
+
+  let pool = AppState.muridList || [];
+  if (isWali) {
+    const childNis = AppState.currentUser?.nis || '242507001';
+    pool = pool.filter(m => String(m.nis).trim() === String(childNis).trim());
+  } else if (isWalas && assignedClass) {
+    pool = pool.filter(m => normalizeClassName(m.kelas) === normalizeClassName(assignedClass));
+  }
+
+  let matched = pool;
+  if (q) {
+    matched = pool.filter(m => {
+      const name = (m.nama_murid || m.nama_santri || '').toLowerCase();
+      return name.includes(q) || String(m.nis || '').includes(q) || String(m.nisn || '').includes(q) || String(m.kelas || '').toLowerCase().includes(q);
+    });
+  }
+
+  const topResults = matched.slice(0, 6);
+  if (topResults.length === 0) {
+    container.innerHTML = `<div class="p-4 text-center text-xs text-slate-400">Tidak ada siswa yang cocok dengan kata kunci "${query}".</div>`;
+    return;
+  }
+
+  container.innerHTML = `
+    <span class="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider px-2 block mb-1">
+      ${q ? `Hasil Pencarian Siswa (${matched.length})` : 'Akses Cepat Profil & Rapor Siswa'}
+    </span>
+    ${topResults.map(s => {
+      const nama = s.nama_murid || s.nama_santri || '-';
+      return `
+        <div class="flex items-center justify-between gap-2 p-2.5 rounded-2xl hover:bg-emerald-50/80 border border-transparent hover:border-emerald-200 transition">
+          <div class="flex items-center gap-2.5 min-w-0">
+            <div class="w-8 h-8 rounded-xl bg-slate-100 text-slate-700 font-bold text-xs flex items-center justify-center shrink-0">
+              ${nama.charAt(0)}
+            </div>
+            <div class="min-w-0">
+              <div class="text-xs font-extrabold text-slate-900 truncate">${nama}</div>
+              <div class="text-[10px] text-slate-500 font-mono">NIS: ${s.nis} • <span class="font-sans font-bold text-emerald-700">${s.kelas}</span></div>
+            </div>
+          </div>
+          <div class="flex items-center gap-1.5 shrink-0">
+            <button type="button" onclick="closeQuickCommandModal(); openResumeChartModal('${s.nis}');" class="px-2.5 py-1 rounded-lg bg-purple-50 hover:bg-purple-100 text-purple-700 text-[10px] font-bold border border-purple-200 cursor-pointer">
+              <i class="fa-solid fa-chart-Simple mr-1"></i>Grafik
+            </button>
+            <button type="button" onclick="closeQuickCommandModal(); previewRaporDirect('${s.nis}');" class="px-2.5 py-1 rounded-lg bg-[#00a66c] hover:bg-[#008f5d] text-white text-[10px] font-bold shadow-2xs cursor-pointer">
+              <i class="fa-solid fa-file-invoice mr-1"></i>Rapor
+            </button>
+          </div>
+        </div>
+      `;
+    }).join('')}
+  `;
+}
+
+// Global Ctrl+K / Cmd+K Shortcut for Quick Command Modal
+window.addEventListener('keydown', (e) => {
+  if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+    e.preventDefault();
+    openQuickCommandModal();
+  } else if (e.key === 'Escape') {
+    const cmdModal = document.getElementById('modal-quick-command');
+    if (cmdModal && !cmdModal.classList.contains('hidden')) {
+      closeQuickCommandModal();
+    }
+  }
+});
+
+window.filterWaliMapelCards = filterWaliMapelCards;
+window.renderWaliInteractiveMapelCards = renderWaliInteractiveMapelCards;
+window.toggleDashboardStepsGuide = toggleDashboardStepsGuide;
+window.quickFilterDashboardByClass = quickFilterDashboardByClass;
+window.switchLegerLayoutMode = switchLegerLayoutMode;
+window.renderLegerCardsMode = renderLegerCardsMode;
+window.syncRowToMobileCard = syncRowToMobileCard;
+window.onCardScoreInput = onCardScoreInput;
+window.onCardCapaianInput = onCardCapaianInput;
+window.onTableCapaianInput = onTableCapaianInput;
+window.setStudentQuickScore = setStudentQuickScore;
+window.fillEmptyLegerScores = fillEmptyLegerScores;
+window.updateLegerProgressIndicator = updateLegerProgressIndicator;
+window.prevNextRaporStudent = prevNextRaporStudent;
+window.openQuickCommandModal = openQuickCommandModal;
+window.closeQuickCommandModal = closeQuickCommandModal;
+window.filterQuickCommandItems = filterQuickCommandItems;
+
 // 19. APP STARTUP INITIALIZATION
 window.addEventListener('DOMContentLoaded', () => {
   // Load persistent cache from LocalStorage first so user edits are immediately restored
@@ -11967,6 +12523,12 @@ window.addEventListener('DOMContentLoaded', () => {
   renderDashboardMiniTables();
   loadDashboardStats();
   renderActivityLogsTable();
+  if (typeof switchLegerLayoutMode === 'function') {
+    switchLegerLayoutMode(window.innerWidth < 768 ? 'cards' : 'table');
+  }
+  if (typeof renderWaliInteractiveMapelCards === 'function') {
+    renderWaliInteractiveMapelCards('all');
+  }
 
   // Enforce mandatory authentication check
   checkAuthOnStartup();

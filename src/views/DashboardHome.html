@@ -1,103 +1,221 @@
 <!-- Dashboard Home / Overview View (Clean Mint & Emerald Theme) -->
 <div id="view-dashboard" class="view-panel space-y-6">
   
-  <!-- Top View Subheader (Matching Screenshot) -->
-  <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-white rounded-2xl p-4 sm:p-5 border border-[#e2f3ea] shadow-sm">
-    <div>
-      <h1 class="text-base sm:text-lg font-black text-slate-900 tracking-tight flex items-center gap-2">
-        <i class="fa-solid fa-table-cells-large text-[#00a66c]"></i>
-        <span id="dashboard-title-heading">Dashboard Utama</span>
-      </h1>
+  <!-- Top View Subheader -->
+  <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-white/95 backdrop-blur-md rounded-2xl p-4 sm:px-6 border border-emerald-100/90 shadow-xs">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-xl bg-emerald-50 border border-emerald-200/70 text-[#00a66c] flex items-center justify-center shadow-2xs shrink-0">
+        <i class="fa-solid fa-table-cells-large text-sm"></i>
+      </div>
+      <div>
+        <h1 class="text-sm sm:text-base font-black text-slate-900 tracking-tight flex items-center gap-2">
+          <span id="dashboard-title-heading">Dashboard Utama</span>
+        </h1>
+        <p class="text-[11px] text-slate-500 font-medium">Ringkasan Akademik, Tahfidz, Karakter & Portofolio Siswa</p>
+      </div>
     </div>
-    <div class="flex items-center gap-2">
-      <span class="text-xs bg-slate-50 border border-slate-200 px-3.5 py-1.5 rounded-full text-slate-500 font-semibold hidden sm:inline-block">
-        Yayasan / Sekolah: <strong class="text-slate-700">SMP AL IMAM ISLAMIC SCHOOL (AI IS)</strong>
+    <div class="flex flex-wrap items-center gap-2 w-full sm:w-auto justify-between sm:justify-end">
+      <span class="text-[11px] bg-emerald-50/70 border border-emerald-200/80 px-3 py-1.5 rounded-xl text-emerald-900 font-semibold inline-flex items-center gap-1.5">
+        <i class="fa-solid fa-school text-[#00a66c] text-[10px]"></i>
+        <span>SMP AL IMAM ISLAMIC SCHOOL (AI IS)</span>
       </span>
+      <button type="button" onclick="openQuickCommandModal()" class="sm:hidden inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 text-white rounded-xl text-[11px] font-bold shadow-xs cursor-pointer">
+        <i class="fa-solid fa-bolt text-amber-400"></i>
+        <span>Aksi Cepat</span>
+      </button>
     </div>
   </div>
 
   <!-- Dedicated Parent Portal View (Wali Murid) -->
   <div id="dashboard-wali-view" class="hidden space-y-6">
-    <!-- Parent Banner -->
-    <div class="bg-gradient-to-r from-emerald-800 to-teal-900 text-white rounded-3xl p-6 sm:p-8 shadow-md relative overflow-hidden">
-      <div class="relative z-10 space-y-3">
-        <div class="flex flex-wrap items-center justify-between gap-2">
-          <span class="px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-xs font-bold text-emerald-200 inline-flex items-center gap-1.5">
-            <i class="fa-solid fa-user-shield"></i> Portal Orang Tua / Wali Murid
-          </span>
+    <!-- Parent Hero Banner (Interactive & Mobile Friendly) -->
+    <div class="bg-gradient-to-br from-emerald-900 via-teal-800 to-slate-900 text-white rounded-3xl p-5 sm:p-8 shadow-xl relative overflow-hidden border border-emerald-700/40">
+      <div class="absolute -right-12 -top-12 w-64 h-64 bg-emerald-400/10 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute right-10 -bottom-16 w-56 h-56 bg-teal-300/10 rounded-full blur-2xl pointer-events-none"></div>
+      <i class="fa-solid fa-graduation-cap absolute -right-4 -bottom-4 text-8xl sm:text-9xl text-white/5 pointer-events-none"></i>
+
+      <div class="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+        <div class="space-y-3 max-w-2xl">
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="px-3 py-1 bg-white/15 backdrop-blur-md rounded-full text-[11px] font-extrabold text-emerald-200 border border-white/15 inline-flex items-center gap-1.5">
+              <i class="fa-solid fa-user-shield text-emerald-300"></i> Portal Resmi Orang Tua / Wali Murid
+            </span>
+            <span class="px-2.5 py-1 bg-emerald-500/20 rounded-full text-[11px] font-bold text-emerald-100 border border-emerald-400/30">
+              TP 2026/2027 &bull; Semester Ganjil
+            </span>
+          </div>
+          <h2 class="text-xl sm:text-2xl lg:text-3xl font-black tracking-tight leading-tight" id="wali-hero-title">
+            Selamat Datang, Bapak / Ibu Wali Murid
+          </h2>
+          <p class="text-xs sm:text-sm text-emerald-100/90 leading-relaxed" id="wali-hero-subtitle">
+            Pantau perkembangan akademik 16 mata pelajaran, capaian kompetensi Kurikulum Merdeka, kehadiran, rekam amal sholeh, dan lembar rapor resmi ananda secara real-time.
+          </p>
         </div>
-        <h2 class="text-xl sm:text-2xl font-black tracking-tight" id="wali-hero-title">
-          Selamat Datang, Bapak / Ibu Wali Murid
-        </h2>
-        <p class="text-xs sm:text-sm text-emerald-100 max-w-2xl leading-relaxed" id="wali-hero-subtitle">
-          Pantau perkembangan akademik, kehadiran, kegiatan ekstrakurikuler, dan lembar rapor resmi ananda.
-        </p>
+
+        <!-- Mobile & Desktop Quick Action Launcher Grid for Parents -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-2 gap-2.5 shrink-0">
+          <button type="button" onclick="switchView('rapor')" class="p-3 rounded-2xl bg-white text-emerald-950 hover:bg-emerald-50 font-extrabold text-xs shadow-lg transition flex items-center gap-2.5 cursor-pointer group">
+            <div class="w-8 h-8 rounded-xl bg-emerald-100 text-[#00a66c] flex items-center justify-center text-sm group-hover:scale-110 transition-transform shrink-0">
+              <i class="fa-solid fa-file-invoice"></i>
+            </div>
+            <div class="text-left min-w-0">
+              <span class="block text-[10px] text-slate-400 font-bold uppercase leading-none">Dokumen</span>
+              <span class="truncate block mt-0.5">Buka Rapor</span>
+            </div>
+          </button>
+
+          <button type="button" onclick="openResumeChartForWali()" class="p-3 rounded-2xl bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/15 font-extrabold text-xs transition flex items-center gap-2.5 cursor-pointer group">
+            <div class="w-8 h-8 rounded-xl bg-purple-400/25 text-purple-200 flex items-center justify-center text-sm group-hover:scale-110 transition-transform shrink-0">
+              <i class="fa-solid fa-chart-column"></i>
+            </div>
+            <div class="text-left min-w-0">
+              <span class="block text-[10px] text-emerald-200/70 font-bold uppercase leading-none">Visual</span>
+              <span class="truncate block mt-0.5">Grafik Nilai</span>
+            </div>
+          </button>
+
+          <button type="button" onclick="switchView('jadwal')" class="p-3 rounded-2xl bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/15 font-extrabold text-xs transition flex items-center gap-2.5 cursor-pointer group">
+            <div class="w-8 h-8 rounded-xl bg-amber-400/25 text-amber-200 flex items-center justify-center text-sm group-hover:scale-110 transition-transform shrink-0">
+              <i class="fa-regular fa-calendar-days"></i>
+            </div>
+            <div class="text-left min-w-0">
+              <span class="block text-[10px] text-emerald-200/70 font-bold uppercase leading-none">Harian</span>
+              <span class="truncate block mt-0.5">Jadwal & Seragam</span>
+            </div>
+          </button>
+
+          <button type="button" onclick="openModalBkConsult()" class="p-3 rounded-2xl bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/15 font-extrabold text-xs transition flex items-center gap-2.5 cursor-pointer group">
+            <div class="w-8 h-8 rounded-xl bg-teal-400/25 text-teal-200 flex items-center justify-center text-sm group-hover:scale-110 transition-transform shrink-0">
+              <i class="fa-brands fa-whatsapp"></i>
+            </div>
+            <div class="text-left min-w-0">
+              <span class="block text-[10px] text-emerald-200/70 font-bold uppercase leading-none">Sinergi</span>
+              <span class="truncate block mt-0.5">Hubungi Walas</span>
+            </div>
+          </button>
+        </div>
       </div>
-      <i class="fa-solid fa-graduation-cap absolute -right-6 -bottom-6 text-9xl text-white/5 pointer-events-none"></i>
     </div>
 
     <!-- Child Summary Cards -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
       <!-- Card 1: Identitas & Status Rapor -->
-      <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm space-y-3">
+      <div class="bg-white rounded-3xl p-5 border border-emerald-100/90 shadow-sm interactive-card flex flex-col justify-between space-y-3">
         <div class="flex items-center justify-between">
-          <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Identitas Ananda</span>
+          <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+            <i class="fa-solid fa-id-card-clip text-[#00a66c]"></i> Identitas Ananda
+          </span>
           <span id="wali-card-status-badge" class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-amber-100 text-amber-800 border border-amber-300">
             DRAFT
           </span>
         </div>
-        <div>
-          <h3 class="font-extrabold text-sm text-slate-900" id="wali-child-name">-</h3>
-          <p class="text-xs text-slate-500 font-mono mt-0.5">NISN: <span id="wali-child-nisn" class="font-bold text-slate-700">-</span></p>
-          <p class="text-xs text-slate-500 font-bold mt-0.5">Kelas: <span id="wali-child-kelas" class="text-purple-700">-</span></p>
+        <div class="flex items-center gap-3.5">
+          <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white flex items-center justify-center text-lg font-black shadow-md shadow-emerald-600/20 shrink-0">
+            <i class="fa-solid fa-user-graduate"></i>
+          </div>
+          <div class="min-w-0">
+            <h3 class="font-black text-sm sm:text-base text-slate-900 truncate" id="wali-child-name">-</h3>
+            <div class="flex flex-wrap items-center gap-2 mt-1">
+              <span class="text-[11px] bg-slate-100 text-slate-700 px-2 py-0.5 rounded-lg font-mono font-bold">NISN: <span id="wali-child-nisn">-</span></span>
+              <span class="text-[11px] bg-purple-50 text-purple-700 border border-purple-200/60 px-2 py-0.5 rounded-lg font-extrabold" id="wali-child-kelas">-</span>
+            </div>
+          </div>
         </div>
-        <div class="pt-2 border-t border-slate-100">
-          <p class="text-[11px] text-slate-500">Wali Kelas: <strong id="wali-child-walas" class="text-slate-800">-</strong></p>
+        <div class="pt-2.5 border-t border-slate-100 flex items-center justify-between text-[11px]">
+          <span class="text-slate-400 font-medium">Wali Kelas:</span>
+          <strong id="wali-child-walas" class="text-slate-800 font-bold truncate max-w-[190px]">-</strong>
         </div>
       </div>
 
       <!-- Card 2: Rekap Presensi -->
-      <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm space-y-3">
+      <div class="bg-white rounded-3xl p-5 border border-emerald-100/90 shadow-sm interactive-card flex flex-col justify-between space-y-3">
         <div class="flex items-center justify-between">
-          <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Kehadiran (Absen UTS)</span>
-          <i class="fa-solid fa-clipboard-user text-emerald-600"></i>
+          <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+            <i class="fa-solid fa-clipboard-user text-[#00a66c]"></i> Kehadiran (Absen UTS)
+          </span>
+          <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">Semester Berjalan</span>
         </div>
-        <div class="grid grid-cols-3 gap-2 text-center">
-          <div class="bg-rose-50 p-2 rounded-xl border border-rose-100">
-            <span class="text-base font-black text-rose-700" id="wali-absen-s">0</span>
-            <span class="block text-[10px] font-bold text-rose-600">Sakit (S)</span>
+        <div class="grid grid-cols-3 gap-2.5 text-center">
+          <div class="bg-rose-50/80 p-2.5 rounded-2xl border border-rose-100">
+            <span class="text-lg font-black text-rose-700 font-mono" id="wali-absen-s">0</span>
+            <span class="block text-[10px] font-bold text-rose-600 mt-0.5">Sakit (S)</span>
           </div>
-          <div class="bg-amber-50 p-2 rounded-xl border border-amber-100">
-            <span class="text-base font-black text-amber-700" id="wali-absen-i">0</span>
-            <span class="block text-[10px] font-bold text-amber-600">Izin (I)</span>
+          <div class="bg-amber-50/80 p-2.5 rounded-2xl border border-amber-100">
+            <span class="text-lg font-black text-amber-700 font-mono" id="wali-absen-i">0</span>
+            <span class="block text-[10px] font-bold text-amber-600 mt-0.5">Izin (I)</span>
           </div>
-          <div class="bg-slate-100 p-2 rounded-xl border border-slate-200">
-            <span class="text-base font-black text-slate-700" id="wali-absen-a">0</span>
-            <span class="block text-[10px] font-bold text-slate-600">Alpa (A)</span>
+          <div class="bg-slate-100/90 p-2.5 rounded-2xl border border-slate-200">
+            <span class="text-lg font-black text-slate-700 font-mono" id="wali-absen-a">0</span>
+            <span class="block text-[10px] font-bold text-slate-600 mt-0.5">Alpa (A)</span>
           </div>
         </div>
-        <p class="text-[10px] text-slate-400 italic text-center">Data presensi terhitung hingga pelaksanaan UTS</p>
+        <p class="text-[10px] text-slate-400 font-medium text-center">Data presensi terverifikasi hingga pelaksanaan UTS</p>
       </div>
 
       <!-- Card 3: Quick Action Rapor & Grafik -->
-      <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm flex flex-col justify-between space-y-3">
+      <div class="bg-white rounded-3xl p-5 border border-emerald-100/90 shadow-sm interactive-card flex flex-col justify-between space-y-3">
         <div>
-          <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Lembar Rapor & Analisis</span>
-          <h4 class="font-extrabold text-xs text-slate-900 mt-1">Rapor Tengah Semester 1 (2026/2027)</h4>
-          <p class="text-[11px] text-slate-500 mt-1" id="wali-rapor-quick-desc">
-            Lihat rincian capaian kompetensi 16 mapel, karakter, dan ekstrakurikuler ananda.
+          <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+            <i class="fa-solid fa-print text-[#00a66c]"></i> Akses Cepat Dokumen
+          </span>
+          <h4 class="font-extrabold text-xs sm:text-sm text-slate-900 mt-1">Rapor Portofolio & SKL Karakter</h4>
+          <p class="text-[11px] text-slate-500 mt-0.5 leading-relaxed" id="wali-rapor-quick-desc">
+            Unduh PDF lembar rapor resmi atau pelajari rincian 16 mata pelajaran di bawah ini.
           </p>
         </div>
-        <div class="space-y-2">
-          <button onclick="switchView('rapor')" class="w-full py-2.5 px-4 bg-[#00a66c] hover:bg-[#008f5d] text-white font-bold rounded-xl text-xs shadow-md shadow-[#00a66c]/20 transition flex items-center justify-center gap-2 cursor-pointer">
+        <div class="grid grid-cols-2 gap-2">
+          <button onclick="switchView('rapor')" class="py-2.5 px-3 bg-[#00a66c] hover:bg-[#008f5d] text-white font-bold rounded-xl text-xs shadow-md shadow-[#00a66c]/20 transition flex items-center justify-center gap-1.5 cursor-pointer">
             <i class="fa-solid fa-file-invoice"></i>
-            <span>Buka Lembar Rapor Ananda</span>
+            <span>Lembar Rapor</span>
           </button>
-          <button onclick="openResumeChartForWali()" class="w-full py-2 px-3 bg-purple-50 hover:bg-purple-100 text-purple-800 border border-purple-200 font-bold rounded-xl text-xs transition flex items-center justify-center gap-1.5 cursor-pointer">
-            <i class="fa-solid fa-chart-column text-purple-600"></i>
-            <span>Lihat Resume Grafik Nilai</span>
+          <button onclick="switchView('amalsholeh')" class="py-2.5 px-3 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-bold rounded-xl text-xs transition flex items-center justify-center gap-1.5 cursor-pointer">
+            <i class="fa-solid fa-hand-holding-heart"></i>
+            <span>Amal Sholeh</span>
           </button>
         </div>
+      </div>
+    </div>
+
+    <!-- NEW SECTION FOR PARENTS: Interactive Mobile-Friendly 16 Mapel Explorer -->
+    <div id="section-wali-mapel-explorer" class="bg-white rounded-3xl p-5 sm:p-7 border border-emerald-100/90 shadow-sm space-y-5">
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-slate-100 pb-4">
+        <div class="flex items-start gap-3">
+          <div class="w-10 h-10 rounded-2xl bg-emerald-50 text-[#00a66c] flex items-center justify-center text-lg border border-emerald-200 shrink-0">
+            <i class="fa-solid fa-book-open-reader"></i>
+          </div>
+          <div>
+            <div class="flex flex-wrap items-center gap-2">
+              <h3 class="font-extrabold text-sm sm:text-base text-slate-900">Eksplorasi Nilai & Capaian 16 Mata Pelajaran Ananda</h3>
+              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-emerald-100 text-emerald-800 border border-emerald-200">
+                Interaktif & Mudah Dibaca
+              </span>
+            </div>
+            <p class="text-xs text-slate-500 mt-0.5">
+              Ketuk kartu mata pelajaran untuk melihat detail Tujuan Pembelajaran (TP), selisih KKM, dan saran pendampingan di rumah.
+            </p>
+          </div>
+        </div>
+
+        <!-- Filter Pills & Search for Parent Mapel Cards -->
+        <div class="flex flex-wrap items-center gap-1.5">
+          <button type="button" onclick="filterWaliMapelCards('all')" id="btn-wali-mapel-all" class="wali-mapel-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-[#00a66c] text-white shadow-xs transition cursor-pointer">
+            Semua (16)
+          </button>
+          <button type="button" onclick="filterWaliMapelCards('agama')" id="btn-wali-mapel-agama" class="wali-mapel-filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-emerald-50 hover:text-emerald-800 transition cursor-pointer">
+            PAI & B. Arab (6)
+          </button>
+          <button type="button" onclick="filterWaliMapelCards('umum')" id="btn-wali-mapel-umum" class="wali-mapel-filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-blue-50 hover:text-blue-800 transition cursor-pointer">
+            Sains & Umum (7)
+          </button>
+          <button type="button" onclick="filterWaliMapelCards('mulok')" id="btn-wali-mapel-mulok" class="wali-mapel-filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-amber-50 hover:text-amber-800 transition cursor-pointer">
+            Keterampilan & Mulok (3)
+          </button>
+        </div>
+      </div>
+
+      <!-- Interactive Cards Grid (Populated via JS) -->
+      <div id="wali-mapel-cards-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+        <!-- Populated dynamically via renderWaliInteractiveMapelCards() -->
       </div>
     </div>
 
@@ -266,179 +384,276 @@
   <!-- Teacher / Administrator Dashboard View -->
   <div id="dashboard-admin-view" class="space-y-6 menu-non-wali">
 
-  <!-- Hero / Welcome Banner (Matching Screenshot) -->
-  <div class="bg-white rounded-3xl p-6 sm:p-8 border border-[#e2f3ea] shadow-sm space-y-2">
-    <h2 class="text-xl sm:text-2xl font-black text-slate-900 uppercase tracking-tight">
-      SMP AL IMAM ISLAMIC SCHOOL (AI IS)
-    </h2>
-    <p class="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-4xl">
-      Sistem penilaian rapor belajar siswa di bawah naungan Yayasan / Sekolah SMP Al-Imam. 
-      Kelola data siswa, input nilai akhir UTS (0-100), pantau buku leger 16 mapel, serta dapatkan cetakan lembar rapor resmi secara otomatis.
-    </p>
+  <!-- Educator Command Center Hero Banner (Rich, Interactive & Non-Monotonous) -->
+  <div class="relative overflow-hidden bg-gradient-to-br from-emerald-950 via-teal-900 to-slate-900 text-white rounded-3xl p-5 sm:p-8 shadow-xl border border-emerald-700/40">
+    <!-- Ambient Decorative Glows -->
+    <div class="absolute -right-12 -top-12 w-72 h-72 bg-emerald-400/15 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute left-1/3 -bottom-16 w-64 h-64 bg-teal-400/10 rounded-full blur-2xl pointer-events-none"></div>
+    <i class="fa-solid fa-mosque absolute -right-4 -bottom-4 text-8xl sm:text-9xl text-white/5 pointer-events-none"></i>
+
+    <div class="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+      <div class="space-y-3 max-w-2xl">
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="px-3 py-1 rounded-full text-[11px] font-black bg-emerald-400/20 text-emerald-200 border border-emerald-400/30 backdrop-blur-xs inline-flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-300 animate-pulse"></span>
+            <span id="teacher-hero-role-pill">Portal Pendidik & Manajemen Rapor</span>
+          </span>
+          <span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-white/10 text-emerald-100 border border-white/15">
+            Kurikulum Merdeka &bull; 16 Mapel
+          </span>
+        </div>
+
+        <h2 class="text-xl sm:text-2xl lg:text-3xl font-black tracking-tight text-white leading-tight" id="teacher-hero-greeting">
+          SMP AL IMAM ISLAMIC SCHOOL (AI IS)
+        </h2>
+        <p class="text-xs sm:text-sm text-emerald-100/85 leading-relaxed">
+          Pusat kendali penilaian holistik: input nilai cepat dengan 1-klik TP, rekam observasi amal sholeh (A-Record), pantau leger sekelas, dan cetak rapor resmi secara instan.
+        </p>
+
+        <!-- Live Completion Progress Pill inside Hero -->
+        <div class="pt-1 flex flex-wrap items-center gap-3">
+          <div class="bg-white/10 backdrop-blur-md border border-white/15 rounded-2xl px-3.5 py-2 flex items-center gap-3 min-w-[240px] flex-1 sm:flex-initial">
+            <div class="w-8 h-8 rounded-xl bg-emerald-400/20 text-emerald-300 flex items-center justify-center text-xs font-black shrink-0">
+              <i class="fa-solid fa-bolt"></i>
+            </div>
+            <div class="flex-1 min-w-[140px]">
+              <div class="flex items-center justify-between text-[10px] font-bold text-emerald-100 mb-1">
+                <span>Kesiapan Data Rapor</span>
+                <span class="text-emerald-300 font-black">100% Siap Cetak</span>
+              </div>
+              <div class="w-full h-1.5 bg-white/15 rounded-full overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-emerald-400 to-teal-300 rounded-full" style="width: 100%"></div>
+              </div>
+            </div>
+          </div>
+
+          <button type="button" onclick="toggleDashboardStepsGuide()" class="px-3.5 py-2 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/15 text-xs font-bold text-emerald-100 transition flex items-center gap-1.5 cursor-pointer">
+            <i class="fa-solid fa-compass text-amber-300"></i>
+            <span>Alur 5 Langkah</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 4 Fast-Action Teacher Cards (Desktop & Mobile Ergonomic Grid) -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-2 gap-2.5 shrink-0 lg:w-[340px]">
+        <button type="button" onclick="switchView('akademik')" class="p-3.5 rounded-2xl bg-white text-slate-900 hover:bg-emerald-50 shadow-lg transition flex items-center gap-2.5 text-left cursor-pointer group">
+          <div class="w-9 h-9 rounded-xl bg-emerald-100 text-[#00a66c] flex items-center justify-center text-base group-hover:scale-110 transition-transform shrink-0">
+            <i class="fa-solid fa-pen-to-square"></i>
+          </div>
+          <div class="min-w-0">
+            <span class="text-[10px] font-extrabold uppercase text-[#00a66c] block leading-none">Utama</span>
+            <span class="text-xs font-black text-slate-900 truncate block mt-0.5">Input Nilai</span>
+          </div>
+        </button>
+
+        <button type="button" onclick="switchView('catatan_amal')" class="p-3.5 rounded-2xl bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/15 transition flex items-center gap-2.5 text-left cursor-pointer group">
+          <div class="w-9 h-9 rounded-xl bg-amber-400/25 text-amber-300 flex items-center justify-center text-base group-hover:scale-110 transition-transform shrink-0">
+            <i class="fa-solid fa-hand-holding-heart"></i>
+          </div>
+          <div class="min-w-0">
+            <span class="text-[10px] font-bold uppercase text-emerald-200/80 block leading-none">A-Record</span>
+            <span class="text-xs font-extrabold text-white truncate block mt-0.5">Catat Amal</span>
+          </div>
+        </button>
+
+        <button type="button" onclick="switchView('leger')" class="p-3.5 rounded-2xl bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/15 transition flex items-center gap-2.5 text-left cursor-pointer group">
+          <div class="w-9 h-9 rounded-xl bg-indigo-400/25 text-indigo-200 flex items-center justify-center text-base group-hover:scale-110 transition-transform shrink-0">
+            <i class="fa-solid fa-table-list"></i>
+          </div>
+          <div class="min-w-0">
+            <span class="text-[10px] font-bold uppercase text-emerald-200/80 block leading-none">Matriks</span>
+            <span class="text-xs font-extrabold text-white truncate block mt-0.5">Buku Leger</span>
+          </div>
+        </button>
+
+        <button type="button" onclick="switchView('rapor')" class="p-3.5 rounded-2xl bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/15 transition flex items-center gap-2.5 text-left cursor-pointer group">
+          <div class="w-9 h-9 rounded-xl bg-teal-400/25 text-teal-200 flex items-center justify-center text-base group-hover:scale-110 transition-transform shrink-0">
+            <i class="fa-solid fa-print"></i>
+          </div>
+          <div class="min-w-0">
+            <span class="text-[10px] font-bold uppercase text-emerald-200/80 block leading-none">Output</span>
+            <span class="text-xs font-extrabold text-white truncate block mt-0.5">Cetak Rapor</span>
+          </div>
+        </button>
+      </div>
+    </div>
   </div>
 
-  <!-- Panduan Langkah Penggunaan Aplikasi (5 Horizontal Cards from Screenshot) -->
-  <div class="bg-white rounded-3xl p-5 sm:p-6 border border-[#e2f3ea] shadow-sm space-y-4">
-    <div class="flex items-center justify-between border-b border-[#e2f3ea] pb-3">
-      <h3 class="text-sm font-extrabold text-slate-900 flex items-center gap-2">
-        <i class="fa-solid fa-book-bookmark text-[#00a66c]"></i>
-        <span>Panduan Langkah Penggunaan Aplikasi</span>
-      </h3>
-      <button onclick="openInteractiveGuide(1)" class="text-xs font-bold text-[#00a66c] hover:underline flex items-center gap-1">
-        <span>Buka Tutorial Lengkap</span> <i class="fa-solid fa-arrow-right text-[10px]"></i>
-      </button>
+  <!-- Panduan Langkah Penggunaan Aplikasi (5 Interactive Step Cards - Collapsible) -->
+  <div id="dashboard-steps-guide-box" class="bg-white rounded-3xl p-5 sm:p-6 border border-emerald-100/90 shadow-sm space-y-4 transition-all">
+    <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+      <div class="flex items-center gap-2">
+        <span class="w-7 h-7 rounded-xl bg-emerald-50 text-[#00a66c] flex items-center justify-center text-xs">
+          <i class="fa-solid fa-book-bookmark"></i>
+        </span>
+        <h3 class="text-xs sm:text-sm font-extrabold text-slate-900">
+          Alur Cepat Penggunaan Aplikasi e-Rapor
+        </h3>
+      </div>
+      <div class="flex items-center gap-3">
+        <button onclick="openInteractiveGuide(1)" class="text-xs font-bold text-[#00a66c] hover:underline flex items-center gap-1 cursor-pointer">
+          <span>Buka Tutorial Interaktif</span> <i class="fa-solid fa-arrow-right text-[10px]"></i>
+        </button>
+        <button type="button" onclick="toggleDashboardStepsGuide()" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg hover:bg-slate-100 text-xs cursor-pointer" title="Sembunyikan/Tampilkan Alur">
+          <i id="icon-toggle-steps-guide" class="fa-solid fa-chevron-up"></i>
+        </button>
+      </div>
     </div>
 
     <!-- 5 Step Cards Grid -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+    <div id="dashboard-steps-cards-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
       
       <!-- Step 1 -->
-      <div class="bg-slate-50/60 hover:bg-[#edf9f3] border border-slate-200/80 hover:border-[#a7f3d0] rounded-2xl p-4 transition flex flex-col justify-between space-y-2.5">
+      <div class="bg-gradient-to-b from-emerald-50/50 to-white hover:from-emerald-50 border border-emerald-100 hover:border-emerald-300 rounded-2xl p-4 transition flex flex-col justify-between space-y-2.5 cursor-pointer interactive-card" onclick="triggerInitDb()">
         <div class="flex items-center justify-between">
-          <span class="w-6 h-6 rounded-full bg-emerald-100 text-[#00a66c] flex items-center justify-center font-black text-xs">1</span>
-          <span class="text-[9px] font-extrabold uppercase tracking-wider text-emerald-800 bg-emerald-100/70 px-2 py-0.5 rounded">Langkah Awal</span>
+          <span class="w-7 h-7 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-black text-xs shadow-xs">1</span>
+          <span class="text-[9px] font-extrabold uppercase tracking-wider text-emerald-800 bg-emerald-100/80 px-2 py-0.5 rounded-full">Sinkronisasi</span>
         </div>
         <div>
-          <h4 class="font-bold text-xs text-slate-900 leading-snug">Inisialisasi Database</h4>
-          <p class="text-[11px] text-slate-500 mt-1 leading-tight">Hubungkan database Sheets / Cloud untuk memuat data master & indikator default.</p>
+          <h4 class="font-extrabold text-xs text-slate-900 leading-snug">Sinkron Database</h4>
+          <p class="text-[11px] text-slate-500 mt-1 leading-tight">Muat data master siswa, 64 TP Kurikulum Merdeka & indikator SKL.</p>
         </div>
       </div>
 
       <!-- Step 2 -->
-      <div class="bg-slate-50/60 hover:bg-[#edf9f3] border border-slate-200/80 hover:border-[#a7f3d0] rounded-2xl p-4 transition flex flex-col justify-between space-y-2.5 cursor-pointer" onclick="switchView('murid')">
+      <div class="bg-gradient-to-b from-teal-50/50 to-white hover:from-teal-50 border border-teal-100 hover:border-teal-300 rounded-2xl p-4 transition flex flex-col justify-between space-y-2.5 cursor-pointer interactive-card" onclick="switchView('murid')">
         <div class="flex items-center justify-between">
-          <span class="w-6 h-6 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center font-black text-xs">2</span>
-          <span class="text-[9px] font-extrabold uppercase tracking-wider text-teal-800 bg-teal-100/70 px-2 py-0.5 rounded">Master Data</span>
+          <span class="w-7 h-7 rounded-xl bg-teal-600 text-white flex items-center justify-center font-black text-xs shadow-xs">2</span>
+          <span class="text-[9px] font-extrabold uppercase tracking-wider text-teal-800 bg-teal-100/80 px-2 py-0.5 rounded-full">Master Siswa</span>
         </div>
         <div>
-          <h4 class="font-bold text-xs text-slate-900 leading-snug">Kelola Data Siswa</h4>
-          <p class="text-[11px] text-slate-500 mt-1 leading-tight">Masuk ke menu Data Siswa untuk menambah identitas manual atau Bulk Import CSV.</p>
+          <h4 class="font-extrabold text-xs text-slate-900 leading-snug">Presensi & Ekskul</h4>
+          <p class="text-[11px] text-slate-500 mt-1 leading-tight">Kelola biodata murid, absensi (S/I/A), dan nilai 3 ekstrakurikuler.</p>
         </div>
       </div>
 
       <!-- Step 3 -->
-      <div class="bg-slate-50/60 hover:bg-[#edf9f3] border border-slate-200/80 hover:border-[#a7f3d0] rounded-2xl p-4 transition flex flex-col justify-between space-y-2.5 cursor-pointer" onclick="switchView('akademik')">
+      <div class="bg-gradient-to-b from-amber-50/50 to-white hover:from-amber-50 border border-amber-100 hover:border-amber-300 rounded-2xl p-4 transition flex flex-col justify-between space-y-2.5 cursor-pointer interactive-card" onclick="switchView('akademik')">
         <div class="flex items-center justify-between">
-          <span class="w-6 h-6 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center font-black text-xs">3</span>
-          <span class="text-[9px] font-extrabold uppercase tracking-wider text-amber-800 bg-amber-100/70 px-2 py-0.5 rounded">Penilaian</span>
+          <span class="w-7 h-7 rounded-xl bg-amber-500 text-white flex items-center justify-center font-black text-xs shadow-xs">3</span>
+          <span class="text-[9px] font-extrabold uppercase tracking-wider text-amber-800 bg-amber-100/80 px-2 py-0.5 rounded-full">Penilaian</span>
         </div>
         <div>
-          <h4 class="font-bold text-xs text-slate-900 leading-snug">Input Nilai Akhir UTS</h4>
-          <p class="text-[11px] text-slate-500 mt-1 leading-tight">Klik tombol "Nilai" di daftar mapel untuk menginput skor UTS & catatan kualitatif.</p>
+          <h4 class="font-extrabold text-xs text-slate-900 leading-snug">Input Nilai & TP</h4>
+          <p class="text-[11px] text-slate-500 mt-1 leading-tight">Input nilai angka & checklist TP (mode Tabel atau Kartu Cepat HP).</p>
         </div>
       </div>
 
       <!-- Step 4 -->
-      <div class="bg-slate-50/60 hover:bg-[#edf9f3] border border-slate-200/80 hover:border-[#a7f3d0] rounded-2xl p-4 transition flex flex-col justify-between space-y-2.5 cursor-pointer" onclick="switchView('rapor')">
+      <div class="bg-gradient-to-b from-indigo-50/50 to-white hover:from-indigo-50 border border-indigo-100 hover:border-indigo-300 rounded-2xl p-4 transition flex flex-col justify-between space-y-2.5 cursor-pointer interactive-card" onclick="switchView('rapor')">
         <div class="flex items-center justify-between">
-          <span class="w-6 h-6 rounded-full bg-rose-100 text-rose-700 flex items-center justify-center font-black text-xs">4</span>
-          <span class="text-[9px] font-extrabold uppercase tracking-wider text-rose-800 bg-rose-100/70 px-2 py-0.5 rounded">Laporan</span>
+          <span class="w-7 h-7 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-black text-xs shadow-xs">4</span>
+          <span class="text-[9px] font-extrabold uppercase tracking-wider text-indigo-800 bg-indigo-100/80 px-2 py-0.5 rounded-full">Publikasi</span>
         </div>
         <div>
-          <h4 class="font-bold text-xs text-slate-900 leading-snug">Cetak & Unduh PDF</h4>
-          <p class="text-[11px] text-slate-500 mt-1 leading-tight">Klik "Lihat Rapor" lalu tekan tombol "Cetak / Simpan PDF" untuk lembar cetak fisik.</p>
+          <h4 class="font-extrabold text-xs text-slate-900 leading-snug">Cetak & Publish Rapor</h4>
+          <p class="text-[11px] text-slate-500 mt-1 leading-tight">Pratinjau lembar A4 Portofolio & SKL, unduh PDF, atau publish ke ortu.</p>
         </div>
       </div>
 
       <!-- Step 5 -->
-      <div class="bg-slate-50/60 hover:bg-[#edf9f3] border border-slate-200/80 hover:border-[#a7f3d0] rounded-2xl p-4 transition flex flex-col justify-between space-y-2.5 cursor-pointer" onclick="switchView('cms')">
+      <div class="bg-gradient-to-b from-rose-50/50 to-white hover:from-rose-50 border border-rose-100 hover:border-rose-300 rounded-2xl p-4 transition flex flex-col justify-between space-y-2.5 cursor-pointer interactive-card" onclick="switchView('cms')">
         <div class="flex items-center justify-between">
-          <span class="w-6 h-6 rounded-full bg-purple-100 text-purple-700 flex items-center justify-center font-black text-xs">5</span>
-          <span class="text-[9px] font-extrabold uppercase tracking-wider text-purple-800 bg-purple-100/70 px-2 py-0.5 rounded">Admin</span>
+          <span class="w-7 h-7 rounded-xl bg-rose-600 text-white flex items-center justify-center font-black text-xs shadow-xs">5</span>
+          <span class="text-[9px] font-extrabold uppercase tracking-wider text-rose-800 bg-rose-100/80 px-2 py-0.5 rounded-full">Konfigurasi</span>
         </div>
         <div>
-          <h4 class="font-bold text-xs text-slate-900 leading-snug">Kustomisasi CMS</h4>
-          <p class="text-[11px] text-slate-500 mt-1 leading-tight">Masuk ke Pengaturan & CMS untuk kustom identitas yayasan, kepsek & rubrik.</p>
+          <h4 class="font-extrabold text-xs text-slate-900 leading-snug">Pengaturan & CMS</h4>
+          <p class="text-[11px] text-slate-500 mt-1 leading-tight">Sesuaikan titimangsa rapor, akun pendidik/wali murid, dan tema warna.</p>
         </div>
       </div>
 
     </div>
   </div>
 
-  <!-- Unit Kerja / Kelas Rombel Stats Cards (Matching Screenshot) -->
+  <!-- Unit Kerja / Kelas Rombel Stats Cards (Interactive & Distinct Color Accents) -->
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
     
     <!-- Unit 1: Kelas VII -->
-    <div class="bg-white rounded-3xl p-5 border border-[#e2f3ea] shadow-sm space-y-3 flex flex-col justify-between hover:shadow-md transition">
+    <div onclick="quickFilterDashboardByClass('VII UTSMAN')" class="bg-white rounded-3xl p-5 border border-emerald-100/90 shadow-sm space-y-3 flex flex-col justify-between interactive-card cursor-pointer relative overflow-hidden group" title="Klik untuk melihat grafik Kelas VII">
+      <div class="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-emerald-500 to-teal-400"></div>
       <div class="flex items-start justify-between">
-        <div class="w-12 h-12 rounded-2xl bg-[#e8f8f2] border border-[#a7f3d0] flex items-center justify-center text-[#00a66c] text-xl shadow-sm">
-          <i class="fa-solid fa-building-columns"></i>
+        <div class="w-12 h-12 rounded-2xl bg-emerald-50 border border-emerald-200/80 flex items-center justify-center text-[#00a66c] text-xl shadow-2xs group-hover:scale-105 transition-transform">
+          <i class="fa-solid fa-seedling"></i>
         </div>
         <div class="text-right">
-          <span class="text-2xl font-black text-slate-900 leading-none" id="card-vii-total">41</span>
-          <span class="text-[11px] text-slate-400 block mt-0.5 font-bold">Murid</span>
+          <span class="text-2xl font-black text-slate-900 leading-none font-mono" id="card-vii-total">41</span>
+          <span class="text-[11px] text-emerald-700 block mt-0.5 font-bold">Peserta Didik</span>
         </div>
       </div>
       <div>
-        <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Unit Kerja / Kelas</span>
-        <h3 class="text-base font-extrabold text-slate-900 mt-0.5">Kelas VII (Utsman & Aisyah)</h3>
+        <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Tingkat Kelas VII</span>
+        <h3 class="text-sm sm:text-base font-extrabold text-slate-900 mt-0.5">Utsman, Aisyah & MBU</h3>
       </div>
       <div class="pt-2 border-t border-slate-100 flex gap-2 text-[11px]">
-        <span class="flex-1 bg-blue-50 text-blue-800 font-bold py-1 px-2 rounded-xl text-center" id="card-vii-ikhwan">Ikhwan: 14</span>
-        <span class="flex-1 bg-[#e8f8f2] text-[#065f46] font-bold py-1 px-2 rounded-xl text-center" id="card-vii-akhwat">Akhwat: 27</span>
+        <span class="flex-1 bg-blue-50 text-blue-800 border border-blue-100 font-bold py-1 px-2 rounded-xl text-center" id="card-vii-ikhwan">Ikhwan: 14</span>
+        <span class="flex-1 bg-emerald-50 text-emerald-800 border border-emerald-100 font-bold py-1 px-2 rounded-xl text-center" id="card-vii-akhwat">Akhwat: 27</span>
       </div>
     </div>
 
     <!-- Unit 2: Kelas VIII -->
-    <div class="bg-white rounded-3xl p-5 border border-[#e2f3ea] shadow-sm space-y-3 flex flex-col justify-between hover:shadow-md transition">
+    <div onclick="quickFilterDashboardByClass('VIII UMAR')" class="bg-white rounded-3xl p-5 border border-teal-100/90 shadow-sm space-y-3 flex flex-col justify-between interactive-card cursor-pointer relative overflow-hidden group" title="Klik untuk melihat grafik Kelas VIII">
+      <div class="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-teal-500 to-cyan-500"></div>
       <div class="flex items-start justify-between">
-        <div class="w-12 h-12 rounded-2xl bg-[#e8f8f2] border border-[#a7f3d0] flex items-center justify-center text-[#00a66c] text-xl shadow-sm">
+        <div class="w-12 h-12 rounded-2xl bg-teal-50 border border-teal-200/80 flex items-center justify-center text-teal-700 text-xl shadow-2xs group-hover:scale-105 transition-transform">
           <i class="fa-solid fa-users"></i>
         </div>
         <div class="text-right">
-          <span class="text-2xl font-black text-slate-900 leading-none" id="card-viii-total">46</span>
-          <span class="text-[11px] text-slate-400 block mt-0.5 font-bold">Murid</span>
+          <span class="text-2xl font-black text-slate-900 leading-none font-mono" id="card-viii-total">46</span>
+          <span class="text-[11px] text-teal-700 block mt-0.5 font-bold">Peserta Didik</span>
         </div>
       </div>
       <div>
-        <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Unit Kerja / Kelas</span>
-        <h3 class="text-base font-extrabold text-slate-900 mt-0.5">Kelas VIII (Umar & Khodijah)</h3>
+        <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Tingkat Kelas VIII</span>
+        <h3 class="text-sm sm:text-base font-extrabold text-slate-900 mt-0.5">Umar & Khodijah</h3>
       </div>
       <div class="pt-2 border-t border-slate-100 flex gap-2 text-[11px]">
-        <span class="flex-1 bg-blue-50 text-blue-800 font-bold py-1 px-2 rounded-xl text-center" id="card-viii-ikhwan">Ikhwan: 19</span>
-        <span class="flex-1 bg-[#e8f8f2] text-[#065f46] font-bold py-1 px-2 rounded-xl text-center" id="card-viii-akhwat">Akhwat: 27</span>
+        <span class="flex-1 bg-blue-50 text-blue-800 border border-blue-100 font-bold py-1 px-2 rounded-xl text-center" id="card-viii-ikhwan">Ikhwan: 19</span>
+        <span class="flex-1 bg-teal-50 text-teal-800 border border-teal-100 font-bold py-1 px-2 rounded-xl text-center" id="card-viii-akhwat">Akhwat: 27</span>
       </div>
     </div>
 
     <!-- Unit 3: Kelas IX -->
-    <div class="bg-white rounded-3xl p-5 border border-[#e2f3ea] shadow-sm space-y-3 flex flex-col justify-between hover:shadow-md transition">
+    <div onclick="quickFilterDashboardByClass('IX ABU BAKAR')" class="bg-white rounded-3xl p-5 border border-indigo-100/90 shadow-sm space-y-3 flex flex-col justify-between interactive-card cursor-pointer relative overflow-hidden group" title="Klik untuk melihat grafik Kelas IX">
+      <div class="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-indigo-500 to-blue-500"></div>
       <div class="flex items-start justify-between">
-        <div class="w-12 h-12 rounded-2xl bg-[#e8f8f2] border border-[#a7f3d0] flex items-center justify-center text-[#00a66c] text-xl shadow-sm">
+        <div class="w-12 h-12 rounded-2xl bg-indigo-50 border border-indigo-200/80 flex items-center justify-center text-indigo-700 text-xl shadow-2xs group-hover:scale-105 transition-transform">
           <i class="fa-solid fa-graduation-cap"></i>
         </div>
         <div class="text-right">
-          <span class="text-2xl font-black text-slate-900 leading-none" id="card-ix-total">50</span>
-          <span class="text-[11px] text-slate-400 block mt-0.5 font-bold">Murid</span>
+          <span class="text-2xl font-black text-slate-900 leading-none font-mono" id="card-ix-total">50</span>
+          <span class="text-[11px] text-indigo-700 block mt-0.5 font-bold">Peserta Didik</span>
         </div>
       </div>
       <div>
-        <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Unit Kerja / Kelas</span>
-        <h3 class="text-base font-extrabold text-slate-900 mt-0.5">Kelas IX (Abu Bakar & Ummu S)</h3>
+        <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Tingkat Kelas IX</span>
+        <h3 class="text-sm sm:text-base font-extrabold text-slate-900 mt-0.5">Abu Bakar & Ummu S</h3>
       </div>
       <div class="pt-2 border-t border-slate-100 flex gap-2 text-[11px]">
-        <span class="flex-1 bg-blue-50 text-blue-800 font-bold py-1 px-2 rounded-xl text-center" id="card-ix-ikhwan">Ikhwan: 24</span>
-        <span class="flex-1 bg-[#e8f8f2] text-[#065f46] font-bold py-1 px-2 rounded-xl text-center" id="card-ix-akhwat">Akhwat: 26</span>
+        <span class="flex-1 bg-blue-50 text-blue-800 border border-blue-100 font-bold py-1 px-2 rounded-xl text-center" id="card-ix-ikhwan">Ikhwan: 24</span>
+        <span class="flex-1 bg-indigo-50 text-indigo-800 border border-indigo-100 font-bold py-1 px-2 rounded-xl text-center" id="card-ix-akhwat">Akhwat: 26</span>
       </div>
     </div>
 
     <!-- Unit 4: Program Tahfidz & Total -->
-    <div class="bg-white rounded-3xl p-5 border border-[#e2f3ea] shadow-sm space-y-3 flex flex-col justify-between hover:shadow-md transition">
+    <div onclick="switchView('leger')" class="bg-white rounded-3xl p-5 border border-amber-100/90 shadow-sm space-y-3 flex flex-col justify-between interactive-card cursor-pointer relative overflow-hidden group" title="Klik untuk membuka Buku Leger">
+      <div class="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-amber-500 to-orange-400"></div>
       <div class="flex items-start justify-between">
-        <div class="w-12 h-12 rounded-2xl bg-[#e8f8f2] border border-[#a7f3d0] flex items-center justify-center text-[#00a66c] text-xl shadow-sm">
+        <div class="w-12 h-12 rounded-2xl bg-amber-50 border border-amber-200/80 flex items-center justify-center text-amber-600 text-xl shadow-2xs group-hover:scale-105 transition-transform">
           <i class="fa-solid fa-mosque"></i>
         </div>
         <div class="text-right">
-          <span class="text-2xl font-black text-slate-900 leading-none" id="card-total-santri">159</span>
-          <span class="text-[11px] text-slate-400 block mt-0.5 font-bold">Total Santri</span>
+          <span class="text-2xl font-black text-slate-900 leading-none font-mono" id="card-total-santri">159</span>
+          <span class="text-[11px] text-amber-700 block mt-0.5 font-bold">Total Santri</span>
         </div>
       </div>
       <div>
         <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Program Khusus / Total</span>
-        <h3 class="text-base font-extrabold text-slate-900 mt-0.5">Tahfidz MBU & 7 Rombel</h3>
+        <h3 class="text-sm sm:text-base font-extrabold text-slate-900 mt-0.5">Tahfidz MBU & 7 Rombel</h3>
       </div>
       <div class="pt-2 border-t border-slate-100 flex gap-2 text-[11px]">
-        <span class="flex-1 bg-amber-50 text-amber-800 font-bold py-1 px-2 rounded-xl text-center" id="card-total-mapel">16 Mapel</span>
-        <span class="flex-1 bg-[#e8f8f2] text-[#065f46] font-bold py-1 px-2 rounded-xl text-center" id="card-total-kkm">100% KKM</span>
+        <span class="flex-1 bg-amber-50 text-amber-800 border border-amber-200/60 font-bold py-1 px-2 rounded-xl text-center" id="card-total-mapel">16 Mapel</span>
+        <span class="flex-1 bg-emerald-50 text-emerald-800 border border-emerald-200/60 font-bold py-1 px-2 rounded-xl text-center" id="card-total-kkm">100% KKM</span>
       </div>
     </div>
 
@@ -727,6 +942,7 @@
               <h4 class="font-bold text-slate-900 mt-0.5">Penilaian Tengah Semester (PTS) Ganjil</h4>
               <p class="text-slate-600 text-[11px] mt-1 leading-snug">Penginputan leger nilai 16 mapel untuk seluruh rombel aktif.</p>
             </div>
+            <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl">
               <span class="text-[10px] font-bold text-slate-500 uppercase block">Kurikulum</span>
               <h4 class="font-bold text-slate-900 mt-0.5">Standar Interval Rapor (KKM 75)</h4>
               <p class="text-slate-600 text-[11px] mt-1 leading-snug">Predikat: <strong>A</strong> (92–100: Sangat Baik), <strong>B</strong> (84–91: Baik), <strong>C</strong> (75–83: Cukup), <strong>D</strong> (≤ 74: Perlu Bimbingan).</p>
@@ -734,7 +950,7 @@
           </div>
         </div>
 
-        <button onclick="switchView('akademik')" class="w-full py-2.5 bg-[#00a66c] hover:bg-[#008f5d] text-white font-bold text-xs rounded-2xl shadow-sm shadow-[#00a66c]/20 transition flex items-center justify-center gap-2">
+        <button onclick="switchView('akademik')" class="w-full py-2.5 bg-[#00a66c] hover:bg-[#008f5d] text-white font-bold text-xs rounded-2xl shadow-sm shadow-[#00a66c]/20 transition flex items-center justify-center gap-2 cursor-pointer">
           <i class="fa-solid fa-pen-to-square"></i>
           <span>Kelola Nilai Akademik</span>
         </button>

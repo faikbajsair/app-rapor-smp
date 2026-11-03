@@ -64,10 +64,18 @@
         <i class="fa-solid fa-magnifying-glass absolute left-2 top-2.5 text-slate-400 text-xs"></i>
       </div>
 
-      <!-- Murid Selector for Print -->
-      <select id="rapor-murid-select" onchange="loadMuridReportForPrint(this.value)" class="text-xs bg-indigo-50 border border-indigo-300 rounded-xl px-3 py-2 text-indigo-950 font-black focus:ring-2 focus:ring-indigo-500 min-w-[200px]">
-        <!-- Populated via JS -->
-      </select>
+      <!-- Murid Selector + Quick Stepper for Print -->
+      <div class="flex items-center gap-1">
+        <button type="button" onclick="prevNextRaporStudent(-1)" class="menu-non-wali w-8 h-8 rounded-xl bg-slate-100 hover:bg-indigo-100 text-slate-600 hover:text-indigo-700 flex items-center justify-center text-xs font-bold transition cursor-pointer shrink-0" title="Siswa Sebelumnya">
+          <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        <select id="rapor-murid-select" onchange="loadMuridReportForPrint(this.value)" class="text-xs bg-indigo-50 border border-indigo-300 rounded-xl px-3 py-2 text-indigo-950 font-black focus:ring-2 focus:ring-indigo-500 min-w-[180px] sm:min-w-[210px] max-w-[260px]">
+          <!-- Populated via JS -->
+        </select>
+        <button type="button" onclick="prevNextRaporStudent(1)" class="menu-non-wali w-8 h-8 rounded-xl bg-slate-100 hover:bg-indigo-100 text-slate-600 hover:text-indigo-700 flex items-center justify-center text-xs font-bold transition cursor-pointer shrink-0" title="Siswa Berikutnya">
+          <i class="fa-solid fa-chevron-right"></i>
+        </button>
+      </div>
 
       <button onclick="window.print()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-xs shadow flex items-center gap-1.5 transition cursor-pointer">
         <i class="fa-solid fa-print"></i>

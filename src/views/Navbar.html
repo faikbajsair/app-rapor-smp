@@ -1,81 +1,91 @@
-<!-- Top Navigation Bar -->
-<header class="no-print bg-white/95 backdrop-blur-md border border-[#e2f3ea] rounded-2xl mx-3 sm:mx-6 mt-3 shadow-sm sticky top-2 z-30">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6">
-    <div class="flex justify-between h-16 items-center">
+<!-- Top Navigation Bar (Modern Glassmorphic Responsive Header) -->
+<header class="no-print bg-white/90 backdrop-blur-xl border border-emerald-100/90 rounded-2xl sm:rounded-3xl mx-2.5 sm:mx-5 lg:mx-6 mt-2.5 sm:mt-3 shadow-[0_4px_24px_-4px_rgba(0,166,108,0.06)] sticky top-2 z-30 transition-all">
+  <div class="max-w-7xl mx-auto px-3 sm:px-5">
+    <div class="flex justify-between h-14 sm:h-16 items-center gap-2">
       
-      <!-- Left: Mobile Menu Toggle & Brand Info -->
-      <div class="flex items-center space-x-3">
-        <button id="btn-toggle-sidebar" onclick="toggleSidebar()" class="lg:hidden p-2 rounded-xl text-slate-600 hover:bg-emerald-50 hover:text-emerald-700 focus:outline-none transition cursor-pointer" title="Menu Sidebar">
-          <i class="fa-solid fa-bars text-lg"></i>
+      <!-- Left: Mobile Menu Toggle & Brand Identity -->
+      <div class="flex items-center gap-2.5 sm:gap-3 min-w-0">
+        <button id="btn-toggle-sidebar" onclick="toggleSidebar()" class="lg:hidden w-9 h-9 rounded-xl bg-emerald-50/80 text-emerald-800 hover:bg-emerald-100 hover:text-emerald-950 flex items-center justify-center focus:outline-none transition cursor-pointer shrink-0 border border-emerald-200/60" title="Buka Menu Navigasi">
+          <i class="fa-solid fa-bars-staggered text-base"></i>
         </button>
         
-        <div class="flex items-center space-x-3 cursor-pointer" onclick="switchView('dashboard')">
-          <img id="nav-school-logo" src="https://alimamischool.com/wp-content/uploads/2020/08/Al-Imam-Islamic-School-alimamischool.com-sekolah-sunnah-logo.png" 
-               alt="Logo Sekolah" class="h-9 w-auto object-contain drop-shadow-sm rounded" />
-          <div class="hidden sm:block">
-            <h1 id="nav-school-name" class="text-sm sm:text-base font-extrabold text-slate-900 leading-tight">SMP AL IMAM ISLAMIC SCHOOL (AI IS)</h1>
-            <p class="text-[11px] font-semibold text-slate-400 flex items-center gap-1.5">
-              <span class="inline-block w-2 h-2 rounded-full bg-[#00a66c] animate-pulse"></span>
-              Development by Al-Imam EduTech
+        <div class="flex items-center gap-2.5 sm:gap-3 cursor-pointer group min-w-0" onclick="switchView('dashboard')">
+          <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-200/70 flex items-center justify-center p-1 shadow-2xs group-hover:scale-105 transition-transform shrink-0">
+            <img id="nav-school-logo" src="https://alimamischool.com/wp-content/uploads/2020/08/Al-Imam-Islamic-School-alimamischool.com-sekolah-sunnah-logo.png" 
+                 alt="Logo Sekolah" class="h-full w-auto object-contain drop-shadow-2xs rounded" />
+          </div>
+          <div class="min-w-0">
+            <h1 id="nav-school-name" class="text-xs sm:text-sm md:text-base font-extrabold text-slate-900 leading-tight truncate">SMP AL IMAM ISLAMIC SCHOOL (AI IS)</h1>
+            <p class="text-[10px] sm:text-[11px] font-semibold text-slate-500 flex items-center gap-1.5 truncate">
+              <span class="inline-block w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#00a66c] animate-pulse shrink-0"></span>
+              <span class="truncate">Sistem e-Rapor Holistik &bull; Al-Imam EduTech</span>
             </p>
           </div>
         </div>
       </div>
 
-      <!-- Center / Right: Academic Badge & User Quick Controls -->
-      <div class="flex items-center space-x-2 sm:space-x-3">
+      <!-- Center / Right: Quick Command, Academic Period & User Controls -->
+      <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
         
+        <!-- Quick Search & Command Trigger (Desktop & Mobile) -->
+        <button type="button" onclick="openQuickCommandModal()" class="inline-flex items-center gap-2 px-2.5 sm:px-3 py-1.5 bg-slate-100/90 hover:bg-emerald-50 text-slate-600 hover:text-emerald-800 border border-slate-200/80 hover:border-emerald-200 rounded-xl text-xs font-bold transition-all cursor-pointer shadow-2xs" title="Pencarian Cepat Siswa & Menu (Ctrl+K)">
+          <i class="fa-solid fa-magnifying-glass text-[#00a66c] text-xs"></i>
+          <span class="hidden xl:inline text-slate-500 font-medium">Cari siswa / menu...</span>
+          <kbd class="hidden xl:inline-block text-[9px] font-mono font-bold bg-white text-slate-500 px-1.5 py-0.5 rounded border border-slate-200">⌘K</kbd>
+        </button>
+
         <!-- Active Period Pill (Clickable to switch / add academic year - Khusus Guru / Admin) -->
         <button id="nav-btn-academic-year" onclick="openAcademicYearModal()" title="Klik untuk mengganti atau menambah Tahun Ajaran Baru"
-                class="menu-non-wali hidden md:flex items-center gap-1.5 bg-emerald-50/80 hover:bg-emerald-100 border border-emerald-200/80 hover:border-emerald-300 px-3 py-1.5 rounded-full text-xs font-medium text-slate-700 hover:text-emerald-900 transition shadow-sm group">
+                class="menu-non-wali hidden md:flex items-center gap-1.5 bg-emerald-50/90 hover:bg-emerald-100 border border-emerald-200/90 hover:border-emerald-300 px-3 py-1.5 rounded-xl text-xs font-medium text-slate-700 hover:text-emerald-950 transition shadow-2xs group cursor-pointer">
           <i class="fa-regular fa-calendar-check text-[#00a66c] group-hover:scale-110 transition-transform"></i>
-          <span>T.A. <strong id="nav-academic-year" class="text-emerald-900 font-bold">2026/2027</strong></span>
-          <span class="text-emerald-200">|</span>
-          <span class="text-emerald-700 font-bold" id="nav-semester">Tengah Semester 1</span>
-          <i class="fa-solid fa-chevron-down text-[9px] text-emerald-400 group-hover:text-emerald-600 ml-0.5"></i>
+          <span class="hidden lg:inline">T.A.</span>
+          <strong id="nav-academic-year" class="text-emerald-950 font-extrabold">2026/2027</strong>
+          <span class="text-emerald-300">|</span>
+          <span class="text-emerald-800 font-bold max-w-[110px] xl:max-w-none truncate" id="nav-semester">Tengah Semester 1</span>
+          <i class="fa-solid fa-chevron-down text-[9px] text-emerald-500 group-hover:text-emerald-700 ml-0.5"></i>
         </button>
 
         <!-- Petunjuk & Panduan Membaca Rapor Button (Resmi di Header) -->
-        <button id="nav-btn-petunjuk-rapor" onclick="openModalPetunjukRapor('baca_rapor')" class="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200/90 rounded-xl text-xs font-bold transition-all shadow-sm cursor-pointer" title="Petunjuk Penggunaan & Cara Membaca Lembar Rapor">
+        <button id="nav-btn-petunjuk-rapor" onclick="openModalPetunjukRapor('baca_rapor')" class="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200/90 rounded-xl text-xs font-bold transition-all shadow-2xs cursor-pointer" title="Petunjuk Penggunaan & Cara Membaca Lembar Rapor">
           <i class="fa-solid fa-book-open-reader text-amber-600"></i>
-          <span class="hidden sm:inline">Petunjuk Rapor</span>
+          <span class="hidden md:inline">Petunjuk Rapor</span>
         </button>
 
         <!-- Interactive Guide Button (Khusus Guru / Non-Wali) -->
-        <button id="nav-btn-tutorial" onclick="openInteractiveGuide(1)" class="menu-non-wali inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-[#00a66c] border border-emerald-200 rounded-xl text-xs font-bold transition-all shadow-sm cursor-pointer">
+        <button id="nav-btn-tutorial" onclick="openInteractiveGuide(1)" class="menu-non-wali hidden sm:inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-[#00a66c] border border-emerald-200 rounded-xl text-xs font-bold transition-all shadow-2xs cursor-pointer" title="Panduan Interaktif">
           <i class="fa-solid fa-lightbulb text-amber-500"></i>
-          <span class="hidden sm:inline">Tutorial</span>
+          <span class="hidden xl:inline">Tutorial</span>
         </button>
 
         <!-- Quick Cetak Rapor Button (Khusus Guru / Admin di Header) -->
-        <button id="nav-btn-quick-print" onclick="openQuickPrintModal()" class="menu-non-wali inline-flex items-center gap-2 px-3.5 py-1.5 bg-[#00a66c] hover:bg-[#008f5d] text-white rounded-xl text-xs font-bold shadow-sm shadow-[#00a66c]/20 transition-all">
+        <button id="nav-btn-quick-print" onclick="openQuickPrintModal()" class="menu-non-wali inline-flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-[#00a66c] to-teal-600 hover:from-[#008f5d] hover:to-teal-700 text-white rounded-xl text-xs font-bold shadow-sm shadow-[#00a66c]/25 transition-all cursor-pointer" title="Cetak Rapor Cepat">
           <i class="fa-solid fa-print"></i>
           <span class="hidden sm:inline">Cetak Rapor</span>
         </button>
 
-        <!-- Active User Profile & Secure Logout (Strictly Private Account, No Switcher) -->
-        <div class="flex items-center space-x-2.5">
+        <!-- Active User Profile & Secure Logout -->
+        <div class="flex items-center gap-1.5 sm:gap-2">
           <!-- Active Role / Class / Mapel Badge (Locked, Non-interactive, Khusus Guru / Walas / Admin) -->
-          <div id="nav-role-badge-container" class="menu-non-wali flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 border border-emerald-200/80 rounded-xl text-xs font-bold text-emerald-900 shadow-sm select-none">
-            <i id="nav-role-badge-icon" class="fa-solid fa-lock text-emerald-600 text-xs"></i>
-            <span id="nav-user-role-badge">Wali Kelas</span>
+          <div id="nav-role-badge-container" class="menu-non-wali hidden xl:flex items-center gap-1.5 px-2.5 py-1.5 bg-emerald-50 border border-emerald-200/80 rounded-xl text-[11px] font-bold text-emerald-900 shadow-2xs select-none max-w-[180px] truncate">
+            <i id="nav-role-badge-icon" class="fa-solid fa-lock text-emerald-600 text-[10px] shrink-0"></i>
+            <span id="nav-user-role-badge" class="truncate">Wali Kelas</span>
           </div>
 
-          <!-- User Identity (Private, No Switcher) -->
-          <div class="flex items-center space-x-2 pl-2 border-l border-slate-200">
-            <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-emerald-600 to-teal-500 text-white flex items-center justify-center font-bold text-xs shadow-inner select-none" 
+          <!-- User Identity -->
+          <div class="flex items-center gap-2 pl-1.5 sm:pl-2 border-l border-slate-200">
+            <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-tr from-[#00a66c] to-teal-500 text-white flex items-center justify-center font-black text-xs shadow-sm select-none shrink-0" 
                  id="nav-user-avatar">
               A
             </div>
             <div class="hidden lg:block text-left select-none">
-              <div id="nav-user-name" class="text-xs font-bold text-slate-800 leading-tight max-w-[160px] truncate">Administrator Utama</div>
-              <div id="nav-user-subtitle" class="text-[10px] text-slate-500 font-medium max-w-[160px] truncate">Sistem Administrator</div>
+              <div id="nav-user-name" class="text-xs font-extrabold text-slate-800 leading-tight max-w-[140px] truncate">Administrator Utama</div>
+              <div id="nav-user-subtitle" class="text-[10px] text-slate-500 font-semibold max-w-[140px] truncate">Sistem Administrator</div>
             </div>
             
             <!-- Direct Logout Button -->
-            <button onclick="logoutUser()" class="flex items-center gap-1.5 px-2.5 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 hover:text-rose-800 border border-rose-200/80 rounded-xl text-xs font-bold transition shadow-sm cursor-pointer ml-1" title="Keluar dari Akun">
+            <button onclick="logoutUser()" class="flex items-center gap-1.5 px-2.5 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 hover:text-rose-800 border border-rose-200/80 rounded-xl text-xs font-bold transition shadow-2xs cursor-pointer" title="Keluar dari Akun">
               <i class="fa-solid fa-power-off text-rose-600 text-xs"></i>
-              <span class="hidden sm:inline">Keluar</span>
+              <span class="hidden md:inline">Keluar</span>
             </button>
           </div>
         </div>

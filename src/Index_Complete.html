@@ -2,7 +2,7 @@
 <html lang="id" class="h-full bg-slate-50">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Rapor Tengah Semester SMP Al-Imam (AI IS) - Sistem Penilaian Holistik</title>
   
   <!-- Anti-cache headers to ensure client browsers always get latest release -->
@@ -43,11 +43,15 @@
     
     body {
       font-family: var(--font-main);
-      background: linear-gradient(135deg, #edf9f3 0%, #e4f6ee 50%, #daf2e6 100%);
+      background: radial-gradient(circle at 0% 0%, #e0f7ec 0%, transparent 45%),
+                  radial-gradient(circle at 100% 0%, #e0f2fe 0%, transparent 40%),
+                  radial-gradient(circle at 100% 100%, #dcfce7 0%, transparent 45%),
+                  linear-gradient(145deg, #f0faf5 0%, #e6f6ef 50%, #f1f5f9 100%);
       background-attachment: fixed;
-      color: #1e293b;
+      color: #0f172a;
       overflow-x: hidden;
       min-height: 100vh;
+      -webkit-tap-highlight-color: transparent;
     }
     
     /* Custom scrollbar */
@@ -56,14 +60,21 @@
       height: 6px;
     }
     ::-webkit-scrollbar-track {
-      background: #eaf8f2;
+      background: rgba(234, 248, 242, 0.6);
     }
     ::-webkit-scrollbar-thumb {
-      background: #a7f3d0;
-      border-radius: 4px;
+      background: #94a3b8;
+      border-radius: 9999px;
     }
     ::-webkit-scrollbar-thumb:hover {
-      background: #34d399;
+      background: #00a66c;
+    }
+    .scrollbar-none::-webkit-scrollbar {
+      display: none;
+    }
+    .scrollbar-none {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
     }
     
     /* Custom CSS Utility Classes using dynamic CSS variables */
@@ -80,20 +91,47 @@
     .text-theme-accent { color: var(--accent-color) !important; }
 
     .theme-card {
-      background-color: #ffffff;
+      background-color: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(12px);
       border: 1px solid #e2f3ea;
       border-radius: 1.5rem;
-      box-shadow: 0 4px 20px -2px rgba(0, 166, 108, 0.04), 0 2px 6px -1px rgba(0, 0, 0, 0.02);
+      box-shadow: 0 10px 30px -5px rgba(0, 166, 108, 0.05), 0 4px 12px -2px rgba(15, 23, 42, 0.03);
+      transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Interactive Modern Card Hover */
+    .interactive-card {
+      transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .interactive-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 28px -6px rgba(0, 166, 108, 0.1), 0 4px 10px -2px rgba(15, 23, 42, 0.04);
     }
     
-    .badge-predikat-A { background-color: #d1fae5; color: #065f46; border: 1px solid #a7f3d0; }
-    .badge-predikat-B { background-color: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; }
-    .badge-predikat-C { background-color: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
-    .badge-predikat-D { background-color: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+    .badge-predikat-A { background-color: #d1fae5; color: #065f46; border: 1px solid #6ee7b7; }
+    .badge-predikat-B { background-color: #e0f2fe; color: #0369a1; border: 1px solid #7dd3fc; }
+    .badge-predikat-C { background-color: #fef3c7; color: #92400e; border: 1px solid #fcd34d; }
+    .badge-predikat-D { background-color: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
 
     /* Smooth View Transitions */
     .view-panel {
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      animation: viewFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes viewFadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Mobile Bottom Dock Active State */
+    .mobile-dock-btn.active-dock {
+      color: #00a66c !important;
+      font-weight: 800 !important;
+    }
+    .mobile-dock-btn.active-dock .dock-icon-pill {
+      background-color: #e8f8f2;
+      color: #00a66c;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px -2px rgba(0, 166, 108, 0.2);
     }
 
     /* Sidebar Navigation Link Styling - Prevent Text Stacking & Clean Active State */
@@ -441,84 +479,94 @@
 <body class="h-full flex flex-col antialiased text-slate-800 bg-[#eaf8f2]">
 
   <!-- Top Navigation Bar -->
-  <!-- Top Navigation Bar -->
-<header class="no-print bg-white/95 backdrop-blur-md border border-[#e2f3ea] rounded-2xl mx-3 sm:mx-6 mt-3 shadow-sm sticky top-2 z-30">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6">
-    <div class="flex justify-between h-16 items-center">
+  <!-- Top Navigation Bar (Modern Glassmorphic Responsive Header) -->
+<header class="no-print bg-white/90 backdrop-blur-xl border border-emerald-100/90 rounded-2xl sm:rounded-3xl mx-2.5 sm:mx-5 lg:mx-6 mt-2.5 sm:mt-3 shadow-[0_4px_24px_-4px_rgba(0,166,108,0.06)] sticky top-2 z-30 transition-all">
+  <div class="max-w-7xl mx-auto px-3 sm:px-5">
+    <div class="flex justify-between h-14 sm:h-16 items-center gap-2">
       
-      <!-- Left: Mobile Menu Toggle & Brand Info -->
-      <div class="flex items-center space-x-3">
-        <button id="btn-toggle-sidebar" onclick="toggleSidebar()" class="lg:hidden p-2 rounded-xl text-slate-600 hover:bg-emerald-50 hover:text-emerald-700 focus:outline-none transition cursor-pointer" title="Menu Sidebar">
-          <i class="fa-solid fa-bars text-lg"></i>
+      <!-- Left: Mobile Menu Toggle & Brand Identity -->
+      <div class="flex items-center gap-2.5 sm:gap-3 min-w-0">
+        <button id="btn-toggle-sidebar" onclick="toggleSidebar()" class="lg:hidden w-9 h-9 rounded-xl bg-emerald-50/80 text-emerald-800 hover:bg-emerald-100 hover:text-emerald-950 flex items-center justify-center focus:outline-none transition cursor-pointer shrink-0 border border-emerald-200/60" title="Buka Menu Navigasi">
+          <i class="fa-solid fa-bars-staggered text-base"></i>
         </button>
         
-        <div class="flex items-center space-x-3 cursor-pointer" onclick="switchView('dashboard')">
-          <img id="nav-school-logo" src="https://alimamischool.com/wp-content/uploads/2020/08/Al-Imam-Islamic-School-alimamischool.com-sekolah-sunnah-logo.png" 
-               alt="Logo Sekolah" class="h-9 w-auto object-contain drop-shadow-sm rounded" />
-          <div class="hidden sm:block">
-            <h1 id="nav-school-name" class="text-sm sm:text-base font-extrabold text-slate-900 leading-tight">SMP AL IMAM ISLAMIC SCHOOL (AI IS)</h1>
-            <p class="text-[11px] font-semibold text-slate-400 flex items-center gap-1.5">
-              <span class="inline-block w-2 h-2 rounded-full bg-[#00a66c] animate-pulse"></span>
-              Development by Al-Imam EduTech
+        <div class="flex items-center gap-2.5 sm:gap-3 cursor-pointer group min-w-0" onclick="switchView('dashboard')">
+          <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-200/70 flex items-center justify-center p-1 shadow-2xs group-hover:scale-105 transition-transform shrink-0">
+            <img id="nav-school-logo" src="https://alimamischool.com/wp-content/uploads/2020/08/Al-Imam-Islamic-School-alimamischool.com-sekolah-sunnah-logo.png" 
+                 alt="Logo Sekolah" class="h-full w-auto object-contain drop-shadow-2xs rounded" />
+          </div>
+          <div class="min-w-0">
+            <h1 id="nav-school-name" class="text-xs sm:text-sm md:text-base font-extrabold text-slate-900 leading-tight truncate">SMP AL IMAM ISLAMIC SCHOOL (AI IS)</h1>
+            <p class="text-[10px] sm:text-[11px] font-semibold text-slate-500 flex items-center gap-1.5 truncate">
+              <span class="inline-block w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#00a66c] animate-pulse shrink-0"></span>
+              <span class="truncate">Sistem e-Rapor Holistik &bull; Al-Imam EduTech</span>
             </p>
           </div>
         </div>
       </div>
 
-      <!-- Center / Right: Academic Badge & User Quick Controls -->
-      <div class="flex items-center space-x-2 sm:space-x-3">
+      <!-- Center / Right: Quick Command, Academic Period & User Controls -->
+      <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
         
+        <!-- Quick Search & Command Trigger (Desktop & Mobile) -->
+        <button type="button" onclick="openQuickCommandModal()" class="inline-flex items-center gap-2 px-2.5 sm:px-3 py-1.5 bg-slate-100/90 hover:bg-emerald-50 text-slate-600 hover:text-emerald-800 border border-slate-200/80 hover:border-emerald-200 rounded-xl text-xs font-bold transition-all cursor-pointer shadow-2xs" title="Pencarian Cepat Siswa & Menu (Ctrl+K)">
+          <i class="fa-solid fa-magnifying-glass text-[#00a66c] text-xs"></i>
+          <span class="hidden xl:inline text-slate-500 font-medium">Cari siswa / menu...</span>
+          <kbd class="hidden xl:inline-block text-[9px] font-mono font-bold bg-white text-slate-500 px-1.5 py-0.5 rounded border border-slate-200">⌘K</kbd>
+        </button>
+
         <!-- Active Period Pill (Clickable to switch / add academic year - Khusus Guru / Admin) -->
         <button id="nav-btn-academic-year" onclick="openAcademicYearModal()" title="Klik untuk mengganti atau menambah Tahun Ajaran Baru"
-                class="menu-non-wali hidden md:flex items-center gap-1.5 bg-emerald-50/80 hover:bg-emerald-100 border border-emerald-200/80 hover:border-emerald-300 px-3 py-1.5 rounded-full text-xs font-medium text-slate-700 hover:text-emerald-900 transition shadow-sm group">
+                class="menu-non-wali hidden md:flex items-center gap-1.5 bg-emerald-50/90 hover:bg-emerald-100 border border-emerald-200/90 hover:border-emerald-300 px-3 py-1.5 rounded-xl text-xs font-medium text-slate-700 hover:text-emerald-950 transition shadow-2xs group cursor-pointer">
           <i class="fa-regular fa-calendar-check text-[#00a66c] group-hover:scale-110 transition-transform"></i>
-          <span>T.A. <strong id="nav-academic-year" class="text-emerald-900 font-bold">2026/2027</strong></span>
-          <span class="text-emerald-200">|</span>
-          <span class="text-emerald-700 font-bold" id="nav-semester">Tengah Semester 1</span>
-          <i class="fa-solid fa-chevron-down text-[9px] text-emerald-400 group-hover:text-emerald-600 ml-0.5"></i>
+          <span class="hidden lg:inline">T.A.</span>
+          <strong id="nav-academic-year" class="text-emerald-950 font-extrabold">2026/2027</strong>
+          <span class="text-emerald-300">|</span>
+          <span class="text-emerald-800 font-bold max-w-[110px] xl:max-w-none truncate" id="nav-semester">Tengah Semester 1</span>
+          <i class="fa-solid fa-chevron-down text-[9px] text-emerald-500 group-hover:text-emerald-700 ml-0.5"></i>
         </button>
 
         <!-- Petunjuk & Panduan Membaca Rapor Button (Resmi di Header) -->
-        <button id="nav-btn-petunjuk-rapor" onclick="openModalPetunjukRapor('baca_rapor')" class="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200/90 rounded-xl text-xs font-bold transition-all shadow-sm cursor-pointer" title="Petunjuk Penggunaan & Cara Membaca Lembar Rapor">
+        <button id="nav-btn-petunjuk-rapor" onclick="openModalPetunjukRapor('baca_rapor')" class="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200/90 rounded-xl text-xs font-bold transition-all shadow-2xs cursor-pointer" title="Petunjuk Penggunaan & Cara Membaca Lembar Rapor">
           <i class="fa-solid fa-book-open-reader text-amber-600"></i>
-          <span class="hidden sm:inline">Petunjuk Rapor</span>
+          <span class="hidden md:inline">Petunjuk Rapor</span>
         </button>
 
         <!-- Interactive Guide Button (Khusus Guru / Non-Wali) -->
-        <button id="nav-btn-tutorial" onclick="openInteractiveGuide(1)" class="menu-non-wali inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-[#00a66c] border border-emerald-200 rounded-xl text-xs font-bold transition-all shadow-sm cursor-pointer">
+        <button id="nav-btn-tutorial" onclick="openInteractiveGuide(1)" class="menu-non-wali hidden sm:inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-[#00a66c] border border-emerald-200 rounded-xl text-xs font-bold transition-all shadow-2xs cursor-pointer" title="Panduan Interaktif">
           <i class="fa-solid fa-lightbulb text-amber-500"></i>
-          <span class="hidden sm:inline">Tutorial</span>
+          <span class="hidden xl:inline">Tutorial</span>
         </button>
 
         <!-- Quick Cetak Rapor Button (Khusus Guru / Admin di Header) -->
-        <button id="nav-btn-quick-print" onclick="openQuickPrintModal()" class="menu-non-wali inline-flex items-center gap-2 px-3.5 py-1.5 bg-[#00a66c] hover:bg-[#008f5d] text-white rounded-xl text-xs font-bold shadow-sm shadow-[#00a66c]/20 transition-all">
+        <button id="nav-btn-quick-print" onclick="openQuickPrintModal()" class="menu-non-wali inline-flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-[#00a66c] to-teal-600 hover:from-[#008f5d] hover:to-teal-700 text-white rounded-xl text-xs font-bold shadow-sm shadow-[#00a66c]/25 transition-all cursor-pointer" title="Cetak Rapor Cepat">
           <i class="fa-solid fa-print"></i>
           <span class="hidden sm:inline">Cetak Rapor</span>
         </button>
 
-        <!-- Active User Profile & Secure Logout (Strictly Private Account, No Switcher) -->
-        <div class="flex items-center space-x-2.5">
+        <!-- Active User Profile & Secure Logout -->
+        <div class="flex items-center gap-1.5 sm:gap-2">
           <!-- Active Role / Class / Mapel Badge (Locked, Non-interactive, Khusus Guru / Walas / Admin) -->
-          <div id="nav-role-badge-container" class="menu-non-wali flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 border border-emerald-200/80 rounded-xl text-xs font-bold text-emerald-900 shadow-sm select-none">
-            <i id="nav-role-badge-icon" class="fa-solid fa-lock text-emerald-600 text-xs"></i>
-            <span id="nav-user-role-badge">Wali Kelas</span>
+          <div id="nav-role-badge-container" class="menu-non-wali hidden xl:flex items-center gap-1.5 px-2.5 py-1.5 bg-emerald-50 border border-emerald-200/80 rounded-xl text-[11px] font-bold text-emerald-900 shadow-2xs select-none max-w-[180px] truncate">
+            <i id="nav-role-badge-icon" class="fa-solid fa-lock text-emerald-600 text-[10px] shrink-0"></i>
+            <span id="nav-user-role-badge" class="truncate">Wali Kelas</span>
           </div>
 
-          <!-- User Identity (Private, No Switcher) -->
-          <div class="flex items-center space-x-2 pl-2 border-l border-slate-200">
-            <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-emerald-600 to-teal-500 text-white flex items-center justify-center font-bold text-xs shadow-inner select-none" 
+          <!-- User Identity -->
+          <div class="flex items-center gap-2 pl-1.5 sm:pl-2 border-l border-slate-200">
+            <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-tr from-[#00a66c] to-teal-500 text-white flex items-center justify-center font-black text-xs shadow-sm select-none shrink-0" 
                  id="nav-user-avatar">
               A
             </div>
             <div class="hidden lg:block text-left select-none">
-              <div id="nav-user-name" class="text-xs font-bold text-slate-800 leading-tight max-w-[160px] truncate">Administrator Utama</div>
-              <div id="nav-user-subtitle" class="text-[10px] text-slate-500 font-medium max-w-[160px] truncate">Sistem Administrator</div>
+              <div id="nav-user-name" class="text-xs font-extrabold text-slate-800 leading-tight max-w-[140px] truncate">Administrator Utama</div>
+              <div id="nav-user-subtitle" class="text-[10px] text-slate-500 font-semibold max-w-[140px] truncate">Sistem Administrator</div>
             </div>
             
             <!-- Direct Logout Button -->
-            <button onclick="logoutUser()" class="flex items-center gap-1.5 px-2.5 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 hover:text-rose-800 border border-rose-200/80 rounded-xl text-xs font-bold transition shadow-sm cursor-pointer ml-1" title="Keluar dari Akun">
+            <button onclick="logoutUser()" class="flex items-center gap-1.5 px-2.5 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 hover:text-rose-800 border border-rose-200/80 rounded-xl text-xs font-bold transition shadow-2xs cursor-pointer" title="Keluar dari Akun">
               <i class="fa-solid fa-power-off text-rose-600 text-xs"></i>
-              <span class="hidden sm:inline">Keluar</span>
+              <span class="hidden md:inline">Keluar</span>
             </button>
           </div>
         </div>
@@ -534,40 +582,56 @@
   <div class="flex-1 flex overflow-hidden">
     
     <!-- Sidebar Navigation -->
-    <!-- Main Application Sidebar -->
-<aside id="app-sidebar" class="no-print fixed inset-y-0 left-0 z-20 w-72 sm:w-72 lg:w-72 flex-shrink-0 bg-white text-slate-700 m-3 sm:m-4 rounded-3xl border border-[#e2f3ea] shadow-sm transform -translate-x-full lg:translate-x-0 lg:static lg:inset-auto transition-transform duration-200 ease-in-out flex flex-col justify-between">
+    <!-- Main Application Sidebar (Responsive Drawer on Mobile/Tablet & Fixed Card on Desktop) -->
+<aside id="app-sidebar" class="no-print fixed inset-y-0 left-0 z-40 w-72 sm:w-72 lg:w-72 flex-shrink-0 bg-white/95 backdrop-blur-xl text-slate-700 m-0 lg:m-4 lg:mr-0 rounded-r-3xl lg:rounded-3xl border-r lg:border border-emerald-100/90 shadow-2xl lg:shadow-[0_10px_30px_-5px_rgba(0,166,108,0.05)] transform -translate-x-full lg:translate-x-0 lg:static lg:inset-auto transition-transform duration-300 cubic-bezier(0.16, 1, 0.3, 1) flex flex-col justify-between">
   
-  <div class="p-3.5 sm:p-4 flex-1 overflow-y-auto">
-    <!-- Brand / School Header in Sidebar (as in screenshot) -->
-    <div class="flex items-center gap-3 pb-4 mb-4 border-b border-[#e2f3ea]">
-      <div class="w-10 h-10 rounded-2xl bg-[#e8f8f2] border border-[#a7f3d0] flex items-center justify-center text-[#00a66c] font-black text-sm shadow-sm flex-shrink-0">
-        <i class="fa-solid fa-graduation-cap text-lg"></i>
+  <div class="p-3.5 sm:p-4 flex-1 overflow-y-auto scrollbar-none">
+    <!-- Brand / School Header in Sidebar -->
+    <div class="flex items-center gap-3 pb-3.5 mb-3.5 border-b border-emerald-100/80">
+      <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-[#00a66c] to-teal-600 text-white flex items-center justify-center font-black text-sm shadow-md shadow-[#00a66c]/20 flex-shrink-0">
+        <i class="fa-solid fa-graduation-cap text-base"></i>
       </div>
       <div class="overflow-hidden min-w-0">
-        <h2 class="text-xs font-extrabold text-slate-900 uppercase tracking-tight truncate leading-tight whitespace-nowrap">SMP AL-IMAM</h2>
-        <p class="text-[10px] font-bold text-[#00a66c] mt-0.5 whitespace-nowrap">TP 2026/2027 (Aktif)</p>
+        <h2 class="text-xs font-black text-slate-900 uppercase tracking-tight truncate leading-tight whitespace-nowrap">SMP AL-IMAM (AI IS)</h2>
+        <p class="text-[10px] font-bold text-[#00a66c] mt-0.5 whitespace-nowrap flex items-center gap-1">
+          <span class="w-1.5 h-1.5 rounded-full bg-[#00a66c] animate-pulse"></span>
+          <span>TP 2026/2027 (Aktif)</span>
+        </p>
       </div>
-      <button id="btn-close-sidebar" onclick="toggleSidebar()" class="ml-auto p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 lg:hidden cursor-pointer flex-shrink-0" title="Tutup Menu">
+      <button id="btn-close-sidebar" onclick="toggleSidebar()" class="ml-auto w-8 h-8 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 lg:hidden flex items-center justify-center cursor-pointer flex-shrink-0 transition" title="Tutup Menu">
         <i class="fa-solid fa-xmark text-base"></i>
       </button>
     </div>
 
+    <!-- Quick Search Button inside Sidebar for Mobile/Tablet convenience -->
+    <button type="button" onclick="toggleSidebar(); openQuickCommandModal();" class="w-full mb-3.5 px-3 py-2 bg-slate-50 hover:bg-emerald-50/70 border border-slate-200/80 hover:border-emerald-200 rounded-2xl flex items-center justify-between text-xs text-slate-500 hover:text-emerald-900 transition cursor-pointer group">
+      <span class="flex items-center gap-2 font-semibold">
+        <i class="fa-solid fa-magnifying-glass text-[#00a66c] group-hover:scale-110 transition-transform"></i>
+        <span>Cari Siswa / Pintasan...</span>
+      </span>
+      <span class="text-[10px] font-mono bg-white px-1.5 py-0.5 rounded border border-slate-200 text-slate-400">⌘K</span>
+    </button>
+
     <!-- Navigation Menu Items -->
-    <nav class="space-y-1.5" id="sidebar-nav-list">
+    <nav class="space-y-1" id="sidebar-nav-list">
       
       <!-- 1. Menu Utama -->
-      <div class="px-3 py-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider whitespace-nowrap">Menu Utama</div>
+      <div class="px-3 py-1 text-[10px] font-extrabold text-slate-400 uppercase tracking-wider whitespace-nowrap">Menu Utama</div>
+      
       <a href="javascript:void(0)" onclick="switchView('dashboard')" id="nav-item-dashboard" 
-         class="sidebar-nav-link active-nav flex items-center gap-2.5 px-3 py-2.5 rounded-2xl text-xs font-bold text-white bg-[#00a66c] shadow-md shadow-[#00a66c]/20 transition-all cursor-pointer select-none whitespace-nowrap">
-        <i class="fa-solid fa-table-cells-large w-4 text-center text-sm flex-shrink-0"></i>
-        <span class="truncate">Dashboard</span>
+         class="sidebar-nav-link active-nav flex items-center justify-between gap-2 px-3 py-2.5 rounded-2xl text-xs font-bold text-white bg-[#00a66c] shadow-md shadow-[#00a66c]/20 transition-all cursor-pointer select-none whitespace-nowrap">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <i class="fa-solid fa-table-cells-large w-4 text-center text-sm flex-shrink-0"></i>
+          <span class="truncate">Dashboard Beranda</span>
+        </div>
+        <span class="nav-badge text-[10px] bg-white/20 text-white px-2 py-0.5 rounded-full font-bold border border-white/30 flex-shrink-0 whitespace-nowrap leading-none">Utama</span>
       </a>
 
       <!-- Jadwal Pelajaran (Kalender) -->
       <a href="javascript:void(0)" onclick="switchView('jadwal')" id="nav-item-jadwal" 
          class="sidebar-nav-link flex items-center justify-between gap-2 px-3 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none whitespace-nowrap">
         <div class="flex items-center gap-2.5 min-w-0">
-          <i class="fa-regular fa-calendar-days w-4 text-center text-sm flex-shrink-0"></i>
+          <i class="fa-regular fa-calendar-days w-4 text-center text-sm text-emerald-600 flex-shrink-0"></i>
           <span class="truncate">Jadwal Pelajaran</span>
         </div>
         <span class="nav-badge text-[10px] bg-emerald-50 text-[#00a66c] px-2 py-0.5 rounded-full font-bold border border-emerald-100 flex-shrink-0 whitespace-nowrap leading-none">Kalender</span>
@@ -593,15 +657,14 @@
         <span class="nav-badge text-[10px] bg-teal-50 text-teal-700 px-2 py-0.5 rounded-full font-bold border border-teal-100 flex-shrink-0 whitespace-nowrap leading-none">BK</span>
       </a>
 
-
       <!-- 2. Kategori Penilaian Utama (TP, Akademik & Checklist, Cek Deskripsi, Ahlaq, Diniyah) -->
-      <div class="pt-3 px-3 py-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider menu-assessment-header menu-non-wali whitespace-nowrap">Penilaian Kurikulum Merdeka</div>
+      <div class="pt-3 px-3 py-1 text-[10px] font-extrabold text-slate-400 uppercase tracking-wider menu-assessment-header menu-non-wali whitespace-nowrap">Penilaian Kurikulum Merdeka</div>
       
       <!-- Tujuan Pembelajaran (TP) -->
       <a href="javascript:void(0)" onclick="switchView('tp')" id="nav-item-tp" 
          class="sidebar-nav-link menu-assessment-item menu-non-wali flex items-center justify-between gap-2 px-3 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none whitespace-nowrap">
         <div class="flex items-center gap-2.5 min-w-0">
-          <i class="fa-solid fa-bullseye w-4 text-center text-sm flex-shrink-0"></i>
+          <i class="fa-solid fa-bullseye w-4 text-center text-sm text-emerald-600 flex-shrink-0"></i>
           <span class="truncate">Tujuan Pembelajaran (TP)</span>
         </div>
         <span class="nav-badge text-[10px] bg-[#e8f8f2] text-[#00a66c] px-2 py-0.5 rounded-full font-bold flex-shrink-0 whitespace-nowrap leading-none" id="badge-count-tp">64 TP</span>
@@ -611,7 +674,7 @@
       <a href="javascript:void(0)" onclick="switchView('akademik')" id="nav-item-akademik" 
          class="sidebar-nav-link menu-assessment-item menu-non-wali flex items-center justify-between gap-2 px-3 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none whitespace-nowrap">
         <div class="flex items-center gap-2.5 min-w-0">
-          <i class="fa-solid fa-book-open w-4 text-center text-sm flex-shrink-0"></i>
+          <i class="fa-solid fa-book-open w-4 text-center text-sm text-emerald-600 flex-shrink-0"></i>
           <span class="truncate">Input Nilai & Checklist TP</span>
         </div>
         <span class="nav-badge text-[10px] bg-[#e8f8f2] text-[#00a66c] px-2 py-0.5 rounded-full font-bold flex-shrink-0 whitespace-nowrap leading-none" id="badge-count-akademik">1,376</span>
@@ -621,7 +684,7 @@
       <a href="javascript:void(0)" onclick="switchView('deskripsi')" id="nav-item-deskripsi" 
          class="sidebar-nav-link menu-assessment-item menu-non-wali flex items-center justify-between gap-2 px-3 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none whitespace-nowrap">
         <div class="flex items-center gap-2.5 min-w-0">
-          <i class="fa-solid fa-file-circle-check w-4 text-center text-sm flex-shrink-0"></i>
+          <i class="fa-solid fa-file-circle-check w-4 text-center text-sm text-blue-600 flex-shrink-0"></i>
           <span class="truncate">Cek Deskripsi Rapor</span>
         </div>
         <span class="nav-badge text-[10px] bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full font-bold flex-shrink-0 whitespace-nowrap leading-none">Auto</span>
@@ -631,7 +694,7 @@
       <a href="javascript:void(0)" onclick="switchView('kepemimpinan')" id="nav-item-kepemimpinan" 
          class="sidebar-nav-link menu-assessment-item menu-non-wali menu-walas-admin-only flex items-center justify-between gap-2 px-3 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none whitespace-nowrap">
         <div class="flex items-center gap-2.5 min-w-0">
-          <i class="fa-solid fa-heart-pulse w-4 text-center text-sm flex-shrink-0"></i>
+          <i class="fa-solid fa-heart-pulse w-4 text-center text-sm text-amber-500 flex-shrink-0"></i>
           <span class="truncate">Ahlaq & Kepribadian</span>
         </div>
         <span class="nav-badge text-[10px] bg-[#e8f8f2] text-[#00a66c] px-2 py-0.5 rounded-full font-bold flex-shrink-0 whitespace-nowrap leading-none" id="badge-count-kepemimpinan">159</span>
@@ -641,7 +704,7 @@
       <a href="javascript:void(0)" onclick="switchView('diniyah')" id="nav-item-diniyah" 
          class="sidebar-nav-link menu-assessment-item menu-non-wali menu-walas-admin-only flex items-center justify-between gap-2 px-3 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none whitespace-nowrap">
         <div class="flex items-center gap-2.5 min-w-0">
-          <i class="fa-solid fa-quran w-4 text-center text-sm flex-shrink-0"></i>
+          <i class="fa-solid fa-quran w-4 text-center text-sm text-teal-600 flex-shrink-0"></i>
           <span class="truncate">Diniyah & Tahfidz</span>
         </div>
         <span class="nav-badge text-[10px] bg-[#e8f8f2] text-[#00a66c] px-2 py-0.5 rounded-full font-bold flex-shrink-0 whitespace-nowrap leading-none" id="badge-count-diniyah">159</span>
@@ -658,42 +721,42 @@
       </a>
 
       <!-- 3. Rapor & Data Master -->
-      <div class="pt-3 px-3 py-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider whitespace-nowrap">Output & Master</div>
+      <div class="pt-3 px-3 py-1 text-[10px] font-extrabold text-slate-400 uppercase tracking-wider whitespace-nowrap">Output & Master</div>
       
       <!-- Buku Leger Nilai Lengkap -->
       <a href="javascript:void(0)" onclick="switchView('leger')" id="nav-item-leger" 
          class="sidebar-nav-link menu-non-wali flex items-center gap-2.5 px-3 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none whitespace-nowrap">
-        <i class="fa-solid fa-table-list w-4 text-center text-sm flex-shrink-0"></i>
+        <i class="fa-solid fa-table-list w-4 text-center text-sm text-indigo-600 flex-shrink-0"></i>
         <span class="truncate">Buku Leger 16 Mapel</span>
       </a>
 
-      <!-- Cetak Rapor (Khusus Wali Kelas & Admin) -->
+      <!-- Cetak Rapor (Khusus Wali Kelas, Admin, & Wali Murid) -->
       <a href="javascript:void(0)" onclick="switchView('rapor')" id="nav-item-rapor" 
          class="sidebar-nav-link menu-walas-admin-only flex items-center gap-2.5 px-3 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none whitespace-nowrap">
-        <i class="fa-solid fa-file-invoice w-4 text-center text-sm flex-shrink-0"></i>
+        <i class="fa-solid fa-file-invoice w-4 text-center text-sm text-emerald-600 flex-shrink-0"></i>
         <span id="nav-label-rapor" class="truncate">Cetak Lembar Rapor</span>
       </a>
 
       <!-- Data Murid (Khusus Wali Kelas & Admin) -->
       <a href="javascript:void(0)" onclick="switchView('murid')" id="nav-item-murid" 
          class="sidebar-nav-link menu-murid-management menu-non-wali menu-walas-admin-only flex items-center gap-2.5 px-3 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none whitespace-nowrap">
-        <i class="fa-solid fa-users-gear w-4 text-center text-sm flex-shrink-0"></i>
+        <i class="fa-solid fa-users-gear w-4 text-center text-sm text-purple-600 flex-shrink-0"></i>
         <span class="truncate">Data Siswa & Ekskul</span>
       </a>
 
       <!-- 4. Konfigurasi CMS & Audit Log -->
-      <div class="pt-3 px-3 py-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider menu-admin-only menu-non-wali whitespace-nowrap">Sistem & CMS</div>
+      <div class="pt-3 px-3 py-1 text-[10px] font-extrabold text-slate-400 uppercase tracking-wider menu-admin-only menu-non-wali whitespace-nowrap">Sistem & CMS</div>
       
       <a href="javascript:void(0)" onclick="switchView('cms')" id="nav-item-cms" 
          class="sidebar-nav-link menu-admin-only menu-non-wali flex items-center gap-2.5 px-3 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none whitespace-nowrap">
-        <i class="fa-solid fa-sliders w-4 text-center text-sm flex-shrink-0"></i>
+        <i class="fa-solid fa-sliders w-4 text-center text-sm text-rose-500 flex-shrink-0"></i>
         <span class="truncate">Pengaturan CMS & SaaS</span>
       </a>
 
       <a href="javascript:void(0)" onclick="switchView('logs')" id="nav-item-logs" 
          class="sidebar-nav-link menu-non-wali flex items-center justify-between gap-2 px-3 py-2.5 rounded-2xl text-xs font-medium text-slate-600 hover:bg-[#edf9f3] hover:text-[#00a66c] transition-all cursor-pointer select-none whitespace-nowrap">
         <div class="flex items-center gap-2.5 min-w-0">
-          <i class="fa-solid fa-clock-rotate-left w-4 text-center text-sm flex-shrink-0"></i>
+          <i class="fa-solid fa-clock-rotate-left w-4 text-center text-sm text-slate-500 flex-shrink-0"></i>
           <span class="truncate">Log Aktivitas Akun</span>
         </div>
         <span class="nav-badge text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full font-bold flex-shrink-0 whitespace-nowrap leading-none" id="badge-count-logs">Live</span>
@@ -703,26 +766,26 @@
   </div>
 
   <!-- Sidebar Footer -->
-  <div class="p-3.5 bg-slate-50/90 border-t border-[#e2f3ea] rounded-b-3xl text-[11px] space-y-2">
+  <div class="p-3.5 bg-slate-50/90 border-t border-emerald-100/80 rounded-br-3xl lg:rounded-b-3xl text-[11px] space-y-2">
     <div class="flex items-center justify-between px-1">
-      <span class="text-slate-400 font-semibold whitespace-nowrap">Status Akun:</span>
-      <span class="inline-flex items-center gap-1.5 text-[#00a66c] font-bold whitespace-nowrap" id="sidebar-role-indicator">
+      <span class="text-slate-400 font-semibold whitespace-nowrap">Status Sesi:</span>
+      <span class="inline-flex items-center gap-1.5 text-[#00a66c] font-bold whitespace-nowrap truncate max-w-[150px]" id="sidebar-role-indicator">
         <span class="w-2 h-2 rounded-full bg-[#00a66c] animate-pulse"></span>
         Admin Utama
       </span>
     </div>
     
     <div>
-      <button onclick="logoutUser()" class="w-full py-2 px-2 bg-white hover:bg-rose-50 text-slate-700 hover:text-rose-600 rounded-xl text-center text-xs font-bold flex items-center justify-center gap-2 border border-[#e2f3ea] hover:border-rose-200 shadow-sm transition cursor-pointer whitespace-nowrap">
+      <button onclick="logoutUser()" class="w-full py-2 px-2 bg-white hover:bg-rose-50 text-slate-700 hover:text-rose-600 rounded-xl text-center text-xs font-bold flex items-center justify-center gap-2 border border-slate-200/80 hover:border-rose-200 shadow-2xs transition cursor-pointer whitespace-nowrap">
         <i class="fa-solid fa-power-off text-xs text-rose-500"></i>
         <span>Keluar dari Akun (Logout)</span>
       </button>
     </div>
 
-    <div class="pt-1 text-center">
-      <button type="button" onclick="triggerInitDb()" class="text-[10px] text-slate-400 hover:text-slate-600 inline-flex items-center gap-1 transition whitespace-nowrap">
-        <i class="fa-solid fa-database text-[8px]"></i>
-        <span>Sinkron / Reset Database</span>
+    <div class="pt-0.5 text-center">
+      <button type="button" onclick="triggerInitDb()" class="text-[10px] text-slate-400 hover:text-[#00a66c] inline-flex items-center gap-1 transition whitespace-nowrap cursor-pointer">
+        <i class="fa-solid fa-cloud-arrow-up text-[9px]"></i>
+        <span>Sinkronisasi Cloud Database</span>
       </button>
     </div>
   </div>
@@ -730,113 +793,231 @@
 </aside>
 
 
-    <div id="sidebar-backdrop" class="fixed inset-0 bg-emerald-950/40 backdrop-blur-sm z-10 hidden lg:hidden" onclick="toggleSidebar()"></div>
+    <div id="sidebar-backdrop" class="fixed inset-0 bg-slate-950/50 backdrop-blur-xs z-30 hidden lg:hidden transition-opacity" onclick="toggleSidebar()"></div>
 
     <!-- Main Dynamic View Area -->
-    <main class="flex-1 overflow-y-auto p-3 sm:p-5 lg:p-6">
-      <div class="max-w-7xl mx-auto space-y-6">
+    <main class="flex-1 overflow-y-auto p-3 sm:p-5 lg:p-6 pb-24 lg:pb-8 scroll-smooth" id="main-scroll-container">
+      <div class="max-w-7xl mx-auto space-y-5 sm:space-y-6">
         
         <!-- View 1: Beranda / Dashboard -->
         <!-- Dashboard Home / Overview View (Clean Mint & Emerald Theme) -->
 <div id="view-dashboard" class="view-panel space-y-6">
   
-  <!-- Top View Subheader (Matching Screenshot) -->
-  <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-white rounded-2xl p-4 sm:p-5 border border-[#e2f3ea] shadow-sm">
-    <div>
-      <h1 class="text-base sm:text-lg font-black text-slate-900 tracking-tight flex items-center gap-2">
-        <i class="fa-solid fa-table-cells-large text-[#00a66c]"></i>
-        <span id="dashboard-title-heading">Dashboard Utama</span>
-      </h1>
+  <!-- Top View Subheader -->
+  <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-white/95 backdrop-blur-md rounded-2xl p-4 sm:px-6 border border-emerald-100/90 shadow-xs">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-xl bg-emerald-50 border border-emerald-200/70 text-[#00a66c] flex items-center justify-center shadow-2xs shrink-0">
+        <i class="fa-solid fa-table-cells-large text-sm"></i>
+      </div>
+      <div>
+        <h1 class="text-sm sm:text-base font-black text-slate-900 tracking-tight flex items-center gap-2">
+          <span id="dashboard-title-heading">Dashboard Utama</span>
+        </h1>
+        <p class="text-[11px] text-slate-500 font-medium">Ringkasan Akademik, Tahfidz, Karakter & Portofolio Siswa</p>
+      </div>
     </div>
-    <div class="flex items-center gap-2">
-      <span class="text-xs bg-slate-50 border border-slate-200 px-3.5 py-1.5 rounded-full text-slate-500 font-semibold hidden sm:inline-block">
-        Yayasan / Sekolah: <strong class="text-slate-700">SMP AL IMAM ISLAMIC SCHOOL (AI IS)</strong>
+    <div class="flex flex-wrap items-center gap-2 w-full sm:w-auto justify-between sm:justify-end">
+      <span class="text-[11px] bg-emerald-50/70 border border-emerald-200/80 px-3 py-1.5 rounded-xl text-emerald-900 font-semibold inline-flex items-center gap-1.5">
+        <i class="fa-solid fa-school text-[#00a66c] text-[10px]"></i>
+        <span>SMP AL IMAM ISLAMIC SCHOOL (AI IS)</span>
       </span>
+      <button type="button" onclick="openQuickCommandModal()" class="sm:hidden inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 text-white rounded-xl text-[11px] font-bold shadow-xs cursor-pointer">
+        <i class="fa-solid fa-bolt text-amber-400"></i>
+        <span>Aksi Cepat</span>
+      </button>
     </div>
   </div>
 
   <!-- Dedicated Parent Portal View (Wali Murid) -->
   <div id="dashboard-wali-view" class="hidden space-y-6">
-    <!-- Parent Banner -->
-    <div class="bg-gradient-to-r from-emerald-800 to-teal-900 text-white rounded-3xl p-6 sm:p-8 shadow-md relative overflow-hidden">
-      <div class="relative z-10 space-y-3">
-        <div class="flex flex-wrap items-center justify-between gap-2">
-          <span class="px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-xs font-bold text-emerald-200 inline-flex items-center gap-1.5">
-            <i class="fa-solid fa-user-shield"></i> Portal Orang Tua / Wali Murid
-          </span>
+    <!-- Parent Hero Banner (Interactive & Mobile Friendly) -->
+    <div class="bg-gradient-to-br from-emerald-900 via-teal-800 to-slate-900 text-white rounded-3xl p-5 sm:p-8 shadow-xl relative overflow-hidden border border-emerald-700/40">
+      <div class="absolute -right-12 -top-12 w-64 h-64 bg-emerald-400/10 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute right-10 -bottom-16 w-56 h-56 bg-teal-300/10 rounded-full blur-2xl pointer-events-none"></div>
+      <i class="fa-solid fa-graduation-cap absolute -right-4 -bottom-4 text-8xl sm:text-9xl text-white/5 pointer-events-none"></i>
+
+      <div class="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+        <div class="space-y-3 max-w-2xl">
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="px-3 py-1 bg-white/15 backdrop-blur-md rounded-full text-[11px] font-extrabold text-emerald-200 border border-white/15 inline-flex items-center gap-1.5">
+              <i class="fa-solid fa-user-shield text-emerald-300"></i> Portal Resmi Orang Tua / Wali Murid
+            </span>
+            <span class="px-2.5 py-1 bg-emerald-500/20 rounded-full text-[11px] font-bold text-emerald-100 border border-emerald-400/30">
+              TP 2026/2027 &bull; Semester Ganjil
+            </span>
+          </div>
+          <h2 class="text-xl sm:text-2xl lg:text-3xl font-black tracking-tight leading-tight" id="wali-hero-title">
+            Selamat Datang, Bapak / Ibu Wali Murid
+          </h2>
+          <p class="text-xs sm:text-sm text-emerald-100/90 leading-relaxed" id="wali-hero-subtitle">
+            Pantau perkembangan akademik 16 mata pelajaran, capaian kompetensi Kurikulum Merdeka, kehadiran, rekam amal sholeh, dan lembar rapor resmi ananda secara real-time.
+          </p>
         </div>
-        <h2 class="text-xl sm:text-2xl font-black tracking-tight" id="wali-hero-title">
-          Selamat Datang, Bapak / Ibu Wali Murid
-        </h2>
-        <p class="text-xs sm:text-sm text-emerald-100 max-w-2xl leading-relaxed" id="wali-hero-subtitle">
-          Pantau perkembangan akademik, kehadiran, kegiatan ekstrakurikuler, dan lembar rapor resmi ananda.
-        </p>
+
+        <!-- Mobile & Desktop Quick Action Launcher Grid for Parents -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-2 gap-2.5 shrink-0">
+          <button type="button" onclick="switchView('rapor')" class="p-3 rounded-2xl bg-white text-emerald-950 hover:bg-emerald-50 font-extrabold text-xs shadow-lg transition flex items-center gap-2.5 cursor-pointer group">
+            <div class="w-8 h-8 rounded-xl bg-emerald-100 text-[#00a66c] flex items-center justify-center text-sm group-hover:scale-110 transition-transform shrink-0">
+              <i class="fa-solid fa-file-invoice"></i>
+            </div>
+            <div class="text-left min-w-0">
+              <span class="block text-[10px] text-slate-400 font-bold uppercase leading-none">Dokumen</span>
+              <span class="truncate block mt-0.5">Buka Rapor</span>
+            </div>
+          </button>
+
+          <button type="button" onclick="openResumeChartForWali()" class="p-3 rounded-2xl bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/15 font-extrabold text-xs transition flex items-center gap-2.5 cursor-pointer group">
+            <div class="w-8 h-8 rounded-xl bg-purple-400/25 text-purple-200 flex items-center justify-center text-sm group-hover:scale-110 transition-transform shrink-0">
+              <i class="fa-solid fa-chart-column"></i>
+            </div>
+            <div class="text-left min-w-0">
+              <span class="block text-[10px] text-emerald-200/70 font-bold uppercase leading-none">Visual</span>
+              <span class="truncate block mt-0.5">Grafik Nilai</span>
+            </div>
+          </button>
+
+          <button type="button" onclick="switchView('jadwal')" class="p-3 rounded-2xl bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/15 font-extrabold text-xs transition flex items-center gap-2.5 cursor-pointer group">
+            <div class="w-8 h-8 rounded-xl bg-amber-400/25 text-amber-200 flex items-center justify-center text-sm group-hover:scale-110 transition-transform shrink-0">
+              <i class="fa-regular fa-calendar-days"></i>
+            </div>
+            <div class="text-left min-w-0">
+              <span class="block text-[10px] text-emerald-200/70 font-bold uppercase leading-none">Harian</span>
+              <span class="truncate block mt-0.5">Jadwal & Seragam</span>
+            </div>
+          </button>
+
+          <button type="button" onclick="openModalBkConsult()" class="p-3 rounded-2xl bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/15 font-extrabold text-xs transition flex items-center gap-2.5 cursor-pointer group">
+            <div class="w-8 h-8 rounded-xl bg-teal-400/25 text-teal-200 flex items-center justify-center text-sm group-hover:scale-110 transition-transform shrink-0">
+              <i class="fa-brands fa-whatsapp"></i>
+            </div>
+            <div class="text-left min-w-0">
+              <span class="block text-[10px] text-emerald-200/70 font-bold uppercase leading-none">Sinergi</span>
+              <span class="truncate block mt-0.5">Hubungi Walas</span>
+            </div>
+          </button>
+        </div>
       </div>
-      <i class="fa-solid fa-graduation-cap absolute -right-6 -bottom-6 text-9xl text-white/5 pointer-events-none"></i>
     </div>
 
     <!-- Child Summary Cards -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
       <!-- Card 1: Identitas & Status Rapor -->
-      <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm space-y-3">
+      <div class="bg-white rounded-3xl p-5 border border-emerald-100/90 shadow-sm interactive-card flex flex-col justify-between space-y-3">
         <div class="flex items-center justify-between">
-          <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Identitas Ananda</span>
+          <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+            <i class="fa-solid fa-id-card-clip text-[#00a66c]"></i> Identitas Ananda
+          </span>
           <span id="wali-card-status-badge" class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-amber-100 text-amber-800 border border-amber-300">
             DRAFT
           </span>
         </div>
-        <div>
-          <h3 class="font-extrabold text-sm text-slate-900" id="wali-child-name">-</h3>
-          <p class="text-xs text-slate-500 font-mono mt-0.5">NISN: <span id="wali-child-nisn" class="font-bold text-slate-700">-</span></p>
-          <p class="text-xs text-slate-500 font-bold mt-0.5">Kelas: <span id="wali-child-kelas" class="text-purple-700">-</span></p>
+        <div class="flex items-center gap-3.5">
+          <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white flex items-center justify-center text-lg font-black shadow-md shadow-emerald-600/20 shrink-0">
+            <i class="fa-solid fa-user-graduate"></i>
+          </div>
+          <div class="min-w-0">
+            <h3 class="font-black text-sm sm:text-base text-slate-900 truncate" id="wali-child-name">-</h3>
+            <div class="flex flex-wrap items-center gap-2 mt-1">
+              <span class="text-[11px] bg-slate-100 text-slate-700 px-2 py-0.5 rounded-lg font-mono font-bold">NISN: <span id="wali-child-nisn">-</span></span>
+              <span class="text-[11px] bg-purple-50 text-purple-700 border border-purple-200/60 px-2 py-0.5 rounded-lg font-extrabold" id="wali-child-kelas">-</span>
+            </div>
+          </div>
         </div>
-        <div class="pt-2 border-t border-slate-100">
-          <p class="text-[11px] text-slate-500">Wali Kelas: <strong id="wali-child-walas" class="text-slate-800">-</strong></p>
+        <div class="pt-2.5 border-t border-slate-100 flex items-center justify-between text-[11px]">
+          <span class="text-slate-400 font-medium">Wali Kelas:</span>
+          <strong id="wali-child-walas" class="text-slate-800 font-bold truncate max-w-[190px]">-</strong>
         </div>
       </div>
 
       <!-- Card 2: Rekap Presensi -->
-      <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm space-y-3">
+      <div class="bg-white rounded-3xl p-5 border border-emerald-100/90 shadow-sm interactive-card flex flex-col justify-between space-y-3">
         <div class="flex items-center justify-between">
-          <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Kehadiran (Absen UTS)</span>
-          <i class="fa-solid fa-clipboard-user text-emerald-600"></i>
+          <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+            <i class="fa-solid fa-clipboard-user text-[#00a66c]"></i> Kehadiran (Absen UTS)
+          </span>
+          <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">Semester Berjalan</span>
         </div>
-        <div class="grid grid-cols-3 gap-2 text-center">
-          <div class="bg-rose-50 p-2 rounded-xl border border-rose-100">
-            <span class="text-base font-black text-rose-700" id="wali-absen-s">0</span>
-            <span class="block text-[10px] font-bold text-rose-600">Sakit (S)</span>
+        <div class="grid grid-cols-3 gap-2.5 text-center">
+          <div class="bg-rose-50/80 p-2.5 rounded-2xl border border-rose-100">
+            <span class="text-lg font-black text-rose-700 font-mono" id="wali-absen-s">0</span>
+            <span class="block text-[10px] font-bold text-rose-600 mt-0.5">Sakit (S)</span>
           </div>
-          <div class="bg-amber-50 p-2 rounded-xl border border-amber-100">
-            <span class="text-base font-black text-amber-700" id="wali-absen-i">0</span>
-            <span class="block text-[10px] font-bold text-amber-600">Izin (I)</span>
+          <div class="bg-amber-50/80 p-2.5 rounded-2xl border border-amber-100">
+            <span class="text-lg font-black text-amber-700 font-mono" id="wali-absen-i">0</span>
+            <span class="block text-[10px] font-bold text-amber-600 mt-0.5">Izin (I)</span>
           </div>
-          <div class="bg-slate-100 p-2 rounded-xl border border-slate-200">
-            <span class="text-base font-black text-slate-700" id="wali-absen-a">0</span>
-            <span class="block text-[10px] font-bold text-slate-600">Alpa (A)</span>
+          <div class="bg-slate-100/90 p-2.5 rounded-2xl border border-slate-200">
+            <span class="text-lg font-black text-slate-700 font-mono" id="wali-absen-a">0</span>
+            <span class="block text-[10px] font-bold text-slate-600 mt-0.5">Alpa (A)</span>
           </div>
         </div>
-        <p class="text-[10px] text-slate-400 italic text-center">Data presensi terhitung hingga pelaksanaan UTS</p>
+        <p class="text-[10px] text-slate-400 font-medium text-center">Data presensi terverifikasi hingga pelaksanaan UTS</p>
       </div>
 
       <!-- Card 3: Quick Action Rapor & Grafik -->
-      <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm flex flex-col justify-between space-y-3">
+      <div class="bg-white rounded-3xl p-5 border border-emerald-100/90 shadow-sm interactive-card flex flex-col justify-between space-y-3">
         <div>
-          <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Lembar Rapor & Analisis</span>
-          <h4 class="font-extrabold text-xs text-slate-900 mt-1">Rapor Tengah Semester 1 (2026/2027)</h4>
-          <p class="text-[11px] text-slate-500 mt-1" id="wali-rapor-quick-desc">
-            Lihat rincian capaian kompetensi 16 mapel, karakter, dan ekstrakurikuler ananda.
+          <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+            <i class="fa-solid fa-print text-[#00a66c]"></i> Akses Cepat Dokumen
+          </span>
+          <h4 class="font-extrabold text-xs sm:text-sm text-slate-900 mt-1">Rapor Portofolio & SKL Karakter</h4>
+          <p class="text-[11px] text-slate-500 mt-0.5 leading-relaxed" id="wali-rapor-quick-desc">
+            Unduh PDF lembar rapor resmi atau pelajari rincian 16 mata pelajaran di bawah ini.
           </p>
         </div>
-        <div class="space-y-2">
-          <button onclick="switchView('rapor')" class="w-full py-2.5 px-4 bg-[#00a66c] hover:bg-[#008f5d] text-white font-bold rounded-xl text-xs shadow-md shadow-[#00a66c]/20 transition flex items-center justify-center gap-2 cursor-pointer">
+        <div class="grid grid-cols-2 gap-2">
+          <button onclick="switchView('rapor')" class="py-2.5 px-3 bg-[#00a66c] hover:bg-[#008f5d] text-white font-bold rounded-xl text-xs shadow-md shadow-[#00a66c]/20 transition flex items-center justify-center gap-1.5 cursor-pointer">
             <i class="fa-solid fa-file-invoice"></i>
-            <span>Buka Lembar Rapor Ananda</span>
+            <span>Lembar Rapor</span>
           </button>
-          <button onclick="openResumeChartForWali()" class="w-full py-2 px-3 bg-purple-50 hover:bg-purple-100 text-purple-800 border border-purple-200 font-bold rounded-xl text-xs transition flex items-center justify-center gap-1.5 cursor-pointer">
-            <i class="fa-solid fa-chart-column text-purple-600"></i>
-            <span>Lihat Resume Grafik Nilai</span>
+          <button onclick="switchView('amalsholeh')" class="py-2.5 px-3 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-bold rounded-xl text-xs transition flex items-center justify-center gap-1.5 cursor-pointer">
+            <i class="fa-solid fa-hand-holding-heart"></i>
+            <span>Amal Sholeh</span>
           </button>
         </div>
+      </div>
+    </div>
+
+    <!-- NEW SECTION FOR PARENTS: Interactive Mobile-Friendly 16 Mapel Explorer -->
+    <div id="section-wali-mapel-explorer" class="bg-white rounded-3xl p-5 sm:p-7 border border-emerald-100/90 shadow-sm space-y-5">
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-slate-100 pb-4">
+        <div class="flex items-start gap-3">
+          <div class="w-10 h-10 rounded-2xl bg-emerald-50 text-[#00a66c] flex items-center justify-center text-lg border border-emerald-200 shrink-0">
+            <i class="fa-solid fa-book-open-reader"></i>
+          </div>
+          <div>
+            <div class="flex flex-wrap items-center gap-2">
+              <h3 class="font-extrabold text-sm sm:text-base text-slate-900">Eksplorasi Nilai & Capaian 16 Mata Pelajaran Ananda</h3>
+              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-emerald-100 text-emerald-800 border border-emerald-200">
+                Interaktif & Mudah Dibaca
+              </span>
+            </div>
+            <p class="text-xs text-slate-500 mt-0.5">
+              Ketuk kartu mata pelajaran untuk melihat detail Tujuan Pembelajaran (TP), selisih KKM, dan saran pendampingan di rumah.
+            </p>
+          </div>
+        </div>
+
+        <!-- Filter Pills & Search for Parent Mapel Cards -->
+        <div class="flex flex-wrap items-center gap-1.5">
+          <button type="button" onclick="filterWaliMapelCards('all')" id="btn-wali-mapel-all" class="wali-mapel-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-[#00a66c] text-white shadow-xs transition cursor-pointer">
+            Semua (16)
+          </button>
+          <button type="button" onclick="filterWaliMapelCards('agama')" id="btn-wali-mapel-agama" class="wali-mapel-filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-emerald-50 hover:text-emerald-800 transition cursor-pointer">
+            PAI & B. Arab (6)
+          </button>
+          <button type="button" onclick="filterWaliMapelCards('umum')" id="btn-wali-mapel-umum" class="wali-mapel-filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-blue-50 hover:text-blue-800 transition cursor-pointer">
+            Sains & Umum (7)
+          </button>
+          <button type="button" onclick="filterWaliMapelCards('mulok')" id="btn-wali-mapel-mulok" class="wali-mapel-filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-amber-50 hover:text-amber-800 transition cursor-pointer">
+            Keterampilan & Mulok (3)
+          </button>
+        </div>
+      </div>
+
+      <!-- Interactive Cards Grid (Populated via JS) -->
+      <div id="wali-mapel-cards-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+        <!-- Populated dynamically via renderWaliInteractiveMapelCards() -->
       </div>
     </div>
 
@@ -1005,179 +1186,276 @@
   <!-- Teacher / Administrator Dashboard View -->
   <div id="dashboard-admin-view" class="space-y-6 menu-non-wali">
 
-  <!-- Hero / Welcome Banner (Matching Screenshot) -->
-  <div class="bg-white rounded-3xl p-6 sm:p-8 border border-[#e2f3ea] shadow-sm space-y-2">
-    <h2 class="text-xl sm:text-2xl font-black text-slate-900 uppercase tracking-tight">
-      SMP AL IMAM ISLAMIC SCHOOL (AI IS)
-    </h2>
-    <p class="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-4xl">
-      Sistem penilaian rapor belajar siswa di bawah naungan Yayasan / Sekolah SMP Al-Imam. 
-      Kelola data siswa, input nilai akhir UTS (0-100), pantau buku leger 16 mapel, serta dapatkan cetakan lembar rapor resmi secara otomatis.
-    </p>
+  <!-- Educator Command Center Hero Banner (Rich, Interactive & Non-Monotonous) -->
+  <div class="relative overflow-hidden bg-gradient-to-br from-emerald-950 via-teal-900 to-slate-900 text-white rounded-3xl p-5 sm:p-8 shadow-xl border border-emerald-700/40">
+    <!-- Ambient Decorative Glows -->
+    <div class="absolute -right-12 -top-12 w-72 h-72 bg-emerald-400/15 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute left-1/3 -bottom-16 w-64 h-64 bg-teal-400/10 rounded-full blur-2xl pointer-events-none"></div>
+    <i class="fa-solid fa-mosque absolute -right-4 -bottom-4 text-8xl sm:text-9xl text-white/5 pointer-events-none"></i>
+
+    <div class="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+      <div class="space-y-3 max-w-2xl">
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="px-3 py-1 rounded-full text-[11px] font-black bg-emerald-400/20 text-emerald-200 border border-emerald-400/30 backdrop-blur-xs inline-flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-300 animate-pulse"></span>
+            <span id="teacher-hero-role-pill">Portal Pendidik & Manajemen Rapor</span>
+          </span>
+          <span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-white/10 text-emerald-100 border border-white/15">
+            Kurikulum Merdeka &bull; 16 Mapel
+          </span>
+        </div>
+
+        <h2 class="text-xl sm:text-2xl lg:text-3xl font-black tracking-tight text-white leading-tight" id="teacher-hero-greeting">
+          SMP AL IMAM ISLAMIC SCHOOL (AI IS)
+        </h2>
+        <p class="text-xs sm:text-sm text-emerald-100/85 leading-relaxed">
+          Pusat kendali penilaian holistik: input nilai cepat dengan 1-klik TP, rekam observasi amal sholeh (A-Record), pantau leger sekelas, dan cetak rapor resmi secara instan.
+        </p>
+
+        <!-- Live Completion Progress Pill inside Hero -->
+        <div class="pt-1 flex flex-wrap items-center gap-3">
+          <div class="bg-white/10 backdrop-blur-md border border-white/15 rounded-2xl px-3.5 py-2 flex items-center gap-3 min-w-[240px] flex-1 sm:flex-initial">
+            <div class="w-8 h-8 rounded-xl bg-emerald-400/20 text-emerald-300 flex items-center justify-center text-xs font-black shrink-0">
+              <i class="fa-solid fa-bolt"></i>
+            </div>
+            <div class="flex-1 min-w-[140px]">
+              <div class="flex items-center justify-between text-[10px] font-bold text-emerald-100 mb-1">
+                <span>Kesiapan Data Rapor</span>
+                <span class="text-emerald-300 font-black">100% Siap Cetak</span>
+              </div>
+              <div class="w-full h-1.5 bg-white/15 rounded-full overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-emerald-400 to-teal-300 rounded-full" style="width: 100%"></div>
+              </div>
+            </div>
+          </div>
+
+          <button type="button" onclick="toggleDashboardStepsGuide()" class="px-3.5 py-2 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/15 text-xs font-bold text-emerald-100 transition flex items-center gap-1.5 cursor-pointer">
+            <i class="fa-solid fa-compass text-amber-300"></i>
+            <span>Alur 5 Langkah</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 4 Fast-Action Teacher Cards (Desktop & Mobile Ergonomic Grid) -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-2 gap-2.5 shrink-0 lg:w-[340px]">
+        <button type="button" onclick="switchView('akademik')" class="p-3.5 rounded-2xl bg-white text-slate-900 hover:bg-emerald-50 shadow-lg transition flex items-center gap-2.5 text-left cursor-pointer group">
+          <div class="w-9 h-9 rounded-xl bg-emerald-100 text-[#00a66c] flex items-center justify-center text-base group-hover:scale-110 transition-transform shrink-0">
+            <i class="fa-solid fa-pen-to-square"></i>
+          </div>
+          <div class="min-w-0">
+            <span class="text-[10px] font-extrabold uppercase text-[#00a66c] block leading-none">Utama</span>
+            <span class="text-xs font-black text-slate-900 truncate block mt-0.5">Input Nilai</span>
+          </div>
+        </button>
+
+        <button type="button" onclick="switchView('catatan_amal')" class="p-3.5 rounded-2xl bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/15 transition flex items-center gap-2.5 text-left cursor-pointer group">
+          <div class="w-9 h-9 rounded-xl bg-amber-400/25 text-amber-300 flex items-center justify-center text-base group-hover:scale-110 transition-transform shrink-0">
+            <i class="fa-solid fa-hand-holding-heart"></i>
+          </div>
+          <div class="min-w-0">
+            <span class="text-[10px] font-bold uppercase text-emerald-200/80 block leading-none">A-Record</span>
+            <span class="text-xs font-extrabold text-white truncate block mt-0.5">Catat Amal</span>
+          </div>
+        </button>
+
+        <button type="button" onclick="switchView('leger')" class="p-3.5 rounded-2xl bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/15 transition flex items-center gap-2.5 text-left cursor-pointer group">
+          <div class="w-9 h-9 rounded-xl bg-indigo-400/25 text-indigo-200 flex items-center justify-center text-base group-hover:scale-110 transition-transform shrink-0">
+            <i class="fa-solid fa-table-list"></i>
+          </div>
+          <div class="min-w-0">
+            <span class="text-[10px] font-bold uppercase text-emerald-200/80 block leading-none">Matriks</span>
+            <span class="text-xs font-extrabold text-white truncate block mt-0.5">Buku Leger</span>
+          </div>
+        </button>
+
+        <button type="button" onclick="switchView('rapor')" class="p-3.5 rounded-2xl bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/15 transition flex items-center gap-2.5 text-left cursor-pointer group">
+          <div class="w-9 h-9 rounded-xl bg-teal-400/25 text-teal-200 flex items-center justify-center text-base group-hover:scale-110 transition-transform shrink-0">
+            <i class="fa-solid fa-print"></i>
+          </div>
+          <div class="min-w-0">
+            <span class="text-[10px] font-bold uppercase text-emerald-200/80 block leading-none">Output</span>
+            <span class="text-xs font-extrabold text-white truncate block mt-0.5">Cetak Rapor</span>
+          </div>
+        </button>
+      </div>
+    </div>
   </div>
 
-  <!-- Panduan Langkah Penggunaan Aplikasi (5 Horizontal Cards from Screenshot) -->
-  <div class="bg-white rounded-3xl p-5 sm:p-6 border border-[#e2f3ea] shadow-sm space-y-4">
-    <div class="flex items-center justify-between border-b border-[#e2f3ea] pb-3">
-      <h3 class="text-sm font-extrabold text-slate-900 flex items-center gap-2">
-        <i class="fa-solid fa-book-bookmark text-[#00a66c]"></i>
-        <span>Panduan Langkah Penggunaan Aplikasi</span>
-      </h3>
-      <button onclick="openInteractiveGuide(1)" class="text-xs font-bold text-[#00a66c] hover:underline flex items-center gap-1">
-        <span>Buka Tutorial Lengkap</span> <i class="fa-solid fa-arrow-right text-[10px]"></i>
-      </button>
+  <!-- Panduan Langkah Penggunaan Aplikasi (5 Interactive Step Cards - Collapsible) -->
+  <div id="dashboard-steps-guide-box" class="bg-white rounded-3xl p-5 sm:p-6 border border-emerald-100/90 shadow-sm space-y-4 transition-all">
+    <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+      <div class="flex items-center gap-2">
+        <span class="w-7 h-7 rounded-xl bg-emerald-50 text-[#00a66c] flex items-center justify-center text-xs">
+          <i class="fa-solid fa-book-bookmark"></i>
+        </span>
+        <h3 class="text-xs sm:text-sm font-extrabold text-slate-900">
+          Alur Cepat Penggunaan Aplikasi e-Rapor
+        </h3>
+      </div>
+      <div class="flex items-center gap-3">
+        <button onclick="openInteractiveGuide(1)" class="text-xs font-bold text-[#00a66c] hover:underline flex items-center gap-1 cursor-pointer">
+          <span>Buka Tutorial Interaktif</span> <i class="fa-solid fa-arrow-right text-[10px]"></i>
+        </button>
+        <button type="button" onclick="toggleDashboardStepsGuide()" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg hover:bg-slate-100 text-xs cursor-pointer" title="Sembunyikan/Tampilkan Alur">
+          <i id="icon-toggle-steps-guide" class="fa-solid fa-chevron-up"></i>
+        </button>
+      </div>
     </div>
 
     <!-- 5 Step Cards Grid -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+    <div id="dashboard-steps-cards-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
       
       <!-- Step 1 -->
-      <div class="bg-slate-50/60 hover:bg-[#edf9f3] border border-slate-200/80 hover:border-[#a7f3d0] rounded-2xl p-4 transition flex flex-col justify-between space-y-2.5">
+      <div class="bg-gradient-to-b from-emerald-50/50 to-white hover:from-emerald-50 border border-emerald-100 hover:border-emerald-300 rounded-2xl p-4 transition flex flex-col justify-between space-y-2.5 cursor-pointer interactive-card" onclick="triggerInitDb()">
         <div class="flex items-center justify-between">
-          <span class="w-6 h-6 rounded-full bg-emerald-100 text-[#00a66c] flex items-center justify-center font-black text-xs">1</span>
-          <span class="text-[9px] font-extrabold uppercase tracking-wider text-emerald-800 bg-emerald-100/70 px-2 py-0.5 rounded">Langkah Awal</span>
+          <span class="w-7 h-7 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-black text-xs shadow-xs">1</span>
+          <span class="text-[9px] font-extrabold uppercase tracking-wider text-emerald-800 bg-emerald-100/80 px-2 py-0.5 rounded-full">Sinkronisasi</span>
         </div>
         <div>
-          <h4 class="font-bold text-xs text-slate-900 leading-snug">Inisialisasi Database</h4>
-          <p class="text-[11px] text-slate-500 mt-1 leading-tight">Hubungkan database Sheets / Cloud untuk memuat data master & indikator default.</p>
+          <h4 class="font-extrabold text-xs text-slate-900 leading-snug">Sinkron Database</h4>
+          <p class="text-[11px] text-slate-500 mt-1 leading-tight">Muat data master siswa, 64 TP Kurikulum Merdeka & indikator SKL.</p>
         </div>
       </div>
 
       <!-- Step 2 -->
-      <div class="bg-slate-50/60 hover:bg-[#edf9f3] border border-slate-200/80 hover:border-[#a7f3d0] rounded-2xl p-4 transition flex flex-col justify-between space-y-2.5 cursor-pointer" onclick="switchView('murid')">
+      <div class="bg-gradient-to-b from-teal-50/50 to-white hover:from-teal-50 border border-teal-100 hover:border-teal-300 rounded-2xl p-4 transition flex flex-col justify-between space-y-2.5 cursor-pointer interactive-card" onclick="switchView('murid')">
         <div class="flex items-center justify-between">
-          <span class="w-6 h-6 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center font-black text-xs">2</span>
-          <span class="text-[9px] font-extrabold uppercase tracking-wider text-teal-800 bg-teal-100/70 px-2 py-0.5 rounded">Master Data</span>
+          <span class="w-7 h-7 rounded-xl bg-teal-600 text-white flex items-center justify-center font-black text-xs shadow-xs">2</span>
+          <span class="text-[9px] font-extrabold uppercase tracking-wider text-teal-800 bg-teal-100/80 px-2 py-0.5 rounded-full">Master Siswa</span>
         </div>
         <div>
-          <h4 class="font-bold text-xs text-slate-900 leading-snug">Kelola Data Siswa</h4>
-          <p class="text-[11px] text-slate-500 mt-1 leading-tight">Masuk ke menu Data Siswa untuk menambah identitas manual atau Bulk Import CSV.</p>
+          <h4 class="font-extrabold text-xs text-slate-900 leading-snug">Presensi & Ekskul</h4>
+          <p class="text-[11px] text-slate-500 mt-1 leading-tight">Kelola biodata murid, absensi (S/I/A), dan nilai 3 ekstrakurikuler.</p>
         </div>
       </div>
 
       <!-- Step 3 -->
-      <div class="bg-slate-50/60 hover:bg-[#edf9f3] border border-slate-200/80 hover:border-[#a7f3d0] rounded-2xl p-4 transition flex flex-col justify-between space-y-2.5 cursor-pointer" onclick="switchView('akademik')">
+      <div class="bg-gradient-to-b from-amber-50/50 to-white hover:from-amber-50 border border-amber-100 hover:border-amber-300 rounded-2xl p-4 transition flex flex-col justify-between space-y-2.5 cursor-pointer interactive-card" onclick="switchView('akademik')">
         <div class="flex items-center justify-between">
-          <span class="w-6 h-6 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center font-black text-xs">3</span>
-          <span class="text-[9px] font-extrabold uppercase tracking-wider text-amber-800 bg-amber-100/70 px-2 py-0.5 rounded">Penilaian</span>
+          <span class="w-7 h-7 rounded-xl bg-amber-500 text-white flex items-center justify-center font-black text-xs shadow-xs">3</span>
+          <span class="text-[9px] font-extrabold uppercase tracking-wider text-amber-800 bg-amber-100/80 px-2 py-0.5 rounded-full">Penilaian</span>
         </div>
         <div>
-          <h4 class="font-bold text-xs text-slate-900 leading-snug">Input Nilai Akhir UTS</h4>
-          <p class="text-[11px] text-slate-500 mt-1 leading-tight">Klik tombol "Nilai" di daftar mapel untuk menginput skor UTS & catatan kualitatif.</p>
+          <h4 class="font-extrabold text-xs text-slate-900 leading-snug">Input Nilai & TP</h4>
+          <p class="text-[11px] text-slate-500 mt-1 leading-tight">Input nilai angka & checklist TP (mode Tabel atau Kartu Cepat HP).</p>
         </div>
       </div>
 
       <!-- Step 4 -->
-      <div class="bg-slate-50/60 hover:bg-[#edf9f3] border border-slate-200/80 hover:border-[#a7f3d0] rounded-2xl p-4 transition flex flex-col justify-between space-y-2.5 cursor-pointer" onclick="switchView('rapor')">
+      <div class="bg-gradient-to-b from-indigo-50/50 to-white hover:from-indigo-50 border border-indigo-100 hover:border-indigo-300 rounded-2xl p-4 transition flex flex-col justify-between space-y-2.5 cursor-pointer interactive-card" onclick="switchView('rapor')">
         <div class="flex items-center justify-between">
-          <span class="w-6 h-6 rounded-full bg-rose-100 text-rose-700 flex items-center justify-center font-black text-xs">4</span>
-          <span class="text-[9px] font-extrabold uppercase tracking-wider text-rose-800 bg-rose-100/70 px-2 py-0.5 rounded">Laporan</span>
+          <span class="w-7 h-7 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-black text-xs shadow-xs">4</span>
+          <span class="text-[9px] font-extrabold uppercase tracking-wider text-indigo-800 bg-indigo-100/80 px-2 py-0.5 rounded-full">Publikasi</span>
         </div>
         <div>
-          <h4 class="font-bold text-xs text-slate-900 leading-snug">Cetak & Unduh PDF</h4>
-          <p class="text-[11px] text-slate-500 mt-1 leading-tight">Klik "Lihat Rapor" lalu tekan tombol "Cetak / Simpan PDF" untuk lembar cetak fisik.</p>
+          <h4 class="font-extrabold text-xs text-slate-900 leading-snug">Cetak & Publish Rapor</h4>
+          <p class="text-[11px] text-slate-500 mt-1 leading-tight">Pratinjau lembar A4 Portofolio & SKL, unduh PDF, atau publish ke ortu.</p>
         </div>
       </div>
 
       <!-- Step 5 -->
-      <div class="bg-slate-50/60 hover:bg-[#edf9f3] border border-slate-200/80 hover:border-[#a7f3d0] rounded-2xl p-4 transition flex flex-col justify-between space-y-2.5 cursor-pointer" onclick="switchView('cms')">
+      <div class="bg-gradient-to-b from-rose-50/50 to-white hover:from-rose-50 border border-rose-100 hover:border-rose-300 rounded-2xl p-4 transition flex flex-col justify-between space-y-2.5 cursor-pointer interactive-card" onclick="switchView('cms')">
         <div class="flex items-center justify-between">
-          <span class="w-6 h-6 rounded-full bg-purple-100 text-purple-700 flex items-center justify-center font-black text-xs">5</span>
-          <span class="text-[9px] font-extrabold uppercase tracking-wider text-purple-800 bg-purple-100/70 px-2 py-0.5 rounded">Admin</span>
+          <span class="w-7 h-7 rounded-xl bg-rose-600 text-white flex items-center justify-center font-black text-xs shadow-xs">5</span>
+          <span class="text-[9px] font-extrabold uppercase tracking-wider text-rose-800 bg-rose-100/80 px-2 py-0.5 rounded-full">Konfigurasi</span>
         </div>
         <div>
-          <h4 class="font-bold text-xs text-slate-900 leading-snug">Kustomisasi CMS</h4>
-          <p class="text-[11px] text-slate-500 mt-1 leading-tight">Masuk ke Pengaturan & CMS untuk kustom identitas yayasan, kepsek & rubrik.</p>
+          <h4 class="font-extrabold text-xs text-slate-900 leading-snug">Pengaturan & CMS</h4>
+          <p class="text-[11px] text-slate-500 mt-1 leading-tight">Sesuaikan titimangsa rapor, akun pendidik/wali murid, dan tema warna.</p>
         </div>
       </div>
 
     </div>
   </div>
 
-  <!-- Unit Kerja / Kelas Rombel Stats Cards (Matching Screenshot) -->
+  <!-- Unit Kerja / Kelas Rombel Stats Cards (Interactive & Distinct Color Accents) -->
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
     
     <!-- Unit 1: Kelas VII -->
-    <div class="bg-white rounded-3xl p-5 border border-[#e2f3ea] shadow-sm space-y-3 flex flex-col justify-between hover:shadow-md transition">
+    <div onclick="quickFilterDashboardByClass('VII UTSMAN')" class="bg-white rounded-3xl p-5 border border-emerald-100/90 shadow-sm space-y-3 flex flex-col justify-between interactive-card cursor-pointer relative overflow-hidden group" title="Klik untuk melihat grafik Kelas VII">
+      <div class="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-emerald-500 to-teal-400"></div>
       <div class="flex items-start justify-between">
-        <div class="w-12 h-12 rounded-2xl bg-[#e8f8f2] border border-[#a7f3d0] flex items-center justify-center text-[#00a66c] text-xl shadow-sm">
-          <i class="fa-solid fa-building-columns"></i>
+        <div class="w-12 h-12 rounded-2xl bg-emerald-50 border border-emerald-200/80 flex items-center justify-center text-[#00a66c] text-xl shadow-2xs group-hover:scale-105 transition-transform">
+          <i class="fa-solid fa-seedling"></i>
         </div>
         <div class="text-right">
-          <span class="text-2xl font-black text-slate-900 leading-none" id="card-vii-total">41</span>
-          <span class="text-[11px] text-slate-400 block mt-0.5 font-bold">Murid</span>
+          <span class="text-2xl font-black text-slate-900 leading-none font-mono" id="card-vii-total">41</span>
+          <span class="text-[11px] text-emerald-700 block mt-0.5 font-bold">Peserta Didik</span>
         </div>
       </div>
       <div>
-        <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Unit Kerja / Kelas</span>
-        <h3 class="text-base font-extrabold text-slate-900 mt-0.5">Kelas VII (Utsman & Aisyah)</h3>
+        <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Tingkat Kelas VII</span>
+        <h3 class="text-sm sm:text-base font-extrabold text-slate-900 mt-0.5">Utsman, Aisyah & MBU</h3>
       </div>
       <div class="pt-2 border-t border-slate-100 flex gap-2 text-[11px]">
-        <span class="flex-1 bg-blue-50 text-blue-800 font-bold py-1 px-2 rounded-xl text-center" id="card-vii-ikhwan">Ikhwan: 14</span>
-        <span class="flex-1 bg-[#e8f8f2] text-[#065f46] font-bold py-1 px-2 rounded-xl text-center" id="card-vii-akhwat">Akhwat: 27</span>
+        <span class="flex-1 bg-blue-50 text-blue-800 border border-blue-100 font-bold py-1 px-2 rounded-xl text-center" id="card-vii-ikhwan">Ikhwan: 14</span>
+        <span class="flex-1 bg-emerald-50 text-emerald-800 border border-emerald-100 font-bold py-1 px-2 rounded-xl text-center" id="card-vii-akhwat">Akhwat: 27</span>
       </div>
     </div>
 
     <!-- Unit 2: Kelas VIII -->
-    <div class="bg-white rounded-3xl p-5 border border-[#e2f3ea] shadow-sm space-y-3 flex flex-col justify-between hover:shadow-md transition">
+    <div onclick="quickFilterDashboardByClass('VIII UMAR')" class="bg-white rounded-3xl p-5 border border-teal-100/90 shadow-sm space-y-3 flex flex-col justify-between interactive-card cursor-pointer relative overflow-hidden group" title="Klik untuk melihat grafik Kelas VIII">
+      <div class="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-teal-500 to-cyan-500"></div>
       <div class="flex items-start justify-between">
-        <div class="w-12 h-12 rounded-2xl bg-[#e8f8f2] border border-[#a7f3d0] flex items-center justify-center text-[#00a66c] text-xl shadow-sm">
+        <div class="w-12 h-12 rounded-2xl bg-teal-50 border border-teal-200/80 flex items-center justify-center text-teal-700 text-xl shadow-2xs group-hover:scale-105 transition-transform">
           <i class="fa-solid fa-users"></i>
         </div>
         <div class="text-right">
-          <span class="text-2xl font-black text-slate-900 leading-none" id="card-viii-total">46</span>
-          <span class="text-[11px] text-slate-400 block mt-0.5 font-bold">Murid</span>
+          <span class="text-2xl font-black text-slate-900 leading-none font-mono" id="card-viii-total">46</span>
+          <span class="text-[11px] text-teal-700 block mt-0.5 font-bold">Peserta Didik</span>
         </div>
       </div>
       <div>
-        <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Unit Kerja / Kelas</span>
-        <h3 class="text-base font-extrabold text-slate-900 mt-0.5">Kelas VIII (Umar & Khodijah)</h3>
+        <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Tingkat Kelas VIII</span>
+        <h3 class="text-sm sm:text-base font-extrabold text-slate-900 mt-0.5">Umar & Khodijah</h3>
       </div>
       <div class="pt-2 border-t border-slate-100 flex gap-2 text-[11px]">
-        <span class="flex-1 bg-blue-50 text-blue-800 font-bold py-1 px-2 rounded-xl text-center" id="card-viii-ikhwan">Ikhwan: 19</span>
-        <span class="flex-1 bg-[#e8f8f2] text-[#065f46] font-bold py-1 px-2 rounded-xl text-center" id="card-viii-akhwat">Akhwat: 27</span>
+        <span class="flex-1 bg-blue-50 text-blue-800 border border-blue-100 font-bold py-1 px-2 rounded-xl text-center" id="card-viii-ikhwan">Ikhwan: 19</span>
+        <span class="flex-1 bg-teal-50 text-teal-800 border border-teal-100 font-bold py-1 px-2 rounded-xl text-center" id="card-viii-akhwat">Akhwat: 27</span>
       </div>
     </div>
 
     <!-- Unit 3: Kelas IX -->
-    <div class="bg-white rounded-3xl p-5 border border-[#e2f3ea] shadow-sm space-y-3 flex flex-col justify-between hover:shadow-md transition">
+    <div onclick="quickFilterDashboardByClass('IX ABU BAKAR')" class="bg-white rounded-3xl p-5 border border-indigo-100/90 shadow-sm space-y-3 flex flex-col justify-between interactive-card cursor-pointer relative overflow-hidden group" title="Klik untuk melihat grafik Kelas IX">
+      <div class="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-indigo-500 to-blue-500"></div>
       <div class="flex items-start justify-between">
-        <div class="w-12 h-12 rounded-2xl bg-[#e8f8f2] border border-[#a7f3d0] flex items-center justify-center text-[#00a66c] text-xl shadow-sm">
+        <div class="w-12 h-12 rounded-2xl bg-indigo-50 border border-indigo-200/80 flex items-center justify-center text-indigo-700 text-xl shadow-2xs group-hover:scale-105 transition-transform">
           <i class="fa-solid fa-graduation-cap"></i>
         </div>
         <div class="text-right">
-          <span class="text-2xl font-black text-slate-900 leading-none" id="card-ix-total">50</span>
-          <span class="text-[11px] text-slate-400 block mt-0.5 font-bold">Murid</span>
+          <span class="text-2xl font-black text-slate-900 leading-none font-mono" id="card-ix-total">50</span>
+          <span class="text-[11px] text-indigo-700 block mt-0.5 font-bold">Peserta Didik</span>
         </div>
       </div>
       <div>
-        <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Unit Kerja / Kelas</span>
-        <h3 class="text-base font-extrabold text-slate-900 mt-0.5">Kelas IX (Abu Bakar & Ummu S)</h3>
+        <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Tingkat Kelas IX</span>
+        <h3 class="text-sm sm:text-base font-extrabold text-slate-900 mt-0.5">Abu Bakar & Ummu S</h3>
       </div>
       <div class="pt-2 border-t border-slate-100 flex gap-2 text-[11px]">
-        <span class="flex-1 bg-blue-50 text-blue-800 font-bold py-1 px-2 rounded-xl text-center" id="card-ix-ikhwan">Ikhwan: 24</span>
-        <span class="flex-1 bg-[#e8f8f2] text-[#065f46] font-bold py-1 px-2 rounded-xl text-center" id="card-ix-akhwat">Akhwat: 26</span>
+        <span class="flex-1 bg-blue-50 text-blue-800 border border-blue-100 font-bold py-1 px-2 rounded-xl text-center" id="card-ix-ikhwan">Ikhwan: 24</span>
+        <span class="flex-1 bg-indigo-50 text-indigo-800 border border-indigo-100 font-bold py-1 px-2 rounded-xl text-center" id="card-ix-akhwat">Akhwat: 26</span>
       </div>
     </div>
 
     <!-- Unit 4: Program Tahfidz & Total -->
-    <div class="bg-white rounded-3xl p-5 border border-[#e2f3ea] shadow-sm space-y-3 flex flex-col justify-between hover:shadow-md transition">
+    <div onclick="switchView('leger')" class="bg-white rounded-3xl p-5 border border-amber-100/90 shadow-sm space-y-3 flex flex-col justify-between interactive-card cursor-pointer relative overflow-hidden group" title="Klik untuk membuka Buku Leger">
+      <div class="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-amber-500 to-orange-400"></div>
       <div class="flex items-start justify-between">
-        <div class="w-12 h-12 rounded-2xl bg-[#e8f8f2] border border-[#a7f3d0] flex items-center justify-center text-[#00a66c] text-xl shadow-sm">
+        <div class="w-12 h-12 rounded-2xl bg-amber-50 border border-amber-200/80 flex items-center justify-center text-amber-600 text-xl shadow-2xs group-hover:scale-105 transition-transform">
           <i class="fa-solid fa-mosque"></i>
         </div>
         <div class="text-right">
-          <span class="text-2xl font-black text-slate-900 leading-none" id="card-total-santri">159</span>
-          <span class="text-[11px] text-slate-400 block mt-0.5 font-bold">Total Santri</span>
+          <span class="text-2xl font-black text-slate-900 leading-none font-mono" id="card-total-santri">159</span>
+          <span class="text-[11px] text-amber-700 block mt-0.5 font-bold">Total Santri</span>
         </div>
       </div>
       <div>
         <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Program Khusus / Total</span>
-        <h3 class="text-base font-extrabold text-slate-900 mt-0.5">Tahfidz MBU & 7 Rombel</h3>
+        <h3 class="text-sm sm:text-base font-extrabold text-slate-900 mt-0.5">Tahfidz MBU & 7 Rombel</h3>
       </div>
       <div class="pt-2 border-t border-slate-100 flex gap-2 text-[11px]">
-        <span class="flex-1 bg-amber-50 text-amber-800 font-bold py-1 px-2 rounded-xl text-center" id="card-total-mapel">16 Mapel</span>
-        <span class="flex-1 bg-[#e8f8f2] text-[#065f46] font-bold py-1 px-2 rounded-xl text-center" id="card-total-kkm">100% KKM</span>
+        <span class="flex-1 bg-amber-50 text-amber-800 border border-amber-200/60 font-bold py-1 px-2 rounded-xl text-center" id="card-total-mapel">16 Mapel</span>
+        <span class="flex-1 bg-emerald-50 text-emerald-800 border border-emerald-200/60 font-bold py-1 px-2 rounded-xl text-center" id="card-total-kkm">100% KKM</span>
       </div>
     </div>
 
@@ -1466,6 +1744,7 @@
               <h4 class="font-bold text-slate-900 mt-0.5">Penilaian Tengah Semester (PTS) Ganjil</h4>
               <p class="text-slate-600 text-[11px] mt-1 leading-snug">Penginputan leger nilai 16 mapel untuk seluruh rombel aktif.</p>
             </div>
+            <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl">
               <span class="text-[10px] font-bold text-slate-500 uppercase block">Kurikulum</span>
               <h4 class="font-bold text-slate-900 mt-0.5">Standar Interval Rapor (KKM 75)</h4>
               <p class="text-slate-600 text-[11px] mt-1 leading-snug">Predikat: <strong>A</strong> (92–100: Sangat Baik), <strong>B</strong> (84–91: Baik), <strong>C</strong> (75–83: Cukup), <strong>D</strong> (≤ 74: Perlu Bimbingan).</p>
@@ -1473,7 +1752,7 @@
           </div>
         </div>
 
-        <button onclick="switchView('akademik')" class="w-full py-2.5 bg-[#00a66c] hover:bg-[#008f5d] text-white font-bold text-xs rounded-2xl shadow-sm shadow-[#00a66c]/20 transition flex items-center justify-center gap-2">
+        <button onclick="switchView('akademik')" class="w-full py-2.5 bg-[#00a66c] hover:bg-[#008f5d] text-white font-bold text-xs rounded-2xl shadow-sm shadow-[#00a66c]/20 transition flex items-center justify-center gap-2 cursor-pointer">
           <i class="fa-solid fa-pen-to-square"></i>
           <span>Kelola Nilai Akademik</span>
         </button>
@@ -3231,8 +3510,25 @@
           </div>
         </div>
 
-        <!-- Quick Generator & Speed Tools -->
+          <!-- Quick Generator & Speed Tools -->
         <div class="flex flex-wrap items-center gap-2">
+          <!-- Layout View Switcher (Tabel Spreadsheet vs Kartu Cepat Mobile) -->
+          <div class="inline-flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200">
+            <button type="button" id="btn-leger-layout-table" onclick="switchLegerLayoutMode('table')"
+                    class="px-2.5 py-1.5 rounded-lg text-[11px] font-extrabold transition flex items-center gap-1.5 bg-white text-[#00a66c] shadow-xs cursor-pointer"
+                    title="Tampilan Tabel Spreadsheet (Cocok untuk Desktop)">
+              <i class="fa-solid fa-table"></i>
+              <span>Tabel</span>
+            </button>
+            <button type="button" id="btn-leger-layout-cards" onclick="switchLegerLayoutMode('cards')"
+                    class="px-2.5 py-1.5 rounded-lg text-[11px] font-bold text-slate-600 hover:text-slate-900 transition flex items-center gap-1.5 cursor-pointer"
+                    title="Tampilan Kartu Cepat Interaktif (Sangat Nyaman di HP & Tablet)">
+              <i class="fa-solid fa-grip-vertical"></i>
+              <span>Kartu Cepat</span>
+              <span class="px-1.5 py-0.2 rounded bg-emerald-100 text-[#00a66c] text-[9px] font-black">Mobile</span>
+            </button>
+          </div>
+
           <button onclick="autoRecommendAllLegerTP()" 
                   class="px-3.5 py-2 bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-300 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm cursor-pointer"
                   title="Otomatis beri checklist rekomendasi TP Optimal / Peningkatan berdasarkan nilai angka murid">
@@ -3252,6 +3548,25 @@
             <i class="fa-solid fa-floppy-disk"></i>
             <span>Simpan Nilai Sekelas</span>
           </button>
+        </div>
+      </div>
+
+      <!-- Quick Batch Fill Bar & Progress Counter -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 px-3.5 py-2.5 bg-slate-50 border border-slate-200/80 rounded-2xl text-xs">
+        <div class="flex flex-wrap items-center gap-1.5">
+          <span class="font-bold text-slate-600 flex items-center gap-1.5 mr-1">
+            <i class="fa-solid fa-bolt text-amber-500"></i>
+            <span>Isi Nilai Kosong Sekaligus:</span>
+          </span>
+          <button type="button" onclick="fillEmptyLegerScores(75)" class="px-2.5 py-1 rounded-lg bg-white hover:bg-amber-50 text-slate-700 hover:text-amber-800 border border-slate-200 font-mono font-bold text-[11px] transition cursor-pointer shadow-2xs">75 (KKM)</button>
+          <button type="button" onclick="fillEmptyLegerScores(80)" class="px-2.5 py-1 rounded-lg bg-white hover:bg-teal-50 text-slate-700 hover:text-teal-800 border border-slate-200 font-mono font-bold text-[11px] transition cursor-pointer shadow-2xs">80 (B)</button>
+          <button type="button" onclick="fillEmptyLegerScores(85)" class="px-2.5 py-1 rounded-lg bg-white hover:bg-emerald-50 text-slate-700 hover:text-emerald-800 border border-slate-200 font-mono font-bold text-[11px] transition cursor-pointer shadow-2xs">85 (B+)</button>
+          <button type="button" onclick="fillEmptyLegerScores(90)" class="px-2.5 py-1 rounded-lg bg-white hover:bg-emerald-100 text-emerald-800 border border-emerald-200 font-mono font-black text-[11px] transition cursor-pointer shadow-2xs">90 (A)</button>
+        </div>
+        <div class="flex items-center gap-2 text-[11px] text-slate-500 font-semibold">
+          <span class="inline-flex items-center gap-1 text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200 font-bold" id="leger-input-progress-pill">
+            <i class="fa-solid fa-circle-check text-[10px]"></i> Terisi Otomatis Tersimpan
+          </span>
         </div>
       </div>
 
@@ -3276,16 +3591,16 @@
         </div>
       </div>
 
-      <!-- Leger Spreadsheet Grid Table with TP Checklists -->
-      <div class="overflow-x-auto rounded-xl border border-slate-200">
+      <!-- MODE 1: Leger Spreadsheet Grid Table with TP Checklists -->
+      <div id="leger-table-mode-container" class="overflow-x-auto rounded-xl border border-slate-200 shadow-inner">
         <table class="w-full text-left text-xs text-slate-700">
           <thead class="bg-slate-100 text-slate-800 uppercase text-[10px] font-extrabold tracking-wider border-b border-slate-200">
             <tr>
               <th class="w-10 px-2 py-3 text-center border-r border-slate-200">No</th>
               <th class="w-28 px-3 py-3 border-r border-slate-200">NISN / NIS</th>
-              <th class="w-52 px-3 py-3 border-r border-slate-200">Nama Peserta Didik</th>
+              <th class="w-52 px-3 py-3 border-r border-slate-200 sticky left-0 bg-slate-100 z-10">Nama Peserta Didik</th>
               <th class="w-14 px-2 py-3 text-center border-r border-slate-200">KKM</th>
-              <th class="w-24 px-2 py-3 text-center border-r border-slate-200 bg-emerald-100/70 text-emerald-950 font-black">Nilai Angka</th>
+              <th class="w-28 px-2 py-3 text-center border-r border-slate-200 bg-emerald-100/70 text-emerald-950 font-black">Nilai Angka</th>
               <th class="w-16 px-2 py-3 text-center border-r border-slate-200">Predikat</th>
               <th class="w-56 px-3 py-3 border-r border-slate-200 bg-emerald-50 text-emerald-900 font-extrabold">
                 <div class="flex items-center gap-1">
@@ -3299,7 +3614,7 @@
                   <span>2. TP Perlu Peningkatan</span>
                 </div>
               </th>
-              <th class="px-4 py-3 bg-slate-50 text-slate-900 font-extrabold">
+              <th class="px-4 py-3 bg-slate-50 text-slate-900 font-extrabold min-w-[260px]">
                 <div class="flex items-center gap-1">
                   <i class="fa-solid fa-wand-magic-sparkles text-blue-600"></i>
                   <span>Deskripsi Capaian Rapor (Otomatis)</span>
@@ -3311,6 +3626,13 @@
             <!-- Populated dynamically via JS -->
           </tbody>
         </table>
+      </div>
+
+      <!-- MODE 2: Interactive Mobile & Tablet Quick-Input Cards -->
+      <div id="leger-cards-mode-container" class="hidden space-y-3">
+        <div id="leger-akademik-cards-container" class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+          <!-- Populated dynamically via JS -->
+        </div>
       </div>
 
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2 text-xs text-slate-500">
@@ -5909,10 +6231,18 @@
         <i class="fa-solid fa-magnifying-glass absolute left-2 top-2.5 text-slate-400 text-xs"></i>
       </div>
 
-      <!-- Murid Selector for Print -->
-      <select id="rapor-murid-select" onchange="loadMuridReportForPrint(this.value)" class="text-xs bg-indigo-50 border border-indigo-300 rounded-xl px-3 py-2 text-indigo-950 font-black focus:ring-2 focus:ring-indigo-500 min-w-[200px]">
-        <!-- Populated via JS -->
-      </select>
+      <!-- Murid Selector + Quick Stepper for Print -->
+      <div class="flex items-center gap-1">
+        <button type="button" onclick="prevNextRaporStudent(-1)" class="menu-non-wali w-8 h-8 rounded-xl bg-slate-100 hover:bg-indigo-100 text-slate-600 hover:text-indigo-700 flex items-center justify-center text-xs font-bold transition cursor-pointer shrink-0" title="Siswa Sebelumnya">
+          <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        <select id="rapor-murid-select" onchange="loadMuridReportForPrint(this.value)" class="text-xs bg-indigo-50 border border-indigo-300 rounded-xl px-3 py-2 text-indigo-950 font-black focus:ring-2 focus:ring-indigo-500 min-w-[180px] sm:min-w-[210px] max-w-[260px]">
+          <!-- Populated via JS -->
+        </select>
+        <button type="button" onclick="prevNextRaporStudent(1)" class="menu-non-wali w-8 h-8 rounded-xl bg-slate-100 hover:bg-indigo-100 text-slate-600 hover:text-indigo-700 flex items-center justify-center text-xs font-bold transition cursor-pointer shrink-0" title="Siswa Berikutnya">
+          <i class="fa-solid fa-chevron-right"></i>
+        </button>
+      </div>
 
       <button onclick="window.print()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-xs shadow flex items-center gap-1.5 transition cursor-pointer">
         <i class="fa-solid fa-print"></i>
@@ -6386,8 +6716,140 @@
 
   </div>
 
+  <!-- Interactive Mobile & Tablet Bottom Navigation Bar (App Dock) -->
+  <nav id="mobile-bottom-nav" class="no-print lg:hidden fixed bottom-0 inset-x-0 z-30 bg-white/95 backdrop-blur-xl border-t border-emerald-100/90 shadow-[0_-8px_30px_rgba(15,23,42,0.08)] px-2 py-1.5 select-none">
+    <!-- Mode 1: Bottom Nav for Guru / Wali Kelas / Admin -->
+    <div id="mobile-dock-staff" class="grid grid-cols-5 items-center max-w-md mx-auto">
+      <button type="button" onclick="switchView('dashboard')" id="mob-nav-dashboard" class="mobile-dock-btn active-dock flex flex-col items-center justify-center py-1 text-slate-500 hover:text-[#00a66c] transition cursor-pointer">
+        <div class="dock-icon-pill w-9 h-7 rounded-xl flex items-center justify-center transition-all">
+          <i class="fa-solid fa-house text-sm"></i>
+        </div>
+        <span class="text-[10px] font-semibold mt-0.5 leading-tight">Beranda</span>
+      </button>
+
+      <button type="button" onclick="switchView('akademik')" id="mob-nav-akademik" class="mobile-dock-btn flex flex-col items-center justify-center py-1 text-slate-500 hover:text-[#00a66c] transition cursor-pointer">
+        <div class="dock-icon-pill w-9 h-7 rounded-xl flex items-center justify-center transition-all">
+          <i class="fa-solid fa-pen-to-square text-sm"></i>
+        </div>
+        <span class="text-[10px] font-semibold mt-0.5 leading-tight">Input Nilai</span>
+      </button>
+
+      <!-- Central Floating Action Launcher -->
+      <div class="flex flex-col items-center justify-center -mt-5">
+        <button type="button" onclick="openQuickCommandModal()" class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#00a66c] to-teal-500 text-white shadow-lg shadow-[#00a66c]/35 flex items-center justify-center text-lg hover:scale-105 active:scale-95 transition-all cursor-pointer border-2 border-white" title="Menu Aksi Cepat & Pencarian">
+          <i class="fa-solid fa-bolt"></i>
+        </button>
+        <span class="text-[10px] font-extrabold text-[#00a66c] mt-0.5 leading-tight">Aksi Cepat</span>
+      </div>
+
+      <button type="button" onclick="switchView('leger')" id="mob-nav-leger" class="mobile-dock-btn flex flex-col items-center justify-center py-1 text-slate-500 hover:text-[#00a66c] transition cursor-pointer">
+        <div class="dock-icon-pill w-9 h-7 rounded-xl flex items-center justify-center transition-all">
+          <i class="fa-solid fa-table-list text-sm"></i>
+        </div>
+        <span class="text-[10px] font-semibold mt-0.5 leading-tight">Leger</span>
+      </button>
+
+      <button type="button" onclick="toggleSidebar()" id="mob-nav-menu" class="mobile-dock-btn flex flex-col items-center justify-center py-1 text-slate-500 hover:text-[#00a66c] transition cursor-pointer">
+        <div class="dock-icon-pill w-9 h-7 rounded-xl flex items-center justify-center transition-all">
+          <i class="fa-solid fa-bars-staggered text-sm"></i>
+        </div>
+        <span class="text-[10px] font-semibold mt-0.5 leading-tight">Menu</span>
+      </button>
+    </div>
+
+    <!-- Mode 2: Bottom Nav for Wali Murid (Parent Portal) -->
+    <div id="mobile-dock-wali" class="hidden grid-cols-5 items-center max-w-md mx-auto">
+      <button type="button" onclick="switchView('dashboard')" id="mob-wali-dashboard" class="mobile-dock-btn active-dock flex flex-col items-center justify-center py-1 text-slate-500 hover:text-[#00a66c] transition cursor-pointer">
+        <div class="dock-icon-pill w-9 h-7 rounded-xl flex items-center justify-center transition-all">
+          <i class="fa-solid fa-house-user text-sm"></i>
+        </div>
+        <span class="text-[10px] font-semibold mt-0.5 leading-tight">Ringkasan</span>
+      </button>
+
+      <button type="button" onclick="switchView('jadwal')" id="mob-wali-jadwal" class="mobile-dock-btn flex flex-col items-center justify-center py-1 text-slate-500 hover:text-[#00a66c] transition cursor-pointer">
+        <div class="dock-icon-pill w-9 h-7 rounded-xl flex items-center justify-center transition-all">
+          <i class="fa-regular fa-calendar-days text-sm"></i>
+        </div>
+        <span class="text-[10px] font-semibold mt-0.5 leading-tight">Jadwal</span>
+      </button>
+
+      <!-- Central Rapor Resmi Button -->
+      <div class="flex flex-col items-center justify-center -mt-5">
+        <button type="button" onclick="switchView('rapor')" class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#00a66c] to-teal-500 text-white shadow-lg shadow-[#00a66c]/35 flex items-center justify-center text-lg hover:scale-105 active:scale-95 transition-all cursor-pointer border-2 border-white" title="Buka Lembar Rapor Ananda">
+          <i class="fa-solid fa-file-invoice"></i>
+        </button>
+        <span class="text-[10px] font-extrabold text-[#00a66c] mt-0.5 leading-tight">Rapor</span>
+      </div>
+
+      <button type="button" onclick="switchView('amalsholeh')" id="mob-wali-amalsholeh" class="mobile-dock-btn flex flex-col items-center justify-center py-1 text-slate-500 hover:text-[#00a66c] transition cursor-pointer">
+        <div class="dock-icon-pill w-9 h-7 rounded-xl flex items-center justify-center transition-all">
+          <i class="fa-solid fa-hand-holding-heart text-sm text-rose-500"></i>
+        </div>
+        <span class="text-[10px] font-semibold mt-0.5 leading-tight">Amal Sholeh</span>
+      </button>
+
+      <button type="button" onclick="switchView('konseling')" id="mob-wali-konseling" class="mobile-dock-btn flex flex-col items-center justify-center py-1 text-slate-500 hover:text-[#00a66c] transition cursor-pointer">
+        <div class="dock-icon-pill w-9 h-7 rounded-xl flex items-center justify-center transition-all">
+          <i class="fa-solid fa-comments text-sm text-teal-600"></i>
+        </div>
+        <span class="text-[10px] font-semibold mt-0.5 leading-tight">Konseling</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Quick Command & Action Sheet Modal (For Fast Teacher & Parent Navigation + Student Search) -->
+  <div id="modal-quick-command" class="no-print fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-xs hidden flex items-end sm:items-center justify-center p-0 sm:p-4" onclick="if(event.target===this) closeQuickCommandModal()">
+    <div class="bg-white w-full sm:max-w-xl rounded-t-3xl sm:rounded-3xl shadow-2xl border border-slate-200 overflow-hidden max-h-[85vh] flex flex-col animate-in fade-in slide-in-from-bottom-4 duration-200">
+      <!-- Handle bar on mobile -->
+      <div class="w-10 h-1.5 bg-slate-200 rounded-full mx-auto mt-2.5 sm:hidden"></div>
+      
+      <!-- Search Header -->
+      <div class="p-4 sm:p-5 border-b border-slate-100 space-y-3">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="w-7 h-7 rounded-xl bg-emerald-100 text-[#00a66c] flex items-center justify-center text-xs font-black">
+              <i class="fa-solid fa-bolt"></i>
+            </span>
+            <h3 class="font-extrabold text-sm text-slate-900">Pusat Aksi Cepat & Pencarian Pintar</h3>
+          </div>
+          <button type="button" onclick="closeQuickCommandModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition cursor-pointer">
+            <i class="fa-solid fa-xmark text-sm"></i>
+          </button>
+        </div>
+
+        <div class="relative">
+          <input type="text" id="quick-command-search-input" oninput="filterQuickCommandItems(this.value)" placeholder="Ketik nama siswa, NISN, kelas, atau menu fitur..." 
+                 class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-200 focus:border-[#00a66c] focus:bg-white rounded-2xl pl-10 pr-4 py-3 text-slate-800 font-semibold outline-none focus:ring-2 focus:ring-[#00a66c]/20 transition" />
+          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-slate-400 text-sm"></i>
+        </div>
+      </div>
+
+      <!-- Scrollable Body -->
+      <div class="p-4 sm:p-5 overflow-y-auto space-y-5 flex-1">
+        <!-- Quick Actions Grid (Adapted by Role) -->
+        <div id="quick-command-actions-section" class="space-y-2.5">
+          <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 block px-1">Pintasan Menu & Input Cepat</span>
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5" id="quick-command-actions-grid">
+            <!-- Populated dynamically via JS -->
+          </div>
+        </div>
+
+        <!-- Instant Student Finder Results -->
+        <div id="quick-command-students-section" class="space-y-2.5">
+          <div class="flex items-center justify-between px-1">
+            <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Direktori Cepat Peserta Didik</span>
+            <span class="text-[10px] font-bold text-[#00a66c]" id="quick-command-student-count">Menampilkan Siswa</span>
+          </div>
+          <div id="quick-command-students-list" class="space-y-1.5 max-h-60 overflow-y-auto pr-1">
+            <!-- Populated dynamically via JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Toast Container -->
-  <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none max-w-sm w-full"></div>
+  <div id="toast-container" class="fixed bottom-20 lg:bottom-5 right-4 sm:right-5 z-50 flex flex-col gap-2 pointer-events-none max-w-sm w-full"></div>
 
   <!-- Detail Capaian Nilai & Kompetensi Mapel dari Jadwal Modal -->
   <!-- Modal Interaktif Detail Capaian Nilai & Kompetensi Mata Pelajaran (Klik Jadwal) -->
@@ -9867,6 +10329,22 @@ function switchView(viewName) {
     activeLink.classList.add('bg-[#00a66c]', 'text-white', 'shadow-md', 'shadow-[#00a66c]/20', 'font-bold', 'active-nav');
   }
 
+  // Update Mobile Bottom Dock Active State
+  document.querySelectorAll('.mobile-dock-btn').forEach(btn => {
+    btn.classList.remove('active-dock', 'text-[#00a66c]', 'font-bold');
+    btn.classList.add('text-slate-500');
+  });
+  const mobStaffBtn = document.getElementById('mob-nav-' + viewName);
+  if (mobStaffBtn) {
+    mobStaffBtn.classList.add('active-dock', 'text-[#00a66c]', 'font-bold');
+    mobStaffBtn.classList.remove('text-slate-500');
+  }
+  const mobWaliBtn = document.getElementById('mob-wali-' + viewName);
+  if (mobWaliBtn) {
+    mobWaliBtn.classList.add('active-dock', 'text-[#00a66c]', 'font-bold');
+    mobWaliBtn.classList.remove('text-slate-500');
+  }
+
   // Close mobile sidebar if opened
   const sidebar = document.getElementById('app-sidebar');
   const backdrop = document.getElementById('sidebar-backdrop');
@@ -10794,12 +11272,30 @@ function applyRoleUIPermissions(role) {
   // Toggle Dashboard view panels (Parent Portal vs Teacher/Admin Dashboard)
   const dashWaliView = document.getElementById('dashboard-wali-view');
   const dashAdminView = document.getElementById('dashboard-admin-view');
+  const mobDockStaff = document.getElementById('mobile-dock-staff');
+  const mobDockWali = document.getElementById('mobile-dock-wali');
   if (isWali) {
     dashWaliView?.classList.remove('hidden');
     dashAdminView?.classList.add('hidden');
+    if (mobDockStaff) { mobDockStaff.classList.add('hidden'); mobDockStaff.classList.remove('grid'); }
+    if (mobDockWali) { mobDockWali.classList.remove('hidden'); mobDockWali.classList.add('grid'); }
   } else {
     dashWaliView?.classList.add('hidden');
     dashAdminView?.classList.remove('hidden');
+    if (mobDockWali) { mobDockWali.classList.add('hidden'); mobDockWali.classList.remove('grid'); }
+    if (mobDockStaff) { mobDockStaff.classList.remove('hidden'); mobDockStaff.classList.add('grid'); }
+
+    // Update Educator Command Center Hero Greeting & Role Pill
+    const teacherGreeting = document.getElementById('teacher-hero-greeting');
+    const teacherRolePill = document.getElementById('teacher-hero-role-pill');
+    if (teacherGreeting) {
+      teacherGreeting.innerText = `Ahlan wa Sahlan, ${user.nama_lengkap || 'Ustadz / Ustadzah'}`;
+    }
+    if (teacherRolePill) {
+      if (isAdmin) teacherRolePill.innerText = (user.username === 'arifrohman' ? 'Kepala Sekolah • Akses Penuh' : 'Super Admin • Akses Penuh');
+      else if (isWalas) teacherRolePill.innerText = `Wali Kelas ${assignedClass} • ${user.mapel || 'Pendidik'}`;
+      else teacherRolePill.innerText = `Guru Mapel: ${user.mapel || (assignedMapels.join(', ') || 'Pendidik')}`;
+    }
   }
 
   // Apply Class & Mapel Restrictions to all select elements
@@ -11034,6 +11530,11 @@ function renderWaliAnekdotAndKonseling(childNis, childMurid) {
 
   // Render Resume Grafik Nilai Ananda for Parent Dashboard
   renderStudentResumeChart(cleanNis, 'wali');
+
+  // Render Interactive 16 Mapel Cards Explorer for Parent Dashboard
+  if (typeof renderWaliInteractiveMapelCards === 'function') {
+    renderWaliInteractiveMapelCards();
+  }
 
   // Render Jadwal Pelajaran Mingguan Ananda (Portal Wali Murid)
   renderWaliJadwal(cleanNis, childMurid);
@@ -15427,12 +15928,16 @@ function renderLegerGrid() {
     <tr class="hover:bg-blue-50/40 transition leger-row" data-nis="${s.nis}">
       <td class="px-2 py-2 text-center font-mono text-slate-500 border-r border-slate-200">${s.no_urut || (idx + 1)}</td>
       <td class="px-3 py-2 font-mono font-bold text-slate-700 border-r border-slate-200">${s.nisn || s.nis}</td>
-      <td class="px-3 py-2 font-bold text-slate-900 border-r border-slate-200">${s.nama_murid || s.nama_santri}</td>
+      <td class="px-3 py-2 font-bold text-slate-900 border-r border-slate-200 sticky left-0 bg-white/95 z-10">${s.nama_murid || s.nama_santri}</td>
       <td class="px-2 py-2 text-center font-bold text-amber-900 bg-amber-50/40 border-r border-slate-200">${kkm}</td>
       <td class="px-2 py-2 text-center border-r border-slate-200 bg-emerald-50/50">
-        <input type="number" min="0" max="100" value="${utsVal}" 
-               oninput="onLegerScoreInput(this)" onkeydown="onLegerScoreKeydown(event, this)"
-               class="leger-input-uts w-16 text-center font-black text-sm bg-white border border-emerald-300 rounded-lg p-1 text-emerald-950 focus:ring-2 focus:ring-[#00a66c] shadow-xs" placeholder="-" />
+        <div class="inline-flex items-center gap-0.5">
+          <button type="button" onclick="setStudentQuickScore('${s.nis}', '-1')" class="w-5 h-7 rounded bg-white hover:bg-slate-100 border border-slate-200 text-slate-500 text-[10px] font-bold flex items-center justify-center cursor-pointer" title="Kurangi 1 poin">-</button>
+          <input type="number" min="0" max="100" value="${utsVal}" 
+                 oninput="onLegerScoreInput(this)" onkeydown="onLegerScoreKeydown(event, this)"
+                 class="leger-input-uts w-14 text-center font-black text-sm bg-white border border-emerald-300 rounded-lg p-1 text-emerald-950 focus:ring-2 focus:ring-[#00a66c] shadow-xs" placeholder="-" />
+          <button type="button" onclick="setStudentQuickScore('${s.nis}', '+1')" class="w-5 h-7 rounded bg-white hover:bg-emerald-100 border border-slate-200 text-emerald-700 text-[10px] font-bold flex items-center justify-center cursor-pointer" title="Tambah 1 poin">+</button>
+        </div>
       </td>
       <td class="px-2 py-2 text-center border-r border-slate-200">
         <span class="leger-badge-predikat px-2 py-0.5 rounded-full text-xs font-black ${predBadgeCls}">${predikat}</span>
@@ -15448,11 +15953,18 @@ function renderLegerGrid() {
         </div>
       </td>
       <td class="px-3 py-2">
-        <textarea rows="2" class="leger-input-capaian w-full text-xs bg-slate-50/80 border border-slate-200 rounded-lg p-2 text-slate-800 focus:ring-2 focus:ring-[#00a66c] focus:bg-white leading-snug" placeholder="Deskripsi capaian rapor otomatis berdasarkan checklist TP...">${capaian}</textarea>
+        <textarea rows="2" oninput="onTableCapaianInput('${s.nis}', this.value)" class="leger-input-capaian w-full text-xs bg-slate-50/80 border border-slate-200 rounded-lg p-2 text-slate-800 focus:ring-2 focus:ring-[#00a66c] focus:bg-white leading-snug" placeholder="Deskripsi capaian rapor otomatis berdasarkan checklist TP...">${capaian}</textarea>
       </td>
     </tr>
     `;
   }).join('');
+
+  if (typeof renderLegerCardsMode === 'function') {
+    renderLegerCardsMode(students, mapel, kkm, activeTps);
+  }
+  if (typeof updateLegerProgressIndicator === 'function') {
+    updateLegerProgressIndicator();
+  }
 
   filterLegerGridStudents();
 }
@@ -15510,6 +16022,11 @@ function toggleRowTpCheck(nis, tpId, type) {
 
   // Regenerate narrative sentence
   recalcRowCapaian(row);
+
+  // Sync mobile card if rendered
+  if (typeof syncRowToMobileCard === 'function') {
+    syncRowToMobileCard(nis);
+  }
 }
 
 function recalcRowCapaian(row) {
@@ -15524,6 +16041,10 @@ function recalcRowCapaian(row) {
   const narasi = generateDeskripsiCapaian(mapel, score, optIds, penIds);
   const textarea = row.querySelector('.leger-input-capaian');
   if (textarea) textarea.value = narasi;
+  const nis = row.getAttribute('data-nis');
+  if (nis && typeof syncRowToMobileCard === 'function') {
+    syncRowToMobileCard(nis);
+  }
 }
 
 function autoRecommendAllLegerTP() {
@@ -15605,6 +16126,16 @@ function filterLegerGridStudents() {
     }
     const text = tr.innerText.toLowerCase();
     tr.style.display = text.includes(query) ? '' : 'none';
+  });
+
+  const cards = document.querySelectorAll('#leger-akademik-cards-container .leger-mobile-card');
+  cards.forEach(card => {
+    if (!query) {
+      card.style.display = '';
+      return;
+    }
+    const text = card.innerText.toLowerCase();
+    card.style.display = text.includes(query) ? '' : 'none';
   });
 }
 
@@ -20009,6 +20540,493 @@ window.onCmsUserNisChange = onCmsUserNisChange;
 window.renderAmalSholehView = renderAmalSholehView;
 window.filterAmalSholehCategory = filterAmalSholehCategory;
 
+// ============================================================================
+// 18C. INTERACTIVE MOBILE & DESKTOP UI/UX ENHANCEMENTS (COMMAND CENTER, CARDS)
+// ============================================================================
+
+let currentWaliMapelFilter = 'all';
+let currentLegerLayoutMode = (typeof window !== 'undefined' && window.innerWidth < 768) ? 'cards' : 'table';
+
+function filterWaliMapelCards(filterGroup) {
+  currentWaliMapelFilter = filterGroup || 'all';
+  ['all', 'agama', 'umum', 'mulok'].forEach(grp => {
+    const btn = document.getElementById(`btn-wali-mapel-${grp}`);
+    if (!btn) return;
+    if (grp === currentWaliMapelFilter) {
+      btn.className = 'wali-mapel-filter-btn px-3 py-1.5 rounded-xl text-[11px] font-black bg-[#00a66c] text-white shadow-xs transition cursor-pointer';
+    } else {
+      btn.className = 'wali-mapel-filter-btn px-3 py-1.5 rounded-xl text-[11px] font-bold text-slate-600 hover:bg-white transition cursor-pointer';
+    }
+  });
+  renderWaliInteractiveMapelCards(currentWaliMapelFilter);
+}
+
+function renderWaliInteractiveMapelCards(filterGroup) {
+  const activeGrp = filterGroup || currentWaliMapelFilter || 'all';
+  const grid = document.getElementById('wali-mapel-cards-grid');
+  if (!grid) return;
+
+  const user = AppState.currentUser || {};
+  const childNis = user.nis || AppState.activePrintNis || '242507001';
+  const gradeData = getStudentGradeData(childNis);
+  if (!gradeData || !gradeData.items) return;
+
+  let items = gradeData.items;
+  if (activeGrp === 'agama') items = items.filter(i => i.rumpun === 'Agama');
+  else if (activeGrp === 'umum') items = items.filter(i => i.rumpun === 'Umum');
+  else if (activeGrp === 'mulok') items = items.filter(i => i.rumpun === 'Mulok');
+
+  grid.innerHTML = items.map(item => {
+    const existingAk = (AppState.akademikList || []).find(a =>
+      String(a.nis).trim() === String(childNis).trim() &&
+      (a.mata_pelajaran === item.name || a.mata_pelajaran === item.id)
+    );
+    const narasi = existingAk?.capaian_kompetensi || existingAk?.catatan_guru || generateDeskripsiCapaian(item.name, item.score, existingAk?.tp_optimal, existingAk?.tp_peningkatan);
+    const pct = Math.min(100, Math.max(20, item.score));
+    const barColor = item.score >= 90 ? 'from-emerald-500 to-teal-500' : (item.score >= 80 ? 'from-teal-500 to-cyan-500' : (item.score >= 75 ? 'from-amber-500 to-orange-500' : 'from-rose-500 to-red-500'));
+    const teacherName = (typeof GURU_JADWAL_DEFAULTS !== 'undefined' && (GURU_JADWAL_DEFAULTS[item.abbr?.toUpperCase()] || GURU_JADWAL_DEFAULTS[item.name?.toUpperCase()])) || 'Guru Mapel SMP AI IS';
+
+    return `
+      <div onclick="openMapelCapaianDetail('${encodeURIComponent(item.name)}', 'SENIN', '07.30 - 08.50', '${encodeURIComponent(teacherName)}', '${encodeURIComponent(item.name)}')"
+           class="group bg-slate-50/70 hover:bg-[#f0fbf7] border border-slate-200/90 hover:border-[#00a66c]/50 rounded-2xl p-4 transition-all duration-200 cursor-pointer shadow-2xs hover:shadow-md flex flex-col justify-between gap-3">
+        <div class="space-y-2.5">
+          <div class="flex items-start justify-between gap-2">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <span class="w-7 h-7 rounded-xl bg-white border border-slate-200 group-hover:bg-[#00a66c] group-hover:text-white group-hover:border-[#00a66c] text-slate-700 font-mono font-black text-xs flex items-center justify-center shrink-0 transition-colors shadow-2xs">
+                ${item.no}
+              </span>
+              <div class="min-w-0">
+                <h5 class="font-extrabold text-xs sm:text-sm text-slate-900 group-hover:text-emerald-950 truncate">${item.name}</h5>
+                <span class="inline-block px-2 py-0.2 rounded-md text-[9px] font-bold ${item.rumpunBadge}">${item.rumpun} • KKM ${item.kkm}</span>
+              </div>
+            </div>
+            <div class="text-right shrink-0">
+              <div class="flex items-center gap-1.5">
+                <span class="text-lg font-black font-mono text-slate-950">${item.score}</span>
+                <span class="px-2 py-0.5 rounded-lg text-[10px] font-black ${item.predikatBadge}">${item.predikat}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Progress Bar vs KKM -->
+          <div class="w-full h-1.5 bg-slate-200/80 rounded-full overflow-hidden">
+            <div class="h-full bg-gradient-to-r ${barColor} rounded-full transition-all duration-500" style="width: ${pct}%"></div>
+          </div>
+
+          <p class="text-[11px] text-slate-600 leading-relaxed line-clamp-2">
+            ${narasi}
+          </p>
+        </div>
+
+        <div class="pt-2 border-t border-slate-200/60 flex items-center justify-between text-[10px] font-bold text-[#00a66c]">
+          <span class="text-slate-500 font-medium truncate max-w-[180px]"><i class="fa-solid fa-chalkboard-user mr-1 text-slate-400"></i>${teacherName}</span>
+          <span class="inline-flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">Detail TP <i class="fa-solid fa-chevron-right text-[9px]"></i></span>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function toggleDashboardStepsGuide() {
+  const body = document.getElementById('dashboard-steps-guide-body');
+  const label = document.getElementById('label-toggle-steps-guide');
+  const icon = document.getElementById('icon-toggle-steps-guide');
+  if (!body) return;
+  const isHidden = body.classList.contains('hidden');
+  if (isHidden) {
+    body.classList.remove('hidden');
+    if (label) label.innerText = 'Sembunyikan Alur';
+    if (icon) icon.className = 'fa-solid fa-chevron-up text-[10px] transition-transform duration-200';
+  } else {
+    body.classList.add('hidden');
+    if (label) label.innerText = 'Tampilkan 5 Langkah';
+    if (icon) icon.className = 'fa-solid fa-chevron-down text-[10px] transition-transform duration-200';
+  }
+}
+
+function quickFilterDashboardByClass(kelasName) {
+  const user = AppState.currentUser || {};
+  if (isUserWaliKelas(user)) {
+    const assigned = getUserAssignedClass(user);
+    if (assigned) kelasName = assigned;
+  }
+  switchView('murid');
+  const filterSelect = document.getElementById('filter-murid-kelas');
+  if (filterSelect && kelasName) {
+    filterSelect.value = kelasName === 'Semua' ? 'Semua' : kelasName;
+    filterTableMuridLocal();
+  }
+}
+
+function switchLegerLayoutMode(mode) {
+  currentLegerLayoutMode = mode === 'cards' ? 'cards' : 'table';
+  const tblContainer = document.getElementById('leger-table-mode-container');
+  const cardsContainer = document.getElementById('leger-cards-mode-container');
+  const btnTbl = document.getElementById('btn-leger-layout-table');
+  const btnCards = document.getElementById('btn-leger-layout-cards');
+
+  if (currentLegerLayoutMode === 'cards') {
+    tblContainer?.classList.add('hidden');
+    cardsContainer?.classList.remove('hidden');
+    if (btnCards) btnCards.className = 'px-2.5 py-1.5 rounded-lg text-[11px] font-extrabold transition flex items-center gap-1.5 bg-white text-[#00a66c] shadow-xs cursor-pointer';
+    if (btnTbl) btnTbl.className = 'px-2.5 py-1.5 rounded-lg text-[11px] font-bold text-slate-600 hover:text-slate-900 transition flex items-center gap-1.5 cursor-pointer';
+  } else {
+    cardsContainer?.classList.add('hidden');
+    tblContainer?.classList.remove('hidden');
+    if (btnTbl) btnTbl.className = 'px-2.5 py-1.5 rounded-lg text-[11px] font-extrabold transition flex items-center gap-1.5 bg-white text-[#00a66c] shadow-xs cursor-pointer';
+    if (btnCards) btnCards.className = 'px-2.5 py-1.5 rounded-lg text-[11px] font-bold text-slate-600 hover:text-slate-900 transition flex items-center gap-1.5 cursor-pointer';
+  }
+}
+
+function renderLegerCardsMode(students, mapel, kkm, activeTps) {
+  const container = document.getElementById('leger-akademik-cards-container');
+  if (!container) return;
+
+  if (!students || students.length === 0) {
+    container.innerHTML = `<div class="col-span-full p-8 text-center text-slate-400 bg-slate-50 rounded-2xl border border-dashed border-slate-200">Tidak ada data siswa pada kelas ini.</div>`;
+    return;
+  }
+
+  container.innerHTML = students.map((s, idx) => {
+    const row = document.querySelector(`.leger-row[data-nis="${s.nis}"]`);
+    const scoreVal = row ? (row.querySelector('.leger-input-uts')?.value || '') : '';
+    const predikat = (scoreVal !== '' && !isNaN(scoreVal)) ? getPredikatFromScore(Number(scoreVal)) : '-';
+    const predBadgeCls = (scoreVal !== '' && !isNaN(scoreVal)) ? `badge-predikat-${predikat}` : 'bg-slate-100 text-slate-500';
+    const capaianVal = row ? (row.querySelector('.leger-input-capaian')?.value || '') : '';
+
+    const optIds = row ? Array.from(row.querySelectorAll('.tp-chip-opt[data-checked="true"]')).map(el => el.getAttribute('data-tp-id')) : [];
+    const penIds = row ? Array.from(row.querySelectorAll('.tp-chip-pen[data-checked="true"]')).map(el => el.getAttribute('data-tp-id')) : [];
+
+    const optChips = activeTps.map(tp => {
+      const isChecked = optIds.includes(tp.id);
+      const cls = isChecked
+        ? 'bg-emerald-600 text-white border-emerald-700 shadow-xs'
+        : 'bg-white text-slate-600 border-slate-200 hover:bg-emerald-50';
+      return `<button type="button" onclick="toggleRowTpCheck('${s.nis}', '${tp.id}', 'optimal')" class="card-tp-opt px-2.5 py-1 rounded-lg text-[10px] font-bold border transition flex items-center gap-1 cursor-pointer ${cls}" data-tp-id="${tp.id}"><i class="fa-solid ${isChecked ? 'fa-check' : 'fa-plus'} text-[9px]"></i><span>${tp.kode_tp || 'TP'}</span></button>`;
+    }).join('');
+
+    const penChips = activeTps.map(tp => {
+      const isChecked = penIds.includes(tp.id);
+      const cls = isChecked
+        ? 'bg-rose-600 text-white border-rose-700 shadow-xs'
+        : 'bg-white text-slate-600 border-slate-200 hover:bg-rose-50';
+      return `<button type="button" onclick="toggleRowTpCheck('${s.nis}', '${tp.id}', 'peningkatan')" class="card-tp-pen px-2.5 py-1 rounded-lg text-[10px] font-bold border transition flex items-center gap-1 cursor-pointer ${cls}" data-tp-id="${tp.id}"><i class="fa-solid ${isChecked ? 'fa-triangle-exclamation' : 'fa-plus'} text-[9px]"></i><span>${tp.kode_tp || 'TP'}</span></button>`;
+    }).join('');
+
+    return `
+      <div class="leger-mobile-card bg-white rounded-2xl border border-slate-200/90 p-4 shadow-xs hover:shadow-md transition space-y-3" data-nis="${s.nis}">
+        <!-- Student Header & Score Box -->
+        <div class="flex items-start justify-between gap-2 pb-2.5 border-b border-slate-100">
+          <div class="flex items-center gap-2.5 min-w-0">
+            <span class="w-7 h-7 rounded-xl bg-emerald-50 text-[#00a66c] font-mono font-black text-xs flex items-center justify-center border border-emerald-200 shrink-0">
+              ${s.no_urut || (idx + 1)}
+            </span>
+            <div class="min-w-0">
+              <h4 class="font-extrabold text-xs sm:text-sm text-slate-900 truncate">${s.nama_murid || s.nama_santri}</h4>
+              <p class="text-[10px] font-mono text-slate-400">NISN: ${s.nisn || s.nis} • KKM ${kkm}</p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-1.5 shrink-0">
+            <span class="card-badge-predikat px-2.5 py-1 rounded-full text-xs font-black ${predBadgeCls}">${predikat}</span>
+          </div>
+        </div>
+
+        <!-- Score Input + Quick Tap Presets -->
+        <div class="bg-slate-50/90 p-2.5 rounded-xl border border-slate-200/70 space-y-2">
+          <div class="flex items-center justify-between gap-2">
+            <span class="text-[10px] font-extrabold text-slate-600 uppercase tracking-wider">Nilai Angka Rapor:</span>
+            <div class="flex items-center gap-1">
+              <button type="button" onclick="setStudentQuickScore('${s.nis}', '-1')" class="w-8 h-8 rounded-lg bg-white hover:bg-rose-50 text-slate-700 border border-slate-300 font-black text-xs flex items-center justify-center cursor-pointer shadow-2xs">-1</button>
+              <input type="number" min="0" max="100" value="${scoreVal}"
+                     oninput="onCardScoreInput('${s.nis}', this.value)"
+                     class="card-input-uts w-16 h-8 text-center font-black text-sm bg-white border-2 border-[#00a66c] rounded-lg text-emerald-950 focus:ring-2 focus:ring-[#00a66c]" placeholder="-" />
+              <button type="button" onclick="setStudentQuickScore('${s.nis}', '+1')" class="w-8 h-8 rounded-lg bg-white hover:bg-emerald-50 text-emerald-700 border border-slate-300 font-black text-xs flex items-center justify-center cursor-pointer shadow-2xs">+1</button>
+            </div>
+          </div>
+          <div class="flex items-center justify-between gap-1 pt-1">
+            <span class="text-[9px] font-bold text-slate-400 uppercase">Tap Cepat:</span>
+            <div class="flex flex-wrap items-center gap-1">
+              ${[75, 80, 85, 90, 95].map(v => `
+                <button type="button" onclick="setStudentQuickScore('${s.nis}', ${v})" class="px-2 py-0.5 rounded-md bg-white hover:bg-emerald-600 hover:text-white text-slate-700 border border-slate-200 font-mono font-bold text-[10px] transition cursor-pointer">${v}</button>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+
+        <!-- TP Checklists -->
+        <div class="grid grid-cols-2 gap-2">
+          <div class="p-2 rounded-xl bg-emerald-50/50 border border-emerald-200/70 space-y-1.5">
+            <span class="text-[9px] font-extrabold text-emerald-800 uppercase block"><i class="fa-solid fa-circle-check text-emerald-600 mr-1"></i>1. TP Optimal</span>
+            <div class="card-opt-chips flex flex-wrap gap-1">${optChips}</div>
+          </div>
+          <div class="p-2 rounded-xl bg-rose-50/50 border border-rose-200/70 space-y-1.5">
+            <span class="text-[9px] font-extrabold text-rose-800 uppercase block"><i class="fa-solid fa-triangle-exclamation text-rose-600 mr-1"></i>2. Perlu Bimbingan</span>
+            <div class="card-pen-chips flex flex-wrap gap-1">${penChips}</div>
+          </div>
+        </div>
+
+        <!-- Auto-Generated Narrative -->
+        <div>
+          <textarea rows="2" oninput="onCardCapaianInput('${s.nis}', this.value)"
+                    class="card-input-capaian w-full text-[11px] bg-slate-50 border border-slate-200 rounded-xl p-2 text-slate-700 focus:bg-white focus:ring-2 focus:ring-[#00a66c] leading-snug"
+                    placeholder="Deskripsi capaian kompetensi otomatis...">${capaianVal}</textarea>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function syncRowToMobileCard(nis) {
+  const row = document.querySelector(`.leger-row[data-nis="${nis}"]`);
+  const card = document.querySelector(`.leger-mobile-card[data-nis="${nis}"]`);
+  if (!row || !card) return;
+
+  const scoreVal = row.querySelector('.leger-input-uts')?.value || '';
+  const cardInput = card.querySelector('.card-input-uts');
+  if (cardInput && cardInput.value !== scoreVal) {
+    cardInput.value = scoreVal;
+  }
+
+  const predBadge = row.querySelector('.leger-badge-predikat');
+  const cardBadge = card.querySelector('.card-badge-predikat');
+  if (predBadge && cardBadge) {
+    cardBadge.innerText = predBadge.innerText;
+    const pred = predBadge.innerText.trim();
+    cardBadge.className = `card-badge-predikat px-2.5 py-1 rounded-full text-xs font-black ${pred !== '-' ? ('badge-predikat-' + pred) : 'bg-slate-100 text-slate-500'}`;
+  }
+
+  const capaianVal = row.querySelector('.leger-input-capaian')?.value || '';
+  const cardCapaian = card.querySelector('.card-input-capaian');
+  if (cardCapaian && cardCapaian.value !== capaianVal) {
+    cardCapaian.value = capaianVal;
+  }
+
+  // Sync TP chips
+  row.querySelectorAll('.tp-chip-opt').forEach(rowBtn => {
+    const tpId = rowBtn.getAttribute('data-tp-id');
+    const isChecked = rowBtn.getAttribute('data-checked') === 'true';
+    const cBtn = card.querySelector(`.card-tp-opt[data-tp-id="${tpId}"]`);
+    if (cBtn) {
+      cBtn.className = `card-tp-opt px-2.5 py-1 rounded-lg text-[10px] font-bold border transition flex items-center gap-1 cursor-pointer ${isChecked ? 'bg-emerald-600 text-white border-emerald-700 shadow-xs' : 'bg-white text-slate-600 border-slate-200 hover:bg-emerald-50'}`;
+      const icon = cBtn.querySelector('i');
+      if (icon) icon.className = `fa-solid ${isChecked ? 'fa-check' : 'fa-plus'} text-[9px]`;
+    }
+  });
+
+  row.querySelectorAll('.tp-chip-pen').forEach(rowBtn => {
+    const tpId = rowBtn.getAttribute('data-tp-id');
+    const isChecked = rowBtn.getAttribute('data-checked') === 'true';
+    const cBtn = card.querySelector(`.card-tp-pen[data-tp-id="${tpId}"]`);
+    if (cBtn) {
+      cBtn.className = `card-tp-pen px-2.5 py-1 rounded-lg text-[10px] font-bold border transition flex items-center gap-1 cursor-pointer ${isChecked ? 'bg-rose-600 text-white border-rose-700 shadow-xs' : 'bg-white text-slate-600 border-slate-200 hover:bg-rose-50'}`;
+      const icon = cBtn.querySelector('i');
+      if (icon) icon.className = `fa-solid ${isChecked ? 'fa-triangle-exclamation' : 'fa-plus'} text-[9px]`;
+    }
+  });
+
+  updateLegerProgressIndicator();
+}
+
+function onCardScoreInput(nis, val) {
+  const row = document.querySelector(`.leger-row[data-nis="${nis}"]`);
+  if (!row) return;
+  const input = row.querySelector('.leger-input-uts');
+  if (input) {
+    input.value = val;
+    onLegerScoreInput(input);
+    syncRowToMobileCard(nis);
+  }
+}
+
+function onCardCapaianInput(nis, val) {
+  const row = document.querySelector(`.leger-row[data-nis="${nis}"]`);
+  if (!row) return;
+  const textarea = row.querySelector('.leger-input-capaian');
+  if (textarea) textarea.value = val;
+}
+
+function onTableCapaianInput(nis, val) {
+  const card = document.querySelector(`.leger-mobile-card[data-nis="${nis}"]`);
+  if (!card) return;
+  const textarea = card.querySelector('.card-input-capaian');
+  if (textarea) textarea.value = val;
+}
+
+function setStudentQuickScore(nis, scoreOrDelta) {
+  const row = document.querySelector(`.leger-row[data-nis="${nis}"]`);
+  if (!row) return;
+  const input = row.querySelector('.leger-input-uts');
+  if (!input) return;
+
+  let current = (input.value !== '' && !isNaN(input.value)) ? Number(input.value) : 80;
+  let nextVal = current;
+  if (scoreOrDelta === '+1') nextVal = Math.min(100, current + 1);
+  else if (scoreOrDelta === '-1') nextVal = Math.max(0, current - 1);
+  else nextVal = Number(scoreOrDelta);
+
+  input.value = nextVal;
+  onLegerScoreInput(input);
+  syncRowToMobileCard(nis);
+}
+
+function fillEmptyLegerScores(scoreVal) {
+  const rows = document.querySelectorAll('.leger-row');
+  let filled = 0;
+  rows.forEach(row => {
+    const input = row.querySelector('.leger-input-uts');
+    if (input && (input.value === '' || input.value === null)) {
+      input.value = scoreVal;
+      onLegerScoreInput(input);
+      const nis = row.getAttribute('data-nis');
+      if (nis) syncRowToMobileCard(nis);
+      filled++;
+    }
+  });
+  if (filled > 0) {
+    showToast(`Berhasil mengisi nilai ${scoreVal} untuk ${filled} siswa yang masih kosong!`, 'success');
+  } else {
+    showToast('Seluruh siswa pada kelas ini sudah memiliki nilai angka.', 'info');
+  }
+  updateLegerProgressIndicator();
+}
+
+function updateLegerProgressIndicator() {
+  const pill = document.getElementById('leger-input-progress-pill');
+  if (!pill) return;
+  const rows = document.querySelectorAll('.leger-row');
+  const total = rows.length;
+  let filled = 0;
+  rows.forEach(r => {
+    const val = r.querySelector('.leger-input-uts')?.value;
+    if (val !== undefined && val !== null && String(val).trim() !== '') filled++;
+  });
+  pill.innerHTML = `<i class="fa-solid fa-circle-check text-[10px]"></i> ${filled} / ${total} Siswa Terisi (Auto-Save)`;
+}
+
+function prevNextRaporStudent(delta) {
+  const select = document.getElementById('rapor-murid-select');
+  if (!select || select.options.length === 0) return;
+  const nextIdx = select.selectedIndex + delta;
+  if (nextIdx >= 0 && nextIdx < select.options.length) {
+    select.selectedIndex = nextIdx;
+    loadMuridReportForPrint(select.value);
+  } else {
+    showToast(delta > 0 ? 'Sudah berada di siswa urutan terakhir.' : 'Sudah berada di siswa urutan pertama.', 'info');
+  }
+}
+
+// Quick Command & Search Modal (Ctrl+K / Mobile Floating Action Button)
+function openQuickCommandModal() {
+  const modal = document.getElementById('modal-quick-command');
+  if (!modal) return;
+  modal.classList.remove('hidden');
+  const input = document.getElementById('quick-command-search-input');
+  if (input) {
+    input.value = '';
+    setTimeout(() => input.focus(), 60);
+  }
+  filterQuickCommandItems('');
+}
+
+function closeQuickCommandModal() {
+  const modal = document.getElementById('modal-quick-command');
+  if (modal) modal.classList.add('hidden');
+}
+
+function filterQuickCommandItems(query) {
+  const q = (query || '').toLowerCase().trim();
+  const container = document.getElementById('quick-command-student-results');
+  if (!container) return;
+
+  const isWali = (AppState.currentUser && AppState.currentUser.role === 'wali_murid');
+  const isWalas = isUserWaliKelas();
+  const assignedClass = getUserAssignedClass();
+
+  let pool = AppState.muridList || [];
+  if (isWali) {
+    const childNis = AppState.currentUser?.nis || '242507001';
+    pool = pool.filter(m => String(m.nis).trim() === String(childNis).trim());
+  } else if (isWalas && assignedClass) {
+    pool = pool.filter(m => normalizeClassName(m.kelas) === normalizeClassName(assignedClass));
+  }
+
+  let matched = pool;
+  if (q) {
+    matched = pool.filter(m => {
+      const name = (m.nama_murid || m.nama_santri || '').toLowerCase();
+      return name.includes(q) || String(m.nis || '').includes(q) || String(m.nisn || '').includes(q) || String(m.kelas || '').toLowerCase().includes(q);
+    });
+  }
+
+  const topResults = matched.slice(0, 6);
+  if (topResults.length === 0) {
+    container.innerHTML = `<div class="p-4 text-center text-xs text-slate-400">Tidak ada siswa yang cocok dengan kata kunci "${query}".</div>`;
+    return;
+  }
+
+  container.innerHTML = `
+    <span class="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider px-2 block mb-1">
+      ${q ? `Hasil Pencarian Siswa (${matched.length})` : 'Akses Cepat Profil & Rapor Siswa'}
+    </span>
+    ${topResults.map(s => {
+      const nama = s.nama_murid || s.nama_santri || '-';
+      return `
+        <div class="flex items-center justify-between gap-2 p-2.5 rounded-2xl hover:bg-emerald-50/80 border border-transparent hover:border-emerald-200 transition">
+          <div class="flex items-center gap-2.5 min-w-0">
+            <div class="w-8 h-8 rounded-xl bg-slate-100 text-slate-700 font-bold text-xs flex items-center justify-center shrink-0">
+              ${nama.charAt(0)}
+            </div>
+            <div class="min-w-0">
+              <div class="text-xs font-extrabold text-slate-900 truncate">${nama}</div>
+              <div class="text-[10px] text-slate-500 font-mono">NIS: ${s.nis} • <span class="font-sans font-bold text-emerald-700">${s.kelas}</span></div>
+            </div>
+          </div>
+          <div class="flex items-center gap-1.5 shrink-0">
+            <button type="button" onclick="closeQuickCommandModal(); openResumeChartModal('${s.nis}');" class="px-2.5 py-1 rounded-lg bg-purple-50 hover:bg-purple-100 text-purple-700 text-[10px] font-bold border border-purple-200 cursor-pointer">
+              <i class="fa-solid fa-chart-Simple mr-1"></i>Grafik
+            </button>
+            <button type="button" onclick="closeQuickCommandModal(); previewRaporDirect('${s.nis}');" class="px-2.5 py-1 rounded-lg bg-[#00a66c] hover:bg-[#008f5d] text-white text-[10px] font-bold shadow-2xs cursor-pointer">
+              <i class="fa-solid fa-file-invoice mr-1"></i>Rapor
+            </button>
+          </div>
+        </div>
+      `;
+    }).join('')}
+  `;
+}
+
+// Global Ctrl+K / Cmd+K Shortcut for Quick Command Modal
+window.addEventListener('keydown', (e) => {
+  if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+    e.preventDefault();
+    openQuickCommandModal();
+  } else if (e.key === 'Escape') {
+    const cmdModal = document.getElementById('modal-quick-command');
+    if (cmdModal && !cmdModal.classList.contains('hidden')) {
+      closeQuickCommandModal();
+    }
+  }
+});
+
+window.filterWaliMapelCards = filterWaliMapelCards;
+window.renderWaliInteractiveMapelCards = renderWaliInteractiveMapelCards;
+window.toggleDashboardStepsGuide = toggleDashboardStepsGuide;
+window.quickFilterDashboardByClass = quickFilterDashboardByClass;
+window.switchLegerLayoutMode = switchLegerLayoutMode;
+window.renderLegerCardsMode = renderLegerCardsMode;
+window.syncRowToMobileCard = syncRowToMobileCard;
+window.onCardScoreInput = onCardScoreInput;
+window.onCardCapaianInput = onCardCapaianInput;
+window.onTableCapaianInput = onTableCapaianInput;
+window.setStudentQuickScore = setStudentQuickScore;
+window.fillEmptyLegerScores = fillEmptyLegerScores;
+window.updateLegerProgressIndicator = updateLegerProgressIndicator;
+window.prevNextRaporStudent = prevNextRaporStudent;
+window.openQuickCommandModal = openQuickCommandModal;
+window.closeQuickCommandModal = closeQuickCommandModal;
+window.filterQuickCommandItems = filterQuickCommandItems;
+
 // 19. APP STARTUP INITIALIZATION
 window.addEventListener('DOMContentLoaded', () => {
   // Load persistent cache from LocalStorage first so user edits are immediately restored
@@ -20036,6 +21054,12 @@ window.addEventListener('DOMContentLoaded', () => {
   renderDashboardMiniTables();
   loadDashboardStats();
   renderActivityLogsTable();
+  if (typeof switchLegerLayoutMode === 'function') {
+    switchLegerLayoutMode(window.innerWidth < 768 ? 'cards' : 'table');
+  }
+  if (typeof renderWaliInteractiveMapelCards === 'function') {
+    renderWaliInteractiveMapelCards('all');
+  }
 
   // Enforce mandatory authentication check
   checkAuthOnStartup();

@@ -126,8 +126,25 @@
           </div>
         </div>
 
-        <!-- Quick Generator & Speed Tools -->
+          <!-- Quick Generator & Speed Tools -->
         <div class="flex flex-wrap items-center gap-2">
+          <!-- Layout View Switcher (Tabel Spreadsheet vs Kartu Cepat Mobile) -->
+          <div class="inline-flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200">
+            <button type="button" id="btn-leger-layout-table" onclick="switchLegerLayoutMode('table')"
+                    class="px-2.5 py-1.5 rounded-lg text-[11px] font-extrabold transition flex items-center gap-1.5 bg-white text-[#00a66c] shadow-xs cursor-pointer"
+                    title="Tampilan Tabel Spreadsheet (Cocok untuk Desktop)">
+              <i class="fa-solid fa-table"></i>
+              <span>Tabel</span>
+            </button>
+            <button type="button" id="btn-leger-layout-cards" onclick="switchLegerLayoutMode('cards')"
+                    class="px-2.5 py-1.5 rounded-lg text-[11px] font-bold text-slate-600 hover:text-slate-900 transition flex items-center gap-1.5 cursor-pointer"
+                    title="Tampilan Kartu Cepat Interaktif (Sangat Nyaman di HP & Tablet)">
+              <i class="fa-solid fa-grip-vertical"></i>
+              <span>Kartu Cepat</span>
+              <span class="px-1.5 py-0.2 rounded bg-emerald-100 text-[#00a66c] text-[9px] font-black">Mobile</span>
+            </button>
+          </div>
+
           <button onclick="autoRecommendAllLegerTP()" 
                   class="px-3.5 py-2 bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-300 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm cursor-pointer"
                   title="Otomatis beri checklist rekomendasi TP Optimal / Peningkatan berdasarkan nilai angka murid">
@@ -147,6 +164,25 @@
             <i class="fa-solid fa-floppy-disk"></i>
             <span>Simpan Nilai Sekelas</span>
           </button>
+        </div>
+      </div>
+
+      <!-- Quick Batch Fill Bar & Progress Counter -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 px-3.5 py-2.5 bg-slate-50 border border-slate-200/80 rounded-2xl text-xs">
+        <div class="flex flex-wrap items-center gap-1.5">
+          <span class="font-bold text-slate-600 flex items-center gap-1.5 mr-1">
+            <i class="fa-solid fa-bolt text-amber-500"></i>
+            <span>Isi Nilai Kosong Sekaligus:</span>
+          </span>
+          <button type="button" onclick="fillEmptyLegerScores(75)" class="px-2.5 py-1 rounded-lg bg-white hover:bg-amber-50 text-slate-700 hover:text-amber-800 border border-slate-200 font-mono font-bold text-[11px] transition cursor-pointer shadow-2xs">75 (KKM)</button>
+          <button type="button" onclick="fillEmptyLegerScores(80)" class="px-2.5 py-1 rounded-lg bg-white hover:bg-teal-50 text-slate-700 hover:text-teal-800 border border-slate-200 font-mono font-bold text-[11px] transition cursor-pointer shadow-2xs">80 (B)</button>
+          <button type="button" onclick="fillEmptyLegerScores(85)" class="px-2.5 py-1 rounded-lg bg-white hover:bg-emerald-50 text-slate-700 hover:text-emerald-800 border border-slate-200 font-mono font-bold text-[11px] transition cursor-pointer shadow-2xs">85 (B+)</button>
+          <button type="button" onclick="fillEmptyLegerScores(90)" class="px-2.5 py-1 rounded-lg bg-white hover:bg-emerald-100 text-emerald-800 border border-emerald-200 font-mono font-black text-[11px] transition cursor-pointer shadow-2xs">90 (A)</button>
+        </div>
+        <div class="flex items-center gap-2 text-[11px] text-slate-500 font-semibold">
+          <span class="inline-flex items-center gap-1 text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200 font-bold" id="leger-input-progress-pill">
+            <i class="fa-solid fa-circle-check text-[10px]"></i> Terisi Otomatis Tersimpan
+          </span>
         </div>
       </div>
 
@@ -171,16 +207,16 @@
         </div>
       </div>
 
-      <!-- Leger Spreadsheet Grid Table with TP Checklists -->
-      <div class="overflow-x-auto rounded-xl border border-slate-200">
+      <!-- MODE 1: Leger Spreadsheet Grid Table with TP Checklists -->
+      <div id="leger-table-mode-container" class="overflow-x-auto rounded-xl border border-slate-200 shadow-inner">
         <table class="w-full text-left text-xs text-slate-700">
           <thead class="bg-slate-100 text-slate-800 uppercase text-[10px] font-extrabold tracking-wider border-b border-slate-200">
             <tr>
               <th class="w-10 px-2 py-3 text-center border-r border-slate-200">No</th>
               <th class="w-28 px-3 py-3 border-r border-slate-200">NISN / NIS</th>
-              <th class="w-52 px-3 py-3 border-r border-slate-200">Nama Peserta Didik</th>
+              <th class="w-52 px-3 py-3 border-r border-slate-200 sticky left-0 bg-slate-100 z-10">Nama Peserta Didik</th>
               <th class="w-14 px-2 py-3 text-center border-r border-slate-200">KKM</th>
-              <th class="w-24 px-2 py-3 text-center border-r border-slate-200 bg-emerald-100/70 text-emerald-950 font-black">Nilai Angka</th>
+              <th class="w-28 px-2 py-3 text-center border-r border-slate-200 bg-emerald-100/70 text-emerald-950 font-black">Nilai Angka</th>
               <th class="w-16 px-2 py-3 text-center border-r border-slate-200">Predikat</th>
               <th class="w-56 px-3 py-3 border-r border-slate-200 bg-emerald-50 text-emerald-900 font-extrabold">
                 <div class="flex items-center gap-1">
@@ -194,7 +230,7 @@
                   <span>2. TP Perlu Peningkatan</span>
                 </div>
               </th>
-              <th class="px-4 py-3 bg-slate-50 text-slate-900 font-extrabold">
+              <th class="px-4 py-3 bg-slate-50 text-slate-900 font-extrabold min-w-[260px]">
                 <div class="flex items-center gap-1">
                   <i class="fa-solid fa-wand-magic-sparkles text-blue-600"></i>
                   <span>Deskripsi Capaian Rapor (Otomatis)</span>
@@ -206,6 +242,13 @@
             <!-- Populated dynamically via JS -->
           </tbody>
         </table>
+      </div>
+
+      <!-- MODE 2: Interactive Mobile & Tablet Quick-Input Cards -->
+      <div id="leger-cards-mode-container" class="hidden space-y-3">
+        <div id="leger-akademik-cards-container" class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+          <!-- Populated dynamically via JS -->
+        </div>
       </div>
 
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2 text-xs text-slate-500">
