@@ -1787,6 +1787,11 @@ function switchView(viewName) {
     activePanel.classList.remove('hidden');
   }
 
+  // Scroll main view container to top smoothly
+  const mainScroll = document.getElementById('main-scroll-container');
+  if (mainScroll) mainScroll.scrollTop = 0;
+  window.scrollTo(0, 0);
+
   // Update Sidebar Active Class
   document.querySelectorAll('.sidebar-nav-link').forEach(link => {
     link.classList.remove('bg-[#00a66c]', 'text-white', 'shadow-md', 'shadow-[#00a66c]/20', 'font-bold', 'active-nav');
