@@ -65,7 +65,7 @@
       <!-- Filter Mapel -->
       <div>
         <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Pilih Mata Pelajaran</label>
-        <select id="filter-tp-mapel" onchange="renderTPTable()" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 font-bold text-slate-800 focus:ring-2 focus:ring-[#00a66c]">
+        <select id="filter-tp-mapel" onchange="renderTPTable()" oninput="renderTPTable()" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 font-bold text-slate-800 focus:ring-2 focus:ring-[#00a66c]">
           <option value="Semua">Semua 16 Mata Pelajaran</option>
           <option value="Akidah">1. Akidah</option>
           <option value="Akhlak">2. Akhlak</option>
@@ -89,7 +89,7 @@
       <!-- Filter Tingkat Kelas -->
       <div>
         <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Tingkat Kelas</label>
-        <select id="filter-tp-tingkat" onchange="renderTPTable()" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 font-bold text-slate-800 focus:ring-2 focus:ring-[#00a66c]">
+        <select id="filter-tp-tingkat" onchange="renderTPTable()" oninput="renderTPTable()" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 font-bold text-slate-800 focus:ring-2 focus:ring-[#00a66c]">
           <option value="Semua">Semua Tingkat (Fase D)</option>
           <option value="Kelas VII">Kelas VII</option>
           <option value="Kelas VIII">Kelas VIII</option>
@@ -100,7 +100,7 @@
       <!-- Filter Semester -->
       <div>
         <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Semester</label>
-        <select id="filter-tp-semester" onchange="renderTPTable()" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 font-bold text-slate-800 focus:ring-2 focus:ring-[#00a66c]">
+        <select id="filter-tp-semester" onchange="renderTPTable()" oninput="renderTPTable()" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 font-bold text-slate-800 focus:ring-2 focus:ring-[#00a66c]">
           <option value="Semua">Semua Semester</option>
           <option value="Tengah Semester 1" selected>Tengah Semester 1</option>
           <option value="Akhir Semester 1">Akhir Semester 1</option>
@@ -112,7 +112,7 @@
       <!-- Filter Status -->
       <div>
         <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Status TP</label>
-        <select id="filter-tp-status" onchange="renderTPTable()" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 font-bold text-slate-800 focus:ring-2 focus:ring-[#00a66c]">
+        <select id="filter-tp-status" onchange="renderTPTable()" oninput="renderTPTable()" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 font-bold text-slate-800 focus:ring-2 focus:ring-[#00a66c]">
           <option value="Semua">Semua Status</option>
           <option value="Aktif" selected>Hanya Aktif</option>
           <option value="Non-Aktif">Hanya Non-Aktif</option>
@@ -123,7 +123,7 @@
       <div>
         <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Cari Materi TP</label>
         <div class="relative">
-          <input type="text" id="filter-tp-search" oninput="renderTPTable()" placeholder="Ketik kata kunci TP..." 
+          <input type="text" id="filter-tp-search" oninput="renderTPTable()" onkeyup="renderTPTable()" placeholder="Ketik kata kunci TP..." 
                  class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg pl-8 pr-3 py-2 text-slate-800 focus:ring-2 focus:ring-[#00a66c]" />
           <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-2.5 text-slate-400 text-xs"></i>
         </div>
