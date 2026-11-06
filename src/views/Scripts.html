@@ -2143,11 +2143,89 @@ function onCmsUserNisChange() {
   }
 }
 
+function onLegerTingkatFilterChange(preferredClass = null) {
+  const tingkat = document.getElementById('filter-leger-akademik-tingkat')?.value || 'Semua';
+  const kelasSelect = document.getElementById('leger-akademik-kelas');
+  if (!kelasSelect) return;
+
+  const currentVal = preferredClass || kelasSelect.value;
+  let firstVisible = null;
+  let currentStillVisible = false;
+
+  Array.from(kelasSelect.options).forEach(opt => {
+    const val = opt.value;
+    let match = true;
+    if (tingkat === 'Kelas VII') {
+      match = val.startsWith('VII');
+    } else if (tingkat === 'Kelas VIII') {
+      match = val.startsWith('VIII');
+    } else if (tingkat === 'Kelas IX') {
+      match = val.startsWith('IX');
+    }
+
+    opt.hidden = !match;
+    opt.disabled = !match;
+
+    if (match) {
+      if (!firstVisible) firstVisible = val;
+      if (val === currentVal) currentStillVisible = true;
+    }
+  });
+
+  if (preferredClass && Array.from(kelasSelect.options).some(o => o.value === preferredClass && !o.disabled)) {
+    kelasSelect.value = preferredClass;
+  } else if (!currentStillVisible && firstVisible) {
+    kelasSelect.value = firstVisible;
+  }
+
+  renderLegerGrid();
+}
+
+function onAkademikTingkatFilterChange() {
+  const tingkat = document.getElementById('filter-akademik-tingkat')?.value || 'Semua';
+  const kelasSelect = document.getElementById('filter-akademik-kelas');
+  if (!kelasSelect) return;
+
+  const currentVal = kelasSelect.value;
+  let firstVisible = null;
+  let currentStillVisible = false;
+
+  Array.from(kelasSelect.options).forEach(opt => {
+    if (opt.value === 'Semua') {
+      opt.hidden = false;
+      opt.disabled = false;
+      if (tingkat === 'Semua') currentStillVisible = true;
+      return;
+    }
+    const val = opt.value;
+    let match = true;
+    if (tingkat === 'Kelas VII') {
+      match = val.startsWith('VII');
+    } else if (tingkat === 'Kelas VIII') {
+      match = val.startsWith('VIII');
+    } else if (tingkat === 'Kelas IX') {
+      match = val.startsWith('IX');
+    }
+
+    opt.hidden = !match;
+    opt.disabled = !match;
+
+    if (match) {
+      if (!firstVisible) firstVisible = val;
+      if (val === currentVal) currentStillVisible = true;
+    }
+  });
+
+  if (!currentStillVisible) {
+    kelasSelect.value = (tingkat === 'Semua') ? 'Semua' : (firstVisible || 'Semua');
+  }
+
+  loadNilaiAkademik();
+}
+
 function applyClassRestrictions(assignedClass) {
   const classDropdownIds = [
     'filter-rapor-kelas',
-    'filter-akademik-kelas',
-    'leger-akademik-kelas',
     'filter-murid-kelas',
     'bulk-presensi-kelas',
     'upload-target-kelas',
@@ -2201,6 +2279,36 @@ function applyClassRestrictions(assignedClass) {
       el.removeAttribute('data-locked-class');
     }
   });
+
+  // Khusus Menu Input Nilai & Checklist TP dan Daftar Nilai:
+  const legerTingkatEl = document.getElementById('filter-leger-akademik-tingkat');
+  const filterTingkatEl = document.getElementById('filter-akademik-tingkat');
+  const legerKelasEl = document.getElementById('leger-akademik-kelas');
+  const filterKelasEl = document.getElementById('filter-akademik-kelas');
+
+  if (isWalas && targetClass) {
+    const walasTingkat = targetClass.startsWith('VII') ? 'Kelas VII' : (targetClass.startsWith('VIII') ? 'Kelas VIII' : (targetClass.startsWith('IX') ? 'Kelas IX' : 'Semua'));
+    if (legerTingkatEl) legerTingkatEl.value = walasTingkat;
+    if (filterTingkatEl) filterTingkatEl.value = walasTingkat;
+    onLegerTingkatFilterChange(targetClass);
+    if (filterKelasEl) filterKelasEl.value = targetClass;
+  } else {
+    // Guru Mapel / Admin: Bebas pilih tingkat kelas dan kelas mana pun
+    if (legerKelasEl) {
+      Array.from(legerKelasEl.options).forEach(opt => {
+        opt.disabled = false;
+        opt.hidden = false;
+      });
+      legerKelasEl.removeAttribute('data-locked-class');
+    }
+    if (filterKelasEl) {
+      Array.from(filterKelasEl.options).forEach(opt => {
+        opt.disabled = false;
+        opt.hidden = false;
+      });
+      filterKelasEl.removeAttribute('data-locked-class');
+    }
+  }
 }
 
 function applyMapelRestrictions(assignedMapels) {
@@ -2216,6 +2324,7 @@ function applyMapelRestrictions(assignedMapels) {
 
   const user = AppState.currentUser;
   const isMapel = isUserGuruMapel(user);
+  const badgeMapel = document.getElementById('leger-mapel-role-badge');
 
   mapelDropdownIds.forEach(id => {
     const el = document.getElementById(id);
@@ -2243,6 +2352,7 @@ function applyMapelRestrictions(assignedMapels) {
 
       el.setAttribute('data-locked-mapel', 'true');
     } else {
+      // Wali Kelas & Admin: Bebas melihat dan menginput SEMUA 16 Mata Pelajaran!
       Array.from(el.options).forEach(opt => {
         opt.disabled = false;
         opt.hidden = false;
@@ -2250,6 +2360,15 @@ function applyMapelRestrictions(assignedMapels) {
       el.removeAttribute('data-locked-mapel');
     }
   });
+
+  if (badgeMapel) {
+    if (isMapel && assignedMapels && assignedMapels.length > 0) {
+      badgeMapel.innerText = `Guru Mapel: ${assignedMapels.join(', ')}`;
+      badgeMapel.classList.remove('hidden');
+    } else {
+      badgeMapel.classList.add('hidden');
+    }
+  }
 }
 
 function loginAsSpecificTeacher(username, password) {
@@ -7312,10 +7431,7 @@ function renderLegerGrid() {
   const assignedMapels = getUserAssignedMapels();
 
   const kelasEl = document.getElementById('leger-akademik-kelas');
-  if (isWalas && assignedClass && kelasEl) {
-    if (kelasEl.value !== assignedClass) kelasEl.value = assignedClass;
-  }
-  const kelas = (isWalas && assignedClass) ? assignedClass : (kelasEl?.value || 'IX ABU BAKAR');
+  const kelas = kelasEl?.value || (isWalas && assignedClass ? assignedClass : 'IX ABU BAKAR');
 
   const mapelEl = document.getElementById('leger-akademik-mapel');
   if (isMapel && assignedMapels.length > 0 && mapelEl) {
@@ -7323,7 +7439,9 @@ function renderLegerGrid() {
       mapelEl.value = assignedMapels[0];
     }
   }
-  const mapel = mapelEl?.value || (isMapel && assignedMapels[0] ? assignedMapels[0] : 'Akidah');
+  const mapel = (isMapel && assignedMapels.length > 0)
+    ? (isMapelAssignedToUser(mapelEl?.value) ? mapelEl.value : assignedMapels[0])
+    : (mapelEl?.value || 'Akidah');
   const kkm = Number(document.getElementById('leger-akademik-kkm')?.value) || (MAPEL_KKM_DEFAULT[mapel] || 75);
 
   const students = AppState.muridList.filter(m => normalizeClassName(m.kelas) === normalizeClassName(kelas));
@@ -12141,6 +12259,8 @@ window.loadMuridList = loadMuridList;
 window.loadCmsSettings = loadCmsSettings;
 window.renderLegerMatrix = renderLegerMatrix;
 window.renderLegerGrid = renderLegerGrid;
+window.onLegerTingkatFilterChange = onLegerTingkatFilterChange;
+window.onAkademikTingkatFilterChange = onAkademikTingkatFilterChange;
 window.renderKepribadianGrid = renderKepribadianGrid;
 window.saveBulkLegerAkademik = saveBulkLegerAkademik;
 window.autoGenerateAllLegerCapaian = autoGenerateAllLegerCapaian;
