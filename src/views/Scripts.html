@@ -1845,6 +1845,14 @@ function switchView(viewName) {
     case 'tp':
     case 'tujuan_pembelajaran':
       if (typeof initTPFilterListeners === 'function') initTPFilterListeners();
+      const walasTingkat = getUserWalasTingkat();
+      const tpTingkatEl = document.getElementById('filter-tp-tingkat');
+      if (tpTingkatEl && isUserWaliKelas() && walasTingkat && (!tpTingkatEl.value || tpTingkatEl.value === 'Semua')) {
+        tpTingkatEl.value = walasTingkat;
+      }
+      if (typeof updateTPMapelOptions === 'function') {
+        updateTPMapelOptions(tpTingkatEl?.value || 'Semua');
+      }
       renderTPTable();
       loadTujuanPembelajaran();
       break;
@@ -2024,8 +2032,69 @@ function isUserWaliKelas(user = AppState.currentUser) {
 function getUserAssignedClass(user = AppState.currentUser) {
   if (!user) return '';
   const uName = String(user.username || '').toLowerCase();
-  const raw = user.wali_kelas || TEACHER_WALI_MAP[uName] || '';
+  const raw = user.wali_kelas || user.assigned_class || user.kelas || user.walas_kelas || TEACHER_WALI_MAP[uName] || '';
   return normalizeClassName(raw);
+}
+
+function getUserWalasTingkat(user = AppState.currentUser) {
+  if (!user || isUserAdmin(user)) return '';
+  const assignedClass = getUserAssignedClass(user);
+  if (!assignedClass) return '';
+  const c = assignedClass.toUpperCase().trim();
+  // Cek VIII terlebih dahulu karena huruf 'VIII' diawali dengan 'VII'
+  if (c.startsWith('VIII') || c.includes('KELAS 8') || c.includes('KELAS VIII')) return 'Kelas VIII';
+  if (c.startsWith('VII') || c.includes('KELAS 7') || c.includes('KELAS VII')) return 'Kelas VII';
+  if (c.startsWith('IX') || c.includes('KELAS 9') || c.includes('KELAS IX')) return 'Kelas IX';
+  return '';
+}
+
+function canUserAccessAllMapelsForTingkat(tingkat, user = AppState.currentUser) {
+  if (!user) return false;
+  if (isUserAdmin(user)) return true;
+  if (!isUserWaliKelas(user)) return false;
+
+  const walasTingkat = getUserWalasTingkat(user);
+  if (!walasTingkat) return false;
+
+  if (!tingkat || tingkat === 'Semua') return false;
+
+  const t = String(tingkat).toUpperCase().trim();
+  if (t === walasTingkat.toUpperCase()) return true;
+
+  if (walasTingkat === 'Kelas VIII' && (t.includes('VIII') || t === '8')) return true;
+  if (walasTingkat === 'Kelas VII' && !t.includes('VIII') && (t.includes('VII') || t === '7')) return true;
+  if (walasTingkat === 'Kelas IX' && (t.includes('IX') || t === '9')) return true;
+
+  return false;
+}
+
+function canUserAccessAllMapelsForClass(className, user = AppState.currentUser) {
+  if (!user) return false;
+  if (isUserAdmin(user)) return true;
+  if (!isUserWaliKelas(user)) return false;
+
+  const assignedClass = getUserAssignedClass(user);
+  const walasTingkat = getUserWalasTingkat(user);
+  if (!className) return false;
+
+  const norm = normalizeClassName(className);
+  if (assignedClass && norm === normalizeClassName(assignedClass)) return true;
+
+  const c = String(className).toUpperCase().trim();
+  if (walasTingkat === 'Kelas VIII' && (c.startsWith('VIII') || c.includes('VIII'))) return true;
+  if (walasTingkat === 'Kelas VII' && !c.startsWith('VIII') && (c.startsWith('VII') || c.includes('VII'))) return true;
+  if (walasTingkat === 'Kelas IX' && (c.startsWith('IX') || c.includes('IX'))) return true;
+
+  return false;
+}
+
+function canUserEditTP(item, user = AppState.currentUser) {
+  if (!user || !item) return false;
+  if (isUserAdmin(user)) return true;
+  const currentFilterTingkat = document.getElementById('filter-tp-tingkat')?.value;
+  if (currentFilterTingkat && currentFilterTingkat !== 'Semua' && canUserAccessAllMapelsForTingkat(currentFilterTingkat, user)) return true;
+  if (canUserAccessAllMapelsForTingkat(item.tingkat_kelas, user)) return true;
+  return isMapelAssignedToUser(item.mata_pelajaran, user);
 }
 
 function isUserGuruMapel(user = AppState.currentUser) {
@@ -2156,7 +2225,7 @@ function onLegerTingkatFilterChange(preferredClass = null) {
     const val = opt.value;
     let match = true;
     if (tingkat === 'Kelas VII') {
-      match = val.startsWith('VII');
+      match = val.startsWith('VII') && !val.startsWith('VIII');
     } else if (tingkat === 'Kelas VIII') {
       match = val.startsWith('VIII');
     } else if (tingkat === 'Kelas IX') {
@@ -2200,7 +2269,7 @@ function onAkademikTingkatFilterChange() {
     const val = opt.value;
     let match = true;
     if (tingkat === 'Kelas VII') {
-      match = val.startsWith('VII');
+      match = val.startsWith('VII') && !val.startsWith('VIII');
     } else if (tingkat === 'Kelas VIII') {
       match = val.startsWith('VIII');
     } else if (tingkat === 'Kelas IX') {
@@ -2280,16 +2349,18 @@ function applyClassRestrictions(assignedClass) {
     }
   });
 
-  // Khusus Menu Input Nilai & Checklist TP dan Daftar Nilai:
+  // Khusus Menu Input Nilai & Checklist TP, Daftar Nilai, dan Modul TP:
+  const tpTingkatEl = document.getElementById('filter-tp-tingkat');
   const legerTingkatEl = document.getElementById('filter-leger-akademik-tingkat');
   const filterTingkatEl = document.getElementById('filter-akademik-tingkat');
   const legerKelasEl = document.getElementById('leger-akademik-kelas');
   const filterKelasEl = document.getElementById('filter-akademik-kelas');
 
   if (isWalas && targetClass) {
-    const walasTingkat = targetClass.startsWith('VII') ? 'Kelas VII' : (targetClass.startsWith('VIII') ? 'Kelas VIII' : (targetClass.startsWith('IX') ? 'Kelas IX' : 'Semua'));
-    if (legerTingkatEl) legerTingkatEl.value = walasTingkat;
-    if (filterTingkatEl) filterTingkatEl.value = walasTingkat;
+    const walasTingkat = getUserWalasTingkat(user);
+    if (tpTingkatEl && walasTingkat) tpTingkatEl.value = walasTingkat;
+    if (legerTingkatEl && walasTingkat) legerTingkatEl.value = walasTingkat;
+    if (filterTingkatEl && walasTingkat) filterTingkatEl.value = walasTingkat;
     onLegerTingkatFilterChange(targetClass);
     if (filterKelasEl) filterKelasEl.value = targetClass;
   } else {
@@ -2320,13 +2391,13 @@ function updateLegerMapelOptions(selectedClass) {
   const isAdmin = isUserAdmin(user);
   const isWalas = isUserWaliKelas(user);
   const assignedClass = getUserAssignedClass(user);
+  const walasTingkat = getUserWalasTingkat(user);
   const assignedMapels = getUserAssignedMapels(user);
 
   // Akses 16 Mapel penuh hanya untuk:
   // 1. Admin / Kepala Sekolah
-  // 2. Wali Kelas KHUSUS pada kelas perwaliannya sendiri (misal Bu Aning di VIII UMAR)
-  const isOwnWalasClass = isWalas && Boolean(assignedClass) && (normalizeClassName(selectedClass) === normalizeClassName(assignedClass));
-  const hasFullAccess = isAdmin || isOwnWalasClass;
+  // 2. Wali Kelas pada kelas binaannya (misal Bu Aning di VIII UMAR atau Kelas VIII)
+  const hasFullAccess = isAdmin || canUserAccessAllMapelsForClass(selectedClass, user);
 
   if (hasFullAccess) {
     Array.from(mapelEl.options).forEach(opt => {
@@ -2341,7 +2412,7 @@ function updateLegerMapelOptions(selectedClass) {
         badgeMapel.innerHTML = '<i class="fa-solid fa-crown text-amber-500"></i><span>Admin • 16 Mapel</span>';
       } else {
         badgeMapel.className = 'px-2 py-0.5 rounded-md text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300 inline-flex items-center gap-1';
-        badgeMapel.innerHTML = `<i class="fa-solid fa-crown text-amber-500"></i><span>Walas ${assignedClass} • 16 Mapel</span>`;
+        badgeMapel.innerHTML = `<i class="fa-solid fa-crown text-amber-500"></i><span>Walas ${selectedClass || assignedClass} • 16 Mapel</span>`;
       }
       badgeMapel.classList.remove('hidden');
     }
@@ -2375,31 +2446,39 @@ function updateLegerMapelOptions(selectedClass) {
   }
 }
 
-function updateAkademikMapelOptions(selectedClass) {
+function updateAkademikMapelOptions(selectedClass, selectedTingkat = null) {
   const user = AppState.currentUser;
   const mapelEl = document.getElementById('filter-akademik-mapel');
   if (!mapelEl) return;
 
   const isAdmin = isUserAdmin(user);
   const isWalas = isUserWaliKelas(user);
-  const assignedClass = getUserAssignedClass(user);
+  const walasTingkat = getUserWalasTingkat(user);
   const assignedMapels = getUserAssignedMapels(user);
+  const tingkat = selectedTingkat || document.getElementById('filter-akademik-tingkat')?.value || '';
 
-  const isOwnWalasClass = isWalas && Boolean(assignedClass) && (normalizeClassName(selectedClass) === normalizeClassName(assignedClass));
-  const hasFullAccess = isAdmin || isOwnWalasClass;
+  const canAccessAll = isAdmin || (isWalas && (
+    canUserAccessAllMapelsForClass(selectedClass, user) ||
+    canUserAccessAllMapelsForTingkat(tingkat, user)
+  ));
 
-  if (hasFullAccess) {
+  const optSemua = mapelEl.querySelector('option[value="Semua"]');
+
+  if (canAccessAll) {
     Array.from(mapelEl.options).forEach(opt => {
       opt.disabled = false;
       opt.hidden = false;
     });
+    if (optSemua) {
+      optSemua.innerText = isWalas ? `Semua 16 Mata Pelajaran (${walasTingkat})` : 'Semua Mata Pelajaran';
+    }
     mapelEl.removeAttribute('data-locked-mapel');
   } else {
     let firstValidValue = null;
     Array.from(mapelEl.options).forEach(opt => {
       if (opt.value === 'Semua') {
-        opt.disabled = true;
-        opt.hidden = true;
+        opt.disabled = false;
+        opt.hidden = false;
       } else if (isMapelAssignedToUser(opt.value, user)) {
         opt.disabled = false;
         opt.hidden = false;
@@ -2410,82 +2489,146 @@ function updateAkademikMapelOptions(selectedClass) {
       }
     });
 
-    if (firstValidValue && (!isMapelAssignedToUser(mapelEl.value, user) || mapelEl.value === 'Semua')) {
-      mapelEl.value = firstValidValue;
+    if (optSemua) {
+      optSemua.innerText = `Semua Mapel Diampu (${assignedMapels.join(', ')})`;
+    }
+
+    if (firstValidValue && (!isMapelAssignedToUser(mapelEl.value, user) && mapelEl.value !== 'Semua')) {
+      mapelEl.value = 'Semua';
     }
     mapelEl.setAttribute('data-locked-mapel', 'true');
   }
 }
 
-function applyTpMapelRestrictions(assignedMapels) {
+function updateTPMapelOptions(selectedTingkat = null) {
   const user = AppState.currentUser;
-  const isAdmin = isUserAdmin(user);
   const filterTpMapel = document.getElementById('filter-tp-mapel');
-  const modalTpMapel = document.getElementById('tp-mapel');
+  if (!filterTpMapel) return;
 
-  if (!isAdmin && assignedMapels && assignedMapels.length > 0) {
-    if (filterTpMapel) {
-      let firstValid = null;
-      Array.from(filterTpMapel.options).forEach(opt => {
-        if (opt.value === 'Semua') {
-          opt.disabled = false;
-          opt.hidden = false;
-        } else if (isMapelAssignedToUser(opt.value, user)) {
-          opt.disabled = false;
-          opt.hidden = false;
-          if (!firstValid) firstValid = opt.value;
-        } else {
-          opt.disabled = true;
-          opt.hidden = true;
-        }
-      });
-      if (filterTpMapel.value !== 'Semua' && !isMapelAssignedToUser(filterTpMapel.value, user)) {
-        filterTpMapel.value = firstValid || 'Semua';
-      }
-    }
+  const tingkat = selectedTingkat || document.getElementById('filter-tp-tingkat')?.value || 'Semua';
+  const isAdmin = isUserAdmin(user);
+  const isWalas = isUserWaliKelas(user);
+  const walasTingkat = getUserWalasTingkat(user);
+  const assignedMapels = getUserAssignedMapels(user);
 
-    if (modalTpMapel) {
-      let firstValid = null;
-      Array.from(modalTpMapel.options).forEach(opt => {
-        if (isMapelAssignedToUser(opt.value, user)) {
-          opt.disabled = false;
-          opt.hidden = false;
-          if (!firstValid) firstValid = opt.value;
-        } else {
-          opt.disabled = true;
-          opt.hidden = true;
-        }
-      });
-      if (!isMapelAssignedToUser(modalTpMapel.value, user)) {
-        modalTpMapel.value = firstValid || '';
-      }
+  // Akses 16 mapel di Modul TP:
+  // 1. Admin / Kepala Sekolah
+  // 2. Wali Kelas KHUSUS pada Tingkat Kelas binaannya (contoh: Bu Aning di Kelas VIII)
+  const canAccessAll = isAdmin || (isWalas && Boolean(walasTingkat) && (
+    tingkat === walasTingkat ||
+    (walasTingkat === 'Kelas VII' && String(tingkat).includes('VII')) ||
+    (walasTingkat === 'Kelas VIII' && String(tingkat).includes('VIII')) ||
+    (walasTingkat === 'Kelas IX' && String(tingkat).includes('IX'))
+  ));
+
+  const optSemua = filterTpMapel.querySelector('option[value="Semua"]');
+
+  if (canAccessAll) {
+    Array.from(filterTpMapel.options).forEach(opt => {
+      opt.disabled = false;
+      opt.hidden = false;
+    });
+    if (optSemua) {
+      optSemua.innerText = isWalas ? `Semua 16 Mata Pelajaran (${walasTingkat})` : 'Semua 16 Mata Pelajaran';
     }
   } else {
-    if (filterTpMapel) {
-      Array.from(filterTpMapel.options).forEach(opt => {
+    let firstValid = null;
+    Array.from(filterTpMapel.options).forEach(opt => {
+      if (opt.value === 'Semua') {
         opt.disabled = false;
         opt.hidden = false;
-      });
+      } else if (isMapelAssignedToUser(opt.value, user)) {
+        opt.disabled = false;
+        opt.hidden = false;
+        if (!firstValid) firstValid = opt.value;
+      } else {
+        opt.disabled = true;
+        opt.hidden = true;
+      }
+    });
+
+    if (optSemua) {
+      optSemua.innerText = `Semua Mapel Diampu (${assignedMapels.join(', ')})`;
     }
-    if (modalTpMapel) {
-      Array.from(modalTpMapel.options).forEach(opt => {
-        opt.disabled = false;
-        opt.hidden = false;
-      });
+
+    if (filterTpMapel.value !== 'Semua' && !isMapelAssignedToUser(filterTpMapel.value, user)) {
+      filterTpMapel.value = 'Semua';
     }
   }
+}
+
+function updateModalTPMapelOptions() {
+  const user = AppState.currentUser;
+  const modalTpMapel = document.getElementById('tp-mapel');
+  const tpTingkatEl = document.getElementById('tp-tingkat');
+  if (!modalTpMapel) return;
+
+  const tingkat = tpTingkatEl?.value || 'Kelas VII';
+  const isAdmin = isUserAdmin(user);
+  const isWalas = isUserWaliKelas(user);
+  const walasTingkat = getUserWalasTingkat(user);
+  const assignedMapels = getUserAssignedMapels(user);
+
+  const canAccessAll = isAdmin || (isWalas && (
+    tingkat === walasTingkat ||
+    (walasTingkat === 'Kelas VII' && String(tingkat).includes('VII')) ||
+    (walasTingkat === 'Kelas VIII' && String(tingkat).includes('VIII')) ||
+    (walasTingkat === 'Kelas IX' && String(tingkat).includes('IX'))
+  ));
+
+  if (canAccessAll) {
+    Array.from(modalTpMapel.options).forEach(opt => {
+      opt.disabled = false;
+      opt.hidden = false;
+    });
+  } else {
+    let firstValid = null;
+    Array.from(modalTpMapel.options).forEach(opt => {
+      if (isMapelAssignedToUser(opt.value, user)) {
+        opt.disabled = false;
+        opt.hidden = false;
+        if (!firstValid) firstValid = opt.value;
+      } else {
+        opt.disabled = true;
+        opt.hidden = true;
+      }
+    });
+    if (!isMapelAssignedToUser(modalTpMapel.value, user)) {
+      modalTpMapel.value = firstValid || assignedMapels[0] || '';
+    }
+  }
+}
+
+function onTPTingkatChange() {
+  const tingkat = document.getElementById('filter-tp-tingkat')?.value || 'Semua';
+  updateTPMapelOptions(tingkat);
+  renderTPTable();
+}
+
+function applyTpMapelRestrictions(assignedMapels) {
+  const user = AppState.currentUser;
+  const isWalas = isUserWaliKelas(user);
+  const walasTingkat = getUserWalasTingkat(user);
+  const currentTpTingkat = document.getElementById('filter-tp-tingkat')?.value || (isWalas && walasTingkat ? walasTingkat : 'Semua');
+  updateTPMapelOptions(currentTpTingkat);
+  updateModalTPMapelOptions();
 }
 
 function applyMapelRestrictions(assignedMapels) {
   const user = AppState.currentUser;
   const isWalas = isUserWaliKelas(user);
   const assignedClass = getUserAssignedClass(user);
+  const walasTingkat = getUserWalasTingkat(user);
+
   const currentLegerClass = document.getElementById('leger-akademik-kelas')?.value || (isWalas && assignedClass ? assignedClass : '');
   const currentAkademikClass = document.getElementById('filter-akademik-kelas')?.value || '';
+  const currentAkademikTingkat = document.getElementById('filter-akademik-tingkat')?.value || '';
+  const currentTpTingkat = document.getElementById('filter-tp-tingkat')?.value || (isWalas && walasTingkat ? walasTingkat : 'Semua');
 
   updateLegerMapelOptions(currentLegerClass);
-  updateAkademikMapelOptions(currentAkademikClass);
-  applyTpMapelRestrictions(assignedMapels);
+  updateAkademikMapelOptions(currentAkademikClass, currentAkademikTingkat);
+  updateTPMapelOptions(currentTpTingkat);
+  updateModalTPMapelOptions();
 
   const otherDropdownIds = ['upload-target-mapel', 'akademik-mapel', 'leger-filter-mapel'];
   const isPureGuru = isUserGuruMapel(user);
@@ -7159,7 +7302,14 @@ function saveBulkPresensiData() {
 // ==========================================
 
 function initTPFilterListeners() {
-  const ids = ['filter-tp-mapel', 'filter-tp-tingkat', 'filter-tp-semester', 'filter-tp-status'];
+  const tingkatEl = document.getElementById('filter-tp-tingkat');
+  if (tingkatEl && !tingkatEl._hasTpListener) {
+    tingkatEl._hasTpListener = true;
+    tingkatEl.addEventListener('change', () => onTPTingkatChange());
+    tingkatEl.addEventListener('input', () => onTPTingkatChange());
+  }
+
+  const ids = ['filter-tp-mapel', 'filter-tp-semester', 'filter-tp-status'];
   ids.forEach(id => {
     const el = document.getElementById(id);
     if (el && !el._hasTpListener) {
@@ -7208,16 +7358,21 @@ function renderTPTable() {
     AppState.tpList = JSON.parse(JSON.stringify(DEFAULT_TP_BANK_16));
   }
 
+  const user = AppState.currentUser;
   const mapel = document.getElementById('filter-tp-mapel')?.value || 'Semua';
   const tingkat = document.getElementById('filter-tp-tingkat')?.value || 'Semua';
   const semester = document.getElementById('filter-tp-semester')?.value || 'Semua';
   const status = document.getElementById('filter-tp-status')?.value || 'Semua';
   const query = (document.getElementById('filter-tp-search')?.value || '').toLowerCase().trim();
 
-  const isRestricted = !isUserAdmin();
+  // Pastikan opsi mapel selalu reaktif terhadap tingkat kelas yang dipilih
+  updateTPMapelOptions(tingkat);
+
+  const canAccessAll = isUserAdmin(user) || canUserAccessAllMapelsForTingkat(tingkat, user);
 
   const filtered = AppState.tpList.filter(item => {
-    if (isRestricted && !isMapelAssignedToUser(item.mata_pelajaran)) return false;
+    // Jika bukan akun admin / walas di tingkat ini, batasi hanya ke mapel yang diampunya
+    if (!canAccessAll && !isMapelAssignedToUser(item.mata_pelajaran, user)) return false;
     if (mapel !== 'Semua' && String(item.mata_pelajaran).toLowerCase() !== String(mapel).toLowerCase()) return false;
 
     // Filter Tingkat Kelas (Kurikulum Merdeka Fase D mencakup Kelas VII, VIII, IX)
@@ -7243,7 +7398,7 @@ function renderTPTable() {
     return qStr.includes(query);
   });
 
-  updateTPWidgets(AppState.tpList);
+  updateTPWidgets(filtered);
 
   const countEl = document.getElementById('table-tp-count');
   if (countEl) countEl.innerText = filtered.length;
@@ -7316,22 +7471,23 @@ function openModalTP(id) {
   if (!modal) return;
   document.getElementById('form-tp')?.reset();
 
-  if (!isUserAdmin()) {
-    applyTpMapelRestrictions(getUserAssignedMapels());
-  }
+  const user = AppState.currentUser;
+  const filterTingkat = document.getElementById('filter-tp-tingkat')?.value;
+  const walasTingkat = getUserWalasTingkat(user);
 
   if (id) {
     const item = AppState.tpList.find(t => String(t.id) === String(id));
     if (item) {
-      if (!isUserAdmin() && !isMapelAssignedToUser(item.mata_pelajaran)) {
-        showToast('Anda tidak berwenang mengedit TP mata pelajaran lain.', 'warning');
+      if (!canUserEditTP(item, user)) {
+        showToast('Anda tidak berwenang mengedit TP mata pelajaran lain di tingkat ini.', 'warning');
         return;
       }
       document.getElementById('modal-tp-title').innerText = 'Edit Tujuan Pembelajaran (TP)';
       document.getElementById('tp-id').value = item.id;
+      document.getElementById('tp-tingkat').value = item.tingkat_kelas || (walasTingkat || 'Kelas VII');
+      updateModalTPMapelOptions();
       document.getElementById('tp-mapel').value = item.mata_pelajaran || 'Akidah';
       document.getElementById('tp-kode').value = item.kode_tp || 'TP 1';
-      document.getElementById('tp-tingkat').value = item.tingkat_kelas || 'Kelas VII';
       document.getElementById('tp-fase').value = item.fase || 'Fase D';
       document.getElementById('tp-semester').value = item.semester || 'Tengah Semester 1';
       document.getElementById('tp-deskripsi').value = item.deskripsi_tp || '';
@@ -7341,13 +7497,13 @@ function openModalTP(id) {
   } else {
     document.getElementById('modal-tp-title').innerText = 'Tambah Tujuan Pembelajaran (TP) Baru';
     document.getElementById('tp-id').value = '';
+    const currentFilterTingkat = (filterTingkat && filterTingkat !== 'Semua') ? filterTingkat : (walasTingkat || 'Kelas VII');
+    document.getElementById('tp-tingkat').value = currentFilterTingkat;
+    updateModalTPMapelOptions();
+
     const currentFilterMapel = document.getElementById('filter-tp-mapel')?.value;
     if (currentFilterMapel && currentFilterMapel !== 'Semua') {
       document.getElementById('tp-mapel').value = currentFilterMapel;
-    }
-    const currentFilterTingkat = document.getElementById('filter-tp-tingkat')?.value;
-    if (currentFilterTingkat && currentFilterTingkat !== 'Semua') {
-      document.getElementById('tp-tingkat').value = currentFilterTingkat;
     }
     const curMapel = document.getElementById('tp-mapel').value;
     document.getElementById('tp-kode').value = 'TP ' + (AppState.tpList.filter(t => t.mata_pelajaran === curMapel).length + 1);
@@ -7377,11 +7533,14 @@ function syncTpRingkasanPreview() {
 
 function submitFormTP(e) {
   e.preventDefault();
+  const user = AppState.currentUser;
   const id = document.getElementById('tp-id').value || `TP-${Date.now().toString(36).toUpperCase()}`;
   let mapel = document.getElementById('tp-mapel').value;
+  const tingkat = document.getElementById('tp-tingkat').value;
 
-  if (!isUserAdmin() && !isMapelAssignedToUser(mapel)) {
-    const assigned = getUserAssignedMapels();
+  const canEditTingkat = isUserAdmin(user) || canUserAccessAllMapelsForTingkat(tingkat, user);
+  if (!canEditTingkat && !isMapelAssignedToUser(mapel, user)) {
+    const assigned = getUserAssignedMapels(user);
     if (assigned.length > 0) mapel = assigned[0];
     else {
       showToast('Anda tidak berwenang menginput TP untuk mata pelajaran ini.', 'error');
@@ -7390,7 +7549,6 @@ function submitFormTP(e) {
   }
 
   const kode = document.getElementById('tp-kode').value;
-  const tingkat = document.getElementById('tp-tingkat').value;
   const fase = document.getElementById('tp-fase').value;
   const semester = document.getElementById('tp-semester').value;
   const deskripsi = document.getElementById('tp-deskripsi').value;
@@ -7431,8 +7589,8 @@ function toggleTPStatus(id) {
   const item = AppState.tpList.find(t => String(t.id) === String(id));
   if (!item) return;
 
-  if (!isUserAdmin() && !isMapelAssignedToUser(item.mata_pelajaran)) {
-    showToast('Anda tidak berwenang mengubah status TP mata pelajaran lain.', 'warning');
+  if (!canUserEditTP(item)) {
+    showToast('Anda tidak berwenang mengubah status TP mata pelajaran ini.', 'warning');
     return;
   }
 
@@ -7448,8 +7606,8 @@ function deleteTP(id) {
   const item = AppState.tpList.find(t => String(t.id) === String(id));
   if (!item) return;
 
-  if (!isUserAdmin() && !isMapelAssignedToUser(item.mata_pelajaran)) {
-    showToast('Anda tidak berwenang menghapus TP mata pelajaran lain.', 'warning');
+  if (!canUserEditTP(item)) {
+    showToast('Anda tidak berwenang menghapus TP mata pelajaran ini.', 'warning');
     return;
   }
 
@@ -7465,10 +7623,30 @@ function deleteTP(id) {
 function importKurikulumMerdekaDefaultTP() {
   if (!confirm('Impor paket Tujuan Pembelajaran Kurikulum Merdeka (Fase D)? TP yang ada akan diperbarui/dilengkapi.')) return;
   
+  const user = AppState.currentUser;
+  const filterTingkat = document.getElementById('filter-tp-tingkat')?.value;
+  const canAccessAll = isUserAdmin(user) || canUserAccessAllMapelsForTingkat(filterTingkat, user);
+
   let bank = JSON.parse(JSON.stringify(DEFAULT_TP_BANK_16));
-  if (!isUserAdmin()) {
-    bank = bank.filter(t => isMapelAssignedToUser(t.mata_pelajaran));
+  if (!canAccessAll) {
+    bank = bank.filter(t => isMapelAssignedToUser(t.mata_pelajaran, user));
   }
+
+  bank.forEach(newItem => {
+    const existingIdx = AppState.tpList.findIndex(t => t.id === newItem.id || (t.mata_pelajaran === newItem.mata_pelajaran && t.kode_tp === newItem.kode_tp));
+    if (existingIdx !== -1) {
+      AppState.tpList[existingIdx] = { ...AppState.tpList[existingIdx], ...newItem };
+    } else {
+      AppState.tpList.push(newItem);
+    }
+  });
+
+  saveStateToLocal('tp');
+  showToast('Alhamdulillah, 64 Tujuan Pembelajaran Kurikulum Merdeka Fase D berhasil dimuat!', 'success');
+  renderTPTable();
+  recordActivity('IMPORT_TP', 'Tujuan Pembelajaran', `Impor paket standar 64 Tujuan Pembelajaran Kurikulum Merdeka (Fase D) untuk seluruh 16 Mapel`, 'success');
+  callApi('importDefaultTujuanPembelajaran', {});
+}
 
   bank.forEach(newItem => {
     const existingIdx = AppState.tpList.findIndex(t => t.id === newItem.id || (t.mata_pelajaran === newItem.mata_pelajaran && t.kode_tp === newItem.kode_tp));
@@ -12427,6 +12605,13 @@ window.syncTpRingkasanPreview = syncTpRingkasanPreview;
 window.submitFormTP = submitFormTP;
 window.toggleTPStatus = toggleTPStatus;
 window.deleteTP = deleteTP;
+window.updateTPMapelOptions = updateTPMapelOptions;
+window.updateModalTPMapelOptions = updateModalTPMapelOptions;
+window.onTPTingkatChange = onTPTingkatChange;
+window.getUserWalasTingkat = getUserWalasTingkat;
+window.canUserAccessAllMapelsForTingkat = canUserAccessAllMapelsForTingkat;
+window.canUserAccessAllMapelsForClass = canUserAccessAllMapelsForClass;
+window.canUserEditTP = canUserEditTP;
 window.importKurikulumMerdekaDefaultTP = importKurikulumMerdekaDefaultTP;
 window.downloadTPTemplate = downloadTPTemplate;
 window.saveBulkKepribadianGrid = saveBulkKepribadianGrid;
