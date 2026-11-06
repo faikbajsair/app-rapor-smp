@@ -7648,22 +7648,6 @@ function importKurikulumMerdekaDefaultTP() {
   callApi('importDefaultTujuanPembelajaran', {});
 }
 
-  bank.forEach(newItem => {
-    const existingIdx = AppState.tpList.findIndex(t => t.id === newItem.id || (t.mata_pelajaran === newItem.mata_pelajaran && t.kode_tp === newItem.kode_tp));
-    if (existingIdx !== -1) {
-      AppState.tpList[existingIdx] = { ...AppState.tpList[existingIdx], ...newItem };
-    } else {
-      AppState.tpList.push(newItem);
-    }
-  });
-
-  saveStateToLocal('tp');
-  showToast('Alhamdulillah, 64 Tujuan Pembelajaran Kurikulum Merdeka Fase D berhasil dimuat!', 'success');
-  renderTPTable();
-  recordActivity('IMPORT_TP', 'Tujuan Pembelajaran', `Impor paket standar 64 Tujuan Pembelajaran Kurikulum Merdeka (Fase D) untuk seluruh 16 Mapel`, 'success');
-  callApi('importDefaultTujuanPembelajaran', {});
-}
-
 function downloadTPTemplate() {
   const headers = ['kode_tp', 'mata_pelajaran', 'tingkat_kelas', 'fase', 'semester', 'tahun_ajaran', 'deskripsi_tp', 'ringkasan_tp', 'status'];
   const sampleRows = [
