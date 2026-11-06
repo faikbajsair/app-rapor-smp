@@ -348,6 +348,36 @@ const DEFAULT_TP_BANK_16 = [
   { id: 'TP-ARB-04', kode_tp: 'TP 4', mata_pelajaran: 'Bahasa Arab', tingkat_kelas: 'Semua Kelas', fase: 'Fase D', semester: 'Tengah Semester 1', tahun_ajaran: '2026/2027', deskripsi_tp: 'Menyusun pola kalimat tarkib sederhana (jumlah ismiyyah dan jumlah fi\'liyyah dasar)', ringkasan_tp: 'menyusun pola kalimat tarkib sederhana berbahasa Arab', status: 'Aktif' }
 ];
 
+function resolveTpItem(idOrKode, activeTps = []) {
+  if (!idOrKode) return null;
+  const clean = String(idOrKode).trim();
+  const allTps = (AppState.tpList && AppState.tpList.length > 0) ? AppState.tpList : DEFAULT_TP_BANK_16;
+
+  // 1. Direct match by id
+  let match = (activeTps || []).find(t => String(t.id).toLowerCase() === clean.toLowerCase()) ||
+              allTps.find(t => String(t.id).toLowerCase() === clean.toLowerCase());
+  if (match) return match;
+
+  // 2. Direct match by kode_tp
+  match = (activeTps || []).find(t => String(t.kode_tp).toLowerCase() === clean.toLowerCase()) ||
+          allTps.find(t => String(t.kode_tp).toLowerCase() === clean.toLowerCase());
+  if (match) return match;
+
+  // 3. Match numeric or TP-01 / TP-1 / TP 1 format (relative to activeTps for this mapel)
+  const numMatch = clean.match(/(?:TP[_\-\s]*)0*(\d+)/i) || clean.match(/^0*(\d+)$/);
+  if (numMatch) {
+    const idx = parseInt(numMatch[1], 10) - 1;
+    if (activeTps && activeTps.length > 0 && idx >= 0 && idx < activeTps.length) {
+      return activeTps[idx];
+    }
+    if (allTps && allTps.length > 0 && idx >= 0 && idx < allTps.length) {
+      return allTps[idx];
+    }
+  }
+
+  return null;
+}
+
 /**
  * GENERATOR NARASI DESKRIPSI RAPOR OTOMATIS BERBASIS CHECKLIST TP & SKOR
  */
@@ -357,13 +387,27 @@ function generateDeskripsiCapaian(mapel, score, optimalTpIds = [], peningkatanTp
   }
   const numScore = Number(score);
   const predikat = getPredikatFromScore(numScore);
-  
-  const allTps = (AppState.tpList && AppState.tpList.length > 0) ? AppState.tpList : DEFAULT_TP_BANK_16;
-  
+  const activeTps = typeof getActiveTpsForMapel === 'function' ? getActiveTpsForMapel(mapel) : [];
+
+  let optIds = Array.isArray(optimalTpIds) ? [...optimalTpIds] : (optimalTpIds ? String(optimalTpIds).split(',').map(s => s.trim()).filter(Boolean) : []);
+  let penIds = Array.isArray(peningkatanTpIds) ? [...peningkatanTpIds] : (peningkatanTpIds ? String(peningkatanTpIds).split(',').map(s => s.trim()).filter(Boolean) : []);
+
+  // Smart fallback jika belum ada checklist TP tetapi ada nilai angka
+  if (optIds.length === 0 && penIds.length === 0 && activeTps.length > 0) {
+    if (numScore >= 84) {
+      optIds = activeTps.map(t => t.id);
+    } else if (numScore >= 75) {
+      optIds = activeTps.slice(0, Math.max(1, activeTps.length - 1)).map(t => t.id);
+      penIds = activeTps.slice(-1).map(t => t.id);
+    } else {
+      penIds = activeTps.map(t => t.id);
+    }
+  }
+
   const getTpSummary = (tpIdOrKode) => {
     if (!tpIdOrKode) return '';
     const cleanKey = String(tpIdOrKode).trim();
-    const match = allTps.find(t => t.id === cleanKey || t.kode_tp === cleanKey);
+    const match = resolveTpItem(cleanKey, activeTps);
     if (match) {
       let ringkas = match.ringkasan_tp || match.deskripsi_tp;
       if (ringkas && ringkas.length > 0) {
@@ -374,13 +418,8 @@ function generateDeskripsiCapaian(mapel, score, optimalTpIds = [], peningkatanTp
     return cleanKey.replace(/\.+$/, '');
   };
 
-  const optimalSummaries = (Array.isArray(optimalTpIds) ? optimalTpIds : (optimalTpIds ? String(optimalTpIds).split(',') : []))
-    .map(id => getTpSummary(id))
-    .filter(Boolean);
-
-  const peningkatanSummaries = (Array.isArray(peningkatanTpIds) ? peningkatanTpIds : (peningkatanTpIds ? String(peningkatanTpIds).split(',') : []))
-    .map(id => getTpSummary(id))
-    .filter(Boolean);
+  const optimalSummaries = optIds.map(id => getTpSummary(id)).filter(Boolean);
+  const peningkatanSummaries = penIds.map(id => getTpSummary(id)).filter(Boolean);
 
   const formatListGrammar = (items) => {
     if (!items || items.length === 0) return '';
@@ -1856,7 +1895,11 @@ function switchView(viewName) {
       renderTPTable();
       loadTujuanPembelajaran();
       break;
-    case 'akademik': loadNilaiAkademik(); renderLegerGrid(); break;
+    case 'akademik':
+      switchAkademikInputMode('leger');
+      loadNilaiAkademik();
+      renderLegerGrid();
+      break;
     case 'leger': renderLegerMatrix(); break;
     case 'kepemimpinan': loadNilaiKepemimpinan(); renderKepribadianGrid(); break;
     case 'diniyah': loadNilaiDiniyah(); break;
@@ -8083,17 +8126,57 @@ function autoRecommendAllLegerTP() {
 }
 
 function autoGenerateAllLegerCapaian() {
-  const rows = document.querySelectorAll('.leger-row');
+  const user = AppState.currentUser;
+  const isWalas = isUserWaliKelas(user);
+  const assignedClass = getUserAssignedClass(user);
+
+  const kelasEl = document.getElementById('leger-akademik-kelas');
+  const kelas = kelasEl?.value || (isWalas && assignedClass ? assignedClass : 'IX ABU BAKAR');
+  const mapelEl = document.getElementById('leger-akademik-mapel');
+  const mapel = mapelEl?.value || 'Akidah';
+  const activeTps = getActiveTpsForMapel(mapel);
+  const students = AppState.muridList.filter(m => normalizeClassName(m.kelas) === normalizeClassName(kelas));
+
   let count = 0;
-  rows.forEach(row => {
-    const inputVal = row.querySelector('.leger-input-uts')?.value;
-    if (inputVal !== '' && !isNaN(inputVal)) {
-      recalcRowCapaian(row);
+  students.forEach(s => {
+    let existing = AppState.akademikList.find(a => String(a.nis) === String(s.nis) && a.mata_pelajaran === mapel);
+    const scoreVal = existing?.nilai_uts !== undefined && existing?.nilai_uts !== null && existing?.nilai_uts !== '' 
+      ? existing.nilai_uts 
+      : (existing?.nilai_akhir ?? '');
+
+    if (scoreVal !== '' && !isNaN(scoreVal)) {
+      const score = Number(scoreVal);
+      let optIds = [];
+      let penIds = [];
+
+      if (score >= 84) {
+        optIds = activeTps.map(t => t.id);
+      } else if (score >= 75) {
+        optIds = activeTps.slice(0, Math.max(1, activeTps.length - 1)).map(t => t.id);
+        penIds = activeTps.slice(-1).map(t => t.id);
+      } else {
+        penIds = activeTps.map(t => t.id);
+      }
+
+      const narasi = generateDeskripsiCapaian(mapel, score, optIds, penIds);
+      if (existing) {
+        existing.tp_optimal = optIds;
+        existing.tp_peningkatan = penIds;
+        existing.capaian_kompetensi = narasi;
+        existing.catatan_guru = narasi;
+      }
       count++;
     }
   });
 
-  showToast(`Deskripsi rapor berhasil di-generate ulang untuk ${count} murid!`, 'success');
+  // Sinkronkan juga baris tabel input jika elemennya sedang dirender
+  const rows = document.querySelectorAll('.leger-row');
+  rows.forEach(row => recalcRowCapaian(row));
+
+  saveStateToLocal('akademik');
+  renderCekDeskripsiView();
+  renderLegerGrid();
+  showToast(`Deskripsi capaian rapor berhasil diperbarui untuk ${count} murid!`, 'success');
 }
 
 // ==========================================
@@ -8373,11 +8456,17 @@ function saveBulkLegerAkademik() {
 // ==========================================
 
 function renderCekDeskripsiView() {
-  const kelas = document.getElementById('leger-akademik-kelas')?.value || 'IX ABU BAKAR';
-  const mapel = document.getElementById('leger-akademik-mapel')?.value || 'Akidah';
-  const kkm = Number(document.getElementById('leger-akademik-kkm')?.value) || 75;
+  const user = AppState.currentUser;
+  const isWalas = isUserWaliKelas(user);
+  const assignedClass = getUserAssignedClass(user);
 
-  const students = AppState.muridList.filter(m => String(m.kelas) === String(kelas));
+  const kelasEl = document.getElementById('leger-akademik-kelas');
+  const kelas = kelasEl?.value || (isWalas && assignedClass ? assignedClass : 'IX ABU BAKAR');
+  const mapelEl = document.getElementById('leger-akademik-mapel');
+  const mapel = mapelEl?.value || 'Akidah';
+  const kkm = Number(document.getElementById('leger-akademik-kkm')?.value) || (MAPEL_KKM_DEFAULT[mapel] || 75);
+
+  const students = AppState.muridList.filter(m => normalizeClassName(m.kelas) === normalizeClassName(kelas));
   const activeTps = getActiveTpsForMapel(mapel);
 
   let filledCount = 0;
@@ -8405,29 +8494,70 @@ function renderCekDeskripsiView() {
     const predikat = hasScore ? getPredikatFromScore(numScore) : '-';
     if (predikat === 'A' || predikat === 'B') countOptimal++;
 
-    let optIds = [];
-    let penIds = [];
+    let rawOptIds = [];
+    let rawPenIds = [];
     if (existing) {
-      if (Array.isArray(existing.tp_optimal)) optIds = existing.tp_optimal;
-      else if (existing.tp_optimal) optIds = String(existing.tp_optimal).split(',').map(x => x.trim()).filter(Boolean);
+      if (Array.isArray(existing.tp_optimal)) rawOptIds = existing.tp_optimal;
+      else if (existing.tp_optimal) rawOptIds = String(existing.tp_optimal).split(',').map(x => x.trim()).filter(Boolean);
 
-      if (Array.isArray(existing.tp_peningkatan)) penIds = existing.tp_peningkatan;
-      else if (existing.tp_peningkatan) penIds = String(existing.tp_peningkatan).split(',').map(x => x.trim()).filter(Boolean);
+      if (Array.isArray(existing.tp_peningkatan)) rawPenIds = existing.tp_peningkatan;
+      else if (existing.tp_peningkatan) rawPenIds = String(existing.tp_peningkatan).split(',').map(x => x.trim()).filter(Boolean);
     }
 
-    if (penIds.length > 0) countPeningkatan++;
+    // Resolve TP objects menggunakan resolveTpItem (bisa membaca 'TP-01', 'TP-02', 'TP 1', id asli, dst)
+    let optItems = rawOptIds.map(id => resolveTpItem(id, activeTps)).filter(Boolean);
+    let penItems = rawPenIds.map(id => resolveTpItem(id, activeTps)).filter(Boolean);
 
-    const narasi = existing?.capaian_kompetensi || (hasScore ? generateDeskripsiCapaian(mapel, numScore, optIds, penIds) : '<span class="text-slate-400 italic">Belum ada nilai & deskripsi</span>');
+    // Auto-recommend jika siswa memiliki nilai tapi TP belum tercentang
+    if (hasScore && optItems.length === 0 && penItems.length === 0 && activeTps.length > 0) {
+      if (numScore >= 84) {
+        optItems = [...activeTps];
+      } else if (numScore >= 75) {
+        optItems = activeTps.slice(0, Math.max(1, activeTps.length - 1));
+        penItems = activeTps.slice(-1);
+      } else {
+        penItems = [...activeTps];
+      }
+    }
 
-    const optBadges = optIds.length > 0 ? optIds.map(id => {
-      const tp = activeTps.find(t => t.id === id || t.kode_tp === id);
-      return `<span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 text-[10px] font-bold" title="${tp?.ringkasan_tp || id}">${tp?.kode_tp || id}</span>`;
-    }).join(' ') : `<span class="text-[10px] text-slate-400 italic">-</span>`;
+    if (penItems.length > 0) countPeningkatan++;
 
-    const penBadges = penIds.length > 0 ? penIds.map(id => {
-      const tp = activeTps.find(t => t.id === id || t.kode_tp === id);
-      return `<span class="px-2 py-0.5 rounded bg-rose-100 text-rose-800 text-[10px] font-bold" title="${tp?.ringkasan_tp || id}">${tp?.kode_tp || id}</span>`;
-    }).join(' ') : `<span class="text-[10px] text-slate-400 italic">-</span>`;
+    // Cek apakah deskripsi masih berupa narasi statis seragam / template legacy
+    const isLegacyGeneric = !existing?.capaian_kompetensi ||
+      existing.capaian_kompetensi.includes('Ananda baik dalam memahami dasar - dasar pelajaran aqidah islam') ||
+      existing.capaian_kompetensi.includes('Ananda cukup baik dalam memahami dasar - dasar') ||
+      existing.capaian_kompetensi.includes('Ananda sangat baik dalam memahami dasar - dasar') ||
+      existing.capaian_kompetensi.includes('Belum ada nilai');
+
+    let narasi = existing?.capaian_kompetensi;
+    if (isLegacyGeneric || !narasi) {
+      if (hasScore) {
+        narasi = generateDeskripsiCapaian(mapel, numScore, optItems.map(t => t.id), penItems.map(t => t.id));
+        if (existing) {
+          existing.capaian_kompetensi = narasi;
+          existing.catatan_guru = narasi;
+          existing.tp_optimal = optItems.map(t => t.id);
+          existing.tp_peningkatan = penItems.map(t => t.id);
+        }
+      } else {
+        narasi = '<span class="text-slate-400 italic">Belum ada nilai & deskripsi</span>';
+      }
+    }
+
+    // Tampilkan kalimat langsung / ringkasan materi TP (bukan hanya label TP-01 / TP-02)
+    const optBadges = optItems.length > 0 ? optItems.map(tp => `
+      <div class="px-2.5 py-1.5 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-950 text-[11px] font-semibold flex items-start gap-1.5 leading-snug">
+        <i class="fa-solid fa-circle-check text-emerald-600 text-xs mt-0.5 shrink-0"></i>
+        <span>${tp.ringkasan_tp || tp.deskripsi_tp}</span>
+      </div>
+    `).join('') : `<span class="text-[11px] text-slate-400 italic">-</span>`;
+
+    const penBadges = penItems.length > 0 ? penItems.map(tp => `
+      <div class="px-2.5 py-1.5 rounded-lg bg-rose-50 border border-rose-200 text-rose-950 text-[11px] font-semibold flex items-start gap-1.5 leading-snug">
+        <i class="fa-solid fa-triangle-exclamation text-rose-500 text-xs mt-0.5 shrink-0"></i>
+        <span>${tp.ringkasan_tp || tp.deskripsi_tp}</span>
+      </div>
+    `).join('') : `<span class="text-[11px] text-slate-400 italic">-</span>`;
 
     const statusCetak = hasScore 
       ? `<span class="px-2.5 py-1 rounded-full text-[10px] font-black bg-emerald-100 text-emerald-800 border border-emerald-300">✅ Siap Cetak</span>`
@@ -8436,7 +8566,7 @@ function renderCekDeskripsiView() {
     return `
     <tr class="hover:bg-slate-50 transition border-b border-slate-100">
       <td class="px-2 py-3 text-center font-mono text-slate-500 border-r border-slate-200">${idx + 1}</td>
-      <td class="px-3 py-3 font-bold text-slate-900 border-r border-slate-200">
+      <td class="px-3 py-3 font-bold text-slate-900 border-r border-slate-200 min-w-[180px]">
         <div>${s.nama_murid || s.nama_santri}</div>
         <div class="text-[10px] text-slate-400 font-mono">${s.nisn || s.nis}</div>
       </td>
@@ -8446,13 +8576,13 @@ function renderCekDeskripsiView() {
       <td class="px-2 py-3 text-center border-r border-slate-200">
         <span class="px-2 py-0.5 rounded-full text-xs font-black badge-predikat-${predikat}">${predikat}</span>
       </td>
-      <td class="px-3 py-3 border-r border-slate-200 bg-emerald-50/30">
-        <div class="flex flex-wrap gap-1">${optBadges}</div>
+      <td class="px-3 py-3 border-r border-slate-200 bg-emerald-50/30 min-w-[280px]">
+        <div class="space-y-1">${optBadges}</div>
       </td>
-      <td class="px-3 py-3 border-r border-slate-200 bg-rose-50/30">
-        <div class="flex flex-wrap gap-1">${penBadges}</div>
+      <td class="px-3 py-3 border-r border-slate-200 bg-rose-50/30 min-w-[280px]">
+        <div class="space-y-1">${penBadges}</div>
       </td>
-      <td class="px-4 py-3 border-r border-slate-200 leading-relaxed text-xs text-slate-800 font-medium">
+      <td class="px-4 py-3 border-r border-slate-200 leading-relaxed text-xs text-slate-800 font-medium min-w-[260px]">
         ${narasi}
       </td>
       <td class="px-3 py-3 text-center space-y-1">
@@ -12578,6 +12708,8 @@ window.onLegerMapelChange = onLegerMapelChange;
 window.onModalMapelChange = onModalMapelChange;
 window.toggleRowTpCheck = toggleRowTpCheck;
 window.autoRecommendAllLegerTP = autoRecommendAllLegerTP;
+window.autoGenerateAllLegerCapaian = autoGenerateAllLegerCapaian;
+window.resolveTpItem = resolveTpItem;
 window.renderCekDeskripsiView = renderCekDeskripsiView;
 window.openStudentReportDirectly = openStudentReportDirectly;
 window.loadTujuanPembelajaran = loadTujuanPembelajaran;
