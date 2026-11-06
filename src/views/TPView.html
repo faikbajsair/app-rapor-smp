@@ -150,7 +150,7 @@
       <table class="w-full text-left text-xs text-slate-700">
         <thead class="bg-slate-100 text-slate-800 uppercase text-[10px] font-extrabold tracking-wider border-b border-slate-200">
           <tr>
-            <th class="w-12 px-3 py-3 text-center border-r border-slate-200">Kode</th>
+            <th class="w-12 px-3 py-3 text-center border-r border-slate-200">No</th>
             <th class="w-40 px-3 py-3 border-r border-slate-200">Mata Pelajaran</th>
             <th class="w-24 px-2 py-3 text-center border-r border-slate-200">Tingkat / Fase</th>
             <th class="w-32 px-2 py-3 text-center border-r border-slate-200">Semester</th>
@@ -185,34 +185,28 @@
 
     <form id="form-tp" onsubmit="submitFormTP(event)" class="p-6 space-y-4">
       <input type="hidden" id="tp-id" />
+      <input type="hidden" id="tp-kode" />
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">Mata Pelajaran *</label>
-          <select id="tp-mapel" required class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-[#00a66c] font-bold">
-            <option value="Akidah">1. Akidah</option>
-            <option value="Akhlak">2. Akhlak</option>
-            <option value="Hadits">3. Hadits</option>
-            <option value="Fikih">4. Fikih</option>
-            <option value="SKI">5. SKI</option>
-            <option value="Pendidikan Pancasila">6. Pendidikan Pancasila</option>
-            <option value="Bahasa Indonesia">7. Bahasa Indonesia</option>
-            <option value="Bahasa Inggris">8. Bahasa Inggris</option>
-            <option value="Matematika">9. Matematika</option>
-            <option value="Ilmu Pengetahuan Alam">10. Ilmu Pengetahuan Alam</option>
-            <option value="Ilmu Pengetahuan Sosial">11. Ilmu Pengetahuan Sosial</option>
-            <option value="Prakarya">12. Prakarya</option>
-            <option value="Pendidikan Jasmani, Olahraga, dan Kesehatan">13. PJOK</option>
-            <option value="Bahasa Sunda">14. Bahasa Sunda</option>
-            <option value="Informatika">15. Informatika</option>
-            <option value="Bahasa Arab">16. Bahasa Arab</option>
-          </select>
-        </div>
-
-        <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">Kode TP *</label>
-          <input type="text" id="tp-kode" required class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-[#00a66c] font-mono font-bold" placeholder="Contoh: TP 1 atau TP 7.1" />
-        </div>
+      <div>
+        <label class="block text-xs font-bold text-slate-700 mb-1">Mata Pelajaran *</label>
+        <select id="tp-mapel" required class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-[#00a66c] font-bold">
+          <option value="Akidah">1. Akidah</option>
+          <option value="Akhlak">2. Akhlak</option>
+          <option value="Hadits">3. Hadits</option>
+          <option value="Fikih">4. Fikih</option>
+          <option value="SKI">5. SKI</option>
+          <option value="Pendidikan Pancasila">6. Pendidikan Pancasila</option>
+          <option value="Bahasa Indonesia">7. Bahasa Indonesia</option>
+          <option value="Bahasa Inggris">8. Bahasa Inggris</option>
+          <option value="Matematika">9. Matematika</option>
+          <option value="Ilmu Pengetahuan Alam">10. Ilmu Pengetahuan Alam</option>
+          <option value="Ilmu Pengetahuan Sosial">11. Ilmu Pengetahuan Sosial</option>
+          <option value="Prakarya">12. Prakarya</option>
+          <option value="Pendidikan Jasmani, Olahraga, dan Kesehatan">13. PJOK</option>
+          <option value="Bahasa Sunda">14. Bahasa Sunda</option>
+          <option value="Informatika">15. Informatika</option>
+          <option value="Bahasa Arab">16. Bahasa Arab</option>
+        </select>
       </div>
 
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">

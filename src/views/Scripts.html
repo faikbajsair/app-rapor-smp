@@ -7108,7 +7108,7 @@ function renderTPTable() {
     return;
   }
 
-  tbody.innerHTML = filtered.map(item => {
+  tbody.innerHTML = filtered.map((item, idx) => {
     const isAktif = item.status === 'Aktif' || !item.status;
     const statusBadge = isAktif
       ? `<button type="button" onclick="toggleTPStatus('${item.id}')" class="px-2.5 py-1 rounded-full text-[10px] font-black bg-emerald-100 text-emerald-800 border border-emerald-300 hover:bg-emerald-200 transition cursor-pointer" title="Klik untuk non-aktifkan">✅ Aktif</button>`
@@ -7116,8 +7116,8 @@ function renderTPTable() {
 
     return `
     <tr class="hover:bg-slate-50 transition border-b border-slate-100">
-      <td class="px-3 py-3 text-center font-mono font-bold text-slate-700 bg-slate-50/50 border-r border-slate-200">
-        ${item.kode_tp || 'TP'}
+      <td class="px-3 py-3 text-center font-bold text-slate-600 bg-slate-50/50 border-r border-slate-200">
+        ${idx + 1}
       </td>
       <td class="px-3 py-3 font-bold text-emerald-900 border-r border-slate-200">
         ${item.mata_pelajaran || '-'}
@@ -7461,13 +7461,12 @@ function renderLegerGrid() {
       chipsContainer.innerHTML = activeTps.map((tp, idx) => {
         const ringkasan = (tp.ringkasan_tp || tp.deskripsi_tp || '-').replace(/"/g, '&quot;');
         const deskripsi = (tp.deskripsi_tp || '-').replace(/"/g, '&quot;');
-        const kode = tp.kode_tp || ('TP ' + (idx + 1));
         return `
           <div class="p-3 bg-white border border-emerald-200/90 hover:border-[#00a66c] rounded-xl shadow-2xs hover:shadow-sm transition flex flex-col justify-between space-y-1.5 group cursor-pointer"
-               title="${kode}: ${ringkasan} - Klik untuk perbesar detail"
+               title="${ringkasan}"
                onclick="openTPGuideModal()">
             <div class="flex items-center justify-between gap-1.5">
-              <span class="font-mono font-black text-xs text-white bg-gradient-to-r from-[#00a66c] to-teal-600 px-2 py-0.5 rounded-md shadow-2xs">${kode}</span>
+              <span class="font-black text-xs text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded-md border border-emerald-200">#${idx + 1}</span>
               <span class="text-[9px] font-semibold text-slate-400 font-mono">${tp.tingkat_kelas || 'Fase D'}</span>
             </div>
             <div class="font-extrabold text-emerald-950 text-xs leading-snug line-clamp-2">
@@ -7534,87 +7533,61 @@ function renderLegerGrid() {
       capaian = generateDeskripsiCapaian(mapel, Number(utsVal), optTpList, penTpList);
     }
 
-    // Render Checklist 1 (Optimal) Chips dengan Teks Arti TP & Instant Tooltip
-    const optChipsHtml = activeTps.length > 0 ? activeTps.map(tp => {
-      const isChecked = optTpList.includes(tp.id) || optTpList.includes(tp.kode_tp);
-      const activeCls = isChecked 
-        ? 'bg-emerald-600 text-white border-emerald-700 shadow-sm' 
-        : 'bg-slate-100 text-slate-700 border-slate-200 hover:bg-emerald-50 hover:text-emerald-700';
-      const icon = isChecked ? 'fa-check' : 'fa-plus';
-      const ringkasan = (tp.ringkasan_tp || tp.deskripsi_tp || '').replace(/"/g, '&quot;');
-      const deskripsi = (tp.deskripsi_tp || '').replace(/"/g, '&quot;');
-      const kode = tp.kode_tp || 'TP';
+    // Render Checklist 1 (Optimal) dengan Kalimat Langsung
+    const optChipsHtml = activeTps.length > 0 ? `
+      <div class="space-y-1.5 flex flex-col items-start w-full min-w-[270px]">
+        ${activeTps.map(tp => {
+          const isChecked = optTpList.includes(tp.id) || optTpList.includes(tp.kode_tp);
+          const activeCls = isChecked 
+            ? 'bg-emerald-50 border-emerald-400 text-emerald-950 font-bold shadow-2xs ring-1 ring-emerald-300/60' 
+            : 'bg-white hover:bg-emerald-50/50 border-slate-200 text-slate-700 hover:text-emerald-900 font-medium';
+          const icon = isChecked ? 'fa-solid fa-square-check text-emerald-600' : 'fa-regular fa-square text-slate-400';
+          const ringkasan = (tp.ringkasan_tp || tp.deskripsi_tp || '').replace(/"/g, '&quot;');
+          const deskripsi = (tp.deskripsi_tp || '').replace(/"/g, '&quot;');
 
-      return `
-        <div class="relative group inline-block">
-          <button type="button" 
-                  onclick="toggleRowTpCheck('${s.nis}', '${tp.id}', 'optimal')" 
-                  onmouseenter="showLiveTpIndicator('${kode}', '${ringkasan}')"
-                  onmouseleave="hideLiveTpIndicator()"
-                  data-tp-id="${tp.id}" 
-                  data-type="optimal"
-                  data-checked="${isChecked ? 'true' : 'false'}"
-                  class="tp-chip-opt px-2 py-1 rounded-md text-[10px] font-bold border transition cursor-pointer flex items-center gap-1 ${activeCls}"
-                  title="${kode}: ${ringkasan}">
-            <i class="fa-solid ${icon} text-[9px]"></i>
-            <span>${kode}</span>
-          </button>
-          <!-- Instant Popover on Hover -->
-          <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 hidden group-hover:flex flex-col items-center z-50 pointer-events-none w-64 text-left animate-in fade-in zoom-in-95 duration-100">
-            <div class="bg-slate-900 text-white text-[11px] rounded-xl p-2.5 shadow-2xl border border-emerald-500/40 leading-snug">
-              <div class="flex items-center justify-between gap-1 mb-1 pb-1 border-b border-slate-700">
-                <span class="font-mono font-black text-emerald-400 text-xs">${kode}</span>
-                <span class="text-[9px] text-emerald-300 font-bold bg-emerald-950 px-1.5 py-0.2 rounded border border-emerald-600/40">Capaian Optimal</span>
-              </div>
-              <p class="font-bold text-white text-[11px] line-clamp-2">"${ringkasan}"</p>
-              <p class="text-[10px] text-slate-300 mt-1 line-clamp-2">${deskripsi}</p>
-            </div>
-            <div class="w-2.5 h-2.5 bg-slate-900 rotate-45 -mt-1.5 border-r border-b border-slate-700"></div>
-          </div>
-        </div>
-      `;
-    }).join(' ') : `<span class="text-[10px] text-slate-400 italic">Tidak ada TP aktif</span>`;
+          return `
+            <button type="button" 
+                    onclick="toggleRowTpCheck('${s.nis}', '${tp.id}', 'optimal')" 
+                    data-tp-id="${tp.id}" 
+                    data-type="optimal"
+                    data-checked="${isChecked ? 'true' : 'false'}"
+                    class="tp-chip-opt w-full text-left px-2.5 py-1.5 rounded-lg border text-[11px] leading-snug transition cursor-pointer flex items-start gap-2 ${activeCls}"
+                    title="${ringkasan} (${deskripsi})">
+              <i class="${icon} text-xs mt-0.5 shrink-0"></i>
+              <span class="tp-text flex-1">${ringkasan}</span>
+            </button>
+          `;
+        }).join('')}
+      </div>
+    ` : `<span class="text-[10px] text-slate-400 italic">Tidak ada Tujuan Pembelajaran aktif</span>`;
 
-    // Render Checklist 2 (Peningkatan) Chips dengan Teks Arti TP & Instant Tooltip
-    const penChipsHtml = activeTps.length > 0 ? activeTps.map(tp => {
-      const isChecked = penTpList.includes(tp.id) || penTpList.includes(tp.kode_tp);
-      const activeCls = isChecked 
-        ? 'bg-rose-600 text-white border-rose-700 shadow-sm' 
-        : 'bg-slate-100 text-slate-700 border-slate-200 hover:bg-rose-50 hover:text-rose-700';
-      const icon = isChecked ? 'fa-triangle-exclamation' : 'fa-plus';
-      const ringkasan = (tp.ringkasan_tp || tp.deskripsi_tp || '').replace(/"/g, '&quot;');
-      const deskripsi = (tp.deskripsi_tp || '').replace(/"/g, '&quot;');
-      const kode = tp.kode_tp || 'TP';
+    // Render Checklist 2 (Peningkatan) dengan Kalimat Langsung
+    const penChipsHtml = activeTps.length > 0 ? `
+      <div class="space-y-1.5 flex flex-col items-start w-full min-w-[270px]">
+        ${activeTps.map(tp => {
+          const isChecked = penTpList.includes(tp.id) || penTpList.includes(tp.kode_tp);
+          const activeCls = isChecked 
+            ? 'bg-rose-50 border-rose-400 text-rose-950 font-bold shadow-2xs ring-1 ring-rose-300/60' 
+            : 'bg-white hover:bg-rose-50/50 border-slate-200 text-slate-700 hover:text-rose-900 font-medium';
+          const icon = isChecked ? 'fa-solid fa-square-check text-rose-600' : 'fa-regular fa-square text-slate-400';
+          const ringkasan = (tp.ringkasan_tp || tp.deskripsi_tp || '').replace(/"/g, '&quot;');
+          const deskripsi = (tp.deskripsi_tp || '').replace(/"/g, '&quot;');
 
-      return `
-        <div class="relative group inline-block">
-          <button type="button" 
-                  onclick="toggleRowTpCheck('${s.nis}', '${tp.id}', 'peningkatan')" 
-                  onmouseenter="showLiveTpIndicator('${kode}', '${ringkasan}')"
-                  onmouseleave="hideLiveTpIndicator()"
-                  data-tp-id="${tp.id}" 
-                  data-type="peningkatan"
-                  data-checked="${isChecked ? 'true' : 'false'}"
-                  class="tp-chip-pen px-2 py-1 rounded-md text-[10px] font-bold border transition cursor-pointer flex items-center gap-1 ${activeCls}"
-                  title="${kode}: ${ringkasan}">
-            <i class="fa-solid ${icon} text-[9px]"></i>
-            <span>${kode}</span>
-          </button>
-          <!-- Instant Popover on Hover -->
-          <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 hidden group-hover:flex flex-col items-center z-50 pointer-events-none w-64 text-left animate-in fade-in zoom-in-95 duration-100">
-            <div class="bg-slate-900 text-white text-[11px] rounded-xl p-2.5 shadow-2xl border border-rose-500/40 leading-snug">
-              <div class="flex items-center justify-between gap-1 mb-1 pb-1 border-b border-slate-700">
-                <span class="font-mono font-black text-rose-400 text-xs">${kode}</span>
-                <span class="text-[9px] text-rose-300 font-bold bg-rose-950 px-1.5 py-0.2 rounded border border-rose-600/40">Perlu Bimbingan</span>
-              </div>
-              <p class="font-bold text-white text-[11px] line-clamp-2">"${ringkasan}"</p>
-              <p class="text-[10px] text-slate-300 mt-1 line-clamp-2">${deskripsi}</p>
-            </div>
-            <div class="w-2.5 h-2.5 bg-slate-900 rotate-45 -mt-1.5 border-r border-b border-slate-700"></div>
-          </div>
-        </div>
-      `;
-    }).join(' ') : `<span class="text-[10px] text-slate-400 italic">Tidak ada TP aktif</span>`;
+          return `
+            <button type="button" 
+                    onclick="toggleRowTpCheck('${s.nis}', '${tp.id}', 'peningkatan')" 
+                    data-tp-id="${tp.id}" 
+                    data-type="peningkatan"
+                    data-checked="${isChecked ? 'true' : 'false'}"
+                    class="tp-chip-pen w-full text-left px-2.5 py-1.5 rounded-lg border text-[11px] leading-snug transition cursor-pointer flex items-start gap-2 ${activeCls}"
+                    title="${ringkasan} (${deskripsi})">
+              <i class="${icon} text-xs mt-0.5 shrink-0"></i>
+              <span class="tp-text flex-1">${ringkasan}</span>
+            </button>
+          `;
+        }).join('')}
+      </div>
+    ` : `<span class="text-[10px] text-slate-400 italic">Tidak ada Tujuan Pembelajaran aktif</span>`;
 
     return `
     <tr class="hover:bg-blue-50/40 transition leger-row" data-nis="${s.nis}">
@@ -7672,42 +7645,42 @@ function toggleRowTpCheck(nis, tpId, type) {
     const wasChecked = optBtn?.getAttribute('data-checked') === 'true';
     if (wasChecked) {
       optBtn.setAttribute('data-checked', 'false');
-      optBtn.className = 'tp-chip-opt px-2 py-1 rounded-md text-[10px] font-bold border transition cursor-pointer flex items-center gap-1 bg-slate-100 text-slate-600 border-slate-200 hover:bg-emerald-50 hover:text-emerald-700';
+      optBtn.className = 'tp-chip-opt w-full text-left px-2.5 py-1.5 rounded-lg border text-[11px] leading-snug transition cursor-pointer flex items-start gap-2 bg-white hover:bg-emerald-50/50 border-slate-200 text-slate-700 hover:text-emerald-900 font-medium';
       const icon = optBtn.querySelector('i');
-      if (icon) icon.className = 'fa-solid fa-plus text-[9px]';
+      if (icon) icon.className = 'fa-regular fa-square text-slate-400 text-xs mt-0.5 shrink-0';
     } else {
       optBtn.setAttribute('data-checked', 'true');
-      optBtn.className = 'tp-chip-opt px-2 py-1 rounded-md text-[10px] font-bold border transition cursor-pointer flex items-center gap-1 bg-emerald-600 text-white border-emerald-700 shadow-sm';
+      optBtn.className = 'tp-chip-opt w-full text-left px-2.5 py-1.5 rounded-lg border text-[11px] leading-snug transition cursor-pointer flex items-start gap-2 bg-emerald-50 border-emerald-400 text-emerald-950 font-bold shadow-2xs ring-1 ring-emerald-300/60';
       const icon = optBtn.querySelector('i');
-      if (icon) icon.className = 'fa-solid fa-check text-[9px]';
+      if (icon) icon.className = 'fa-solid fa-square-check text-emerald-600 text-xs mt-0.5 shrink-0';
 
       // Mutual exclusion: Uncheck improvement
       if (penBtn) {
         penBtn.setAttribute('data-checked', 'false');
-        penBtn.className = 'tp-chip-pen px-2 py-1 rounded-md text-[10px] font-bold border transition cursor-pointer flex items-center gap-1 bg-slate-100 text-slate-600 border-slate-200 hover:bg-rose-50 hover:text-rose-700';
+        penBtn.className = 'tp-chip-pen w-full text-left px-2.5 py-1.5 rounded-lg border text-[11px] leading-snug transition cursor-pointer flex items-start gap-2 bg-white hover:bg-rose-50/50 border-slate-200 text-slate-700 hover:text-rose-900 font-medium';
         const pIcon = penBtn.querySelector('i');
-        if (pIcon) pIcon.className = 'fa-solid fa-plus text-[9px]';
+        if (pIcon) pIcon.className = 'fa-regular fa-square text-slate-400 text-xs mt-0.5 shrink-0';
       }
     }
   } else if (type === 'peningkatan') {
     const wasChecked = penBtn?.getAttribute('data-checked') === 'true';
     if (wasChecked) {
       penBtn.setAttribute('data-checked', 'false');
-      penBtn.className = 'tp-chip-pen px-2 py-1 rounded-md text-[10px] font-bold border transition cursor-pointer flex items-center gap-1 bg-slate-100 text-slate-600 border-slate-200 hover:bg-rose-50 hover:text-rose-700';
+      penBtn.className = 'tp-chip-pen w-full text-left px-2.5 py-1.5 rounded-lg border text-[11px] leading-snug transition cursor-pointer flex items-start gap-2 bg-white hover:bg-rose-50/50 border-slate-200 text-slate-700 hover:text-rose-900 font-medium';
       const icon = penBtn.querySelector('i');
-      if (icon) icon.className = 'fa-solid fa-plus text-[9px]';
+      if (icon) icon.className = 'fa-regular fa-square text-slate-400 text-xs mt-0.5 shrink-0';
     } else {
       penBtn.setAttribute('data-checked', 'true');
-      penBtn.className = 'tp-chip-pen px-2 py-1 rounded-md text-[10px] font-bold border transition cursor-pointer flex items-center gap-1 bg-rose-600 text-white border-rose-700 shadow-sm';
+      penBtn.className = 'tp-chip-pen w-full text-left px-2.5 py-1.5 rounded-lg border text-[11px] leading-snug transition cursor-pointer flex items-start gap-2 bg-rose-50 border-rose-400 text-rose-950 font-bold shadow-2xs ring-1 ring-rose-300/60';
       const icon = penBtn.querySelector('i');
-      if (icon) icon.className = 'fa-solid fa-triangle-exclamation text-[9px]';
+      if (icon) icon.className = 'fa-solid fa-square-check text-rose-600 text-xs mt-0.5 shrink-0';
 
       // Mutual exclusion: Uncheck optimal
       if (optBtn) {
         optBtn.setAttribute('data-checked', 'false');
-        optBtn.className = 'tp-chip-opt px-2 py-1 rounded-md text-[10px] font-bold border transition cursor-pointer flex items-center gap-1 bg-slate-100 text-slate-600 border-slate-200 hover:bg-emerald-50 hover:text-emerald-700';
+        optBtn.className = 'tp-chip-opt w-full text-left px-2.5 py-1.5 rounded-lg border text-[11px] leading-snug transition cursor-pointer flex items-start gap-2 bg-white hover:bg-emerald-50/50 border-slate-200 text-slate-700 hover:text-emerald-900 font-medium';
         const oIcon = optBtn.querySelector('i');
-        if (oIcon) oIcon.className = 'fa-solid fa-plus text-[9px]';
+        if (oIcon) oIcon.className = 'fa-regular fa-square text-slate-400 text-xs mt-0.5 shrink-0';
       }
     }
   }
@@ -7771,19 +7744,19 @@ function autoRecommendAllLegerTP() {
       if (optBtn) {
         optBtn.setAttribute('data-checked', isOpt ? 'true' : 'false');
         optBtn.className = isOpt
-          ? 'tp-chip-opt px-2 py-1 rounded-md text-[10px] font-bold border transition cursor-pointer flex items-center gap-1 bg-emerald-600 text-white border-emerald-700 shadow-sm'
-          : 'tp-chip-opt px-2 py-1 rounded-md text-[10px] font-bold border transition cursor-pointer flex items-center gap-1 bg-slate-100 text-slate-600 border-slate-200 hover:bg-emerald-50 hover:text-emerald-700';
+          ? 'tp-chip-opt w-full text-left px-2.5 py-1.5 rounded-lg border text-[11px] leading-snug transition cursor-pointer flex items-start gap-2 bg-emerald-50 border-emerald-400 text-emerald-950 font-bold shadow-2xs ring-1 ring-emerald-300/60'
+          : 'tp-chip-opt w-full text-left px-2.5 py-1.5 rounded-lg border text-[11px] leading-snug transition cursor-pointer flex items-start gap-2 bg-white hover:bg-emerald-50/50 border-slate-200 text-slate-700 hover:text-emerald-900 font-medium';
         const icon = optBtn.querySelector('i');
-        if (icon) icon.className = `fa-solid ${isOpt ? 'fa-check' : 'fa-plus'} text-[9px]`;
+        if (icon) icon.className = isOpt ? 'fa-solid fa-square-check text-emerald-600 text-xs mt-0.5 shrink-0' : 'fa-regular fa-square text-slate-400 text-xs mt-0.5 shrink-0';
       }
 
       if (penBtn) {
         penBtn.setAttribute('data-checked', isPen ? 'true' : 'false');
         penBtn.className = isPen
-          ? 'tp-chip-pen px-2 py-1 rounded-md text-[10px] font-bold border transition cursor-pointer flex items-center gap-1 bg-rose-600 text-white border-rose-700 shadow-sm'
-          : 'tp-chip-pen px-2 py-1 rounded-md text-[10px] font-bold border transition cursor-pointer flex items-center gap-1 bg-slate-100 text-slate-600 border-slate-200 hover:bg-rose-50 hover:text-rose-700';
+          ? 'tp-chip-pen w-full text-left px-2.5 py-1.5 rounded-lg border text-[11px] leading-snug transition cursor-pointer flex items-start gap-2 bg-rose-50 border-rose-400 text-rose-950 font-bold shadow-2xs ring-1 ring-rose-300/60'
+          : 'tp-chip-pen w-full text-left px-2.5 py-1.5 rounded-lg border text-[11px] leading-snug transition cursor-pointer flex items-start gap-2 bg-white hover:bg-rose-50/50 border-slate-200 text-slate-700 hover:text-rose-900 font-medium';
         const icon = penBtn.querySelector('i');
-        if (icon) icon.className = `fa-solid ${isPen ? 'fa-triangle-exclamation' : 'fa-plus'} text-[9px]`;
+        if (icon) icon.className = isPen ? 'fa-solid fa-square-check text-rose-600 text-xs mt-0.5 shrink-0' : 'fa-regular fa-square text-slate-400 text-xs mt-0.5 shrink-0';
       }
     });
 
@@ -12477,57 +12450,35 @@ function renderLegerCardsMode(students, mapel, kkm, activeTps) {
     const optChips = activeTps.map(tp => {
       const isChecked = optIds.includes(tp.id);
       const cls = isChecked
-        ? 'bg-emerald-600 text-white border-emerald-700 shadow-xs'
-        : 'bg-white text-slate-700 border-slate-200 hover:bg-emerald-50';
+        ? 'bg-emerald-50 border-emerald-400 text-emerald-950 font-bold ring-1 ring-emerald-300/60 shadow-2xs'
+        : 'bg-white text-slate-700 border-slate-200 hover:bg-emerald-50 font-medium';
+      const icon = isChecked ? 'fa-solid fa-square-check text-emerald-600' : 'fa-regular fa-square text-slate-400';
       const ringkasan = (tp.ringkasan_tp || tp.deskripsi_tp || '').replace(/"/g, '&quot;');
-      const kode = tp.kode_tp || 'TP';
       return `
-        <div class="relative group inline-block">
-          <button type="button" 
-                  onclick="toggleRowTpCheck('${s.nis}', '${tp.id}', 'optimal')" 
-                  onmouseenter="showLiveTpIndicator('${kode}', '${ringkasan}')"
-                  onmouseleave="hideLiveTpIndicator()"
-                  class="card-tp-opt px-2.5 py-1 rounded-lg text-[10px] font-bold border transition flex items-center gap-1 cursor-pointer ${cls}" 
-                  data-tp-id="${tp.id}"
-                  title="${kode}: ${ringkasan}">
-            <i class="fa-solid ${isChecked ? 'fa-check' : 'fa-plus'} text-[9px]"></i>
-            <span>${kode}</span>
-          </button>
-          <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 hidden group-hover:flex flex-col items-center z-50 pointer-events-none w-52 text-left">
-            <div class="bg-slate-900 text-white text-[10px] rounded-lg p-2 shadow-xl border border-emerald-500/40 leading-snug">
-              <span class="font-mono font-bold text-emerald-400">${kode}:</span> "${ringkasan}"
-            </div>
-            <div class="w-2 h-2 bg-slate-900 rotate-45 -mt-1"></div>
-          </div>
-        </div>`;
+        <button type="button" 
+                onclick="toggleRowTpCheck('${s.nis}', '${tp.id}', 'optimal')" 
+                class="card-tp-opt w-full text-left p-2 rounded-xl text-[11px] border transition flex items-start gap-2 cursor-pointer leading-snug ${cls}" 
+                data-tp-id="${tp.id}">
+          <i class="${icon} text-xs mt-0.5 shrink-0"></i>
+          <span class="flex-1">${ringkasan}</span>
+        </button>`;
     }).join('');
 
     const penChips = activeTps.map(tp => {
       const isChecked = penIds.includes(tp.id);
       const cls = isChecked
-        ? 'bg-rose-600 text-white border-rose-700 shadow-xs'
-        : 'bg-white text-slate-700 border-slate-200 hover:bg-rose-50';
+        ? 'bg-rose-50 border-rose-400 text-rose-950 font-bold ring-1 ring-rose-300/60 shadow-2xs'
+        : 'bg-white text-slate-700 border-slate-200 hover:bg-rose-50 font-medium';
+      const icon = isChecked ? 'fa-solid fa-square-check text-rose-600' : 'fa-regular fa-square text-slate-400';
       const ringkasan = (tp.ringkasan_tp || tp.deskripsi_tp || '').replace(/"/g, '&quot;');
-      const kode = tp.kode_tp || 'TP';
       return `
-        <div class="relative group inline-block">
-          <button type="button" 
-                  onclick="toggleRowTpCheck('${s.nis}', '${tp.id}', 'peningkatan')" 
-                  onmouseenter="showLiveTpIndicator('${kode}', '${ringkasan}')"
-                  onmouseleave="hideLiveTpIndicator()"
-                  class="card-tp-pen px-2.5 py-1 rounded-lg text-[10px] font-bold border transition flex items-center gap-1 cursor-pointer ${cls}" 
-                  data-tp-id="${tp.id}"
-                  title="${kode}: ${ringkasan}">
-            <i class="fa-solid ${isChecked ? 'fa-triangle-exclamation' : 'fa-plus'} text-[9px]"></i>
-            <span>${kode}</span>
-          </button>
-          <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 hidden group-hover:flex flex-col items-center z-50 pointer-events-none w-52 text-left">
-            <div class="bg-slate-900 text-white text-[10px] rounded-lg p-2 shadow-xl border border-rose-500/40 leading-snug">
-              <span class="font-mono font-bold text-rose-400">${kode}:</span> "${ringkasan}"
-            </div>
-            <div class="w-2 h-2 bg-slate-900 rotate-45 -mt-1"></div>
-          </div>
-        </div>`;
+        <button type="button" 
+                onclick="toggleRowTpCheck('${s.nis}', '${tp.id}', 'peningkatan')" 
+                class="card-tp-pen w-full text-left p-2 rounded-xl text-[11px] border transition flex items-start gap-2 cursor-pointer leading-snug ${cls}" 
+                data-tp-id="${tp.id}">
+          <i class="${icon} text-xs mt-0.5 shrink-0"></i>
+          <span class="flex-1">${ringkasan}</span>
+        </button>`;
     }).join('');
 
     return `
@@ -12571,15 +12522,15 @@ function renderLegerCardsMode(students, mapel, kkm, activeTps) {
           </div>
         </div>
 
-        <!-- TP Checklists -->
-        <div class="grid grid-cols-2 gap-2">
-          <div class="p-2 rounded-xl bg-emerald-50/50 border border-emerald-200/70 space-y-1.5">
-            <span class="text-[9px] font-extrabold text-emerald-800 uppercase block"><i class="fa-solid fa-circle-check text-emerald-600 mr-1"></i>1. TP Optimal</span>
-            <div class="card-opt-chips flex flex-wrap gap-1">${optChips}</div>
+        <!-- TP Checklists (Tampil Kalimat Lengkap) -->
+        <div class="space-y-2.5">
+          <div class="p-2.5 rounded-xl bg-emerald-50/50 border border-emerald-200/70 space-y-1.5">
+            <span class="text-[10px] font-extrabold text-emerald-800 uppercase block"><i class="fa-solid fa-circle-check text-emerald-600 mr-1"></i>1. Capaian TP Optimal</span>
+            <div class="card-opt-chips space-y-1.5">${optChips}</div>
           </div>
-          <div class="p-2 rounded-xl bg-rose-50/50 border border-rose-200/70 space-y-1.5">
-            <span class="text-[9px] font-extrabold text-rose-800 uppercase block"><i class="fa-solid fa-triangle-exclamation text-rose-600 mr-1"></i>2. Perlu Bimbingan</span>
-            <div class="card-pen-chips flex flex-wrap gap-1">${penChips}</div>
+          <div class="p-2.5 rounded-xl bg-rose-50/50 border border-rose-200/70 space-y-1.5">
+            <span class="text-[10px] font-extrabold text-rose-800 uppercase block"><i class="fa-solid fa-triangle-exclamation text-rose-600 mr-1"></i>2. TP Perlu Peningkatan</span>
+            <div class="card-pen-chips space-y-1.5">${penChips}</div>
           </div>
         </div>
 
@@ -12625,9 +12576,9 @@ function syncRowToMobileCard(nis) {
     const isChecked = rowBtn.getAttribute('data-checked') === 'true';
     const cBtn = card.querySelector(`.card-tp-opt[data-tp-id="${tpId}"]`);
     if (cBtn) {
-      cBtn.className = `card-tp-opt px-2.5 py-1 rounded-lg text-[10px] font-bold border transition flex items-center gap-1 cursor-pointer ${isChecked ? 'bg-emerald-600 text-white border-emerald-700 shadow-xs' : 'bg-white text-slate-600 border-slate-200 hover:bg-emerald-50'}`;
+      cBtn.className = `card-tp-opt w-full text-left p-2 rounded-xl text-[11px] border transition flex items-start gap-2 cursor-pointer leading-snug ${isChecked ? 'bg-emerald-50 border-emerald-400 text-emerald-950 font-bold ring-1 ring-emerald-300/60 shadow-2xs' : 'bg-white text-slate-700 border-slate-200 hover:bg-emerald-50 font-medium'}`;
       const icon = cBtn.querySelector('i');
-      if (icon) icon.className = `fa-solid ${isChecked ? 'fa-check' : 'fa-plus'} text-[9px]`;
+      if (icon) icon.className = isChecked ? 'fa-solid fa-square-check text-emerald-600 text-xs mt-0.5 shrink-0' : 'fa-regular fa-square text-slate-400 text-xs mt-0.5 shrink-0';
     }
   });
 
@@ -12636,9 +12587,9 @@ function syncRowToMobileCard(nis) {
     const isChecked = rowBtn.getAttribute('data-checked') === 'true';
     const cBtn = card.querySelector(`.card-tp-pen[data-tp-id="${tpId}"]`);
     if (cBtn) {
-      cBtn.className = `card-tp-pen px-2.5 py-1 rounded-lg text-[10px] font-bold border transition flex items-center gap-1 cursor-pointer ${isChecked ? 'bg-rose-600 text-white border-rose-700 shadow-xs' : 'bg-white text-slate-600 border-slate-200 hover:bg-rose-50'}`;
+      cBtn.className = `card-tp-pen w-full text-left p-2 rounded-xl text-[11px] border transition flex items-start gap-2 cursor-pointer leading-snug ${isChecked ? 'bg-rose-50 border-rose-400 text-rose-950 font-bold ring-1 ring-rose-300/60 shadow-2xs' : 'bg-white text-slate-700 border-slate-200 hover:bg-rose-50 font-medium'}`;
       const icon = cBtn.querySelector('i');
-      if (icon) icon.className = `fa-solid ${isChecked ? 'fa-triangle-exclamation' : 'fa-plus'} text-[9px]`;
+      if (icon) icon.className = isChecked ? 'fa-solid fa-square-check text-rose-600 text-xs mt-0.5 shrink-0' : 'fa-regular fa-square text-slate-400 text-xs mt-0.5 shrink-0';
     }
   });
 
