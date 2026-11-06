@@ -7329,21 +7329,38 @@ function renderLegerGrid() {
   const students = AppState.muridList.filter(m => normalizeClassName(m.kelas) === normalizeClassName(kelas));
   const activeTps = getActiveTpsForMapel(mapel);
 
-  // Update TP Chips Banner
+  // Update TP Chips Banner (Menampilkan teks jelas apa itu TP 1, TP 2, TP 3, TP 4)
   const chipsContainer = document.getElementById('active-tp-chips-container');
   const badgeCount = document.getElementById('active-tp-badge-count');
+  const mapelLabel = document.getElementById('active-tp-mapel-label');
+  if (mapelLabel) mapelLabel.innerText = mapel;
   if (badgeCount) badgeCount.innerText = `${activeTps.length} TP Aktif`;
 
   if (chipsContainer) {
     if (activeTps.length === 0) {
-      chipsContainer.innerHTML = `<span class="text-slate-400 italic">Belum ada TP aktif untuk mapel ${mapel}. <button type="button" onclick="switchView('tp')" class="underline font-bold text-[#00a66c]">Kelola TP</button></span>`;
+      chipsContainer.innerHTML = `<div class="col-span-full p-4 bg-white/80 rounded-xl border border-dashed border-slate-300 text-center text-slate-400 italic">Belum ada Tujuan Pembelajaran aktif untuk mapel ${mapel}. <button type="button" onclick="switchView('tp')" class="underline font-bold text-[#00a66c]">Kelola TP</button></div>`;
     } else {
-      chipsContainer.innerHTML = activeTps.map((tp, idx) => `
-        <div class="px-2.5 py-1 bg-white border border-emerald-200 rounded-lg shadow-xs flex items-center gap-1.5 text-slate-800 text-[11px]" title="${tp.deskripsi_tp}">
-          <span class="font-mono font-black text-[#00a66c] bg-emerald-50 px-1.5 py-0.5 rounded text-[10px]">${tp.kode_tp || ('TP ' + (idx + 1))}</span>
-          <span class="truncate max-w-[240px] font-medium">${tp.ringkasan_tp || tp.deskripsi_tp}</span>
-        </div>
-      `).join('');
+      chipsContainer.innerHTML = activeTps.map((tp, idx) => {
+        const ringkasan = (tp.ringkasan_tp || tp.deskripsi_tp || '-').replace(/"/g, '&quot;');
+        const deskripsi = (tp.deskripsi_tp || '-').replace(/"/g, '&quot;');
+        const kode = tp.kode_tp || ('TP ' + (idx + 1));
+        return `
+          <div class="p-3 bg-white border border-emerald-200/90 hover:border-[#00a66c] rounded-xl shadow-2xs hover:shadow-sm transition flex flex-col justify-between space-y-1.5 group cursor-pointer"
+               title="${kode}: ${ringkasan} - Klik untuk perbesar detail"
+               onclick="openTPGuideModal()">
+            <div class="flex items-center justify-between gap-1.5">
+              <span class="font-mono font-black text-xs text-white bg-gradient-to-r from-[#00a66c] to-teal-600 px-2 py-0.5 rounded-md shadow-2xs">${kode}</span>
+              <span class="text-[9px] font-semibold text-slate-400 font-mono">${tp.tingkat_kelas || 'Fase D'}</span>
+            </div>
+            <div class="font-extrabold text-emerald-950 text-xs leading-snug line-clamp-2">
+              "${ringkasan}"
+            </div>
+            <div class="text-[10px] text-slate-500 line-clamp-2 leading-relaxed">
+              ${deskripsi}
+            </div>
+          </div>
+        `;
+      }).join('');
     }
   }
 
@@ -7399,47 +7416,85 @@ function renderLegerGrid() {
       capaian = generateDeskripsiCapaian(mapel, Number(utsVal), optTpList, penTpList);
     }
 
-    // Render Checklist 1 (Optimal) Chips
+    // Render Checklist 1 (Optimal) Chips dengan Teks Arti TP & Instant Tooltip
     const optChipsHtml = activeTps.length > 0 ? activeTps.map(tp => {
       const isChecked = optTpList.includes(tp.id) || optTpList.includes(tp.kode_tp);
       const activeCls = isChecked 
         ? 'bg-emerald-600 text-white border-emerald-700 shadow-sm' 
-        : 'bg-slate-100 text-slate-600 border-slate-200 hover:bg-emerald-50 hover:text-emerald-700';
+        : 'bg-slate-100 text-slate-700 border-slate-200 hover:bg-emerald-50 hover:text-emerald-700';
       const icon = isChecked ? 'fa-check' : 'fa-plus';
+      const ringkasan = (tp.ringkasan_tp || tp.deskripsi_tp || '').replace(/"/g, '&quot;');
+      const deskripsi = (tp.deskripsi_tp || '').replace(/"/g, '&quot;');
+      const kode = tp.kode_tp || 'TP';
 
       return `
-        <button type="button" 
-                onclick="toggleRowTpCheck('${s.nis}', '${tp.id}', 'optimal')" 
-                data-tp-id="${tp.id}" 
-                data-type="optimal"
-                data-checked="${isChecked ? 'true' : 'false'}"
-                class="tp-chip-opt px-2 py-1 rounded-md text-[10px] font-bold border transition cursor-pointer flex items-center gap-1 ${activeCls}"
-                title="${tp.ringkasan_tp || tp.deskripsi_tp}">
-          <i class="fa-solid ${icon} text-[9px]"></i>
-          <span>${tp.kode_tp || 'TP'}</span>
-        </button>
+        <div class="relative group inline-block">
+          <button type="button" 
+                  onclick="toggleRowTpCheck('${s.nis}', '${tp.id}', 'optimal')" 
+                  onmouseenter="showLiveTpIndicator('${kode}', '${ringkasan}')"
+                  onmouseleave="hideLiveTpIndicator()"
+                  data-tp-id="${tp.id}" 
+                  data-type="optimal"
+                  data-checked="${isChecked ? 'true' : 'false'}"
+                  class="tp-chip-opt px-2 py-1 rounded-md text-[10px] font-bold border transition cursor-pointer flex items-center gap-1 ${activeCls}"
+                  title="${kode}: ${ringkasan}">
+            <i class="fa-solid ${icon} text-[9px]"></i>
+            <span>${kode}</span>
+          </button>
+          <!-- Instant Popover on Hover -->
+          <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 hidden group-hover:flex flex-col items-center z-50 pointer-events-none w-64 text-left animate-in fade-in zoom-in-95 duration-100">
+            <div class="bg-slate-900 text-white text-[11px] rounded-xl p-2.5 shadow-2xl border border-emerald-500/40 leading-snug">
+              <div class="flex items-center justify-between gap-1 mb-1 pb-1 border-b border-slate-700">
+                <span class="font-mono font-black text-emerald-400 text-xs">${kode}</span>
+                <span class="text-[9px] text-emerald-300 font-bold bg-emerald-950 px-1.5 py-0.2 rounded border border-emerald-600/40">Capaian Optimal</span>
+              </div>
+              <p class="font-bold text-white text-[11px] line-clamp-2">"${ringkasan}"</p>
+              <p class="text-[10px] text-slate-300 mt-1 line-clamp-2">${deskripsi}</p>
+            </div>
+            <div class="w-2.5 h-2.5 bg-slate-900 rotate-45 -mt-1.5 border-r border-b border-slate-700"></div>
+          </div>
+        </div>
       `;
     }).join(' ') : `<span class="text-[10px] text-slate-400 italic">Tidak ada TP aktif</span>`;
 
-    // Render Checklist 2 (Peningkatan) Chips
+    // Render Checklist 2 (Peningkatan) Chips dengan Teks Arti TP & Instant Tooltip
     const penChipsHtml = activeTps.length > 0 ? activeTps.map(tp => {
       const isChecked = penTpList.includes(tp.id) || penTpList.includes(tp.kode_tp);
       const activeCls = isChecked 
         ? 'bg-rose-600 text-white border-rose-700 shadow-sm' 
-        : 'bg-slate-100 text-slate-600 border-slate-200 hover:bg-rose-50 hover:text-rose-700';
+        : 'bg-slate-100 text-slate-700 border-slate-200 hover:bg-rose-50 hover:text-rose-700';
       const icon = isChecked ? 'fa-triangle-exclamation' : 'fa-plus';
+      const ringkasan = (tp.ringkasan_tp || tp.deskripsi_tp || '').replace(/"/g, '&quot;');
+      const deskripsi = (tp.deskripsi_tp || '').replace(/"/g, '&quot;');
+      const kode = tp.kode_tp || 'TP';
 
       return `
-        <button type="button" 
-                onclick="toggleRowTpCheck('${s.nis}', '${tp.id}', 'peningkatan')" 
-                data-tp-id="${tp.id}" 
-                data-type="peningkatan"
-                data-checked="${isChecked ? 'true' : 'false'}"
-                class="tp-chip-pen px-2 py-1 rounded-md text-[10px] font-bold border transition cursor-pointer flex items-center gap-1 ${activeCls}"
-                title="${tp.ringkasan_tp || tp.deskripsi_tp}">
-          <i class="fa-solid ${icon} text-[9px]"></i>
-          <span>${tp.kode_tp || 'TP'}</span>
-        </button>
+        <div class="relative group inline-block">
+          <button type="button" 
+                  onclick="toggleRowTpCheck('${s.nis}', '${tp.id}', 'peningkatan')" 
+                  onmouseenter="showLiveTpIndicator('${kode}', '${ringkasan}')"
+                  onmouseleave="hideLiveTpIndicator()"
+                  data-tp-id="${tp.id}" 
+                  data-type="peningkatan"
+                  data-checked="${isChecked ? 'true' : 'false'}"
+                  class="tp-chip-pen px-2 py-1 rounded-md text-[10px] font-bold border transition cursor-pointer flex items-center gap-1 ${activeCls}"
+                  title="${kode}: ${ringkasan}">
+            <i class="fa-solid ${icon} text-[9px]"></i>
+            <span>${kode}</span>
+          </button>
+          <!-- Instant Popover on Hover -->
+          <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 hidden group-hover:flex flex-col items-center z-50 pointer-events-none w-64 text-left animate-in fade-in zoom-in-95 duration-100">
+            <div class="bg-slate-900 text-white text-[11px] rounded-xl p-2.5 shadow-2xl border border-rose-500/40 leading-snug">
+              <div class="flex items-center justify-between gap-1 mb-1 pb-1 border-b border-slate-700">
+                <span class="font-mono font-black text-rose-400 text-xs">${kode}</span>
+                <span class="text-[9px] text-rose-300 font-bold bg-rose-950 px-1.5 py-0.2 rounded border border-rose-600/40">Perlu Bimbingan</span>
+              </div>
+              <p class="font-bold text-white text-[11px] line-clamp-2">"${ringkasan}"</p>
+              <p class="text-[10px] text-slate-300 mt-1 line-clamp-2">${deskripsi}</p>
+            </div>
+            <div class="w-2.5 h-2.5 bg-slate-900 rotate-45 -mt-1.5 border-r border-b border-slate-700"></div>
+          </div>
+        </div>
       `;
     }).join(' ') : `<span class="text-[10px] text-slate-400 italic">Tidak ada TP aktif</span>`;
 
@@ -7633,6 +7688,88 @@ function autoGenerateAllLegerCapaian() {
   });
 
   showToast(`Deskripsi rapor berhasil di-generate ulang untuk ${count} murid!`, 'success');
+}
+
+// ==========================================
+// PANDUAN CEPAT & DETAIL MATERI TP DI MENU INPUT NILAI
+// ==========================================
+function openTPGuideModal() {
+  const mapelEl = document.getElementById('leger-akademik-mapel');
+  const mapel = mapelEl?.value || 'Akidah';
+  const activeTps = getActiveTpsForMapel(mapel);
+
+  const titleEl = document.getElementById('modal-tp-guide-title');
+  if (titleEl) titleEl.innerText = `Panduan Materi Tujuan Pembelajaran (TP) — ${mapel}`;
+
+  const container = document.getElementById('modal-tp-guide-list');
+  if (container) {
+    if (activeTps.length === 0) {
+      container.innerHTML = `<div class="p-8 text-center text-slate-400">Belum ada Tujuan Pembelajaran aktif untuk mata pelajaran ${mapel}.</div>`;
+    } else {
+      container.innerHTML = activeTps.map((tp, idx) => `
+        <div class="p-4 rounded-2xl bg-white border border-emerald-200/80 shadow-xs hover:border-[#00a66c] transition space-y-2">
+          <div class="flex items-center justify-between gap-2 pb-2 border-b border-slate-100">
+            <div class="flex items-center gap-2">
+              <span class="font-mono font-black text-xs text-white bg-gradient-to-r from-[#00a66c] to-teal-600 px-2.5 py-1 rounded-lg shadow-2xs">${tp.kode_tp || ('TP ' + (idx + 1))}</span>
+              <span class="font-extrabold text-sm text-emerald-950">${tp.mata_pelajaran}</span>
+            </div>
+            <span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">
+              ${tp.tingkat_kelas || 'Semua Kelas'} • ${tp.fase || 'Fase D'}
+            </span>
+          </div>
+          <div>
+            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-0.5">Deskripsi Lengkap Materi:</span>
+            <p class="text-xs sm:text-sm font-semibold text-slate-800 leading-relaxed">${tp.deskripsi_tp}</p>
+          </div>
+          <div class="p-2.5 rounded-xl bg-emerald-50/60 border border-emerald-100 text-xs">
+            <span class="text-[10px] font-bold text-emerald-800 uppercase tracking-wider block mb-0.5">Ringkasan Narasi Rapor (Auto-Generate):</span>
+            <p class="italic text-emerald-900 font-medium">"${tp.ringkasan_tp || tp.deskripsi_tp}"</p>
+          </div>
+        </div>
+      `).join('');
+    }
+  }
+
+  const modal = document.getElementById('modal-tp-quick-guide');
+  if (modal) modal.classList.remove('hidden');
+}
+
+function closeTPGuideModal() {
+  const modal = document.getElementById('modal-tp-quick-guide');
+  if (modal) modal.classList.add('hidden');
+}
+
+function toggleTPGuideBanner() {
+  const container = document.getElementById('active-tp-chips-container');
+  const icon = document.getElementById('icon-toggle-tp-guide');
+  const text = document.getElementById('text-toggle-tp-guide');
+  if (!container) return;
+
+  if (container.classList.contains('hidden')) {
+    container.classList.remove('hidden');
+    if (icon) icon.className = 'fa-solid fa-chevron-up text-[10px]';
+    if (text) text.innerText = 'Ciutkan';
+  } else {
+    container.classList.add('hidden');
+    if (icon) icon.className = 'fa-solid fa-chevron-down text-[10px]';
+    if (text) text.innerText = 'Lihat Keterangan TP';
+  }
+}
+
+function showLiveTpIndicator(kode, desc) {
+  const el = document.getElementById('leger-live-tp-indicator');
+  const badge = document.getElementById('live-tp-badge');
+  const text = document.getElementById('live-tp-desc');
+  if (el && badge && text) {
+    badge.innerText = kode;
+    text.innerText = `"${desc}"`;
+    el.classList.remove('hidden');
+  }
+}
+
+function hideLiveTpIndicator() {
+  const el = document.getElementById('leger-live-tp-indicator');
+  if (el) el.classList.add('hidden');
 }
 
 function filterLegerGridStudents() {
@@ -12221,16 +12358,56 @@ function renderLegerCardsMode(students, mapel, kkm, activeTps) {
       const isChecked = optIds.includes(tp.id);
       const cls = isChecked
         ? 'bg-emerald-600 text-white border-emerald-700 shadow-xs'
-        : 'bg-white text-slate-600 border-slate-200 hover:bg-emerald-50';
-      return `<button type="button" onclick="toggleRowTpCheck('${s.nis}', '${tp.id}', 'optimal')" class="card-tp-opt px-2.5 py-1 rounded-lg text-[10px] font-bold border transition flex items-center gap-1 cursor-pointer ${cls}" data-tp-id="${tp.id}"><i class="fa-solid ${isChecked ? 'fa-check' : 'fa-plus'} text-[9px]"></i><span>${tp.kode_tp || 'TP'}</span></button>`;
+        : 'bg-white text-slate-700 border-slate-200 hover:bg-emerald-50';
+      const ringkasan = (tp.ringkasan_tp || tp.deskripsi_tp || '').replace(/"/g, '&quot;');
+      const kode = tp.kode_tp || 'TP';
+      return `
+        <div class="relative group inline-block">
+          <button type="button" 
+                  onclick="toggleRowTpCheck('${s.nis}', '${tp.id}', 'optimal')" 
+                  onmouseenter="showLiveTpIndicator('${kode}', '${ringkasan}')"
+                  onmouseleave="hideLiveTpIndicator()"
+                  class="card-tp-opt px-2.5 py-1 rounded-lg text-[10px] font-bold border transition flex items-center gap-1 cursor-pointer ${cls}" 
+                  data-tp-id="${tp.id}"
+                  title="${kode}: ${ringkasan}">
+            <i class="fa-solid ${isChecked ? 'fa-check' : 'fa-plus'} text-[9px]"></i>
+            <span>${kode}</span>
+          </button>
+          <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 hidden group-hover:flex flex-col items-center z-50 pointer-events-none w-52 text-left">
+            <div class="bg-slate-900 text-white text-[10px] rounded-lg p-2 shadow-xl border border-emerald-500/40 leading-snug">
+              <span class="font-mono font-bold text-emerald-400">${kode}:</span> "${ringkasan}"
+            </div>
+            <div class="w-2 h-2 bg-slate-900 rotate-45 -mt-1"></div>
+          </div>
+        </div>`;
     }).join('');
 
     const penChips = activeTps.map(tp => {
       const isChecked = penIds.includes(tp.id);
       const cls = isChecked
         ? 'bg-rose-600 text-white border-rose-700 shadow-xs'
-        : 'bg-white text-slate-600 border-slate-200 hover:bg-rose-50';
-      return `<button type="button" onclick="toggleRowTpCheck('${s.nis}', '${tp.id}', 'peningkatan')" class="card-tp-pen px-2.5 py-1 rounded-lg text-[10px] font-bold border transition flex items-center gap-1 cursor-pointer ${cls}" data-tp-id="${tp.id}"><i class="fa-solid ${isChecked ? 'fa-triangle-exclamation' : 'fa-plus'} text-[9px]"></i><span>${tp.kode_tp || 'TP'}</span></button>`;
+        : 'bg-white text-slate-700 border-slate-200 hover:bg-rose-50';
+      const ringkasan = (tp.ringkasan_tp || tp.deskripsi_tp || '').replace(/"/g, '&quot;');
+      const kode = tp.kode_tp || 'TP';
+      return `
+        <div class="relative group inline-block">
+          <button type="button" 
+                  onclick="toggleRowTpCheck('${s.nis}', '${tp.id}', 'peningkatan')" 
+                  onmouseenter="showLiveTpIndicator('${kode}', '${ringkasan}')"
+                  onmouseleave="hideLiveTpIndicator()"
+                  class="card-tp-pen px-2.5 py-1 rounded-lg text-[10px] font-bold border transition flex items-center gap-1 cursor-pointer ${cls}" 
+                  data-tp-id="${tp.id}"
+                  title="${kode}: ${ringkasan}">
+            <i class="fa-solid ${isChecked ? 'fa-triangle-exclamation' : 'fa-plus'} text-[9px]"></i>
+            <span>${kode}</span>
+          </button>
+          <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 hidden group-hover:flex flex-col items-center z-50 pointer-events-none w-52 text-left">
+            <div class="bg-slate-900 text-white text-[10px] rounded-lg p-2 shadow-xl border border-rose-500/40 leading-snug">
+              <span class="font-mono font-bold text-rose-400">${kode}:</span> "${ringkasan}"
+            </div>
+            <div class="w-2 h-2 bg-slate-900 rotate-45 -mt-1"></div>
+          </div>
+        </div>`;
     }).join('');
 
     return `
@@ -12546,6 +12723,11 @@ window.prevNextRaporStudent = prevNextRaporStudent;
 window.openQuickCommandModal = openQuickCommandModal;
 window.closeQuickCommandModal = closeQuickCommandModal;
 window.filterQuickCommandItems = filterQuickCommandItems;
+window.openTPGuideModal = openTPGuideModal;
+window.closeTPGuideModal = closeTPGuideModal;
+window.toggleTPGuideBanner = toggleTPGuideBanner;
+window.showLiveTpIndicator = showLiveTpIndicator;
+window.hideLiveTpIndicator = hideLiveTpIndicator;
 
 // 19. APP STARTUP INITIALIZATION
 window.addEventListener('DOMContentLoaded', () => {
