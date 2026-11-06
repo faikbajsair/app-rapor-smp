@@ -10920,27 +10920,189 @@ function applyClassRestrictions(assignedClass) {
   }
 }
 
-function applyMapelRestrictions(assignedMapels) {
-  const mapelDropdownIds = [
-    'filter-akademik-mapel',
-    'leger-akademik-mapel',
-    'akademik-mapel',
-    'upload-target-mapel',
-    'filter-tp-mapel',
-    'tp-mapel',
-    'leger-filter-mapel'
-  ];
-
+function updateLegerMapelOptions(selectedClass) {
   const user = AppState.currentUser;
-  const isMapel = isUserGuruMapel(user);
+  const mapelEl = document.getElementById('leger-akademik-mapel');
   const badgeMapel = document.getElementById('leger-mapel-role-badge');
+  if (!mapelEl) return;
 
-  mapelDropdownIds.forEach(id => {
+  const isAdmin = isUserAdmin(user);
+  const isWalas = isUserWaliKelas(user);
+  const assignedClass = getUserAssignedClass(user);
+  const assignedMapels = getUserAssignedMapels(user);
+
+  // Akses 16 Mapel penuh hanya untuk:
+  // 1. Admin / Kepala Sekolah
+  // 2. Wali Kelas KHUSUS pada kelas perwaliannya sendiri (misal Bu Aning di VIII UMAR)
+  const isOwnWalasClass = isWalas && Boolean(assignedClass) && (normalizeClassName(selectedClass) === normalizeClassName(assignedClass));
+  const hasFullAccess = isAdmin || isOwnWalasClass;
+
+  if (hasFullAccess) {
+    Array.from(mapelEl.options).forEach(opt => {
+      opt.disabled = false;
+      opt.hidden = false;
+    });
+    mapelEl.removeAttribute('data-locked-mapel');
+
+    if (badgeMapel) {
+      if (isAdmin) {
+        badgeMapel.className = 'px-2 py-0.5 rounded-md text-[10px] font-bold bg-purple-100 text-purple-800 border border-purple-300 inline-flex items-center gap-1';
+        badgeMapel.innerHTML = '<i class="fa-solid fa-crown text-amber-500"></i><span>Admin • 16 Mapel</span>';
+      } else {
+        badgeMapel.className = 'px-2 py-0.5 rounded-md text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300 inline-flex items-center gap-1';
+        badgeMapel.innerHTML = `<i class="fa-solid fa-crown text-amber-500"></i><span>Walas ${assignedClass} • 16 Mapel</span>`;
+      }
+      badgeMapel.classList.remove('hidden');
+    }
+  } else {
+    // Terbatas hanya untuk mata pelajaran yang diampu oleh guru tersebut
+    let firstValidValue = null;
+    Array.from(mapelEl.options).forEach(opt => {
+      if (opt.value === 'Semua') {
+        opt.disabled = true;
+        opt.hidden = true;
+      } else if (isMapelAssignedToUser(opt.value, user)) {
+        opt.disabled = false;
+        opt.hidden = false;
+        if (!firstValidValue) firstValidValue = opt.value;
+      } else {
+        opt.disabled = true;
+        opt.hidden = true;
+      }
+    });
+
+    if (firstValidValue && (!isMapelAssignedToUser(mapelEl.value, user) || mapelEl.value === 'Semua')) {
+      mapelEl.value = firstValidValue;
+    }
+    mapelEl.setAttribute('data-locked-mapel', 'true');
+
+    if (badgeMapel) {
+      badgeMapel.className = 'px-2 py-0.5 rounded-md text-[10px] font-bold bg-blue-100 text-blue-800 border border-blue-300 inline-flex items-center gap-1';
+      badgeMapel.innerHTML = `<i class="fa-solid fa-book text-blue-600"></i><span>Guru Mapel: ${(assignedMapels.length > 0 ? assignedMapels.join(', ') : 'Diampu')}</span>`;
+      badgeMapel.classList.remove('hidden');
+    }
+  }
+}
+
+function updateAkademikMapelOptions(selectedClass) {
+  const user = AppState.currentUser;
+  const mapelEl = document.getElementById('filter-akademik-mapel');
+  if (!mapelEl) return;
+
+  const isAdmin = isUserAdmin(user);
+  const isWalas = isUserWaliKelas(user);
+  const assignedClass = getUserAssignedClass(user);
+  const assignedMapels = getUserAssignedMapels(user);
+
+  const isOwnWalasClass = isWalas && Boolean(assignedClass) && (normalizeClassName(selectedClass) === normalizeClassName(assignedClass));
+  const hasFullAccess = isAdmin || isOwnWalasClass;
+
+  if (hasFullAccess) {
+    Array.from(mapelEl.options).forEach(opt => {
+      opt.disabled = false;
+      opt.hidden = false;
+    });
+    mapelEl.removeAttribute('data-locked-mapel');
+  } else {
+    let firstValidValue = null;
+    Array.from(mapelEl.options).forEach(opt => {
+      if (opt.value === 'Semua') {
+        opt.disabled = true;
+        opt.hidden = true;
+      } else if (isMapelAssignedToUser(opt.value, user)) {
+        opt.disabled = false;
+        opt.hidden = false;
+        if (!firstValidValue) firstValidValue = opt.value;
+      } else {
+        opt.disabled = true;
+        opt.hidden = true;
+      }
+    });
+
+    if (firstValidValue && (!isMapelAssignedToUser(mapelEl.value, user) || mapelEl.value === 'Semua')) {
+      mapelEl.value = firstValidValue;
+    }
+    mapelEl.setAttribute('data-locked-mapel', 'true');
+  }
+}
+
+function applyTpMapelRestrictions(assignedMapels) {
+  const user = AppState.currentUser;
+  const isAdmin = isUserAdmin(user);
+  const filterTpMapel = document.getElementById('filter-tp-mapel');
+  const modalTpMapel = document.getElementById('tp-mapel');
+
+  if (!isAdmin && assignedMapels && assignedMapels.length > 0) {
+    if (filterTpMapel) {
+      let firstValid = null;
+      Array.from(filterTpMapel.options).forEach(opt => {
+        if (opt.value === 'Semua') {
+          opt.disabled = false;
+          opt.hidden = false;
+        } else if (isMapelAssignedToUser(opt.value, user)) {
+          opt.disabled = false;
+          opt.hidden = false;
+          if (!firstValid) firstValid = opt.value;
+        } else {
+          opt.disabled = true;
+          opt.hidden = true;
+        }
+      });
+      if (filterTpMapel.value !== 'Semua' && !isMapelAssignedToUser(filterTpMapel.value, user)) {
+        filterTpMapel.value = firstValid || 'Semua';
+      }
+    }
+
+    if (modalTpMapel) {
+      let firstValid = null;
+      Array.from(modalTpMapel.options).forEach(opt => {
+        if (isMapelAssignedToUser(opt.value, user)) {
+          opt.disabled = false;
+          opt.hidden = false;
+          if (!firstValid) firstValid = opt.value;
+        } else {
+          opt.disabled = true;
+          opt.hidden = true;
+        }
+      });
+      if (!isMapelAssignedToUser(modalTpMapel.value, user)) {
+        modalTpMapel.value = firstValid || '';
+      }
+    }
+  } else {
+    if (filterTpMapel) {
+      Array.from(filterTpMapel.options).forEach(opt => {
+        opt.disabled = false;
+        opt.hidden = false;
+      });
+    }
+    if (modalTpMapel) {
+      Array.from(modalTpMapel.options).forEach(opt => {
+        opt.disabled = false;
+        opt.hidden = false;
+      });
+    }
+  }
+}
+
+function applyMapelRestrictions(assignedMapels) {
+  const user = AppState.currentUser;
+  const isWalas = isUserWaliKelas(user);
+  const assignedClass = getUserAssignedClass(user);
+  const currentLegerClass = document.getElementById('leger-akademik-kelas')?.value || (isWalas && assignedClass ? assignedClass : '');
+  const currentAkademikClass = document.getElementById('filter-akademik-kelas')?.value || '';
+
+  updateLegerMapelOptions(currentLegerClass);
+  updateAkademikMapelOptions(currentAkademikClass);
+  applyTpMapelRestrictions(assignedMapels);
+
+  const otherDropdownIds = ['upload-target-mapel', 'akademik-mapel', 'leger-filter-mapel'];
+  const isPureGuru = isUserGuruMapel(user);
+  otherDropdownIds.forEach(id => {
     const el = document.getElementById(id);
     if (!el) return;
-
-    if (isMapel && assignedMapels && assignedMapels.length > 0) {
-      let firstValidValue = null;
+    if (isPureGuru && assignedMapels && assignedMapels.length > 0) {
+      let firstValid = null;
       Array.from(el.options).forEach(opt => {
         if (opt.value === 'Semua') {
           opt.disabled = true;
@@ -10948,36 +11110,22 @@ function applyMapelRestrictions(assignedMapels) {
         } else if (isMapelAssignedToUser(opt.value, user)) {
           opt.disabled = false;
           opt.hidden = false;
-          if (!firstValidValue) firstValidValue = opt.value;
+          if (!firstValid) firstValid = opt.value;
         } else {
           opt.disabled = true;
           opt.hidden = true;
         }
       });
-
-      if (firstValidValue && (!isMapelAssignedToUser(el.value, user) || el.value === 'Semua')) {
-        el.value = firstValidValue;
+      if (!isMapelAssignedToUser(el.value, user)) {
+        el.value = firstValid || assignedMapels[0];
       }
-
-      el.setAttribute('data-locked-mapel', 'true');
     } else {
-      // Wali Kelas & Admin: Bebas melihat dan menginput SEMUA 16 Mata Pelajaran!
       Array.from(el.options).forEach(opt => {
         opt.disabled = false;
         opt.hidden = false;
       });
-      el.removeAttribute('data-locked-mapel');
     }
   });
-
-  if (badgeMapel) {
-    if (isMapel && assignedMapels && assignedMapels.length > 0) {
-      badgeMapel.innerText = `Guru Mapel: ${assignedMapels.join(', ')}`;
-      badgeMapel.classList.remove('hidden');
-    } else {
-      badgeMapel.classList.add('hidden');
-    }
-  }
 }
 
 function loginAsSpecificTeacher(username, password) {
@@ -15675,10 +15823,10 @@ function renderTPTable() {
   const status = document.getElementById('filter-tp-status')?.value || 'Semua';
   const query = (document.getElementById('filter-tp-search')?.value || '').toLowerCase().trim();
 
-  const isMapel = isUserGuruMapel();
+  const isRestricted = !isUserAdmin();
 
   const filtered = AppState.tpList.filter(item => {
-    if (isMapel && !isMapelAssignedToUser(item.mata_pelajaran)) return false;
+    if (isRestricted && !isMapelAssignedToUser(item.mata_pelajaran)) return false;
     if (mapel !== 'Semua' && String(item.mata_pelajaran).toLowerCase() !== String(mapel).toLowerCase()) return false;
 
     // Filter Tingkat Kelas (Kurikulum Merdeka Fase D mencakup Kelas VII, VIII, IX)
@@ -15777,14 +15925,14 @@ function openModalTP(id) {
   if (!modal) return;
   document.getElementById('form-tp')?.reset();
 
-  if (isUserGuruMapel()) {
-    applyMapelRestrictions(getUserAssignedMapels());
+  if (!isUserAdmin()) {
+    applyTpMapelRestrictions(getUserAssignedMapels());
   }
 
   if (id) {
     const item = AppState.tpList.find(t => String(t.id) === String(id));
     if (item) {
-      if (isUserGuruMapel() && !isMapelAssignedToUser(item.mata_pelajaran)) {
+      if (!isUserAdmin() && !isMapelAssignedToUser(item.mata_pelajaran)) {
         showToast('Anda tidak berwenang mengedit TP mata pelajaran lain.', 'warning');
         return;
       }
@@ -15841,7 +15989,7 @@ function submitFormTP(e) {
   const id = document.getElementById('tp-id').value || `TP-${Date.now().toString(36).toUpperCase()}`;
   let mapel = document.getElementById('tp-mapel').value;
 
-  if (isUserGuruMapel() && !isMapelAssignedToUser(mapel)) {
+  if (!isUserAdmin() && !isMapelAssignedToUser(mapel)) {
     const assigned = getUserAssignedMapels();
     if (assigned.length > 0) mapel = assigned[0];
     else {
@@ -15892,7 +16040,7 @@ function toggleTPStatus(id) {
   const item = AppState.tpList.find(t => String(t.id) === String(id));
   if (!item) return;
 
-  if (isUserGuruMapel() && !isMapelAssignedToUser(item.mata_pelajaran)) {
+  if (!isUserAdmin() && !isMapelAssignedToUser(item.mata_pelajaran)) {
     showToast('Anda tidak berwenang mengubah status TP mata pelajaran lain.', 'warning');
     return;
   }
@@ -15909,7 +16057,7 @@ function deleteTP(id) {
   const item = AppState.tpList.find(t => String(t.id) === String(id));
   if (!item) return;
 
-  if (isUserGuruMapel() && !isMapelAssignedToUser(item.mata_pelajaran)) {
+  if (!isUserAdmin() && !isMapelAssignedToUser(item.mata_pelajaran)) {
     showToast('Anda tidak berwenang menghapus TP mata pelajaran lain.', 'warning');
     return;
   }
@@ -15927,7 +16075,7 @@ function importKurikulumMerdekaDefaultTP() {
   if (!confirm('Impor paket Tujuan Pembelajaran Kurikulum Merdeka (Fase D)? TP yang ada akan diperbarui/dilengkapi.')) return;
   
   let bank = JSON.parse(JSON.stringify(DEFAULT_TP_BANK_16));
-  if (isUserGuruMapel()) {
+  if (!isUserAdmin()) {
     bank = bank.filter(t => isMapelAssignedToUser(t.mata_pelajaran));
   }
 
@@ -16034,23 +16182,28 @@ function getActiveTpsForMapel(mapel) {
 }
 
 function renderLegerGrid() {
-  const isWalas = isUserWaliKelas();
-  const assignedClass = getUserAssignedClass();
-  const isMapel = isUserGuruMapel();
-  const assignedMapels = getUserAssignedMapels();
+  const user = AppState.currentUser;
+  const isWalas = isUserWaliKelas(user);
+  const assignedClass = getUserAssignedClass(user);
+  const assignedMapels = getUserAssignedMapels(user);
+  const isAdmin = isUserAdmin(user);
 
   const kelasEl = document.getElementById('leger-akademik-kelas');
   const kelas = kelasEl?.value || (isWalas && assignedClass ? assignedClass : 'IX ABU BAKAR');
 
+  // Update opsi mapel dan badge wewenang secara reaktif sesuai kelas yang sedang dipilih
+  updateLegerMapelOptions(kelas);
+
+  const isOwnWalasClass = isWalas && Boolean(assignedClass) && (normalizeClassName(kelas) === normalizeClassName(assignedClass));
+  const hasFullAccess = isAdmin || isOwnWalasClass;
+
   const mapelEl = document.getElementById('leger-akademik-mapel');
-  if (isMapel && assignedMapels.length > 0 && mapelEl) {
-    if (!isMapelAssignedToUser(mapelEl.value)) {
-      mapelEl.value = assignedMapels[0];
-    }
-  }
-  const mapel = (isMapel && assignedMapels.length > 0)
-    ? (isMapelAssignedToUser(mapelEl?.value) ? mapelEl.value : assignedMapels[0])
+  const mapel = (!hasFullAccess && assignedMapels.length > 0)
+    ? (isMapelAssignedToUser(mapelEl?.value, user) ? mapelEl.value : assignedMapels[0])
     : (mapelEl?.value || 'Akidah');
+  if (mapelEl && mapelEl.value !== mapel) {
+    mapelEl.value = mapel;
+  }
   const kkm = Number(document.getElementById('leger-akademik-kkm')?.value) || (MAPEL_KKM_DEFAULT[mapel] || 75);
 
   const students = AppState.muridList.filter(m => normalizeClassName(m.kelas) === normalizeClassName(kelas));
@@ -16587,9 +16740,21 @@ function updateLegerPredikats() {
 }
 
 function saveBulkLegerAkademik() {
+  const user = AppState.currentUser;
+  const isWalas = isUserWaliKelas(user);
+  const assignedClass = getUserAssignedClass(user);
+
   const kelas = document.getElementById('leger-akademik-kelas')?.value || 'IX ABU BAKAR';
   const mapel = document.getElementById('leger-akademik-mapel')?.value || 'Akidah';
   const kkm = Number(document.getElementById('leger-akademik-kkm')?.value) || 75;
+
+  const isOwnWalasClass = isWalas && Boolean(assignedClass) && (normalizeClassName(kelas) === normalizeClassName(assignedClass));
+  const hasFullAccess = isUserAdmin(user) || isOwnWalasClass;
+
+  if (!hasFullAccess && !isMapelAssignedToUser(mapel, user)) {
+    showToast(`Anda tidak berwenang menginput/menyimpan nilai mata pelajaran ${mapel} di kelas ${kelas}.`, 'warning');
+    return;
+  }
 
   const rows = document.querySelectorAll('.leger-row');
   const items = [];
@@ -16784,19 +16949,20 @@ function loadNilaiAkademik() {
   let kelas = document.getElementById('filter-akademik-kelas')?.value || 'Semua';
   let mapel = document.getElementById('filter-akademik-mapel')?.value || 'Semua';
 
-  const isWalas = isUserWaliKelas();
-  const assignedClass = getUserAssignedClass();
-  if (isWalas && assignedClass) {
-    kelas = assignedClass;
-    const kEl = document.getElementById('filter-akademik-kelas');
-    if (kEl && kEl.value !== assignedClass) kEl.value = assignedClass;
-  }
+  const user = AppState.currentUser;
+  const isWalas = isUserWaliKelas(user);
+  const assignedClass = getUserAssignedClass(user);
+  const assignedMapels = getUserAssignedMapels(user);
+  const isAdmin = isUserAdmin(user);
 
-  const isMapel = isUserGuruMapel();
-  const assignedMapels = getUserAssignedMapels();
-  if (isMapel && assignedMapels.length > 0) {
+  updateAkademikMapelOptions(kelas);
+
+  const isOwnWalasClass = isWalas && Boolean(assignedClass) && (normalizeClassName(kelas) === normalizeClassName(assignedClass));
+  const hasFullAccess = isAdmin || isOwnWalasClass;
+
+  if (!hasFullAccess && assignedMapels.length > 0) {
     const mEl = document.getElementById('filter-akademik-mapel');
-    if (mEl && (!isMapelAssignedToUser(mEl.value) || mEl.value === 'Semua')) {
+    if (mEl && (!isMapelAssignedToUser(mEl.value, user) || mEl.value === 'Semua')) {
       mEl.value = assignedMapels[0];
     }
     mapel = mEl?.value || assignedMapels[0];
@@ -16986,13 +17152,16 @@ function editNilaiAkademikModal(id) {
   const item = AppState.akademikList.find(n => String(n.id) === String(id));
   if (!item) return;
 
-  if (isUserGuruMapel() && !isMapelAssignedToUser(item.mata_pelajaran)) {
-    showToast('Anda tidak memiliki wewenang untuk mengedit nilai mata pelajaran ini.', 'warning');
-    return;
-  }
-  if (isUserWaliKelas() && normalizeClassName(item.kelas) !== normalizeClassName(getUserAssignedClass())) {
-    showToast('Anda tidak memiliki wewenang untuk mengedit nilai siswa kelas lain.', 'warning');
-    return;
+  const user = AppState.currentUser;
+  const isWalas = isUserWaliKelas(user);
+  const assignedClass = getUserAssignedClass(user);
+  const isOwnClass = isWalas && Boolean(assignedClass) && (normalizeClassName(item.kelas) === normalizeClassName(assignedClass));
+
+  if (!isUserAdmin(user)) {
+    if (!isOwnClass && !isMapelAssignedToUser(item.mata_pelajaran, user)) {
+      showToast('Anda tidak memiliki wewenang untuk mengedit nilai mata pelajaran ini.', 'warning');
+      return;
+    }
   }
 
   document.getElementById('modal-akademik-title').innerText = 'Edit Nilai Akademik';
@@ -17003,7 +17172,7 @@ function editNilaiAkademikModal(id) {
   document.getElementById('akademik-uts').value = item.nilai_uts !== undefined && item.nilai_uts !== null ? item.nilai_uts : (item.nilai_akhir || 85);
   document.getElementById('akademik-catatan').value = item.capaian_kompetensi || item.catatan_guru || '';
   recalcAkademikPreview();
-  if (isUserGuruMapel()) {
+  if (!isUserAdmin(user)) {
     applyMapelRestrictions(getUserAssignedMapels());
   }
   document.getElementById('modal-akademik').classList.remove('hidden');
@@ -17015,18 +17184,20 @@ function submitFormAkademik(e) {
   const m = AppState.muridList.find(x => String(x.nis) === String(nis)) || {};
   let mapel = document.getElementById('akademik-mapel').value;
 
-  if (isUserGuruMapel() && !isMapelAssignedToUser(mapel)) {
-    const assigned = getUserAssignedMapels();
-    if (assigned.length > 0) mapel = assigned[0];
-    else {
-      showToast('Anda tidak berwenang menginput nilai untuk mata pelajaran ini.', 'error');
-      return;
-    }
-  }
+  const user = AppState.currentUser;
+  const isWalas = isUserWaliKelas(user);
+  const assignedClass = getUserAssignedClass(user);
+  const isOwnClass = isWalas && Boolean(assignedClass) && (normalizeClassName(m.kelas) === normalizeClassName(assignedClass));
 
-  if (isUserWaliKelas() && m.kelas && normalizeClassName(m.kelas) !== normalizeClassName(getUserAssignedClass())) {
-    showToast(`Anda hanya berwenang menginput nilai siswa kelas ${getUserAssignedClass()}.`, 'error');
-    return;
+  if (!isUserAdmin(user)) {
+    if (!isOwnClass && !isMapelAssignedToUser(mapel, user)) {
+      const assigned = getUserAssignedMapels();
+      if (assigned.length > 0 && isMapelAssignedToUser(assigned[0], user)) mapel = assigned[0];
+      else {
+        showToast(`Anda tidak berwenang menginput nilai mata pelajaran ${mapel} untuk kelas ${m.kelas || '-'}.`, 'error');
+        return;
+      }
+    }
   }
 
   const uts = Number(document.getElementById('akademik-uts').value) || 0;
@@ -20841,6 +21012,8 @@ window.loadMuridList = loadMuridList;
 window.loadCmsSettings = loadCmsSettings;
 window.renderLegerMatrix = renderLegerMatrix;
 window.renderLegerGrid = renderLegerGrid;
+window.updateLegerMapelOptions = updateLegerMapelOptions;
+window.updateAkademikMapelOptions = updateAkademikMapelOptions;
 window.onLegerTingkatFilterChange = onLegerTingkatFilterChange;
 window.onAkademikTingkatFilterChange = onAkademikTingkatFilterChange;
 window.renderKepribadianGrid = renderKepribadianGrid;
