@@ -3748,7 +3748,7 @@
               <th class="w-48 px-3 py-3 border-r border-slate-200 text-emerald-800 bg-emerald-50/60 font-bold">TP Tercapai Optimal</th>
               <th class="w-48 px-3 py-3 border-r border-slate-200 text-rose-800 bg-rose-50/60 font-bold">TP Perlu Peningkatan</th>
               <th class="px-4 py-3 border-r border-slate-200 font-black text-slate-900">Narasi Deskripsi Rapor (Siap Cetak)</th>
-              <th class="w-28 px-3 py-3 text-center">Aksi / Cetak</th>
+              <th class="w-36 min-w-[140px] px-3 py-3 text-center">Aksi / Cetak</th>
             </tr>
           </thead>
           <tbody id="table-deskripsi-tbody" class="divide-y divide-slate-100 bg-white">
@@ -17173,8 +17173,14 @@ function renderCekDeskripsiView() {
     `).join('') : `<span class="text-[11px] text-slate-400 italic">-</span>`;
 
     const statusCetak = hasScore 
-      ? `<span class="px-2.5 py-1 rounded-full text-[10px] font-black bg-emerald-100 text-emerald-800 border border-emerald-300">✅ Siap Cetak</span>`
-      : `<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-300">⚠️ Belum Ada Nilai</span>`;
+      ? `<span class="px-2.5 py-1 rounded-full text-[10px] font-black bg-emerald-100 text-emerald-800 border border-emerald-300 inline-flex items-center gap-1.5 justify-center whitespace-nowrap shadow-2xs">
+          <i class="fa-solid fa-circle-check text-emerald-600"></i>
+          <span>Siap Cetak</span>
+        </span>`
+      : `<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-50 text-amber-800 border border-amber-300 inline-flex items-center gap-1.5 justify-center whitespace-nowrap shadow-2xs">
+          <i class="fa-solid fa-triangle-exclamation text-amber-500"></i>
+          <span>Belum Ada Nilai</span>
+        </span>`;
 
     return `
     <tr class="hover:bg-slate-50 transition border-b border-slate-100">
@@ -17198,13 +17204,15 @@ function renderCekDeskripsiView() {
       <td class="px-4 py-3 border-r border-slate-200 leading-relaxed text-xs text-slate-800 font-medium min-w-[260px]">
         ${narasi}
       </td>
-      <td class="px-3 py-3 text-center space-y-1">
-        <div>${statusCetak}</div>
-        <button type="button" onclick="openStudentReportDirectly('${s.nis}')" 
-                class="px-2.5 py-1 bg-slate-100 hover:bg-[#00a66c] hover:text-white text-slate-700 rounded-lg text-[10px] font-bold transition flex items-center justify-center gap-1 w-full mt-1 cursor-pointer">
-          <i class="fa-solid fa-eye"></i>
-          <span>Lihat Rapor</span>
-        </button>
+      <td class="px-3 py-3 text-center whitespace-nowrap min-w-[135px] align-middle">
+        <div class="flex flex-col items-center justify-center gap-1.5 w-full">
+          ${statusCetak}
+          <button type="button" onclick="openStudentReportDirectly('${s.nis}')" 
+                  class="px-3 py-1.5 bg-slate-100 hover:bg-[#00a66c] hover:text-white text-slate-700 rounded-lg text-[10px] font-bold transition inline-flex items-center justify-center gap-1.5 w-full cursor-pointer whitespace-nowrap shadow-2xs border border-slate-200 hover:border-[#00a66c]">
+            <i class="fa-solid fa-eye text-xs"></i>
+            <span>Lihat Rapor</span>
+          </button>
+        </div>
       </td>
     </tr>
     `;
